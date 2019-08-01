@@ -20,5 +20,9 @@ h, m = [0 if x is '' else int(x) for x in duration.split('h')]
 dt = timedelta(hours=h, minutes=m)
 tfin = tdebut + dt
 
+# Obtenir le numero de la semaine (S1, S2, etc)
+week = tdebut.isocalendar()[1]
+
 print(tdebut)
 print(tfin)
+print(week)
