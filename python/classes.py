@@ -1,5 +1,5 @@
 class Cours:
-    def __init__(self, name, code, professor, professor_email, nb_weeks = 1, weight = 1):
+    def __init__(self, name, code, professor, professor_email, nb_weeks=1, weight=1):
         """
         Creates an object Cours, with the name and code of the course,
         the professor and the mail adress of the professor
@@ -14,10 +14,10 @@ class Cours:
         self.professor = professor
         self.professor_email = professor_email
         self.slots = {}
-        for i in range(1, nb_weeks+1):
+        for i in range(1, nb_weeks + 1):
             slots[i] = []
         self.weight = weight
-    
+
     def add_slot(self, slot, week):
         """
         Add a slot to this course
@@ -26,7 +26,7 @@ class Cours:
             self.slots[week].append(slot)
             return True
         return False
-    
+
     def remove_slot(self, slot, week):
         """
         Removes a slot to this course
@@ -38,23 +38,24 @@ class Cours:
             return True
 
 
-class CoursMagistral(Cours):
+class CM(Cours):
     def __init__(self, name, code, professor, professor_email):
         super.__init__(self, name, code, professor, professor_email)
-    
+
     def add_slot(self, slot, week):
         return super().add_slot(slot, week)(self, slot, week)
-    
+
     def remove_slot(self, slot, week):
         return super().remove_slot(slot, week)
 
-class APE(Cours):
-    def __init__(self, name, code, professor, professor_email, obligatoire = False):
+
+class TP(Cours):
+    def __init__(self, name, code, professor, professor_email, obligatoire=False):
         super.__init__(self, name, code, professor, professor_email)
         self.obligatoire = obligatoire
-    
+
     def add_slot(self, slot, week):
         return super().add_slot(slot, week)(self, slot, week)
-    
+
     def remove_slot(self, slot, week):
         return super().remove_slot(slot, week)
