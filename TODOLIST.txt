@@ -1,0 +1,17 @@
+************************************************  TO  DO  LIST   ****************************************************
+
+** PROJET LOCAL (BACK-END)
+OK	- Web scraping (recuperer les donnees sur ADE)
+	- Stocker les donnees sous un format efficace pour la suite
+	- Generation d'une semaine type + conflits
+	- Algorithme d'optimisation en fonctions de parametres utilisateurs
+		--> fonction qui genere les permutations (en tenant eventuellement compte de hard-contraintes utilisateur)
+		--> fonction d'evalutation des differents horaires selon differents parametres utilisateur
+	- Export resultat final
+	- Creation d'un lien d'abonnement
+
+** WEB-APP (FRONT-END)
+	- Hebergement (gratos ?) du site
+	- Creation de l'interface graphique (site internet)
+	- Creation de l'interface entre le back-end et le front-end
+	
