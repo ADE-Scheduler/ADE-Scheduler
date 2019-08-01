@@ -36,7 +36,6 @@ def getCoursesFromCodes(course_tags, weeks, projectID=2):
            + '&code=' + codes \
            + '&login=etudiant&password=student&projectId=' + str(projectID) \
            + opt
-    print(url)
 
     s = requests.Session()
     r = s.get(url)
