@@ -115,6 +115,28 @@ class Slot:
                 self.week = week - week_q2 + 1 - 2
             else:
                 self.week = week - week_q2 + 1
+    
+    def overlap(self, other):
+        """
+        Checks if there is an overlap between the two slots
+        if a.begin < b.begin, there is an overlap if b.begin < a.end
+        @pre: -
+        @post: None if other is not of type Slot
+               True if there is an overlap (bad)
+               False if there isn't any overlap (good)
+        """
+        if not type(self) == type(other):
+            return None
+        if self.begin < other.begin:
+            if self.end <= other.begin:
+                return False
+            else:
+                return True
+        else:
+            if other.end <= self.begin:
+                return False
+            else:
+                return True
 
     def __str__(self):
         return "(S" + str(self.week) + ") " + str(self.begin) + " - " + str(self.end)
@@ -126,6 +148,7 @@ class Slot:
         if type(self) == type(value) and self.week == value.week and self.begin == value.begin and self.end == value.end:
             return True
         return False
+    
 
 
 if __name__ == '__main__':
@@ -135,18 +158,26 @@ if __name__ == '__main__':
 
     duration = '2h'
     date = '13/05/2019'
+    date2 = '14/05/2019'
     time = '14h00'
+    time2 = '12h01'
 
     tdebut = datetime.strptime(date+'-'+time, '%d/%m/%Y-%Hh%M')
     h, m = [0 if x is '' else int(x) for x in duration.split('h')]
     dt = timedelta(hours=h, minutes=m)
     tfin = tdebut + dt
 
+    tdebut2 = datetime.strptime(date2+'-'+time2, '%d/%m/%Y-%Hh%M')
+    h, m = [0 if x is '' else int(x) for x in duration.split('h')]
+    dt = timedelta(hours=h, minutes=m)
+    tfin2 = tdebut2 + dt
+
     slotA = Slot(tdebut, tfin)
-    slotB = Slot(tdebut, tfin)
+    slotB = Slot(tdebut2, tfin2)
     slotC = Slot(tdebut, tfin)
 
     a.add_slot(slotA)
     a.add_slot(slotB)
     a.add_slot(slotC)
     a.scheduling()
+    print(slotA.overlap(slotB))
