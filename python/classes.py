@@ -15,8 +15,9 @@ Q1 = True
 Q2 = False
 ########################################
 
+
 class Cours:
-    def __init__(self, name, code, professor, professor_email, nb_weeks=13, Q = Q2, weight=1):
+    def __init__(self, name, code, professor, professor_email, nb_weeks=13, Q=Q2, weight=1):
         """
         Represents a given course, with the name and code of the course,
         the professor and the mail adress of the professor
@@ -62,10 +63,10 @@ class Cours:
         else:
             self.slots[slot.week].remove(slot)
             return True
-    
+
     def __str__(self):
         return self.code + ": " + self.name + ", " + self.professor + "(" + self.professor_email + ")\n"
-    
+
     def scheduling(self):
         s = str(self)
         s += "Below all the possibilities of the course " + self.code + ":\n\n"
@@ -75,7 +76,7 @@ class Cours:
                 s += str(j) + "\n"
             s += "\n"
         print(s)
-        
+
 
 class CM(Cours):
     pass
@@ -83,6 +84,7 @@ class CM(Cours):
 
 class TP(Cours):
     pass
+
 
 class Slot:
     """
@@ -94,6 +96,7 @@ class Slot:
     - begin: the date and hour when starts the CM/TP of this slot
     - end: the date and hour when ends the CM/TP of this slot
     """
+
     def __init__(self, begin, end):
         self.begin = begin
         self.end = end
@@ -105,10 +108,10 @@ class Slot:
         else:
             self.week = week - week_q2 + 1
             self.Q = Q2
-    
+
     def __str__(self):
         return "(S" + str(self.week) + ") " + str(self.begin) + " - " + str(self.end)
-    
+
     def __eq__(self, value):
         """
         Check if two Slot represent the same scheduling
@@ -140,4 +143,3 @@ if __name__ == '__main__':
     a.add_slot(slotB)
     a.add_slot(slotC)
     a.scheduling()
-
