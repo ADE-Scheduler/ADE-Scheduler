@@ -12,7 +12,7 @@ OK	- Web scraping (recuperer les donnees sur ADE)
 	        --> il faut un url qui renvoit un fichier ics (soit ADE le fait, soit on le fait avec le pakcage ics.py ?)
 
 ** WEB-APP (FRONT-END)
-	- Hebergement (gratos ?) du site
+	- Hebergement (gratos ?) du site -> tutoriel https://realpython.com/python-web-applications/
 	- Creation de l'interface graphique (site internet)
 	- Creation de l'interface entre le back-end et le front-end
 	
