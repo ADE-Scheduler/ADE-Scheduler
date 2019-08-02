@@ -1,4 +1,4 @@
-***REMOVED***
+from requests import Session
 from lxml import html
 
 
@@ -37,24 +37,19 @@ def getCoursesFromCodes(course_tags, weeks, projectID=2):
            + '&login=etudiant&password=student&projectId=' + str(projectID) \
            + opt
 
-    s = requests.Session()
+    s = Session()
     r = s.get(url)
     r = s.get('http://horaire.uclouvain.be/jsp/custom/modules/plannings/info.jsp?order=slot&amp;clearTree=false')
-    s.keep_alive = False
+    s.close()
 
     tree = html.fromstring(r.content)
     data = tree.xpath('//tr')[2:]       # the two first lines are titles
     entry = ['date', 'tag', 'time', 'duration', 'name', 'teacher', 'mail', 'room']
-    tab = [None] * len(data)
+    tab = [{} for i in range(len(data))]
     i = 0
-    while data:
+    for f in tab:
         el = data.pop().iterchildren()
-        tab[i] = {}
-        for x in entry:
-            info = next(el)
-            if info is not None:
-                tab[i][x] = info.text_content()
-            else:
-                tab[i][x] = ''
+        for y in entry:
+            f[y] = next(el).text_content()
         i += 1
     return tab
