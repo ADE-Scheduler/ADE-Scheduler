@@ -3,6 +3,10 @@ from datetime import datetime, timedelta
 ############ CHANGING DATA #############
 date_q1 = '16/09/2019'
 date_q2 = '04/02/2020'
+
+# One of the two is useless
+date_spring_b = '06/04/2019'
+date_spring_e = '19/04/2019'
 ########################################
 
 ############## METADATA ################
@@ -11,6 +15,9 @@ start_q1_week = datetime.strptime(date_q1+'-'+time_q1_q2, '%d/%m/%Y-%Hh%M')
 week_q1 = start_q1_week.isocalendar()[1]
 start_q2_week = datetime.strptime(date_q2+'-'+time_q1_q2, '%d/%m/%Y-%Hh%M')
 week_q2 = start_q2_week.isocalendar()[1]
+
+start_spring = datetime.strptime(date_spring_b+'-'+time_q1_q2, '%d/%m/%Y-%Hh%M')
+
 Q1 = True
 Q2 = False
 ########################################
@@ -34,10 +41,7 @@ class Cours:
         self.professor_email = professor_email
         self.slots = {}
         self.Q = Q
-        if self.Q == Q2:
-            self.nb_weeks = nb_weeks + 2 # Adding Spring holidays
-        else:
-            self.nb_weeks = nb_weeks
+        self.nb_weeks = nb_weeks
         # Here the dictionnary starts at index 1 until nb_weeks included
         for i in range(1, self.nb_weeks + 1):
             self.slots[i] = []
@@ -106,8 +110,11 @@ class Slot:
             self.Q = Q1
             self.week = week - week_q1 + 1
         else:
-            self.week = week - week_q2 + 1
             self.Q = Q2
+            if begin > start_spring:
+                self.week = week - week_q2 + 1 - 2
+            else:
+                self.week = week - week_q2 + 1
 
     def __str__(self):
         return "(S" + str(self.week) + ") " + str(self.begin) + " - " + str(self.end)
