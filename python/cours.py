@@ -1,3 +1,8 @@
+############## METADATA ################
+Q1 = True
+Q2 = False
+########################################
+
 class Cours:
     def __init__(self, name, code, professor, professor_email, nb_weeks=13, Q=Q2, weight=1):
         """
@@ -47,7 +52,7 @@ class Cours:
         return self.code + ": " + self.name + ", " + self.professor + "(" + self.professor_email + ")\n"
 
     def __eq__(self, value):
-        if not type(self) == type(value):
+        if not type(value) == Cours:
             return False
         return self.code == value.code
 
