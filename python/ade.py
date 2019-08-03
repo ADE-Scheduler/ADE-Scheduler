@@ -19,8 +19,10 @@ def getCoursesFromCodes(course_tags, weeks, projectID=2):
     q = min(weeks) < 20
     nb_weeks = len(weeks)
     entry = ['date', 'tag', 'time', 'duration', 'name', 'teacher', 'mail', 'room']
-    courses_added = []
-    course_list = []
+    cm_added = []
+    tp_added = []
+    cm_list = []
+    tp_list = []
 
     # generating the URL for ADE
     url = 'http://horaire.uclouvain.be/jsp/custom/modules/plannings/direct_planning.jsp?'
@@ -68,20 +70,32 @@ def getCoursesFromCodes(course_tags, weeks, projectID=2):
         h, m = [0 if x is '' else int(x) for x in c['duration'].split('h')]
         dt = timedelta(hours=h, minutes=m)
         tfin = tdebut + dt
+        tag = ''
+        iscm = True
+        if '-' in c['tag']:  # CM
+            if '_' in c['tag']:
+                warn('Both - and _ found in course tag, assuming it is a CM.')
+            tag = c['tag'].split('-')[0]
+        else:
+            tag = c['tag'].split('_')[0]
+            iscm = False
+
         try:  # The course was already added, we just add the corresponding time slot
-            i = courses_added.index(c['tag'])
-            course_list[i].add_slot(Slot(tdebut, tfin))
+            if iscm:
+                i = cm_added.index(tag)
+                cm_list[i].add_slot(Slot(tdebut, tfin))
+            else:
+                i = tp_added.index(tag)
+                tp_list[i].add_slot(Slot(tdebut, tfin))
 
         except ValueError:  # This is a new course
-            courses_added.append(c['tag'])
-            if '-' in c['tag']:   # CM
-                if '_' in c['tag']:
-                    warn('Both - and _ found in course tag, assuming it is a CM.')
-                course_list.append(CM(c['name'], c['tag'], c['teacher'], c['mail'], nb_weeks=nb_weeks, Q=q))
-
+            if iscm:
+                cm_added.append(tag)
+                cm_list.append(CM(c['name'], tag, c['teacher'], c['mail'], nb_weeks=nb_weeks, Q=q))
+                cm_list[-1].add_slot(Slot(tdebut, tfin))
             else:   # TP
-                course_list.append(TP(c['name'], c['tag'], c['teacher'], c['mail'], nb_weeks=nb_weeks, Q=q))
+                tp_added.append(tag)
+                tp_list.append(TP(c['name'], tag, c['teacher'], c['mail'], nb_weeks=nb_weeks, Q=q))
+                tp_list[-1].add_slot(Slot(tdebut, tfin))
 
-            course_list[-1].add_slot(Slot(tdebut, tfin))
-
-    return course_list
+    return cm_list, tp_list
