@@ -53,12 +53,11 @@ class Slot:
         Checks if there is an overlap between the two slots
         if a.begin < b.begin, there is an overlap if b.begin < a.end
         @pre: -
-        @post: None if other is not of type Slot
                True if there is an overlap (bad)
                False if there isn't any overlap (good)
         """
         if not type(other) is Slot:
-            return None
+            raise TypeError('The argument is not of type Slot')
         if self.begin < other.begin:
             if self.end <= other.begin:
                 return False
