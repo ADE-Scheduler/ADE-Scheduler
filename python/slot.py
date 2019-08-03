@@ -57,7 +57,7 @@ class Slot:
                True if there is an overlap (bad)
                False if there isn't any overlap (good)
         """
-        if not type(self) == type(other):
+        if not type(other) is Slot:
             return None
         if self.begin < other.begin:
             if self.end <= other.begin:
@@ -77,6 +77,6 @@ class Slot:
         """
         Check if two Slot represent the same scheduling
         """
-        if type(self) == type(value) and self.week == value.week and self.begin == value.begin and self.end == value.end:
+        if type(value) is Slot and self.week == value.week and self.begin == value.begin and self.end == value.end:
             return True
         return False
