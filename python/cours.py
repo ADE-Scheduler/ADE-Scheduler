@@ -71,9 +71,9 @@ class Cours:
 
 class CM(Cours):
     def __init__(self, name, code, professor, professor_email, nb_weeks=13, Q=Q2, weight=1):
-        Cours.__init__(self, name, code, professor, professor_email, nb_weeks, Q, weight)
+        return super().__init__(name, code, professor, professor_email, nb_weeks=nb_weeks, Q=Q, weight=weight)
 
 
 class TP(Cours):
     def __init__(self, name, code, professor, professor_email, nb_weeks=13, Q=Q2, weight=1):
-        Cours.__init__(self, name, code, professor, professor_email, nb_weeks, Q, weight)
+        return super().__init__(name, code, professor, professor_email, nb_weeks=nb_weeks, Q=Q, weight=weight)
