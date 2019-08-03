@@ -9,8 +9,8 @@ weeks = [21, 22, 23, 24, 25, 26, 27, 28, 29, 32, 33, 34, 35]
 
 cm, tp = getCoursesFromCodes(codes, weeks, projectID)
 
-for course in tp:
-    course.scheduling()
+#for course in tp:
+#    course.scheduling()
 
 print(len(tp))
 print(len(cm))
@@ -22,5 +22,16 @@ for course in cm:
 for t in tp:
     computation.add_course(t)
 
-for c in computation.courses:
-    print(c)
+valid, courses = computation.compute(4)
+
+print(len(valid))
+print(len(courses))
+
+for perm in valid:
+    print(perm)
+    print("NEW PERMUTATION\n-----------------------")
+    for course in courses:
+        print(course)
+        print(perm[course.code])
+        print('\n\n')
+    print("----------------------\n")
