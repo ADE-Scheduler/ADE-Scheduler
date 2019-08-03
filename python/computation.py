@@ -15,12 +15,12 @@ class Computation:
     def add_course(self, course):
         if not course in self.courses:
             self.courses.append(course)
-        up_to_date = False
+        self.up_to_date = False
     
     def remove_course(self, course):
         if course in self.courses:
             self.courses.remove(course)
-        up_to_date = False
+        self.up_to_date = False
     
     def add_valid_schedule(self, schedule):
         """
@@ -92,4 +92,3 @@ class Computation:
         
         self.up_to_date = True
         return self.valid
-
