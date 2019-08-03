@@ -70,12 +70,11 @@ def getCoursesFromCodes(course_tags, weeks, projectID=2):
         h, m = [0 if x is '' else int(x) for x in c['duration'].split('h')]
         dt = timedelta(hours=h, minutes=m)
         tfin = tdebut + dt
-        tag = ''
-        iscm = True
         if '-' in c['tag']:  # CM
             if '_' in c['tag']:
                 warn('Both - and _ found in course tag, assuming it is a CM.')
             tag = c['tag'].split('-')[0]
+            iscm = True
         else:
             tag = c['tag'].split('_')[0]
             iscm = False
@@ -89,7 +88,7 @@ def getCoursesFromCodes(course_tags, weeks, projectID=2):
                 tp_list[i].add_slot(Slot(tdebut, tfin))
 
         except ValueError:  # This is a new course
-            if iscm:
+            if iscm:    # CM
                 cm_added.append(tag)
                 cm_list.append(CM(c['name'], tag, c['teacher'], c['mail'], nb_weeks=nb_weeks, Q=q))
                 cm_list[-1].add_slot(Slot(tdebut, tfin))
