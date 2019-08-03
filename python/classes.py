@@ -71,6 +71,11 @@ class Cours:
     def __str__(self):
         return self.code + ": " + self.name + ", " + self.professor + "(" + self.professor_email + ")\n"
 
+    def __eq__(self, value):
+        if not type(self) == type(value):
+            return False
+        return self.code == value.code
+
     def scheduling(self):
         s = str(self)
         s += "Below all the possibilities of the course " + self.code + ":\n\n"
