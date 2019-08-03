@@ -28,10 +28,9 @@ print(len(valid))
 print(len(courses))
 
 for perm in valid:
-    print(perm)
     print("NEW PERMUTATION\n-----------------------")
     for course in courses:
         print(course)
         print(perm[course.code])
         print('\n\n')
-    print("----------------------\n")
+    print("----------------------\n\n\n\n\n")
