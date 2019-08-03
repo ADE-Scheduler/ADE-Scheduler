@@ -1,12 +1,12 @@
 ############## METADATA ################
 Q1 = True
 Q2 = False
-
-
+CM = True
+TP = False
 ########################################
 
 class Cours:
-    def __init__(self, name, code, professor, professor_email, nb_weeks=13, Q=Q2, weight=1):
+    def __init__(self, name, code, professor, professor_email, nb_weeks=13, Q=Q2, weight=1, type_course=CM):
         """
         Represents a given course, with the name and code of the course,
         the professor and the mail adress of the professor
@@ -24,6 +24,7 @@ class Cours:
         self.slots = {}
         self.Q = Q
         self.nb_weeks = nb_weeks
+        self.type_course = type_course
         # Here the dictionnary starts at index 1 until nb_weeks included
         for i in range(1, self.nb_weeks + 1):
             self.slots[i] = []
@@ -56,7 +57,7 @@ class Cours:
     def __eq__(self, value):
         if not isinstance(value, Cours):
             return False
-        return self.code == value.code
+        return self.code == value.code and self.type_course == value.type_course
 
     def scheduling(self):
         s = str(self)
