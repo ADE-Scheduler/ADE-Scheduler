@@ -11,6 +11,7 @@ class Computation:
         self.courses = []
         self.up_to_date = False
         self.valid = []
+        self.working_courses = []
 
     def add_course(self, course):
         if not course in self.courses:
@@ -33,19 +34,28 @@ class Computation:
             self.valid[course.code] = schedule[i]
         self.valid.append(new_valid)
 
-    def compute(self):
+    def compute(self, week):
         """
         Computes all the valids schedulings for the given courses
         in self.courses, where each course has his own slots
+        FOR THE MOMENT: input:
+        - week: the week (UCLouvain-like) where the computation
+        has to be done.
+        ///////////////////////////
+        ||WORKS ONLY FOR ONE WEEK||
+        \\\\\\\\\\\\\\\\\\\\\\\\\\\\
         ---------------------------------------------------------
         A 'valid' scheduling is one which has no conflict for all
         the courses (CM/APE).
         TO DO: preferences
 
-        @post: a list of dictionnaries, where each item is a 
+        @post: 
+        * a list of dictionnaries, where each item is a 
         valid schedule. Each dictionnary has the form code:slot :
-        - code is the code of the course (e.g. 'LINMA1510')
-        - slot is the slot object (of class Slot)
+            - code is the code of the course (e.g. 'LINMA1510')
+            - slot is the slot object (of class Slot)
+        * working_courses: all the courses listed for the week
+        week
 
         /!\ The dictionnary is only computed if there is a change
             since the last computation
@@ -53,14 +63,18 @@ class Computation:
         
         # No change since last time
         if self.up_to_date:
-            return self.valid
+            return self.valid, self.working_courses
         
         # Reset the valid, since changes
         self.valid = []
+        self.working_courses = []
 
         all_slots = []
         for c in self.courses:
-            all_slots.append(c.slots)
+            l = [i for i in c.slots if i.week == week]
+            if len(l) > 0:
+                all_slots.append(l)
+                self.working_courses.append(c)
         
         # Computing the permutations based on the slots
         permutations = list(itools.product(*all_slots))
@@ -91,4 +105,4 @@ class Computation:
                 add_valid_schedule(perm)
         
         self.up_to_date = True
-        return self.valid
+        return self.valid, self.working_courses
