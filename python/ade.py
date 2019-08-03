@@ -1,5 +1,9 @@
 from requests import Session
 from lxml import html
+from cours import CM, TP
+from slot import Slot
+from datetime import datetime, timedelta
+from warnings import warn
 
 
 def getCoursesFromCodes(course_tags, weeks, projectID=2):
@@ -11,6 +15,14 @@ def getCoursesFromCodes(course_tags, weeks, projectID=2):
     projectID : int
     """
 
+    # some variables
+    q = min(weeks) < 20
+    nb_weeks = len(weeks)
+    entry = ['date', 'tag', 'time', 'duration', 'name', 'teacher', 'mail', 'room']
+    courses_added = []
+    course_list = []
+
+    # generating the URL for ADE
     url = 'http://horaire.uclouvain.be/jsp/custom/modules/plannings/direct_planning.jsp?'
     opt = '&showTab=true&showTabInstructors=true&showImage=true&iE=true&displayConfId=46&display=true&x=&y=&isClickable' \
           '=true&changeOptions=true&displayType=0&showLoad=false&showTreeCategory2=true&showTabActivity=true&showTabWeek' \
@@ -37,19 +49,39 @@ def getCoursesFromCodes(course_tags, weeks, projectID=2):
            + '&login=etudiant&password=student&projectId=' + str(projectID) \
            + opt
 
+    # fetching data from ADE
     s = Session()
     r = s.get(url)
     r = s.get('http://horaire.uclouvain.be/jsp/custom/modules/plannings/info.jsp?order=slot&amp;clearTree=false')
     s.close()
-
     tree = html.fromstring(r.content)
-    data = tree.xpath('//tr')[2:]       # the two first lines are titles
-    entry = ['date', 'tag', 'time', 'duration', 'name', 'teacher', 'mail', 'room']
-    tab = [{} for i in range(len(data))]
-    i = 0
-    for f in tab:
-        el = data.pop().iterchildren()
+    data = tree.xpath('//tr')[2:]  # the two first lines are titles
+
+    # constructing the course list
+    for line in data:
+        c = {}
+        el = line.iterchildren()
         for y in entry:
-            f[y] = next(el).text_content()
-        i += 1
-    return tab
+            c[y] = str(next(el).text_content())
+
+        tdebut = datetime.strptime(c['date'] + '-' + c['time'], '%d/%m/%Y-%Hh%M')
+        h, m = [0 if x is '' else int(x) for x in c['duration'].split('h')]
+        dt = timedelta(hours=h, minutes=m)
+        tfin = tdebut + dt
+        try:  # The course was already added, we just add the corresponding time slot
+            i = courses_added.index(c['tag'])
+            course_list[i].add_slot(Slot(tdebut, tfin))
+
+        except ValueError:  # This is a new course
+            courses_added.append(c['tag'])
+            if '-' in c['tag']:   # CM
+                if '_' in c['tag']:
+                    warn('Both - and _ found in course tag, assuming it is a CM.')
+                course_list.append(CM(c['name'], c['tag'], c['teacher'], c['mail'], nb_weeks=nb_weeks, Q=q))
+
+            else:   # TP
+                course_list.append(TP(c['name'], c['tag'], c['teacher'], c['mail'], nb_weeks=nb_weeks, Q=q))
+
+            course_list[-1].add_slot(Slot(tdebut, tfin))
+
+    return course_list
