@@ -1,6 +1,8 @@
 ############## METADATA ################
 Q1 = True
 Q2 = False
+
+
 ########################################
 
 class Cours:
@@ -59,9 +61,19 @@ class Cours:
     def scheduling(self):
         s = str(self)
         s += "Below all the possibilities of the course " + self.code + ":\n\n"
-        for i in range(1, self.nb_weeks+1):
+        for i in range(1, self.nb_weeks + 1):
             s += "================= S" + str(i) + " =================\n"
             for j in self.slots[i]:
                 s += str(j) + "\n"
             s += "\n"
         print(s)
+
+
+class CM(Cours):
+    def __init__(self, name, code, professor, professor_email, nb_weeks=13, Q=Q2, weight=1):
+        Cours.__init__(self, name, code, professor, professor_email, nb_weeks, Q, weight)
+
+
+class TP(Cours):
+    def __init__(self, name, code, professor, professor_email, nb_weeks=13, Q=Q2, weight=1):
+        Cours.__init__(self, name, code, professor, professor_email, nb_weeks, Q, weight)
