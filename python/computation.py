@@ -31,7 +31,7 @@ class Computation:
         """
         new_valid = {}
         for i, course in enumerate(self.courses):
-            self.valid[course.code] = schedule[i]
+            new_valid[course.code] = schedule[i]
         self.valid.append(new_valid)
 
     def compute(self, week):
@@ -71,11 +71,20 @@ class Computation:
 
         all_slots = []
         for c in self.courses:
-            l = [i for i in c.slots if i.week == week]
+            l = c.slots[week]
             if len(l) > 0:
                 all_slots.append(l)
                 self.working_courses.append(c)
         
+        """
+        for i in all_slots:
+            for j in i:
+                print(j)
+            print('----')
+        
+        for i in self.working_courses:
+            print(i)
+        """
         # Computing the permutations based on the slots
         permutations = list(itools.product(*all_slots))
 
@@ -96,13 +105,13 @@ class Computation:
             for i in range(len(perm)-1):
                 if overlap:
                     break
-                for j in range(1, len(perm)):
-                    if i.overlap(j):
+                for j in range(i+1, len(perm)):
+                    if perm[i].overlap(perm[j]):
                         overlap = True
                         break
             # No overlap: it is a valid schedule
             if not overlap:
-                add_valid_schedule(perm)
+                self.add_valid_schedule(perm)
         
         self.up_to_date = True
         return self.valid, self.working_courses
