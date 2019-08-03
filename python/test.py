@@ -1,4 +1,5 @@
 from ade import *
+from computation import *
 from datetime import datetime, timedelta
 import re
 
@@ -13,3 +14,13 @@ for course in tp:
 
 print(len(tp))
 print(len(cm))
+
+computation = Computation()
+
+for course in cm:
+    computation.add_course(course)
+for t in tp:
+    computation.add_course(t)
+
+for c in computation.courses:
+    print(c)
