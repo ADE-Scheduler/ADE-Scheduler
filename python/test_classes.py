@@ -1,9 +1,11 @@
 from cours import *
 from slot import *
 from datetime import datetime, timedelta
+from professor import Professor
 
 if __name__ == '__main__':
-    a = Cours("Autolin", "LINMA1510", "Denis Dochain", "denis@uc.c", Q = Q2, nb_weeks = 13)
+    Denis = Professor("Denis Dochain", "denis_est_beau@gmail.ucl")
+    a = Cours("Autolin", "LINMA1510", Denis, Q = Q2, nb_weeks = 13)
 
     ########
 

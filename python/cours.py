@@ -6,21 +6,19 @@ TP = False
 ########################################
 
 class Cours:
-    def __init__(self, name, code, professor, professor_email, nb_weeks=13, Q=Q2, weight=1, type_course=CM):
+    def __init__(self, name, code, professor, nb_weeks=13, Q=Q2, weight=1, type_course=CM):
         """
         Represents a given course, with the name and code of the course,
         the professor and the mail adress of the professor
         example:
         - name: "Automatique lineaire"
         - code: "LINMA1510"
-        - professor: "Denis Dochain"
-        - professor_email: "denisdochain@uclouvain.be"
+        - professor: Professor or list of Professors
         - nb_weeks: the duration of the course, starting at S1
         """
         self.name = name
         self.code = code
         self.professor = professor
-        self.professor_email = professor_email
         self.slots = {}
         self.Q = Q
         self.nb_weeks = nb_weeks
@@ -52,11 +50,11 @@ class Cours:
             return True
 
     def __str__(self):
-        return self.code + ": " + self.name + ", " + self.professor + "(" + self.professor_email + ")\n"
+        return self.code + ": " + self.name + ", " + str(self.professor)
 
     def __eq__(self, value):
         if not isinstance(value, Cours):
-            return False
+            raise TypeError
         return self.code == value.code and self.type_course == value.type_course
 
     def scheduling(self):
@@ -71,10 +69,10 @@ class Cours:
 
 
 class CM(Cours):
-    def __init__(self, name, code, professor, professor_email, nb_weeks=13, Q=Q2, weight=1):
-        super().__init__(name, code, professor, professor_email, nb_weeks=nb_weeks, Q=Q, weight=weight, type_course = CM)
+    def __init__(self, name, code, professor, nb_weeks=13, Q=Q2, weight=1):
+        super().__init__(name, code, professor, nb_weeks=nb_weeks, Q=Q, weight=weight, type_course=CM)
 
 
 class TP(Cours):
-    def __init__(self, name, code, professor, professor_email, nb_weeks=13, Q=Q2, weight=1):
-        super().__init__(name, code, professor, professor_email, nb_weeks=nb_weeks, Q=Q, weight=weight, type_course = TP)
+    def __init__(self, name, code, professor, nb_weeks=13, Q=Q2, weight=1):
+        super().__init__(name, code, professor, nb_weeks=nb_weeks, Q=Q, weight=weight, type_course=TP)
