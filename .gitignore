@@ -105,3 +105,6 @@ venv.bak/
 
 # PyCharm
 .idea
+
+# VS Code
+.vscode
