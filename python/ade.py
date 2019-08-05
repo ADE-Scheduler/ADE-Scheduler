@@ -4,6 +4,8 @@ from cours import CM, TP
 from slot import Slot
 from datetime import datetime, timedelta
 from warnings import warn
+from static_data import Q2_START, Q1, Q2, Q3
+from professor import Professor
 
 
 def getCoursesFromCodes(course_tags, weeks, projectID=2):
@@ -16,7 +18,7 @@ def getCoursesFromCodes(course_tags, weeks, projectID=2):
     """
 
     # some variables
-    q = min(weeks) < 20
+    q = [week < Q2_START for week in weeks]
     nb_weeks = len(weeks)
     entry = ['date', 'tag', 'time', 'duration', 'name', 'teacher', 'mail', 'room']
     cm_added = []
@@ -59,8 +61,9 @@ def getCoursesFromCodes(course_tags, weeks, projectID=2):
     tree = html.fromstring(r.content)
     data = tree.xpath('//tr')[2:]  # the two first lines are titles
 
+
     # constructing the course list
-    for line in data:
+    for i, line in enumerate(data):
         c = {}
         el = line.iterchildren()
         for y in entry:
@@ -88,13 +91,17 @@ def getCoursesFromCodes(course_tags, weeks, projectID=2):
                 tp_list[i].add_slot(Slot(tdebut, tfin))
 
         except ValueError:  # This is a new course
+            pr = Professor(c['teacher'], c['mail'])
             if iscm:    # CM
                 cm_added.append(tag)
-                cm_list.append(CM(c['name'], tag, c['teacher'], c['mail'], nb_weeks=nb_weeks, Q=q))
+                cm_list.append(CM(c['name'], tag, pr, nb_weeks=nb_weeks, Q=q[i]))
                 cm_list[-1].add_slot(Slot(tdebut, tfin))
             else:   # TP
                 tp_added.append(tag)
-                tp_list.append(TP(c['name'], tag, c['teacher'], c['mail'], nb_weeks=nb_weeks, Q=q))
+                tp_list.append(TP(c['name'], tag, pr, nb_weeks=nb_weeks, Q=q[i]))
                 tp_list[-1].add_slot(Slot(tdebut, tfin))
 
     return cm_list, tp_list
+
+
+_, _ = getCoursesFromCodes(['lepl1102'], Q1+Q2+Q3)
