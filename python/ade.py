@@ -18,7 +18,7 @@ def getCoursesFromCodes(course_tags, weeks, projectID=2):
     """
 
     # some variables
-    q = [week < Q2_START for week in weeks]
+    q = min(weeks) < 20
     nb_weeks = len(weeks)
     entry = ['date', 'tag', 'time', 'duration', 'name', 'teacher', 'mail', 'room']
     cm_added = []
@@ -94,14 +94,11 @@ def getCoursesFromCodes(course_tags, weeks, projectID=2):
             pr = Professor(c['teacher'], c['mail'])
             if iscm:    # CM
                 cm_added.append(tag)
-                cm_list.append(CM(c['name'], tag, pr, nb_weeks=nb_weeks, Q=q[i]))
+                cm_list.append(CM(c['name'], tag, pr, nb_weeks=nb_weeks, Q=q))
                 cm_list[-1].add_slot(Slot(tdebut, tfin))
             else:   # TP
                 tp_added.append(tag)
-                tp_list.append(TP(c['name'], tag, pr, nb_weeks=nb_weeks, Q=q[i]))
+                tp_list.append(TP(c['name'], tag, pr, nb_weeks=nb_weeks, Q=q))
                 tp_list[-1].add_slot(Slot(tdebut, tfin))
 
     return cm_list, tp_list
-
-
-_, _ = getCoursesFromCodes(['lepl1102'], Q1+Q2+Q3)
