@@ -1,9 +1,7 @@
 from datetime import datetime, timedelta
+from static_data import *
 
 ############ CHANGING DATA #############
-date_q1 = '16/09/2019'
-date_q2 = '04/02/2020'
-
 # One of the two is useless
 date_spring_b = '06/04/2019'
 date_spring_e = '19/04/2019'
@@ -11,12 +9,12 @@ date_spring_e = '19/04/2019'
 
 ############## METADATA ################
 time_q1_q2 = '00h00'
-start_q1_week = datetime.strptime(date_q1+'-'+time_q1_q2, '%d/%m/%Y-%Hh%M')
+start_q1_week = datetime.strptime(Q1_START_DATE+'-'+time_q1_q2, '%d/%m/%Y-%Hh%M')
 week_q1 = start_q1_week.isocalendar()[1]
-start_q2_week = datetime.strptime(date_q2+'-'+time_q1_q2, '%d/%m/%Y-%Hh%M')
+start_q2_week = datetime.strptime(Q2_START_DATE+'-'+time_q1_q2, '%d/%m/%Y-%Hh%M')
 week_q2 = start_q2_week.isocalendar()[1]
 
-start_spring = datetime.strptime(date_spring_b+'-'+time_q1_q2, '%d/%m/%Y-%Hh%M')
+start_spring = datetime.strptime(SPING_BREAK_START_DATE+'-'+time_q1_q2, '%d/%m/%Y-%Hh%M')
 
 Q1 = True
 Q2 = False

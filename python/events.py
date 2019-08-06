@@ -3,6 +3,7 @@ from enum import Enum
 from static_data import COURSE_REGEX
 from datetime import datetime, timedelta
 from ics import Event
+from slot import Slot
 
 
 class EventType(Enum):
@@ -41,28 +42,58 @@ def extractDateTime(date, time, delta):
 
 
 # EVENT CLASSES (FOR ICS FORMAT)
-class EventCM(Event):
-    def __init__(self, start, end, code, name, professor, loc):
+class CustomEvent(Event):
+    def __init__(self, name, begin, duration, descr, loc):
+        super().__init__(name=name, begin=begin, duration=duration, description=descr, location=loc)
+
+        # Each event may be given at different times, organized by weeks, UCLouvain-like
+        self.slots = [None for i in range(20)]
+        self.add_slot(Slot(self.begin, self.end))
+
+    def add_slot(self, slot):
+        """
+        Add a slot to this event
+        The week where the slot is saved is the week of slot.week
+        The slot is not added if it is already in the available slots
+        """
+        if slot not in self.slots[slot.week]:
+            self.slots[slot.week].append(slot)
+            return True
+        return False
+
+    def remove_slot(self, slot):
+        """
+        Removes a slot to this course
+        """
+        if not slot in self.slots[slot.week]:
+            return False
+        else:
+            self.slots[slot.week].remove(slot)
+            return True
+
+
+class EventCM(CustomEvent):
+    def __init__(self, begin, duration, code, name, professor, loc):
         name = 'Cours Magistral\n' + code + ' : ' + name
-        super().__init__(name=name, begin=start, end=end, description=str(professor), location=loc)
+        super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc)
 
 
-class EventTP(Event):
-    def __init__(self, start, end, code, name, professor, loc):
+class EventTP(CustomEvent):
+    def __init__(self, begin, duration, code, name, professor, loc):
         name = 'Séance de TP\n' + code + ' : ' + name
-        super().__init__(name=name, begin=start, end=end, description=str(professor), location=loc)
+        super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc)
 
 
-class EventEXAMEN(Event):
-    def __init__(self, start, end, code, name, professor, loc):
+class EventEXAMEN(CustomEvent):
+    def __init__(self, begin, duration, code, name, professor, loc):
         name = 'EXAMEN\n' + code + ' : ' + name
-        super().__init__(name=name, begin=start, end=end, description=str(professor), location=loc)
+        super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc)
 
 
-class EventOTHER(Event):
-    def __init__(self, start, end, code, name, professor, loc):
+class EventOTHER(CustomEvent):
+    def __init__(self, begin, duration, code, name, professor, loc):
         name = 'Other\n' + code + ' : ' + name
-        super().__init__(name=name, begin=start, end=end, description=str(professor), location=loc)
+        super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc)
 
 
 # class Course:
