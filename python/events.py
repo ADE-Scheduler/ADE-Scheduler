@@ -29,12 +29,25 @@ def extractDateTime(date, time, delta):
     t1 = t0 + dt
     return t0, t1, dt
 
+def overlappingTime(event1, event2, onlyOnverlap=True, saveCheck=True):
+    if saveCheck and event1 == event2: # No overlap if same event
+        return 0
+    if not isinstance(event2, CustomEvent):
+        raise TypeError
+
+    time = event1.weight * event2.weight * (min(event1.end, event2.end) - max(event1.begin, event2.begin))
+    if onlyOnverlap: # Only positive overlap is counted
+        return max(time, 0)
+    else:
+        return time
+
 
 # Event classes (from ics python package)
 class CustomEvent(Event):
     def __init__(self, name, begin, duration, descr, loc, weight=1):
         super().__init__(name=name, begin=begin, duration=duration, description=descr, location=loc)
         self.weight = weight
+        self.end = self.begin + self.duration
 
     def __str__(self):
         return self.name + '\n' + str(self.begin) + ' --> ' + str(self.end)
@@ -56,24 +69,26 @@ class CustomEvent(Event):
         """
         return self.begin.isocalendar()[1] - 1
 
+# Attention, si il y a une liste de prof (plusieurs profs), ca ne fonctionnera pas comme on le souhaite : str(professor)
+
 class EventCM(CustomEvent):
     def __init__(self, begin, duration, code, name, professor, loc, weight=1):
-        name = 'Cours Magistral\n' + code + ' : ' + name
+        name = 'CM :' + code + ' - ' + name
         super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, weight=weight)
 
 class EventTP(CustomEvent):
     def __init__(self, begin, duration, code, name, professor, loc, weight=1):
-        name = 'Séance de TP\n' + code + ' : ' + name
+        name = 'TP :' + code + ' - ' + name
         super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, weight=weight)
 
 class EventEXAM(CustomEvent):
     def __init__(self, begin, duration, code, name, professor, loc, weight=1):
-        name = 'EXAMEN\n' + code + ' : ' + name
+        name = 'EXAM :' + code + ' - ' + name
         super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, weight=weight)
 
 class EventOTHER(CustomEvent):
     def __init__(self, begin, duration, code, name, professor, loc, weight=1):
-        name = 'Other\n' + code + ' : ' + name
+        name = 'Other :' + code + ' - ' + name
         super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, weight=weight)
 
 
@@ -102,6 +117,10 @@ class Course:
 
     def __str__(self):
         return self.code + ": " + self.name
+
+    def getweek(self, week):
+        # Bon on gère pas encore les "Other".. trop chiant
+        return self.CM[week], self.TP[week], self.E[week]
 
     def addEvent(self, event):
         """
