@@ -47,7 +47,6 @@ class CustomEvent(Event):
     def __init__(self, name, begin, duration, descr, loc, weight=1):
         super().__init__(name=name, begin=begin, duration=duration, description=descr, location=loc)
         self.weight = weight
-        self.end = self.begin + self.duration
 
     def __str__(self):
         return self.name + '\n' + str(self.begin) + ' --> ' + str(self.end)
