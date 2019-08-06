@@ -1,4 +1,39 @@
 import itertools as itools
+from itertools import combinations, product
+from events import overlappingTime
+import math
+from datetime import datetime
+
+def compute(weekCourses, forbiddenTimeSlots=None, week_from_date='13/10/19'):
+    week = datetime.strptime(week_from_date, '%d/%m/%Y').isocalendar()[1] - 1
+
+    # Liste de toutes les semaines possibles
+    allWeekEvents  = product(*course.getweek(week) for course in weekCourse)
+
+    best_score = 849849849849984984949849849849849849894 # Faudrait l'infini ou faire autrement
+    best = None
+    for weekEvents in allWeekEvents:
+        if best is None:
+            best = g
+        weekEvents = product(*)
+
+
+
+def costFunction(weekEvents, forbiddenTimeSlots=None):
+    """
+    weekEvents : array of events.CustomeEvent - contains all the events of one week
+    forbiddenTimeSlots : array of ics.Event - contains all the time slots you want to be free
+    """
+    # do a n^2 comparison for all overlaps
+    p = sum(overlappingTime(*e) for e in combinations(weekEvents, 2))
+    
+    if forbiddenTimeSlots:
+        f = sum(overlappingTime(*e) for e in product(weekEvents, forbiddenTimeSlots))
+
+        return p + f
+    else:
+        return p
+
 
 class Computation:
     """
