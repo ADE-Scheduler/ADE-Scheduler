@@ -30,7 +30,7 @@ def extractDateTime(date, time, delta):
     return t0, t1, dt
 
 
-# EVENT CLASSES (FOR ICS FORMAT)
+# Event classes (from ics python package)
 class CustomEvent(Event):
     def __init__(self, name, begin, duration, descr, loc, weight=1):
         super().__init__(name=name, begin=begin, duration=duration, description=descr, location=loc)
@@ -40,7 +40,10 @@ class CustomEvent(Event):
         return self.name + '\n' + str(self.begin) + ' --> ' + str(self.end)
 
     def getweek(self):
-        return self.begin.isocalendar()[1]
+        """
+        returns the week of this event in the gregorian calendar, starting at 0 for the first week
+        """
+        return self.begin.isocalendar()[1] - 1
 
 class EventCM(CustomEvent):
     def __init__(self, begin, duration, code, name, professor, loc, weight=1):
