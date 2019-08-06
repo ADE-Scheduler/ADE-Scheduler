@@ -46,30 +46,8 @@ class CustomEvent(Event):
     def __init__(self, name, begin, duration, descr, loc):
         super().__init__(name=name, begin=begin, duration=duration, description=descr, location=loc)
 
-        # Each event may be given at different times, organized by weeks, UCLouvain-like
-        self.slots = [None for i in range(20)]
-        self.add_slot(Slot(self.begin, self.end))
-
-    def add_slot(self, slot):
-        """
-        Add a slot to this event
-        The week where the slot is saved is the week of slot.week
-        The slot is not added if it is already in the available slots
-        """
-        if slot not in self.slots[slot.week]:
-            self.slots[slot.week].append(slot)
-            return True
-        return False
-
-    def remove_slot(self, slot):
-        """
-        Removes a slot to this course
-        """
-        if not slot in self.slots[slot.week]:
-            return False
-        else:
-            self.slots[slot.week].remove(slot)
-            return True
+    def getSlot(self):
+        return Slot(self.begin, self.end)
 
 
 class EventCM(CustomEvent):
@@ -96,11 +74,11 @@ class EventOTHER(CustomEvent):
         super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc)
 
 
-# class Course:
-#     def __init__(self, name, professor, CM=None, TP=None, E=None, Other=None):
-#         self.name = name
-#         self.professor = professor
-#         self.CM = CM
-#         self.TP = TP
-#         self.E = E
-#         self.Other = Other
+class Course:
+    def __init__(self, name, professor, CM=None, TP=None, E=None, Other=None):
+        self.name = name
+        self.professor = professor
+        self.CM = CM
+        self.TP = TP
+        self.E = E
+        self.Other = Other
