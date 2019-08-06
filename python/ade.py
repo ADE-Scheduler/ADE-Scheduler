@@ -1,11 +1,7 @@
 from requests import Session
 from lxml import html
-from cours import CM, TP
-from slot import Slot
-from datetime import datetime, timedelta
-from warnings import warn
-from static_data import Q2_START, Q1, Q2, Q3
 from professor import Professor
+from events import *
 
 
 def getCoursesFromCodes(course_tags, weeks, projectID=2):
@@ -18,13 +14,9 @@ def getCoursesFromCodes(course_tags, weeks, projectID=2):
     """
 
     # some variables
-    q = min(weeks) < 20
-    nb_weeks = len(weeks)
-    entry = ['date', 'tag', 'time', 'duration', 'name', 'teacher', 'mail', 'room']
-    cm_added = []
-    tp_added = []
-    cm_list = []
-    tp_list = []
+    entry = ['date', 'code', 'time', 'duration', 'name', 'prof', 'mail', 'loc']
+    course_added = []
+    course_list = []
 
     # generating the URL for ADE
     url = 'http://horaire.uclouvain.be/jsp/custom/modules/plannings/direct_planning.jsp?'
@@ -61,7 +53,6 @@ def getCoursesFromCodes(course_tags, weeks, projectID=2):
     tree = html.fromstring(r.content)
     data = tree.xpath('//tr')[2:]  # the two first lines are titles
 
-
     # constructing the course list
     for i, line in enumerate(data):
         c = {}
@@ -69,36 +60,15 @@ def getCoursesFromCodes(course_tags, weeks, projectID=2):
         for y in entry:
             c[y] = str(next(el).text_content())
 
-        tdebut = datetime.strptime(c['date'] + '-' + c['time'], '%d/%m/%Y-%Hh%M')
-        h, m = [0 if x is '' else int(x) for x in c['duration'].split('h')]
-        dt = timedelta(hours=h, minutes=m)
-        tfin = tdebut + dt
-        if '-' in c['tag']:  # CM
-            if '_' in c['tag']:
-                warn('Both - and _ found in course tag, assuming it is a CM.')
-            tag = c['tag'].split('-')[0]
-            iscm = True
-        else:
-            tag = c['tag'].split('_')[0]
-            iscm = False
-
-        try:  # The course was already added, we just add the corresponding time slot
-            if iscm:
-                i = cm_added.index(tag)
-                cm_list[i].add_slot(Slot(tdebut, tfin))
-            else:
-                i = tp_added.index(tag)
-                tp_list[i].add_slot(Slot(tdebut, tfin))
-
+        t, _, dt = extractDateTime(c['date'], c['time'], c['duration'])
+        code = extractCode(c['code'])
+        event = extractType(c['code'])(t, dt, code, c['name'], Professor(c['prof'], c['mail']), c['loc'])
+        try:    # The course was already added
+            i = course_added.index(code)
+            course_list[i].addEvent(event)
         except ValueError:  # This is a new course
-            pr = Professor(c['teacher'], c['mail'])
-            if iscm:    # CM
-                cm_added.append(tag)
-                cm_list.append(CM(c['name'], tag, pr, nb_weeks=nb_weeks, Q=q))
-                cm_list[-1].add_slot(Slot(tdebut, tfin))
-            else:   # TP
-                tp_added.append(tag)
-                tp_list.append(TP(c['name'], tag, pr, nb_weeks=nb_weeks, Q=q))
-                tp_list[-1].add_slot(Slot(tdebut, tfin))
+            course_added.append(code)
+            course_list.append(Course(code, c['name']))
+            course_list[-1].addEvent(event)
 
-    return cm_list, tp_list
+    return course_list
