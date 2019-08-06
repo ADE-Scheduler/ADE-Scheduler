@@ -13,9 +13,9 @@ def extractCode(code):
         return None
 
 def extractType(course):
-    if re.search(COURSE_REGEX + "_", course, re.IGNORECASE):
+    if re.search(COURSE_REGEX + "-", course, re.IGNORECASE):
         return EventCM
-    elif re.search(COURSE_REGEX + "-", course, re.IGNORECASE):
+    elif re.search(COURSE_REGEX + "_", course, re.IGNORECASE):
         return EventTP
     elif re.search(COURSE_REGEX + "=E", course, re.IGNORECASE):
         return EventEXAM
@@ -38,6 +38,17 @@ class CustomEvent(Event):
 
     def __str__(self):
         return self.name + '\n' + str(self.begin) + ' --> ' + str(self.end)
+
+    def __eq__(self, other):
+        if isinstance(other, CustomEvent):
+            return (self.name == other.name
+                    and self.begin == other.begin
+                    and self.duration == other.duration)
+        else:
+            raise TypeError
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
     def getweek(self):
         """
@@ -74,7 +85,7 @@ class Course:
         self.weight = weight
 
         # A course can be composed of 4 different events: CM, TP, Exam and Other
-        # Each individual event is classed by week
+        # Each event is classed by week
         self.CM = [[] for i in range(53)]
         self.TP = [[] for i in range(53)]
         self.E  = [[] for i in range(53)]
@@ -85,6 +96,9 @@ class Course:
             return self.code == other.code
         else:
             raise TypeError
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
     def __str__(self):
         return self.code + ": " + self.name
