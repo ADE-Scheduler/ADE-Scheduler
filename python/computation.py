@@ -4,12 +4,10 @@ from events import overlappingTime
 import math
 from datetime import datetime
 
-def compute(Courses, forbiddenTimeSlots=None, week_from_date='25/03/2019'):
-    week = datetime.strptime(week_from_date, '%d/%m/%Y').isocalendar()[1] - 1
-
+def compute(courses, week, forbiddenTimeSlots=None):
     # Liste de toutes les semaines possibles
     all_courses = []
-    for c in Courses:
+    for c in courses:
         cm, tp, exam = c.getweek(week)
         if cm:
             all_courses.append(cm)
