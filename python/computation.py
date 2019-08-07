@@ -2,23 +2,23 @@ import itertools as itools
 from itertools import combinations, product
 from events import overlappingTime
 import math
-from datetime import datetime
 
 def compute(courses, week, forbiddenTimeSlots=None):
-    # Liste de toutes les semaines possibles
+    # All possible schedules
     all_courses = []
     for c in courses:
-        cm, tp, exam = c.getweek(week)
+        cm, tp, exam, oral = c.getweek(week)
         if cm:
             all_courses.append(cm)
         if tp:
             all_courses.append(tp)
         if exam:
             all_courses.append(exam)
+        if oral:
+            all_courses.append(oral)
     perm = product(*all_courses)
 
-    # test = product((sum(course.getweek(week) for course in Courses), ()))
-
+    # Best schedule
     best_score = math.inf
     best = None
     for weekEvents in perm:
