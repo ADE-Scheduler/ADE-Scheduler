@@ -13,6 +13,7 @@ def extractCode(code):
     else:
         return None
 
+
 def extractType(course):
     if re.search(COURSE_REGEX + "-", course, re.IGNORECASE):
         return EventCM
@@ -20,8 +21,11 @@ def extractType(course):
         return EventTP
     elif re.search(COURSE_REGEX + "=E", course, re.IGNORECASE):
         return EventEXAM
+    elif re.search(COURSE_REGEX + "=O", course, re.IGNORECASE):
+        return EventORAL
     else:
         return EventOTHER
+
 
 def extractDateTime(date, time, delta):
     # We need to set the timzeone
@@ -39,14 +43,16 @@ def extractDateTime(date, time, delta):
     t1 = t0 + dt
     return t0, t1, dt
 
+
 def overlappingTime(event1, event2, onlyOnverlap=True, saveCheck=True):
     if saveCheck and event1 == event2:  # No overlap if same event
         return 0
     if not isinstance(event2, CustomEvent):
         raise TypeError
 
-    time = event1.weight * event2.weight * (min(event1.end, event2.end) - max(event1.begin, event2.begin)).total_seconds()
-    if onlyOnverlap:    # Only positive overlap is counted
+    time = event1.weight * event2.weight * (
+                min(event1.end, event2.end) - max(event1.begin, event2.begin)).total_seconds()
+    if onlyOnverlap:  # Only positive overlap is counted
         return max(time, 0)
     else:
         return time
@@ -80,20 +86,30 @@ class CustomEvent(Event):
         """
         return self.begin.isocalendar()[1] - 1
 
+
 class EventCM(CustomEvent):
     def __init__(self, begin, duration, code, name, professor, loc, weight=1):
         name = 'CM: ' + code + ' - ' + name
         super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, weight=weight)
+
 
 class EventTP(CustomEvent):
     def __init__(self, begin, duration, code, name, professor, loc, weight=1):
         name = 'TP: ' + code + ' - ' + name
         super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, weight=weight)
 
+
 class EventEXAM(CustomEvent):
     def __init__(self, begin, duration, code, name, professor, loc, weight=1):
         name = 'EXAM: ' + code + ' - ' + name
         super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, weight=weight)
+
+
+class EventORAL(CustomEvent):
+    def __init__(self, begin, duration, code, name, professor, loc, weight=1):
+        name = 'ORAL: ' + code + ' - ' + name
+        super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, weight=weight)
+
 
 class EventOTHER(CustomEvent):
     def __init__(self, begin, duration, code, name, professor, loc, weight=1):
@@ -112,7 +128,8 @@ class Course:
         # Each event is classed by week
         self.CM = [[] for i in range(53)]
         self.TP = [[] for i in range(53)]
-        self.E  = [[] for i in range(53)]
+        self.E = [[] for i in range(53)]
+        self.O = [[] for i in range(53)]
         self.Other = [[] for i in range(53)]
 
     def __eq__(self, other):
@@ -129,7 +146,7 @@ class Course:
 
     def getweek(self, week):
         # Bon on gère pas encore les "Other".. trop chiant
-        return self.CM[week], self.TP[week], self.E[week]
+        return self.CM[week], self.TP[week], self.E[week], self.O[week]
 
     def addEvent(self, event):
         """
@@ -153,6 +170,12 @@ class Course:
         elif isinstance(event, EventEXAM):
             if event not in self.E[week]:
                 self.E[week].append(event)
+                return True
+            else:
+                return False
+        elif isinstance(event, EventORAL):
+            if event not in self.O[week]:
+                self.O[week].append(event)
                 return True
             else:
                 return False
@@ -187,6 +210,12 @@ class Course:
                 return False
             else:
                 self.E[week].remove(event)
+                return True
+        if isinstance(event, EventORAL):
+            if event not in self.O[week]:
+                return False
+            else:
+                self.O[week].remove(event)
                 return True
         if isinstance(event, EventOTHER):
             if event not in self.Other[week]:

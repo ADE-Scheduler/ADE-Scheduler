@@ -14,7 +14,7 @@ def getCoursesFromCodes(course_tags, weeks, projectID=2):
     """
 
     # some variables
-    entry = ['date', 'code', 'time', 'duration', 'name', 'prof', 'mail', 'loc']
+    entry = ('date', 'code', 'time', 'duration', 'name', 'prof', 'mail', 'loc')
     course_added = []
     course_list = []
 
@@ -38,7 +38,7 @@ def getCoursesFromCodes(course_tags, weeks, projectID=2):
           '=false&c7Ct=false&c7T=false&c7F=false&c7Cx=false&c7Cy=false&c7Cz=false&c7Tz=false&showTabCategory8=false&c8C' \
           '=false&c8Ty=false&c8Url=false&c8E=false&c8M=false&c8J=false&c8A1=false&c8A2=false&c8Zp=false&c8Ci=false&c8St' \
           '=false&c8Ct=false&c8T=false&c8F=false&c8Cx=false&c8Cy=false&c8Cz=false&c8Tz=false '
-    codes = '%2C'.join(course_tags)
+    codes = ','.join(course_tags)
     weeks = ','.join(str(x) for x in weeks)
     url += '&weeks=' + weeks \
            + '&code=' + codes \
@@ -58,7 +58,11 @@ def getCoursesFromCodes(course_tags, weeks, projectID=2):
         c = {}
         el = line.iterchildren()
         for y in entry:
-            c[y] = str(next(el).text_content())
+            info = str(next(el).text_content())
+            if info:
+                c[y] = info
+            else:
+                c[y] = ''
 
         t, _, dt = extractDateTime(c['date'], c['time'], c['duration'])
         code = extractCode(c['code'])
