@@ -1,0 +1,18 @@
+<!-- As it extends the layout.html, we don't have to write again the basic
+of the squeleton
+-->
+
+<h1>{{title}}</h1> <!-- We can have the title the same maner -->
+<p>Welcome to {{title}}</p>
+
+<!-- If statement -->
+{{# if condition }}
+    Condition is met
+{{ else }}
+    Condition not met
+{{/if}}
+
+<!-- Each loop statement -->
+{{# each anyArray as |value key|}}
+    {{key}}:{{ value }} <!-- this is a reserved keyword -->
+{{/each}}
