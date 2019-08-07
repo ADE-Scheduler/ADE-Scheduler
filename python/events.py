@@ -2,6 +2,7 @@ import re
 from static_data import COURSE_REGEX
 from datetime import datetime, timedelta
 from ics import Event
+from pytz import timezone
 
 
 # Information extraction functions
@@ -23,20 +24,29 @@ def extractType(course):
         return EventOTHER
 
 def extractDateTime(date, time, delta):
-    t0 = datetime.strptime(date + '-' + time, '%d/%m/%Y-%Hh%M')
-    h, m = [0 if x is '' else int(x) for x in delta.split('h')]
+    # We need to set the timzeone
+    tz = timezone('Europe/Brussels')
+
+    t0 = datetime.strptime(date + '-' + time, '%d/%m/%Y-%Hh%M').astimezone(tz)
+    s = re.findall(r'[0-9]+', delta)
+    if len(s) == 2:
+        h = int(s[0])
+        m = int(s[1])
+    else:
+        h = int(s[0]);
+        m = 0
     dt = timedelta(hours=h, minutes=m)
     t1 = t0 + dt
     return t0, t1, dt
 
 def overlappingTime(event1, event2, onlyOnverlap=True, saveCheck=True):
-    if saveCheck and event1 == event2: # No overlap if same event
+    if saveCheck and event1 == event2:  # No overlap if same event
         return 0
     if not isinstance(event2, CustomEvent):
         raise TypeError
 
-    time = event1.weight * event2.weight * (min(event1.end, event2.end) - max(event1.begin, event2.begin))
-    if onlyOnverlap: # Only positive overlap is counted
+    time = event1.weight * event2.weight * (min(event1.end, event2.end) - max(event1.begin, event2.begin)).total_seconds()
+    if onlyOnverlap:    # Only positive overlap is counted
         return max(time, 0)
     else:
         return time
@@ -47,9 +57,6 @@ class CustomEvent(Event):
     def __init__(self, name, begin, duration, descr, loc, weight=1):
         super().__init__(name=name, begin=begin, duration=duration, description=descr, location=loc)
         self.weight = weight
-
-    def __str__(self):
-        return self.name + '\n' + str(self.begin) + ' --> ' + str(self.end)
 
     def __eq__(self, other):
         if isinstance(other, CustomEvent):
@@ -62,32 +69,35 @@ class CustomEvent(Event):
     def __ne__(self, other):
         return not self.__eq__(other)
 
+    # Askip il faut rendre CustomEvent hashable pour pouvoir l'ajouter a un calendrier
+    # et si on définit pas __hash__() ça fonctionne pas (héritage svp ? :'( )
+    def __hash__(self):
+        return super().__hash__()
+
     def getweek(self):
         """
         returns the week of this event in the gregorian calendar, starting at 0 for the first week
         """
         return self.begin.isocalendar()[1] - 1
 
-# Attention, si il y a une liste de prof (plusieurs profs), ca ne fonctionnera pas comme on le souhaite : str(professor)
-
 class EventCM(CustomEvent):
     def __init__(self, begin, duration, code, name, professor, loc, weight=1):
-        name = 'CM :' + code + ' - ' + name
+        name = 'CM: ' + code + ' - ' + name
         super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, weight=weight)
 
 class EventTP(CustomEvent):
     def __init__(self, begin, duration, code, name, professor, loc, weight=1):
-        name = 'TP :' + code + ' - ' + name
+        name = 'TP: ' + code + ' - ' + name
         super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, weight=weight)
 
 class EventEXAM(CustomEvent):
     def __init__(self, begin, duration, code, name, professor, loc, weight=1):
-        name = 'EXAM :' + code + ' - ' + name
+        name = 'EXAM: ' + code + ' - ' + name
         super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, weight=weight)
 
 class EventOTHER(CustomEvent):
     def __init__(self, begin, duration, code, name, professor, loc, weight=1):
-        name = 'Other :' + code + ' - ' + name
+        name = 'Other: ' + code + ' - ' + name
         super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, weight=weight)
 
 
