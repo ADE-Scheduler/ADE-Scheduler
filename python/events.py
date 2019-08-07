@@ -29,10 +29,10 @@ def extractDateTime(date, time, delta):
     t1 = t0 + dt
     return t0, t1, dt
 
-def overlappingTime(event1, event2, onlyOnverlap=True, saveCheck=True):
-    if saveCheck and event1 == event2: # No overlap if same event
+def overlappingTime(event1, event2, onlyOnverlap=True):
+    if event1 is None or event2 is None:
         return 0
-    if not isinstance(event2, CustomEvent):
+    if not isinstance(event1, CustomEvent) or not isinstance(event2, CustomEvent):
         raise TypeError
 
     time = event1.weight * event2.weight * (min(event1.end, event2.end) - max(event1.begin, event2.begin))
@@ -119,7 +119,7 @@ class Course:
 
     def getweek(self, week):
         # Bon on gère pas encore les "Other".. trop chiant
-        return self.CM[week], self.TP[week], self.E[week]
+        return [self.CM[week], self.TP[week], self.E[week]]
 
     def addEvent(self, event):
         """
