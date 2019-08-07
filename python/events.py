@@ -37,7 +37,7 @@ def extractDateTime(date, time, delta):
         h = int(s[0])
         m = int(s[1])
     else:
-        h = int(s[0]);
+        h = int(s[0])
         m = 0
     dt = timedelta(hours=h, minutes=m)
     t1 = t0 + dt
