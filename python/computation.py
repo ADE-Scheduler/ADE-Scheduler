@@ -4,21 +4,33 @@ from events import overlappingTime
 import math
 from datetime import datetime
 
-def compute(Courses, forbiddenTimeSlots=None, week_from_date='13/10/19'):
+def compute(Courses, forbiddenTimeSlots=None, week_from_date='22/04/2019'):
     week = datetime.strptime(week_from_date, '%d/%m/%Y').isocalendar()[1] - 1
 
     # Liste de toutes les semaines possibles
-    allWeekEvents  = product(sum(course.getweek(week) for course in Course, ()))
+    print('All events')
+    for course in Courses:
+        pass
+        #print(course.getweek(week))
+    s = map(iter, filter(lambda e: len(e) != 0, sum((course.getweek(week) for course in Courses), [])))
+    for l in s:
+        print(l)
+    allWeekEvents  = product(*s)
+    print(list(allWeekEvents))
 
-    best_score = math.inf # Faudrait l'infini ou faire autrement
+    best_score = math.inf
     best = None
+    print('Testing all')
     for weekEvents in allWeekEvents:
+        print(weekEvents)
         if best is None:
             best = weekEvents
         x = costFunction(weekEvents)
+        print(x)
         if x < best_score:
             best_score = x
             best = weekEvents
+    print('Finished\n')
     return best, best_score
 
 
