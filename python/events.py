@@ -11,7 +11,7 @@ def extractCode(code):
     if s:
         return s.group(1)
     else:
-        return None
+        return ''
 
 
 def extractType(course):
@@ -44,7 +44,7 @@ def extractDateTime(date, time, delta):
     return t0, t1, dt
 
 
-def overlappingTime(event1, event2, onlyOnverlap=True, saveCheck=True):
+def overlappingTime(event1, event2, onlyOverlap=True, saveCheck=True):
     if saveCheck and event1 == event2:  # No overlap if same event
         return 0
     if not isinstance(event2, CustomEvent):
@@ -52,7 +52,7 @@ def overlappingTime(event1, event2, onlyOnverlap=True, saveCheck=True):
 
     time = event1.weight * event2.weight * (
                 min(event1.end, event2.end) - max(event1.begin, event2.begin)).total_seconds()
-    if onlyOnverlap:  # Only positive overlap is counted
+    if onlyOverlap:  # Only positive overlap is counted
         return max(time, 0)
     else:
         return time
