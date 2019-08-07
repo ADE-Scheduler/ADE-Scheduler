@@ -1,16 +1,15 @@
 from ade import *
 from computation import *
-from events import *
-from static_data import Q2, Q3
+from static_data import Q1, Q2, Q3
 from ics import Calendar
 
 codes = ['LELEC1310', 'LELEC1360', 'LINMA1510', 'LMECA1321', 'LMECA1100', 'LFSAB1508']
-projectID = 2
-weeks = [21, 22, 23, 24, 25, 26, 27, 28, 29, 32, 33, 34, 35, 36]
+codes_master = ['LELEC2660', 'LELEC2811', 'LMECA2755', 'LELEC2313', 'LELEC2531', 'LMECA2801', 'LELME2002']
+projectID = 2   # = 9 pour 2019-2020 !
 
 cal = Calendar()
-c = getCoursesFromCodes(codes, Q2+Q3, projectID)
-for week in range(4, 27):
+c = getCoursesFromCodes(codes, Q1+Q2+Q3, 2)
+for week in range(53):
     best, score = compute(c, week)
     if score > 0:
         print('Probleme avec la semaine numero '+str(week)+', score de: '+str(score))
