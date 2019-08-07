@@ -1,7 +1,8 @@
 from requests import Session
 from lxml import html
 from professor import Professor
-from events import *
+from event import *
+from course import Course
 
 
 def getCoursesFromCodes(course_tags, weeks, projectID=2):
