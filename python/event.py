@@ -79,7 +79,7 @@ def overlappingTime(event1, event2, onlyOverlap=True, saveCheck=False):
         return time
 
 
-# Event classes (from ics python package)
+# Event classes (subclasses of ics.Event)
 class CustomEvent(Event):
     def __init__(self, name, begin, duration, descr, loc, weight=1):
         super().__init__(name=name, begin=begin, duration=duration, description=descr, location=loc)
