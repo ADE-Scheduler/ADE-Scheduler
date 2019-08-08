@@ -8,13 +8,13 @@ class Course:
         self.name = name
         self.weight = weight
 
-        # A course can be composed of 4 different events: CM, TP, Exam and Other
+        # A course can be composed of 5 different events: CM, TP, Exam, Oral and Other
         # Each event is classed by week
-        self.CM = [[] for i in range(53)]
-        self.TP = [[] for i in range(53)]
-        self.E = [[] for i in range(53)]
-        self.O = [[] for i in range(53)]
-        self.Other = [[] for i in range(53)]
+        self.CM = [[] for i in range(53)]       # EventCM
+        self.TP = [[] for i in range(53)]       # EventTP
+        self.E = [[] for i in range(53)]        # EventEXAM
+        self.O = [[] for i in range(53)]        # EventORAL
+        self.Other = [[] for i in range(53)]    # EventOTHER
 
     def __eq__(self, other):
         if isinstance(other, Course):
