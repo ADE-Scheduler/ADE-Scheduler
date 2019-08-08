@@ -44,7 +44,7 @@ def extractDateTime(date, time, delta):
     return t0, t1, dt
 
 
-def overlappingTime(event1, event2, onlyOverlap=True, saveCheck=False):
+def overlappingTime(event1, event2, onlyPositive=True):
     """
     Compute the overlapping time between two events.
     In option, it can count non-overlap time as negative overlap, in others words, the time between two events.
@@ -52,10 +52,8 @@ def overlappingTime(event1, event2, onlyOverlap=True, saveCheck=False):
     ----------
     event1, event2 : ics.Event
         Two events to be compared.
-    onlyOverlap : boolean
+    onlyPositive : boolean
         If True, only positive overlap is counted.
-    saveCheck : boolean
-        If True, functions returns 0 if both events are the same.
     Returns
     -------
     c : int
@@ -66,14 +64,14 @@ def overlappingTime(event1, event2, onlyOverlap=True, saveCheck=False):
         If event1 or event2 are not subclass of ics.Event.
     """
 
-    if saveCheck and event1 == event2:  # No overlap if same event
+    if event1 == event2:  # No overlap if same event
         return 0
     if not isinstance(event1, CustomEvent) or not isinstance(event2, CustomEvent):
         raise TypeError
 
     time = event1.weight * event2.weight * (
                 min(event1.end, event2.end) - max(event1.begin, event2.begin)).total_seconds()
-    if onlyOverlap:  # Only positive overlap is counted
+    if onlyPositive:  # Only positive overlap is counted
         return max(time, 0)
     else:
         return time
