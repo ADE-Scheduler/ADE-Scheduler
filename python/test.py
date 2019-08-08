@@ -9,10 +9,10 @@ codes_info = ['lelec2531', 'lingi2241', 'lingi2255', 'lingi2261', 'lingi2266', '
 projectID = 2  # = 9 pour 2019-2020 !
 
 cal = Calendar()
-c = getCoursesFromCodes(codes_info, Q1 + Q2 + Q3, 9)
+c = getCoursesFromCodes(codes_master, Q1 + Q2 + Q3, 9)
 
 year = parallel_compute(c)
-for week in year:
+for week, score in year:
     for event in week:
         cal.events.add(event)
 
