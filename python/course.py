@@ -10,11 +10,11 @@ class Course:
 
         # A course can be composed of 5 different events: CM, TP, Exam, Oral and Other
         # Each event is classed by week
-        self.CM = [[] for i in range(53)]       # CM
-        self.TP = [[] for i in range(53)]       # TP
-        self.E = [[] for i in range(53)]        # EXAM
-        self.O = [[] for i in range(53)]        # ORAL
-        self.Other = [[] for i in range(53)]    # OTHER
+        self.CM = [[] for i in range(53)]       # EventCM
+        self.TP = [[] for i in range(53)]       # EventTP
+        self.E = [[] for i in range(53)]        # EventEXAM
+        self.O = [[] for i in range(53)]        # EventORAL
+        self.Other = [[] for i in range(53)]    # EventOTHER
 
     def __eq__(self, other):
         if isinstance(other, Course):
