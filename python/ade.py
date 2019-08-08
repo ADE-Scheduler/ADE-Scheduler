@@ -6,7 +6,8 @@ from course import Course
 
 
 def getCoursesFromCodes(course_tags, weeks, projectID=2):
-    """ Fetches courses schedule from UCLouvain ADE website
+    """
+    Fetches courses schedule from UCLouvain ADE website
     Parameters:
     -----------
     courses : list of str
