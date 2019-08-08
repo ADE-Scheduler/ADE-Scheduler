@@ -44,7 +44,7 @@ def costFunction(weekEvents, forbiddenTimeSlots=None):
     else:
         return p
 
-
+# Est-encore necessaire ?
 class Computation:
     """
     Class defining the computation of a scheduling.
