@@ -7,30 +7,24 @@ from datetime import datetime
 def compute(Courses, forbiddenTimeSlots=None, week_from_date='22/04/2019'):
     week = datetime.strptime(week_from_date, '%d/%m/%Y').isocalendar()[1] - 1
 
-    # Liste de toutes les semaines possibles
-    print('All events')
-    for course in Courses:
-        pass
-        #print(course.getweek(week))
+    # List of all events in form of : [[ELEC TP1, ELEC TP2], [ELEC CM], [MATH TP1, MATH TP2, MATH TP3], ...]
     s = map(iter, filter(lambda e: len(e) != 0, sum((course.getweek(week) for course in Courses), [])))
-    for l in s:
-        print(l)
+    
+    # All possible weeks by selecting one element in each list of the list 's'
     allWeekEvents  = product(*s)
-    print(list(allWeekEvents))
 
     best_score = math.inf
     best = None
-    print('Testing all')
     for weekEvents in allWeekEvents:
-        print(weekEvents)
+
         if best is None:
             best = weekEvents
         x = costFunction(weekEvents)
-        print(x)
+
         if x < best_score:
             best_score = x
             best = weekEvents
-    print('Finished\n')
+ 
     return best, best_score
 
 
