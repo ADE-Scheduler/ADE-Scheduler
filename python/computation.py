@@ -12,7 +12,7 @@ def parallel_compute(courses, forbiddenTimeSlots=None, max_workers=53):
         futures = [executor.submit(compute, *(courses, i, forbiddenTimeSlots)) for i in range(53)]
         executor.shutdown(wait=True)
 
-    return [future.result()[0] for future in futures]
+    return [future.result() for future in futures]
 
 
 def compute(courses, week, forbiddenTimeSlots=None):
