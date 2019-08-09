@@ -4,12 +4,12 @@ from concurrent.futures import ThreadPoolExecutor
 import math
 
 
-def parallel_compute(courses, forbiddenTimeSlots=None, max_workers=53):
+def parallel_compute(courses, forbiddenTimeSlots=None, weeks=range(53), max_workers=53):
     """
     Calls the compute() function for all weeks using parallel programming
     """
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        futures = [executor.submit(compute, *(courses, i, forbiddenTimeSlots)) for i in range(53)]
+        futures = [executor.submit(compute, *(courses, i, forbiddenTimeSlots)) for i in weeks]
         executor.shutdown(wait=True)
 
     return [future.result() for future in futures]
