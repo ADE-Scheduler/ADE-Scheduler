@@ -43,6 +43,8 @@ def extractDateTime(date, time, delta):
     t1 = t0 + dt
     return t0, t1, dt
 
+def overlap(event1, event2):
+    return event1.weight * event2.weight * (event1.begin < event2.end or event2.begin < event1.end)
 
 def overlappingTime(event1, event2, onlyPositive=True):
     """
@@ -79,9 +81,10 @@ def overlappingTime(event1, event2, onlyPositive=True):
 
 # Event classes (subclasses of ics.Event)
 class CustomEvent(Event):
-    def __init__(self, name, begin, duration, descr, loc, weight=1):
+    def __init__(self, name, begin, duration, descr, loc, id=None, weight=1):
         super().__init__(name=name, begin=begin, duration=duration, description=descr, location=loc)
         self.weight = weight
+        self.id = id
 
     def __eq__(self, other):
         if isinstance(other, CustomEvent):
@@ -93,6 +96,9 @@ class CustomEvent(Event):
 
     def __ne__(self, other):
         return not self.__eq__(other)
+
+    def getId(self):
+        return self.id
 
     # Askip il faut rendre CustomEvent hashable pour pouvoir l'ajouter a un calendrier
     # et si on définit pas __hash__() ça fonctionne pas (héritage svp ? :'( )
@@ -107,30 +113,35 @@ class CustomEvent(Event):
 
 
 class EventCM(CustomEvent):
-    def __init__(self, begin, duration, code, name, professor, loc, weight=1):
+    def __init__(self, begin, duration, code, name, professor, loc, id=None, weight=1):
         name = 'CM: ' + code + ' - ' + name
-        super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, weight=weight)
+        id = 'CM:' + id
+        super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, id=id, weight=weight)
 
 
 class EventTP(CustomEvent):
-    def __init__(self, begin, duration, code, name, professor, loc, weight=1):
+    def __init__(self, begin, duration, code, name, professor, loc, id=None, weight=1):
         name = 'TP: ' + code + ' - ' + name
-        super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, weight=weight)
+        id = 'TP:' + id
+        super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, id=id, weight=weight)
 
 
 class EventEXAM(CustomEvent):
-    def __init__(self, begin, duration, code, name, professor, loc, weight=1):
+    def __init__(self, begin, duration, code, name, professor, loc, id=None, weight=1):
         name = 'EXAM: ' + code + ' - ' + name
-        super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, weight=weight)
+        id = 'EXAM:' + id
+        super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, id=id, weight=weight)
 
 
 class EventORAL(CustomEvent):
-    def __init__(self, begin, duration, code, name, professor, loc, weight=1):
+    def __init__(self, begin, duration, code, name, professor, loc, id=None, weight=1):
         name = 'ORAL: ' + code + ' - ' + name
-        super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, weight=weight)
+        id = 'ORAL:' + id
+        super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, id=id, weight=weight)
 
 
 class EventOTHER(CustomEvent):
-    def __init__(self, begin, duration, code, name, professor, loc, weight=1):
+    def __init__(self, begin, duration, code, name, professor, loc, id=None, weight=1):
         name = 'Other: ' + code + ' - ' + name
-        super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, weight=weight)
+        id = 'Other:' + id
+        super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, id=id, weight=weight)
