@@ -1,5 +1,6 @@
 from event import *
-
+from itertools import chain
+from operator import itemgetter
 
 class Course:
     def __init__(self, code, name, weight=1):
@@ -31,6 +32,20 @@ class Course:
     def getweek(self, week):
         # Bon on gère pas encore les "Other".. trop chiant
         return self.CM[week], self.TP[week], self.E[week], self.O[week]
+
+    def getSummary(self, weeks='ALL'):
+        if weeks == 'ALL':
+            w = chain(self.CM, self.TP, self.E, self.O, self.Other) # [CM from week 1, CM from week 2, ..., TP from week 1, ...]
+            e = chain(*w) # [CM1, CM2,... , TP1, ...]
+        elif isinstance(weeks, slice):
+            w = chain(self.CM[weeks], self.TP[weeks], self.E[weeks], self.O[weeks], self.Other[weeks])
+            e = chain(*w)
+        else:
+            itg = itemgetter(*list(weeks))
+            w = chain(itg(self.CM), itg(self.TP), itg(self.E), itg(self.O), itg(self.Other))
+            e = chain(*w)
+        return set(map(lambda x: x.getId(), e))
+
 
     def addEvent(self, event):
         """
