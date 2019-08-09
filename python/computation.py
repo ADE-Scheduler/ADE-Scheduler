@@ -1,5 +1,5 @@
 from itertools import combinations, product
-from event import overlappingTime
+from event import  overlap
 from concurrent.futures import ThreadPoolExecutor
 import math
 
@@ -79,10 +79,12 @@ def costFunction(weekEvents, forbiddenTimeSlots=None):
     int, the "cost" of this particular schedule
     """
     # do a n^2 comparison for all overlaps
-    p = sum(overlappingTime(*e) for e in combinations(weekEvents, 2))
+    p = sum(overlap(*e) for e in combinations(weekEvents, 2))
+    #p = sum(overlappingTime(*e) for e in combinations(weekEvents, 2))
 
     if forbiddenTimeSlots:
-        f = sum(overlappingTime(*e) for e in product(weekEvents, forbiddenTimeSlots))
+        f = sum(overlap(*e) for e in product(weekEvents, forbiddenTimeSlots))
+        #f = sum(overlappingTime(*e) for e in product(weekEvents, forbiddenTimeSlots))
         return p + f
     else:
         return p
