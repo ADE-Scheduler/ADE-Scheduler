@@ -68,7 +68,7 @@ def getCoursesFromCodes(course_tags, weeks, projectID=2):
 
         t, _, dt = extractDateTime(c['date'], c['time'], c['duration'])
         code = extractCode(c['code'])
-        event = extractType(c['code'])(t, dt, code, c['name'], Professor(c['prof'], c['mail']), c['loc'])
+        event = extractType(c['code'])(t, dt, code, c['name'], Professor(c['prof'], c['mail']), c['loc'], id=c['code'])
         try:    # The course was already added
             i = course_added.index(code)
             course_list[i].addEvent(event)
