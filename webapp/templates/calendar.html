@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+{% block head %}
+    <meta charset="UTF-8">
+    <title>ADE Scheduler</title>
+
+    <!-- FullCalendar -->
+    <link href='/static/core/main.css' rel='stylesheet' />
+    <link href='/static/daygrid/main.css' rel='stylesheet' />
+
+    <script src='/static/core/main.js'></script>
+    <script src='/static/interaction/main.js'></script>
+    <script src='/static/daygrid/main.js'></script>
+    <script src='/static/list/main.js'></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            plugins: [ 'interaction', 'dayGrid', 'list' ],
+            header: {
+            left: 'prevYear,prev,next,nextYear today',
+            center: 'title',
+            right: 'dayGridMonth,dayGridWeek,listWeek'
+            },
+            navLinks: true, // can click day/week names to navigate views
+            editable: true,
+            eventLimit: true, // allow "more" link when too many events
+        });
+
+        calendar.render();
+        });
+    </script>
+
+    <style>
+        #calendar {
+            height: auto;
+            margin: 0 auto;
+        }
+    </style>
+
+{% endblock %}
+
+{% block body %}
+
+    <div id='calendar'></div>
+
+{% endblock %}
