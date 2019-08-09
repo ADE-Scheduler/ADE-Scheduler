@@ -13,7 +13,7 @@ codes_q5 = ['langl1873', 'lelec1530', 'lelec1755', 'lepl2351', 'lfsab1105', 'lme
 cal = Calendar()
 
 # projectID: 2 pour 18-19 ou 9 pour 19-20
-c = getCoursesFromCodes(codes_q5, Q1 + Q2 + Q3, 2)
+c = getCoursesFromCodes(codes_info, Q1 + Q2 + Q3, 2)
 
 year = parallel_compute(c)
 for week, score in year:
