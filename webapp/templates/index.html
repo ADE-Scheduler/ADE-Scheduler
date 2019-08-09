@@ -1,8 +1,44 @@
 {% extends "base.html" %}
+{% block head %}
+<script>
+    function add_fields() {
+        var d = document.getElementById("content");
+ 
+        d.innerHTML += "<h4> Hello </h4>";
+    }
+</script>
+{% endblock %}
 {% block body %}
-<div class="callout callout-info">
-        <h4>Navigation information</h4>
-        <p>Use the side bar to navigate through the application.</p>
-</div>     
-    
+<div class="box box-info">
+    <div class="box-header with-border">
+      <h3 class="box-title">Input Addon</h3>
+    </div>
+    <div class="box-body">
+      <h4>With checkbox and radio inputs</h4>
+
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="input-group">
+                <span class="input-group-addon">
+                  <input type="checkbox">
+                </span>
+            <input type="text" class="form-control">
+          </div>
+          <div class="input-group">
+                <span class="input-group-addon">
+                <input type="checkbox">
+                </span>
+            <input type="text" class="form-control">
+            </div>
+          <!-- /input-group -->
+          <div class="box-footer">
+            <button onclick="addFields.js" class="btn btn-info pull-right">Add course</button>
+          </div>
+        </div>
+        <!-- /.col-lg-6 -->
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.box-body -->
+  </div>
 {% endblock %}
