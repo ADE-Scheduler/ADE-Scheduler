@@ -6,7 +6,7 @@ from time import time
 
 codes = ['LELEC1310', 'LELEC1360', 'LINMA1510', 'LMECA1321', 'LMECA1100', 'LFSAB1508']
 codes_master = ['LELEC2660', 'LELEC2811', 'LMECA2755', 'LELEC2313', 'LELEC2531', 'LMECA2801', 'LELME2002']
-codes_info = ['lelec2531', 'lingi2241', 'lingi2255', 'lingi2261', 'lingi2266', 'lingi2142']
+codes_info = ['lelec2531', 'lingi2241', 'lingi2255', 'lingi2261', 'lingi2266', 'lfsab2351']
 projectID = 2  # = 9 pour 2019-2020 !
 
 cal = Calendar()
