@@ -4,7 +4,7 @@ from concurrent.futures import ThreadPoolExecutor
 import math
 
 
-def parallel_compute(courses, forbiddenTimeSlots=None, weeks=range(53), max_workers=53):
+def parallel_compute(courses, weeks=range(53), forbiddenTimeSlots=None, max_workers=53):
     """
     Calls the compute() function for all weeks using parallel programming
     """
