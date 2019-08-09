@@ -44,6 +44,17 @@ def extractDateTime(date, time, delta):
     return t0, t1, dt
 
 def overlap(event1, event2):
+    """
+    Check if two events overlap. No safe check is operated.
+    Parameters
+    ----------
+    event1, event2 : ics.Event
+        Two events to be compared.
+    Returns
+    -------
+    c : int
+        The product of the weights if events overlap, 0 otherwise.
+    """
     return event1.weight * event2.weight * (event1.begin < event2.end or event2.begin < event1.end)
 
 def overlappingTime(event1, event2, onlyPositive=True):
