@@ -43,6 +43,8 @@ def extractDateTime(date, time, delta):
     t1 = t0 + dt
     return t0, t1, dt
 
+def overlap(event1, event2):
+    return event1.weight * event2.weight * (event1.begin < event2.end or event2.begin < event1.end)
 
 def overlappingTime(event1, event2, onlyPositive=True):
     """
