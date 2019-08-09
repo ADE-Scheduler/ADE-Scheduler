@@ -3,6 +3,8 @@ from event import overlappingTime
 from concurrent.futures import ThreadPoolExecutor
 import math
 
+from time import time
+
 
 def parallel_compute(courses, weeks=range(53), forbiddenTimeSlots=None, max_workers=53):
     """
@@ -35,14 +37,22 @@ def compute(courses, week, forbiddenTimeSlots=None):
         The score of said best schedule
     """
     # List of all events in form of : [[ELEC TP1, ELEC TP2], [ELEC CM], [MATH TP1, MATH TP2, MATH TP3], ...]
+    #print('Start computing')
+    #t1 = time()
+    #print('Generating all possible permutations')
+    #t2 = time()
     all_events = map(iter, filter(lambda e: len(e) != 0, sum((course.getweek(week) for course in courses), ())))
 
     # All possible weeks by selecting one element in each list of the list 's'
     perm = product(*all_events)
 
+    #print('Time elapsed for generating... :', time()-t2)
+
     # Selecting the best possible schedule
     best_score = math.inf
     best = None
+    #best = max(perm, key=lambda f:costFunction(f, forbiddenTimeSlots))
+    
     for weekEvents in perm:
         if best is None:
             best = weekEvents
@@ -50,6 +60,8 @@ def compute(courses, week, forbiddenTimeSlots=None):
         if x < best_score:
             best_score = x
             best = weekEvents
+
+    #print('Time elapsed for computing :', time()-t1)
     return best, best_score
 
 
