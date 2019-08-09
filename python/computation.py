@@ -2,6 +2,7 @@ from itertools import combinations, product
 from event import  overlap
 from concurrent.futures import ThreadPoolExecutor
 from multiprocessing import Pool
+from heapq import nsmallest
 import math
 
 from time import time
@@ -22,7 +23,7 @@ def parallel_compute(courses, weeks=range(53), forbiddenTimeSlots=None, max_work
         return [compute(courses, i, forbiddenTimeSlots) for i in range(53)]
 
 
-def compute(courses, week, forbiddenTimeSlots=None):
+def compute(courses, week, forbiddenTimeSlots=None, nbest=10):
     """
     Generates all the possible schedules for a given week.
     Then evaluates all those possibilities to pick the best one(s).
@@ -34,6 +35,8 @@ def compute(courses, week, forbiddenTimeSlots=None):
         The number of the to-be-scheduled week
     forbiddenTimeSlots: list of event.CustomEvents
         The slots that are marked as "busy" by the user
+    nbest : int
+        The n-bests weeks you want to save (lower is better for performance).
     Returns:
     --------
     best: list of event.CustomEvents
@@ -52,11 +55,12 @@ def compute(courses, week, forbiddenTimeSlots=None):
     perm = product(*all_events)
 
     #print('Time elapsed for generating... :', time()-t2)
-
     # Selecting the best possible schedule
     best_score = math.inf
 
-    best = min(perm, key=lambda f:costFunction(f, forbiddenTimeSlots))
+    n_bests = nsmallest(nbest, perm, key=lambda f:costFunction(f, forbiddenTimeSlots))
+    best = n_bests[0]
+    #best = min(perm, key=lambda f:costFunction(f, forbiddenTimeSlots))
     
     #print('Testing all weeks possible')
     #t3 = time()
