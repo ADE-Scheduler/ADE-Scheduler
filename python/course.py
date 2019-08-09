@@ -35,8 +35,9 @@ class Course:
 
     def getSummary(self, weeks='ALL'):
         if weeks == 'ALL':
-            w = chain(self.CM, self.TP, self.E, self.O, self.Other) # [CM from week 1, CM from week 2, ..., TP from week 1, ...]
-            e = chain(*w) # [CM1, CM2,... , TP1, ...]
+            w = chain(self.CM, self.TP, self.E, self.O, self.Other)     # [CM from week 1, CM from week 2, ...,
+                                                                        # TP from week 1, ...]
+            e = chain(*w)   # [CM1, CM2,... , TP1, ...]
         elif isinstance(weeks, slice):
             w = chain(self.CM[weeks], self.TP[weeks], self.E[weeks], self.O[weeks], self.Other[weeks])
             e = chain(*w)
