@@ -1,6 +1,7 @@
 from itertools import combinations, product
 from event import  overlap
 from concurrent.futures import ThreadPoolExecutor
+from multiprocessing import Pool
 import math
 
 from time import time
@@ -10,11 +11,15 @@ def parallel_compute(courses, weeks=range(53), forbiddenTimeSlots=None, max_work
     """
     Calls the compute() function for all weeks using parallel programming
     """
-    with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        futures = [executor.submit(compute, *(courses, i, forbiddenTimeSlots)) for i in weeks]
-        executor.shutdown(wait=True)
+    choice = 1
+    if choice == 1:
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            futures = [executor.submit(compute, *(courses, i, forbiddenTimeSlots)) for i in weeks]
+            executor.shutdown(wait=True)
 
-    return [future.result() for future in futures]
+        return [future.result() for future in futures]
+    else:
+        return [compute(courses, i, forbiddenTimeSlots) for i in range(53)]
 
 
 def compute(courses, week, forbiddenTimeSlots=None):
@@ -38,9 +43,9 @@ def compute(courses, week, forbiddenTimeSlots=None):
     """
     # List of all events in form of : [[ELEC TP1, ELEC TP2], [ELEC CM], [MATH TP1, MATH TP2, MATH TP3], ...]
     #print('Start computing')
-    #t1 = time()
+    t1 = time()
     #print('Generating all possible permutations')
-    #t2 = time()
+    t2 = time()
     all_events = map(iter, filter(lambda e: len(e) != 0, sum((course.getweek(week) for course in courses), ())))
 
     # All possible weeks by selecting one element in each list of the list 's'
@@ -50,16 +55,23 @@ def compute(courses, week, forbiddenTimeSlots=None):
 
     # Selecting the best possible schedule
     best_score = math.inf
-    best = None
-    #best = max(perm, key=lambda f:costFunction(f, forbiddenTimeSlots))
+
+    best = min(perm, key=lambda f:costFunction(f, forbiddenTimeSlots))
     
+    #print('Testing all weeks possible')
+    #t3 = time()
+    """
     for weekEvents in perm:
-        if best is None:
-            best = weekEvents
+        #print('Calling cost function')
+        #t4 = time()
         x = costFunction(weekEvents, forbiddenTimeSlots)
+        #print('Time elapsed for costFunction :', time()-t4)
         if x < best_score:
             best_score = x
             best = weekEvents
+    """
+
+    #print('Time elapsed for testing all weeks :', time()-t3)
 
     #print('Time elapsed for computing :', time()-t1)
     return best, best_score
@@ -80,11 +92,9 @@ def costFunction(weekEvents, forbiddenTimeSlots=None):
     """
     # do a n^2 comparison for all overlaps
     p = sum(overlap(*e) for e in combinations(weekEvents, 2))
-    #p = sum(overlappingTime(*e) for e in combinations(weekEvents, 2))
 
     if forbiddenTimeSlots:
         f = sum(overlap(*e) for e in product(weekEvents, forbiddenTimeSlots))
-        #f = sum(overlappingTime(*e) for e in product(weekEvents, forbiddenTimeSlots))
         return p + f
     else:
         return p
