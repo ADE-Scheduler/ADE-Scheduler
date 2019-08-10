@@ -14,7 +14,7 @@ codes_celine = ['lkine2108','LTECO1004','lkine2127','lkine2138','lkine2148','lki
 cal = Calendar()
 
 # projectID: 2 pour 18-19 ou 9 pour 19-20
-c = getCoursesFromCodes(codes_celine, Q1+Q2, 9)
+c = getCoursesFromCodes(codes_master, Q1+Q2, 9)
 
 year = parallel_compute(c)
 for week, score in year:
@@ -28,5 +28,5 @@ for week, score in year:
 #     for event in best:
 #         cal.events.add(event)
 
-with open('celine.ics', 'w') as f:
+with open('my.ics', 'w') as f:
     f.writelines(cal)
