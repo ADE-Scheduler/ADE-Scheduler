@@ -64,6 +64,7 @@ def compute(courses, week, forbiddenTimeSlots=None, nbest=10):
     
     #print('Testing all weeks possible')
     #t3 = time()
+    
     """
     for weekEvents in perm:
         #print('Calling cost function')

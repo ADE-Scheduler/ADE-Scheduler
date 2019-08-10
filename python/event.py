@@ -55,7 +55,7 @@ def overlap(event1, event2):
     c : int
         The product of the weights if events overlap, 0 otherwise.
     """
-    return event1.weight * event2.weight * (event1.begin < event2.end or event2.begin < event1.end)
+    return event1.weight * event2.weight * (event1.end > event2.begin and event2.end > event1.begin) # not(A or B) = notA and notB
 
 def overlappingTime(event1, event2, onlyPositive=True):
     """
