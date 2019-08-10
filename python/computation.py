@@ -23,7 +23,7 @@ def parallel_compute(courses, weeks=range(53), forbiddenTimeSlots=None, max_work
         return [compute(courses, i, forbiddenTimeSlots) for i in range(53)]
 
 
-def compute(courses, week, forbiddenTimeSlots=None, nbest=10):
+def compute(courses, week, forbiddenTimeSlots=None, nbest=5):
     """
     Generates all the possible schedules for a given week.
     Then evaluates all those possibilities to pick the best one(s).
@@ -39,46 +39,25 @@ def compute(courses, week, forbiddenTimeSlots=None, nbest=10):
         The n-bests weeks you want to save (lower is better for performance).
     Returns:
     --------
-    best: list of event.CustomEvents
-        The best schedule according to the evaluation function (costFunction())
-    best_score: int
-        The score of said best schedule
+    best: list of lists of event.CustomEvents
+        The n best schedules according to the evaluation function (costFunction())
+    best_scores: list of int
+        The scores of best schedules
     """
     # List of all events in form of : [[ELEC TP1, ELEC TP2], [ELEC CM], [MATH TP1, MATH TP2, MATH TP3], ...]
-    #print('Start computing')
-    t1 = time()
-    #print('Generating all possible permutations')
-    t2 = time()
     all_events = map(iter, filter(lambda e: len(e) != 0, sum((course.getweek(week) for course in courses), ())))
 
     # All possible weeks by selecting one element in each list of the list 's'
     perm = product(*all_events)
 
-    #print('Time elapsed for generating... :', time()-t2)
     # Selecting the best possible schedule
-    best_score = math.inf
+    if nbest == 1:
+        best = [min(perm, key=lambda f:costFunction(f, forbiddenTimeSlots))]
+    else:
+        best = nsmallest(nbest, perm, key=lambda f:costFunction(f, forbiddenTimeSlots))
 
-    n_bests = nsmallest(nbest, perm, key=lambda f:costFunction(f, forbiddenTimeSlots))
-    best = n_bests[0]
-    #best = min(perm, key=lambda f:costFunction(f, forbiddenTimeSlots))
-    
-    #print('Testing all weeks possible')
-    #t3 = time()
-    """
-    for weekEvents in perm:
-        #print('Calling cost function')
-        #t4 = time()
-        x = costFunction(weekEvents, forbiddenTimeSlots)
-        #print('Time elapsed for costFunction :', time()-t4)
-        if x < best_score:
-            best_score = x
-            best = weekEvents
-    """
 
-    #print('Time elapsed for testing all weeks :', time()-t3)
-
-    #print('Time elapsed for computing :', time()-t1)
-    return best, best_score
+    return best, [costFunction(week, forbiddenTimeSlots) for week in best]
 
 
 def costFunction(weekEvents, forbiddenTimeSlots=None):
