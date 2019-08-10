@@ -1,0 +1,117 @@
+["vcalendar",
+  [
+    [
+      "attendee",
+      {
+        "delegated-to": [
+          "mailto:foo7@bar",
+          "mailto:foo8@bar"
+        ],
+        "cn": "Foo, Bar"
+      },
+      "cal-address",
+      "mailto:foo1@bar"
+    ],
+    [
+      "attendee",
+      {
+        "delegated-to": [
+          "mailto:foo7@bar",
+          "mailto:foo8@bar"
+        ],
+        "cn": "Foo; Bar"
+      },
+      "cal-address",
+      "mailto:foo2@bar"
+    ],
+    [
+      "attendee",
+      {
+        "cn": "Foo, Bar"
+      },
+      "cal-address",
+      "mailto:foo3@bar"
+    ],
+    [
+      "attendee",
+      {
+        "cn": "Foo; Bar"
+      },
+      "cal-address",
+      "mailto:foo4@bar"
+    ],
+    [
+      "attendee",
+      {
+        "delegated-to": "mailto:foo7@bar",
+        "cn": "Foo, Bar"
+      },
+      "cal-address",
+      "mailto:foo5@bar"
+    ],
+    [
+      "attendee",
+      {
+        "delegated-to": "mailto:foo7@bar",
+        "cn": "Foo; Bar"
+      },
+      "cal-address",
+      "mailto:foo6@bar"
+    ],
+    [
+      "attendee",
+      {
+        "role": "REQ-PARTICIPANT;foo",
+        "delegated-from": "mailto:bar@baz.com",
+        "partstat": "ACCEPTED",
+        "rsvp": "TRUE"
+      },
+      "cal-address",
+      "mailto:foo@bar.com"
+    ],
+    [
+      "x-foo",
+      {
+        "param1": "VAL1"
+      },
+      "unknown",
+      "FOO;BAR"
+    ],
+    [
+      "x-foo2",
+      {
+        "param1": "VAL1",
+        "param2": "VAL2"
+      },
+      "unknown",
+      "FOO;BAR"
+    ],
+    [
+      "x-bar",
+      {
+        "param1": "VAL1:FOO"
+      },
+      "unknown",
+      "BAZ;BAR"
+    ],
+    [
+      "x-baz",
+      {
+        "param1": "VAL1:FOO",
+        "param2": "VAL2"
+      },
+      "unknown",
+      "BAZ;BAR"
+    ],
+    [
+      "x-baz2",
+      {
+        "param1": "VAL1",
+        "param2": "VAL2:FOO"
+      },
+      "unknown",
+      "BAZ;BAR"
+    ]
+  ],
+  []
+]

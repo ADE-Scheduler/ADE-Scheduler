@@ -1,0 +1,17 @@
+["vcalendar",
+  [
+    [
+      "x-integer",
+      {},
+      "integer",
+      105
+    ],
+    [
+      "x-invalid",
+      {},
+      "integer",
+      0
+    ]
+  ],
+  []
+]
