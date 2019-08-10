@@ -27,8 +27,7 @@
 {% endblock %}
 
 {% block body %}
-    <h4>{{ name }}</h4>
-    <div id='calendar'></div>
+    <div id='calendar', style="height: 540px"></div>
 {% endblock %}
 
 {% block js %}
@@ -39,14 +38,14 @@
     <script src='/static/fullcalendar/list/main.js'></script>
 
     <script>
-        var eventsArray = [
-            {
-                title: 'MAY 1',
-                start: '2019-08-10',
-                end: '2019-08-11',
-                allDay: true
-            },
-        ];
+        var eventsArray = [];
+        function readData(data) {
+            for (var i = 0; i < data.length; i++) {
+                eventsArray.push(data[i]);
+                console.log(data[i])
+            }
+        }
+        readData({{ data|safe }});
 
         document.addEventListener('DOMContentLoaded', function() {
             const calendarEl = document.getElementById('calendar');
