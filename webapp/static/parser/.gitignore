@@ -1,0 +1,13 @@
+.DS_Store
+node_modules
+bower_components
+*.pyc
+tools/tzurl
+tools/libical
+zoneinfo
+api
+ghpages-stage
+/validator.html
+coverage/
+build/benchmark/ical_upstream.js
+junk/
