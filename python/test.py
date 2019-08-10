@@ -18,7 +18,7 @@ c = getCoursesFromCodes(codes_celine, Q1+Q2, 9)
 
 year = parallel_compute(c)
 for week, score in year:
-    for event in week:
+    for event in week[0]:
         cal.events.add(event)
 
 # for week in range(53):
