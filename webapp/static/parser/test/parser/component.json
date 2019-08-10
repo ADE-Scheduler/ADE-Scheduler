@@ -1,0 +1,21 @@
+["vcalendar",
+  [],
+  [
+    [
+      "vevent",
+      [["summary", {}, "text", "foo \\nbar"]],
+      [
+        [
+          "valarm",
+          [["summary", {}, "text", "escaped, comma and; semicolon\nnewline"]],
+          []
+        ]
+      ]
+    ],
+    [
+      "vevent",
+      [["summary", {}, "text", "another"]],
+      []
+    ]
+  ]
+]

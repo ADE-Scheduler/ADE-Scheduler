@@ -1,44 +1,59 @@
 {% extends "base.html" %}
+
 {% block head %}
+    <link href='/static/fullcalendar/core/main.css' rel='stylesheet' xmlns:height="http://www.w3.org/1999/xhtml"
+          xmlns:height="http://www.w3.org/1999/xhtml"/>
+    <link href='/static/fullcalendar/daygrid/main.css' rel='stylesheet' />
 
-    <!-- FullCalendar -->
-    <link href='/static/core/main.css' rel='stylesheet' />
-    <link href='/static/daygrid/main.css' rel='stylesheet' />
+    <style>
+        html, body {
+            overflow: hidden; /* don't do scrollbars */
+            font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+            font-size: 14px;
+            }
+        #calendar-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+        .fc-header-toolbar {
+            padding-top: 1em;
+            padding-left: 1em;
+            padding-right: 1em;
+        }
+    </style>
+{% endblock %}
 
-    <script src='/static/core/main.js'></script>
-    <script src='/static/interaction/main.js'></script>
-    <script src='/static/daygrid/main.js'></script>
-    <script src='/static/list/main.js'></script>
+{% block body %}
+    <div id='calendar'></div>
+{% endblock %}
+
+{% block js %}
+    <script src='/static/parser/build/ical.js'></script>
+    <script src='/static/fullcalendar/core/main.js'></script>
+    <script src='/static/fullcalendar/interaction/main.js'></script>
+    <script src='/static/fullcalendar/daygrid/main.js'></script>
+    <script src='/static/fullcalendar/list/main.js'></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const calendarEl = document.getElementById('calendar');
-
             const calendar = new FullCalendar.Calendar(calendarEl, {
                 plugins: ['interaction', 'dayGrid', 'list'],
+                height: 'parent',
+                width: 'parent',
                 header: {
-                    left: 'prevYear,prev,next,nextYear today',
+                    left: 'prev,next, today',
                     center: 'title',
                     right: 'dayGridMonth,dayGridWeek,listWeek'
                 },
                 navLinks: true, // can click day/week names to navigate views
-                editable: true,
+                editable: false,
                 eventLimit: true, // allow "more" link when too many events
+                weekNumberCalculation: 'ISO',
             });
             calendar.render();
         });
     </script>
-
-    <style>
-        #calendar {
-            height: auto;
-            margin: 0 auto;
-        }
-    </style>
-
-{% endblock %}
-
-{% block body %}
-
-    <div id='calendar'></div>
-
 {% endblock %}

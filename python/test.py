@@ -14,11 +14,11 @@ codes_celine = ['lkine2108','LTECO1004','lkine2127','lkine2138','lkine2148','lki
 cal = Calendar()
 
 # projectID: 2 pour 18-19 ou 9 pour 19-20
-c = getCoursesFromCodes(codes_celine, Q1, 9)
+c = getCoursesFromCodes(codes_celine, Q1+Q2, 9)
 
 year = parallel_compute(c)
 for week, score in year:
-    for event in week:
+    for event in week[0]:
         cal.events.add(event)
 
 # for week in range(53):
