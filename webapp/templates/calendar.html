@@ -36,7 +36,17 @@
     <script src='/static/fullcalendar/interaction/main.js'></script>
     <script src='/static/fullcalendar/daygrid/main.js'></script>
     <script src='/static/fullcalendar/list/main.js'></script>
+
     <script>
+        var eventsArray = [
+            {
+                title: 'MAY 1',
+                start: '2019-08-10',
+                end: '2019-08-11',
+                allDay: true
+            },
+        ];
+
         document.addEventListener('DOMContentLoaded', function() {
             const calendarEl = document.getElementById('calendar');
             const calendar = new FullCalendar.Calendar(calendarEl, {
@@ -52,6 +62,9 @@
                 editable: false,
                 eventLimit: true, // allow "more" link when too many events
                 weekNumberCalculation: 'ISO',
+                events: function( fetchInfo, successCallback, failureCallback ) {
+                    successCallback(eventsArray)
+                }
             });
             calendar.render();
         });
