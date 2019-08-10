@@ -8,12 +8,13 @@ codes = ['LELEC1310', 'LELEC1360', 'LINMA1510', 'LMECA1321', 'LMECA1100', 'LFSAB
 codes_master = ['LELEC2660', 'LELEC2811', 'LMECA2755', 'LELEC2313', 'LELEC2531', 'LMECA2801', 'LELME2002']
 codes_info = ['lelec2531', 'lingi2241', 'lingi2255', 'lingi2261', 'lingi2266', 'lfsab2351']
 codes_q5 = ['langl1873', 'lelec1530', 'lelec1755', 'lepl2351', 'lfsab1105', 'lmeca1451', 'lmeca1855', 'lmeca1901']
+codes_celine = ['lkine2108','LTECO1004','lkine2127','lkine2138','lkine2148','lkine2158','lkine2168','LIEPR2236']
 
 
 cal = Calendar()
 
 # projectID: 2 pour 18-19 ou 9 pour 19-20
-c = getCoursesFromCodes(codes_q5, Q1, 9)
+c = getCoursesFromCodes(codes_celine, Q1, 9)
 
 year = parallel_compute(c)
 for week, score in year:
