@@ -1,0 +1,23 @@
+["vcalendar",
+  [
+    [
+      "x-true",
+      {},
+      "boolean",
+      true
+    ],
+    [
+      "x-false",
+      {},
+      "boolean",
+      false
+    ],
+    [
+      "x-maybe",
+      {},
+      "boolean",
+      false
+    ]
+  ],
+  []
+]
