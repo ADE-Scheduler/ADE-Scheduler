@@ -1,0 +1,16 @@
+[
+  "vcalendar",
+  [
+    [
+      "attach",
+      {
+        "fmttype": "text/plain",
+        "encoding": "BASE64",
+        "x-base64-param": "UGFyYW1ldGVyCg="
+      },
+      "binary",
+      "WW91IHJlYWxseSBzcGVudCB0aGUgdGltZSB0byBiYXNlNjQgZGVjb2RlIHRoaXM/Cg="
+    ]
+  ],
+  []
+]
