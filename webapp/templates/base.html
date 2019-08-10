@@ -38,6 +38,8 @@
 
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+  {%block head%}{%endblock%}
+
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -56,34 +58,6 @@
       <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
         <span class="sr-only">Toggle navigation</span>
       </a>
-      <div class="navbar-custom-menu">
-        <ul class="nav navbar-nav">
-          <li class="dropdown user user-menu closed">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-              <span class="hidden-xs">{{user_name}}</span>
-            </a>
-            <ul class="dropdown-menu">
-              <!-- User image -->
-              <li class="user-header">
-                <img src="/static/img/user_icon.png" class="img-circle" alt="User Image">
-                <p>
-                  {{user_privilege}}
-                </p>
-              </li>
-
-              <!-- Menu Footer-->
-              <li class="user-footer">
-                <div class="pull-left">
-                  <a href="/app.py/profile" class="btn btn-default btn-flat">Profile</a>
-                </div>
-                <div class="pull-right">
-                  <a href="/app.py/logout" class="btn btn-default btn-flat">Sign out</a>
-                </div>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </div>
     </nav>
   </header>
 
@@ -100,21 +74,6 @@
             <i class="fa fa-tasks"></i> <span>Nothing to do</span>
           </a>
         </li>
-
-  {%- if user_privilege=="admin" %}
-  <li class="treeview menu-open">
-    <a href="#">
-      <i class="fa fa-wrench"></i> <span>Admin</span>
-      <span class="pull-right-container">
-        <i class="fa fa-angle-left pull-right"></i>
-      </span>
-    </a>
-    <ul class="treeview-menu" style="display: block;">
-      <li><a href="/app.py/admin/projects"><i class="fa"></i> Projects</a></li>
-      <li><a href="/app.py/admin/users"><i class="fa"></i> Users</a></li>
-    </ul>
-  </li>
-  {% endif %}
       </ul>
     </section>
     <!-- /.sidebar -->
