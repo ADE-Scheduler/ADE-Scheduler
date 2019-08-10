@@ -28,5 +28,5 @@ for week, score in year:
 #     for event in best:
 #         cal.events.add(event)
 
-with open('my.ics', 'w') as f:
+with open('celine.ics', 'w') as f:
     f.writelines(cal)
