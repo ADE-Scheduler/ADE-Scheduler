@@ -50,6 +50,14 @@
             width: 88%;
             height: 100%;
         }
+        .tooltip-inner {
+            white-space:pre;
+            max-width:none;
+            background-color: #ffb019;
+            border-color: #ffb019;
+            box-shadow: 0 0 3px rgba(0,0,0,0.5);
+            color: black;
+        }
     </style>
 {% endblock %}
 
@@ -152,11 +160,10 @@
                 },
 
                 // Extra info when hovering an event
-                // using tooltip.js + popper.js
                 eventRender: function (arg) {
                     $(arg.el).tooltip({
                         title: arg.event.extendedProps.description,
-                        container: 'body'
+                        container: 'body',
                     });
                 },
 
