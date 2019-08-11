@@ -65,4 +65,4 @@ def continued():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='90.41.153.93')
+    app.run(debug=True, host='0.0.0.0')
