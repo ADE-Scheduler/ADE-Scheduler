@@ -44,7 +44,7 @@ def index():
             year = parallel_compute(c)
             for week, score in year:
                 for event in week[0]:
-                    temp = {'start': str(event.begin), 'end': str(event.end), 'title': event.name}
+                    temp = {'start': str(event.begin), 'end': str(event.end), 'title': event.name, 'editable': False}
                     data.append(temp)
 
         # CLEAR ALL
