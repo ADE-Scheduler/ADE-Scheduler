@@ -105,24 +105,26 @@
     <script src='/static/fullcalendar/timegrid/main.js'></script>
 
     <script>
-        // Load the events
-        var eventsArray = [];
-        var parsed_data = {{ data|safe }};
-        for (var i = 0; i < parsed_data.length; i++) {
+        // Course events (schedule)
+        let eventsArray = [];
+        let parsed_data = {{ data|safe }};
+        for (let i = 0; i < parsed_data.length; i++) {
                 eventsArray.push(parsed_data[i]);
         }
+        // Forbidden time slots (user's input)
+        let forbiddenTimeSlots = [];
 
         // FullCalendar initialization
         document.addEventListener('DOMContentLoaded', function() {
             // Initialise the draggable "forbidden time slots"
-            var containerEl = document.getElementById('external-events-list');
+            let containerEl = document.getElementById('external-events-list');
             new FullCalendarInteraction.Draggable(containerEl, {
                 itemSelector: '.fc-event',
             });
 
             // Initialize the calendar
-            var calendarEl = document.getElementById('calendar');
-            var calendar = new FullCalendar.Calendar(calendarEl, {
+            let calendarEl = document.getElementById('calendar');
+            let calendar = new FullCalendar.Calendar(calendarEl, {
                 plugins: ['interaction', 'dayGrid', 'list', 'timeGrid'],
                 height: 'parent',
                 width: 'parent',
@@ -134,28 +136,74 @@
                 minTime: '08:00:00',
                 maxTime: '20:00:00',
                 navLinks: true, // can click day/week names to navigate views
-                editable: false,
+                editable: true,
                 droppable: true,
                 eventLimit: false, // allow "more" link when too many events
                 weekNumberCalculation: 'ISO',
+                // Function called when we need to refresh the events
+                // Fetches the events in eventsArray and forbiddenTimeSlots
                 events: function( fetchInfo, successCallback, failureCallback ) {
-                    successCallback(eventsArray)
+                    successCallback(eventsArray.concat(forbiddenTimeSlots))
                 },
+
+                // Function called when the user drops a "forbiddenTimeSlot" event
                 drop: function(arg) {
-                    {#var hStart = prompt('Enter a start hour as HH:MM:');#}
-                    {#var hEnd = prompt('Enter an end hour as HH:MM:');#}
-                    {#var date = arg.date.toISOString();#}
+                    // TODO: Rendre la fonction robuste aux erreurs des utilisateurs (try-catch)
+                    // TODO: Verifier que il y a pas de bus (OK normalement mais on sait jamais)
+                    // Event begin:
+                    let dateStart = new Date(arg.date.getFullYear(), arg.date.getMonth(), arg.date.getDate());
+                    let hStart = prompt('Enter a start hour as HH:MM:');
+                    dateStart.setHours(parseInt(hStart.split(':')[0]));
+                    dateStart.setMinutes(parseInt(hStart.split(':')[1]));
 
-                    var evt = {
+                    // Event end:
+                    let dateEnd = new Date(arg.date.getFullYear(), arg.date.getMonth(), arg.date.getDate());
+                    let hEnd = prompt('Enter an end hour as HH:MM:');
+                    dateEnd.setHours(parseInt(hEnd.split(':')[0]));
+                    dateEnd.setMinutes(parseInt(hEnd.split(':')[1]));
+
+                    let evt = {
                         title: arg.draggedEl.textContent,
-                        start: arg.date.toISOString(),
-                        end: arg.date.toISOString(),
+                        start: dateStart,
+                        end: dateEnd,
                         backgroundColor: arg.draggedEl.style.backgroundColor,
-                        borderColor: arg.draggedEl.style.borderColor
+                        borderColor: arg.draggedEl.style.borderColor,
+                        editable: true
                     };
-                    eventsArray.push(evt);
+                    forbiddenTimeSlots.push(evt);
+                    calendar.refetchEvents();
+                },
 
-                    {#.fullCalendar('refetchEvents');#}
+                // Function called when the user tries to moves a "forbiddenTimeSlot" event
+                eventDrop: function(arg){
+                    // First, we remove the event before the drag
+                    let i;
+                    for (i = 0; i < forbiddenTimeSlots.length; i++) {
+                        let o = forbiddenTimeSlots[i];
+                        if(o.title === arg.oldEvent.title && o.start.toISOString() === arg.oldEvent.start.toISOString()
+                            && o.end.toISOString() === arg.oldEvent.end.toISOString()) {
+                            forbiddenTimeSlots.splice(i,1);
+                            break;
+                        }
+                    }
+                    // We then add the new event
+                    forbiddenTimeSlots.push(arg.event);
+                },
+
+                // Function called when the user tries to resize a "forbiddenTimeSlot" event
+                eventResize: function(arg) {
+                    // First, we remove the event before the resize
+                    let i;
+                    for (i = 0; i < forbiddenTimeSlots.length; i++) {
+                        let o = forbiddenTimeSlots[i];
+                        if(o.title === arg.oldEvent.title && o.start.toISOString() === arg.oldEvent.start.toISOString()
+                            && o.end.toISOString() === arg.oldEvent.end.toISOString()) {
+                            forbiddenTimeSlots.splice(i,1);
+                            break;
+                        }
+                    }
+                    // We then add the new event
+                    forbiddenTimeSlots.push(arg.event);
                 }
             });
             calendar.render();
