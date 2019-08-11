@@ -250,9 +250,9 @@
 
                 // Extra info when hovering an event
                 // using tooltip.js + popper.js
-                eventRender: function(info) {
-                    let tooltip = new Tooltip(info.el, {
-                        title: info.event.extendedProps.description,
+                eventRender: function(arg) {
+                    let tooltip = new Tooltip(arg.el, {
+                        title: arg.event.extendedProps.description,
                         placement: 'top',
                         trigger: 'hover',
                         container: 'body'
