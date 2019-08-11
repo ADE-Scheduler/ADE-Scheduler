@@ -66,10 +66,10 @@
         <div style='clear:both'></div>
     </div>
 
-    <div class="col-xs-6">
+    <div class="col-xs-6", style="width: 13%">
         <div class="box box-info">
             <div class="box-header">
-                <h3 class="box-title">Current course codes</h3>
+                <h3 class="box-title">Current courses</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
@@ -118,11 +118,6 @@
             var containerEl = document.getElementById('external-events-list');
             new FullCalendarInteraction.Draggable(containerEl, {
                 itemSelector: '.fc-event',
-                eventData: function(eventEl) {
-                    return {
-                        title: eventEl.innerText.trim()
-                    }
-                }
             });
 
             // Initialize the calendar
@@ -136,6 +131,8 @@
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
                 },
+                minTime: '08:00:00',
+                maxTime: '20:00:00',
                 navLinks: true, // can click day/week names to navigate views
                 editable: false,
                 droppable: true,
@@ -145,17 +142,20 @@
                     successCallback(eventsArray)
                 },
                 drop: function(arg) {
+                    {#var hStart = prompt('Enter a start hour as HH:MM:');#}
+                    {#var hEnd = prompt('Enter an end hour as HH:MM:');#}
+                    {#var date = arg.date.toISOString();#}
+
                     var evt = {
-                        title: 'test',
-                        start: '2019-08-11',
-                        end: '2019-08-12',
-                        backgroundColor: '#b91826',
-                        borderColor: '#b91826'
+                        title: arg.draggedEl.textContent,
+                        start: arg.date.toISOString(),
+                        end: arg.date.toISOString(),
+                        backgroundColor: arg.draggedEl.style.backgroundColor,
+                        borderColor: arg.draggedEl.style.borderColor
                     };
                     eventsArray.push(evt);
-                    console.log(eventsArray)
-                    FullCalendar.fullCalendar('rerenderEvents');
-                    FullCalendar.fullCalendar('refetchEvents');
+
+                    {#.fullCalendar('refetchEvents');#}
                 }
             });
             calendar.render();
