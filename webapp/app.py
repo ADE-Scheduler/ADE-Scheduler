@@ -14,6 +14,8 @@ codes_master = ['LELEC2660', 'LELEC2811', 'LMECA2755', 'LELEC2313', 'LELEC2531',
 codes = list()
 data = list()
 
+basic_context = {}
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -22,10 +24,14 @@ def index():
             course_code = request.form.get("course_code", None)
             if course_code:
                 # TODO: check le regex de course_code pour prevenir les erreurs user ?
-                codes.append(course_code)
+                if course_code not in codes:
+                    codes.append(course_code)
                 print(codes)
 
         if request.form['submit'] == 'Compute':
+            if len(codes) == 0:
+                print('At least a course !')
+                return render_template('calendar.html', data=json.dumps(data))
             print('Computing the calendar ! Please wait.')
             c = getCoursesFromCodes(codes, Q1 + Q2, 9)
             year = parallel_compute(c)
@@ -36,8 +42,12 @@ def index():
 
         if request.form['submit'] == 'Clear':
             data.clear()
+            codes.clear()
+    
+    context = basic_context
+    context['codes'] = codes
 
-    return render_template('calendar.html', data=json.dumps(data))
+    return render_template('calendar.html', **context, data=json.dumps(data))
 
 
 # To be chosed
