@@ -13,6 +13,7 @@ app = Flask(__name__)
 codes_master = ['LELEC2660', 'LELEC2811', 'LMECA2755', 'LELEC2313', 'LELEC2531', 'LMECA2801', 'LELME2002']
 codes = list()
 data = list()
+blocked = list()
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -25,9 +26,9 @@ def index():
                 codes.append(course_code)
                 print(codes)
 
-        if request.form['submit'] == 'Compute':
-            print('Computing the calendar ! Please wait.')
-            c = getCoursesFromCodes(codes, Q1 + Q2, 9)
+        if request.form['submit'] == 'Compute' and codes_master:
+            data.clear()
+            c = getCoursesFromCodes(codes_master, Q1 + Q2, 9)
             year = parallel_compute(c)
             for week, score in year:
                 for event in week[0]:
