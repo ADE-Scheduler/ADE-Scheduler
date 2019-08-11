@@ -150,7 +150,7 @@
 {% endblock %}
 
 {% block body %}
-    <div class="col-xs-6">
+    <div class="col-xs-6" , style="width: 12%">
         <div class="box box-info">
             <div class="box-header">
                 <h3 class="box-title">Current courses</h3>
@@ -179,6 +179,7 @@
         </div>
     <!-- /.box -->
     </div>
+
     <div id='wrap', style="height: 550px">
         <div id='external-events'>
             <h4>Block Time Slots</h4>
@@ -254,7 +255,7 @@
                     let tooltip = new Tooltip(arg.el, {
                         title: arg.event.extendedProps.description,
                         placement: 'top',
-                        trigger: 'hover',
+                        trigger: 'hover click',
                         container: 'body'
                     });
                 },
@@ -323,6 +324,8 @@
             });
             calendar.render();
         });
+
+        // Delete a course
         function deleteCourse(code)
         {
             console.log('deletion');
