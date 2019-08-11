@@ -20,7 +20,6 @@ basic_context = {}
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-
         # CODE ADDED BY USER
         if request.form['submit'] == 'Add':
             course_code = request.form.get("course_code", None)
@@ -44,8 +43,10 @@ def index():
             year = parallel_compute(c)
             for week, score in year:
                 for event in week[0]:
-                    temp = {'start': str(event.begin), 'end': str(event.end), 'title': event.name, 'editable': False}
+                    temp = {'start': str(event.begin), 'end': str(event.end), 'title': event.name, 'editable': False,
+                            'description': event.name+'\n'+event.location+' - '+str(event.duration)+'\n'+str(event.description)}
                     data.append(temp)
+                    print(temp['description'])
 
         # CLEAR ALL
         if request.form['submit'] == 'Clear':
