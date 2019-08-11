@@ -57,11 +57,9 @@
         <div id='external-events'>
             <h4>Block Time Slots</h4>
             <div id='external-events-list'>
-                <div class='fc-event'>My Event 1</div>
-                <div class='fc-event'>My Event 2</div>
-                <div class='fc-event'>My Event 3</div>
-                <div class='fc-event'>My Event 4</div>
-                <div class='fc-event'>My Event 5</div>
+                <div class='fc-event', style="background-color: #46b92f; border-color: #46b92f">Low</div>
+                <div class='fc-event', style="background-color: #b97012; border-color: #b97012">Medium</div>
+                <div class='fc-event',, style="background-color: #b91826; border-color: #b91826">High</div>
             </div>
         </div>
         <div id='calendar'></div>
@@ -152,8 +150,16 @@
                     successCallback(eventsArray)
                 },
                 drop: function(arg) {
-                    console.log(eventsArray);
-                    eventsArray.push(arg.draggedEl);
+                    var evt = {
+                        title: 'test',
+                        start: '2019-08-11',
+                        end: '2019-08-12',
+                        backgroundColor: '#b91826',
+                        borderColor: '#b91826'
+                    };
+                    eventsArray.push(evt);
+                    console.log(eventsArray)
+                    $('#calendar').fullCalendar( 'refetchEvents' );
                 }
             });
             calendar.render();
