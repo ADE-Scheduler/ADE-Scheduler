@@ -80,7 +80,7 @@
                                 <td>
                                     {{ code }}
                                 </td>
-                                <td style="width:40px;"><button type="button" class="btn btn-box-tool" onclick="deleteCourse({{ code }})"><i class="fa fa-trash-o"></i>
+                                <td style="width:40px;"><button type="button" class="btn btn-box-tool" onClick=deleteCourse("{{ code }}")><i class="fa fa-trash-o"></i>
                                 </button></td>
                             </tr>
                         {% endfor %}
@@ -235,7 +235,7 @@
         // Delete a course
         function deleteCourse(code)
         {
-            console.log('deletion');
+            console.log('salut ' + code);
             $.post("/remove/code/"+code,() => window.location.reload());
         }
     </script>
