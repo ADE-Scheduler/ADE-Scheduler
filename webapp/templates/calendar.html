@@ -66,32 +66,33 @@
         <div style='clear:both'></div>
     </div>
 
-        <div class="col-xs-6">
-          <div class="box box-info">
+    <div class="col-xs-6">
+        <div class="box box-info">
             <div class="box-header">
-              <h3 class="box-title">Current course codes</h3>
+                <h3 class="box-title">Current course codes</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
-              <table class="table table-hover">
-                <tbody>
-                  <tr>
-                  <th>Code</th>
-                  </tr>
-                  <!-- For the course-->
-                  {% for code in codes %}
-                  <tr><td>
-                      {{ code }}
-                    </td>
-                  </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
+                <table class="table table-hover">
+                    <tbody>
+                        <tr>
+                            <th>Code</th>
+                        </tr>
+                        <!-- For the course-->
+                        {% for code in codes %}
+                            <tr>
+                                <td>
+                                    {{ code }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
+        <!-- /.box-body -->
         </div>
+    <!-- /.box -->
+    </div>
 
 {% endblock %}
 
@@ -125,8 +126,8 @@
             });
 
             // Initialize the calendar
-            const calendarEl = document.getElementById('calendar');
-            const calendar = new FullCalendar.Calendar(calendarEl, {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
                 plugins: ['interaction', 'dayGrid', 'list', 'timeGrid'],
                 height: 'parent',
                 width: 'parent',
@@ -153,7 +154,8 @@
                     };
                     eventsArray.push(evt);
                     console.log(eventsArray)
-                    $('#calendar').fullCalendar( 'refetchEvents' );
+                    FullCalendar.fullCalendar('rerenderEvents');
+                    FullCalendar.fullCalendar('refetchEvents');
                 }
             });
             calendar.render();
