@@ -47,7 +47,6 @@ def index():
                     temp = {'start': str(event.begin), 'end': str(event.end), 'title': event.name, 'editable': False,
                             'description': event.name+'\n'+event.location+' - '+str(event.duration)+'\n'+str(event.description)}
                     data.append(temp)
-                    print(temp['description'])
 
         # CLEAR ALL
         if request.form['submit'] == 'Clear':
