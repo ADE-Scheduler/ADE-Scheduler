@@ -1,31 +1,43 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import json
 import sys
 
 # BACK-END FILES
 sys.path.insert(1, '../python')
 from ade import getCoursesFromCodes
-from static_data import Q1, Q2
+from static_data import Q1, Q2, Q3
 from computation import parallel_compute
 
 app = Flask(__name__)
 
 codes_master = ['LELEC2660', 'LELEC2811', 'LMECA2755', 'LELEC2313', 'LELEC2531', 'LMECA2801', 'LELME2002']
-c = getCoursesFromCodes(codes_master, Q1 + Q2, 9)
-year = parallel_compute(c)
-to_send = list()
-i = 0
-for week, score in year:
-    for event in week[0]:
-        temp = {'start': str(event.begin), 'end': str(event.end), 'title': event.name}
-        to_send.append(temp)
+codes = list()
+data = list()
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    data = to_send
+    if request.method == 'POST':
+        if request.form['submit'] == 'Add':
+            course_code = request.form.get("course_code", None)
+            if course_code:
+                # TODO: check le regex de course_code pour prevenir les erreurs user ?
+                codes.append(course_code)
+                print(codes)
+
+        if request.form['submit'] == 'Compute':
+            print('Computing the calendar ! Please wait.')
+            c = getCoursesFromCodes(codes, Q1 + Q2, 9)
+            year = parallel_compute(c)
+            for week, score in year:
+                for event in week[0]:
+                    temp = {'start': str(event.begin), 'end': str(event.end), 'title': event.name}
+                    data.append(temp)
+
+        if request.form['submit'] == 'Clear':
+            data.clear()
+
     return render_template('calendar.html', data=json.dumps(data))
-    # json.dumps creates json objects: 1 per list element !
 
 
 # To be chosed
