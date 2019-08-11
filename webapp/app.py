@@ -34,6 +34,7 @@ def index():
         if request.form['submit'] == 'Compute':
             # No course code was specified
             if len(codes) == 0:
+                data.clear()
                 print('At least a course !')
                 return render_template('calendar.html', data=json.dumps(data))
 
@@ -55,6 +56,14 @@ def index():
     context = basic_context
     context['codes'] = codes
     return render_template('calendar.html', **context, data=json.dumps(data))
+
+# To remove the code
+@app.route('/remove/code/<the_code>', methods=['POST'])
+def remove_code(the_code):
+    codes.remove(the_code)
+    print(codes)
+    return render_template('calendar.html', **basic_context, data=json.dumps(data))
+
 
 
 # To be chosed
