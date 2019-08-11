@@ -20,35 +20,38 @@ basic_context = {}
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
+
+        # CODE ADDED BY USER
         if request.form['submit'] == 'Add':
             course_code = request.form.get("course_code", None)
             if course_code:
-                # TODO: check le regex de course_code pour prevenir les erreurs user ?
+                # TODO: check le regex de course_code pour prevenir les erreurs user
                 if course_code not in codes:
                     codes.append(course_code)
-                print(codes)
+                    # TODO: fonction dans Course pour générer objet JSON pour directement afficher le cours
+                    # TODO: afficher l'horaire "brut" du cours après addition du code
 
-        if request.form['submit'] == 'Compute' and codes_master:
+        # COMPUTATION REQUESTED BY USER
+        if request.form['submit'] == 'Compute':
+            # No course code was specified
+            if len(codes) == 0:
+                print('At least a course !')
+                return render_template('calendar.html', data=json.dumps(data))
+
+            # At least one course code was specified, time to compute !
             data.clear()
-            c = getCoursesFromCodes(codes_master, Q1 + Q2, 9)
-
-        # if request.form['submit'] == 'Compute':
-        #     if len(codes) == 0:
-        #         print('At least a course !')
-        #         return render_template('calendar.html', data=json.dumps(data))
-        #     print('Computing the calendar ! Please wait.')
-        #     c = getCoursesFromCodes(codes, Q1 + Q2, 9)
-
+            c = getCoursesFromCodes(codes, Q1 + Q2, 9)
             year = parallel_compute(c)
             for week, score in year:
                 for event in week[0]:
                     temp = {'start': str(event.begin), 'end': str(event.end), 'title': event.name}
                     data.append(temp)
 
+        # CLEAR ALL
         if request.form['submit'] == 'Clear':
             data.clear()
             codes.clear()
-    
+
     context = basic_context
     context['codes'] = codes
     return render_template('calendar.html', **context, data=json.dumps(data))
