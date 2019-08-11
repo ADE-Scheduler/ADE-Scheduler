@@ -14,7 +14,6 @@ codes_master = ['LELEC2660', 'LELEC2811', 'LMECA2755', 'LELEC2313', 'LELEC2531',
 codes = list()
 data = list()
 blocked = list()
-
 basic_context = {}
 
 
@@ -52,7 +51,6 @@ def index():
     
     context = basic_context
     context['codes'] = codes
-
     return render_template('calendar.html', **context, data=json.dumps(data))
 
 
