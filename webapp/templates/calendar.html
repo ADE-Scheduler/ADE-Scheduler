@@ -6,7 +6,6 @@
     <link href='/static/fullcalendar/timegrid/main.css' rel='stylesheet' />
     <link href='/static/fullcalendar/list/main.css' rel='stylesheet' />
 
-
     <style>
         html, body {
             overflow: hidden; /* don't do scrollbars */
@@ -49,6 +48,102 @@
             width: 88%;
             height: 100%;
         }
+        .popper,
+        .tooltip {
+            position: absolute;
+            z-index: 9999;
+            background: #FFC107;
+            color: black;
+            width: 150px;
+            border-radius: 3px;
+            box-shadow: 0 0 2px rgba(0,0,0,0.5);
+            padding: 10px;
+            text-align: center;
+        }
+        .style5 .tooltip {
+            background: #1E252B;
+            color: #FFFFFF;
+            max-width: 200px;
+            width: auto;
+            font-size: .8rem;
+            padding: .5em 1em;
+        }
+        .popper .popper__arrow,
+        .tooltip .tooltip-arrow {
+            width: 0;
+            height: 0;
+            border-style: solid;
+            position: absolute;
+            margin: 5px;
+        }
+
+        .tooltip .tooltip-arrow,
+        .popper .popper__arrow {
+            border-color: #FFC107;
+        }
+        .style5 .tooltip .tooltip-arrow {
+            border-color: #1E252B;
+        }
+        .popper[x-placement^="top"],
+        .tooltip[x-placement^="top"] {
+            margin-bottom: 5px;
+        }
+        .popper[x-placement^="top"] .popper__arrow,
+        .tooltip[x-placement^="top"] .tooltip-arrow {
+            border-width: 5px 5px 0 5px;
+            border-left-color: transparent;
+            border-right-color: transparent;
+            border-bottom-color: transparent;
+            bottom: -5px;
+            left: calc(50% - 5px);
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+        .popper[x-placement^="bottom"],
+        .tooltip[x-placement^="bottom"] {
+            margin-top: 5px;
+        }
+        .tooltip[x-placement^="bottom"] .tooltip-arrow,
+        .popper[x-placement^="bottom"] .popper__arrow {
+            border-width: 0 5px 5px 5px;
+            border-left-color: transparent;
+            border-right-color: transparent;
+            border-top-color: transparent;
+            top: -5px;
+            left: calc(50% - 5px);
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+        .tooltip[x-placement^="right"],
+        .popper[x-placement^="right"] {
+            margin-left: 5px;
+        }
+        .popper[x-placement^="right"] .popper__arrow,
+        .tooltip[x-placement^="right"] .tooltip-arrow {
+            border-width: 5px 5px 5px 0;
+            border-left-color: transparent;
+            border-top-color: transparent;
+            border-bottom-color: transparent;
+            left: -5px;
+            top: calc(50% - 5px);
+            margin-left: 0;
+            margin-right: 0;
+        }
+        .popper[x-placement^="left"],
+        .tooltip[x-placement^="left"] {
+            margin-right: 5px;
+        }
+        .popper[x-placement^="left"] .popper__arrow,
+        .tooltip[x-placement^="left"] .tooltip-arrow {
+            border-width: 5px 0 5px 5px;
+            border-top-color: transparent;
+            border-right-color: transparent;
+            border-bottom-color: transparent;
+            right: -5px;
+            top: calc(50% - 5px);
+            margin-left: 0;
+            margin-right: 0;
+        }
     </style>
 {% endblock %}
 
@@ -57,9 +152,9 @@
         <div id='external-events'>
             <h4>Block Time Slots</h4>
             <div id='external-events-list'>
-                <div class='fc-event', style="background-color: #46b92f; border-color: #46b92f">Low</div>
-                <div class='fc-event', style="background-color: #b97012; border-color: #b97012">Medium</div>
-                <div class='fc-event',, style="background-color: #b91826; border-color: #b91826">High</div>
+                <div class='fc-event' , style="background-color: #46b92f; border-color: #46b92f">Low</div>
+                <div class='fc-event' , style="background-color: #b97012; border-color: #b97012">Medium</div>
+                <div class='fc-event' , style="background-color: #b91826; border-color: #b91826">High</div>
             </div>
         </div>
         <div id='calendar'></div>
@@ -103,6 +198,8 @@
     <script src='/static/fullcalendar/daygrid/main.js'></script>
     <script src='/static/fullcalendar/list/main.js'></script>
     <script src='/static/fullcalendar/timegrid/main.js'></script>
+    <script src='https://unpkg.com/tooltip.js/dist/umd/tooltip.min.js'></script>
+    <script src='https://unpkg.com/popper.js/dist/umd/popper.min.js'></script>
 
     <script>
         // Course events (schedule)
@@ -115,7 +212,7 @@
         // Forbidden time slots (user's input)
         // TODO: envoyer l'info vers le back-end
         let forbiddenTimeSlots = [];
-        
+
         // FullCalendar initialization
         document.addEventListener('DOMContentLoaded', function() {
             // Initialise the draggable "forbidden time slots"
@@ -149,6 +246,17 @@
                     successCallback(eventsArray.concat(forbiddenTimeSlots))
                 },
 
+                // Extra info when hovering an event
+                // using tooltip.js + popper.js
+                eventRender: function(info) {
+                    let tooltip = new Tooltip(info.el, {
+                        title: info.event.extendedProps.description,
+                        placement: 'top',
+                        trigger: 'hover',
+                        container: 'body'
+                    });
+                },
+
                 // Function called when the user drops a "forbiddenTimeSlot" event
                 drop: function(arg) {
                     // TODO: Rendre la fonction robuste aux erreurs des utilisateurs (try-catch)
@@ -172,7 +280,8 @@
                         end: dateEnd,
                         backgroundColor: arg.draggedEl.style.backgroundColor,
                         borderColor: arg.draggedEl.style.borderColor,
-                        editable: true
+                        editable: true,
+                        description: 'A time slot where the user would like to be free'
                     };
                     forbiddenTimeSlots.push(evt);
                     calendar.refetchEvents();
@@ -200,8 +309,8 @@
                     let i;
                     for (i = 0; i < forbiddenTimeSlots.length; i++) {
                         let o = forbiddenTimeSlots[i];
-                        if(o.title === arg.oldEvent.title && o.start.toISOString() === arg.oldEvent.start.toISOString()
-                            && o.end.toISOString() === arg.oldEvent.end.toISOString()) {
+                        if(o.title === arg.prevEvent.title && o.start.toISOString() === arg.prevEvent.start.toISOString()
+                            && o.end.toISOString() === arg.prevEvent.end.toISOString()) {
                             forbiddenTimeSlots.splice(i,1);
                             break;
                         }
