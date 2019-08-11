@@ -13,12 +13,41 @@
             font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
             font-size: 14px;
         }
-
+        #wrap {
+            width: 100%;
+            height: 100%;
+            margin: 0 auto;
+        }
+        #external-events {
+            float: left;
+            width: 11%;
+            padding: 0 10px;
+            border: 1px solid #ccc;
+            background: #eee;
+            text-align: left;
+        }
+        #external-events h4 {
+            font-size: 16px;
+            margin-top: 0;
+            padding-top: 1em;
+        }
+        #external-events .fc-event {
+            margin: 10px 0;
+            cursor: pointer;
+        }
+        #external-events p {
+            margin: 1.5em 0;
+            font-size: 11px;
+            color: #666;
+        }
+        #external-events p input {
+            margin: 0;
+            vertical-align: middle;
+        }
         #calendar {
             max-width: 900px;
             margin: 40px auto;
         }
-
         .popper,
         .tooltip {
             position: absolute;
@@ -30,6 +59,7 @@
             box-shadow: 0 0 2px rgba(0,0,0,0.5);
             padding: 10px;
             text-align: center;
+            font-size: 10px;
         }
             .style5 .tooltip {
             background: #1E252B;
