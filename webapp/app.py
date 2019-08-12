@@ -19,6 +19,7 @@ basic_context = {}
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    print(blocked)
     if request.method == 'POST':
         # CODE ADDED BY USER
         if request.form['submit'] == 'Add':
@@ -38,7 +39,7 @@ def index():
             if len(codes) == 0:
                 data.clear()
                 print('At least a course !')
-                return render_template('calendar.html', data=json.dumps(data))
+                return render_template('calendar.html', data=json.dumps(data), fts=json.dumps(blocked))
 
             # At least one course code was specified, time to compute !
             data.clear()
@@ -57,14 +58,24 @@ def index():
 
     context = basic_context
     context['codes'] = codes
-    return render_template('calendar.html', **context, data=json.dumps(data))
+    return render_template('calendar.html', **context, data=json.dumps(data), fts=json.dumps(blocked))
+
+# To fetch the FTS
+@app.route('/getFTS', methods=['POST'])
+def getFTS():
+    fts = json.loads(request.values.get('fts', None))
+    blocked.clear()
+    for el in fts:
+        blocked.append(el)
+    return render_template('calendar.html', **basic_context, data=json.dumps(data), fts=json.dumps(blocked))
+
 
 # To remove the code
 @app.route('/remove/code/<the_code>', methods=['POST'])
 def remove_code(the_code):
     codes.remove(the_code)
     print(codes)
-    return render_template('calendar.html', **basic_context, data=json.dumps(data))
+    return render_template('calendar.html', **basic_context, data=json.dumps(data), fts=json.dumps(blocked))
 
 
 # To be chosed
