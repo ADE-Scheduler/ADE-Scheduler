@@ -22,6 +22,7 @@
         #courses-block {
             float: left;
             clear: left;
+            width: 11%;
         }
         #external-events {
             float: left;
@@ -30,7 +31,7 @@
             padding: 0 10px;
             border: 1px solid #ccc;
             background: #eee;
-            text-align: left;
+            text-align: center;
         }
         #external-events h4 {
             font-size: 16px;
@@ -38,8 +39,9 @@
             padding-top: 1em;
         }
         #external-events .fc-event {
-            margin: 10px 0;
             cursor: pointer;
+            width: 100px;
+            margin: 10px auto;
         }
         #external-events p {
             margin: 1.5em 0;
@@ -51,6 +53,7 @@
             vertical-align: middle;
         }
         #calendar {
+            top: 0;
             float: right;
             width: 88%;
             height: 100%;
@@ -67,12 +70,13 @@
 {% endblock %}
 
 {% block body %}
+    <div id='wrap' style="height: 550px">
+        <!-- calendar body -->
+        <div id='calendar'></div>
 
-
-    <div id='wrap', style="height: 550px">
         <!-- drag-n-drop body -->
-        <div id='external-events'>
-            <h4>Block Time Slots</h4>
+        <div id='external-events' style="margin-top: 10px">
+            <h4 style="font-weight: bold">Block Time Slots</h4>
             <div id='external-events-list'>
                 <div class='fc-event' , style="background-color: #46b92f; border-color: #46b92f">Low</div>
                 <div class='fc-event' , style="background-color: #b97012; border-color: #b97012">Medium</div>
@@ -81,7 +85,35 @@
         </div>
 
         <!-- course body -->
-        <div id = 'courses-block' class="col-xs-6" , style="width: 12%">
+        <div id='external-events' style="margin-top: 15px; margin-bottom: 15px">
+            <div>
+                <h4 style="font-weight: bold">Current Courses</h4>
+                <table>
+                    <tbody>
+                        <!-- For the course-->
+                        {% if codes|length < 1  %}
+                            <tr style="align: center">
+                                <td style="vertical-align: middle; padding-bottom:10px">
+                                    None
+                                </td>
+                            </tr>
+                        {% endif %}
+                        {% for code in codes %}
+                            <tr style="align: center">
+                                <td>
+                                    {{ code }}
+                                </td>
+                                <td style="width:40px;"><button type="button" class="btn btn-box-tool" onClick=deleteCourse("{{ code }}")><i class="fa fa-trash-o"></i>
+                                </button></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- course body x2 -->
+        <div id = 'courses-block' class="col-xs-6">
             <div class="box box-info">
                 <div class="box-header">
                     <h3 class="box-title">Current courses</h3>
@@ -110,9 +142,6 @@
             </div>
         <!-- /.box -->
         </div>
-
-        <!-- calendar body -->
-        <div id='calendar'></div>
     </div>
 {% endblock %}
 

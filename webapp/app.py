@@ -25,10 +25,12 @@ def index():
             course_code = request.form.get("course_code", None)
             if course_code:
                 # TODO: check le regex de course_code pour prevenir les erreurs user
+                # TODO: afficher direct les cours après fetching ?
                 if course_code not in codes:
                     codes.append(course_code)
-                    # TODO: fonction dans Course pour générer objet JSON pour directement afficher le cours
-                    # TODO: afficher l'horaire "brut" du cours après addition du code
+                    # c = getCoursesFromCodes(codes, Q1+Q2, 9)
+                    # for course in c:
+                    #     data += course.getEventsJSON()
 
         # COMPUTATION REQUESTED BY USER
         if request.form['submit'] == 'Compute':
