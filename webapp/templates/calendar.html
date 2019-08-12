@@ -10,7 +10,7 @@
         html, body {
             margin: 0;
             padding: 0;
-            overflow: hidden; /* don't do scrollbars */
+            {#overflow: hidden; /* don't do scrollbars */#}
             font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
             font-size: 14px;
             }
@@ -24,7 +24,7 @@
             clear: left;
             width: 11%;
         }
-        #external-events {
+        #left-container {
             float: left;
             clear: left;
             width: 11%;
@@ -33,29 +33,38 @@
             background: #eee;
             text-align: center;
         }
-        #external-events h4 {
+        #left-container h4 {
             font-size: 16px;
             margin-top: 0;
             padding-top: 1em;
         }
-        #external-events .fc-event {
+        #left-container .fc-event {
             cursor: pointer;
-            width: 100px;
+            width: 75%;
             margin: 10px auto;
         }
-        #external-events p {
+        #left-container p {
             margin: 1.5em 0;
             font-size: 11px;
             color: #666;
         }
-        #external-events p input {
+        #left-container p input {
             margin: 0;
             vertical-align: middle;
         }
-        #calendar {
-            top: 0;
+        #calendar-container {
             float: right;
+            clear: right;
             width: 88%;
+            height: 100%;
+            padding: 0 10px;
+            border: 1px solid #ccc;
+            background: #eee;
+        }
+        #calendar {
+            {#top: 0;#}
+            {#float: right;#}
+            width: 100%;
             height: 100%;
         }
         .tooltip-inner {
@@ -72,10 +81,12 @@
 {% block body %}
     <div id='wrap' style="height: 550px">
         <!-- calendar body -->
-        <div id='calendar'></div>
+        <div id='calendar-container'>
+            <div id='calendar'></div>
+        </div>
 
         <!-- drag-n-drop body -->
-        <div id='external-events' style="margin-top: 10px">
+        <div id='left-container'>
             <h4 style="font-weight: bold">Block Time Slots</h4>
             <div id='external-events-list'>
                 <div class='fc-event' , style="background-color: #46b92f; border-color: #46b92f">Low</div>
@@ -85,7 +96,7 @@
         </div>
 
         <!-- course body -->
-        <div id='external-events' style="margin-top: 15px; margin-bottom: 15px">
+        <div id='left-container' style="margin-top: 15px; margin-bottom: 15px">
             <div>
                 <h4 style="font-weight: bold">Current Courses</h4>
                 <table>
@@ -110,37 +121,6 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-
-        <!-- course body x2 -->
-        <div id = 'courses-block' class="col-xs-6">
-            <div class="box box-info">
-                <div class="box-header">
-                    <h3 class="box-title">Current courses</h3>
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body table-responsive no-padding">
-                    <table class="table table-hover">
-                        <tbody>
-                            <tr>
-                                <th>Code</th>
-                            </tr>
-                            <!-- For the course-->
-                            {% for code in codes %}
-                                <tr>
-                                    <td>
-                                        {{ code }}
-                                    </td>
-                                    <td style="width:40px;"><button type="button" class="btn btn-box-tool" onClick=deleteCourse("{{ code }}")><i class="fa fa-trash-o"></i>
-                                    </button></td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            <!-- /.box-body -->
-            </div>
-        <!-- /.box -->
         </div>
     </div>
 {% endblock %}
