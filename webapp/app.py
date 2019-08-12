@@ -14,7 +14,7 @@ codes_master = ['LELEC2660', 'LELEC2811', 'LMECA2755', 'LELEC2313', 'LELEC2531',
 codes = list()
 data = list()
 blocked = list()
-basic_context = {}
+basic_context = {'up_to_date':True}
 # TODO: traduire blocked en CustomEvent et implementer les FTS pour compute !
 
 @app.route('/', methods=['GET', 'POST'])
@@ -27,6 +27,7 @@ def index():
                 # TODO: check le regex de course_code pour prevenir les erreurs user
                 # TODO: afficher direct les cours après fetching ?
                 if course_code not in codes:
+                    basic_context['up_to_date'] = False
                     codes.append(course_code)
                     # c = getCoursesFromCodes(codes, Q1+Q2, 9)
                     # for course in c:
@@ -34,11 +35,12 @@ def index():
 
         # COMPUTATION REQUESTED BY USER
         if request.form['submit'] == 'Compute':
+            basic_context['up_to_date'] = True
             # No course code was specified
             if len(codes) == 0:
                 data.clear()
                 print('At least a course !')
-                return render_template('calendar.html', data=json.dumps(data), fts=json.dumps(blocked))
+                return render_template('calendar.html', **basic_context, data=json.dumps(data), fts=json.dumps(blocked))
 
             # At least one course code was specified, time to compute !
             data.clear()
@@ -54,6 +56,7 @@ def index():
 
         # CLEAR ALL
         if request.form['submit'] == 'Clear':
+            basic_context['up_to_date'] = True
             data.clear()
             codes.clear()
 
@@ -75,7 +78,9 @@ def getFTS():
 # To remove the code
 @app.route('/remove/code/<the_code>', methods=['GET'])
 def remove_code(the_code):
-    codes.remove(the_code)
+    if the_code in codes:
+        codes.remove(the_code)
+        basic_context['up_to_date'] = False
     return render_template('calendar.html', **basic_context, data=json.dumps(data), fts=json.dumps(blocked))
 
 
