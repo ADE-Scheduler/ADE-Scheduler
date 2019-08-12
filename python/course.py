@@ -2,6 +2,7 @@ from event import *
 from itertools import chain
 from operator import itemgetter
 
+
 class Course:
     def __init__(self, code, name, weight=1):
         # A Course is defined by its code and its name
@@ -11,11 +12,11 @@ class Course:
 
         # A course can be composed of 5 different events: CM, TP, Exam, Oral and Other
         # Each event is classed by week
-        self.CM = [[] for i in range(53)]       # EventCM
-        self.TP = [[] for i in range(53)]       # EventTP
-        self.E = [[] for i in range(53)]        # EventEXAM
-        self.O = [[] for i in range(53)]        # EventORAL
-        self.Other = [[] for i in range(53)]    # EventOTHER
+        self.CM = [[] for i in range(53)]  # EventCM
+        self.TP = [[] for i in range(53)]  # EventTP
+        self.E = [[] for i in range(53)]  # EventEXAM
+        self.O = [[] for i in range(53)]  # EventORAL
+        self.Other = [[] for i in range(53)]  # EventOTHER
 
     def __eq__(self, other):
         if isinstance(other, Course):
@@ -35,9 +36,9 @@ class Course:
 
     def getSummary(self, weeks='ALL'):
         if weeks == 'ALL':
-            w = chain(self.CM, self.TP, self.E, self.O, self.Other)     # [CM from week 1, CM from week 2, ...,
-                                                                        # TP from week 1, ...]
-            e = chain(*w)   # [CM1, CM2,... , TP1, ...]
+            w = chain(self.CM, self.TP, self.E, self.O, self.Other)  # [CM from week 1, CM from week 2, ...,
+            # TP from week 1, ...]
+            e = chain(*w)  # [CM1, CM2,... , TP1, ...]
         elif isinstance(weeks, slice):
             w = chain(self.CM[weeks], self.TP[weeks], self.E[weeks], self.O[weeks], self.Other[weeks])
             e = chain(*w)
@@ -46,7 +47,6 @@ class Course:
             w = chain(itg(self.CM), itg(self.TP), itg(self.E), itg(self.O), itg(self.Other))
             e = chain(*w)
         return set(map(lambda x: x.getId(), e))
-
 
     def addEvent(self, event):
         """
@@ -125,3 +125,40 @@ class Course:
                 return True
         else:
             raise TypeError
+
+    def getEventsJSON(self):
+        """
+        Returns the list of events for this course, in "JSON format"
+        """
+        events = list()
+        for week in self.CM:
+            for event in week:
+                temp = {'start': str(event.begin), 'end': str(event.end), 'title': event.name, 'editable': False,
+                        'description': event.name + '\n' + event.location + ' - ' + str(event.duration) + '\n' + str(
+                            event.description)}
+                events.append(temp)
+        for week in self.TP:
+            for event in week:
+                temp = {'start': str(event.begin), 'end': str(event.end), 'title': event.name, 'editable': False,
+                        'description': event.name + '\n' + event.location + ' - ' + str(event.duration) + '\n' + str(
+                            event.description)}
+                events.append(temp)
+        for week in self.E:
+            for event in week:
+                temp = {'start': str(event.begin), 'end': str(event.end), 'title': event.name, 'editable': False,
+                        'description': event.name + '\n' + event.location + ' - ' + str(event.duration) + '\n' + str(
+                            event.description)}
+                events.append(temp)
+        for week in self.O:
+            for event in week:
+                temp = {'start': str(event.begin), 'end': str(event.end), 'title': event.name, 'editable': False,
+                        'description': event.name + '\n' + event.location + ' - ' + str(event.duration) + '\n' + str(
+                            event.description)}
+                events.append(temp)
+        for week in self.Other:
+            for event in week:
+                temp = {'start': str(event.begin), 'end': str(event.end), 'title': event.name, 'editable': False,
+                        'description': event.name + '\n' + event.location + ' - ' + str(event.duration) + '\n' + str(
+                            event.description)}
+                events.append(temp)
+        return events
