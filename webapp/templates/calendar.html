@@ -83,6 +83,9 @@
             </form>
     </small>
   </h1>
+  {% if up_to_date == False %}
+    <h1>NOT UP TO DATE</h1>
+  {% endif %}
 {% endblock %}
 
 {% block body %}
