@@ -167,6 +167,14 @@
                     });
                 },
 
+                // Fix for the tooltip "bug" when dragging/resizing
+                eventPositioned: function (arg) {
+                    console.log("After Render");
+                    if (arg.isMirror) {
+                        $(arg.el).tooltip('destroy')
+                    }
+                },
+
                 // Function called when the user drops a "forbiddenTimeSlot" event
                 drop: function(arg) {
                     // TODO: Rendre la fonction robuste aux erreurs des utilisateurs (try-catch)
