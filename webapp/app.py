@@ -89,11 +89,11 @@ def help_guide():
     return render_template('help.html')
 
 
-# A little game...
-@app.route('/tennis')
-def tennis():
-    return render_template('tennis.html')
+# ERROR HANDLER
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
