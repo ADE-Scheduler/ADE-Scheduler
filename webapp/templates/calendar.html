@@ -134,18 +134,6 @@
         function send_fts_to_serv() {
             let xhttp = new XMLHttpRequest();
             let data = new FormData();
-            const getCircularReplacer = () => {
-                const seen = new WeakSet();
-                return (key, value) => {
-                    if (typeof value === "object" && value !== null) {
-                        if (seen.has(value)) {
-                            return;
-                        }
-                        seen.add(value);
-                    }
-                    return value;
-                };
-            };
             let to_send = JSON.stringify(forbiddenTimeSlots);
             data.append('fts', to_send);
             xhttp.open('POST', '/getFTS', true);
@@ -226,8 +214,8 @@
 
                         let evt = {
                             title: arg.draggedEl.textContent,
-                            start: dateStart,
-                            end: dateEnd,
+                            start: dateStart.toISOString(),
+                            end: dateEnd.toISOString(),
                             backgroundColor: arg.draggedEl.style.backgroundColor,
                             borderColor: arg.draggedEl.style.borderColor,
                             editable: true,
@@ -245,23 +233,21 @@
                 eventDrop: function(arg){
                     // First, we remove the event before the drag
                     let i;
-                    let evt;
                     for (i = 0; i < forbiddenTimeSlots.length; i++) {
                         let o = forbiddenTimeSlots[i];
                         if(o.title === arg.oldEvent.title && o.start === arg.oldEvent.start.toISOString()
                             && o.end === arg.oldEvent.end.toISOString()) {
-                            evt = o;
                             forbiddenTimeSlots.splice(i,1);
                             break;
                         }
                     }
                     // We then add the new event
                     let newEvt = {
-                        title: evt.title,
-                        start: arg.event.start,
-                        end: arg.event.end,
-                        backgroundColor: evt.backgroundColor,
-                        borderColor: evt.borderColor,
+                        title: arg.oldEvent.title,
+                        start: arg.event.start.toISOString(),
+                        end: arg.event.end.toISOString(),
+                        backgroundColor: arg.oldEvent.backgroundColor,
+                        borderColor: arg.oldEvent.borderColor,
                         editable: true,
                         description: 'A time slot where the user would like to be free'
                     };
@@ -270,32 +256,30 @@
                 },
 
                 // Function called when the user tries to resize a "forbiddenTimeSlot" event
-                eventResize: function(arg) {
-                    // First, we remove the event before the resize
+                eventResize: function(arg){
+                    // First, we remove the event before the drag
                     let i;
-                    let evt;
                     for (i = 0; i < forbiddenTimeSlots.length; i++) {
                         let o = forbiddenTimeSlots[i];
-                        if(o.title === arg.prevEvent.title && o.start === arg.prevEvent.start.toISOString()
-                            && o.end === arg.prevEvent.end.toISOString()) {
-                            evt = o;
+                        if(o.title === arg.oldEvent.title && o.start === arg.oldEvent.start.toISOString()
+                            && o.end === arg.oldEvent.end.toISOString()) {
                             forbiddenTimeSlots.splice(i,1);
                             break;
                         }
                     }
                     // We then add the new event
                     let newEvt = {
-                        title: evt.title,
-                        start: arg.event.start.end.toISOString(),
+                        title: arg.oldEvent.title,
+                        start: arg.event.start.toISOString(),
                         end: arg.event.end.toISOString(),
-                        backgroundColor: evt.backgroundColor,
-                        borderColor: evt.borderColor,
+                        backgroundColor: arg.oldEvent.backgroundColor,
+                        borderColor: arg.oldEvent.borderColor,
                         editable: true,
                         description: 'A time slot where the user would like to be free'
                     };
                     forbiddenTimeSlots.push(newEvt);
                     send_fts_to_serv();
-                }
+                },
             });
             calendar.render();
         });
