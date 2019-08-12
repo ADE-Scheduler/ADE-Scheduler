@@ -19,11 +19,6 @@
             height: 100%;
             margin: 0 auto;
         }
-        #courses-block {
-            float: left;
-            clear: left;
-            width: 11%;
-        }
         #left-container {
             float: left;
             clear: left;
@@ -62,8 +57,6 @@
             background: #eee;
         }
         #calendar {
-            {#top: 0;#}
-            {#float: right;#}
             width: 100%;
             height: 100%;
         }
@@ -134,16 +127,18 @@
 
     <script>
         // Course events (schedule)
-        let eventsArray = [];
-        let parsed_data = {{ data|safe }};
-        for (let i = 0; i < parsed_data.length; i++) {
-                eventsArray.push(parsed_data[i]);
-        }
+        let eventsArray = {{ data|safe }};
 
         // Forbidden time slots (user's input)
-        // TODO: envoyer l'info vers le back-end
-        // TODO: sauvegarde des FTS lors d'actualisation --> créer tableau FTS dans le back-end
-        let forbiddenTimeSlots = [];
+        let forbiddenTimeSlots = {{ fts|safe }};
+        function send_fts_to_serv() {
+            let xhttp = new XMLHttpRequest();
+            let data = new FormData();
+            let to_send = JSON.stringify(forbiddenTimeSlots);
+            data.append('fts', to_send);
+            xhttp.open('POST', '/getFTS', true);
+            xhttp.send(data);
+        }
 
         // FullCalendar initialization
         document.addEventListener('DOMContentLoaded', function() {
@@ -225,6 +220,7 @@
                             description: 'A time slot where the user would like to be free'
                         };
                         forbiddenTimeSlots.push(evt);
+                        send_fts_to_serv();
                         calendar.refetchEvents();
                     } catch(err) {
                         alert(err.concat('\nPlease try again.'))
@@ -245,6 +241,7 @@
                     }
                     // We then add the new event
                     forbiddenTimeSlots.push(arg.event);
+                    send_fts_to_serv()
                 },
 
                 // Function called when the user tries to resize a "forbiddenTimeSlot" event
@@ -261,6 +258,7 @@
                     }
                     // We then add the new event
                     forbiddenTimeSlots.push(arg.event);
+                    send_fts_to_serv()
                 }
             });
             calendar.render();
