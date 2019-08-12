@@ -71,6 +71,20 @@
     </style>
 {% endblock %}
 
+{% block bodyhead %}
+    <h1>
+        {{section_name}}
+        <small>
+            <form action="/" method="post">
+                <input type="text" name="course_code">
+                <input type="submit" name="submit" value="Add">
+                <input type="submit" name="submit" value="Compute">
+                <input type="submit" name="submit" value="Clear">
+            </form>
+    </small>
+  </h1>
+{% endblock %}
+
 {% block body %}
     <div id='wrap' style="height: 550px">
         <!-- calendar body -->
