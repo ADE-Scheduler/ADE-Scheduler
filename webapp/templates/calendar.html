@@ -19,8 +19,13 @@
             height: 100%;
             margin: 0 auto;
         }
+        #courses-block {
+            float: left;
+            clear: left;
+        }
         #external-events {
             float: left;
+            clear: left;
             width: 11%;
             padding: 0 10px;
             border: 1px solid #ccc;
@@ -62,37 +67,10 @@
 {% endblock %}
 
 {% block body %}
-    <div class="col-xs-6" , style="width: 12%">
-        <div class="box box-info">
-            <div class="box-header">
-                <h3 class="box-title">Current courses</h3>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body table-responsive no-padding">
-                <table class="table table-hover">
-                    <tbody>
-                        <tr>
-                            <th>Code</th>
-                        </tr>
-                        <!-- For the course-->
-                        {% for code in codes %}
-                            <tr>
-                                <td>
-                                    {{ code }}
-                                </td>
-                                <td style="width:40px;"><button type="button" class="btn btn-box-tool" onClick=deleteCourse("{{ code }}")><i class="fa fa-trash-o"></i>
-                                </button></td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        <!-- /.box-body -->
-        </div>
-    <!-- /.box -->
-    </div>
+
 
     <div id='wrap', style="height: 550px">
+        <!-- drag-n-drop body -->
         <div id='external-events'>
             <h4>Block Time Slots</h4>
             <div id='external-events-list'>
@@ -101,8 +79,40 @@
                 <div class='fc-event' , style="background-color: #b91826; border-color: #b91826">High</div>
             </div>
         </div>
+
+        <!-- course body -->
+        <div id = 'courses-block' class="col-xs-6" , style="width: 12%">
+            <div class="box box-info">
+                <div class="box-header">
+                    <h3 class="box-title">Current courses</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover">
+                        <tbody>
+                            <tr>
+                                <th>Code</th>
+                            </tr>
+                            <!-- For the course-->
+                            {% for code in codes %}
+                                <tr>
+                                    <td>
+                                        {{ code }}
+                                    </td>
+                                    <td style="width:40px;"><button type="button" class="btn btn-box-tool" onClick=deleteCourse("{{ code }}")><i class="fa fa-trash-o"></i>
+                                    </button></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            <!-- /.box-body -->
+            </div>
+        <!-- /.box -->
+        </div>
+
+        <!-- calendar body -->
         <div id='calendar'></div>
-        <div style='clear:both'></div>
     </div>
 {% endblock %}
 
@@ -169,7 +179,6 @@
 
                 // Fix for the tooltip "bug" when dragging/resizing
                 eventPositioned: function (arg) {
-                    console.log("After Render");
                     if (arg.isMirror) {
                         $(arg.el).tooltip('destroy')
                     }
@@ -178,7 +187,6 @@
                 // Function called when the user drops a "forbiddenTimeSlot" event
                 drop: function(arg) {
                     // TODO: Rendre la fonction robuste aux erreurs des utilisateurs (try-catch)
-                    // TODO: Verifier que il y a pas de bug (OK normalement mais y'avait des trucs chelou)
                     // TODO: Gérer la récurrence (à voir si on le fait, c'est supra relou je crois)
                     // Event begin:
                     let dateStart = new Date(arg.date.getFullYear(), arg.date.getMonth(), arg.date.getDate());
@@ -239,7 +247,9 @@
             });
             calendar.render();
         });
+    </script>
 
+    <script>
         // Delete a course
         function deleteCourse(code)
         {
