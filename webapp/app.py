@@ -65,11 +65,16 @@ def remove_code(the_code):
     return render_template('calendar.html', **basic_context, data=json.dumps(data))
 
 
-
 # To be chosed
 @app.route('/tobecontinued')
 def continued():
     return render_template('continued.html')
+
+
+# Page for user's help guide
+@app.route('/help')
+def help_guide():
+    return render_template('help.html')
 
 
 if __name__ == '__main__':
