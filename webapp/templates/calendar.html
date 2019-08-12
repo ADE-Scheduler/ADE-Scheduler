@@ -299,7 +299,6 @@
     <script>
         // Delete a course
         function deleteCourse(code) {
-            console.log('salut ' + code);
             $.get('/remove/code/'+code,() => window.location=window.location);
         }
     </script>

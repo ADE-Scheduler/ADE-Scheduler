@@ -31,7 +31,7 @@ class Course:
         return self.code + ": " + self.name
 
     def getweek(self, week):
-        # Bon on gère pas encore les "Other".. trop chiant
+        # TODO: Gérer les Other (trop chiant)
         return self.CM[week], self.TP[week], self.E[week], self.O[week]
 
     def getSummary(self, weeks='ALL'):
