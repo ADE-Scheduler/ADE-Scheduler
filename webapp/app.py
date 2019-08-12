@@ -15,8 +15,6 @@ codes = list()
 data = list()
 blocked = list()
 basic_context = {}
-
-
 # TODO: traduire blocked en CustomEvent et implementer les FTS pour compute !
 
 @app.route('/', methods=['GET', 'POST'])
@@ -44,7 +42,8 @@ def index():
 
             # At least one course code was specified, time to compute !
             data.clear()
-            c = getCoursesFromCodes(codes, Q1 + Q2, 9)
+            # TODO: Gérer les projectID sur le site et sur le back-end ! (proposer l'année scolaire en sélection ?)
+            c = getCoursesFromCodes(codes, Q1+Q2+Q3, 9)
             year = parallel_compute(c)
             for week, score in year:
                 for event in week[0]:
@@ -77,7 +76,6 @@ def getFTS():
 @app.route('/remove/code/<the_code>', methods=['GET'])
 def remove_code(the_code):
     codes.remove(the_code)
-    print(codes)
     return render_template('calendar.html', **basic_context, data=json.dumps(data), fts=json.dumps(blocked))
 
 
