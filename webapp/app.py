@@ -19,7 +19,6 @@ basic_context = {}
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    print(blocked)
     if request.method == 'POST':
         # CODE ADDED BY USER
         if request.form['submit'] == 'Add':
