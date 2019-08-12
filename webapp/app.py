@@ -17,6 +17,8 @@ blocked = list()
 basic_context = {}
 
 
+# TODO: traduire blocked en CustomEvent et implementer les FTS pour compute !
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
@@ -47,7 +49,8 @@ def index():
             for week, score in year:
                 for event in week[0]:
                     temp = {'start': str(event.begin), 'end': str(event.end), 'title': event.name, 'editable': False,
-                            'description': event.name+'\n'+event.location+' - '+str(event.duration)+'\n'+str(event.description)}
+                            'description': event.name + '\n' + event.location + ' - ' + str(
+                                event.duration) + '\n' + str(event.description)}
                     data.append(temp)
 
         # CLEAR ALL
@@ -58,6 +61,7 @@ def index():
     context = basic_context
     context['codes'] = codes
     return render_template('calendar.html', **context, data=json.dumps(data), fts=json.dumps(blocked))
+
 
 # To fetch the FTS
 @app.route('/getFTS', methods=['POST'])
@@ -70,7 +74,7 @@ def getFTS():
 
 
 # To remove the code
-@app.route('/remove/code/<the_code>', methods=['POST'])
+@app.route('/remove/code/<the_code>', methods=['GET'])
 def remove_code(the_code):
     codes.remove(the_code)
     print(codes)
@@ -90,10 +94,10 @@ def help_guide():
 
 
 # ERROR HANDLER
-
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')

@@ -163,6 +163,7 @@
             });
 
             // Initialize the calendar
+            // TODO: remember where the user left the calendar (currently returns to "today" on the month view)
             let calendarEl = document.getElementById('calendar');
             let calendar = new FullCalendar.Calendar(calendarEl, {
                 plugins: ['interaction', 'dayGrid', 'list', 'timeGrid'],
@@ -299,7 +300,7 @@
         // Delete a course
         function deleteCourse(code) {
             console.log('salut ' + code);
-            $.post("/remove/code/"+code,() => window.location.reload());
+            $.get('/remove/code/'+code,() => window.location=window.location);
         }
     </script>
 {% endblock %}
