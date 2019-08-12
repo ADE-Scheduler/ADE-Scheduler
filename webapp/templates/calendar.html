@@ -215,31 +215,40 @@
 
                 // Function called when the user drops a "forbiddenTimeSlot" event
                 drop: function(arg) {
-                    // TODO: Rendre la fonction robuste aux erreurs des utilisateurs (try-catch)
-                    // TODO: Gérer la récurrence (à voir si on le fait, c'est supra relou je crois)
-                    // Event begin:
-                    let dateStart = new Date(arg.date.getFullYear(), arg.date.getMonth(), arg.date.getDate());
-                    let hStart = prompt('Enter a start hour as HH:MM:');
-                    dateStart.setHours(parseInt(hStart.split(':')[0]));
-                    dateStart.setMinutes(parseInt(hStart.split(':')[1]));
+                    try {
+                        // TODO: Gérer la récurrence (à voir si on le fait, c'est supra relou je crois)
+                        // Event begin:
+                        let dateStart = new Date(arg.date.getFullYear(), arg.date.getMonth(), arg.date.getDate());
+                        let hStart = prompt('Enter a start hour as HH:MM:');
+                        dateStart.setHours(parseInt(hStart.split(':')[0]));
+                        dateStart.setMinutes(parseInt(hStart.split(':')[1]));
+                        if((isNaN(dateStart.getTime()))) {
+                            throw "Invalid format for specified start time !";
+                        }
 
-                    // Event end:
-                    let dateEnd = new Date(arg.date.getFullYear(), arg.date.getMonth(), arg.date.getDate());
-                    let hEnd = prompt('Enter an end hour as HH:MM:');
-                    dateEnd.setHours(parseInt(hEnd.split(':')[0]));
-                    dateEnd.setMinutes(parseInt(hEnd.split(':')[1]));
+                        // Event end:
+                        let dateEnd = new Date(arg.date.getFullYear(), arg.date.getMonth(), arg.date.getDate());
+                        let hEnd = prompt('Enter an end hour as HH:MM:');
+                        dateEnd.setHours(parseInt(hEnd.split(':')[0]));
+                        dateEnd.setMinutes(parseInt(hEnd.split(':')[1]));
+                        if((isNaN(dateEnd.getTime()))) {
+                            throw "Invalid format for specified end time !";
+                        }
 
-                    let evt = {
-                        title: arg.draggedEl.textContent,
-                        start: dateStart,
-                        end: dateEnd,
-                        backgroundColor: arg.draggedEl.style.backgroundColor,
-                        borderColor: arg.draggedEl.style.borderColor,
-                        editable: true,
-                        description: 'A time slot where the user would like to be free'
-                    };
-                    forbiddenTimeSlots.push(evt);
-                    calendar.refetchEvents();
+                        let evt = {
+                            title: arg.draggedEl.textContent,
+                            start: dateStart,
+                            end: dateEnd,
+                            backgroundColor: arg.draggedEl.style.backgroundColor,
+                            borderColor: arg.draggedEl.style.borderColor,
+                            editable: true,
+                            description: 'A time slot where the user would like to be free'
+                        };
+                        forbiddenTimeSlots.push(evt);
+                        calendar.refetchEvents();
+                    } catch(err) {
+                        alert(err.concat('\nPlease try again.'))
+                    }
                 },
 
                 // Function called when the user tries to moves a "forbiddenTimeSlot" event
