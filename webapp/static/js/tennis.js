@@ -1,21 +1,3 @@
-{% extends 'base.html' %}
-
-{% block head %}
-    <style>
-    	* { padding: 0; margin: 0; }
-    	canvas { background: #000; display: block; margin: 0 auto; }
-    </style>
-{% endblock %}
-
-
-{% block body %}
-    <canvas id="myCanvas" width="480" height="320"></canvas>
-{% endblock %}
-
-
-{% block js %}
-    <script>
-        // JavaScript code goes here
         var canvas = document.getElementById("myCanvas");
         var ctx = canvas.getContext("2d");
 
@@ -191,5 +173,3 @@
 
         // Draw
         draw();
-    </script>
-{% endblock %}
