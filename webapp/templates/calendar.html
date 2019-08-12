@@ -153,8 +153,6 @@
             xhttp.open('POST', '/getFTS', true);
             xhttp.send(data);
         }
-        console.log(forbiddenTimeSlots);
-        console.log(eventsArray);
 
         // FullCalendar initialization
         document.addEventListener('DOMContentLoaded', function() {
@@ -256,7 +254,7 @@
                         }
                     }
                     // We then add the new event
-                    let newEvt = {
+                    forbiddenTimeSlots.push({
                         title: arg.oldEvent.title,
                         start: arg.event.start.toISOString(),
                         end: arg.event.end.toISOString(),
@@ -264,8 +262,7 @@
                         borderColor: arg.oldEvent.borderColor,
                         editable: true,
                         description: 'A time slot where the user would like to be free'
-                    };
-                    forbiddenTimeSlots.push(newEvt);
+                    });
                     send_fts_to_serv();
                 },
 
@@ -275,23 +272,22 @@
                     let i;
                     for (i = 0; i < forbiddenTimeSlots.length; i++) {
                         let o = forbiddenTimeSlots[i];
-                        if(o.title === arg.oldEvent.title && o.start === arg.oldEvent.start.toISOString()
-                            && o.end === arg.oldEvent.end.toISOString()) {
+                        if(o.title === arg.prevEvent.title && o.start === arg.prevEvent.start.toISOString()
+                            && o.end === arg.prevEvent.end.toISOString()) {
                             forbiddenTimeSlots.splice(i,1);
                             break;
                         }
                     }
                     // We then add the new event
-                    let newEvt = {
-                        title: arg.oldEvent.title,
+                    forbiddenTimeSlots.push({
+                        title: arg.prevEvent.title,
                         start: arg.event.start.toISOString(),
                         end: arg.event.end.toISOString(),
-                        backgroundColor: arg.oldEvent.backgroundColor,
-                        borderColor: arg.oldEvent.borderColor,
+                        backgroundColor: arg.prevEvent.backgroundColor,
+                        borderColor: arg.prevEvent.borderColor,
                         editable: true,
                         description: 'A time slot where the user would like to be free'
-                    };
-                    forbiddenTimeSlots.push(newEvt);
+                    });
                     send_fts_to_serv();
                 },
             });
@@ -301,8 +297,7 @@
 
     <script>
         // Delete a course
-        function deleteCourse(code)
-        {
+        function deleteCourse(code) {
             console.log('salut ' + code);
             $.post("/remove/code/"+code,() => window.location.reload());
         }
