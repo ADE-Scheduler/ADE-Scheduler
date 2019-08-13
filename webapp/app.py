@@ -108,6 +108,12 @@ def continued():
     return render_template('continued.html')
 
 
+# Page for user preferences
+@app.route('/preferences')
+def preferences():
+    return render_template('preferences.html')
+
+
 # Page for user's help guide
 @app.route('/help')
 def help_guide():
