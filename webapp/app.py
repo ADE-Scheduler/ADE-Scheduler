@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request
 import json
 import sys
+from pytz import timezone
+from dateutil.parser import parse
 
 # BACK-END FILES
 sys.path.insert(1, '../python')
@@ -8,7 +10,7 @@ from ade import getCoursesFromCodes
 from static_data import Q1, Q2, Q3
 from computation import parallel_compute
 from event import CustomEvent
-from datetime import datetime
+
 
 app = Flask(__name__)
 
@@ -21,6 +23,8 @@ basic_context = {'up_to_date': True}
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    print(data)
+    print(fts)
     if request.method == 'POST':
         # CODE ADDED BY USER
         if request.form['submit'] == 'Add':
@@ -74,10 +78,11 @@ def index():
 def getFTS():
     msg = json.loads(request.values.get('fts', None))
     fts_json.clear()
+    tz = timezone('Europe/Brussels')
     for el in msg:
         fts_json.append(el)
-        t0 = datetime.strptime(el['start'], '%Y-%m-%dT%H:%M:%S.%fZ')
-        t1 = datetime.strptime(el['end'], '%Y-%m-%dT%H:%M:%S.%fZ')
+        t0 = parse(el['start']).astimezone(tz)
+        t1 = parse(el['end']).astimezone(tz)
         dt = t1 - t0
         if el['title'] == 'High':
             fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=5))
