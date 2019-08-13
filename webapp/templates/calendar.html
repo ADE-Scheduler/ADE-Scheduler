@@ -81,11 +81,11 @@
                 <input type="submit" name="submit" value="Compute">
                 <input type="submit" name="submit" value="Clear">
             </form>
-    </small>
-  </h1>
-  {% if up_to_date == False %}
-    <h1>NOT UP TO DATE</h1>
-  {% endif %}
+        </small>
+    </h1>
+    {% if up_to_date == False %}
+        <h1>NOT UP TO DATE</h1>
+    {% endif %}
 {% endblock %}
 
 {% block body %}
@@ -227,8 +227,7 @@
                         if((isNaN(dateEnd.getTime()))) {
                             throw "Invalid format for specified end time !";
                         }
-
-                        let evt = {
+                        forbiddenTimeSlots.push({
                             title: arg.draggedEl.textContent,
                             start: dateStart.toISOString(),
                             end: dateEnd.toISOString(),
@@ -236,8 +235,7 @@
                             borderColor: arg.draggedEl.style.borderColor,
                             editable: true,
                             description: 'A time slot where the user would like to be free'
-                        };
-                        forbiddenTimeSlots.push(evt);
+                        });
                         send_fts_to_serv();
                         calendar.refetchEvents();
                     } catch(err) {
