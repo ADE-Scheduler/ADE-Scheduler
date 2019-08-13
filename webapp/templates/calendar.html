@@ -166,7 +166,6 @@
             });
 
             // Initialize the calendar
-            // TODO: remember where the user left the calendar (currently returns to "today" on the month view)
             let calendarEl = document.getElementById('calendar');
             let calendar = new FullCalendar.Calendar(calendarEl, {
                 plugins: ['interaction', 'dayGrid', 'list', 'timeGrid'],
@@ -184,10 +183,10 @@
                 droppable: true,
                 eventLimit: false, // allow "more" link when too many events
                 weekNumberCalculation: 'ISO',
-                defaultView: (localStorage.getItem("fcDefaultView") !== null ? localStorage.getItem("fcDefaultView") : 'dayGridMonth'),
-                defaultDate: (localStorage.getItem("fcDefaultDate") !== null ? parseInt(localStorage.getItem("fcDefaultDate")) : Date.now()),
 
                 // Remember where the user left the calendar
+                defaultView: (localStorage.getItem("fcDefaultView") !== null ? localStorage.getItem("fcDefaultView") : 'dayGridMonth'),
+                defaultDate: (localStorage.getItem("fcDefaultDate") !== null ? parseInt(localStorage.getItem("fcDefaultDate")) : Date.now()),
                 datesRender: function (arg) {
                     localStorage.setItem("fcDefaultView", arg.view.type);
                     localStorage.setItem("fcDefaultDate", arg.view.currentStart.getTime());
@@ -217,7 +216,7 @@
                 // Function called when the user drops a "forbiddenTimeSlot" event
                 drop: function(arg) {
                     try {
-                        // TODO: Gérer la récurrence (à voir si on le fait, c'est supra relou je crois)
+                        // TODO: Gérer la récurrence: je propose de le faire en draggant un event avec CTRL appuyé
                         // Event begin:
                         let dateStart = new Date(arg.date.getFullYear(), arg.date.getMonth(), arg.date.getDate());
                         let hStart = prompt('Enter a start hour as HH:MM:');
@@ -249,6 +248,11 @@
                     } catch(err) {
                         alert(err.concat('\nPlease try again.'))
                     }
+                },
+
+                // Function called to create a copy of a "forbiddenTimeSlot" event (with CTRL+click)
+                eventDragStart: function(arg) {
+
                 },
 
                 // Function called when the user tries to moves a "forbiddenTimeSlot" event
