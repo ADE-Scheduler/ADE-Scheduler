@@ -97,9 +97,11 @@ class CustomEvent(Event):
         self.weight = weight
         self.id = id
 
+
     def __eq__(self, other):
+
         if isinstance(other, CustomEvent):
-            return (self.name == other.name
+            return (self.getId() == other.getId()
                     and self.begin == other.begin
                     and self.duration == other.duration)
         else:
@@ -111,8 +113,6 @@ class CustomEvent(Event):
     def getId(self):
         return self.id
 
-    # Askip il faut rendre CustomEvent hashable pour pouvoir l'ajouter a un calendrier
-    # et si on définit pas __hash__() ça fonctionne pas (héritage svp ? :'( )
     def __hash__(self):
         return super().__hash__()
 
