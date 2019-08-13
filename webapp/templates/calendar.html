@@ -184,6 +184,14 @@
                 droppable: true,
                 eventLimit: false, // allow "more" link when too many events
                 weekNumberCalculation: 'ISO',
+                defaultView: (localStorage.getItem("fcDefaultView") !== null ? localStorage.getItem("fcDefaultView") : 'dayGridMonth'),
+                defaultDate: (localStorage.getItem("fcDefaultDate") !== null ? parseInt(localStorage.getItem("fcDefaultDate")) : Date.now()),
+
+                // Remember where the user left the calendar
+                datesRender: function (arg) {
+                    localStorage.setItem("fcDefaultView", arg.view.type);
+                    localStorage.setItem("fcDefaultDate", arg.view.currentStart.getTime());
+                },
 
                 // Function called when we need to refresh the events
                 // Fetches the events in eventsArray and forbiddenTimeSlots
