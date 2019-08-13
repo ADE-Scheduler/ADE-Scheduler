@@ -23,8 +23,6 @@ basic_context = {'up_to_date': True}
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    print(data)
-    print(fts)
     if request.method == 'POST':
         # CODE ADDED BY USER
         if request.form['submit'] == 'Add':
