@@ -3,6 +3,9 @@ from lxml import html
 from professor import Professor
 from event import *
 from course import Course
+import re
+
+SPLITTED_COURSES = ['(LANGL)']
 
 
 def getCoursesFromCodes(course_tags, weeks, projectID=2):
@@ -76,5 +79,9 @@ def getCoursesFromCodes(course_tags, weeks, projectID=2):
             course_added.append(code)
             course_list.append(Course(code, c['name']))
             course_list[-1].addEvent(event)
+
+    for splitted_course in SPLITTED_COURSES:
+        for course in filter(lambda c: re.search(splitted_course, c.code, re.IGNORECASE), course_list):
+            course.join()
 
     return course_list

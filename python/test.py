@@ -15,10 +15,9 @@ anglais3 = ['langl1873'] # Q1
 cal = Calendar()
 
 # projectID: 2 pour 18-19 ou 9 pour 19-20
-c = getCoursesFromCodes(anglais3, [2], 9)
+c = getCoursesFromCodes(anglais3, [Q1[4]], 9)
 
 for course in c:
-        print(course.CM)
         print(course.name, course.getSummary())
 
 """
