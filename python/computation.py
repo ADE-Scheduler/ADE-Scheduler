@@ -23,7 +23,7 @@ def parallel_compute(courses, weeks=range(53), forbiddenTimeSlots=None, max_work
         return [compute(courses, i, forbiddenTimeSlots) for i in range(53)]
 
 
-def compute(courses, week, forbiddenTimeSlots=None, nbest=5):
+def compute(courses, week, forbiddenTimeSlots=None, nbest=20):
     """
     Generates all the possible schedules for a given week.
     Then evaluates all those possibilities to pick the best one(s).
