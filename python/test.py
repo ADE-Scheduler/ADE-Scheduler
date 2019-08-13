@@ -9,15 +9,24 @@ codes_master = ['LELEC2660', 'LELEC2811', 'LMECA2755', 'LELEC2313', 'LELEC2531',
 codes_info = ['lelec2531', 'lingi2241', 'lingi2255', 'lingi2261', 'lingi2266', 'lfsab2351']
 codes_q5 = ['langl1873', 'lelec1530', 'lelec1755', 'lepl2351', 'lfsab1105', 'lmeca1451', 'lmeca1855', 'lmeca1901']
 codes_celine = ['lkine2108','LTECO1004','lkine2127','lkine2138','lkine2148','lkine2158','lkine2168','LIEPR2236']
+anglais3 = ['langl1873'] # Q1
 
 
 cal = Calendar()
 
 # projectID: 2 pour 18-19 ou 9 pour 19-20
-c = getCoursesFromCodes(codes_celine, Q1+Q2, 9)
+c = getCoursesFromCodes(anglais3, [2], 9)
 
+for course in c:
+        print(course.CM)
+        print(course.name, course.getSummary())
+
+"""
 year = parallel_compute(c)
+i = 0
 for week, score in year:
+    print('Scores des 20 meilleures semaines pour la semaine', i,end=' '); print(score)
+    i += 1
     for event in week[0]:
         cal.events.add(event)
 
@@ -30,3 +39,4 @@ for week, score in year:
 
 with open('my.ics', 'w') as f:
     f.writelines(cal)
+"""
