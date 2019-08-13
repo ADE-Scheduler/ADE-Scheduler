@@ -76,18 +76,18 @@ def getFTS():
     fts_json.clear()
     for el in msg:
         fts_json.append(el)
-        t0 = datetime.strptime(el['start'], 'YYYY-MM-DDTHH:MM:SS.mmmZ')
-        t1 = datetime.strptime(el['end'], 'YYYY-MM-DDTHH:MM:SS.mmmZ')
+        t0 = datetime.strptime(el['start'], '%Y-%m-%dT%H:%M:%S.%fZ')
+        t1 = datetime.strptime(el['end'], '%Y-%m-%dT%H:%M:%S.%fZ')
         dt = t1 - t0
-        print(dt)
-        if el['name'] == 'High':
-            fts.append(CustomEvent(el['name'], t0, dt, el['description'], '', weight=5))
-        elif el['name'] == 'Medium':
-            fts.append(CustomEvent(el['name'], t0, dt, el['description'], '', weight=3))
-        elif el['name'] == 'Low':
-            fts.append(CustomEvent(el['name'], t0, dt, el['description'], '', weight=1))
+        if el['title'] == 'High':
+            fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=5))
+        elif el['title'] == 'Medium':
+            fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=3))
+        elif el['title'] == 'Low':
+            fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=1))
         else:
             print('This FTS was not recognized by the engine')
+    return render_template('calendar.html', **basic_context, data=json.dumps(data), fts=json.dumps(fts_json))
 
 
 # To remove the code
