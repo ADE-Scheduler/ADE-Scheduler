@@ -1,59 +1,346 @@
 {% extends "base.html" %}
 
 {% block head %}
-    <link href='/static/fullcalendar/core/main.css' rel='stylesheet' xmlns:height="http://www.w3.org/1999/xhtml"
-          xmlns:height="http://www.w3.org/1999/xhtml"/>
+    <link href='/static/fullcalendar/core/main.css' rel='stylesheet'/>
     <link href='/static/fullcalendar/daygrid/main.css' rel='stylesheet' />
+    <link href='/static/fullcalendar/timegrid/main.css' rel='stylesheet' />
+    <link href='/static/fullcalendar/list/main.css' rel='stylesheet' />
 
     <style>
         html, body {
-            overflow: hidden; /* don't do scrollbars */
+            margin: 0;
+            padding: 0;
+            {#overflow: hidden; /* don't do scrollbars */#}
             font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
             font-size: 14px;
             }
-        #calendar-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+        #wrap {
+            width: 100%;
+            height: 100%;
+            margin: 0 auto;
         }
-        .fc-header-toolbar {
+        #left-container {
+            float: left;
+            clear: left;
+            width: 11%;
+            padding: 0 10px;
+            border: 1px solid #ccc;
+            background: #eee;
+            text-align: center;
+        }
+        #left-container h4 {
+            font-size: 16px;
+            margin-top: 0;
             padding-top: 1em;
-            padding-left: 1em;
-            padding-right: 1em;
+        }
+        #left-container .fc-event {
+            cursor: pointer;
+            width: 75%;
+            margin: 10px auto;
+        }
+        #left-container p {
+            margin: 1.5em 0;
+            font-size: 11px;
+            color: #666;
+        }
+        #left-container p input {
+            margin: 0;
+            vertical-align: middle;
+        }
+        #calendar-container {
+            float: right;
+            clear: right;
+            width: 88%;
+            height: 100%;
+            padding: 0 10px;
+            border: 1px solid #ccc;
+            background: #eee;
+        }
+        #calendar {
+            width: 100%;
+            height: 100%;
+        }
+        .tooltip-inner {
+            white-space:pre;
+            max-width:none;
+            background-color: #ffb019;
+            border-color: #ffb019;
+            box-shadow: 0 0 3px rgba(0,0,0,0.5);
+            color: black;
         }
     </style>
 {% endblock %}
 
+{% block bodyhead %}
+    <h1>
+        {{section_name}}
+        <small>
+            <form action="/" method="post">
+                <input type="text" name="course_code">
+                <input type="submit" name="submit" value="Add">
+                <input type="submit" name="submit" value="Compute">
+                <input type="submit" name="submit" value="Clear">
+            </form>
+        </small>
+    </h1>
+    {% if up_to_date == False %}
+        <h1>NOT UP TO DATE</h1>
+    {% endif %}
+{% endblock %}
+
 {% block body %}
-    <div id='calendar'></div>
+    <div id='wrap' style="height: 550px">
+        <!-- calendar body -->
+        <div id='calendar-container'>
+            <div id='calendar'></div>
+        </div>
+
+        <!-- drag-n-drop body -->
+        <div id='left-container'>
+            <h4 style="font-weight: bold">Block Time Slots</h4>
+            <div id='external-events-list'>
+                <div class='fc-event' , style="background-color: #46b92f; border-color: #46b92f">Low</div>
+                <div class='fc-event' , style="background-color: #b97012; border-color: #b97012">Medium</div>
+                <div class='fc-event' , style="background-color: #b91826; border-color: #b91826">High</div>
+            </div>
+        </div>
+
+        <!-- course body -->
+        <div id='left-container' style="margin-top: 15px; margin-bottom: 15px">
+            <div>
+                <h4 style="font-weight: bold">Current Courses</h4>
+                <table>
+                    <tbody>
+                        <!-- For the course-->
+                        {% if codes|length < 1  %}
+                            <tr style="align: center">
+                                <td style="vertical-align: middle; padding-bottom:10px">
+                                    None
+                                </td>
+                            </tr>
+                        {% endif %}
+                        {% for code in codes %}
+                            <tr style="align: center">
+                                <td>
+                                    {{ code }}
+                                </td>
+                                <td style="width:40px;"><button type="button" class="btn btn-box-tool" onClick=deleteCourse("{{ code }}")><i class="fa fa-trash-o"></i>
+                                </button></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block js %}
-    <script src='/static/parser/build/ical.js'></script>
     <script src='/static/fullcalendar/core/main.js'></script>
     <script src='/static/fullcalendar/interaction/main.js'></script>
     <script src='/static/fullcalendar/daygrid/main.js'></script>
     <script src='/static/fullcalendar/list/main.js'></script>
+    <script src='/static/fullcalendar/timegrid/main.js'></script>
+
     <script>
+        // Course events (schedule)
+        let eventsArray = {{ data|safe }};
+
+        // Forbidden time slots (user's input)
+        let forbiddenTimeSlots = {{ fts|safe }};
+        let dragToCopy = false;
+        function send_fts_to_serv() {
+            let xhttp = new XMLHttpRequest();
+            let data = new FormData();
+            let to_send = JSON.stringify(forbiddenTimeSlots);
+            data.append('fts', to_send);
+            xhttp.open('POST', '/getFTS', true);
+            xhttp.send(data);
+        }
+
+        // FullCalendar initialization
         document.addEventListener('DOMContentLoaded', function() {
-            const calendarEl = document.getElementById('calendar');
-            const calendar = new FullCalendar.Calendar(calendarEl, {
-                plugins: ['interaction', 'dayGrid', 'list'],
+            // Initialise the draggable "forbidden time slots"
+            let containerEl = document.getElementById('external-events-list');
+            new FullCalendarInteraction.Draggable(containerEl, {
+                itemSelector: '.fc-event',
+            });
+
+            // Initialize the calendar
+            let calendarEl = document.getElementById('calendar');
+            let calendar = new FullCalendar.Calendar(calendarEl, {
+                plugins: ['interaction', 'dayGrid', 'list', 'timeGrid'],
                 height: 'parent',
                 width: 'parent',
                 header: {
                     left: 'prev,next, today',
                     center: 'title',
-                    right: 'dayGridMonth,dayGridWeek,listWeek'
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
                 },
+                minTime: '08:00:00',
+                maxTime: '20:00:00',
                 navLinks: true, // can click day/week names to navigate views
-                editable: false,
-                eventLimit: true, // allow "more" link when too many events
+                editable: true,
+                droppable: true,
+                eventLimit: false, // allow "more" link when too many events
                 weekNumberCalculation: 'ISO',
+
+                // Remember where the user left the calendar
+                defaultView: (localStorage.getItem("fcDefaultView") !== null ? localStorage.getItem("fcDefaultView") : 'dayGridMonth'),
+                defaultDate: (localStorage.getItem("fcDefaultDate") !== null ? parseInt(localStorage.getItem("fcDefaultDate")) : Date.now()),
+                datesRender: function (arg) {
+                    localStorage.setItem("fcDefaultView", arg.view.type);
+                    localStorage.setItem("fcDefaultDate", arg.view.currentStart.getTime());
+                },
+
+                // Function called when we need to refresh the events
+                // Fetches the events in eventsArray and forbiddenTimeSlots
+                events: function (fetchInfo, successCallback, failureCallback) {
+                    successCallback(eventsArray.concat(forbiddenTimeSlots));
+                },
+
+                // Extra info when hovering an event
+                eventRender: function (arg) {
+                    $(arg.el).tooltip({
+                        title: arg.event.extendedProps.description,
+                        container: 'body',
+                    });
+                },
+
+                // Fix for the tooltip "bug" when dragging/resizing
+                eventPositioned: function (arg) {
+                    if (arg.isMirror) {
+                        $(arg.el).tooltip('destroy');
+                    }
+                },
+
+                // Function called when the user drops a "forbiddenTimeSlot" event
+                drop: function(arg) {
+                    try {
+                        // Event begin:
+                        let dateStart = new Date(arg.date.getFullYear(), arg.date.getMonth(), arg.date.getDate());
+                        let hStart = prompt('Enter a start hour as HH:MM:');
+                        dateStart.setHours(parseInt(hStart.split(':')[0]));
+                        dateStart.setMinutes(parseInt(hStart.split(':')[1]));
+                        if((isNaN(dateStart.getTime()))) {
+                            throw "Invalid format for specified start time !";
+                        }
+
+                        // Event end:
+                        let dateEnd = new Date(arg.date.getFullYear(), arg.date.getMonth(), arg.date.getDate());
+                        let hEnd = prompt('Enter an end hour as HH:MM:');
+                        dateEnd.setHours(parseInt(hEnd.split(':')[0]));
+                        dateEnd.setMinutes(parseInt(hEnd.split(':')[1]));
+                        if((isNaN(dateEnd.getTime()))) {
+                            throw "Invalid format for specified end time !";
+                        }
+                        forbiddenTimeSlots.push({
+                            title: arg.draggedEl.textContent,
+                            start: dateStart.toISOString(),
+                            end: dateEnd.toISOString(),
+                            backgroundColor: arg.draggedEl.style.backgroundColor,
+                            borderColor: arg.draggedEl.style.borderColor,
+                            editable: true,
+                            description: 'A time slot where the user would like to be free'
+                        });
+                        send_fts_to_serv();
+                        calendar.refetchEvents();
+                    } catch(err) {
+                        alert(err.concat('\nPlease try again.'));
+                    }
+                },
+
+                // Function called to create a copy of a "forbiddenTimeSlot" event (with ALT+click)
+                eventDragStart: function(arg) {
+                    if(arg.jsEvent.altKey) {
+                        dragToCopy = true;
+                        calendar.refetchEvents();
+                        // TODO: TOOLTIP BUG RE (quand on drag il disparait pas :()
+                        $(arg.event).tooltip('destroy');
+                    }
+                },
+
+                // Function called when the user tries to moves a "forbiddenTimeSlot" event
+                eventDrop: function(arg) {
+                    if(!dragToCopy) {
+                        // First, we remove the event before the drag
+                        let i;
+                        for (i = 0; i < forbiddenTimeSlots.length; i++) {
+                            let o = forbiddenTimeSlots[i];
+                            if (o.title === arg.oldEvent.title && o.start === arg.oldEvent.start.toISOString()
+                                && o.end === arg.oldEvent.end.toISOString()) {
+                                forbiddenTimeSlots.splice(i, 1);
+                                break;
+                            }
+                        }
+                    } else {
+                        dragToCopy = false;
+                    }
+                    // We then add the new event
+                    forbiddenTimeSlots.push({
+                        title: arg.oldEvent.title,
+                        start: arg.event.start.toISOString(),
+                        end: arg.event.end.toISOString(),
+                        backgroundColor: arg.oldEvent.backgroundColor,
+                        borderColor: arg.oldEvent.borderColor,
+                        editable: true,
+                        description: 'A time slot where the user would like to be free'
+                    });
+                    send_fts_to_serv();
+                },
+
+                // Function called when the user tries to resize a "forbiddenTimeSlot" event
+                eventResize: function(arg) {
+                    // First, we remove the event before the drag
+                    let i;
+                    for (i = 0; i < forbiddenTimeSlots.length; i++) {
+                        let o = forbiddenTimeSlots[i];
+                        if(o.title === arg.prevEvent.title && o.start === arg.prevEvent.start.toISOString()
+                            && o.end === arg.prevEvent.end.toISOString()) {
+                            forbiddenTimeSlots.splice(i,1);
+                            break;
+                        }
+                    }
+                    // We then add the new event
+                    forbiddenTimeSlots.push({
+                        title: arg.prevEvent.title,
+                        start: arg.event.start.toISOString(),
+                        end: arg.event.end.toISOString(),
+                        backgroundColor: arg.prevEvent.backgroundColor,
+                        borderColor: arg.prevEvent.borderColor,
+                        editable: true,
+                        description: 'A time slot where the user would like to be free'
+                    });
+                    send_fts_to_serv();
+                },
+
+                // Delete a "forbiddenTimeSlot" event with SHIFT+click
+                // Classical course events cannot be deleted !
+                eventClick: function(arg) {
+                    if(arg.jsEvent.shiftKey) {
+                        let i;
+                        for (i = 0; i < forbiddenTimeSlots.length; i++) {
+                            let o = forbiddenTimeSlots[i];
+                            if (o.title === arg.event.title && o.start === arg.event.start.toISOString()
+                                && o.end === arg.event.end.toISOString()) {
+                                forbiddenTimeSlots.splice(i, 1);
+                                $(arg.el).tooltip('destroy');
+                                arg.event.remove();
+                                send_fts_to_serv();
+                                break;
+                            }
+                        }
+                    }
+                }
             });
             calendar.render();
         });
+    </script>
+
+    <script>
+        // Delete a course
+        function deleteCourse(code) {
+            $.get('/remove/code/'+code,() => window.location=window.location);
+        }
     </script>
 {% endblock %}
