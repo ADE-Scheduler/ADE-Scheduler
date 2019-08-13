@@ -157,7 +157,6 @@
             xhttp.open('POST', '/getFTS', true);
             xhttp.send(data);
         }
-        console.log(forbiddenTimeSlots);
 
         // FullCalendar initialization
         document.addEventListener('DOMContentLoaded', function() {
@@ -197,7 +196,7 @@
                 // Function called when we need to refresh the events
                 // Fetches the events in eventsArray and forbiddenTimeSlots
                 events: function (fetchInfo, successCallback, failureCallback) {
-                    successCallback(eventsArray.concat(forbiddenTimeSlots))
+                    successCallback(eventsArray.concat(forbiddenTimeSlots));
                 },
 
                 // Extra info when hovering an event
@@ -211,14 +210,13 @@
                 // Fix for the tooltip "bug" when dragging/resizing
                 eventPositioned: function (arg) {
                     if (arg.isMirror) {
-                        $(arg.el).tooltip('destroy')
+                        $(arg.el).tooltip('destroy');
                     }
                 },
 
                 // Function called when the user drops a "forbiddenTimeSlot" event
                 drop: function(arg) {
                     try {
-                        // TODO: Gérer la récurrence: je propose de le faire en draggant un event avec CTRL appuyé
                         // Event begin:
                         let dateStart = new Date(arg.date.getFullYear(), arg.date.getMonth(), arg.date.getDate());
                         let hStart = prompt('Enter a start hour as HH:MM:');
@@ -248,7 +246,7 @@
                         send_fts_to_serv();
                         calendar.refetchEvents();
                     } catch(err) {
-                        alert(err.concat('\nPlease try again.'))
+                        alert(err.concat('\nPlease try again.'));
                     }
                 },
 
@@ -257,6 +255,8 @@
                     if(arg.jsEvent.altKey) {
                         dragToCopy = true;
                         calendar.refetchEvents();
+                        // TODO: TOOLTIP BUG RE (quand on drag il disparait pas :()
+                        $(arg.event).tooltip('destroy');
                     }
                 },
 
@@ -287,7 +287,6 @@
                         description: 'A time slot where the user would like to be free'
                     });
                     send_fts_to_serv();
-                    calendar.refetchEvents();
                 },
 
                 // Function called when the user tries to resize a "forbiddenTimeSlot" event
@@ -314,6 +313,25 @@
                     });
                     send_fts_to_serv();
                 },
+
+                // Delete a "forbiddenTimeSlot" event with SHIFT+click
+                // Classical course events cannot be deleted !
+                eventClick: function(arg) {
+                    if(arg.jsEvent.shiftKey) {
+                        let i;
+                        for (i = 0; i < forbiddenTimeSlots.length; i++) {
+                            let o = forbiddenTimeSlots[i];
+                            if (o.title === arg.event.title && o.start === arg.event.start.toISOString()
+                                && o.end === arg.event.end.toISOString()) {
+                                forbiddenTimeSlots.splice(i, 1);
+                                $(arg.el).tooltip('destroy');
+                                arg.event.remove();
+                                send_fts_to_serv();
+                                break;
+                            }
+                        }
+                    }
+                }
             });
             calendar.render();
         });
