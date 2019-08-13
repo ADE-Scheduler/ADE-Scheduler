@@ -250,13 +250,16 @@
                     }
                 },
 
-                // Function called to create a copy of a "forbiddenTimeSlot" event (with CTRL+click)
+                // Function called to create a copy of a "forbiddenTimeSlot" event (with ALT+click)
+                // TODO: comment faire ça proprement ?
                 eventDragStart: function(arg) {
-
+                    if(arg.jsEvent.altKey) {
+                        console.log("Duplicate event ?")
+                    }
                 },
 
                 // Function called when the user tries to moves a "forbiddenTimeSlot" event
-                eventDrop: function(arg){
+                eventDrop: function(arg) {
                     // First, we remove the event before the drag
                     let i;
                     for (i = 0; i < forbiddenTimeSlots.length; i++) {
@@ -281,7 +284,7 @@
                 },
 
                 // Function called when the user tries to resize a "forbiddenTimeSlot" event
-                eventResize: function(arg){
+                eventResize: function(arg) {
                     // First, we remove the event before the drag
                     let i;
                     for (i = 0; i < forbiddenTimeSlots.length; i++) {
