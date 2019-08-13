@@ -148,6 +148,7 @@
 
         // Forbidden time slots (user's input)
         let forbiddenTimeSlots = {{ fts|safe }};
+        let dragToCopy = false;
         function send_fts_to_serv() {
             let xhttp = new XMLHttpRequest();
             let data = new FormData();
@@ -156,6 +157,7 @@
             xhttp.open('POST', '/getFTS', true);
             xhttp.send(data);
         }
+        console.log(forbiddenTimeSlots);
 
         // FullCalendar initialization
         document.addEventListener('DOMContentLoaded', function() {
@@ -251,24 +253,28 @@
                 },
 
                 // Function called to create a copy of a "forbiddenTimeSlot" event (with ALT+click)
-                // TODO: comment faire ça proprement ?
                 eventDragStart: function(arg) {
                     if(arg.jsEvent.altKey) {
-                        console.log("Duplicate event ?")
+                        dragToCopy = true;
+                        calendar.refetchEvents();
                     }
                 },
 
                 // Function called when the user tries to moves a "forbiddenTimeSlot" event
                 eventDrop: function(arg) {
-                    // First, we remove the event before the drag
-                    let i;
-                    for (i = 0; i < forbiddenTimeSlots.length; i++) {
-                        let o = forbiddenTimeSlots[i];
-                        if(o.title === arg.oldEvent.title && o.start === arg.oldEvent.start.toISOString()
-                            && o.end === arg.oldEvent.end.toISOString()) {
-                            forbiddenTimeSlots.splice(i,1);
-                            break;
+                    if(!dragToCopy) {
+                        // First, we remove the event before the drag
+                        let i;
+                        for (i = 0; i < forbiddenTimeSlots.length; i++) {
+                            let o = forbiddenTimeSlots[i];
+                            if (o.title === arg.oldEvent.title && o.start === arg.oldEvent.start.toISOString()
+                                && o.end === arg.oldEvent.end.toISOString()) {
+                                forbiddenTimeSlots.splice(i, 1);
+                                break;
+                            }
                         }
+                    } else {
+                        dragToCopy = false;
                     }
                     // We then add the new event
                     forbiddenTimeSlots.push({
@@ -281,6 +287,7 @@
                         description: 'A time slot where the user would like to be free'
                     });
                     send_fts_to_serv();
+                    calendar.refetchEvents();
                 },
 
                 // Function called when the user tries to resize a "forbiddenTimeSlot" event
