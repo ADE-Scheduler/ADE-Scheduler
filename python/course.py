@@ -12,11 +12,20 @@ class Course:
 
         # A course can be composed of 5 different events: CM, TP, Exam, Oral and Other
         # Each event is classed by week
-        self.CM = [[] for i in range(53)]  # EventCM
-        self.TP = [[] for i in range(53)]  # EventTP
-        self.E = [[] for i in range(53)]  # EventEXAM
-        self.O = [[] for i in range(53)]  # EventORAL
-        self.Other = [[] for i in range(53)]  # EventOTHER
+        CM = [[] for i in range(53)]  # EventCM
+        TP = [[] for i in range(53)]  # EventTP
+        E = [[] for i in range(53)]  # EventEXAM
+        O = [[] for i in range(53)]  # EventORAL
+        Other = [[] for i in range(53)]  # EventOTHER
+        self.events = {EventCM:CM, EventTP:TP, EventEXAM:E, EventORAL:O, EventOTHER:Other}
+
+    def __getitem__(self, item):
+        return self.events[item]
+    
+    
+    def __setitem__(self, name, value):
+        self.events[name] = value
+    
 
     def __eq__(self, other):
         if isinstance(other, Course):
@@ -32,24 +41,44 @@ class Course:
 
     def getweek(self, week):
         # TODO: Gérer les Other (trop chiant)
-        return self.CM[week], self.TP[week], self.E[week], self.O[week]
+        return self[EventCM][week], self[EventTP][week], self[EventEXAM][week], self[EventORAL][week]
+
+    def getEvents(self, slice=None):
+        if slice is None:
+            return self[EventCM], self[EventTP], self[EventEXAM], self[EventORAL], self[EventOTHER]
+        else:
+            return self[EventCM][slice], self[EventTP][slice], self[EventEXAM][slice], self[EventORAL][slice], self[EventOTHER][slice]
 
     def join(self):
-        for week in range(53):
-            self.CM[week].sort(key=lambda e: e.getId())
-            pass
+        # TODO : definite cours['CM'], etc pour faciliter
+        for eventType, course in self.events.items():
+            for week in range(len(course)):
+                course[week].sort(key=lambda e: e.getId())
+                n_events = len(course[week])
+                if n_events == 0:
+                    pass
+                else:
+                    c = [course[week][0]] # the new list of courses (joined when possible)
+                    for i in range(1, n_events):
+                        if c[-1].getId() == course[week][i].getId(): # If we can join [i-1] & [i]
+                            c[-1] = eventType(c[-1].begin, 2*c[-1].duration, self.code, self.name, c[-1].description, c[-1].location, c[-1].id)
+                        else:
+                            c.append(course[week][i])
+                    self[eventType][week] = c
 
     def getSummary(self, weeks='ALL'):
         if weeks == 'ALL':
-            w = chain(self.CM, self.TP, self.E, self.O, self.Other)  # [CM from week 1, CM from week 2, ...,
+            w = chain(*self.getEvents())
+            #w = chain(self.CM, self.TP, self.E, self.O, self.Other)  # [CM from week 1, CM from week 2, ...,
             # TP from week 1, ...]
             e = chain(*w)  # [CM1, CM2,... , TP1, ...]
         elif isinstance(weeks, slice):
-            w = chain(self.CM[weeks], self.TP[weeks], self.E[weeks], self.O[weeks], self.Other[weeks])
+            w = chain(*self.getEvents(slice))
+            #w = chain(self['CM'][weeks], self['TP'][weeks], self['E'][weeks], self['O'][weeks], self['Other'][weeks])
             e = chain(*w)
         else:
             itg = itemgetter(*list(weeks))
-            w = chain(itg(self.CM), itg(self.TP), itg(self.E), itg(self.O), itg(self.Other))
+            w = chain(itg(self[EventCM]), itg(self[EventTP]), itg(self[EventEXAM]), itg(self[EventORAL]), itg(self[EventOTHER]))
             e = chain(*w)
         return set(map(lambda x: x.getId(), e))
 
@@ -60,37 +89,15 @@ class Course:
         If the event is already there, it is not added
         """
         week = event.getweek()
-        if isinstance(event, EventCM):
-            if event not in self.CM[week]:
-                self.CM[week].append(event)
+        eventType = type(event)
+
+        try:
+            if event not in self[eventType][week]:
+                self[eventType][week].append(event)
                 return True
             else:
                 return False
-        elif isinstance(event, EventTP):
-            if event not in self.TP[week]:
-                self.TP[week].append(event)
-                return True
-            else:
-                return False
-        elif isinstance(event, EventEXAM):
-            if event not in self.E[week]:
-                self.E[week].append(event)
-                return True
-            else:
-                return False
-        elif isinstance(event, EventORAL):
-            if event not in self.O[week]:
-                self.O[week].append(event)
-                return True
-            else:
-                return False
-        elif isinstance(event, EventOTHER):
-            if event not in self.Other[week]:
-                self.Other[week].append(event)
-                return True
-            else:
-                return False
-        else:
+        except KeyError:
             raise TypeError
 
     def removeEvent(self, event):
@@ -98,72 +105,28 @@ class Course:
         Removes an event from this course
         """
         week = event.getweek()
-        if isinstance(event, EventCM):
-            if event not in self.CM[week]:
-                return False
-            else:
-                self.CM[week].remove(event)
+        eventType = type(event)
+
+        try:
+            if event not in self[eventType][week]:
+                self[eventType][week].remove(event)
                 return True
-        if isinstance(event, EventTP):
-            if event not in self.TP[week]:
-                return False
             else:
-                self.TP[week].remove(event)
-                return True
-        if isinstance(event, EventEXAM):
-            if event not in self.E[week]:
                 return False
-            else:
-                self.E[week].remove(event)
-                return True
-        if isinstance(event, EventORAL):
-            if event not in self.O[week]:
-                return False
-            else:
-                self.O[week].remove(event)
-                return True
-        if isinstance(event, EventOTHER):
-            if event not in self.Other[week]:
-                return False
-            else:
-                self.Other[week].remove(event)
-                return True
-        else:
+        except KeyError:
             raise TypeError
+       
 
     def getEventsJSON(self):
         """
         Returns the list of events for this course, in "JSON format"
         """
         events = list()
-        for week in self.CM:
-            for event in week:
-                temp = {'start': str(event.begin), 'end': str(event.end), 'title': event.name, 'editable': False,
-                        'description': event.name + '\n' + event.location + ' - ' + str(event.duration) + '\n' + str(
-                            event.description)}
-                events.append(temp)
-        for week in self.TP:
-            for event in week:
-                temp = {'start': str(event.begin), 'end': str(event.end), 'title': event.name, 'editable': False,
-                        'description': event.name + '\n' + event.location + ' - ' + str(event.duration) + '\n' + str(
-                            event.description)}
-                events.append(temp)
-        for week in self.E:
-            for event in week:
-                temp = {'start': str(event.begin), 'end': str(event.end), 'title': event.name, 'editable': False,
-                        'description': event.name + '\n' + event.location + ' - ' + str(event.duration) + '\n' + str(
-                            event.description)}
-                events.append(temp)
-        for week in self.O:
-            for event in week:
-                temp = {'start': str(event.begin), 'end': str(event.end), 'title': event.name, 'editable': False,
-                        'description': event.name + '\n' + event.location + ' - ' + str(event.duration) + '\n' + str(
-                            event.description)}
-                events.append(temp)
-        for week in self.Other:
-            for event in week:
-                temp = {'start': str(event.begin), 'end': str(event.end), 'title': event.name, 'editable': False,
-                        'description': event.name + '\n' + event.location + ' - ' + str(event.duration) + '\n' + str(
-                            event.description)}
-                events.append(temp)
+        for course in self.events.values():
+            for week in course:
+                for event in week:
+                    temp = {'start': str(event.begin), 'end': str(event.end), 'title': event.name, 'editable': False,
+                            'description': event.name + '\n' + event.location + ' - ' + str(event.duration) + '\n' + str(
+                                event.description)}
+                    events.append(temp)
         return events
