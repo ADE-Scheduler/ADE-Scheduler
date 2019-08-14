@@ -45,7 +45,6 @@ def index():
             # No course code was specified
             if len(codes) == 0:
                 data.clear()
-                print('At least a course !')
                 return render_template('calendar.html', **basic_context, data=json.dumps(data), fts=json.dumps(fts_json))
 
             # At least one course code was specified, time to compute !
@@ -102,12 +101,6 @@ def remove_code(the_code):
         codes.remove(the_code)
         basic_context['up_to_date'] = False
     return render_template('calendar.html', **basic_context, data=json.dumps(data), fts=json.dumps(fts_json))
-
-
-# To be chosed
-@app.route('/tobecontinued')
-def continued():
-    return render_template('continued.html')
 
 
 # Page for user preferences
