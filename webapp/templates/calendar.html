@@ -255,8 +255,7 @@
                     if(arg.jsEvent.altKey) {
                         dragToCopy = true;
                         calendar.refetchEvents();
-                        // TODO: TOOLTIP BUG RE (quand on drag il disparait pas :()
-                        $(arg.event).tooltip('destroy');
+                        $('div').tooltip('destroy');
                     }
                 },
 
