@@ -110,3 +110,4 @@ venv.bak/
 .vscode
 python/my.ics
 my.ics
+*.ics
