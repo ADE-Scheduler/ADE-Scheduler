@@ -51,7 +51,7 @@
         function drawScores() {
             ctx.font = "16px Arial";
             ctx.fillStyle = "#0095DD";
-            ctx.fillText("Score AI: "+score1 + "\n" + "Your score: "+score2, 8, 20);
+            ctx.fillText("Your score: "+score1 + "\n" + "Score AI: "+score2, 8, 20);
         }
 
         function drawBall() {
