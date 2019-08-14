@@ -89,6 +89,15 @@
 {% endblock %}
 
 {% block body %}
+{#    <div class="modal body">#}
+{#        <div class="bootbox-body">#}
+{#            <form class="bootbox-form">#}
+{#                <input class="bootbox-input bootbox-input-time form-control" autocomplete="off" type="time">#}
+{#                <input class="bootbox-input bootbox-input-time form-control" autocomplete="off" type="time">#}
+{#            </form>#}
+{#        </div>#}
+{#    </div>#}
+
     <div id='wrap' style="height: 550px">
         <!-- calendar body -->
         <div id='calendar-container'>
@@ -133,6 +142,12 @@
             </div>
         </div>
     </div>
+
+
+{#<form class="bootbox-form">#}
+{#    <input class="bootbox-input bootbox-input-time form-control" autocomplete="off" type="time" style="float: left; width: 45%">#}
+{#    <input class="bootbox-input bootbox-input-time form-control" autocomplete="off" type="time" style="float: right; width: 45%">#}
+{#</form>#}
 {% endblock %}
 
 {% block js %}
@@ -216,38 +231,47 @@
 
                 // Function called when the user drops a "forbiddenTimeSlot" event
                 drop: function(arg) {
-                    try {
-                        // Event begin:
-                        let dateStart = new Date(arg.date.getFullYear(), arg.date.getMonth(), arg.date.getDate());
-                        let hStart = prompt('Enter a start hour as HH:MM:');
-                        dateStart.setHours(parseInt(hStart.split(':')[0]));
-                        dateStart.setMinutes(parseInt(hStart.split(':')[1]));
-                        if((isNaN(dateStart.getTime()))) {
-                            throw "Invalid format for specified start time !";
-                        }
+                    // START TIME
+                    bootbox.prompt({
+                        title: "Please specify the start time as HH:MM AM/PM:",
+                        message: "Hey",
+                        inputType: 'time',
+                        centerVertical: true,
+                        backdrop: true,
+                        size: 'small',
+                        callback: function (result) {
+                            let dateStart = new Date(arg.date.getFullYear(), arg.date.getMonth(), arg.date.getDate());
+                            dateStart.setHours(parseInt(result.split(':')[0]));
+                            dateStart.setMinutes(parseInt(result.split(':')[1]));
 
-                        // Event end:
-                        let dateEnd = new Date(arg.date.getFullYear(), arg.date.getMonth(), arg.date.getDate());
-                        let hEnd = prompt('Enter an end hour as HH:MM:');
-                        dateEnd.setHours(parseInt(hEnd.split(':')[0]));
-                        dateEnd.setMinutes(parseInt(hEnd.split(':')[1]));
-                        if((isNaN(dateEnd.getTime()))) {
-                            throw "Invalid format for specified end time !";
+                            // END TIME
+                            bootbox.prompt({
+                                title: "Please specify the end time as HH:MM AM/PM:",
+                                inputType: 'time',
+                                centerVertical: true,
+                                backdrop: true,
+                                size: 'small',
+                                callback: function (result) {
+                                    let dateEnd = new Date(arg.date.getFullYear(), arg.date.getMonth(), arg.date.getDate());
+                                    dateEnd.setHours(parseInt(result.split(':')[0]));
+                                    dateEnd.setMinutes(parseInt(result.split(':')[1]));
+
+                                    // NEW EVENT
+                                    forbiddenTimeSlots.push({
+                                        title: arg.draggedEl.textContent,
+                                        start: dateStart.toISOString(),
+                                        end: dateEnd.toISOString(),
+                                        backgroundColor: arg.draggedEl.style.backgroundColor,
+                                        borderColor: arg.draggedEl.style.borderColor,
+                                        editable: true,
+                                        description: 'A time slot where the user would like to be free'
+                                    });
+                                    send_fts_to_serv();
+                                    calendar.refetchEvents();
+                                }
+                            });
                         }
-                        forbiddenTimeSlots.push({
-                            title: arg.draggedEl.textContent,
-                            start: dateStart.toISOString(),
-                            end: dateEnd.toISOString(),
-                            backgroundColor: arg.draggedEl.style.backgroundColor,
-                            borderColor: arg.draggedEl.style.borderColor,
-                            editable: true,
-                            description: 'A time slot where the user would like to be free'
-                        });
-                        send_fts_to_serv();
-                        calendar.refetchEvents();
-                    } catch(err) {
-                        alert(err.concat('\nPlease try again.'));
-                    }
+                    });
                 },
 
                 // Function called to create a copy of a "forbiddenTimeSlot" event (with ALT+click)
