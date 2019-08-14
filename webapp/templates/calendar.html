@@ -115,7 +115,7 @@
         </div>
 
         <!-- course body -->
-        <div id='left-container' style="margin-top: 15px; margin-bottom: 15px">
+        <div id='left-container' style="margin-top: 15px; margin-bottom: 15px;">
             <div>
                 <h4 style="font-weight: bold">Current Courses</h4>
                 <table>
@@ -130,10 +130,10 @@
                         {% endif %}
                         {% for code in codes %}
                             <tr style="align: center">
-                                <td>
+                                <td style="word-break:break-all;">
                                     {{ code }}
                                 </td>
-                                <td style="width:40px;"><button type="button" class="btn btn-box-tool" onClick=deleteCourse("{{ code }}")><i class="fa fa-trash-o"></i>
+                                <td style="width:20px;"><button type="button" class="btn btn-box-tool" onClick=deleteCourse("{{ code }}")><i class="fa fa-trash-o"></i>
                                 </button></td>
                             </tr>
                         {% endfor %}
