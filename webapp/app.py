@@ -1,11 +1,13 @@
 from flask import Flask, render_template, request
 import json
-import sys
+import sys, os, inspect
 from pytz import timezone
 from dateutil.parser import parse
 
 # BACK-END FILES
-sys.path.insert(1, '../python')
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname(currentdir)
+sys.path.insert(0, parentdir+'/python')
 from ade import getCoursesFromCodes
 from static_data import Q1, Q2, Q3
 from computation import parallel_compute
