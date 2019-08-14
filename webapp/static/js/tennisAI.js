@@ -51,7 +51,7 @@
         function drawScores() {
             ctx.font = "16px Arial";
             ctx.fillStyle = "#0095DD";
-            ctx.fillText("Score player 1: "+score1 + "\n" + "Score player2: "+score2, 8, 20);
+            ctx.fillText("Score AI: "+score1 + "\n" + "Your score: "+score2, 8, 20);
         }
 
         function drawBall() {
@@ -110,7 +110,7 @@
             if(x + dx < ballRadius) {
                 score1++;
                 if(score1 == maxScore) {
-                    alert("GAME OVER, you won!");
+                    alert("GAME OVER, you win!");
                     document.location.reload();
                 }
                 else {
@@ -132,7 +132,7 @@
             if(x + dx > canvas.width-ballRadius) {
                 score2++;
                 if(score2 == maxScore) {
-                    alert("GAME OVER, the AI won!");
+                    alert("GAME OVER, the AI wins!");
                     document.location.reload();
                 }
                 else {
