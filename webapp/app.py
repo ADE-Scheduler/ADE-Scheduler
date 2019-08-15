@@ -11,8 +11,7 @@ sys.path.insert(0, parentdir+'/python')
 from ade import getCoursesFromCodes
 from static_data import Q1, Q2, Q3
 from computation import parallel_compute
-from event import CustomEvent
-
+from event import CustomEvent, EventCM
 
 app = Flask(__name__)
 
@@ -47,11 +46,13 @@ def index():
                 data_sched.clear()
                 return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=json.dumps(data_sched), fts=json.dumps(fts_json))
 
+            print('computing')
             # At least one course code was specified, time to compute !
             data_sched.clear()
             # TODO: Gérer les projectID sur le site et sur le back-end ! (proposer l'année scolaire en sélection ?)
             c = getCoursesFromCodes(codes, Q1+Q2+Q3, 9)
-            year = parallel_compute(c, forbiddenTimeSlots=fts)
+            year = parallel_compute(c, forbiddenTimeSlots=fts, nbest=5)
+            print(year)
             for week, score in year:
                 for event in week[0]:
                     temp = {'start': str(event.begin), 'end': str(event.end), 'title': event.name, 'editable': False,
