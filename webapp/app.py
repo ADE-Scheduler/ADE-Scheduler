@@ -34,7 +34,7 @@ def index():
                 if course_code not in codes:
                     basic_context['up_to_date'] = False
                     codes.append(course_code)
-                    c = getCoursesFromCodes(course_code, Q1+Q2+Q3, 9)
+                    c = getCoursesFromCodes([course_code], Q1+Q2+Q3, 9)
                     for course in c:
                         data += course.getEventsJSON()
 
