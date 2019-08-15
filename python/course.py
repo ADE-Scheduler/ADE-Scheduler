@@ -43,11 +43,14 @@ class Course:
         # TODO: Gérer les Other (trop chiant)
         return self[EventCM][week], self[EventTP][week], self[EventEXAM][week], self[EventORAL][week]
 
-    def getEvents(self, slice=None):
-        if slice is None:
-            return self[EventCM], self[EventTP], self[EventEXAM], self[EventORAL], self[EventOTHER]
+    def getEvents(self, weeks=None):
+        if weeks is None:
+            return self.events.values()
+        elif isinstance(weeks, slice):
+            return (events[slice] for events in self.events.values())
         else:
-            return self[EventCM][slice], self[EventTP][slice], self[EventEXAM][slice], self[EventORAL][slice], self[EventOTHER][slice]
+            itg = itemgetter(*list(weeks))
+            return (itg(events) for events in self.events.values())
 
     def join(self):
         for eventType, course in self.events.items():
@@ -65,20 +68,9 @@ class Course:
                             c.append(course[week][i])
                     self[eventType][week] = c
 
-    def getSummary(self, weeks='ALL'):
-        if weeks == 'ALL':
-            w = chain(*self.getEvents())
-            #w = chain(self.CM, self.TP, self.E, self.O, self.Other)  # [CM from week 1, CM from week 2, ...,
-            # TP from week 1, ...]
-            e = chain(*w)  # [CM1, CM2,... , TP1, ...]
-        elif isinstance(weeks, slice):
-            w = chain(*self.getEvents(slice))
-            #w = chain(self['CM'][weeks], self['TP'][weeks], self['E'][weeks], self['O'][weeks], self['Other'][weeks])
-            e = chain(*w)
-        else:
-            itg = itemgetter(*list(weeks))
-            w = chain(itg(self[EventCM]), itg(self[EventTP]), itg(self[EventEXAM]), itg(self[EventORAL]), itg(self[EventOTHER]))
-            e = chain(*w)
+    def getSummary(self, weeks=None):
+        w = chain(*self.getEvents(weeks))
+        e = chain(*w)  # [CM1, CM2,... , TP1, ...]
         return set(map(lambda x: x.getId(), e))
 
     def addEvent(self, event):
