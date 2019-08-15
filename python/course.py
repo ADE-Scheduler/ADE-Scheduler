@@ -50,7 +50,6 @@ class Course:
             return self[EventCM][slice], self[EventTP][slice], self[EventEXAM][slice], self[EventORAL][slice], self[EventOTHER][slice]
 
     def join(self):
-        # TODO : definite cours['CM'], etc pour faciliter
         for eventType, course in self.events.items():
             for week in range(len(course)):
                 course[week].sort(key=lambda e: e.getId())
@@ -91,14 +90,11 @@ class Course:
         week = event.getweek()
         eventType = type(event)
 
-        try:
-            if event not in self[eventType][week]:
-                self[eventType][week].append(event)
-                return True
-            else:
-                return False
-        except KeyError:
-            raise TypeError
+        if event not in self[eventType][week]:
+            self[eventType][week].append(event)
+            return True
+        else:
+            return False
 
     def removeEvent(self, event):
         """
@@ -107,14 +103,11 @@ class Course:
         week = event.getweek()
         eventType = type(event)
 
-        try:
-            if event not in self[eventType][week]:
-                self[eventType][week].remove(event)
-                return True
-            else:
-                return False
-        except KeyError:
-            raise TypeError
+        if event not in self[eventType][week]:
+            self[eventType][week].remove(event)
+            return True
+        else:
+            return False
        
 
     def getEventsJSON(self):
