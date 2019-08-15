@@ -18,7 +18,7 @@ cal = Calendar()
 c = getCoursesFromCodes(anglais3, [Q1[4]], 9)
 
 for course in c:
-        print(course.name, course.getSummary())
+        print(course.name, course.getSummary(weeks=range(34,53)))
 
 """
 year = parallel_compute(c)
