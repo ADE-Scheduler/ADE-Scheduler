@@ -5,6 +5,7 @@
     <link href='/static/fullcalendar/daygrid/main.css' rel='stylesheet' />
     <link href='/static/fullcalendar/timegrid/main.css' rel='stylesheet' />
     <link href='/static/fullcalendar/list/main.css' rel='stylesheet' />
+    <link href='/static/clockpicker/dist/bootstrap-clockpicker.min.css' rel='stylesheet' />
 
     <style>
         html, body {
@@ -86,6 +87,38 @@
 {% endblock %}
 
 {% block body %}
+    <!-- TIME PROMPT (modal) -->
+    <div class="modal fade" id="time-prompt" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="height: 100px">
+                    <div class="input-group clockpicker" style="width: 40%; margin-left: 5%; float: left">
+                        <input type="text" class="form-control" value="08:00" id="start_time">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-time"></span>
+                        </span>
+                    </div>
+                    <div class="input-group clockpicker" style="width: 40%; margin-right: 5%; float: right">
+                        <input type="text" class="form-control" value="10:00" id="end_time">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-time"></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="time-prompt-confirm">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <div id='wrap' style="height: 550px">
         <!-- calendar body -->
@@ -131,8 +164,7 @@
             </div>
         </div>
 
-
-
+        <!-- Add/Compute/Clear -->
         <div class="form-group" style="float: left; clear: left; width: 11%;">
             <form class="form-horizontal" action="/" method="post">
                 <label class="control-label">Add a course</label>
@@ -147,10 +179,9 @@
         <form class="form-vertical" action="/" method="post">
             <div class="btn-group-vertical" style="float: left; clear: left; width: 11%;">
                 <button href="#" class="btn btn-default" type="submit" name="submit" value="Compute" style="width: 100%;">Compute</button>
-                <button href="#" class="btn btn-default" type="submit" name="submit" value="Clear" style="width: 100%;">Clear</button>
+                <button href="#" class="btn btn-default" type="submit" data-toggle="modal" data-target="#exampleModal" name="submit" value="Clear" style="width: 100%;">Clear</button>
             </div>
         </form>
-
     </div>
 
 {#            <div>#}
@@ -170,6 +201,14 @@
     <script src='/static/fullcalendar/daygrid/main.js'></script>
     <script src='/static/fullcalendar/list/main.js'></script>
     <script src='/static/fullcalendar/timegrid/main.js'></script>
+    <script src='/static/clockpicker/dist/bootstrap-clockpicker.min.js'></script>
+
+    <script type="text/javascript">
+        $('.clockpicker').clockpicker({
+            placement: 'bottom',
+            autoclose: true,
+        });
+    </script>
 
     <script>
         // Course events (schedule)
@@ -245,46 +284,31 @@
 
                 // Function called when the user drops a "forbiddenTimeSlot" event
                 drop: function(arg) {
-                    // START TIME
-                    bootbox.prompt({
-                        title: "Please specify the start time as HH:MM AM/PM:",
-                        message: "Hey",
-                        inputType: 'time',
-                        centerVertical: true,
-                        backdrop: true,
-                        size: 'small',
-                        callback: function (result) {
-                            let dateStart = new Date(arg.date.getFullYear(), arg.date.getMonth(), arg.date.getDate());
-                            dateStart.setHours(parseInt(result.split(':')[0]));
-                            dateStart.setMinutes(parseInt(result.split(':')[1]));
+                    $('#time-prompt').modal('show');
+                    $('#time-prompt').on('click', '#time-prompt-confirm', function (e) {
+                        let startTime = $('#start_time').val();
+                        let endTime = $('#end_time').val();
+                        $('#time-prompt').modal('toggle');
 
-                            // END TIME
-                            bootbox.prompt({
-                                title: "Please specify the end time as HH:MM AM/PM:",
-                                inputType: 'time',
-                                centerVertical: true,
-                                backdrop: true,
-                                size: 'small',
-                                callback: function (result) {
-                                    let dateEnd = new Date(arg.date.getFullYear(), arg.date.getMonth(), arg.date.getDate());
-                                    dateEnd.setHours(parseInt(result.split(':')[0]));
-                                    dateEnd.setMinutes(parseInt(result.split(':')[1]));
+                        let dateStart = new Date(arg.date.getFullYear(), arg.date.getMonth(), arg.date.getDate());
+                        dateStart.setHours(parseInt(startTime.split(':')[0]));
+                        dateStart.setMinutes(parseInt(startTime.split(':')[1]));
+                        let dateEnd = new Date(arg.date.getFullYear(), arg.date.getMonth(), arg.date.getDate());
+                        dateEnd.setHours(parseInt(endTime.split(':')[0]));
+                        dateEnd.setMinutes(parseInt(endTime.split(':')[1]));
 
-                                    // NEW EVENT
-                                    forbiddenTimeSlots.push({
-                                        title: arg.draggedEl.textContent,
-                                        start: dateStart.toISOString(),
-                                        end: dateEnd.toISOString(),
-                                        backgroundColor: arg.draggedEl.style.backgroundColor,
-                                        borderColor: arg.draggedEl.style.borderColor,
-                                        editable: true,
-                                        description: 'A time slot where the user would like to be free'
-                                    });
-                                    send_fts_to_serv();
-                                    calendar.refetchEvents();
-                                }
-                            });
-                        }
+                        // NEW EVENT
+                        forbiddenTimeSlots.push({
+                            title: arg.draggedEl.textContent,
+                            start: dateStart.toISOString(),
+                            end: dateEnd.toISOString(),
+                            backgroundColor: arg.draggedEl.style.backgroundColor,
+                            borderColor: arg.draggedEl.style.borderColor,
+                            editable: true,
+                            description: 'A time slot where the user would like to be free'
+                        });
+                        send_fts_to_serv();
+                        calendar.refetchEvents();
                     });
                 },
 
