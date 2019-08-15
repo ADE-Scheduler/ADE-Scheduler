@@ -1,6 +1,7 @@
 from event import *
 from itertools import chain
 from operator import itemgetter
+from collections.abc import Iterable
 
 
 class Course:
@@ -62,15 +63,48 @@ class Course:
                     c = [course[week][0]] # the new list of courses (joined when possible)
                     for i in range(1, n_events):
                         if c[-1].getId() == course[week][i].getId(): # If we can join [i-1] & [i]
-                            c[-1] = eventType(c[-1].begin, 2*c[-1].duration, self.code, self.name, c[-1].description, c[-1].location, c[-1].id)
+                            id = c[-1].id[c[-1].id.index(':')+1:]
+                            c[-1] = eventType(c[-1].begin, 2*c[-1].duration, self.code, self.name, c[-1].description, c[-1].location, id)
                         else:
                             c.append(course[week][i])
                     self[eventType][week] = c
 
-    def getSummary(self, weeks=None):
-        w = chain(*self.getEvents(weeks))
-        e = chain(*w)  # [CM1, CM2,... , TP1, ...]
-        return set(map(lambda x: x.getId(), e))
+    def getSummary(self, weeks=None, view=None):
+        w = chain(*self.getView(weeks, view))
+        if isinstance(weeks, int):
+            return set(map(lambda x: x.getId(), w))
+        else:
+            e = chain(*w)  # [CM1, CM2,... , TP1, ...]
+            return set(map(lambda x: x.getId(), e))
+
+    def getView(self, weeks=None, ids=None):
+        w = self.getEvents(weeks)
+        if ids is None:
+            return self.getEvents(weeks)
+        else:
+            ids = set(ids)
+            return (list(filter(lambda e: e.getId() in ids, weekEvents)) for weekEvents in w)
+
+    def mergeEvents(self, eventTypes, week):
+        if not isinstance(eventTypes, Iterable):
+            eventTypes = {eventTypes}
+        view = set()
+        for eventType in eventTypes: # What we merge
+            to_merge = sorted(self[eventType][week], key=lambda e:e.begin)
+            if len(to_merge) == 0:
+                pass
+            else:
+                ev = [to_merge[0]]
+                for e in to_merge[1:]:
+                    if intersect(ev[-1], e):
+                        pass
+                    else:
+                        ev.append(e)
+                view.update(e.getId() for e in ev)
+        for eventType in set(self.events.keys()) - set(eventTypes): # What we don't merge
+            view.update(e.getId() for e in self[eventType][week])
+        return view # A set to pass to getView function
+
 
     def addEvent(self, event):
         """
