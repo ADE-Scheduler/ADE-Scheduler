@@ -69,6 +69,22 @@
             box-shadow: 0 0 3px rgba(0,0,0,0.5);
             color: black;
         }
+        .modal {
+          text-align: center;
+        }
+        @media screen and (min-width: 768px) {
+          .modal:before {
+            display: inline-block;
+            vertical-align: middle;
+            content: " ";
+            height: 100%;
+          }
+        }
+        .modal-dialog {
+          display: inline-block;
+          text-align: left;
+          vertical-align: middle;
+        }
     </style>
 {% endblock %}
 
@@ -88,32 +104,32 @@
 
 {% block body %}
     <!-- TIME PROMPT (modal) -->
-    <div class="modal fade" id="time-prompt" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal fade" id="time-prompt" tabindex="-1" role="dialog" aria-labelledby="startEndTimePrompt" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body" style="height: 100px">
-                    <div class="input-group clockpicker" style="width: 40%; margin-left: 5%; float: left">
-                        <input type="text" class="form-control" value="08:00" id="start_time">
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-time"></span>
-                        </span>
+                <div class="modal-body" style="height: 90px">
+                    <div class="btn-group-vertical" style="width: 48%; margin-right: 2%; float: left">
+                        <h5 style="text-align: center"><strong>Start</strong></h5>
+                        <div class="input-group clockpicker">
+                            <input type="text" class="form-control" value="08:00" id="start_time">
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-time"></span>
+                            </span>
+                        </div>
                     </div>
-                    <div class="input-group clockpicker" style="width: 40%; margin-right: 5%; float: right">
-                        <input type="text" class="form-control" value="10:00" id="end_time">
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-time"></span>
-                        </span>
+                    <div class="btn-group-vertical" style="width: 48%; margin-left: 2%; float: right">
+                        <h5 style="text-align: center"><strong>End</strong></h5>
+                        <div class="input-group clockpicker">
+                            <input type="text" class="form-control" value="10:00" id="end_time">
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-time"></span>
+                            </span>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="time-prompt-confirm">Confirm</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" style="float: left;">Cancel</button>
+                    <button type="button" class="btn btn-success" id="time-prompt-confirm" style="float: right;">Confirm</button>
                 </div>
             </div>
         </div>
@@ -205,7 +221,7 @@
 
     <script type="text/javascript">
         $('.clockpicker').clockpicker({
-            placement: 'bottom',
+            placement: 'top',
             autoclose: true,
         });
     </script>
