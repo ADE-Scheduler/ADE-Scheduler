@@ -46,7 +46,6 @@ def index():
                 data_sched.clear()
                 return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=json.dumps(data_sched), fts=json.dumps(fts_json))
 
-            print('computing')
             # At least one course code was specified, time to compute !
             data_sched.clear()
             # TODO: Gérer les projectID sur le site et sur le back-end ! (proposer l'année scolaire en sélection ?)
