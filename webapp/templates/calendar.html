@@ -11,7 +11,6 @@
         html, body {
             margin: 0;
             padding: 0;
-            {#overflow: hidden; /* don't do scrollbars */#}
             font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
             font-size: 14px;
             }
@@ -114,8 +113,6 @@
             </li>
         </ul>
     </div>
-
-
 {% endblock %}
 
 {% block body %}
@@ -152,7 +149,7 @@
     </div>
 
 
-    <div id='wrap' style="height: 550px">
+    <div id='wrap' style="height: 100%">
         <!-- calendar body -->
         <div id='calendar-container'>
             <div id='calendar'></div>
