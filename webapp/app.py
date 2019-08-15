@@ -31,8 +31,6 @@ def index():
         if request.form['submit'] == 'Add':
             course_code = request.form.get("course_code", None)
             if course_code:
-                # TODO: check le regex de course_code pour prevenir les erreurs user
-                # TODO: afficher direct les cours après fetching ?
                 if course_code not in codes:
                     basic_context['up_to_date'] = False
                     codes.append(course_code)
@@ -98,9 +96,14 @@ def getFTS():
 # To remove the code
 @app.route('/remove/code/<the_code>', methods=['GET'])
 def remove_code(the_code):
+    global data
     if the_code in codes:
         codes.remove(the_code)
         basic_context['up_to_date'] = False
+        data.clear()
+        c = getCoursesFromCodes(codes, Q1 + Q2 + Q3, 9)
+        for course in c:
+            data += course.getEventsJSON()
     return render_template('calendar.html', **basic_context, data=json.dumps(data), fts=json.dumps(fts_json))
 
 
