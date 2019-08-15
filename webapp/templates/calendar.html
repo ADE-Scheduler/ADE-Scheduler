@@ -92,26 +92,26 @@
     <div>
         <ul class="nav nav-tabs">
             <li class="active">
-                <a href="#nav-brut" data-toggle="tab" aria-expanded="false">Basic schedule</a>
+                <a id="nav-brut" data-toggle="tab" aria-expanded="false">Basic schedule</a>
             </li>
             <li class="">
-                <a href="#nav-sched-1" data-toggle="tab" aria-expanded="false">1st schedule</a>
+                <a id="nav-sched-1" data-toggle="tab" aria-expanded="false">1st schedule</a>
             </li>
-            <li class="disabled">
-                <a>1st schedule</a>
-            </li>
+{#            <li class="disabled">#}
+{#                <a>1st schedule</a>#}
+{#            </li>#}
             <li class="">
-                <a href="#nav-sched-2" data-toggle="tab" aria-expanded="false">2nd schedule</a>
+                <a id="nav-sched-2" data-toggle="tab" aria-expanded="false">2nd schedule</a>
             </li>
-            <li class="disabled">
-                <a>2nd schedule</a>
-            </li>
+{#            <li class="disabled">#}
+{#                <a>2nd schedule</a>#}
+{#            </li>#}
             <li class="">
-                <a href="#nav-sched-3" data-toggle="tab" aria-expanded="false">3rd schedule</a>
+                <a id="nav-sched-3" data-toggle="tab" aria-expanded="false">3rd schedule</a>
             </li>
-            <li class="disabled">
-                <a>3rd schedule</a>
-            </li>
+{#            <li class="disabled">#}
+{#                <a>3rd schedule</a>#}
+{#            </li>#}
         </ul>
     </div>
 
@@ -201,7 +201,7 @@
             <form class="form-horizontal" action="/" method="post">
                 <label class="control-label">Add a course</label>
                 <div class="input-group" action="/" method="post">
-                    <input type="text" class="form-control" name="course_code" placeholder="Code">
+                    <input type="text" id='course-input' class="form-control" name="course_code" placeholder="Code">
                     <span class="input-group-btn">
                         <button class="btn btn-default" type="submit" name="submit" value="Add">+</button>
                     </span>
@@ -211,11 +211,11 @@
         <form class="form-vertical" action="/" method="post">
             <div class="btn-group-vertical" style="float: left; clear: left; width: 11%;">
                 {% if up_to_date == False %}
-                    <button href="#" class="btn btn-danger" type="submit" name="submit" value="Compute" style="width: 100%;">Compute</button>
+                    <button class="btn btn-danger" type="submit" name="submit" value="Compute" style="width: 100%;">Compute</button>
                 {% else %}
-                    <button href="#" class="btn btn-success" type="submit" name="submit" value="Compute" style="width: 100%;">Compute</button>
+                    <button class="btn btn-success" type="submit" name="submit" value="Compute" style="width: 100%;">Compute</button>
                 {% endif %}
-                <button href="#" class="btn btn-default" type="submit" data-toggle="modal" data-target="#exampleModal" name="submit" value="Clear" style="width: 100%;">Clear</button>
+                <button class="btn btn-default" type="submit" data-toggle="modal" data-target="#exampleModal" name="submit" value="Clear" style="width: 100%;">Clear</button>
             </div>
         </form>
     </div>
@@ -237,8 +237,35 @@
     </script>
 
     <script>
-        // Course events (schedule)
-        let eventsArray = {{ data|safe }};
+    window.onload = function() {
+        document.getElementById("course-input").focus();
+    };
+    </script>
+
+    <script>
+        let eventsArray = {{ data_base|safe }};
+
+        $(document).ready(function(){
+            $('a').click(function(){
+                let linkValue = $(this).attr('id');
+                switch (linkValue) {
+                    case 'nav-brut':
+                        eventsArray = {{ data_base|safe }};
+                        window.location = window.location;
+                    break;
+                    case 'nav-sched-1':
+                        eventsArray = [];
+                        window.location = window.location;
+                    break;
+                    case 'nav-sched-2':
+                        console.log(linkValue);
+                    break;
+                    case 'nav-sched-3':
+                        console.log(linkValue);
+                    break;
+                }
+            });
+        });
 
         // Forbidden time slots (user's input)
         let forbiddenTimeSlots = {{ fts|safe }};
