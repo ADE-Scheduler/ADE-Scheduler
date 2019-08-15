@@ -7,22 +7,22 @@ from functools import reduce
 import operator
 
 
-def parallel_compute(courses, weeks=range(53), forbiddenTimeSlots=None, max_workers=53):
+def parallel_compute(courses, weeks=range(53), forbiddenTimeSlots=None, nbest=5, max_workers=53):
     """
     Calls the compute() function for all weeks using parallel programming
     """
     choice = 2
     if choice == 1:
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
-            futures = [executor.submit(compute, *(courses, i, forbiddenTimeSlots)) for i in weeks]
+            futures = [executor.submit(compute, *(courses, i, forbiddenTimeSlots, nbest)) for i in weeks]
             executor.shutdown(wait=True)
 
         return [future.result() for future in futures]
     else:
-        return [compute(courses, i, forbiddenTimeSlots) for i in range(53)]
+        return [compute(courses, i, forbiddenTimeSlots, nbest=5) for i in weeks]
 
 
-def compute(courses, week, forbiddenTimeSlots=None, nbest=20):
+def compute(courses, week, forbiddenTimeSlots=None, nbest=5):
     """
     Generates all the possible schedules for a given week.
     Then evaluates all those possibilities to pick the best one(s).
