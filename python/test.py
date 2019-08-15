@@ -15,12 +15,13 @@ anglais3 = ['langl1873'] # Q1
 cal = Calendar()
 
 # projectID: 2 pour 18-19 ou 9 pour 19-20
-c = getCoursesFromCodes(anglais3, [Q1[4]], 9)
-
-for course in c:
-        print(course.name, course.getSummary(weeks=range(34,53)))
+c = getCoursesFromCodes(codes_q5, Q1, 9)
 
 """
+for course in c:
+        print(course.name, course.getSummary(weeks=range(34,53)))
+"""
+
 year = parallel_compute(c)
 i = 0
 for week, score in year:
@@ -38,4 +39,3 @@ for week, score in year:
 
 with open('my.ics', 'w') as f:
     f.writelines(cal)
-"""
