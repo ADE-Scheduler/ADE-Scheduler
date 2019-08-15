@@ -194,21 +194,15 @@
         </div>
         <form class="form-vertical" action="/" method="post">
             <div class="btn-group-vertical" style="float: left; clear: left; width: 11%;">
-                <button href="#" class="btn btn-default" type="submit" name="submit" value="Compute" style="width: 100%;">Compute</button>
+                {% if up_to_date == False %}
+                    <button href="#" class="btn btn-danger" type="submit" name="submit" value="Compute" style="width: 100%;">Compute</button>
+                {% else %}
+                    <button href="#" class="btn btn-success" type="submit" name="submit" value="Compute" style="width: 100%;">Compute</button>
+                {% endif %}
                 <button href="#" class="btn btn-default" type="submit" data-toggle="modal" data-target="#exampleModal" name="submit" value="Clear" style="width: 100%;">Clear</button>
             </div>
         </form>
     </div>
-
-{#            <div>#}
-{#                <form action="/" method="post">#}
-{#                    <input type="submit" name="submit" value="Compute">#}
-{#                    <input type="submit" name="submit" value="Clear">#}
-{#                </form>#}
-{#            </div>#}
-{#        {% if up_to_date == False %}#}
-{#            <h1>NOT UP TO DATE</h1>#}
-{#        {% endif %}#}
 {% endblock %}
 
 {% block js %}
@@ -300,45 +294,37 @@
 
                 // Function called when the user drops a "forbiddenTimeSlot" event
                 drop: function(arg) {
-                    try {
-                        $('#time-prompt').modal('show');
-                        $('#time-prompt').on('click', '#time-prompt-confirm', function (e) {
-                            let startTime = $('#start_time').val();
-                            let endTime = $('#end_time').val();
-                            $('#time-prompt').modal('toggle');
+                    let modal = $('#time-prompt');
 
-                            let dateStart = new Date(arg.date.getFullYear(), arg.date.getMonth(), arg.date.getDate());
-                            dateStart.setHours(parseInt(startTime.split(':')[0]));
-                            dateStart.setMinutes(parseInt(startTime.split(':')[1]));
-                            let dateEnd = new Date(arg.date.getFullYear(), arg.date.getMonth(), arg.date.getDate());
-                            dateEnd.setHours(parseInt(endTime.split(':')[0]));
-                            dateEnd.setMinutes(parseInt(endTime.split(':')[1]));
+                    function timePromptConfirm(e) {
+                        let startTime = $('#start_time').val();
+                        let endTime = $('#end_time').val();
+                        modal.modal('hide');
 
-                            // NEW EVENT
-                            forbiddenTimeSlots.push({
-                                title: arg.draggedEl.textContent,
-                                start: dateStart.toISOString(),
-                                end: dateEnd.toISOString(),
-                                backgroundColor: arg.draggedEl.style.backgroundColor,
-                                borderColor: arg.draggedEl.style.borderColor,
-                                editable: true,
-                                description: 'A time slot where the user would like to be free'
-                            });
-                            send_fts_to_serv();
-                            calendar.refetchEvents();
+                        let dateStart = new Date(arg.date.getFullYear(), arg.date.getMonth(), arg.date.getDate());
+                        dateStart.setHours(parseInt(startTime.split(':')[0]));
+                        dateStart.setMinutes(parseInt(startTime.split(':')[1]));
+                        let dateEnd = new Date(arg.date.getFullYear(), arg.date.getMonth(), arg.date.getDate());
+                        dateEnd.setHours(parseInt(endTime.split(':')[0]));
+                        dateEnd.setMinutes(parseInt(endTime.split(':')[1]));
+
+                        // NEW EVENT
+                        forbiddenTimeSlots.push({
+                            title: arg.draggedEl.textContent,
+                            start: dateStart.toISOString(),
+                            end: dateEnd.toISOString(),
+                            backgroundColor: arg.draggedEl.style.backgroundColor,
+                            borderColor: arg.draggedEl.style.borderColor,
+                            editable: true,
+                            description: 'A time slot where the user would like to be free'
                         });
-                    } catch(err) {
-
-                    }
-                },
-
-                // Function called to create a copy of a "forbiddenTimeSlot" event (with ALT+click)
-                eventDragStart: function(arg) {
-                    if(arg.jsEvent.altKey) {
-                        dragToCopy = true;
+                        send_fts_to_serv();
                         calendar.refetchEvents();
-                        $('div').tooltip('destroy');
                     }
+
+                    modal.on('click', '#time-prompt-confirm', timePromptConfirm);
+                    modal.on('hide.bs.modal', function(e) {modal.off('click', '#time-prompt-confirm', timePromptConfirm);});
+                    modal.modal();
                 },
 
                 // Function called when the user tries to moves a "forbiddenTimeSlot" event

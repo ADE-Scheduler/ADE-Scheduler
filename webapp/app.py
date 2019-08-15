@@ -90,6 +90,7 @@ def getFTS():
             fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=1))
         else:
             print('This FTS was not recognized by the engine')
+        basic_context['up_to_date'] = False
     return render_template('calendar.html', **basic_context, data=json.dumps(data), fts=json.dumps(fts_json))
 
 
