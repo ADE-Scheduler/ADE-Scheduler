@@ -43,6 +43,9 @@ def extractDateTime(date, time, delta):
     t1 = t0 + dt
     return t0, t1, dt
 
+def intersect(event1, event2):
+    return event1.end > event2.begin and event2.end > event1.begin # not(A or B) = notA and notB
+
 def overlap(event1, event2):
     """
     Check if two events overlap. No safe check is operated.
@@ -55,7 +58,7 @@ def overlap(event1, event2):
     c : int
         The product of the weights if events overlap, 0 otherwise.
     """
-    return event1.weight * event2.weight * (event1.end > event2.begin and event2.end > event1.begin) # not(A or B) = notA and notB
+    return event1.weight * event2.weight * intersect(event1, event2) 
 
 def overlappingTime(event1, event2, onlyPositive=True):
     """

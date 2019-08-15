@@ -1,15 +1,17 @@
 from itertools import combinations, product
-from event import overlap
+from event import overlap, EventTP, EventCM, intersect
 from concurrent.futures import ThreadPoolExecutor
 from multiprocessing import Pool
 from heapq import nsmallest
+from functools import reduce
+import operator
 
 
 def parallel_compute(courses, weeks=range(53), forbiddenTimeSlots=None, max_workers=53):
     """
     Calls the compute() function for all weeks using parallel programming
     """
-    choice = 1
+    choice = 2
     if choice == 1:
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
             futures = [executor.submit(compute, *(courses, i, forbiddenTimeSlots)) for i in weeks]
@@ -41,9 +43,50 @@ def compute(courses, week, forbiddenTimeSlots=None, nbest=20):
     best_scores: list of int
         The scores of best schedules
     """
+
+    mergeTypes = {EventTP, EventCM}
+    priorTypes = {EventCM}
+
     # List of all events in form of : [[ELEC TP1, ELEC TP2], [ELEC CM], [MATH TP1, MATH TP2, MATH TP3], ...]
     # By default, EventOTHER are all chosen are accessed with Course.getEvent(self, weeks)[-1]
-    all_events = map(iter, filter(lambda e: len(e) != 0, sum((course.getWeek(week)[:-1] for course in courses), ())))
+    def __extractAllEvents(courses, week, views=None):
+        # We merge
+        if views is None:
+            # (Course 1, Course 2, ...), Course # = [CM, TP, ...]
+            m_courses = sum((course.getWeek(week)[:-1] for course in courses), ())
+        else:
+            m_courses = sum((tuple(course.getView(week, view))[:-1] for course, view in zip(courses, views)), ())
+        # We filter empty lists
+        fm_courses = filter(lambda e: len(e) != 0, m_courses)
+        # We make it iterable
+        ifm_courses = map(iter, fm_courses)
+        return ifm_courses
+        
+
+    all_events = __extractAllEvents(courses, week)
+
+    safe_compute = True # Should be chosen by user if possible
+    threshold = 100 # Arbitrary value
+    # Under a certain amount of permutations, we remove TP that are conflicting CM and same TP at the same period
+
+    if safe_compute:
+        n_perm = reduce(operator.mul, (len(list(list_e)) for list_e in all_events), 1)
+        if n_perm > threshold:
+            # views of courses where multiple TP at same period are omitted
+            views = [course.mergeEvents(mergeTypes, week) for course in courses]
+
+            # We remove all non-prior events that interesect prior events
+            # !! List comprehesion read loop from left to right
+            prior = (e for course in courses for eventType in priorTypes for e in course[eventType])
+            non_prior = (e for course in courses for eventType in set(course.events.keys())-priorTypes for e in course[eventType])
+
+            to_reject = [set(map(lambda t: t[1].getId(), 
+                                filter(lambda t: intersect(t[0], t[1]), product(p, n)))) for p, n in zip(prior, non_prior)]
+
+            views = [view-view_reject for view, view_reject in zip(views, to_reject)]
+
+            all_events = __extractAllEvents(courses, week, views)
+            
 
     # All possible weeks by selecting one element in each list of the list 's'
     perm = product(*all_events)
