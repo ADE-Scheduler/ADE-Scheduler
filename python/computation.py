@@ -1,11 +1,8 @@
 from itertools import combinations, product
-from event import  overlap
+from event import overlap
 from concurrent.futures import ThreadPoolExecutor
 from multiprocessing import Pool
 from heapq import nsmallest
-import math
-
-from time import time
 
 
 def parallel_compute(courses, weeks=range(53), forbiddenTimeSlots=None, max_workers=53):
@@ -45,7 +42,8 @@ def compute(courses, week, forbiddenTimeSlots=None, nbest=20):
         The scores of best schedules
     """
     # List of all events in form of : [[ELEC TP1, ELEC TP2], [ELEC CM], [MATH TP1, MATH TP2, MATH TP3], ...]
-    all_events = map(iter, filter(lambda e: len(e) != 0, sum((course.getweek(week) for course in courses), ())))
+    # By default, EventOTHER are all chosen are accessed with Course.getEvent(self, weeks)[-1]
+    all_events = map(iter, filter(lambda e: len(e) != 0, sum((course.getWeek(week)[:-1] for course in courses), ())))
 
     # All possible weeks by selecting one element in each list of the list 's'
     perm = product(*all_events)
@@ -56,8 +54,9 @@ def compute(courses, week, forbiddenTimeSlots=None, nbest=20):
     else:
         best = nsmallest(nbest, perm, key=lambda f:costFunction(f, forbiddenTimeSlots))
 
-
-    return best, [costFunction(week, forbiddenTimeSlots) for week in best]
+    # Return best week + add all EventOTHER
+    other = tuple(sum((course.getWeek(week)[-1] for course in courses),[]))
+    return [best[i] + other for i in range(len(best))], [costFunction(week, forbiddenTimeSlots) for week in best]
 
 
 def costFunction(weekEvents, forbiddenTimeSlots=None):

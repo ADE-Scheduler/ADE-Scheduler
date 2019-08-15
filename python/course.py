@@ -39,18 +39,17 @@ class Course:
     def __str__(self):
         return self.code + ": " + self.name
 
-    def getweek(self, week):
-        # TODO: Gérer les Other (trop chiant)
-        return self[EventCM][week], self[EventTP][week], self[EventEXAM][week], self[EventORAL][week]
-
     def getEvents(self, weeks=None):
         if weeks is None:
             return self.events.values()
-        elif isinstance(weeks, slice):
-            return (events[slice] for events in self.events.values())
+        elif isinstance(weeks, slice) or isinstance(weeks, int) :
+            return (events[weeks] for events in self.events.values())
         else:
             itg = itemgetter(*list(weeks))
             return (itg(events) for events in self.events.values())
+
+    def getWeek(self, week):
+        return tuple(self.getEvents(week))
 
     def join(self):
         for eventType, course in self.events.items():
