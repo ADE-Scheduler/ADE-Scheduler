@@ -90,28 +90,28 @@
 
 {% block bodyhead %}
     <div>
-        <ul class="nav nav-tabs">
+        <ul class="nav nav-tabs" id="nav-tab-cal">
             <li class="active">
                 <a id="nav-brut" data-toggle="tab" aria-expanded="false">Basic schedule</a>
             </li>
-            <li class="">
+            <li>
                 <a id="nav-sched-1" data-toggle="tab" aria-expanded="false">1st schedule</a>
             </li>
 {#            <li class="disabled">#}
 {#                <a>1st schedule</a>#}
 {#            </li>#}
-            <li class="">
-                <a id="nav-sched-2" data-toggle="tab" aria-expanded="false">2nd schedule</a>
-            </li>
-{#            <li class="disabled">#}
-{#                <a>2nd schedule</a>#}
+{#            <li>#}
+{#                <a id="nav-sched-2" data-toggle="tab" aria-expanded="false">2nd schedule</a>#}
 {#            </li>#}
-            <li class="">
-                <a id="nav-sched-3" data-toggle="tab" aria-expanded="false">3rd schedule</a>
+            <li class="disabled">
+                <a>2nd schedule</a>
             </li>
-{#            <li class="disabled">#}
-{#                <a>3rd schedule</a>#}
+{#            <li>#}
+{#                <a id="nav-sched-3" data-toggle="tab" aria-expanded="false">3rd schedule</a>#}
 {#            </li>#}
+            <li class="disabled">
+                <a>3rd schedule</a>
+            </li>
         </ul>
     </div>
 
@@ -228,7 +228,6 @@
     <script src='/static/fullcalendar/list/main.js'></script>
     <script src='/static/fullcalendar/timegrid/main.js'></script>
     <script src='/static/clockpicker/dist/bootstrap-clockpicker.min.js'></script>
-
     <script type="text/javascript">
         $('.clockpicker').clockpicker({
             placement: 'top',
@@ -237,35 +236,43 @@
     </script>
 
     <script>
-    window.onload = function() {
-        document.getElementById("course-input").focus();
-    };
+        // Focus on the Course Code input
+        window.onload = function() {
+            document.getElementById("course-input").focus();
+        };
+
+        // Remember the navbar's selected tab
+        $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
+            localStorage.setItem('activeTab', $(e.target).attr('id'));
+        });
+
+        let activeTab = localStorage.getItem('activeTab');
+        console.log(activeTab);
+        if(activeTab) {
+            $('#nav-tab-cal a[id="' + activeTab + '"]').tab('show');
+        }
     </script>
 
     <script>
-        let eventsArray = {{ data_base|safe }};
-
+        let eventsArray = [];
         $(document).ready(function(){
             $('a').click(function(){
-                let linkValue = $(this).attr('id');
-                switch (linkValue) {
-                    case 'nav-brut':
-                        eventsArray = {{ data_base|safe }};
-                        window.location = window.location;
-                    break;
-                    case 'nav-sched-1':
-                        eventsArray = [];
-                        window.location = window.location;
-                    break;
-                    case 'nav-sched-2':
-                        console.log(linkValue);
-                    break;
-                    case 'nav-sched-3':
-                        console.log(linkValue);
-                    break;
-                }
+                window.location = window.location;
             });
         });
+        switch (localStorage.getItem('activeTab')) {
+            case 'nav-brut':
+                eventsArray = {{ data_base|safe }};
+            break;
+            case 'nav-sched-1':
+                eventsArray = {{ data_sched|safe }};
+                console.log(eventsArray);
+            break;
+            case 'nav-sched-2':
+            break;
+            case 'nav-sched-3':
+            break;
+        }
 
         // Forbidden time slots (user's input)
         let forbiddenTimeSlots = {{ fts|safe }};
