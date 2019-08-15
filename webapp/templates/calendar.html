@@ -377,6 +377,15 @@
                     modal.modal();
                 },
 
+                // Function called to create a copy of a "forbiddenTimeSlot" event (with ALT+click)
+                eventDragStart: function(arg) {
+                    if(arg.jsEvent.altKey) {
+                        dragToCopy = true;
+                        calendar.refetchEvents();
+                        $('div').tooltip('destroy');
+                    }
+                },
+
                 // Function called when the user tries to moves a "forbiddenTimeSlot" event
                 eventDrop: function(arg) {
                     if(!dragToCopy) {
