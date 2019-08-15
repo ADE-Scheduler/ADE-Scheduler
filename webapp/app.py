@@ -45,7 +45,7 @@ def index():
             # No course code was specified
             if len(codes) == 0:
                 data_sched.clear()
-                return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), fts=json.dumps(fts_json))
+                return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=json.dumps(data_sched), fts=json.dumps(fts_json))
 
             # At least one course code was specified, time to compute !
             data_sched.clear()
@@ -63,13 +63,14 @@ def index():
         if request.form['submit'] == 'Clear':
             basic_context['up_to_date'] = True
             data_base.clear()
+            data_sched.clear()
             codes.clear()
             fts_json.clear()
             fts.clear()
 
     context = basic_context
     context['codes'] = codes
-    return render_template('calendar.html', **context, data_base=json.dumps(data_base), fts=json.dumps(fts_json))
+    return render_template('calendar.html', **context, data_base=json.dumps(data_base), data_sched=json.dumps(data_sched), fts=json.dumps(fts_json))
 
 
 # To fetch the FTS
@@ -92,7 +93,7 @@ def getFTS():
         else:
             print('This FTS was not recognized by the engine')
         basic_context['up_to_date'] = False
-    return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), fts=json.dumps(fts_json))
+    return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=json.dumps(data_sched), fts=json.dumps(fts_json))
 
 
 # To remove the code
@@ -106,7 +107,7 @@ def remove_code(the_code):
         c = getCoursesFromCodes(codes, Q1 + Q2 + Q3, 9)
         for course in c:
             data_base += course.getEventsJSON()
-    return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), fts=json.dumps(fts_json))
+    return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=json.dumps(data_sched), fts=json.dumps(fts_json))
 
 
 # Page for user preferences
