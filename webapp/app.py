@@ -25,6 +25,7 @@ basic_context = {'up_to_date': True}
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    global data
     if request.method == 'POST':
         # CODE ADDED BY USER
         if request.form['submit'] == 'Add':
@@ -35,9 +36,9 @@ def index():
                 if course_code not in codes:
                     basic_context['up_to_date'] = False
                     codes.append(course_code)
-                    # c = getCoursesFromCodes(codes, Q1+Q2, 9)
-                    # for course in c:
-                    #     data += course.getEventsJSON()
+                    c = getCoursesFromCodes(course_code, Q1+Q2+Q3, 9)
+                    for course in c:
+                        data += course.getEventsJSON()
 
         # COMPUTATION REQUESTED BY USER
         if request.form['submit'] == 'Compute':
