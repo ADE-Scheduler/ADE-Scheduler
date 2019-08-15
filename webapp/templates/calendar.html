@@ -111,7 +111,7 @@
                     <div class="btn-group-vertical" style="width: 48%; margin-right: 2%; float: left">
                         <h5 style="text-align: center"><strong>Start</strong></h5>
                         <div class="input-group clockpicker">
-                            <input type="text" class="form-control" value="08:00" id="start_time">
+                            <input type="text" class="form-control" value="08:00" id="start_time" readonly>
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-time"></span>
                             </span>
@@ -120,7 +120,7 @@
                     <div class="btn-group-vertical" style="width: 48%; margin-left: 2%; float: right">
                         <h5 style="text-align: center"><strong>End</strong></h5>
                         <div class="input-group clockpicker">
-                            <input type="text" class="form-control" value="10:00" id="end_time">
+                            <input type="text" class="form-control" value="10:00" id="end_time" readonly>
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-time"></span>
                             </span>
@@ -300,32 +300,36 @@
 
                 // Function called when the user drops a "forbiddenTimeSlot" event
                 drop: function(arg) {
-                    $('#time-prompt').modal('show');
-                    $('#time-prompt').on('click', '#time-prompt-confirm', function (e) {
-                        let startTime = $('#start_time').val();
-                        let endTime = $('#end_time').val();
-                        $('#time-prompt').modal('toggle');
+                    try {
+                        $('#time-prompt').modal('show');
+                        $('#time-prompt').on('click', '#time-prompt-confirm', function (e) {
+                            let startTime = $('#start_time').val();
+                            let endTime = $('#end_time').val();
+                            $('#time-prompt').modal('toggle');
 
-                        let dateStart = new Date(arg.date.getFullYear(), arg.date.getMonth(), arg.date.getDate());
-                        dateStart.setHours(parseInt(startTime.split(':')[0]));
-                        dateStart.setMinutes(parseInt(startTime.split(':')[1]));
-                        let dateEnd = new Date(arg.date.getFullYear(), arg.date.getMonth(), arg.date.getDate());
-                        dateEnd.setHours(parseInt(endTime.split(':')[0]));
-                        dateEnd.setMinutes(parseInt(endTime.split(':')[1]));
+                            let dateStart = new Date(arg.date.getFullYear(), arg.date.getMonth(), arg.date.getDate());
+                            dateStart.setHours(parseInt(startTime.split(':')[0]));
+                            dateStart.setMinutes(parseInt(startTime.split(':')[1]));
+                            let dateEnd = new Date(arg.date.getFullYear(), arg.date.getMonth(), arg.date.getDate());
+                            dateEnd.setHours(parseInt(endTime.split(':')[0]));
+                            dateEnd.setMinutes(parseInt(endTime.split(':')[1]));
 
-                        // NEW EVENT
-                        forbiddenTimeSlots.push({
-                            title: arg.draggedEl.textContent,
-                            start: dateStart.toISOString(),
-                            end: dateEnd.toISOString(),
-                            backgroundColor: arg.draggedEl.style.backgroundColor,
-                            borderColor: arg.draggedEl.style.borderColor,
-                            editable: true,
-                            description: 'A time slot where the user would like to be free'
+                            // NEW EVENT
+                            forbiddenTimeSlots.push({
+                                title: arg.draggedEl.textContent,
+                                start: dateStart.toISOString(),
+                                end: dateEnd.toISOString(),
+                                backgroundColor: arg.draggedEl.style.backgroundColor,
+                                borderColor: arg.draggedEl.style.borderColor,
+                                editable: true,
+                                description: 'A time slot where the user would like to be free'
+                            });
+                            send_fts_to_serv();
+                            calendar.refetchEvents();
                         });
-                        send_fts_to_serv();
-                        calendar.refetchEvents();
-                    });
+                    } catch(err) {
+
+                    }
                 },
 
                 // Function called to create a copy of a "forbiddenTimeSlot" event (with ALT+click)
