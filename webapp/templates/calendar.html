@@ -95,7 +95,7 @@
 
         <!-- drag-n-drop body -->
         <div id='left-container'>
-            <h4 style="font-weight: bold">Block Time Slots</h4>
+            <h4><strong>Block Time Slots</strong></h4>
             <div id='external-events-list'>
                 <div class='fc-event' , style="background-color: #46b92f; border-color: #46b92f">Low</div>
                 <div class='fc-event' , style="background-color: #b97012; border-color: #b97012">Medium</div>
@@ -106,7 +106,7 @@
         <!-- course body -->
         <div id='left-container' style="margin-top: 15px; margin-bottom: 15px;">
             <div>
-                <h4 style="font-weight: bold">Current Courses</h4>
+                <h4><strong>Current Courses</strong></h4>
                 <table>
                     <tbody>
                         <!-- For the course-->
@@ -139,17 +139,17 @@
                 <div class="input-group" action="/" method="post">
                     <input type="text" class="form-control" name="course_code" placeholder="Code">
                     <span class="input-group-btn">
-                        <button class="btn btn-default" type="submit" name="submit" value="Add">Add</button>
+                        <button class="btn btn-default" type="submit" name="submit" value="Add">+</button>
                     </span>
                 </div>
             </form>
         </div>
-        <div style="float: left; clear: left; width: 11%;">
-            <form class="form-horizontal" action="/" method="post">
+        <form class="form-vertical" action="/" method="post">
+            <div class="btn-group-vertical" style="float: left; clear: left; width: 11%;">
                 <button href="#" class="btn btn-default" type="submit" name="submit" value="Compute" style="width: 100%;">Compute</button>
                 <button href="#" class="btn btn-default" type="submit" name="submit" value="Clear" style="width: 100%;">Clear</button>
-            </form>
-        </div>
+            </div>
+        </form>
 
     </div>
 
