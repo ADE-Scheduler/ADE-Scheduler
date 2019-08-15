@@ -18,6 +18,7 @@ app = Flask(__name__)
 
 codes_master = ['LELEC2660', 'LELEC2811', 'LMECA2755', 'LELEC2313', 'LELEC2531', 'LMECA2801', 'LELME2002']
 codes = list()
+data_base = list()
 data = list()
 fts_json = list()
 fts = list()
@@ -25,7 +26,7 @@ basic_context = {'up_to_date': True}
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    global data
+    global data_base
     if request.method == 'POST':
         # CODE ADDED BY USER
         if request.form['submit'] == 'Add':
@@ -36,7 +37,7 @@ def index():
                     codes.append(course_code)
                     c = getCoursesFromCodes([course_code], Q1+Q2+Q3, 9)
                     for course in c:
-                        data += course.getEventsJSON()
+                        data_base += course.getEventsJSON()
 
         # COMPUTATION REQUESTED BY USER
         if request.form['submit'] == 'Compute':
@@ -44,7 +45,7 @@ def index():
             # No course code was specified
             if len(codes) == 0:
                 data.clear()
-                return render_template('calendar.html', **basic_context, data=json.dumps(data), fts=json.dumps(fts_json))
+                return render_template('calendar.html', **basic_context, data=json.dumps(data_base), fts=json.dumps(fts_json))
 
             # At least one course code was specified, time to compute !
             data.clear()
@@ -61,14 +62,14 @@ def index():
         # CLEAR ALL
         if request.form['submit'] == 'Clear':
             basic_context['up_to_date'] = True
-            data.clear()
+            data_base.clear()
             codes.clear()
             fts_json.clear()
             fts.clear()
 
     context = basic_context
     context['codes'] = codes
-    return render_template('calendar.html', **context, data=json.dumps(data), fts=json.dumps(fts_json))
+    return render_template('calendar.html', **context, data=json.dumps(data_base), fts=json.dumps(fts_json))
 
 
 # To fetch the FTS
@@ -91,21 +92,21 @@ def getFTS():
         else:
             print('This FTS was not recognized by the engine')
         basic_context['up_to_date'] = False
-    return render_template('calendar.html', **basic_context, data=json.dumps(data), fts=json.dumps(fts_json))
+    return render_template('calendar.html', **basic_context, data=json.dumps(data_base), fts=json.dumps(fts_json))
 
 
 # To remove the code
 @app.route('/remove/code/<the_code>', methods=['GET'])
 def remove_code(the_code):
-    global data
+    global data_base
     if the_code in codes:
         codes.remove(the_code)
         basic_context['up_to_date'] = False
-        data.clear()
+        data_base.clear()
         c = getCoursesFromCodes(codes, Q1 + Q2 + Q3, 9)
         for course in c:
-            data += course.getEventsJSON()
-    return render_template('calendar.html', **basic_context, data=json.dumps(data), fts=json.dumps(fts_json))
+            data_base += course.getEventsJSON()
+    return render_template('calendar.html', **basic_context, data=json.dumps(data_base), fts=json.dumps(fts_json))
 
 
 # Page for user preferences

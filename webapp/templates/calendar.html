@@ -92,13 +92,29 @@
     <div>
         <ul class="nav nav-tabs">
             <li class="active">
-                <a href="#home" data-toggle="tab">Calendrier 1</a>
+                <a href="#nav-brut" data-toggle="tab" aria-expanded="false">Basic schedule</a>
             </li>
-            <li>
-                <a href="#profile" data-toggle="tab">Calendrier 2</a>
+            <li class="">
+                <a href="#nav-sched-1" data-toggle="tab" aria-expanded="false">1st schedule</a>
+            </li>
+            <li class="disabled">
+                <a>1st schedule</a>
+            </li>
+            <li class="">
+                <a href="#nav-sched-2" data-toggle="tab" aria-expanded="false">2nd schedule</a>
+            </li>
+            <li class="disabled">
+                <a>2nd schedule</a>
+            </li>
+            <li class="">
+                <a href="#nav-sched-3" data-toggle="tab" aria-expanded="false">3rd schedule</a>
+            </li>
+            <li class="disabled">
+                <a>3rd schedule</a>
             </li>
         </ul>
     </div>
+
 
 {% endblock %}
 
@@ -146,9 +162,9 @@
         <div id='left-container'>
             <h4><strong>Block Time Slots</strong></h4>
             <div id='external-events-list'>
-                <div class='fc-event' , style="background-color: #46b92f; border-color: #46b92f">Low</div>
-                <div class='fc-event' , style="background-color: #b97012; border-color: #b97012">Medium</div>
-                <div class='fc-event' , style="background-color: #b91826; border-color: #b91826">High</div>
+                <div class='fc-event' style="background-color: #46b92f; border-color: #46b92f">Low</div>
+                <div class='fc-event' style="background-color: #b97012; border-color: #b97012">Medium</div>
+                <div class='fc-event' style="background-color: #b91826; border-color: #b91826">High</div>
             </div>
         </div>
 
