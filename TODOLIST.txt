@@ -1,5 +1,9 @@
 ************************************************  TO  DO  LIST   ****************************************************
 
+Si on veut tout porter en javascript :
+- ics.py => https://github.com/nwcell/ics.js/
+- itertools => https://github.com/abozhilov/ES-Iter/blob/master/src/Iter.js
+
 ** PROJET LOCAL (BACK-END)
 OK	- Web scraping (recuperer les donnees sur ADE)
 	- Stocker les donnees sous un format efficace pour la suite
