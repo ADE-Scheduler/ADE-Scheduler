@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, make_response
 import json
 import sys, os, inspect
 from pytz import timezone
@@ -26,6 +26,16 @@ basic_context = {'up_to_date': True}
 @app.route('/', methods=['GET', 'POST'])
 def index():
     global data_base
+    try:
+        pref_safe_compute = request.cookies.get('safe-compute')
+        if pref_safe_compute is None or pref_safe_compute == 'False':
+            # Put some cookies
+            basic_context['safe_compute'] = False
+        elif pref_safe_compute == 'True':
+            basic_context['safe_compute'] = True
+    except:
+        # Put some cookies
+        basic_context['safe_compute'] = False
     if request.method == 'POST':
         # CODE ADDED BY USER
         if request.form['submit'] == 'Add':
@@ -114,7 +124,17 @@ def remove_code(the_code):
 # Page for user preferences
 @app.route('/preferences')
 def preferences():
-    return render_template('preferences.html')
+    try:
+        pref_safe_compute = request.cookies.get('safe-compute')
+        if pref_safe_compute is None or pref_safe_compute == 'False':
+            # Put some cookies
+            basic_context['safe_compute'] = False
+        elif pref_safe_compute == 'True':
+            basic_context['safe_compute'] = True
+    except:
+        # Put some cookies
+        basic_context['safe_compute'] = False
+    return render_template('preferences.html', **basic_context)
 
 
 # Page for user's help guide
@@ -124,11 +144,19 @@ def help_guide():
 
 
 # To handle the preferences form
-@app.route('/change/preferences', methods=['GET', 'POST'])
+# The method post garantees that we cannot go by url
+@app.route('/change/preferences', methods=['POST'])
 def preferences_changes():
     # Some work
-    return redirect('/')
-
+    if request.method == 'POST':
+        resp = make_response(redirect('/'))
+        safe_compute_user = request.form.get('safe-compute')
+        print(safe_compute_user)
+        if safe_compute_user is None: # Not checked
+            resp.set_cookie('safe-compute', 'False')
+        else:
+            resp.set_cookie('safe-compute', 'True')
+    return resp
 
 # ERROR HANDLER
 @app.errorhandler(404)
