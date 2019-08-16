@@ -51,7 +51,7 @@ def index():
             # TODO: Gérer les projectID sur le site et sur le back-end ! (proposer l'année scolaire en sélection ?)
             c = getCoursesFromCodes(codes, Q1+Q2+Q3, 9)
             year = parallel_compute(c, forbiddenTimeSlots=fts, nbest=5)
-            print(year)
+            #print(year)
             for week, score in year:
                 for event in week[0]:
                     temp = {'start': str(event.begin), 'end': str(event.end), 'title': event.name, 'editable': False,
