@@ -20,7 +20,11 @@
                     <div class="box-body">
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox"> Safe compute (see <a href="/help">Help section</a>)
+                                {% if safe_compute == False %}
+                                    <input type="checkbox" name="safe-compute" id="safe-compute"> Safe compute (see <a href="/help">Help section</a>)
+                                {% else %}
+                                <input type="checkbox" name="safe-compute" id="safe-compute" checked> Safe compute (see <a href="/help">Help section</a>)
+                                {% endif %}
                             </label>
                         </div>
                     </div>
