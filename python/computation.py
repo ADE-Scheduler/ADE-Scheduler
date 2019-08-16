@@ -1,11 +1,10 @@
-from itertools import combinations, product
+from itertools import combinations, product, tee
 from event import overlap, EventTP, EventCM, intersect
 from concurrent.futures import ThreadPoolExecutor
 from multiprocessing import Pool
 from heapq import nsmallest
 from functools import reduce
 import operator
-
 
 def parallel_compute(courses, weeks=range(53), forbiddenTimeSlots=None, nbest=5, max_workers=53):
     """
@@ -58,19 +57,17 @@ def compute(courses, week, forbiddenTimeSlots=None, nbest=5):
             m_courses = sum((tuple(course.getView(week, view))[:-1] for course, view in zip(courses, views)), ())
         # We filter empty lists
         fm_courses = filter(lambda e: len(e) != 0, m_courses)
-        # We make it iterable
-        ifm_courses = map(iter, fm_courses)
-        return ifm_courses
+        return fm_courses
         
 
-    all_events = __extractAllEvents(courses, week)
+    all_events, all_events_bis = tee(__extractAllEvents(courses, week))
 
     safe_compute = True # Should be chosen by user if possible
-    threshold = 100 # Arbitrary value
+    threshold = 0 # Arbitrary value
     # Under a certain amount of permutations, we remove TP that are conflicting CM and same TP at the same period
 
     if safe_compute:
-        n_perm = reduce(operator.mul, (len(list(list_e)) for list_e in all_events), 1)
+        n_perm = reduce(operator.mul, (len(list(list_e)) for list_e in all_events_bis), 1)
         if n_perm > threshold:
             # views of courses where multiple TP at same period are omitted
             views = [course.mergeEvents(mergeTypes, week) for course in courses]
@@ -88,7 +85,7 @@ def compute(courses, week, forbiddenTimeSlots=None, nbest=5):
             all_events = __extractAllEvents(courses, week, views)
             
 
-    # All possible weeks by selecting one element in each list of the list 's'
+    # All possible weeks by selecting one element in each list of the list
     perm = product(*all_events)
 
     # Selecting the best possible schedule
