@@ -486,7 +486,7 @@
     <script>
         // Delete a course
         function deleteCourse(code) {
-            $.get('/remove/code/'+code,() => window.location=window.location);
+            $.post('/remove/code/'+code,() => window.location.reload());
         }
     </script>
 {% endblock %}
