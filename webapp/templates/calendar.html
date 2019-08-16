@@ -90,6 +90,29 @@
 {% block bodyhead %}
     <div>
         <ul class="nav nav-tabs" id="nav-tab-cal">
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                Dropdown <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <div class="form-group">
+                        <div class="col-lg-10">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
+                                    Sched 1
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                                    Sched 2
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </ul>
+            </li>
             <li class="active">
                 <a id="nav-brut" data-toggle="tab" aria-expanded="false">Basic schedule</a>
             </li>
