@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 import json
 import sys, os, inspect
 from pytz import timezone
@@ -121,6 +121,13 @@ def preferences():
 @app.route('/help')
 def help_guide():
     return render_template('help.html')
+
+
+# To handle the preferences form
+@app.route('/change/preferences', methods=['GET', 'POST'])
+def preferences_changes():
+    # Some work
+    return redirect('/')
 
 
 # ERROR HANDLER
