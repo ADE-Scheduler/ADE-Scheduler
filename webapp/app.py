@@ -15,6 +15,8 @@ from event import CustomEvent, EventCM
 
 app = Flask(__name__)
 
+__first_connection = True
+
 codes_master = ['LELEC2660', 'LELEC2811', 'LMECA2755', 'LELEC2313', 'LELEC2531', 'LMECA2801', 'LELME2002']
 codes = list()
 data_base = list()
@@ -26,46 +28,11 @@ basic_context = {'up_to_date': True, 'safe_compute':None}
 @app.route('/', methods=['GET', 'POST'])
 def index():
     global data_base
-    global codes
+    global __first_connection
 
-    if basic_context['safe_compute'] is None: # Also meaning that it is the first connection
-        # Getting the cookies
-        # Safe compute
-        resp = make_response(render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=data_sched, fts=json.dumps(fts_json)))
-        try:
-            pref_safe_compute = request.cookies.get('safe-compute')
-            if pref_safe_compute is None or pref_safe_compute == 'False':
-                # Put some cookies
-                basic_context['safe_compute'] = False
-            elif pref_safe_compute == 'True':
-                basic_context['safe_compute'] = True
-        except:
-            # Put some cookies
-            basic_context['safe_compute'] = False
-
-        # Last computed codes
-        if request.method == 'GET' and len(codes) == 0:
-            try:
-                last_computed = request.cookies.get('last_computed')
-                codes = last_computed.split()
-                c = getCoursesFromCodes(codes, Q1+Q2+Q3, 9)
-                for course in c:
-                    data_base += course.getEventsJSON()
-                scheds, score = parallel_compute(c, forbiddenTimeSlots=fts, nbest=3)
-                i = 1
-                for year in scheds:
-                    temp_sched = list()
-                    for week in year:
-                        for event in week:
-                            temp = {'start': str(event.begin), 'end': str(event.end), 'title': event.name,
-                                    'editable': False,
-                                    'description': event.name + '\n' + event.location + ' - ' + str(
-                                        event.duration) + '\n' + str(event.description)}
-                            temp_sched.append(temp)
-                    data_sched['sched_' + str(i)] = json.dumps(temp_sched)
-                    i += 1
-            except:
-                pass
+    if __first_connection:
+        __first_connection = False
+        cookies_handler()
         
     if request.method == 'POST':
         # CODE ADDED BY USER
@@ -215,6 +182,49 @@ def preferences_changes():
 def page_not_found(e):
     return render_template('404.html'), 404
 
+
+# COOKIES HANDLER
+def cookies_handler():
+    global codes
+    global data_base
+
+    # Getting the cookies
+    # Safe compute
+    resp = make_response(render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=data_sched, fts=json.dumps(fts_json)))
+    try:
+        pref_safe_compute = request.cookies.get('safe-compute')
+        if pref_safe_compute is None or pref_safe_compute == 'False':
+            # Put some cookies
+            basic_context['safe_compute'] = False
+        elif pref_safe_compute == 'True':
+            basic_context['safe_compute'] = True
+    except:
+        # Put some cookies
+        basic_context['safe_compute'] = False
+
+    # Last computed codes
+    if request.method == 'GET' and len(codes) == 0:
+        try:
+            last_computed = request.cookies.get('last_computed')
+            codes = last_computed.split()
+            c = getCoursesFromCodes(codes, Q1+Q2+Q3, 9)
+            for course in c:
+                data_base += course.getEventsJSON()
+            scheds, score = parallel_compute(c, forbiddenTimeSlots=fts, nbest=3)
+            i = 1
+            for year in scheds:
+                temp_sched = list()
+                for week in year:
+                    for event in week:
+                        temp = {'start': str(event.begin), 'end': str(event.end), 'title': event.name,
+                                'editable': False,
+                                'description': event.name + '\n' + event.location + ' - ' + str(
+                                    event.duration) + '\n' + str(event.description)}
+                        temp_sched.append(temp)
+                data_sched['sched_' + str(i)] = json.dumps(temp_sched)
+                i += 1
+        except:
+            pass
 
 if __name__ == '__main__':
     app.run(debug=True)
