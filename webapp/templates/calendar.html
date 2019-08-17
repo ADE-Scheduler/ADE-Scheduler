@@ -43,11 +43,80 @@
     <div>
         <ul class="nav nav-tabs" id="nav-tab-cal">
             <li class="nav-item">
-                <a class="nav-link active" id="nav-brut" data-toggle="tab" aria-expanded="false">Basic schedule</a>
+                <a class="nav-link active" id="nav-brut" data-toggle="tab" aria-expanded="false">ADE schedule</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" id="nav-sched-1" data-toggle="tab" aria-expanded="false">1st schedule</a>
-            </li>
+            {% if data_sched|length > 0 %}
+                <li class="nav-item">
+                    <a class="nav-link" id="nav-sched-1" data-toggle="tab" aria-expanded="false">1st schedule</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">1st schedule</a>
+                </li>
+            {% endif %}
+            {% if data_sched|length > 1 %}
+                <li class="nav-item">
+                    <a class="nav-link" id="nav-sched-2" data-toggle="tab" aria-expanded="false">2nd schedule</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">2nd schedule</a>
+                </li>
+            {% endif %}
+            {% if data_sched|length > 2 %}
+                <li class="nav-item">
+                    <a class="nav-link" id="nav-sched-3" data-toggle="tab" aria-expanded="false">3rd schedule</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">3rd schedule</a>
+                </li>
+            {% endif %}
+            {% if data_sched|length > 0 %}
+                <li class="nav-item dropdown" id="dropdown-compare">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Compare</a>
+                    <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 39px, 0px); top: 0px; left: 0px; will-change: transform;">
+                        <div class="form-group">
+                            <a class="dropdown-item">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="check-sched-default">
+                                    <label class="custom-control-label" for="check-sched-default">ADE schedule</label>
+                                </div>
+                            </a>
+                            <a class="dropdown-item">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="check-sched-1">
+                                    <label class="custom-control-label" for="check-sched-1">1st schedule</label>
+                                </div>
+                            </a>
+                            {% if data_sched|length > 1 %}
+                                <a class="dropdown-item">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="check-sched-2">
+                                        <label class="custom-control-label" for="check-sched-2">2nd schedule</label>
+                                    </div>
+                                </a>
+                            {% endif %}
+                            {% if data_sched|length > 2 %}
+                                <a class="dropdown-item">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="check-sched-3">
+                                        <label class="custom-control-label" for="check-sched-3">3rd schedule</label>
+                                    </div>
+                                </a>
+                            {% endif %}
+
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="" id="btn-sched-compare">Go !</a>
+                    </div>
+                </li>
+            {% else %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link disabled" href="#">Compare</a>
+                </li>
+            {% endif %}
+
         </ul>
     </div>
 {% endblock %}
@@ -162,7 +231,7 @@
     <script src='/static/fullcalendar/bootstrap/main.js'></script>
     <script src='/static/clockpicker/bootstrap-clockpicker.min.js'></script>
 
-    <script type="text/javascript">
+    <script>
         $('.clockpicker').clockpicker({
             placement: 'top',
             autoclose: true,
@@ -181,29 +250,86 @@
         });
 
         let activeTab = localStorage.getItem('activeTab');
-        console.log(activeTab);
         if(activeTab) {
             $('#nav-tab-cal a[id="' + activeTab + '"]').tab('show');
         }
+
+        // Compare the requested schedules
+        $('#btn-sched-compare').on('click', function(event) {
+            let str = 'compare_';
+            if ($('#check-sched-default').is(':checked')) {
+                str = str.concat('d');
+            }
+            if ($('#check-sched-1').is(':checked')) {
+                str = str.concat('1');
+            }
+            if ($('#check-sched-2').is(':checked')) {
+                str = str.concat('2');
+            }
+            if ($('#check-sched-3').is(':checked')) {
+                str = str.concat('3');
+            }
+            localStorage.setItem('activeTab', str);
+        });
+
+        // Do not close dropdown on click inside
+        jQuery('.dropdown-toggle').on('click', function (e) {
+            $(this).next().toggle();
+        });
+        jQuery('.dropdown-menu.keep-open').on('click', function (e) {
+            e.stopPropagation();
+        });
     </script>
 
     <script>
+        // Course Events selection
         let eventsArray = [];
+        let schedules = {{ data_sched|safe }};
         $(document).ready(function(){
             $('a[data-toggle="tab"]').click(function(){
                 window.location = window.location;
             });
         });
-        switch (localStorage.getItem('activeTab')) {
+        {% if data_sched|length < 1 %}
+            localStorage.setItem('activeTab', 'nav-brut');
+        {% endif %}
+        let str = localStorage.getItem('activeTab').split('_');
+        switch (str[0]) {
             case 'nav-brut':
                 eventsArray = {{ data_base|safe }};
             break;
             case 'nav-sched-1':
-                eventsArray = {{ data_sched|safe }};
+                eventsArray = JSON.parse(schedules.sched_1);
             break;
             case 'nav-sched-2':
+                eventsArray = JSON.parse(schedules.sched_2);
             break;
             case 'nav-sched-3':
+                eventsArray = JSON.parse(schedules.sched_3);
+            break;
+            case 'compare':
+                for (let i=0; i < str[1].length; i++){
+                    switch (str[1].charAt(i)) {
+                        case 'd':
+                            eventsArray = {{ data_base|safe }};
+                            break;
+                        case '1':
+                            let evtList = JSON.parse(schedules.sched_1);
+                            for (let j=0; j < schedules.sched_1.length; j++) {
+                                let evt = evtList[j];
+                                console.log(evt)
+                                evt.backgroundColor = 'black';
+                                evt.borderColor = 'black';
+                                eventsArray.push(evt);
+                            }
+                            break;
+                        case '2':
+                            break;
+                        case '3':
+                            break;
+                    }
+                }
+                localStorage.setItem('activeTab', 'nav-brut');
             break;
         }
 

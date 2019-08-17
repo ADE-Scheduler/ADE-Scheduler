@@ -6,19 +6,40 @@ from heapq import nsmallest
 from functools import reduce
 import operator
 
-def parallel_compute(courses, weeks=range(53), forbiddenTimeSlots=None, nbest=5, max_workers=53):
-    """
-    Calls the compute() function for all weeks using parallel programming
-    """
-    choice = 2
-    if choice == 1:
-        with ThreadPoolExecutor(max_workers=max_workers) as executor:
-            futures = [executor.submit(compute, *(courses, i, forbiddenTimeSlots, nbest)) for i in weeks]
-            executor.shutdown(wait=True)
 
-        return [future.result() for future in futures]
-    else:
-        return [compute(courses, i, forbiddenTimeSlots, nbest=5) for i in weeks]
+def parallel_compute(courses, weeks=range(53), forbiddenTimeSlots=None, nbest=5):
+    """
+   Calls the compute() function for all weeks using parallel programming
+   """
+
+    """ cela n'a jamais marche
+   choice = 2
+   if choice == 1:
+       with ThreadPoolExecutor(max_workers=max_workers) as executor:
+           futures = [executor.submit(compute, *(courses, i, forbiddenTimeSlots, nbest)) for i in weeks]
+           executor.shutdown(wait=True)
+
+       return [future.result() for future in futures]
+   else:
+   """
+    # solution temporaire car j'ai pas le temps ajd
+    # oktamer = [compute(courses, i, forbiddenTimeSlots, nbest=5) for i in weeks]
+    sched = [[]] * nbest
+    scores = [[]] * nbest
+    for i in weeks:
+        fd, p = compute(courses, i, forbiddenTimeSlots, nbest)
+        if len(p) == 1:
+            for j in range(nbest):
+                sched[j].append(fd[0])
+                scores[j].append(p[0])
+        else:
+            for j in range(nbest):
+                sched[j].append(fd[j])
+                scores[j].append(p[j])
+    # sched = [horaire1, horaire2, horaire3,...] avec horaire contenant toutes les weeks
+    # scores = [score1, score2, ...]
+    print(len(sched[0]))
+    return sched, scores
 
 
 def compute(courses, week, forbiddenTimeSlots=None, nbest=5):
