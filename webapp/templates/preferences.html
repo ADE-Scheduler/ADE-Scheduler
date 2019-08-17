@@ -5,7 +5,39 @@
 
 
 {% block body %}
-    <h4>USER PREFERENCES</h4>
+    
+    <!-- Form with the preferences-->
+        <!-- left column -->
+        <div class="col-md-6">
+              <!-- general form elements -->
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">User preferences</h3>
+                </div>
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form role="form" action="/change/preferences" method="post">
+                    <div class="box-body">
+                        <div class="checkbox">
+                            <label>
+                                {% if safe_compute == False %}
+                                    <input type="checkbox" name="safe-compute" id="safe-compute"> Safe compute (see <a href="/help">Help section</a>)
+                                {% else %}
+                                <input type="checkbox" name="safe-compute" id="safe-compute" checked> Safe compute (see <a href="/help">Help section</a>)
+                                {% endif %}
+                            </label>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+          </div>
+          <!-- /.box -->
+        </div>
+        <!--/.col (right) -->
 {% endblock %}
 
 
