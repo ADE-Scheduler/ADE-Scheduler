@@ -88,7 +88,10 @@ def index():
             # No course code was specified
             if len(codes) == 0:
                 data_sched.clear()
-                return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=data_sched, fts=json.dumps(fts_json))
+                resp = make_response(render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=data_sched, fts=json.dumps(fts_json)))
+                # Update the last computed codes
+                resp.set_cookie('last_computed', "")
+                return resp
 
             # At least one course code was specified, time to compute !
             data_sched.clear()
@@ -200,6 +203,7 @@ def preferences_changes():
     if request.method == 'POST':
         resp = make_response(redirect('/'))
         safe_compute_user = request.form.get('safe-compute')
+        print(safe_compute_user)
         if safe_compute_user is None: # Not checked
             resp.set_cookie('safe-compute', 'False')
         else:
