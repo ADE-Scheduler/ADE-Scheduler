@@ -21,21 +21,46 @@ data_base = list()
 data_sched = list()
 fts_json = list()
 fts = list()
-basic_context = {'up_to_date': True}
+basic_context = {'up_to_date': True, 'safe_compute':None}
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     global data_base
-    try:
-        pref_safe_compute = request.cookies.get('safe-compute')
-        if pref_safe_compute is None or pref_safe_compute == 'False':
+    global codes
+
+    if basic_context['safe_compute'] is None:
+        # Getting the cookies
+        # Safe compute
+        resp = make_response(render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=json.dumps(data_sched), fts=json.dumps(fts_json)))
+        try:
+            pref_safe_compute = request.cookies.get('safe-compute')
+            if pref_safe_compute is None or pref_safe_compute == 'False':
+                # Put some cookies
+                basic_context['safe_compute'] = False
+            elif pref_safe_compute == 'True':
+                basic_context['safe_compute'] = True
+        except:
             # Put some cookies
             basic_context['safe_compute'] = False
-        elif pref_safe_compute == 'True':
-            basic_context['safe_compute'] = True
-    except:
-        # Put some cookies
-        basic_context['safe_compute'] = False
+
+        # Last computed codes
+        if request.method == 'GET' and len(codes) == 0:
+            try:
+                last_computed = request.cookies.get('last_computed')
+                codes = last_computed.split()
+                c = getCoursesFromCodes(codes, Q1+Q2+Q3, 9)
+                for course in c:
+                    data_base += course.getEventsJSON()
+                year = parallel_compute(c, forbiddenTimeSlots=fts, nbest=5)
+                for week, score in year:
+                    for event in week[0]:
+                        temp = {'start': str(event.begin), 'end': str(event.end), 'title': event.name, 'editable': False,
+                                'description': event.name + '\n' + event.location + ' - ' + str(
+                                    event.duration) + '\n' + str(event.description)}
+                        data_sched.append(temp)
+            except:
+                pass
+        
     if request.method == 'POST':
         # CODE ADDED BY USER
         if request.form['submit'] == 'Add':
@@ -47,14 +72,17 @@ def index():
                     c = getCoursesFromCodes([course_code], Q1+Q2+Q3, 9)
                     for course in c:
                         data_base += course.getEventsJSON()
+                    basic_context['codes'] = codes # Useless I think
+            return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=json.dumps(data_sched), fts=json.dumps(fts_json))
 
         # COMPUTATION REQUESTED BY USER
         if request.form['submit'] == 'Compute':
             basic_context['up_to_date'] = True
+
             # No course code was specified
             if len(codes) == 0:
                 data_sched.clear()
-                return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=json.dumps(data_sched), fts=json.dumps(fts_json))
+                return resp
 
             # At least one course code was specified, time to compute !
             data_sched.clear()
@@ -68,6 +96,11 @@ def index():
                             'description': event.name + '\n' + event.location + ' - ' + str(
                                 event.duration) + '\n' + str(event.description)}
                     data_sched.append(temp)
+            resp = make_response(render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=json.dumps(data_sched), fts=json.dumps(fts_json)))
+            # Update the last computed codes
+            str_last_computed = " ".join(codes)
+            resp.set_cookie('last_computed', str_last_computed)
+            return resp
 
         # CLEAR ALL
         if request.form['submit'] == 'Clear':
@@ -77,10 +110,13 @@ def index():
             codes.clear()
             fts_json.clear()
             fts.clear()
+            basic_context['codes'] = codes
+            return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=json.dumps(data_sched), fts=json.dumps(fts_json))
 
-    context = basic_context
-    context['codes'] = codes
-    return render_template('calendar.html', **context, data_base=json.dumps(data_base), data_sched=json.dumps(data_sched), fts=json.dumps(fts_json))
+
+    basic_context['codes'] = codes
+    print(codes)
+    return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=json.dumps(data_sched), fts=json.dumps(fts_json))
 
 
 # To fetch the FTS
@@ -151,7 +187,6 @@ def preferences_changes():
     if request.method == 'POST':
         resp = make_response(redirect('/'))
         safe_compute_user = request.form.get('safe-compute')
-        print(safe_compute_user)
         if safe_compute_user is None: # Not checked
             resp.set_cookie('safe-compute', 'False')
         else:
