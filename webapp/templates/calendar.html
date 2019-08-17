@@ -8,6 +8,11 @@
     <link href='/static/clockpicker/bootstrap-clockpicker.min.css' rel='stylesheet' />
 
     <style>
+        :root {
+            --sched-1-color: #f73dff;
+            --sched-2-color: #5be4ff;
+            --sched-3-color: #fff117;
+        }
         #calendar {
             width: 100%;
             height: 100%;
@@ -308,24 +313,38 @@
                 eventsArray = JSON.parse(schedules.sched_3);
             break;
             case 'compare':
+                let evtList;
                 for (let i=0; i < str[1].length; i++){
                     switch (str[1].charAt(i)) {
                         case 'd':
                             eventsArray = {{ data_base|safe }};
                             break;
                         case '1':
-                            let evtList = JSON.parse(schedules.sched_1);
-                            for (let j=0; j < schedules.sched_1.length; j++) {
+                            evtList = JSON.parse(schedules.sched_1);
+                            for (let j=0; j < evtList.length; j++) {
                                 let evt = evtList[j];
-                                console.log(evt)
-                                evt.backgroundColor = 'black';
-                                evt.borderColor = 'black';
+                                evt.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--sched-1-color');
+                                evt.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--sched-1-color');
                                 eventsArray.push(evt);
                             }
                             break;
                         case '2':
+                            evtList = JSON.parse(schedules.sched_1);
+                            for (let j=0; j < evtList.length; j++) {
+                                let evt = evtList[j];
+                                evt.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--sched-2-color');
+                                evt.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--sched-2-color');
+                                eventsArray.push(evt);
+                            }
                             break;
                         case '3':
+                            evtList = JSON.parse(schedules.sched_1);
+                            for (let j=0; j < evtList.length; j++) {
+                                let evt = evtList[j];
+                                evt.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--sched-3-color');
+                                evt.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--sched-3-color');
+                                eventsArray.push(evt);
+                            }
                             break;
                     }
                 }
@@ -419,18 +438,7 @@
                         dateEnd.setMinutes(parseInt(endTime.split(':')[1]));
 
                         let text = arg.draggedEl.textContent;
-                        let color;
-                        switch(text) {
-                            case 'High':
-                                color = 'red';
-                                break;
-                            case 'Medium':
-                                color = 'orange';
-                                break;
-                            case 'Low':
-                                color = 'green';
-                                break;
-                        }
+                        let color = window.getComputedStyle(arg.draggedEl, null).getPropertyValue("background-color");
 
                         // NEW EVENT
                         forbiddenTimeSlots.push({
