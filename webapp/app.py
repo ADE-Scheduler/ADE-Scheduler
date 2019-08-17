@@ -18,7 +18,7 @@ app = Flask(__name__)
 codes_master = ['LELEC2660', 'LELEC2811', 'LMECA2755', 'LELEC2313', 'LELEC2531', 'LMECA2801', 'LELME2002']
 codes = list()
 data_base = list()
-data_sched = list()
+data_sched = dict()
 fts_json = list()
 fts = list()
 basic_context = {'up_to_date': True, 'safe_compute':None}
@@ -31,7 +31,7 @@ def index():
     if basic_context['safe_compute'] is None: # Also meaning that it is the first connection
         # Getting the cookies
         # Safe compute
-        resp = make_response(render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=json.dumps(data_sched), fts=json.dumps(fts_json)))
+        resp = make_response(render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=data_sched, fts=json.dumps(fts_json)))
         try:
             pref_safe_compute = request.cookies.get('safe-compute')
             if pref_safe_compute is None or pref_safe_compute == 'False':
@@ -51,13 +51,19 @@ def index():
                 c = getCoursesFromCodes(codes, Q1+Q2+Q3, 9)
                 for course in c:
                     data_base += course.getEventsJSON()
-                year = parallel_compute(c, forbiddenTimeSlots=fts, nbest=5)
-                for week, score in year:
-                    for event in week[0]:
-                        temp = {'start': str(event.begin), 'end': str(event.end), 'title': event.name, 'editable': False,
-                                'description': event.name + '\n' + event.location + ' - ' + str(
-                                    event.duration) + '\n' + str(event.description)}
-                        data_sched.append(temp)
+                scheds, score = parallel_compute(c, forbiddenTimeSlots=fts, nbest=3)
+                i = 1
+                for year in scheds:
+                    temp_sched = list()
+                    for week in year:
+                        for event in week:
+                            temp = {'start': str(event.begin), 'end': str(event.end), 'title': event.name,
+                                    'editable': False,
+                                    'description': event.name + '\n' + event.location + ' - ' + str(
+                                        event.duration) + '\n' + str(event.description)}
+                            temp_sched.append(temp)
+                    data_sched['sched_' + str(i)] = json.dumps(temp_sched)
+                    i += 1
             except:
                 pass
         
@@ -73,7 +79,7 @@ def index():
                     for course in c:
                         data_base += course.getEventsJSON()
                     basic_context['codes'] = codes # Useless I think
-            return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=json.dumps(data_sched), fts=json.dumps(fts_json))
+            return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=data_sched, fts=json.dumps(fts_json))
 
         # COMPUTATION REQUESTED BY USER
         if request.form['submit'] == 'Compute':
@@ -82,21 +88,27 @@ def index():
             # No course code was specified
             if len(codes) == 0:
                 data_sched.clear()
-                return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=json.dumps(data_sched), fts=json.dumps(fts_json))
+                return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=data_sched, fts=json.dumps(fts_json))
 
             # At least one course code was specified, time to compute !
             data_sched.clear()
             # TODO: Gérer les projectID sur le site et sur le back-end ! (proposer l'année scolaire en sélection ?)
             c = getCoursesFromCodes(codes, Q1+Q2+Q3, 9)
-            year = parallel_compute(c, forbiddenTimeSlots=fts, nbest=5)
-            #print(year)
-            for week, score in year:
-                for event in week[0]:
-                    temp = {'start': str(event.begin), 'end': str(event.end), 'title': event.name, 'editable': False,
-                            'description': event.name + '\n' + event.location + ' - ' + str(
-                                event.duration) + '\n' + str(event.description)}
-                    data_sched.append(temp)
-            resp = make_response(render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=json.dumps(data_sched), fts=json.dumps(fts_json)))
+            scheds, score = parallel_compute(c, forbiddenTimeSlots=fts, nbest=3)
+            i = 1
+            for year in scheds:
+                temp_sched = list()
+                for week in year:
+                    for event in week:
+                        temp = {'start': str(event.begin), 'end': str(event.end), 'title': event.name,
+                                'editable': False,
+                                'description': event.name + '\n' + event.location + ' - ' + str(
+                                    event.duration) + '\n' + str(event.description)}
+                        temp_sched.append(temp)
+                data_sched['sched_' + str(i)] = json.dumps(temp_sched)
+                i += 1
+
+            resp = make_response(render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=data_sched, fts=json.dumps(fts_json)))
             # Update the last computed codes
             str_last_computed = " ".join(codes)
             resp.set_cookie('last_computed', str_last_computed)
@@ -111,12 +123,12 @@ def index():
             fts_json.clear()
             fts.clear()
             basic_context['codes'] = codes
-            return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=json.dumps(data_sched), fts=json.dumps(fts_json))
+            return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=data_sched, fts=json.dumps(fts_json))
 
 
     basic_context['codes'] = codes
     print(codes)
-    return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=json.dumps(data_sched), fts=json.dumps(fts_json))
+    return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=data_sched, fts=json.dumps(fts_json))
 
 
 # To fetch the FTS
@@ -139,7 +151,7 @@ def getFTS():
         else:
             print('This FTS was not recognized by the engine')
         basic_context['up_to_date'] = False
-    return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=json.dumps(data_sched), fts=json.dumps(fts_json))
+    return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=data_sched, fts=json.dumps(fts_json))
 
 
 # To remove the code
@@ -150,11 +162,12 @@ def remove_code(the_code):
         codes.remove(the_code)
         basic_context['up_to_date'] = False
         data_base.clear()
+        data_sched.clear()
         if len(codes) > 0:
             c = getCoursesFromCodes(codes, Q1 + Q2 + Q3, 9)
             for course in c:
                 data_base += course.getEventsJSON()
-    return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=json.dumps(data_sched), fts=json.dumps(fts_json))
+    return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=data_sched, fts=json.dumps(fts_json))
 
 
 # Page for user preferences
