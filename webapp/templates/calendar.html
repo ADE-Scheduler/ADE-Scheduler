@@ -5,7 +5,7 @@
     <link href='/static/fullcalendar/daygrid/main.css' rel='stylesheet' />
     <link href='/static/fullcalendar/timegrid/main.css' rel='stylesheet' />
     <link href='/static/fullcalendar/list/main.css' rel='stylesheet' />
-    <link href='/static/clockpicker/dist/bootstrap-clockpicker.min.css' rel='stylesheet' />
+    <link href='/static/clockpicker/bootstrap-clockpicker.min.css' rel='stylesheet' />
 
     <style>
         #calendar {
@@ -200,7 +200,6 @@
             break;
             case 'nav-sched-1':
                 eventsArray = {{ data_sched|safe }};
-                console.log(eventsArray);
             break;
             case 'nav-sched-2':
             break;
@@ -273,7 +272,7 @@
                 // Fix for the tooltip "bug" when dragging/resizing
                 eventPositioned: function (arg) {
                     if (arg.isMirror) {
-                        $(arg.el).tooltip('destroy');
+                        $(arg.el).tooltip('dispose');
                     }
                 },
 
@@ -331,7 +330,7 @@
                     if(arg.jsEvent.altKey) {
                         dragToCopy = true;
                         calendar.refetchEvents();
-                        $('div').tooltip('destroy');
+                        $('div').tooltip('dispose');
                     }
                 },
 
@@ -399,7 +398,7 @@
                             if (o.title === arg.event.title && o.start === arg.event.start.toISOString()
                                 && o.end === arg.event.end.toISOString()) {
                                 forbiddenTimeSlots.splice(i, 1);
-                                $(arg.el).tooltip('destroy');
+                                $(arg.el).tooltip('dispose');
                                 arg.event.remove();
                                 send_fts_to_serv();
                                 break;
