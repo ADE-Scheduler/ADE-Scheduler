@@ -82,7 +82,7 @@ def index():
             # No course code was specified
             if len(codes) == 0:
                 data_sched.clear()
-                return resp
+                return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=json.dumps(data_sched), fts=json.dumps(fts_json))
 
             # At least one course code was specified, time to compute !
             data_sched.clear()
