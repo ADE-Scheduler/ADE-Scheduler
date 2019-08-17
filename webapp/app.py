@@ -28,7 +28,7 @@ def index():
     global data_base
     global codes
 
-    if basic_context['safe_compute'] is None:
+    if basic_context['safe_compute'] is None: # Also meaning that it is the first connection
         # Getting the cookies
         # Safe compute
         resp = make_response(render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=json.dumps(data_sched), fts=json.dumps(fts_json)))
