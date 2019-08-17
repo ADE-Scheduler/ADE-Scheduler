@@ -8,54 +8,6 @@
     <link href='/static/clockpicker/dist/bootstrap-clockpicker.min.css' rel='stylesheet' />
 
     <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
-            font-size: 14px;
-            }
-        #wrap {
-            width: 100%;
-            height: 100%;
-            margin: 0 auto;
-        }
-        #left-container {
-            float: left;
-            clear: left;
-            width: 11%;
-            padding: 0 10px;
-            border: 1px solid #ccc;
-            background: #eee;
-            text-align: center;
-        }
-        #left-container h4 {
-            font-size: 16px;
-            margin-top: 0;
-            padding-top: 1em;
-        }
-        #left-container .fc-event {
-            cursor: pointer;
-            width: 75%;
-            margin: 10px auto;
-        }
-        #left-container p {
-            margin: 1.5em 0;
-            font-size: 11px;
-            color: #666;
-        }
-        #left-container p input {
-            margin: 0;
-            vertical-align: middle;
-        }
-        #calendar-container {
-            float: right;
-            clear: right;
-            width: 88%;
-            height: 100%;
-            padding: 0 10px;
-            border: 1px solid #ccc;
-            background: #eee;
-        }
         #calendar {
             width: 100%;
             height: 100%;
@@ -72,17 +24,17 @@
           text-align: center;
         }
         @media screen and (min-width: 768px) {
-          .modal:before {
-            display: inline-block;
-            vertical-align: middle;
-            content: " ";
-            height: 100%;
-          }
+            .modal:before {
+                display: inline-block;
+                vertical-align: middle;
+                content: " ";
+                height: 100%;
+            }
         }
         .modal-dialog {
-          display: inline-block;
-          text-align: left;
-          vertical-align: middle;
+            display: inline-block;
+            text-align: left;
+            vertical-align: middle;
         }
     </style>
 {% endblock %}
@@ -90,49 +42,11 @@
 {% block bodyhead %}
     <div>
         <ul class="nav nav-tabs" id="nav-tab-cal">
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
-                Dropdown <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu">
-                    <div class="form-group">
-                        <div class="col-lg-10">
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
-                                    Sched 1
-                                </label>
-                            </div>
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-                                    Sched 2
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </ul>
+            <li class="nav-item">
+                <a class="nav-link active" id="nav-brut" data-toggle="tab" aria-expanded="false">Basic schedule</a>
             </li>
-            <li class="active">
-                <a id="nav-brut" data-toggle="tab" aria-expanded="false">Basic schedule</a>
-            </li>
-            <li>
-                <a id="nav-sched-1" data-toggle="tab" aria-expanded="false">1st schedule</a>
-            </li>
-{#            <li class="disabled">#}
-{#                <a>1st schedule</a>#}
-{#            </li>#}
-{#            <li>#}
-{#                <a id="nav-sched-2" data-toggle="tab" aria-expanded="false">2nd schedule</a>#}
-{#            </li>#}
-            <li class="disabled">
-                <a>2nd schedule</a>
-            </li>
-{#            <li>#}
-{#                <a id="nav-sched-3" data-toggle="tab" aria-expanded="false">3rd schedule</a>#}
-{#            </li>#}
-            <li class="disabled">
-                <a>3rd schedule</a>
+            <li class="nav-item">
+                <a class="nav-link" id="nav-sched-1" data-toggle="tab" aria-expanded="false">1st schedule</a>
             </li>
         </ul>
     </div>
@@ -148,18 +62,12 @@
                         <h5 style="text-align: center"><strong>Start</strong></h5>
                         <div class="input-group clockpicker">
                             <input type="text" class="form-control" value="08:00" id="start_time" readonly>
-                            <span class="input-group-addon">
-                                <span class="glyphicon glyphicon-time"></span>
-                            </span>
                         </div>
                     </div>
                     <div class="btn-group-vertical" style="width: 48%; margin-left: 2%; float: right">
                         <h5 style="text-align: center"><strong>End</strong></h5>
                         <div class="input-group clockpicker">
                             <input type="text" class="form-control" value="10:00" id="end_time" readonly>
-                            <span class="input-group-addon">
-                                <span class="glyphicon glyphicon-time"></span>
-                            </span>
                         </div>
                     </div>
                 </div>
@@ -171,74 +79,78 @@
         </div>
     </div>
 
-
-    <div id='wrap' style="height: 100%">
-        <!-- calendar body -->
-        <div id='calendar-container'>
+    <!-- calendar body -->
+    <div class="card border-primary mb-3" style="float: right; clear: right; width: 88%; max-height: 550px">
+        <div class="card-body">
             <div id='calendar'></div>
         </div>
+    </div>
 
-        <!-- drag-n-drop body -->
-        <div id='left-container'>
-            <h4><strong>Block Time Slots</strong></h4>
+    <!-- drag-n-drop body -->
+    <div class="card border-primary mb-3" style="float: left; clear: left; width: 11%; text-align: center;">
+        <div class="card-header"><strong>Block Time Slots</strong></div>
+        <div class="card-body" style="padding-left: 15%; padding-right: 15%">
             <div id='external-events-list'>
-                <div class='fc-event' style="background-color: #46b92f; border-color: #46b92f">Low</div>
-                <div class='fc-event' style="background-color: #b97012; border-color: #b97012">Medium</div>
-                <div class='fc-event' style="background-color: #b91826; border-color: #b91826">High</div>
+                <span class="badge badge-success" style="width: 100%; height: 100%">Low</span>
+                <span class="badge badge-warning" style="width: 100%; height: 100%">Medium</span>
+                <span class="badge badge-danger" style="width: 100%; height: 100%">High</span>
             </div>
         </div>
+    </div>
 
-        <!-- course body -->
-        <div id='left-container' style="margin-top: 15px; margin-bottom: 15px;">
-            <div>
-                <h4><strong>Current Courses</strong></h4>
-                <table>
-                    <tbody>
-                        <!-- For the course-->
-                        {% if codes|length < 1  %}
-                            <tr style="align: center">
-                                <td style="vertical-align: middle; padding-bottom:10px">
-                                    None
-                                </td>
-                            </tr>
-                        {% endif %}
-                        {% for code in codes %}
-                            <tr style="align: center">
-                                <td style="word-break:break-all;">
-                                    {{ code }}
-                                </td>
-                                <td style="width:20px;"><button type="button" class="btn btn-box-tool" onClick=deleteCourse("{{ code }}")><i class="fa fa-trash-o"></i>
-                                </button></td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+    <!-- course body -->
+    <div class="card border-primary mb-3" style="float: left; clear: left; width: 11%; text-align: center;">
+        <div class="card-header"><strong>Current Courses</strong></div>
+        <div class="card-body" style="padding: 5%">
+            <table>
+                <tbody>
+                    <!-- For the course-->
+                    {% if codes|length < 1  %}
+                        <tr style="align: center">
+                            <td style="vertical-align: middle; padding-bottom:10px">
+                                None
+                            </td>
+                        </tr>
+                    {% endif %}
+                    {% for code in codes %}
+                        <tr style="align: center">
+                            <td style="word-break:break-all;">
+                                {{ code }}
+                            </td>
+                            <td style="width:20px;">
+                                <button type="button" class="btn btn-default" onClick=deleteCourse("{{ code }}")>
+                                    <i class="fas fa-trash"></i></span>
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
+    </div>
 
-        <!-- Add/Compute/Clear -->
-        <div class="form-group" style="float: left; clear: left; width: 11%;">
-            <form class="form-horizontal" action="/" method="post">
-                <label class="control-label">Add a course</label>
-                <div class="input-group" action="/" method="post">
-                    <input type="text" id='course-input' class="form-control" name="course_code" placeholder="Code">
-                    <span class="input-group-btn">
-                        <button class="btn btn-default" type="submit" name="submit" value="Add">+</button>
-                    </span>
+    <!-- Add/Compute/Clear -->
+    <div class="form-group" style="float: left; clear: left; width: 11%;">
+        <form class="form-horizontal" action="/" method="post">
+            <label class="control-label"><strong>Add a course</strong></label>
+            <div class="input-group mb-3" action="/" method="post">
+                <input type="text" id='course-input' class="form-control" name="course_code" placeholder="Code">
+                <div class="input-group-append">
+                    <button class="btn btn-secondary" type="submit" name="submit" value="Add">+</button>
                 </div>
-            </form>
-        </div>
-        <form class="form-vertical" action="/" method="post">
-            <div class="btn-group-vertical" style="float: left; clear: left; width: 11%;">
-                {% if up_to_date == False %}
-                    <button class="btn btn-danger" type="submit" name="submit" value="Compute" style="width: 100%;">Compute</button>
-                {% else %}
-                    <button class="btn btn-success" type="submit" name="submit" value="Compute" style="width: 100%;">Compute</button>
-                {% endif %}
-                <button class="btn btn-default" type="submit" data-toggle="modal" data-target="#exampleModal" name="submit" value="Clear" style="width: 100%;">Clear</button>
             </div>
         </form>
     </div>
+    <form class="form-vertical" action="/" method="post">
+        <div class="btn-group-vertical" style="float: left; clear: left; width: 11%;">
+            {% if up_to_date == False %}
+                <button class="btn btn-danger" type="submit" name="submit" value="Compute" style="width: 100%;">Compute</button>
+            {% else %}
+                <button class="btn btn-success" type="submit" name="submit" value="Compute" style="width: 100%;">Compute</button>
+            {% endif %}
+            <button class="btn btn-secondary" type="submit" data-toggle="modal" data-target="#exampleModal" name="submit" value="Clear" style="width: 100%;">Clear</button>
+        </div>
+    </form>
 {% endblock %}
 
 {% block js %}
@@ -247,7 +159,9 @@
     <script src='/static/fullcalendar/daygrid/main.js'></script>
     <script src='/static/fullcalendar/list/main.js'></script>
     <script src='/static/fullcalendar/timegrid/main.js'></script>
+    <script src='/static/fullcalendar/bootstrap/main.js'></script>
     <script src='/static/clockpicker/dist/bootstrap-clockpicker.min.js'></script>
+
     <script type="text/javascript">
         $('.clockpicker').clockpicker({
             placement: 'top',
@@ -311,14 +225,15 @@
             // Initialise the draggable "forbidden time slots"
             let containerEl = document.getElementById('external-events-list');
             new FullCalendarInteraction.Draggable(containerEl, {
-                itemSelector: '.fc-event',
+                itemSelector: '.badge'
             });
 
             // Initialize the calendar
             let calendarEl = document.getElementById('calendar');
             let calendar = new FullCalendar.Calendar(calendarEl, {
-                plugins: ['interaction', 'dayGrid', 'list', 'timeGrid'],
-                height: 'parent',
+                plugins: ['interaction', 'dayGrid', 'list', 'timeGrid', 'bootstrap'],
+                themeSystem: 'bootstrap',
+                height: 500,
                 width: 'parent',
                 header: {
                     left: 'prev,next, today',
@@ -378,13 +293,27 @@
                         dateEnd.setHours(parseInt(endTime.split(':')[0]));
                         dateEnd.setMinutes(parseInt(endTime.split(':')[1]));
 
+                        let text = arg.draggedEl.textContent;
+                        let color;
+                        switch(text) {
+                            case 'High':
+                                color = 'red';
+                                break;
+                            case 'Medium':
+                                color = 'orange';
+                                break;
+                            case 'Low':
+                                color = 'green';
+                                break;
+                        }
+
                         // NEW EVENT
                         forbiddenTimeSlots.push({
-                            title: arg.draggedEl.textContent,
+                            title: text,
                             start: dateStart.toISOString(),
                             end: dateEnd.toISOString(),
-                            backgroundColor: arg.draggedEl.style.backgroundColor,
-                            borderColor: arg.draggedEl.style.borderColor,
+                            backgroundColor: color,
+                            borderColor: color,
                             editable: true,
                             description: 'A time slot where the user would like to be free'
                         });
@@ -486,7 +415,7 @@
     <script>
         // Delete a course
         function deleteCourse(code) {
-            $.post('/remove/code/'+code,() => window.location.reload());
+            $.post('/remove/code/'+code,() => window.location = window.location);
         }
     </script>
 {% endblock %}
