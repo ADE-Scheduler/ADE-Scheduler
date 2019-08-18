@@ -40,6 +40,9 @@ class Course:
     def __str__(self):
         return self.code + ": " + self.name
 
+    def __repr__(self):
+        return str(self)
+
     def getEvents(self, weeks=None):
         if weeks is None:
             return self.events.values()
