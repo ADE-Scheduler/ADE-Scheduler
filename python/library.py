@@ -42,6 +42,7 @@ def addSettings(settings):
     files = sorted(glob(save_type))
 
     if len(files) == 0:
+        next_name = 0
         file = os.path.join(save_folder, '0.p') # first file
     else:
         name, _ = os.path.splitext(os.path.basename(files[-1])) # get last file added
@@ -50,6 +51,7 @@ def addSettings(settings):
 
     f = open(file, 'wb')
     dump(settings, f)
+    return next_name
 
 def getSettings(n):
     # TODO: on devrait gerer les erreurs si le fichier n'existe pas
