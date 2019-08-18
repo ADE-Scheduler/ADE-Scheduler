@@ -8,7 +8,7 @@ import re
 SPLITTED_COURSES = ['(LANGL)']
 
 
-def getCoursesFromCodes(course_tags, weeks, projectID=2):
+def getCoursesFromCodes(course_tags, weeks, projectID=9):
     """
     Fetches courses schedule from UCLouvain ADE website
     Parameters:
