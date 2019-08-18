@@ -24,8 +24,8 @@ def parallel_compute(courses, weeks=range(53), forbiddenTimeSlots=None, nbest=5)
    """
     # solution temporaire car j'ai pas le temps ajd
     # oktamer = [compute(courses, i, forbiddenTimeSlots, nbest=5) for i in weeks]
-    sched = [[]] * nbest
-    scores = [[]] * nbest
+    sched = [[] for i in range(nbest)]
+    scores = [[] for i in range(nbest)]
     for i in weeks:
         fd, p = compute(courses, i, forbiddenTimeSlots, nbest)
         if len(p) == 1:
