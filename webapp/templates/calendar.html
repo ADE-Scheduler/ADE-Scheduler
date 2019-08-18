@@ -170,7 +170,7 @@
     </div>
 
     <!-- calendar body -->
-    <div class="card border-primary mb-3" style="float: right; clear: right; width: 88%; max-height: 550px">
+    <div class="card border-primary mb-3" style="float: right; clear: right; width: 88%;">
         <div class="card-body">
             <div id='calendar'></div>
         </div>
@@ -329,7 +329,7 @@
                             }
                             break;
                         case '2':
-                            evtList = JSON.parse(schedules.sched_1);
+                            evtList = JSON.parse(schedules.sched_2);
                             for (let j=0; j < evtList.length; j++) {
                                 let evt = evtList[j];
                                 evt.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--sched-2-color');
@@ -338,7 +338,7 @@
                             }
                             break;
                         case '3':
-                            evtList = JSON.parse(schedules.sched_1);
+                            evtList = JSON.parse(schedules.sched_3);
                             for (let j=0; j < evtList.length; j++) {
                                 let evt = evtList[j];
                                 evt.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--sched-3-color');
