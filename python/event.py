@@ -1,8 +1,21 @@
 import re
-from static_data import COURSE_REGEX
+from static_data import COURSE_REGEX, Q1_START_DATE
 from datetime import datetime, timedelta
 from ics import Event
 from pytz import timezone
+
+# We need to set the timezone
+tz = timezone('Europe/Brussels')
+S0 = datetime.strptime(Q1_START_DATE, '%d/%m/%Y').astimezone(tz).isocalendar()[1] - 2
+
+def gregorianToADE(n):
+    """
+    Returns the ade week number
+    """
+    if n < S0:
+        return 52 - n + S0
+    else:
+        return n - S0
 
 
 # Information extraction functions
@@ -28,8 +41,6 @@ def extractType(course):
 
 
 def extractDateTime(date, time, delta):
-    # We need to set the timzeone
-    tz = timezone('Europe/Brussels')
 
     t0 = datetime.strptime(date + '-' + time, '%d/%m/%Y-%Hh%M').astimezone(tz)
     s = re.findall(r'[0-9]+', delta)
@@ -95,10 +106,11 @@ def overlappingTime(event1, event2, onlyPositive=True):
 
 # Event classes (subclasses of ics.Event)
 class CustomEvent(Event):
-    def __init__(self, name, begin, duration, descr, loc, id=None, weight=1):
+    def __init__(self, name, begin, duration, descr, loc, id=None, weight=1, code=None):
         super().__init__(name=name, begin=begin, duration=duration, description=descr, location=loc)
         self.weight = weight
         self.id = id
+        self.code = code
 
 
     def __eq__(self, other):
@@ -130,32 +142,32 @@ class EventCM(CustomEvent):
     def __init__(self, begin, duration, code, name, professor, loc, id=None, weight=1):
         name = 'CM: ' + code + ' - ' + name
         id = 'CM:' + id
-        super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, id=id, weight=weight)
+        super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, id=id, weight=weight, code=code)
 
 
 class EventTP(CustomEvent):
     def __init__(self, begin, duration, code, name, professor, loc, id=None, weight=1):
         name = 'TP: ' + code + ' - ' + name
         id = 'TP:' + id
-        super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, id=id, weight=weight)
+        super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, id=id, weight=weight, code=code)
 
 
 class EventEXAM(CustomEvent):
     def __init__(self, begin, duration, code, name, professor, loc, id=None, weight=1):
         name = 'EXAM: ' + code + ' - ' + name
         id = 'EXAM:' + id
-        super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, id=id, weight=weight)
+        super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, id=id, weight=weight, code=code)
 
 
 class EventORAL(CustomEvent):
     def __init__(self, begin, duration, code, name, professor, loc, id=None, weight=1):
         name = 'ORAL: ' + code + ' - ' + name
         id = 'ORAL:' + id
-        super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, id=id, weight=weight)
+        super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, id=id, weight=weight, code=code)
 
 
 class EventOTHER(CustomEvent):
     def __init__(self, begin, duration, code, name, professor, loc, id=None, weight=1):
         name = 'Other: ' + code + ' - ' + name
         id = 'Other:' + id
-        super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, id=id, weight=weight)
+        super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, id=id, weight=weight, code=code)
