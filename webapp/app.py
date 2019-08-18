@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, make_response
+from flask import Flask, render_template, request, redirect, url_for, make_response, send_file
 import json
 import sys, os, inspect
 from pytz import timezone
@@ -12,6 +12,7 @@ from ade import getCoursesFromCodes
 from static_data import Q1, Q2, Q3
 from computation import parallel_compute
 from event import CustomEvent, EventCM
+import library
 
 app = Flask(__name__)
 
@@ -100,6 +101,11 @@ def index():
     print(codes)
     return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=data_sched, fts=json.dumps(fts_json))
 
+
+@app.route('/getCalendar')
+def getCalendar():
+    n = request.args.get('number', default=0, type=int)
+    return send_file(library.getCalendar(n), as_attachment=True)
 
 # To fetch the FTS
 @app.route('/getFTS', methods=['POST'])

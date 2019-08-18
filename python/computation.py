@@ -38,7 +38,6 @@ def parallel_compute(courses, weeks=range(53), forbiddenTimeSlots=None, nbest=5)
                 scores[j].append(p[j])
     # sched = [horaire1, horaire2, horaire3,...] avec horaire contenant toutes les weeks
     # scores = [score1, score2, ...]
-    print(len(sched[0]))
     return sched, scores
 
 
