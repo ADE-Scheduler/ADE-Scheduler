@@ -159,6 +159,8 @@ def preferences():
     except:
         # Put some cookies
         basic_context['safe_compute'] = False
+
+    basic_context['codes'] = codes
     return render_template('preferences.html', **basic_context)
 
 
