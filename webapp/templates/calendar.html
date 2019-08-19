@@ -56,11 +56,11 @@
             <div class="navbar-collapse collapse">
                 <ul class="navbar-nav mr-auto">
                     <ul class="nav nav-tabs" id="nav-tab-cal">
-                        <li class="nav-item">
+                        <li class="nav-item" style="cursor: pointer;">
                             <a class="nav-link active" id="nav-brut" data-toggle="tab" aria-expanded="false">ADE schedule</a>
                         </li>
                         {% if data_sched|length > 0 %}
-                            <li class="nav-item">
+                            <li class="nav-item" style="cursor: pointer;">
                                 <a class="nav-link" id="nav-sched-1" data-toggle="tab" aria-expanded="false">1st schedule</a>
                             </li>
                         {% else %}
@@ -69,7 +69,7 @@
                             </li>
                         {% endif %}
                         {% if data_sched|length > 1 %}
-                            <li class="nav-item">
+                            <li class="nav-item" style="cursor: pointer;">
                                 <a class="nav-link" id="nav-sched-2" data-toggle="tab" aria-expanded="false">2nd schedule</a>
                             </li>
                         {% else %}
@@ -78,7 +78,7 @@
                             </li>
                         {% endif %}
                         {% if data_sched|length > 2 %}
-                            <li class="nav-item">
+                            <li class="nav-item" style="cursor: pointer;">
                                 <a class="nav-link" id="nav-sched-3" data-toggle="tab" aria-expanded="false">3rd schedule</a>
                             </li>
                         {% else %}
@@ -215,28 +215,41 @@
                                 <div class="dropdown dropright">
                                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" style="margin-right: -.125rem">{{ code }}</a>
                                     <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-start">
-                                        <div class="form-group">
-                                            <a class="dropdown-item">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="checkie" checked=true>
-                                                    <label class="custom-control-label" for="checkie">Check !</label>
-                                                </div>
-                                            </a>
-                                            <a class="dropdown-item">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="ouchie" checked=true>
-                                                    <label class="custom-control-label" for="ouchie">Ouch !</label>
-                                                </div>
-                                            </a>
-                                        </div>
-                                        <a class="dropdown-item" href="#">Action</a>
-                                        <a class="dropdown-item" href="#">Another action</a>
-                                        <a class="dropdown-item" href="#">Something else here</a>
-                                        <a class="dropdown-item" href="#">Action</a>
-                                        <a class="dropdown-item" href="#">Another action</a>
-                                        <a class="dropdown-item" href="#">Something else here</a>
+                                        <a class="dropdown-item">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="check-cm" checked=true>
+                                                <label class="custom-control-label" for="check-cm">CM class</label>
+                                            </div>
+                                        </a>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#">Separated link</a>
+                                        <a class="dropdown-item">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="check-tp" checked=true>
+                                                <label class="custom-control-label" for="check-tp">TP class</label>
+                                            </div>
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="check-exam" checked=true>
+                                                <label class="custom-control-label" for="check-exam">Exam class</label>
+                                            </div>
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="check-oral" checked=true>
+                                                <label class="custom-control-label" for="check-oral">Oral class</label>
+                                            </div>
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="check-other" checked=true>
+                                                <label class="custom-control-label" for="check-other">Other class</label>
+                                            </div>
+                                        </a>
+                                        <div class="dropdown-divider"></div>
                                     </div>
                                 </div>
                             </td>
@@ -252,7 +265,7 @@
         </div>
     </div>
 
-    <!-- Add/Compute/Clear -->
+    <!-- Add a course code -->
     <div class="form-group" style="float: left; clear: left; width: 11%; margin-bottom: -5px">
         <form class="form-horizontal" action="/" method="post">
             <label class="control-label"><strong>Add a course</strong></label>
