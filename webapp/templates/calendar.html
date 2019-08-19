@@ -16,10 +16,12 @@
             width: 100%;
             height: 100%;
         }
-        .scrollable-menu {
-            height: auto;
+        .dropdown-menu {
             max-height: 200px;
-            overflow-x: hidden;
+            overflow-y:auto;
+        }
+        .dropdown:hover>.dropdown-menu {
+            display: block;
         }
         .tooltip-inner {
             white-space:pre;
@@ -210,7 +212,33 @@
                     {% for code in codes %}
                         <tr style="align: center; padding: 0;">
                             <td style="word-break: break-all; padding: 0;">
-                                {{ code }}
+                                <div class="dropdown dropright">
+                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" style="margin-right: -.125rem">{{ code }}</a>
+                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-start">
+                                        <div class="form-group">
+                                            <a class="dropdown-item">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="checkie" checked=true>
+                                                    <label class="custom-control-label" for="checkie">Check !</label>
+                                                </div>
+                                            </a>
+                                            <a class="dropdown-item">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="ouchie" checked=true>
+                                                    <label class="custom-control-label" for="ouchie">Ouch !</label>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <a class="dropdown-item" href="#">Action</a>
+                                        <a class="dropdown-item" href="#">Another action</a>
+                                        <a class="dropdown-item" href="#">Something else here</a>
+                                        <a class="dropdown-item" href="#">Action</a>
+                                        <a class="dropdown-item" href="#">Another action</a>
+                                        <a class="dropdown-item" href="#">Something else here</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">Separated link</a>
+                                    </div>
+                                </div>
                             </td>
                             <td style="padding: 0">
                                 <button class="btn btn-default" onClick=deleteCourse("{{ code }}"); style="background-color: transparent; border-color: transparent;">
