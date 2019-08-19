@@ -160,8 +160,24 @@ def preferences():
         # Put some cookies
         basic_context['safe_compute'] = False
 
+    # ID OF EACH EVENT
+    c = getCoursesFromCodes(codes, Q1+Q2+Q3, 9)
+    id_tab = dict()
+    for course in c:
+        type_tab = {
+            'CM': list(),
+            'TP': list(),
+            'Exam': list(),
+            'Oral': list(),
+            'Other': list()
+        }
+        for str in course.getSummary():
+            temp = str.split(':')
+            type_tab[temp[0]].append(temp[1])
+        id_tab[course.code] = type_tab
+
     basic_context['codes'] = codes
-    return render_template('preferences.html', **basic_context)
+    return render_template('preferences.html', **basic_context, id=id_tab)
 
 
 # Page for user's help guide
