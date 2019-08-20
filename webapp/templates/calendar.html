@@ -64,8 +64,8 @@
                                 <a class="nav-link" id="nav-sched-1" data-toggle="tab" aria-expanded="false">1st schedule</a>
                             </li>
                         {% else %}
-                            <li class="nav-item">
-                                <a class="nav-link disabled" href="#">1st schedule</a>
+                            <li class="nav-item" style="cursor: not-allowed">
+                                <a class="nav-link disabled">1st schedule</a>
                             </li>
                         {% endif %}
                         {% if data_sched|length > 1 %}
@@ -73,8 +73,8 @@
                                 <a class="nav-link" id="nav-sched-2" data-toggle="tab" aria-expanded="false">2nd schedule</a>
                             </li>
                         {% else %}
-                            <li class="nav-item">
-                                <a class="nav-link disabled" href="#">2nd schedule</a>
+                            <li class="nav-item" style="cursor: not-allowed">
+                                <a class="nav-link disabled">2nd schedule</a>
                             </li>
                         {% endif %}
                         {% if data_sched|length > 2 %}
@@ -82,8 +82,8 @@
                                 <a class="nav-link" id="nav-sched-3" data-toggle="tab" aria-expanded="false">3rd schedule</a>
                             </li>
                         {% else %}
-                            <li class="nav-item">
-                                <a class="nav-link disabled" href="#">3rd schedule</a>
+                            <li class="nav-item" style="cursor: not-allowed">
+                                <a class="nav-link disabled">3rd schedule</a>
                             </li>
                         {% endif %}
                         {% if data_sched|length > 0 %}
@@ -126,8 +126,8 @@
                                 </div>
                             </li>
                         {% else %}
-                            <li class="nav-item dropdown">
-                                <a class="nav-link disabled" href="#">Compare</a>
+                            <li class="nav-item dropdown" style="cursor: not-allowed">
+                                <a class="nav-link disabled">Compare</a>
                             </li>
                         {% endif %}
                     </ul>
@@ -573,5 +573,4 @@
             e.stopPropagation();
         });
     </script>
-
 {% endblock %}
