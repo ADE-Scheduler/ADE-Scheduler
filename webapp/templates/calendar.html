@@ -88,7 +88,7 @@
                         {% endif %}
                         {% if data_sched|length > 0 %}
                             <li class="nav-item dropdown" id="dropdown-compare">
-                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Compare</a>
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Compare</a>
                                 <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 39px, 0px); top: 0px; left: 0px; will-change: transform;">
                                     <div class="form-group">
                                         <a class="dropdown-item">
@@ -122,7 +122,7 @@
 
                                     </div>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="" id="btn-sched-compare">Go !</a>
+                                    <a class="dropdown-item" id="btn-sched-compare">Go !</a>
                                 </div>
                             </li>
                         {% else %}
@@ -293,110 +293,12 @@
         window.onload = function() {
             document.getElementById("course-input").focus();
         };
-
-        // Refresh page on tab click
-        $(document).ready(function(){
-            $('a[data-toggle="tab"]').click(function(){
-                window.location = window.location;
-            });
-        });
-
-        // Remember the navbar's selected tab
-        $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
-            localStorage.setItem('activeTab', $(e.target).attr('id'));
-        });
-        let activeTab = localStorage.getItem('activeTab');
-        if(activeTab) {
-            $('#nav-tab-cal a[id="' + activeTab + '"]').tab('show');
-        }
-
-        // Compare the requested schedules
-        $('#btn-sched-compare').on('click', function(event) {
-            let str = 'compare_';
-            if ($('#check-sched-default').is(':checked')) {
-                str = str.concat('d');
-            }
-            if ($('#check-sched-1').is(':checked')) {
-                str = str.concat('1');
-            }
-            if ($('#check-sched-2').is(':checked')) {
-                str = str.concat('2');
-            }
-            if ($('#check-sched-3').is(':checked')) {
-                str = str.concat('3');
-            }
-            localStorage.setItem('activeTab', str);
-        });
-
-        // Do not close dropdown on click inside
-        $('.dropdown-toggle').on('click', function (e) {
-            $(this).next().toggle();
-        });
-        $('.dropdown-menu.keep-open').on('click', function (e) {
-            e.stopPropagation();
-        });
     </script>
 
     <script>
-        // Course Events selection
-        let eventsArray = [];
+        // Course Events
         let schedules = {{ data_sched|safe }};
-        {% if data_sched|length < 1 %}
-            localStorage.setItem('activeTab', 'nav-brut');
-        {% endif %}
-        let str = localStorage.getItem('activeTab').split('_');
-        switch (str[0]) {
-            case 'nav-brut':
-                eventsArray = {{ data_base|safe }};
-            break;
-            case 'nav-sched-1':
-                eventsArray = JSON.parse(schedules.sched_1);
-            break;
-            case 'nav-sched-2':
-                eventsArray = JSON.parse(schedules.sched_2);
-            break;
-            case 'nav-sched-3':
-                eventsArray = JSON.parse(schedules.sched_3);
-            break;
-            case 'compare':
-                let evtList;
-                for (let i=0; i < str[1].length; i++){
-                    switch (str[1].charAt(i)) {
-                        case 'd':
-                            eventsArray = {{ data_base|safe }};
-                            break;
-                        case '1':
-                            evtList = JSON.parse(schedules.sched_1);
-                            for (let j=0; j < evtList.length; j++) {
-                                let evt = evtList[j];
-                                evt.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--sched-1-color');
-                                evt.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--sched-1-color');
-                                eventsArray.push(evt);
-                            }
-                            break;
-                        case '2':
-                            evtList = JSON.parse(schedules.sched_2);
-                            for (let j=0; j < evtList.length; j++) {
-                                let evt = evtList[j];
-                                evt.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--sched-2-color');
-                                evt.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--sched-2-color');
-                                eventsArray.push(evt);
-                            }
-                            break;
-                        case '3':
-                            evtList = JSON.parse(schedules.sched_3);
-                            for (let j=0; j < evtList.length; j++) {
-                                let evt = evtList[j];
-                                evt.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--sched-3-color');
-                                evt.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--sched-3-color');
-                                eventsArray.push(evt);
-                            }
-                            break;
-                    }
-                }
-                localStorage.setItem('activeTab', 'nav-brut');
-            break;
-        }
+        let eventsArray = {{ data_base|safe }};
 
         // Forbidden time slots (user's input)
         let forbiddenTimeSlots = {{ fts|safe }};
@@ -587,11 +489,68 @@
                     }
                 }
             });
+
+            // Display requested schedule
+            $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
+                switch ($(e.target).attr('id')) {
+                    case 'nav-brut':
+                        eventsArray = {{ data_base|safe }};
+                    break;
+                    case 'nav-sched-1':
+                        eventsArray = JSON.parse(schedules.sched_1);
+                    break;
+                    case 'nav-sched-2':
+                        eventsArray = JSON.parse(schedules.sched_2);
+                    break;
+                    case 'nav-sched-3':
+                        eventsArray = JSON.parse(schedules.sched_3);
+                    break;
+                }
+                calendar.refetchEvents();
+            });
+
+            // Display course comparaison
+            $('#btn-sched-compare').on('click', function(event) {
+                eventsArray = [];
+                if ($('#check-sched-default').is(':checked')) {
+                    eventsArray = {{ data_base|safe }};
+                }
+                if ($('#check-sched-1').is(':checked')) {
+                    evtList = JSON.parse(schedules.sched_1);
+                    for (let j=0; j < evtList.length; j++) {
+                        let evt = evtList[j];
+                        evt.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--sched-1-color');
+                        evt.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--sched-1-color');
+                        eventsArray.push(evt);
+                    }
+                }
+                if ($('#check-sched-2').is(':checked')) {
+                    evtList = JSON.parse(schedules.sched_2);
+                    for (let j=0; j < evtList.length; j++) {
+                        let evt = evtList[j];
+                        evt.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--sched-2-color');
+                        evt.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--sched-2-color');
+                        eventsArray.push(evt);
+                    }
+                }
+                if ($('#check-sched-3').is(':checked')) {
+                    evtList = JSON.parse(schedules.sched_3);
+                    for (let j=0; j < evtList.length; j++) {
+                        let evt = evtList[j];
+                        evt.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--sched-3-color');
+                        evt.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--sched-3-color');
+                        eventsArray.push(evt);
+                    }
+                }
+                calendar.refetchEvents();
+            });
+
             calendar.render();
         });
     </script>
 
     <script>
+        // Time picker for FTS
         $('.clockpicker').clockpicker({
             placement: 'top',
             autoclose: true,
@@ -604,4 +563,15 @@
             $.post('/remove/code/'+code,() => window.location = window.location);
         }
     </script>
+
+    <script>
+        // Prevent closing dropdown
+        $('.dropdown-toggle').on('click', function (e) {
+            $(this).next().toggle();
+        });
+        $('.dropdown-menu.keep-open').on('click', function (e) {
+            e.stopPropagation();
+        });
+    </script>
+
 {% endblock %}
