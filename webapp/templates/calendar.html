@@ -16,10 +16,12 @@
             width: 100%;
             height: 100%;
         }
-        .scrollable-menu {
-            height: auto;
+        .dropdown-menu {
             max-height: 200px;
-            overflow-x: hidden;
+            overflow-y:auto;
+        }
+        .dropdown:hover>.dropdown-menu {
+            display: block;
         }
         .tooltip-inner {
             white-space:pre;
@@ -54,11 +56,11 @@
             <div class="navbar-collapse collapse">
                 <ul class="navbar-nav mr-auto">
                     <ul class="nav nav-tabs" id="nav-tab-cal">
-                        <li class="nav-item">
+                        <li class="nav-item" style="cursor: pointer;">
                             <a class="nav-link active" id="nav-brut" data-toggle="tab" aria-expanded="false">ADE schedule</a>
                         </li>
                         {% if data_sched|length > 0 %}
-                            <li class="nav-item">
+                            <li class="nav-item" style="cursor: pointer;">
                                 <a class="nav-link" id="nav-sched-1" data-toggle="tab" aria-expanded="false">1st schedule</a>
                             </li>
                         {% else %}
@@ -67,7 +69,7 @@
                             </li>
                         {% endif %}
                         {% if data_sched|length > 1 %}
-                            <li class="nav-item">
+                            <li class="nav-item" style="cursor: pointer;">
                                 <a class="nav-link" id="nav-sched-2" data-toggle="tab" aria-expanded="false">2nd schedule</a>
                             </li>
                         {% else %}
@@ -76,7 +78,7 @@
                             </li>
                         {% endif %}
                         {% if data_sched|length > 2 %}
-                            <li class="nav-item">
+                            <li class="nav-item" style="cursor: pointer;">
                                 <a class="nav-link" id="nav-sched-3" data-toggle="tab" aria-expanded="false">3rd schedule</a>
                             </li>
                         {% else %}
@@ -210,7 +212,46 @@
                     {% for code in codes %}
                         <tr style="align: center; padding: 0;">
                             <td style="word-break: break-all; padding: 0;">
-                                {{ code }}
+                                <div class="dropdown dropright" style="margin: 0; padding: 0;">
+                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" style="margin-right: -.125rem; margin-left: 0; padding: 0; word-break: break-all">{{ code }}</a>
+                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-start">
+                                        <a class="dropdown-item">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="check-cm" checked=true>
+                                                <label class="custom-control-label" for="check-cm">CM class</label>
+                                            </div>
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="check-tp" checked=true>
+                                                <label class="custom-control-label" for="check-tp">TP class</label>
+                                            </div>
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="check-exam" checked=true>
+                                                <label class="custom-control-label" for="check-exam">Exam class</label>
+                                            </div>
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="check-oral" checked=true>
+                                                <label class="custom-control-label" for="check-oral">Oral class</label>
+                                            </div>
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="check-other" checked=true>
+                                                <label class="custom-control-label" for="check-other">Other class</label>
+                                            </div>
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                    </div>
+                                </div>
                             </td>
                             <td style="padding: 0">
                                 <button class="btn btn-default" onClick=deleteCourse("{{ code }}"); style="background-color: transparent; border-color: transparent;">
@@ -224,7 +265,7 @@
         </div>
     </div>
 
-    <!-- Add/Compute/Clear -->
+    <!-- Add a course code -->
     <div class="form-group" style="float: left; clear: left; width: 11%; margin-bottom: -5px">
         <form class="form-horizontal" action="/" method="post">
             <label class="control-label"><strong>Add a course</strong></label>
