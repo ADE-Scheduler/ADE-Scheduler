@@ -10,6 +10,8 @@ L'utilisateur peut
   - ex. : pour le cours de proba, on choisit de ne prendre que le TP n°3, le mercredi à 14h00
 - générer les "n" meilleurs horaires, minimisant les conflits horaires
 - rajouter des slots horaires pendant lesquels on veut être libre
+- sauvegarder son calendrier (sauve les paramètres dans la base de donnée) et obtenir un code pour récuperer à tout moment la dernière version à jour du calendrier
+  - utilité : via une url, récuperer un calendrier (via son code) en format .ics -> ceci peut faire office de lien d'abonnement iCalendar
 
 ## Objectifs bonus
 L'utilisateur peut
