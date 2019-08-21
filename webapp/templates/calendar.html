@@ -88,7 +88,7 @@
                         {% endif %}
                         {% if data_sched|length > 0 %}
                             <li class="nav-item dropdown" id="dropdown-compare">
-                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Compare</a>
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button">Compare</a>
                                 <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 39px, 0px); top: 0px; left: 0px; will-change: transform;">
                                     <div class="form-group">
                                         <a class="dropdown-item">
@@ -140,7 +140,8 @@
                             {% else %}
                                 <button class="btn btn-success" type="submit" name="submit" value="Compute" style="width: 100%;"><strong>Compute</strong></button>
                             {% endif %}
-                            <button class="btn btn-secondary" type="submit" name="submit" value="Clear" style="width: 100%;"><strong>Clear</strong></button>
+                            <button class="btn btn-secondary" type="button" onclick=refreshFunction(); style="width: 100%;"><strong>Refresh</strong></button>
+                            <button class="btn btn-warning" type="submit" name="submit" value="Clear" style="width: 100%;"><strong>Clear</strong></button>
                         </div>
                     </form>
                 </ul>
@@ -222,7 +223,7 @@
                                                 <a class="dropdown-item">
                                                     <div class="custom-control custom-checkbox">
                                                         <input type="checkbox" class="custom-control-input" id="{{ cm_id }}" checked=true>
-                                                        <label class="custom-control-label" for="check-cm">{{ cm_id }}</label>
+                                                        <label class="custom-control-label" for="{{ cm_id }}">{{ cm_id }}</label>
                                                     </div>
                                                 </a>
                                             {% endfor %}
@@ -235,8 +236,8 @@
                                             {% for tp_id in id[code].TP %}
                                                 <a class="dropdown-item">
                                                     <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="{{ tp_id }}" checked=true>
-                                                        <label class="custom-control-label" for="check-cm">{{ tp_id }}</label>
+                                                        <input type="checkbox" class="custom-control-input" id="{{ tp_id }}" checked="true">
+                                                        <label class="custom-control-label" for="{{ tp_id }}">{{ tp_id }}</label>
                                                     </div>
                                                 </a>
                                             {% endfor %}
@@ -249,8 +250,8 @@
                                             {% for exam_id in id[code].Exam %}
                                                 <a class="dropdown-item">
                                                     <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="{{ exam_id }}" checked=true>
-                                                        <label class="custom-control-label" for="check-cm">{{ exam_id }}</label>
+                                                        <input type="checkbox" class="custom-control-input" id="{{ exam_id }}" checked="true">
+                                                        <label class="custom-control-label" for="{{ exam_id }}">{{ exam_id }}</label>
                                                     </div>
                                                 </a>
                                             {% endfor %}
@@ -263,8 +264,8 @@
                                             {% for oral_id in id[code].Oral %}
                                                 <a class="dropdown-item">
                                                     <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="{{ oral_id }}" checked=true>
-                                                        <label class="custom-control-label" for="check-cm">{{ oral_id }}</label>
+                                                        <input type="checkbox" class="custom-control-input" id="{{ oral_id }}" checked="true">
+                                                        <label class="custom-control-label" for="{{ oral_id }}">{{ oral_id }}</label>
                                                     </div>
                                                 </a>
                                             {% endfor %}
@@ -278,7 +279,7 @@
                                                 <a class="dropdown-item">
                                                     <div class="custom-control custom-checkbox">
                                                         <input type="checkbox" class="custom-control-input" id="{{ other_id }}" checked=true>
-                                                        <label class="custom-control-label" for="check-cm">{{ other_id }}</label>
+                                                        <label class="custom-control-label" for="{{ other_id }}">{{ other_id }}</label>
                                                     </div>
                                                 </a>
                                             {% endfor %}
@@ -287,7 +288,7 @@
                                 </div>
                             </td>
                             <td style="padding: 0">
-                                <button class="btn btn-default" onClick=deleteCourse("{{ code }}"); style="background-color: transparent; border-color: transparent;">
+                                <button class="btn btn-default" type="button" onclick=deleteCourse("{{ code }}"); style="background-color: transparent; border-color: transparent;">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </td>
@@ -329,6 +330,50 @@
     </script>
 
     <script>
+        // When the refresh button is pressed
+        function refreshFunction() {
+            let course_codes = {{ codes|safe }};
+            let course_ids = {{ id|safe }};
+            let selected_ids = [];
+            for (let i=0; i < course_codes.length; i++) {
+                // CM
+                for (let j = 0; j < course_ids[course_codes[i]].CM.length; j++) {
+                    if ($('#' + course_ids[course_codes[i]].CM[j]).is(':checked')) {
+                        selected_ids.push(course_ids[course_codes[i]].CM[j]);
+                    }
+                }
+                // TP
+                for (let j = 0; j < course_ids[course_codes[i]].TP.length; j++) {
+                    if ($('#' + course_ids[course_codes[i]].TP[j]).is(':checked')) {
+                        selected_ids.push(course_ids[course_codes[i]].TP[j]);
+                    }
+                }
+                // Exam
+                for (let j = 0; j < course_ids[course_codes[i]].Exam.length; j++) {
+                    if ($('#' + course_ids[course_codes[i]].Exam[j]).is(':checked')) {
+                        selected_ids.push(course_ids[course_codes[i]].Exam[j]);
+                    }
+                }
+                // Oral
+                for (let j = 0; j < course_ids[course_codes[i]].Oral.length; j++) {
+                    if ($('#' + course_ids[course_codes[i]].Oral[j]).is(':checked')) {
+                        selected_ids.push(course_ids[course_codes[i]].Oral[j]);
+                    }
+                }
+                // Other
+                for (let j = 0; j < course_ids[course_codes[i]].Other.length; j++) {
+                    if ($('#' + course_ids[course_codes[i]].Other[j]).is(':checked')) {
+                        selected_ids.push(course_ids[course_codes[i]].Other[j]);
+                    }
+                }
+            }
+
+            // send data to server
+            $.post("/getIDs", {'IDs': JSON.stringify(selected_ids)});
+        }
+    </script>
+
+    <script>
         // Course Events
         let schedules = {{ data_sched|safe }};
         let eventsArray = {{ data_base|safe }};
@@ -337,12 +382,7 @@
         let forbiddenTimeSlots = {{ fts|safe }};
         let dragToCopy = false;
         function send_fts_to_serv() {
-            let xhttp = new XMLHttpRequest();
-            let data = new FormData();
-            let to_send = JSON.stringify(forbiddenTimeSlots);
-            data.append('fts', to_send);
-            xhttp.open('POST', '/getFTS', true);
-            xhttp.send(data);
+            $.post('/getFTS', {'fts': JSON.stringify(forbiddenTimeSlots)});
         }
 
         // FullCalendar initialization
@@ -593,7 +633,7 @@
     <script>
         // Delete a course
         function deleteCourse(code) {
-            $.post('/remove/code/'+code,() => window.location = window.location);
+            $.post('/remove/code/'+code, () => window.location = window.location);
         }
     </script>
 
