@@ -24,6 +24,7 @@ data_base = list()
 data_sched = dict()
 fts_json = list()
 fts = list()
+id_tab = dict()
 basic_context = {'up_to_date': True, 'safe_compute':None}
 
 @app.route('/', methods=['GET', 'POST'])
@@ -34,6 +35,22 @@ def index():
     if __first_connection:
         __first_connection = False
         cookies_handler()
+
+    # ID OF EACH EVENT
+    id_tab.clear()
+    c = getCoursesFromCodes(codes, Q1 + Q2 + Q3, 9)
+    for course in c:
+        type_tab = {
+            'CM': list(),
+            'TP': list(),
+            'Exam': list(),
+            'Oral': list(),
+            'Other': list()
+        }
+        for abcd in course.getSummary():
+            temp = abcd.split(':')
+            type_tab[temp[0]].append(temp[1])
+        id_tab[course.code] = type_tab
         
     if request.method == 'POST':
         # CODE ADDED BY USER
@@ -46,8 +63,19 @@ def index():
                     c = getCoursesFromCodes([course_code], Q1+Q2+Q3, 9)
                     for course in c:
                         data_base += course.getEventsJSON()
+                        type_tab = {
+                            'CM': list(),
+                            'TP': list(),
+                            'Exam': list(),
+                            'Oral': list(),
+                            'Other': list()
+                        }
+                        for abcd in course.getSummary():
+                            temp = abcd.split(':')
+                            type_tab[temp[0]].append(temp[1])
+                        id_tab[course.code] = type_tab
+
                     basic_context['codes'] = codes # Useless I think
-            return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=data_sched, fts=json.dumps(fts_json))
 
         # COMPUTATION REQUESTED BY USER
         if request.form['submit'] == 'Compute':
@@ -56,7 +84,7 @@ def index():
             # No course code was specified
             if len(codes) == 0:
                 data_sched.clear()
-                resp = make_response(render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=data_sched, fts=json.dumps(fts_json)))
+                resp = make_response(render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=data_sched, fts=json.dumps(fts_json), id=id_tab))
                 # Update the last computed codes
                 resp.set_cookie('last_computed', "")
                 return resp
@@ -79,7 +107,7 @@ def index():
                 data_sched['sched_' + str(i)] = json.dumps(temp_sched)
                 i += 1
 
-            resp = make_response(render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=data_sched, fts=json.dumps(fts_json)))
+            resp = make_response(render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=data_sched, fts=json.dumps(fts_json), id=id_tab))
             # Update the last computed codes
             str_last_computed = " ".join(codes)
             resp.set_cookie('last_computed', str_last_computed)
@@ -94,12 +122,10 @@ def index():
             fts_json.clear()
             fts.clear()
             basic_context['codes'] = codes
-            return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=data_sched, fts=json.dumps(fts_json))
-
 
     basic_context['codes'] = codes
     print(codes)
-    return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=data_sched, fts=json.dumps(fts_json))
+    return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=data_sched, fts=json.dumps(fts_json), id=id_tab)
 
 
 @app.route('/getCalendar')
@@ -127,7 +153,7 @@ def getFTS():
         else:
             print('This FTS was not recognized by the engine')
         basic_context['up_to_date'] = False
-    return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=data_sched, fts=json.dumps(fts_json))
+    return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=data_sched, fts=json.dumps(fts_json), id=id_tab)
 
 
 # To remove the code
@@ -143,7 +169,7 @@ def remove_code(the_code):
             c = getCoursesFromCodes(codes, Q1 + Q2 + Q3, 9)
             for course in c:
                 data_base += course.getEventsJSON()
-    return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=data_sched, fts=json.dumps(fts_json))
+    return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=data_sched, fts=json.dumps(fts_json), id=id_tab)
 
 
 # Page for user preferences
@@ -214,7 +240,7 @@ def cookies_handler():
 
     # Getting the cookies
     # Safe compute
-    resp = make_response(render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=data_sched, fts=json.dumps(fts_json)))
+    resp = make_response(render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=data_sched, fts=json.dumps(fts_json), id=id_tab))
     try:
         pref_safe_compute = request.cookies.get('safe-compute')
         if pref_safe_compute is None or pref_safe_compute == 'False':
