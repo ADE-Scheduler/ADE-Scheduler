@@ -51,6 +51,9 @@ def index():
             temp = abcd.split(':')
             type_tab[temp[0]].append(temp[1])
         id_tab[course.code] = type_tab
+    for code in codes:
+        if code not in id_tab.keys():
+            id_tab[code] = {'CM': list(), 'TP': list(), 'Exam': list(), 'Oral': list(), 'Other': list()}
         
     if request.method == 'POST':
         # CODE ADDED BY USER
@@ -74,6 +77,9 @@ def index():
                             temp = abcd.split(':')
                             type_tab[temp[0]].append(temp[1])
                         id_tab[course.code] = type_tab
+                    for code in codes:
+                        if code not in id_tab.keys():
+                            id_tab[code] = {'CM': list(), 'TP': list(), 'Exam': list(), 'Oral': list(), 'Other': list()}
 
                     basic_context['codes'] = codes # Useless I think
 
@@ -136,7 +142,7 @@ def getCalendar():
 # To fetch the FTS
 @app.route('/getFTS', methods=['POST'])
 def getFTS():
-    msg = json.loads(request.values.get('fts', None))
+    msg = json.loads(request.form['fts'])
     fts_json.clear()
     tz = timezone('Europe/Brussels')
     for el in msg:
@@ -155,6 +161,14 @@ def getFTS():
         basic_context['up_to_date'] = False
     return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=data_sched, fts=json.dumps(fts_json), id=id_tab)
 
+
+# To fetch the IDs
+@app.route('/getIDs', methods=['POST'])
+def getIDs():
+    selected_ids = json.loads(request.form['IDs'])
+    print(selected_ids)
+    return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=data_sched,
+                           fts=json.dumps(fts_json), id=id_tab)
 
 # To remove the code
 @app.route('/remove/code/<the_code>', methods=['POST'])
