@@ -1,17 +1,18 @@
 # Spécifications de l'application ADE-scheduler
-Sur base des données fournies par le site ade-uclouvain, l'application obtient les données et les traite.
+Sur base des données fournies par le site ADE-UCLouvain, l'application obtient les données et les traite.
 
 ## Objectifs
 L'utilisateur peut
 - visualiser le calendrier en temps réel
-- créer un fichier .ics téléchargeable à partir du calendrier visionnié
 - ajouter et supprimer des cours via leur code cours
-- sélectionner, par cours, les éléments que l'on veut garder
-  - ex. : pour le cours de proba, on choisit de ne prendre que le TP n°3, le mercredi à 14h00
-- générer les "n" meilleurs horaires, minimisant les conflits horaires
-- rajouter des slots horaires pendant lesquels on veut être libre
-- sauvegarder son calendrier (sauve les paramètres dans la base de donnée) et obtenir un code pour récuperer à tout moment la dernière version à jour du calendrier
-  - utilité : via une url, récuperer un calendrier (via son code) en format .ics -> ceci peut faire office de lien d'abonnement iCalendar
+- sélectionner, par cours, les éléments qu'il souhaite garder
+  - ex. : pour le cours de Probabilité (LFSAB1105), il choisit de ne prendre que le TP n°3, le mercredi à 14h00
+  - ex. : pour le cours de Logique (LINGI1101), il choisit de ne prendre en compte que les cours magistraux
+- rajouter des slots horaires pendant lesquels il souhaite être libre (avec divers niveau de priorité)
+- générer les "n" meilleurs horaires, minimisant les conflits horaires, et respectant au maximum les souhaits de l'utilisateur, selon une fonction de couts à minimiser (par exemple: un conflit horaire génère un cout élevé)
+- créer un fichier .ics téléchargeable à partir du calendrier visionnié
+- sauvegarder son calendrier (sauve les paramètres dans une base de donnée) et obtenir un code pour récupérer à tout moment la dernière version du calendrier selon les dernières informations de ADE-UCLouvain
+  - utilité : via une url, récupérer un calendrier (via son code) en format .ics -> ceci peut faire office de lien d'abonnement iCalendar
 
 ## Objectifs bonus
 L'utilisateur peut
@@ -27,9 +28,9 @@ L'utilisateur peut
   - les cours pour 24H et limiter la quantité de requêtes ADE en allant d'abord rechercher ce qu'il existe dans la base
   - les paramètres afin de reconstruire un calendrier à chaque requête de l'abonnement icalendar
 
-### `html` pour
+### `HTML` pour
 - les pages webs
 
-### `javascript` pour
+### `JavaScript` pour
 - les pages webs
 - affichage du calendrier avec FullCalendar
