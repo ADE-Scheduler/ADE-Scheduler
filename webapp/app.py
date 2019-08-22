@@ -183,7 +183,7 @@ def remove_code(the_code):
             c = getCoursesFromCodes(codes, Q1 + Q2 + Q3, 9)
             for course in c:
                 data_base += course.getEventsJSON()
-    return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=data_sched, fts=json.dumps(fts_json), id=id_tab)
+    return redirect('/')
 
 
 # Page for user preferences
