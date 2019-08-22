@@ -216,73 +216,77 @@
                                 <div class="dropdown dropright" style="margin: 0; padding: 0;">
                                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" style="margin-right: -.125rem; margin-left: 0; padding: 0; word-break: break-all">{{ code }}</a>
                                     <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-start">
-                                        <!-- ID OF CMs -->
-                                        {% if id[code].CM|length > 0 %}
-                                            <label class="custom-control-label" style="margin-left: 5px"><strong>CM:</strong></label>
-                                            {% for cm_id in id[code].CM %}
-                                                <a class="dropdown-item">
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="{{ cm_id }}" checked=true>
-                                                        <label class="custom-control-label" for="{{ cm_id }}">{{ cm_id }}</label>
-                                                    </div>
-                                                </a>
-                                            {% endfor %}
-                                            <div class="dropdown-divider"></div>
-                                        {% endif %}
+                                        {% if id[code]|length == 0 %}
+                                            <label class="custom-control-label" style="margin-left: 5px"><strong>No event found !</strong></label>
+                                        {% else %}
+                                            <!-- ID OF CMs -->
+                                            {% if id[code].CM|length > 0 %}
+                                                <label class="custom-control-label" style="margin-left: 5px"><strong>CM:</strong></label>
+                                                {% for cm_id in id[code].CM %}
+                                                    <a class="dropdown-item">
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input" id="{{ cm_id }}" checked=true>
+                                                            <label class="custom-control-label" for="{{ cm_id }}">{{ cm_id }}</label>
+                                                        </div>
+                                                    </a>
+                                                {% endfor %}
+                                                <div class="dropdown-divider"></div>
+                                            {% endif %}
 
-                                        <!-- ID OF TPs -->
-                                        {% if id[code].TP|length > 0 %}
-                                            <label class="custom-control-label" style="margin-left: 5px"><strong>TP:</strong></label>
-                                            {% for tp_id in id[code].TP %}
-                                                <a class="dropdown-item">
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="{{ tp_id }}" checked="true">
-                                                        <label class="custom-control-label" for="{{ tp_id }}">{{ tp_id }}</label>
-                                                    </div>
-                                                </a>
-                                            {% endfor %}
-                                            <div class="dropdown-divider"></div>
-                                        {% endif %}
+                                            <!-- ID OF TPs -->
+                                            {% if id[code].TP|length > 0 %}
+                                                <label class="custom-control-label" style="margin-left: 5px"><strong>TP:</strong></label>
+                                                {% for tp_id in id[code].TP %}
+                                                    <a class="dropdown-item">
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input" id="{{ tp_id }}" checked="true">
+                                                            <label class="custom-control-label" for="{{ tp_id }}">{{ tp_id }}</label>
+                                                        </div>
+                                                    </a>
+                                                {% endfor %}
+                                                <div class="dropdown-divider"></div>
+                                            {% endif %}
 
-                                        <!-- ID OF Exams -->
-                                        {% if id[code].Exam|length > 0 %}
-                                            <label class="custom-control-label" style="margin-left: 5px"><strong>Exam:</strong></label>
-                                            {% for exam_id in id[code].Exam %}
-                                                <a class="dropdown-item">
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="{{ exam_id }}" checked="true">
-                                                        <label class="custom-control-label" for="{{ exam_id }}">{{ exam_id }}</label>
-                                                    </div>
-                                                </a>
-                                            {% endfor %}
-                                            <div class="dropdown-divider"></div>
-                                        {% endif %}
+                                            <!-- ID OF Exams -->
+                                            {% if id[code].EXAM|length > 0 %}
+                                                <label class="custom-control-label" style="margin-left: 5px"><strong>Exam:</strong></label>
+                                                {% for exam_id in id[code].EXAM %}
+                                                    <a class="dropdown-item">
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input" id="{{ exam_id }}" checked="true">
+                                                            <label class="custom-control-label" for="{{ exam_id }}">{{ exam_id }}</label>
+                                                        </div>
+                                                    </a>
+                                                {% endfor %}
+                                                <div class="dropdown-divider"></div>
+                                            {% endif %}
 
-                                        <!-- ID OF Orals -->
-                                        {% if id[code].Oral|length > 0 %}
-                                            <label class="custom-control-label" style="margin-left: 5px"><strong>Oral:</strong></label>
-                                            {% for oral_id in id[code].Oral %}
-                                                <a class="dropdown-item">
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="{{ oral_id }}" checked="true">
-                                                        <label class="custom-control-label" for="{{ oral_id }}">{{ oral_id }}</label>
-                                                    </div>
-                                                </a>
-                                            {% endfor %}
-                                            <div class="dropdown-divider"></div>
-                                        {% endif %}
+                                            <!-- ID OF Orals -->
+                                            {% if id[code].ORAL|length > 0 %}
+                                                <label class="custom-control-label" style="margin-left: 5px"><strong>Oral:</strong></label>
+                                                {% for oral_id in id[code].ORAL %}
+                                                    <a class="dropdown-item">
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input" id="{{ oral_id }}" checked="true">
+                                                            <label class="custom-control-label" for="{{ oral_id }}">{{ oral_id }}</label>
+                                                        </div>
+                                                    </a>
+                                                {% endfor %}
+                                                <div class="dropdown-divider"></div>
+                                            {% endif %}
 
-                                        <!-- ID OF Others -->
-                                        {% if id[code].Other|length > 0 %}
-                                            <label class="custom-control-label" style="margin-left: 5px"><strong>Other:</strong></label>
-                                            {% for other_id in id[code].Other %}
-                                                <a class="dropdown-item">
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="{{ other_id }}" checked=true>
-                                                        <label class="custom-control-label" for="{{ other_id }}">{{ other_id }}</label>
-                                                    </div>
-                                                </a>
-                                            {% endfor %}
+                                            <!-- ID OF Others -->
+                                            {% if id[code].Other|length > 0 %}
+                                                <label class="custom-control-label" style="margin-left: 5px"><strong>Other:</strong></label>
+                                                {% for other_id in id[code].Other %}
+                                                    <a class="dropdown-item">
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input" id="{{ other_id }}" checked=true>
+                                                            <label class="custom-control-label" for="{{ other_id }}">{{ other_id }}</label>
+                                                        </div>
+                                                    </a>
+                                                {% endfor %}
+                                            {% endif %}
                                         {% endif %}
                                     </div>
                                 </div>
@@ -338,38 +342,38 @@
             for (let i=0; i < course_codes.length; i++) {
                 // CM
                 for (let j = 0; j < course_ids[course_codes[i]].CM.length; j++) {
-                    if ($('#' + course_ids[course_codes[i]].CM[j]).is(':checked')) {
+                    if (document.getElementById(course_ids[course_codes[i]].CM[j]).getAttribute("checked")) {
                         selected_ids.push(course_ids[course_codes[i]].CM[j]);
                     }
                 }
                 // TP
                 for (let j = 0; j < course_ids[course_codes[i]].TP.length; j++) {
-                    if ($('#' + course_ids[course_codes[i]].TP[j]).is(':checked')) {
+                    if (document.getElementById(course_ids[course_codes[i]].TP[j]).getAttribute("checked")) {
                         selected_ids.push(course_ids[course_codes[i]].TP[j]);
                     }
                 }
                 // Exam
-                for (let j = 0; j < course_ids[course_codes[i]].Exam.length; j++) {
-                    if ($('#' + course_ids[course_codes[i]].Exam[j]).is(':checked')) {
-                        selected_ids.push(course_ids[course_codes[i]].Exam[j]);
+                for (let j = 0; j < course_ids[course_codes[i]].EXAM.length; j++) {
+                    if (document.getElementById(course_ids[course_codes[i]].EXAM[j]).getAttribute("checked")) {
+                        selected_ids.push(course_ids[course_codes[i]].EXAM[j]);
                     }
                 }
                 // Oral
-                for (let j = 0; j < course_ids[course_codes[i]].Oral.length; j++) {
-                    if ($('#' + course_ids[course_codes[i]].Oral[j]).is(':checked')) {
-                        selected_ids.push(course_ids[course_codes[i]].Oral[j]);
+                for (let j = 0; j < course_ids[course_codes[i]].ORAL.length; j++) {
+                    if (document.getElementById(course_ids[course_codes[i]].ORAL[j]).getAttribute("checked")) {
+                        selected_ids.push(course_ids[course_codes[i]].ORAL[j]);
                     }
                 }
                 // Other
                 for (let j = 0; j < course_ids[course_codes[i]].Other.length; j++) {
-                    if ($('#' + course_ids[course_codes[i]].Other[j]).is(':checked')) {
+                    if (document.getElementById(course_ids[course_codes[i]].Other[j]).getAttribute("checked")) {
                         selected_ids.push(course_ids[course_codes[i]].Other[j]);
                     }
                 }
             }
 
             // send data to server
-            $.post("/getIDs", {'IDs': JSON.stringify(selected_ids)});
+            $.post("/getIDs", {'IDs': JSON.stringify(selected_ids)}, function(){location.reload()});
         }
     </script>
 
