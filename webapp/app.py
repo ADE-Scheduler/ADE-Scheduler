@@ -43,8 +43,8 @@ def index():
         type_tab = {
             'CM': list(),
             'TP': list(),
-            'Exam': list(),
-            'Oral': list(),
+            'EXAM': list(),
+            'ORAL': list(),
             'Other': list()
         }
         for abcd in course.getSummary():
@@ -53,7 +53,7 @@ def index():
         id_tab[course.code] = type_tab
     for code in codes:
         if code not in id_tab.keys():
-            id_tab[code] = {'CM': list(), 'TP': list(), 'Exam': list(), 'Oral': list(), 'Other': list()}
+            id_tab[code] = {}
         
     if request.method == 'POST':
         # CODE ADDED BY USER
@@ -69,8 +69,8 @@ def index():
                         type_tab = {
                             'CM': list(),
                             'TP': list(),
-                            'Exam': list(),
-                            'Oral': list(),
+                            'EXAM': list(),
+                            'ORAL': list(),
                             'Other': list()
                         }
                         for abcd in course.getSummary():
@@ -79,7 +79,7 @@ def index():
                         id_tab[course.code] = type_tab
                     for code in codes:
                         if code not in id_tab.keys():
-                            id_tab[code] = {'CM': list(), 'TP': list(), 'Exam': list(), 'Oral': list(), 'Other': list()}
+                            id_tab[code] = {}
 
                     basic_context['codes'] = codes # Useless I think
 
