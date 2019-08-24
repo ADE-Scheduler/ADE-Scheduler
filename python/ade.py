@@ -20,7 +20,6 @@ def getCoursesFromCodes(course_tags, weeks, projectID=9):
     if not course_tags:
         return []
 
-
     # some variables
     entry = ('date', 'code', 'time', 'duration', 'name', 'prof', 'mail', 'loc')
     course_added = []

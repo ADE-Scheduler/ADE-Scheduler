@@ -19,12 +19,15 @@ app = Flask(__name__)
 __first_connection = True
 
 codes_master = ['LELEC2660', 'LELEC2811', 'LMECA2755', 'LELEC2313', 'LELEC2531', 'LMECA2801', 'LELME2002']
+
+# Course codes
 codes = list()
 data_base = list()
 data_sched = dict()
 fts_json = list()
 fts = list()
 id_tab = dict()
+id_list = None
 basic_context = {'up_to_date': True, 'safe_compute':None}
 
 @app.route('/', methods=['GET', 'POST'])
@@ -40,13 +43,7 @@ def index():
     id_tab.clear()
     c = getCoursesFromCodes(codes, Q1 + Q2 + Q3, 9)
     for course in c:
-        type_tab = {
-            'CM': list(),
-            'TP': list(),
-            'EXAM': list(),
-            'ORAL': list(),
-            'Other': list()
-        }
+        type_tab = {'CM': list(), 'TP': list(), 'EXAM': list(), 'ORAL': list(), 'Other': list()}
         for abcd in course.getSummary():
             temp = abcd.split(':')
             type_tab[temp[0]].append(temp[1])
@@ -66,13 +63,7 @@ def index():
                     c = getCoursesFromCodes([course_code], Q1+Q2+Q3, 9)
                     for course in c:
                         data_base += course.getEventsJSON()
-                        type_tab = {
-                            'CM': list(),
-                            'TP': list(),
-                            'EXAM': list(),
-                            'ORAL': list(),
-                            'Other': list()
-                        }
+                        type_tab = {'CM': list(), 'TP': list(), 'EXAM': list(), 'ORAL': list(), 'Other': list()}
                         for abcd in course.getSummary():
                             temp = abcd.split(':')
                             type_tab[temp[0]].append(temp[1])
@@ -130,7 +121,6 @@ def index():
             basic_context['codes'] = codes
 
     basic_context['codes'] = codes
-    print(codes)
     return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=data_sched, fts=json.dumps(fts_json), id=id_tab)
 
 
@@ -140,7 +130,7 @@ def getCalendar():
     return send_file(library.getCalendar(n), as_attachment=True)
 
 # To fetch the FTS
-@app.route('/getFTS', methods=['POST'])
+@app.route('/get/fts', methods=['POST'])
 def getFTS():
     msg = json.loads(request.form['fts'])
     fts_json.clear()
@@ -159,16 +149,16 @@ def getFTS():
         else:
             print('This FTS was not recognized by the engine')
         basic_context['up_to_date'] = False
-    return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=data_sched, fts=json.dumps(fts_json), id=id_tab)
+    return redirect(url_for('index'))
 
 
 # To fetch the IDs
-@app.route('/getIDs', methods=['POST'])
+@app.route('/get/id', methods=['POST'])
 def getIDs():
-    selected_ids = json.loads(request.form['IDs'])
-    print(selected_ids)
-    return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=data_sched,
-                           fts=json.dumps(fts_json), id=id_tab)
+    global id_list
+    id_list = json.loads(request.form['IDs'])
+    print(id_list)
+    return redirect(url_for('index'))
 
 # To remove the code
 @app.route('/remove/code/<the_code>', methods=['POST'])
@@ -183,7 +173,7 @@ def remove_code(the_code):
             c = getCoursesFromCodes(codes, Q1 + Q2 + Q3, 9)
             for course in c:
                 data_base += course.getEventsJSON()
-    return redirect('/')
+    return redirect(url_for('index'))
 
 
 # Page for user preferences
