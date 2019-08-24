@@ -1,0 +1,115 @@
+# French translations for PROJECT.
+# Copyright (C) 2019 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2019.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2019-08-25 00:19+0200\n"
+"PO-Revision-Date: 2019-08-24 23:58+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: fr\n"
+"Language-Team: fr <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.7.0\n"
+
+#: templates/calendar.html:61
+msgid "ADE schedule"
+msgstr "Horaire ADE"
+
+#: templates/calendar.html:65 templates/calendar.html:69
+#: templates/calendar.html:104
+msgid "1st schedule"
+msgstr "1er horaire"
+
+#: templates/calendar.html:74 templates/calendar.html:78
+#: templates/calendar.html:111
+msgid "2nd schedule"
+msgstr "2ème horaire"
+
+#: templates/calendar.html:83 templates/calendar.html:87
+#: templates/calendar.html:119
+msgid "3rd schedule"
+msgstr "3ème horaire"
+
+#: templates/calendar.html:92 templates/calendar.html:131
+msgid "Compare"
+msgstr "Comparer"
+
+#: templates/calendar.html:98
+msgid "ADE Schedule"
+msgstr "Horaire ADE"
+
+#: templates/calendar.html:140 templates/calendar.html:142
+msgid "Compute"
+msgstr "Calculer"
+
+#: templates/calendar.html:146
+msgid "Refresh"
+msgstr "Rafraichir"
+
+#: templates/calendar.html:149
+msgid "Clear"
+msgstr "Réinitialiser"
+
+#: templates/calendar.html:165
+msgid "Start"
+msgstr "Début"
+
+#: templates/calendar.html:171
+msgid "End"
+msgstr "Fin"
+
+#: templates/calendar.html:178
+msgid "Cancel"
+msgstr "Annuler"
+
+#: templates/calendar.html:179
+msgid "Confirm"
+msgstr "Confirmer"
+
+#: templates/calendar.html:194
+msgid "Block Time Slots"
+msgstr "Bloquer un Horaire"
+
+#: templates/calendar.html:197
+msgid "Low"
+msgstr "Bas"
+
+#: templates/calendar.html:198
+msgid "Medium"
+msgstr "Moyen"
+
+#: templates/calendar.html:199
+msgid "High"
+msgstr "Haut"
+
+#: templates/calendar.html:206
+msgid "Current Courses"
+msgstr "Cours ajoutés"
+
+#: templates/calendar.html:225
+msgid "No event found !"
+msgstr "Aucun événement trouvé"
+
+#: templates/calendar.html:316
+msgid "Add a course"
+msgstr "Ajouter un cours"
+
+#: templates/help.html:8
+msgid "How does the scheduler work ?"
+msgstr "Comment est ce que le scheduler fonctionne ?"
+
+#: templates/help.html:18
+msgid "What are the options ?"
+msgstr "Quelles sont les options ?"
+
+#: templates/preferences.html:69
+msgid "Academic Year"
+msgstr "Année académique"
+

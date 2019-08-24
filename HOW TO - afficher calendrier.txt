@@ -1,5 +1,0 @@
-https://github.com/niccokunzmann/open-web-calendar
-
-https://fullcalendar.io/
-
-https://pypi.org/project/js.fullcalendar/
