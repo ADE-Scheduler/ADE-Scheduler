@@ -58,57 +58,57 @@
                 <ul class="navbar-nav mr-auto">
                     <ul class="nav nav-tabs" id="nav-tab-cal">
                         <li class="nav-item" style="cursor: pointer;">
-                            <a class="nav-link active" id="nav-brut" data-toggle="tab" aria-expanded="false">ADE schedule</a>
+                            <a class="nav-link active" id="nav-brut" data-toggle="tab" aria-expanded="false">{{ _('ADE schedule') }}</a>
                         </li>
                         {% if data_sched|length > 0 %}
                             <li class="nav-item" style="cursor: pointer;">
-                                <a class="nav-link" id="nav-sched-1" data-toggle="tab" aria-expanded="false">1st schedule</a>
+                                <a class="nav-link" id="nav-sched-1" data-toggle="tab" aria-expanded="false">{{ _('1st schedule') }}</a>
                             </li>
                         {% else %}
                             <li class="nav-item" style="cursor: not-allowed">
-                                <a class="nav-link disabled">1st schedule</a>
+                                <a class="nav-link disabled">{{ _('1st schedule') }}</a>
                             </li>
                         {% endif %}
                         {% if data_sched|length > 1 %}
                             <li class="nav-item" style="cursor: pointer;">
-                                <a class="nav-link" id="nav-sched-2" data-toggle="tab" aria-expanded="false">2nd schedule</a>
+                                <a class="nav-link" id="nav-sched-2" data-toggle="tab" aria-expanded="false">{{ _('2nd schedule') }}</a>
                             </li>
                         {% else %}
                             <li class="nav-item" style="cursor: not-allowed">
-                                <a class="nav-link disabled">2nd schedule</a>
+                                <a class="nav-link disabled">{{ _('2nd schedule') }}</a>
                             </li>
                         {% endif %}
                         {% if data_sched|length > 2 %}
                             <li class="nav-item" style="cursor: pointer;">
-                                <a class="nav-link" id="nav-sched-3" data-toggle="tab" aria-expanded="false">3rd schedule</a>
+                                <a class="nav-link" id="nav-sched-3" data-toggle="tab" aria-expanded="false">{{ _('3rd schedule') }}</a>
                             </li>
                         {% else %}
                             <li class="nav-item" style="cursor: not-allowed">
-                                <a class="nav-link disabled">3rd schedule</a>
+                                <a class="nav-link disabled">{{ _('3rd schedule') }}</a>
                             </li>
                         {% endif %}
                         {% if data_sched|length > 0 %}
                             <li class="nav-item dropdown" id="dropdown-compare">
-                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button">Compare</a>
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button">{{ _('Compare') }}</a>
                                 <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 39px, 0px); top: 0px; left: 0px; will-change: transform;">
                                     <div class="form-group">
                                         <a class="dropdown-item">
                                             <div class="custom-control custom-checkbox">
                                                 <input type="checkbox" class="custom-control-input" id="check-sched-default">
-                                                <label class="custom-control-label" for="check-sched-default">ADE schedule</label>
+                                                <label class="custom-control-label" for="check-sched-default">{{ _('ADE Schedule') }}</label>
                                             </div>
                                         </a>
                                         <a class="dropdown-item">
                                             <div class="custom-control custom-checkbox">
                                                 <input type="checkbox" class="custom-control-input" id="check-sched-1">
-                                                <label class="custom-control-label" for="check-sched-1">1st schedule</label>
+                                                <label class="custom-control-label" for="check-sched-1">{{ _('1st schedule') }}</label>
                                             </div>
                                         </a>
                                         {% if data_sched|length > 1 %}
                                             <a class="dropdown-item">
                                                 <div class="custom-control custom-checkbox">
                                                     <input type="checkbox" class="custom-control-input" id="check-sched-2">
-                                                    <label class="custom-control-label" for="check-sched-2">2nd schedule</label>
+                                                    <label class="custom-control-label" for="check-sched-2">{{ _('2nd schedule') }}</label>
                                                 </div>
                                             </a>
                                         {% endif %}
@@ -116,7 +116,7 @@
                                             <a class="dropdown-item">
                                                 <div class="custom-control custom-checkbox">
                                                     <input type="checkbox" class="custom-control-input" id="check-sched-3">
-                                                    <label class="custom-control-label" for="check-sched-3">3rd schedule</label>
+                                                    <label class="custom-control-label" for="check-sched-3">{{ _('3rd schedule') }}</label>
                                                 </div>
                                             </a>
                                         {% endif %}
@@ -128,7 +128,7 @@
                             </li>
                         {% else %}
                             <li class="nav-item dropdown" style="cursor: not-allowed">
-                                <a class="nav-link disabled">Compare</a>
+                                <a class="nav-link disabled">{{ _('Compare') }}</a>
                             </li>
                         {% endif %}
                     </ul>
@@ -137,16 +137,16 @@
                     <div>
                         <form class="btn-group" method="post" action="/">
                             {% if up_to_date == False %}
-                                <button class="btn btn-danger" type="submit" name="submit" value="Compute" style="width: 100%;"><strong>Compute</strong></button>
+                                <button class="btn btn-danger" type="submit" name="submit" value="Compute" style="width: 100%;"><strong>{{ _('Compute') }}</strong></button>
                             {% else %}
-                                <button class="btn btn-success" type="submit" name="submit" value="Compute" style="width: 100%;"><strong>Compute</strong></button>
+                                <button class="btn btn-success" type="submit" name="submit" value="Compute" style="width: 100%;"><strong>{{ _('Compute') }}</strong></button>
                             {% endif %}
                         </form>
                         <div class="btn-group">
-                            <button class="btn btn-secondary" type="button" onclick=refreshFunction(); style="width: 100%;"><strong>Refresh</strong></button>
+                            <button class="btn btn-secondary" type="button" onclick=refreshFunction(); style="width: 100%;"><strong>{{ _('Refresh') }}</strong></button>
                         </div>
                         <form class="btn-group" method="post" action="/">
-                            <button class="btn btn-warning" type="submit" name="submit" value="Clear" style="width: 100%;"><strong>Clear</strong></button>
+                            <button class="btn btn-warning" type="submit" name="submit" value="Clear" style="width: 100%;"><strong>{{ _('Clear') }}</strong></button>
                         </form>
                     </div>
                 </ul>
@@ -162,21 +162,21 @@
             <div class="modal-content">
                 <div class="modal-body" style="height: 90px">
                     <div class="btn-group-vertical" style="width: 48%; margin-right: 2%; float: left">
-                        <h5 style="text-align: center"><strong>Start</strong></h5>
+                        <h5 style="text-align: center"><strong>{{ _('Start') }}</strong></h5>
                         <div class="input-group clockpicker">
                             <input type="text" class="form-control" value="08:00" id="start_time" readonly>
                         </div>
                     </div>
                     <div class="btn-group-vertical" style="width: 48%; margin-left: 2%; float: right">
-                        <h5 style="text-align: center"><strong>End</strong></h5>
+                        <h5 style="text-align: center"><strong>{{ _('End') }}</strong></h5>
                         <div class="input-group clockpicker">
                             <input type="text" class="form-control" value="10:00" id="end_time" readonly>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal" style="float: left;">Cancel</button>
-                    <button type="button" class="btn btn-success" id="time-prompt-confirm" style="float: right;">Confirm</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" style="float: left;">{{ _('Cancel') }}</button>
+                    <button type="button" class="btn btn-success" id="time-prompt-confirm" style="float: right;">{{ _('Confirm') }}</button>
                 </div>
             </div>
         </div>
@@ -191,19 +191,19 @@
 
     <!-- drag-n-drop body -->
     <div class="card border-primary mb-3" style="float: left; clear: left; width: 11%; text-align: center;">
-        <div class="card-header" style="padding: 5%"><strong>Block Time Slots</strong></div>
+        <div class="card-header" style="padding: 5%"><strong>{{ _('Block Time Slots') }}</strong></div>
         <div class="card-body" style="padding: 5% 10%;">
             <div id='external-events-list'>
-                <span class="badge badge-success" style="width: 100%; height: 100%; cursor: pointer;">Low</span>
-                <span class="badge badge-warning" style="width: 100%; height: 100%; cursor: pointer;">Medium</span>
-                <span class="badge badge-danger" style="width: 100%; height: 100%; cursor: pointer;">High</span>
+                <span class="badge badge-success" style="width: 100%; height: 100%; cursor: pointer;">{{ _('Low') }}</span>
+                <span class="badge badge-warning" style="width: 100%; height: 100%; cursor: pointer;">{{ _('Medium') }}</span>
+                <span class="badge badge-danger" style="width: 100%; height: 100%; cursor: pointer;">{{ _('High') }}</span>
             </div>
         </div>
     </div>
 
     <!-- course body -->
     <div class="card border-primary mb-3" style="float: left; clear: left; width: 11%; text-align: center;">
-        <div class="card-header" style="padding: 5%"><strong>Current Courses</strong></div>
+        <div class="card-header" style="padding: 5%"><strong>{{ _('Current Courses') }}</strong></div>
         <div class="card-body" style="padding: 5%">
             <table style="border-collapse: collapse">
                 <tbody>
@@ -222,7 +222,7 @@
                                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" style="margin-right: -.125rem; margin-left: 0; padding: 0; word-break: break-all">{{ code }}</a>
                                     <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-start">
                                         {% if id[code]|length == 0 %}
-                                            <label class="custom-control-label" style="margin-left: 5px"><strong>No event found !</strong></label>
+                                            <label class="custom-control-label" style="margin-left: 5px"><strong>{{ _('No event found !') }}</strong></label>
                                         {% else %}
                                             <!-- ID OF CMs -->
                                             {% if id[code].CM|length > 0 %}
@@ -313,7 +313,7 @@
     <!-- Add a course code -->
     <div class="form-group" style="float: left; clear: left; width: 11%; margin-bottom: -5px">
         <form class="form-horizontal" action="/" method="post">
-            <label class="control-label"><strong>Add a course</strong></label>
+            <label class="control-label"><strong>{{ _('Add a course') }}</strong></label>
             <div class="input-group mb-3">
                 <input type="text" id='course-input' class="form-control" name="course_code" placeholder="Code">
                 <div class="input-group-append">
@@ -331,6 +331,7 @@
     <script src='/static/fullcalendar/list/main.js'></script>
     <script src='/static/fullcalendar/timegrid/main.js'></script>
     <script src='/static/fullcalendar/bootstrap/main.js'></script>
+    <script src='/static/fullcalendar/core/locales/fr.js'></script>
     <script src='/static/clockpicker/bootstrap-clockpicker.min.js'></script>
 
     <script>
@@ -423,6 +424,9 @@
                 droppable: true,
                 eventLimit: false, // allow "more" link when too many events
                 weekNumberCalculation: 'ISO',
+
+                // Language selection
+                locale: {{ locale|tojson }},
 
                 // Remember where the user left the calendar
                 defaultView: (localStorage.getItem("fcDefaultView") !== null ? localStorage.getItem("fcDefaultView") : 'dayGridMonth'),
