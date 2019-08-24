@@ -17,7 +17,6 @@ def clear():
     session['data_base'].clear()
     session['data_sched'].clear()
     session['codes'].clear()
-    session['fts_json'].clear()
     session['fts'].clear()
     session['id_tab'].clear()
     session['id_list'] = None
@@ -29,8 +28,19 @@ def compute():
         clear()
     else:
         courses = getCoursesFromCodes(session['codes'])
-        scheds, score = parallel_compute(courses, forbiddenTimeSlots=session['fts'], nbest=3)
-
+        tz = timezone('Europe/Brussels')
+        fts = list()
+        for el in session['fts']:
+            t0 = parse(el['start']).astimezone(tz)
+            t1 = parse(el['end']).astimezone(tz)
+            dt = t1 - t0
+            if el['title'] == 'High':
+                fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=5))
+            elif el['title'] == 'Medium':
+                fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=3))
+            elif el['title'] == 'Low':
+                fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=1))
+        scheds, score = parallel_compute(courses, forbiddenTimeSlots=fts, nbest=3)
         i = 1
         for sched in scheds:
             temp_sched = list()
@@ -44,6 +54,7 @@ def compute():
             session['data_sched']['sched_' + str(i)] = json.dumps(temp_sched)
             i += 1
         session['basic_context']['up_to_date'] = True
+    session.modified = True
 
 
 def init():
@@ -60,7 +71,6 @@ def init():
     session['data_sched'] = dict()
 
     # Forbidden Time Slots
-    session['fts_json'] = list()
     session['fts'] = list()
 
     # Course IDs
@@ -72,10 +82,13 @@ def init():
 
 
 def add_course(code):
+    if code is '' or code is None:
+        return
     if code not in session['codes']:
         session['codes'].append(code)
         fetch_courses()
         session['basic_context']['up_to_date'] = False
+        session.modified = True
 
 
 def fetch_courses():
@@ -84,6 +97,7 @@ def fetch_courses():
     session['data_base'].clear()
     for course in courses:
         session['data_base'] += course.getEventsJSON()
+    session.modified = True
 
 
 def fetch_id():
@@ -97,25 +111,15 @@ def fetch_id():
     for code in session['codes']:
         if code not in session['id_tab'].keys():
             session['id_tab'][code] = {}
+    session.modified = True
 
 
 def get_fts():
     msg = json.loads(request.form['fts'])
-    session['fts_json'].clear()
-    tz = timezone('Europe/Brussels')
+    session['fts'].clear()
     for el in msg:
-        session['fts_json'].append(el)
-        t0 = parse(el['start']).astimezone(tz)
-        t1 = parse(el['end']).astimezone(tz)
-        dt = t1 - t0
-        if el['title'] == 'High':
-            session['fts'].append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=5))
-        elif el['title'] == 'Medium':
-            session['fts'].append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=3))
-        elif el['title'] == 'Low':
-            session['fts'].append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=1))
-        else:
-            print('This FTS was not recognized by the engine')
+        session['fts'].append(el)
+    session.modified = True
 
 
 def get_id():
@@ -127,3 +131,4 @@ def delete_course(code):
         session['codes'].remove(code)
         fetch_courses()
         session['basic_context']['up_to_date'] = False
+        session.modified = True
