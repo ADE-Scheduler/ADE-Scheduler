@@ -1,14 +1,32 @@
 # BACK-END FILES
 from webapp.calendar import *
+from flask import Flask, request, url_for, render_template, redirect, make_response, send_file
+from flask_babel import Babel
 from flask_session import Session
 ***REMOVED***
 
 
+
+
 app = Flask(__name__)
+
+# BABEL
+app.config['LANGUAGES'] = ['en', 'fr']
+app.config['BABEL_TRANSLATION_DIRECTORIES'] = 'app/translations'
+
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 app.config['SESSION_TYPE'] = 'redis'
 app.config['SESSION_REDIS'] = Redis(host='192.168.1.13', port=6379)
+
+babel = Babel(app)
 Session(app)
+
+
+@babel.localeselector
+def get_locale():
+    locale = request.accept_languages.best_match(app.config['LANGUAGES'])
+    session['basic_context']['locale'] = locale
+    return locale
 
 
 @app.route('/', methods=['GET', 'POST'])
