@@ -1,17 +1,15 @@
 # BACK-END FILES
 from webapp.calendar import *
 from flask_session import Session
+***REMOVED***
 
-current_folder = os.path.dirname(__file__)
-db_path = os.path.join(current_folder, 'database.db')
-db_path = 'sqlite:///' + db_path
 
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
-# app.config['SQLALCHEMY_DATABASE_URI'] = db_path
-# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# app.config['SESSION_TYPE'] = 'sqlalchemy'
-# Session(app)
+app.config['SESSION_TYPE'] = 'redis'
+app.config['SESSION_REDIS'] = Redis(host='192.168.1.13', port=6379)
+Session(app)
+
 
 @app.route('/', methods=['GET', 'POST'])
 def calendar():
@@ -69,18 +67,18 @@ def getCalendar():
 # Page for user preferences
 @app.route('/preferences')
 def preferences():
-    try:
-        pref_safe_compute = request.cookies.get('safe-compute')
-        if pref_safe_compute is None or pref_safe_compute == 'False':
-            # Put some cookies
-            basic_context['safe_compute'] = False
-        elif pref_safe_compute == 'True':
-            basic_context['safe_compute'] = True
-    except:
-        # Put some cookies
-        basic_context['safe_compute'] = False
-
-    basic_context['codes'] = codes
+    # try:
+    #     pref_safe_compute = request.cookies.get('safe-compute')
+    #     if pref_safe_compute is None or pref_safe_compute == 'False':
+    #         # Put some cookies
+    #         basic_context['safe_compute'] = False
+    #     elif pref_safe_compute == 'True':
+    #         basic_context['safe_compute'] = True
+    # except:
+    #     # Put some cookies
+    #     basic_context['safe_compute'] = False
+    #
+    # basic_context['codes'] = codes
     return render_template('preferences.html', **session['basic_context'])
 
 
