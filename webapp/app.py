@@ -1,10 +1,17 @@
 # BACK-END FILES
 from webapp.calendar import *
+from flask_session import Session
 
+current_folder = os.path.dirname(__file__)
+db_path = os.path.join(current_folder, 'database.db')
+db_path = 'sqlite:///' + db_path
 
 app = Flask(__name__)
-app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'    # A CACHER QUAND ON PASSERA OPEN SOURCE !!!!!
-
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+# app.config['SQLALCHEMY_DATABASE_URI'] = db_path
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# app.config['SESSION_TYPE'] = 'sqlalchemy'
+# Session(app)
 
 @app.route('/', methods=['GET', 'POST'])
 def calendar():
@@ -35,8 +42,7 @@ def calendar():
 @app.route('/get/fts', methods=['POST'])
 def getFTS():
     get_fts()
-    return render_template('calendar.html', **(session['basic_context']), data_base=json.dumps(session['data_base']),
-                           data_sched=session['data_sched'], fts=json.dumps(session['fts']), id=session['id_tab'])
+    return redirect(url_for('calendar'))
 
 
 # To remove the code
@@ -75,7 +81,7 @@ def preferences():
         basic_context['safe_compute'] = False
 
     basic_context['codes'] = codes
-    return render_template('preferences.html', **basic_context)
+    return render_template('preferences.html', **session['basic_context'])
 
 
 # Page for user's help guide
