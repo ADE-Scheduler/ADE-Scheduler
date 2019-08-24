@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, make_response, send_file, session
+
+
 from pytz import timezone
 from dateutil.parser import parse
 import json
@@ -12,6 +14,7 @@ from static_data import Q1, Q2, Q3
 from computation import parallel_compute
 from event import CustomEvent, EventCM
 import library
+
 
 def clear():
     session['data_base'].clear()
