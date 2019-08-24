@@ -26,15 +26,17 @@ def calendar():
         fetch_id()
 
     session['basic_context']['codes'] = session['codes']
-    return render_template('calendar.html', **session['basic_context'], data_base=json.dumps(session['data_base']),
-                           data_sched=session['data_sched'], fts=json.dumps(session['fts_json']), id=session['id_tab'])
+    session.modified = True
+    return render_template('calendar.html', **(session['basic_context']), data_base=json.dumps(session['data_base']),
+                           data_sched=session['data_sched'], fts=json.dumps(session['fts']), id=session['id_tab'])
 
 
 # To fetch the FTS
 @app.route('/get/fts', methods=['POST'])
 def getFTS():
     get_fts()
-    return redirect(url_for('calendar'))
+    return render_template('calendar.html', **(session['basic_context']), data_base=json.dumps(session['data_base']),
+                           data_sched=session['data_sched'], fts=json.dumps(session['fts']), id=session['id_tab'])
 
 
 # To remove the code
