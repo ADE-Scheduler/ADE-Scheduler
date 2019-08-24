@@ -314,7 +314,7 @@
     <div class="form-group" style="float: left; clear: left; width: 11%; margin-bottom: -5px">
         <form class="form-horizontal" action="/" method="post">
             <label class="control-label"><strong>Add a course</strong></label>
-            <div class="input-group mb-3" action="/" method="post">
+            <div class="input-group mb-3">
                 <input type="text" id='course-input' class="form-control" name="course_code" placeholder="Code">
                 <div class="input-group-append">
                     <button class="btn btn-secondary" type="submit" name="submit" value="Add"><strong>+</strong></button>
@@ -587,6 +587,7 @@
                         eventsArray = JSON.parse(schedules.sched_2);
                     break;
                     case 'nav-sched-3':
+                        console.log(schedules.sched_3);
                         eventsArray = JSON.parse(schedules.sched_3);
                     break;
                 }

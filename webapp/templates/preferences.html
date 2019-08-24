@@ -71,24 +71,9 @@
         {% for code in codes %}
             <div class="tab-pane fade" id="{{ code }}-pref" role="tabpanel" aria-labelledby="profile-tab">
                 <div class="card border-primary mb-3" style="float: left; clear: left; text-align: center;">
-                    <div class="card-header" style="padding: 5%"><strong>CM</strong></div>
+                    <div class="card-header" style="padding: 5%"><strong>{{ code }}</strong></div>
                     <div class="card-body" style="padding: 5%">
-                        <table style="border-collapse: collapse">
-                            <tbody>
-                                {% for cm_id in id[code].CM %}
-                                    <tr style="align: center; padding: 0;">
-                                        <td style="word-break: break-all; padding: 0;">
-                                            {{ cm_id }}
-                                        </td>
-                                        <td style="padding: 0">
-                                            <button class="btn btn-default" style="background-color: transparent; border-color: transparent;">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                        content goes there
                     </div>
                 </div>
             </div>

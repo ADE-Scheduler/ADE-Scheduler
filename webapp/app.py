@@ -1,179 +1,61 @@
-from flask import Flask, render_template, request, redirect, url_for, make_response, send_file
-import json
-import sys, os, inspect
-from pytz import timezone
-from dateutil.parser import parse
-
 # BACK-END FILES
-currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parentdir = os.path.dirname(currentdir)
-sys.path.insert(0, parentdir+'/python')
-from ade import getCoursesFromCodes
-from static_data import Q1, Q2, Q3
-from computation import parallel_compute
-from event import CustomEvent, EventCM
-import library
+from webapp.calendar import *
+
 
 app = Flask(__name__)
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'    # A CACHER QUAND ON PASSERA OPEN SOURCE !!!!!
 
-__first_connection = True
-
-codes_master = ['LELEC2660', 'LELEC2811', 'LMECA2755', 'LELEC2313', 'LELEC2531', 'LMECA2801', 'LELME2002']
-
-# Course codes
-codes = list()
-data_base = list()
-data_sched = dict()
-fts_json = list()
-fts = list()
-id_tab = dict()
-id_list = None
-basic_context = {'up_to_date': True, 'safe_compute':None}
 
 @app.route('/', methods=['GET', 'POST'])
-def index():
-    global data_base
-    global __first_connection
+def calendar():
+    if not session.get('init'):
+        init()
 
-    if __first_connection:
-        __first_connection = False
-        cookies_handler()
-
-    # ID OF EACH EVENT
-    id_tab.clear()
-    c = getCoursesFromCodes(codes, Q1 + Q2 + Q3, 9)
-    for course in c:
-        type_tab = {'CM': list(), 'TP': list(), 'EXAM': list(), 'ORAL': list(), 'Other': list()}
-        for abcd in course.getSummary():
-            temp = abcd.split(':')
-            type_tab[temp[0]].append(temp[1])
-        id_tab[course.code] = type_tab
-    for code in codes:
-        if code not in id_tab.keys():
-            id_tab[code] = {}
-        
     if request.method == 'POST':
-        # CODE ADDED BY USER
+        # ADD CODE
         if request.form['submit'] == 'Add':
-            course_code = request.form.get("course_code", None)
-            if course_code:
-                if course_code not in codes:
-                    basic_context['up_to_date'] = False
-                    codes.append(course_code)
-                    c = getCoursesFromCodes([course_code], Q1+Q2+Q3, 9)
-                    for course in c:
-                        data_base += course.getEventsJSON()
-                        type_tab = {'CM': list(), 'TP': list(), 'EXAM': list(), 'ORAL': list(), 'Other': list()}
-                        for abcd in course.getSummary():
-                            temp = abcd.split(':')
-                            type_tab[temp[0]].append(temp[1])
-                        id_tab[course.code] = type_tab
-                    for code in codes:
-                        if code not in id_tab.keys():
-                            id_tab[code] = {}
-
-                    basic_context['codes'] = codes # Useless I think
-
-        # COMPUTATION REQUESTED BY USER
+            code = request.form['course_code'].upper()
+            add_course(code)
+        # COMPUTE
         if request.form['submit'] == 'Compute':
-            basic_context['up_to_date'] = True
-
-            # No course code was specified
-            if len(codes) == 0:
-                data_sched.clear()
-                resp = make_response(render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=data_sched, fts=json.dumps(fts_json), id=id_tab))
-                # Update the last computed codes
-                resp.set_cookie('last_computed', "")
-                return resp
-
-            # At least one course code was specified, time to compute !
-            data_sched.clear()
-            # TODO: Gérer les projectID sur le site et sur le back-end ! (proposer l'année scolaire en sélection ?)
-            c = getCoursesFromCodes(codes, Q1+Q2+Q3, 9)
-            scheds, score = parallel_compute(c, forbiddenTimeSlots=fts, nbest=3)
-            i = 1
-            for year in scheds:
-                temp_sched = list()
-                for week in year:
-                    for event in week:
-                        temp = {'start': str(event.begin), 'end': str(event.end), 'title': event.name,
-                                'editable': False,
-                                'description': event.name + '\n' + event.location + ' - ' + str(
-                                    event.duration) + '\n' + str(event.description)}
-                        temp_sched.append(temp)
-                data_sched['sched_' + str(i)] = json.dumps(temp_sched)
-                i += 1
-
-            resp = make_response(render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=data_sched, fts=json.dumps(fts_json), id=id_tab))
-            # Update the last computed codes
-            str_last_computed = " ".join(codes)
-            resp.set_cookie('last_computed', str_last_computed)
-            return resp
-
-        # CLEAR ALL
+            compute()
+        # CLEAR
         if request.form['submit'] == 'Clear':
-            basic_context['up_to_date'] = True
-            data_base.clear()
-            data_sched.clear()
-            codes.clear()
-            fts_json.clear()
-            fts.clear()
-            basic_context['codes'] = codes
+            clear()
+    else:
+        fetch_id()
 
-    basic_context['codes'] = codes
-    return render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=data_sched, fts=json.dumps(fts_json), id=id_tab)
+    session['basic_context']['codes'] = session['codes']
+    return render_template('calendar.html', **session['basic_context'], data_base=json.dumps(session['data_base']),
+                           data_sched=session['data_sched'], fts=json.dumps(session['fts_json']), id=session['id_tab'])
+
+
+# To fetch the FTS
+@app.route('/get/fts', methods=['POST'])
+def getFTS():
+    get_fts()
+    return redirect(url_for('calendar'))
+
+
+# To remove the code
+@app.route('/remove/code/<code>', methods=['POST'])
+def remove_code(code):
+    delete_course(code)
+    return redirect(url_for('calendar'))
+
+
+# To fetch the IDs
+@app.route('/get/id', methods=['POST'])
+def getIDs():
+    session['id_list'] = json.loads(request.form['IDs'])
+    print(session['id_list'])
+    return redirect(url_for('calendar'))
 
 
 @app.route('/getCalendar')
 def getCalendar():
     n = request.args.get('number', default=0, type=int)
     return send_file(library.getCalendar(n), as_attachment=True)
-
-# To fetch the FTS
-@app.route('/get/fts', methods=['POST'])
-def getFTS():
-    msg = json.loads(request.form['fts'])
-    fts_json.clear()
-    tz = timezone('Europe/Brussels')
-    for el in msg:
-        fts_json.append(el)
-        t0 = parse(el['start']).astimezone(tz)
-        t1 = parse(el['end']).astimezone(tz)
-        dt = t1 - t0
-        if el['title'] == 'High':
-            fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=5))
-        elif el['title'] == 'Medium':
-            fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=3))
-        elif el['title'] == 'Low':
-            fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=1))
-        else:
-            print('This FTS was not recognized by the engine')
-        basic_context['up_to_date'] = False
-    return redirect(url_for('index'))
-
-
-# To fetch the IDs
-@app.route('/get/id', methods=['POST'])
-def getIDs():
-    global id_list
-    id_list = json.loads(request.form['IDs'])
-    print(id_list)
-    return redirect(url_for('index'))
-
-# To remove the code
-@app.route('/remove/code/<the_code>', methods=['POST'])
-def remove_code(the_code):
-    global data_base
-    if the_code in codes:
-        codes.remove(the_code)
-        basic_context['up_to_date'] = False
-        data_base.clear()
-        data_sched.clear()
-        if len(codes) > 0:
-            c = getCoursesFromCodes(codes, Q1 + Q2 + Q3, 9)
-            for course in c:
-                data_base += course.getEventsJSON()
-    return redirect(url_for('index'))
 
 
 # Page for user preferences
@@ -190,24 +72,8 @@ def preferences():
         # Put some cookies
         basic_context['safe_compute'] = False
 
-    # ID OF EACH EVENT
-    c = getCoursesFromCodes(codes, Q1+Q2+Q3, 9)
-    id_tab = dict()
-    for course in c:
-        type_tab = {
-            'CM': list(),
-            'TP': list(),
-            'Exam': list(),
-            'Oral': list(),
-            'Other': list()
-        }
-        for str in course.getSummary():
-            temp = str.split(':')
-            type_tab[temp[0]].append(temp[1])
-        id_tab[course.code] = type_tab
-
     basic_context['codes'] = codes
-    return render_template('preferences.html', **basic_context, id=id_tab)
+    return render_template('preferences.html', **basic_context)
 
 
 # Page for user's help guide
@@ -225,11 +91,12 @@ def preferences_changes():
         resp = make_response(redirect('/'))
         safe_compute_user = request.form.get('safe-compute')
         print(safe_compute_user)
-        if safe_compute_user is None: # Not checked
+        if safe_compute_user is None:  # Not checked
             resp.set_cookie('safe-compute', 'False')
         else:
             resp.set_cookie('safe-compute', 'True')
     return resp
+
 
 # ERROR HANDLER
 @app.errorhandler(404)
@@ -244,7 +111,9 @@ def cookies_handler():
 
     # Getting the cookies
     # Safe compute
-    resp = make_response(render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=data_sched, fts=json.dumps(fts_json), id=id_tab))
+    resp = make_response(
+        render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=data_sched,
+                        fts=json.dumps(fts_json), id=id_tab))
     try:
         pref_safe_compute = request.cookies.get('safe-compute')
         if pref_safe_compute is None or pref_safe_compute == 'False':
@@ -261,7 +130,7 @@ def cookies_handler():
         try:
             last_computed = request.cookies.get('last_computed')
             codes = last_computed.split()
-            c = getCoursesFromCodes(codes, Q1+Q2+Q3, 9)
+            c = getCoursesFromCodes(codes, Q1 + Q2 + Q3, 9)
             for course in c:
                 data_base += course.getEventsJSON()
             scheds, score = parallel_compute(c, forbiddenTimeSlots=fts, nbest=3)
@@ -279,6 +148,7 @@ def cookies_handler():
                 i += 1
         except:
             pass
+
 
 if __name__ == '__main__':
     # host = '0.0.0.0' opens to local network
