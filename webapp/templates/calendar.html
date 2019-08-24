@@ -12,6 +12,7 @@
             --sched-2-color: #5be4ff;
             --sched-3-color: #fff117;
         }
+        .btn-group + .btn-group {margin-left: -5px;}
         #calendar {
             width: 100%;
             height: 100%;
@@ -133,17 +134,21 @@
                     </ul>
                 </ul>
                 <ul class="navbar-nav">
-                    <form class="form-vertical" action="/" method="post">
-                        <div class="btn-group" role="group">
+                    <div>
+                        <form class="btn-group" method="post" action="/">
                             {% if up_to_date == False %}
                                 <button class="btn btn-danger" type="submit" name="submit" value="Compute" style="width: 100%;"><strong>Compute</strong></button>
                             {% else %}
                                 <button class="btn btn-success" type="submit" name="submit" value="Compute" style="width: 100%;"><strong>Compute</strong></button>
                             {% endif %}
+                        </form>
+                        <form class="btn-group" action="/get/id">
                             <button class="btn btn-secondary" type="button" onclick=refreshFunction(); style="width: 100%;"><strong>Refresh</strong></button>
+                        </form>
+                        <form class="btn-group" method="post" action="/">
                             <button class="btn btn-warning" type="submit" name="submit" value="Clear" style="width: 100%;"><strong>Clear</strong></button>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </ul>
             </div>
         </nav>
@@ -292,9 +297,11 @@
                                 </div>
                             </td>
                             <td style="padding: 0">
-                                <button class="btn btn-default" type="button" onclick=deleteCourse("{{ code }}"); style="background-color: transparent; border-color: transparent;">
-                                    <i class="fas fa-trash"></i>
-                                </button>
+                                <form method="post" action="/remove/code/{{ code }}">
+                                    <button class="btn btn-default" type="submit" style="background-color: transparent; border-color: transparent;">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                     {% endfor %}
@@ -373,7 +380,7 @@
             }
 
             // send data to server
-            $.post("/getIDs", {'IDs': JSON.stringify(selected_ids)}, function(){location.reload()});
+            $.post("/get/id", {'IDs': JSON.stringify(selected_ids)}, function(){location.reload()});
         }
     </script>
 
@@ -386,7 +393,7 @@
         let forbiddenTimeSlots = {{ fts|safe }};
         let dragToCopy = false;
         function send_fts_to_serv() {
-            $.post('/getFTS', {'fts': JSON.stringify(forbiddenTimeSlots)});
+            $.post('/get/fts', {'fts': JSON.stringify(forbiddenTimeSlots)});
         }
 
         // FullCalendar initialization
@@ -632,13 +639,6 @@
             placement: 'top',
             autoclose: true,
         });
-    </script>
-
-    <script>
-        // Delete a course
-        function deleteCourse(code) {
-            $.post('/remove/code/'+code, () => window.location = window.location);
-        }
     </script>
 
     <script>
