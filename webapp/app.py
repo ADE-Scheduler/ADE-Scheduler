@@ -1,11 +1,9 @@
 # BACK-END FILES
-from webapp.calendar import *
+from app_calendar import *
 from flask import Flask, request, url_for, render_template, redirect, make_response, send_file
 from flask_babel import Babel
 from flask_session import Session
 from redis import Redis
-
-
 
 
 app = Flask(__name__)
@@ -24,9 +22,16 @@ Session(app)
 
 @babel.localeselector
 def get_locale():
-    locale = request.accept_languages.best_match(app.config['LANGUAGES'])
-    session['basic_context']['locale'] = locale
+    # locale = request.accept_languages.best_match(app.config['LANGUAGES'])
+    locale = session['basic_context']['locale']
     return locale
+
+
+@app.route('/locale/<locale>', methods=['GET'])
+def locale_selector(locale):
+    if request.method == 'GET':
+        session['basic_context']['locale'] = locale
+    return redirect(url_for('calendar'))
 
 
 @app.route('/', methods=['GET', 'POST'])

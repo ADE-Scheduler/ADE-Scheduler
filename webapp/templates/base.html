@@ -109,10 +109,17 @@ desired effect
       </div>
       <!-- /.content-wrapper -->
 
-      <!-- Main Footer -->
-      <footer class="main-footer">
-        <strong>Copyright &copy; 2019</strong>
-      </footer>
+        <!-- Main Footer -->
+        <footer class="main-footer">
+            <strong>Copyright &copy; 2019</strong>
+            <div class="form-group">
+                <label for="exampleSelect1">Example select</label>
+                <select class="form-control" id="locale-selector" onchange=locale_selector(this)>
+                    <option id="locale-en">FR</option>
+                    <option id="locale-fr">EN</option>
+                </select>
+            </div>
+        </footer>
     </div>
     <!-- ./wrapper -->
 
@@ -128,6 +135,13 @@ desired effect
     <script src="/static/bootstrap/js/bootstrap.min.js"></script>
     <!-- AdminLTE App -->
     <script src="/static/js/adminlte.min.js"></script>
+
+    <script>
+        function locale_selector(e) {
+            $.get('locale/' + e.value, {}, function(){location = location} )
+        }
+    </script>
+
 
     {%block js%}{%endblock%}
 </body>
