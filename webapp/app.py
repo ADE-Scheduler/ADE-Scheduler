@@ -16,7 +16,7 @@ babel = Babel(app)
 
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 app.config['SESSION_TYPE'] = 'redis'
-app.config['SESSION_REDIS'] = Redis(host=personnal_data.my_ip, port=6379)     # '192.168.1.13' ou '127.0.0.1'
+app.config['SESSION_REDIS'] = Redis(host=personnal_data.redis_ip, port=6379)     # '192.168.1.13' ou '127.0.0.1'
 Session(app)
 
 
@@ -181,5 +181,5 @@ def cookies_handler():
 
 
 if __name__ == '__main__':
-    host = personnal_data.my_ip
-    app.run(debug=True, host=host, port='5000')
+    host = personnal_data.local_ip
+    app.run(debug=True, host=host)
