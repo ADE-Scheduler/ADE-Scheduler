@@ -181,6 +181,5 @@ def cookies_handler():
 
 
 if __name__ == '__main__':
-    host = 'localhost'
-    # host = '192.168.1.46'
-    app.run(debug=True, host=host)
+    host = personnal_data.my_ip
+    app.run(debug=True, host=host, port='5000')
