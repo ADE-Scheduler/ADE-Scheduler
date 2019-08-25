@@ -14,7 +14,7 @@ app.config['BABEL_TRANSLATION_DIRECTORIES'] = 'app/translations'
 
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 app.config['SESSION_TYPE'] = 'redis'
-app.config['SESSION_REDIS'] = Redis(host='127.0.0.1', port=6379)
+app.config['SESSION_REDIS'] = Redis(host='192.168.1.13', port=6379)     # '192.168.1.13' ou '127.0.0.1'
 
 babel = Babel(app)
 Session(app)
@@ -109,7 +109,7 @@ def preferences():
 # Page for user's help guide
 @app.route('/help')
 def help_guide():
-    return render_template('help.html')
+    return render_template('help.html', **session['basic_context'])
 
 
 # To handle the preferences form
