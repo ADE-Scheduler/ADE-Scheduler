@@ -110,11 +110,12 @@ desired effect
       <!-- /.content-wrapper -->
 
         <!-- Main Footer -->
-        <footer class="main-footer">
-            <strong>Copyright &copy; 2019</strong>
-            <div class="form-group">
-                <label for="exampleSelect1">Example select</label>
-                <select class="form-control" id="locale-selector" onchange=locale_selector(this)>
+        <footer class="main-footer" style="height: 60px">
+            <div style="float: left">
+                <strong>Copyright &copy; 2019</strong>
+            </div>
+            <div class="form-group" style="width: 70px; float: right">
+                <select class="form-control" id="locale-selector" onchange=locale_selector(this);>
                     <option id="locale-en">FR</option>
                     <option id="locale-fr">EN</option>
                 </select>
@@ -137,6 +138,7 @@ desired effect
     <script src="/static/js/adminlte.min.js"></script>
 
     <script>
+        $("#locale-selector").val({{ locale|tojson }}.toUpperCase());
         function locale_selector(e) {
             $.get('locale/' + e.value, {}, function(){location = location} )
         }
