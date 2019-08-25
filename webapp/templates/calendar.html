@@ -484,7 +484,7 @@
                             backgroundColor: color,
                             borderColor: color,
                             editable: true,
-                            description: 'A time slot where the user would like to be free'
+                            description: {{ _('A time slot where the user would like to be free') }}
                         });
                         send_fts_to_serv();
                         calendar.refetchEvents();
@@ -528,7 +528,7 @@
                         backgroundColor: arg.oldEvent.backgroundColor,
                         borderColor: arg.oldEvent.borderColor,
                         editable: true,
-                        description: 'A time slot where the user would like to be free'
+                        description: {{ _('A time slot where the user would like to be free') }}
                     });
                     send_fts_to_serv();
                 },
@@ -553,7 +553,7 @@
                         backgroundColor: arg.prevEvent.backgroundColor,
                         borderColor: arg.prevEvent.borderColor,
                         editable: true,
-                        description: 'A time slot where the user would like to be free'
+                        description: {{ _('A time slot where the user would like to be free') }}
                     });
                     send_fts_to_serv();
                 },
