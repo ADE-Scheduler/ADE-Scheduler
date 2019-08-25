@@ -22,7 +22,8 @@ Session(app)
 
 @babel.localeselector
 def get_locale():
-    # locale = request.accept_languages.best_match(app.config['LANGUAGES'])
+    if session.get('basic_context').get('locale') is None:
+        session['basic_context']['locale'] = request.accept_languages.best_match(app.config['LANGUAGES'])
     locale = session['basic_context']['locale']
     return locale
 
