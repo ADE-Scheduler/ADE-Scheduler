@@ -4,6 +4,7 @@ from flask import Flask, request, url_for, render_template, redirect, make_respo
 from flask_babel import Babel
 from flask_session import Session
 from redis import Redis
+import personnal_data
 
 
 app = Flask(__name__)
@@ -14,7 +15,7 @@ app.config['BABEL_TRANSLATION_DIRECTORIES'] = 'app/translations'
 
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 app.config['SESSION_TYPE'] = 'redis'
-app.config['SESSION_REDIS'] = Redis(host='192.168.1.13', port=6379)     # '192.168.1.13' ou '127.0.0.1'
+app.config['SESSION_REDIS'] = Redis(host=personnal_data.my_ip, port=6379)     # '192.168.1.13' ou '127.0.0.1'
 
 babel = Babel(app)
 Session(app)
