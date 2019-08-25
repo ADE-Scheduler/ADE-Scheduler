@@ -81,7 +81,7 @@ def init():
     session['id_list'] = None
 
     # Other variables
-    session['basic_context'] = {'up_to_date': True, 'safe_compute': None}
+    session['basic_context'] = {'up_to_date': True, 'safe_compute': None, 'locale': 'en'}
 
 
 def add_course(code):

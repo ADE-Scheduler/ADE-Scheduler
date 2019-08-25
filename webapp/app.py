@@ -181,5 +181,6 @@ def cookies_handler():
 
 
 if __name__ == '__main__':
-    # host = '0.0.0.0' opens to local network
-    app.run(debug=True, host='0.0.0.0')
+    host = '0.0.0.0'
+    host = '192.168.1.46'
+    app.run(debug=True, host=host, port='5000')
