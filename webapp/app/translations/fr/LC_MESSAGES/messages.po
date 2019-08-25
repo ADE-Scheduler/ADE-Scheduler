@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-08-25 00:19+0200\n"
+"POT-Creation-Date: 2019-08-25 15:51+0200\n"
 "PO-Revision-Date: 2019-08-24 23:58+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -17,6 +17,18 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.7.0\n"
+
+#: templates/base.html:112
+msgid "Calendar"
+msgstr "Calendrier"
+
+#: templates/base.html:117
+msgid "User preferences"
+msgstr "Préférences utilisateur"
+
+#: templates/base.html:122
+msgid "Help"
+msgstr "Aide"
 
 #: templates/calendar.html:61
 msgid "ADE schedule"
@@ -101,11 +113,11 @@ msgstr "Aucun événement trouvé"
 msgid "Add a course"
 msgstr "Ajouter un cours"
 
-#: templates/help.html:8
+#: templates/help.html:9
 msgid "How does the scheduler work ?"
 msgstr "Comment est ce que le scheduler fonctionne ?"
 
-#: templates/help.html:18
+#: templates/help.html:45
 msgid "What are the options ?"
 msgstr "Quelles sont les options ?"
 
