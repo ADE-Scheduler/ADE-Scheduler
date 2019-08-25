@@ -13,6 +13,7 @@ L'utilisateur peut
 - créer un fichier .ics téléchargeable à partir du calendrier visionnié
 - sauvegarder son calendrier (sauve les paramètres dans une base de donnée) et obtenir un code pour récupérer à tout moment la dernière version du calendrier selon les dernières informations de ADE-UCLouvain
   - utilité : via une url, récupérer un calendrier (via son code) en format .ics -> ceci peut faire office de lien d'abonnement iCalendar
+- avoir le site en : anglais / français
 
 ## Objectifs bonus
 L'utilisateur peut
