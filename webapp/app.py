@@ -12,12 +12,11 @@ app = Flask(__name__)
 # BABEL
 app.config['LANGUAGES'] = ['en', 'fr']
 app.config['BABEL_TRANSLATION_DIRECTORIES'] = 'app/translations'
+babel = Babel(app)
 
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 app.config['SESSION_TYPE'] = 'redis'
 app.config['SESSION_REDIS'] = Redis(host=personnal_data.my_ip, port=6379)     # '192.168.1.13' ou '127.0.0.1'
-
-babel = Babel(app)
 Session(app)
 
 
@@ -182,6 +181,6 @@ def cookies_handler():
 
 
 if __name__ == '__main__':
-    host = '0.0.0.0'
-    host = '192.168.1.46'
-    app.run(debug=True, host=host, port='5000')
+    host = 'localhost'
+    # host = '192.168.1.46'
+    app.run(debug=True, host=host)
