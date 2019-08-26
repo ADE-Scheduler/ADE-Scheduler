@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-08-25 23:17+0200\n"
+"POT-Creation-Date: 2019-08-26 15:48+0200\n"
 "PO-Revision-Date: 2019-08-24 23:58+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -18,15 +18,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.7.0\n"
 
-#: templates/base.html:112
+#: templates/base.html:110
 msgid "Calendar"
 msgstr "Calendrier"
 
-#: templates/base.html:117
+#: templates/base.html:115
 msgid "User preferences"
 msgstr "Préférences utilisateur"
 
-#: templates/base.html:122
+#: templates/base.html:120
 msgid "Help"
 msgstr "Aide"
 
@@ -112,6 +112,15 @@ msgstr "Aucun événement trouvé"
 #: templates/calendar.html:316
 msgid "Add a course"
 msgstr "Ajouter un cours"
+
+#: templates/calendar.html:509 templates/calendar.html:553
+#: templates/calendar.html:578
+msgid "A time slot where the user would like to be free"
+msgstr "Un moment ou l'utilisateur voudrait être libre"
+
+#: templates/calendar.html:629
+msgid "Please select at least a schedule to compare !"
+msgstr "Sélectionnez au moins un horaire à comparer !"
 
 #: templates/help.html:9
 msgid "How does the scheduler work ?"
