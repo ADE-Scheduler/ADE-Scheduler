@@ -49,8 +49,8 @@ def compute():
             temp_sched = list()
             for week in sched:
                 for event in week:
-                    temp = {'start': str(event.begin), 'end': str(event.end), 'title': event.name,
-                            'editable': False,
+                    temp = {'start': str(event.begin), 'end': str(event.end), 'title': event.id,
+                            'editable': False, 'code': event.code,
                             'description': event.name + '\n' + event.location + ' - ' + str(
                                 event.duration) + '\n' + str(event.description)}
                     temp_sched.append(temp)
@@ -81,7 +81,9 @@ def init():
     session['id_list'] = None
 
     # Other variables
-    session['basic_context'] = {'up_to_date': True, 'safe_compute': None, 'locale': 'en'}
+    color_gradient = ['#374955', '#005376', '#00c0ff', '#1f789d', '#4493ba', '#64afd7', '#83ccf5', '#a1eaff', '#006c5a', '#3d978a']
+    color_police = ['white', 'white', 'black', 'black', 'black', 'black', 'black', 'black', 'black', 'black', 'black', 'black']
+    session['basic_context'] = {'up_to_date': True, 'safe_compute': None, 'locale': 'en', 'gradient': color_gradient, 'police': color_police}
 
 
 def add_course(code):
