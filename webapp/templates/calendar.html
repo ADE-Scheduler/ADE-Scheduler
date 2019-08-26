@@ -414,7 +414,7 @@
             let calendar = new FullCalendar.Calendar(calendarEl, {
                 plugins: ['interaction', 'dayGrid', 'list', 'timeGrid', 'bootstrap'],
                 themeSystem: 'bootstrap',
-                height: 500,
+                height: 'parent',
                 width: 'parent',
                 header: {
                     left: 'prev,next, today',
@@ -513,7 +513,7 @@
                             send_fts_to_serv();
                             calendar.refetchEvents();
                         } catch(err) {
-                            bootbox.alert("You specified a wrong time format ! Please try again.")
+                            bootbox.alert({{ _('You specified a wrong time format ! Please try again.')|tojson }})
                         }
                     }
 
