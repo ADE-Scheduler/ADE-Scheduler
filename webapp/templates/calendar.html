@@ -123,7 +123,7 @@
 
                                     </div>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" id="btn-sched-compare">Go !</a>
+                                    <a class="dropdown-item" id="btn-sched-compare" style="cursor: pointer">Go !</a>
                                 </div>
                             </li>
                         {% else %}
@@ -333,6 +333,9 @@
     <script src='/static/fullcalendar/bootstrap/main.js'></script>
     <script src='/static/fullcalendar/core/locales/fr.js'></script>
     <script src='/static/clockpicker/bootstrap-clockpicker.min.js'></script>
+    <script src='/static/bootbox/bootbox.min.js'></script>
+    <script src='/static/bootbox/bootbox.locales.min.js'></script>
+    <script src='/static/js/colorgradient.js'></script>
 
     <script>
         // Focus on the Course Code input
@@ -389,6 +392,7 @@
         // Course Events
         let schedules = {{ data_sched|safe }};
         let eventsArray = {{ data_base|safe }};
+        let compIsRequested = false;
 
         // Forbidden time slots (user's input)
         let forbiddenTimeSlots = {{ fts|safe }};
@@ -439,6 +443,24 @@
                 // Function called when we need to refresh the events
                 // Fetches the events in eventsArray and forbiddenTimeSlots
                 events: function (fetchInfo, successCallback, failureCallback) {
+                    if (!compIsRequested) {
+                        let courses = {{ codes|tojson }};
+                        let gradient = {{ gradient|tojson }};
+                        let police = {{ police|tojson }};
+                        for (let i = 0, j = 0; i < courses.length; i++, j++) {
+                            if (j === gradient.length)
+                                j = 0;
+                            eventsArray.map(function (obj) {
+                                if (obj.code === courses[i]) {
+                                    obj.backgroundColor = gradient[j];
+                                    obj.borderColor = gradient[j];
+                                    obj.textColor = police[j];
+                                }
+                            })
+                        }
+                    } else {
+                        compIsRequested = false;
+                    }
                     successCallback(eventsArray.concat(forbiddenTimeSlots));
                 },
 
@@ -484,7 +506,7 @@
                             backgroundColor: color,
                             borderColor: color,
                             editable: true,
-                            description: 'A time slot where the user would like to be free'
+                            description: {{ _('A time slot where the user would like to be free')|tojson }}
                         });
                         send_fts_to_serv();
                         calendar.refetchEvents();
@@ -528,7 +550,7 @@
                         backgroundColor: arg.oldEvent.backgroundColor,
                         borderColor: arg.oldEvent.borderColor,
                         editable: true,
-                        description: 'A time slot where the user would like to be free'
+                        description: {{ _('A time slot where the user would like to be free')|tojson }}
                     });
                     send_fts_to_serv();
                 },
@@ -553,7 +575,7 @@
                         backgroundColor: arg.prevEvent.backgroundColor,
                         borderColor: arg.prevEvent.borderColor,
                         editable: true,
-                        description: 'A time slot where the user would like to be free'
+                        description: {{ _('A time slot where the user would like to be free')|tojson }}
                     });
                     send_fts_to_serv();
                 },
@@ -600,34 +622,43 @@
             // Display course comparaison
             $('#btn-sched-compare').on('click', function(event) {
                 eventsArray = [];
-                if ($('#check-sched-default').is(':checked')) {
+                if (!$('#check-sched-default').is(':checked') &&
+                    !$('#check-sched-1').is(':checked') &&
+                    !$('#check-sched-2').is(':checked') &&
+                    !$('#check-sched-3').is(':checked')) {
+                    bootbox.alert({{ _('Please select at least a schedule to compare !')|tojson }});
                     eventsArray = {{ data_base|safe }};
-                }
-                if ($('#check-sched-1').is(':checked')) {
-                    evtList = JSON.parse(schedules.sched_1);
-                    for (let j=0; j < evtList.length; j++) {
-                        let evt = evtList[j];
-                        evt.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--sched-1-color');
-                        evt.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--sched-1-color');
-                        eventsArray.push(evt);
+                } else {
+                    compIsRequested = true;
+                    if ($('#check-sched-default').is(':checked')) {
+                        eventsArray = {{ data_base|safe }};
                     }
-                }
-                if ($('#check-sched-2').is(':checked')) {
-                    evtList = JSON.parse(schedules.sched_2);
-                    for (let j=0; j < evtList.length; j++) {
-                        let evt = evtList[j];
-                        evt.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--sched-2-color');
-                        evt.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--sched-2-color');
-                        eventsArray.push(evt);
+                    if ($('#check-sched-1').is(':checked')) {
+                        evtList = JSON.parse(schedules.sched_1);
+                        for (let j = 0; j < evtList.length; j++) {
+                            let evt = evtList[j];
+                            evt.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--sched-1-color');
+                            evt.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--sched-1-color');
+                            eventsArray.push(evt);
+                        }
                     }
-                }
-                if ($('#check-sched-3').is(':checked')) {
-                    evtList = JSON.parse(schedules.sched_3);
-                    for (let j=0; j < evtList.length; j++) {
-                        let evt = evtList[j];
-                        evt.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--sched-3-color');
-                        evt.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--sched-3-color');
-                        eventsArray.push(evt);
+                    if ($('#check-sched-2').is(':checked')) {
+                        evtList = JSON.parse(schedules.sched_2);
+                        for (let j = 0; j < evtList.length; j++) {
+                            let evt = evtList[j];
+                            evt.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--sched-2-color');
+                            evt.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--sched-2-color');
+                            eventsArray.push(evt);
+                        }
+                    }
+                    if ($('#check-sched-3').is(':checked')) {
+                        evtList = JSON.parse(schedules.sched_3);
+                        for (let j = 0; j < evtList.length; j++) {
+                            let evt = evtList[j];
+                            evt.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--sched-3-color');
+                            evt.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--sched-3-color');
+                            eventsArray.push(evt);
+                        }
                     }
                 }
                 calendar.refetchEvents();
