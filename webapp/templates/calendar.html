@@ -164,13 +164,13 @@
                     <div class="btn-group-vertical" style="width: 48%; margin-right: 2%; float: left">
                         <h5 style="text-align: center"><strong>{{ _('Start') }}</strong></h5>
                         <div class="input-group clockpicker">
-                            <input type="text" class="form-control" value="08:00" id="start_time" readonly>
+                            <input type="text" class="form-control" value="08:00" id="start_time">
                         </div>
                     </div>
                     <div class="btn-group-vertical" style="width: 48%; margin-left: 2%; float: right">
                         <h5 style="text-align: center"><strong>{{ _('End') }}</strong></h5>
                         <div class="input-group clockpicker">
-                            <input type="text" class="form-control" value="10:00" id="end_time" readonly>
+                            <input type="text" class="form-control" value="10:00" id="end_time">
                         </div>
                     </div>
                 </div>
@@ -488,28 +488,33 @@
                         let endTime = $('#end_time').val();
                         modal.modal('hide');
 
-                        let dateStart = new Date(arg.date.getFullYear(), arg.date.getMonth(), arg.date.getDate());
-                        dateStart.setHours(parseInt(startTime.split(':')[0]));
-                        dateStart.setMinutes(parseInt(startTime.split(':')[1]));
-                        let dateEnd = new Date(arg.date.getFullYear(), arg.date.getMonth(), arg.date.getDate());
-                        dateEnd.setHours(parseInt(endTime.split(':')[0]));
-                        dateEnd.setMinutes(parseInt(endTime.split(':')[1]));
+                        try {
+                            let dateStart = new Date(arg.date.getFullYear(), arg.date.getMonth(), arg.date.getDate());
+                            dateStart.setHours(parseInt(startTime.split(':')[0]));
+                            dateStart.setMinutes(parseInt(startTime.split(':')[1]));
+                            let dateEnd = new Date(arg.date.getFullYear(), arg.date.getMonth(), arg.date.getDate());
+                            dateEnd.setHours(parseInt(endTime.split(':')[0]));
+                            dateEnd.setMinutes(parseInt(endTime.split(':')[1]));
 
-                        let text = arg.draggedEl.textContent;
-                        let color = window.getComputedStyle(arg.draggedEl, null).getPropertyValue("background-color");
 
-                        // NEW EVENT
-                        forbiddenTimeSlots.push({
-                            title: text,
-                            start: dateStart.toISOString(),
-                            end: dateEnd.toISOString(),
-                            backgroundColor: color,
-                            borderColor: color,
-                            editable: true,
-                            description: {{ _('A time slot where the user would like to be free')|tojson }}
-                        });
-                        send_fts_to_serv();
-                        calendar.refetchEvents();
+                            let text = arg.draggedEl.textContent;
+                            let color = window.getComputedStyle(arg.draggedEl, null).getPropertyValue("background-color");
+
+                            // NEW EVENT
+                            forbiddenTimeSlots.push({
+                                title: text,
+                                start: dateStart.toISOString(),
+                                end: dateEnd.toISOString(),
+                                backgroundColor: color,
+                                borderColor: color,
+                                editable: true,
+                                description: {{ _('A time slot where the user would like to be free')|tojson }}
+                            });
+                            send_fts_to_serv();
+                            calendar.refetchEvents();
+                        } catch(err) {
+                            bootbox.alert("You specified a wrong time format ! Please try again.")
+                        }
                     }
 
                     modal.on('click', '#time-prompt-confirm', timePromptConfirm);
