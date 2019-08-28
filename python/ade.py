@@ -1,5 +1,10 @@
 from requests import Session
 from lxml import html
+***REMOVED***
+from pickle import dumps, loads
+***REMOVED***
+
+
 from professor import Professor
 from event import *
 from course import Course
@@ -8,7 +13,32 @@ import re
 SPLITTED_COURSES = ['(LANGL)']
 
 
-def getCoursesFromCodes(course_tags, weeks=range(52), projectID=9):
+def getCoursesFromCodes(codes, projectID=9, weeks=range(52)):
+    """
+    Fetches course schedule from Redis' course cache
+    :param codes: list of str
+    :param projectID: int
+    :param weeks: list of int
+    :return: Course list
+    """
+    ***REMOVED***
+    courses = list()
+    not_added = list()
+    for code in codes:
+        course = redis.get(str(projectID) + code)
+        if course is None:
+            not_added.append(code)
+        else:
+            courses.append(loads(course))
+
+    for course in getCoursesFromADE(not_added, projectID=projectID, weeks=weeks):
+        courses.append(course)
+        redis.set(str(projectID) + code, dumps(course), ex=24*60*60)    # valid for one day
+
+    return courses
+
+
+def getCoursesFromADE(course_tags, projectID=9, weeks=range(52)):
     """
     Fetches courses schedule from UCLouvain ADE website
     Parameters:
