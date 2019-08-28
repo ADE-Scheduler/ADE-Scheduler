@@ -30,12 +30,8 @@
         .container-fluid {
             height: 100%;
             overflow-y: hidden; /* don't show content that exceeds my height */
-            {#padding-bottom: 60px;#}
         }
         .main-footer {
-            {#position: fixed;#}
-            {#width: 100%;#}
-            {#bottom: 0;#}
             height: 60px;
         }
     </style>
@@ -204,20 +200,6 @@ desired effect
             $.get('locale/' + e.value, {}, function(){location = location} )
         }
     </script>
-
-{#    <script src="/static/element-queries/ResizeSensor.js"></script>
-    <script>
-        function resizeFooter() {
-            let width = $('#main-container').width();
-            $('#footer-relou').width(width);
-        }
-        resizeFooter();
-
-        new ResizeSensor($('window'), function(){
-            console.log("hey");
-            resizeFooter();
-        });
-    </script>#}
 
     {%block js%}{%endblock%}
 </body>
