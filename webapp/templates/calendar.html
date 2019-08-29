@@ -32,25 +32,9 @@
             box-shadow: 0 0 3px rgba(0,0,0,0.5);
             color: black;
         }
-        .modal {
-          text-align: center;
+        .fc-event.fc-draggable {
+            cursor: move;
         }
-        @media screen and (min-width: 768px) {
-            .modal:before {
-                display: inline-block;
-                vertical-align: middle;
-                content: " ";
-                height: 100%;
-            }
-        }
-        .modal-dialog {
-            display: inline-block;
-            text-align: left;
-            vertical-align: middle;
-        }
-    .fc-event.fc-draggable {
-        cursor: move;
-    }
     </style>
 {% endblock %}
 
@@ -160,8 +144,8 @@
 
 {% block body %}
     <!-- TIME PROMPT (modal) -->
-    <div class="modal fade" id="time-prompt" tabindex="-1" role="dialog" aria-labelledby="startEndTimePrompt" aria-hidden="true">
-        <div class="modal-dialog modal-sm">
+    <div class="modal fade" id="time-prompt" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
             <div class="modal-content">
                 <div class="modal-body" style="height: 90px">
                     <div class="btn-group-vertical" style="width: 48%; margin-right: 2%; float: left">
@@ -186,6 +170,25 @@
     </div>
 
     <!-- EXPORT PROMPT (modal) -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="exportPrompt" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Export schedule</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Choose the schedule you want to export and under which format (subscription link or .ics file)</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- calendar body -->
     <div class="card border-primary mb-3" style="float: right; clear: right; width: 88%;">
@@ -348,6 +351,9 @@
             </div>
         </form>
     </div>
+
+    <button class="btn btn-secondary" data-toggle="modal" data-target="#exportPrompt" style="float: left; clear: left; width: 11%;">{{ _('Export') }}</button>
+
 {% endblock %}
 
 {% block js %}
@@ -630,7 +636,10 @@
                             send_fts_to_serv();
                             calendar.refetchEvents();
                         } catch(err) {
-                            bootbox.alert({{ _('You specified a wrong time format ! Please try again.')|tojson }})
+                            bootbox.alert({
+                                message: {{ _('You specified a wrong time format ! Please try again.')|tojson }},
+                                centerVertical: true,
+                            });
                         }
                     }
 
@@ -748,7 +757,10 @@
                     !$('#check-sched-1').is(':checked') &&
                     !$('#check-sched-2').is(':checked') &&
                     !$('#check-sched-3').is(':checked')) {
-                    bootbox.alert({{ _('Please select at least a schedule to compare !')|tojson }});
+                    bootbox.alert({
+                        message: {{ _('Please select at least a schedule to compare !')|tojson }},
+                        centerVertical: true,
+                    });
                     eventsArray = {{ data_base|safe }};
                 } else {
                     compIsRequested = true;
