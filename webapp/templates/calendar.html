@@ -164,13 +164,13 @@
                     <div class="btn-group-vertical" style="width: 48%; margin-right: 2%; float: left">
                         <h5 style="text-align: center"><strong>{{ _('Start') }}</strong></h5>
                         <div class="input-group clockpicker">
-                            <input type="text" class="form-control" value="08:00" id="start_time">
+                            <input type="text" class="form-control" value="08:00" id="start_time" maxlength="5">
                         </div>
                     </div>
                     <div class="btn-group-vertical" style="width: 48%; margin-left: 2%; float: right">
                         <h5 style="text-align: center"><strong>{{ _('End') }}</strong></h5>
                         <div class="input-group clockpicker">
-                            <input type="text" class="form-control" value="10:00" id="end_time">
+                            <input type="text" class="form-control" value="10:00" id="end_time" maxlength="5">
                         </div>
                     </div>
                 </div>
@@ -211,7 +211,7 @@
                     {% if codes|length < 1  %}
                         <tr style="align: center">
                             <td style="vertical-align: middle; padding-bottom:10px">
-                                None
+                                {{ _('None') }}
                             </td>
                         </tr>
                     {% endif %}
@@ -311,7 +311,7 @@
         <form class="form-horizontal" action="/" method="post">
             <label class="control-label"><strong>{{ _('Add a course') }}</strong></label>
             <div class="input-group mb-3">
-                <input type="text" id='course-input' class="form-control" name="course_code" placeholder="Code">
+                <input type="text" id='course-input' class="form-control" name="course_code" placeholder="Code" maxlength="12">
                 <div class="input-group-append">
                     <button class="btn btn-secondary" type="submit" name="submit" value="Add"><strong>+</strong></button>
                 </div>
