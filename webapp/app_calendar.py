@@ -10,9 +10,8 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir+'/python')
 from ade import getCoursesFromCodes
-from static_data import Q1, Q2, Q3
-from computation import parallel_compute
-from event import CustomEvent, EventCM
+from computation import compute_best
+from event import CustomEvent, EventCM, JSONfromEvents
 import library
 
 
@@ -43,19 +42,9 @@ def compute():
                 fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=3))
             elif el['title'] == 'Low':
                 fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=1))
-        scheds, score = parallel_compute(courses, forbiddenTimeSlots=fts, nbest=3)
-        i = 1
-        for sched in scheds:
-            temp_sched = list()
-            for week in sched:
-                for event in week:
-                    temp = {'start': str(event.begin), 'end': str(event.end), 'title': event.id,
-                            'editable': False, 'code': event.code,
-                            'description': event.name + '\n' + event.location + ' - ' + str(
-                                event.duration) + '\n' + str(event.description)}
-                    temp_sched.append(temp)
-            session['data_sched']['sched_' + str(i)] = json.dumps(temp_sched)
-            i += 1
+
+        for i, sched in enumerate(compute_best(courses, fts=fts, nbest=3)):
+            session['data_sched']['sched_' + str(i+1)] = json.dumps(JSONfromEvents(sched))
         session['basic_context']['up_to_date'] = True
     session.modified = True
 
