@@ -1,17 +1,18 @@
 from flask import request, session
 
-
 from pytz import timezone
 from dateutil.parser import parse
+from itertools import chain
 import json
 import re
 
 import sys, os, inspect
+
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
-sys.path.insert(0, parentdir+'/python')
+sys.path.insert(0, parentdir + '/python')
 from ade import getCoursesFromCodes
-from computation import compute_best
+from computation import compute_best, extractEvents
 from event import CustomEvent, EventCM, JSONfromEvents
 from static_data import COURSE_REGEX
 import library
@@ -48,8 +49,8 @@ def compute():
             elif el['title'] == 'Low':
                 fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=1))
 
-        for i, sched in enumerate(compute_best(courses, fts=fts, nbest=3)):
-            session['data_sched']['sched_' + str(i+1)] = json.dumps(JSONfromEvents(sched))
+        for i, sched in enumerate(compute_best(courses, fts=fts, nbest=3, view=session['id_list'])):
+            session['data_sched']['sched_' + str(i + 1)] = json.dumps(JSONfromEvents(sched))
         session['basic_context']['up_to_date'] = True
     session.modified = True
 
@@ -75,9 +76,12 @@ def init():
     session['id_list'] = None
 
     # Other variables
-    color_gradient = ['', '#374955', '#005376', '#00c0ff', '#1f789d', '#4493ba', '#64afd7', '#83ccf5', '#a1eaff', '#006c5a', '#3d978a']
-    color_police = ['', 'white', 'white', 'black', 'black', 'black', 'black', 'black', 'black', 'black', 'black', 'black', 'black']
-    session['basic_context'] = {'up_to_date': True, 'safe_compute': None, 'locale': 'en', 'gradient': color_gradient, 'police': color_police}
+    color_gradient = ['', '#374955', '#005376', '#00c0ff', '#1f789d', '#4493ba', '#64afd7', '#83ccf5', '#a1eaff',
+                      '#006c5a', '#3d978a']
+    color_police = ['', 'white', 'white', 'black', 'black', 'black', 'black', 'black', 'black', 'black', 'black',
+                    'black', 'black']
+    session['basic_context'] = {'up_to_date': True, 'safe_compute': None, 'locale': 'en', 'gradient': color_gradient,
+                                'police': color_police}
 
 
 def add_course(code):
@@ -96,9 +100,9 @@ def add_course(code):
 def fetch_courses():
     courses = getCoursesFromCodes(session['codes'])
     fetch_id()
-    session['data_base'].clear()
-    for course in courses:
-        session['data_base'] += course.getEventsJSON()
+    events = chain.from_iterable(chain.from_iterable(extractEvents(courses, view=session['id_list'])))
+    session['data_base'] = JSONfromEvents(events)
+    print(session['data_base'])
     session.modified = True
 
 
@@ -126,7 +130,9 @@ def get_fts():
 
 
 def get_id():
-    pass
+    fetch_courses()
+    session['basic_context']['up_to_date'] = False
+    session.modified = True
 
 
 def delete_course(code):
