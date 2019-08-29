@@ -132,7 +132,7 @@ def preferences_changes():
 # ERROR HANDLER
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template('404.html'), 404
+    return render_template('404.html', **session['basic_context']), 404
 
 
 # COOKIES HANDLER
