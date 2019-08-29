@@ -173,7 +173,7 @@ def JSONfromEvents(events):
     """
         Returns the list of events, in "JSON format"
         """
-    return [{'start': str(event.begin), 'end': str(event.end), 'title': event.name, 'editable': False,
+    return [{'start': str(event.begin), 'end': str(event.end), 'title': event.id, 'editable': False, 'code': event.code,
              'description': event.name + '\n' + event.location + ' - ' + str(event.duration) + '\n' + str(
                  event.description)} for event in events]
 

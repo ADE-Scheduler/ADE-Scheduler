@@ -71,7 +71,7 @@ def init():
 
     # Other variables
     color_gradient = ['', '#374955', '#005376', '#00c0ff', '#1f789d', '#4493ba', '#64afd7', '#83ccf5', '#a1eaff', '#006c5a', '#3d978a']
-    color_police = ['black', 'white', 'white', 'black', 'black', 'black', 'black', 'black', 'black', 'black', 'black', 'black', 'black']
+    color_police = ['', 'white', 'white', 'black', 'black', 'black', 'black', 'black', 'black', 'black', 'black', 'black', 'black']
     session['basic_context'] = {'up_to_date': True, 'safe_compute': None, 'locale': 'en', 'gradient': color_gradient, 'police': color_police}
 
 
@@ -113,6 +113,7 @@ def get_fts():
     session['fts'].clear()
     for el in msg:
         session['fts'].append(el)
+    session['basic_context']['up_to_date'] = False
     session.modified = True
 
 
