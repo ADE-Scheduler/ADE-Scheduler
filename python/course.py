@@ -194,5 +194,4 @@ class Course:
                             'description': event.name + '\n' + event.location + ' - ' + str(event.duration) + '\n' +
                             str(event.description), 'code': event.code}
                     events.append(temp)
-                    print(temp)
         return events

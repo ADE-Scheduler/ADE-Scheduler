@@ -4,6 +4,7 @@ from flask import request, session
 from pytz import timezone
 from dateutil.parser import parse
 import json
+import re
 
 import sys, os, inspect
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
@@ -12,7 +13,11 @@ sys.path.insert(0, parentdir+'/python')
 from ade import getCoursesFromCodes
 from computation import compute_best
 from event import CustomEvent, EventCM, JSONfromEvents
+from static_data import COURSE_REGEX
 import library
+
+# letters + number only regex
+regex = re.compile('[^A-Z0-9]')
 
 
 def clear():
@@ -76,6 +81,9 @@ def init():
 
 
 def add_course(code):
+    if len(code) > 12:
+        code = code[0:12]
+    code = regex.sub('', code)
     if code is '' or code is None:
         return
     if code not in session['codes']:
