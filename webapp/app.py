@@ -83,6 +83,15 @@ def getIDs():
     return redirect(url_for('calendar'))
 
 
+# To download the calendar's .ics file
+@app.route('/download/calendar', methods=['GET'])
+def download():
+    _cal = download_calendar()
+    resp = make_response(_cal)
+    resp.headers["Content-Disposition"] = "attachment; filename=calendar.ics"
+    return resp
+
+
 @app.route('/getCalendar')
 def getCalendar():
     n = request.args.get('number', default=0, type=int)
@@ -92,18 +101,6 @@ def getCalendar():
 # Page for user preferences
 @app.route('/preferences')
 def preferences():
-    # try:
-    #     pref_safe_compute = request.cookies.get('safe-compute')
-    #     if pref_safe_compute is None or pref_safe_compute == 'False':
-    #         # Put some cookies
-    #         basic_context['safe_compute'] = False
-    #     elif pref_safe_compute == 'True':
-    #         basic_context['safe_compute'] = True
-    # except:
-    #     # Put some cookies
-    #     basic_context['safe_compute'] = False
-    #
-    # basic_context['codes'] = codes
     return render_template('preferences.html', **session['basic_context'])
 
 
@@ -113,72 +110,10 @@ def help_guide():
     return render_template('help.html', **session['basic_context'])
 
 
-# To handle the preferences form
-# The method post garantees that we cannot go by url
-@app.route('/change/preferences', methods=['POST'])
-def preferences_changes():
-    # Some work
-    if request.method == 'POST':
-        resp = make_response(redirect('/'))
-        safe_compute_user = request.form.get('safe-compute')
-        print(safe_compute_user)
-        if safe_compute_user is None:  # Not checked
-            resp.set_cookie('safe-compute', 'False')
-        else:
-            resp.set_cookie('safe-compute', 'True')
-    return resp
-
-
 # ERROR HANDLER
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html', **session['basic_context']), 404
-
-
-# COOKIES HANDLER
-def cookies_handler():
-    global codes
-    global data_base
-
-    # Getting the cookies
-    # Safe compute
-    resp = make_response(
-        render_template('calendar.html', **basic_context, data_base=json.dumps(data_base), data_sched=data_sched,
-                        fts=json.dumps(fts_json), id=id_tab))
-    try:
-        pref_safe_compute = request.cookies.get('safe-compute')
-        if pref_safe_compute is None or pref_safe_compute == 'False':
-            # Put some cookies
-            basic_context['safe_compute'] = False
-        elif pref_safe_compute == 'True':
-            basic_context['safe_compute'] = True
-    except:
-        # Put some cookies
-        basic_context['safe_compute'] = False
-
-    # Last computed codes
-    if request.method == 'GET' and len(codes) == 0:
-        try:
-            last_computed = request.cookies.get('last_computed')
-            codes = last_computed.split()
-            c = getCoursesFromCodes(codes, Q1 + Q2 + Q3, 9)
-            for course in c:
-                data_base += course.getEventsJSON()
-            scheds, score = parallel_compute(c, forbiddenTimeSlots=fts, nbest=3)
-            i = 1
-            for year in scheds:
-                temp_sched = list()
-                for week in year:
-                    for event in week:
-                        temp = {'start': str(event.begin), 'end': str(event.end), 'title': event.name,
-                                'editable': False,
-                                'description': event.name + '\n' + event.location + ' - ' + str(
-                                    event.duration) + '\n' + str(event.description)}
-                        temp_sched.append(temp)
-                data_sched['sched_' + str(i)] = json.dumps(temp_sched)
-                i += 1
-        except:
-            pass
 
 
 if __name__ == '__main__':

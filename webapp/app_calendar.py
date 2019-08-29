@@ -3,6 +3,7 @@ from flask import request, session
 from pytz import timezone
 from dateutil.parser import parse
 from itertools import chain
+from ics import Calendar
 import json
 import re
 
@@ -141,3 +142,24 @@ def delete_course(code):
         fetch_courses()
         session['basic_context']['up_to_date'] = False
         session.modified = True
+
+
+def download_calendar():
+    courses = getCoursesFromCodes(session['codes'])
+    fts = list()
+    for el in session['fts']:
+        t0 = parse(el['start']).astimezone(tz)
+        t1 = parse(el['end']).astimezone(tz)
+        dt = t1 - t0
+        if el['title'] == 'High':
+            fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=5))
+        elif el['title'] == 'Medium':
+            fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=3))
+        elif el['title'] == 'Low':
+            fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=1))
+    events = compute_best(courses, fts=fts, nbest=3, view=session['id_list'])
+
+    calendar = Calendar()
+    for event in events[1]:
+        calendar.events.add(event)
+    return str(calendar)

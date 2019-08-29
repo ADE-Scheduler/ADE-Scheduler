@@ -599,12 +599,13 @@
                 // Function called when the user drops a "forbiddenTimeSlot" event
                 drop: function(arg) {
                     let modal = $('#time-prompt');
-                    let startTime = $('#start_time').val().substring(0, 5);
-                    let endTime = $('#end_time').val().substring(0, 5);
-                    modal.modal('hide');
 
                     function timePromptConfirm(e) {
                         try {
+                            let startTime = $('#start_time').val().substring(0, 5);
+                            let endTime = $('#end_time').val().substring(0, 5);
+                            modal.modal('hide');
+
                             let dateStart = new Date(arg.date.getFullYear(), arg.date.getMonth(), arg.date.getDate());
                             dateStart.setHours(parseInt(startTime.split(':')[0]));
                             dateStart.setMinutes(parseInt(startTime.split(':')[1]));
