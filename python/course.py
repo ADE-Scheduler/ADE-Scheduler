@@ -190,9 +190,9 @@ class Course:
         for course in self.events.values():
             for week in course:
                 for event in week:
-                    temp = {'start': str(event.begin), 'end': str(event.end), 'title': event.name, 'editable': False,
-                            'description': event.name + '\n' + event.location + ' - ' + str(
-                                event.duration) + '\n' + str(
-                                event.description)}
+                    temp = {'start': str(event.begin), 'end': str(event.end), 'title': event.id, 'editable': False,
+                            'description': event.name + '\n' + event.location + ' - ' + str(event.duration) + '\n' +
+                            str(event.description), 'code': event.code}
                     events.append(temp)
+                    print(temp)
         return events
