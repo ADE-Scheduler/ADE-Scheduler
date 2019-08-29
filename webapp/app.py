@@ -79,7 +79,7 @@ def remove_code(code):
 @app.route('/get/id', methods=['POST'])
 def getIDs():
     session['id_list'] = json.loads(request.form['IDs'])
-    print(session['id_list'])
+    get_id()
     return redirect(url_for('calendar'))
 
 
