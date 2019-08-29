@@ -149,7 +149,7 @@
                             <button class="btn btn-secondary" type="button" onclick=refreshFunction(); style="width: 100%;"><strong>{{ _('Refresh') }}</strong></button>
                         </div>
                         <form class="btn-group" method="post" action="/">
-                            <button class="btn btn-warning" type="submit" name="submit" value="Clear" style="width: 100%;"><strong>{{ _('Clear') }}</strong></button>
+                            <button class="btn btn-warning" type="submit" name="submit" value="Clear" style="width: 100%;" onclick=clearButton();><strong>{{ _('Clear') }}</strong></button>
                         </form>
                     </div>
                 </ul>
@@ -364,29 +364,47 @@
     <script src='/static/js/colorgradient.js'></script>
 
     <script>
-        // Focus on the Course Code input
+        // On load: focus on course-input + repopulate checkboxes
         window.onload = function() {
             document.getElementById("course-input").focus();
+            repopulateCheckbox()
         };
     </script>
 
     <script>
-        // Save checkbox state
+        // Save checkbox state on check
         $('#course-body input[type="checkbox"]').change(function() {
-            let checkboxValues = {};
-            $(":checkbox").each(function(){
-              checkboxValues[this.id] = this.checked;
-            });
-            localStorage.setItem('checkboxValues', JSON.stringify(checkboxValues));
+            // small delay so every checkbox has time to 'react'
+            setTimeout(function() {
+                saveCheckbox();
+            }, 5);
         });
 
+        // Save checkbox state
+        function saveCheckbox() {
+            setTimeout(function() {
+                let checkboxValues = {};
+                $(":checkbox").each(function(){
+                  checkboxValues[this.id] = this.checked;
+                });
+                localStorage.setItem('checkboxValues', JSON.stringify(checkboxValues));
+            }, 5);
+        }
+
         // Repopulate checkbox
-        let checkboxValues = JSON.parse(localStorage.getItem('checkboxValues'));
-        if (checkboxValues) {
-            Object.keys(checkboxValues).forEach(function (element) {
-                let checked = checkboxValues[element];
-                $("#" + element).prop('checked', checked);
-            });
+        function repopulateCheckbox() {
+            let checkboxValues = JSON.parse(localStorage.getItem('checkboxValues'));
+            if (checkboxValues) {
+                Object.keys(checkboxValues).forEach(function (element) {
+                    let checked = checkboxValues[element];
+                    document.getElementById(element).checked = checked;
+                });
+            }
+        }
+
+        // Clear
+        function clearButton() {
+            localStorage.removeItem('checkboxValues');
         }
     </script>
 
