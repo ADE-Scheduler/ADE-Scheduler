@@ -185,6 +185,8 @@
         </div>
     </div>
 
+    <!-- EXPORT PROMPT (modal) -->
+
     <!-- calendar body -->
     <div class="card border-primary mb-3" style="float: right; clear: right; width: 88%;">
         <div class="card-body">
@@ -205,7 +207,7 @@
     </div>
 
     <!-- course body -->
-    <div class="card border-primary mb-3" style="float: left; clear: left; width: 11%; text-align: center;">
+    <div class="card border-primary mb-3" style="float: left; clear: left; width: 11%; text-align: center;" id="course-body">
         <div class="card-header" style="padding: 5%"><strong>{{ _('Current Courses') }}</strong></div>
         <div class="card-body" style="padding: 5%">
             <table style="border-collapse: collapse">
@@ -369,6 +371,26 @@
     </script>
 
     <script>
+        // Save checkbox state
+        $('#course-body input[type="checkbox"]').change(function() {
+            let checkboxValues = {};
+            $(":checkbox").each(function(){
+              checkboxValues[this.id] = this.checked;
+            });
+            localStorage.setItem('checkboxValues', JSON.stringify(checkboxValues));
+        });
+
+        // Repopulate checkbox
+        let checkboxValues = JSON.parse(localStorage.getItem('checkboxValues'));
+        if (checkboxValues) {
+            Object.keys(checkboxValues).forEach(function (element) {
+                let checked = checkboxValues[element];
+                $("#" + element).prop('checked', checked);
+            });
+        }
+    </script>
+
+    <script>
         // Group checkboxes
         let course_codes = {{ codes|safe }};
         for (let i=0; i < course_codes.length; i++) {
@@ -411,7 +433,6 @@
 
         // Toggle group checkbox
         function areCheckboxesChecked(id) {
-            console.log(id);
             let all_checkboxes = $('#'+ id + ' input[type="checkbox"]');
             if (all_checkboxes.length === all_checkboxes.filter(":checked").length)
                 $('#' + id + '-all').prop("checked", true);
@@ -458,12 +479,8 @@
             }
 
             // send data to server
-            $.post("/get/id", {'IDs': JSON.stringify(selected_ids)}, function(){
-                {#location = location#}
-            });
+            $.post("/get/id", {'IDs': JSON.stringify(selected_ids)}, function(){ location = location });
         }
-
-
     </script>
 
     <script>
