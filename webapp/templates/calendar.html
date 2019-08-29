@@ -140,9 +140,9 @@
                     <div>
                         <form class="btn-group" method="post" action="/">
                             {% if up_to_date == False %}
-                                <button class="btn btn-danger" type="submit" name="submit" value="Compute" style="width: 100%;"><strong>{{ _('Compute') }}</strong></button>
+                                <button class="btn btn-danger" type="submit" name="submit" value="Compute" style="width: 100%;" id="btn-compute"><strong>{{ _('Compute') }}</strong></button>
                             {% else %}
-                                <button class="btn btn-success" type="submit" name="submit" value="Compute" style="width: 100%;"><strong>{{ _('Compute') }}</strong></button>
+                                <button class="btn btn-success" type="submit" name="submit" value="Compute" style="width: 100%;" id="btn-compute"><strong>{{ _('Compute') }}</strong></button>
                             {% endif %}
                         </form>
                         <div class="btn-group">
@@ -233,8 +233,8 @@
                                                 {% for cm_id in id[code].CM %}
                                                     <a class="dropdown-item">
                                                         <div class="custom-control custom-checkbox">
-                                                            <input type="checkbox" class="custom-control-input" id="{{ cm_id }}" checked=true>
-                                                            <label class="custom-control-label" for="{{ cm_id }}">{{ cm_id }}</label>
+                                                            <input type="checkbox" class="custom-control-input" id="CM:{{ cm_id }}" checked=true>
+                                                            <label class="custom-control-label" for="CM:{{ cm_id }}">{{ cm_id }}</label>
                                                         </div>
                                                     </a>
                                                 {% endfor %}
@@ -246,8 +246,8 @@
                                                 {% for tp_id in id[code].TP %}
                                                     <a class="dropdown-item">
                                                         <div class="custom-control custom-checkbox">
-                                                            <input type="checkbox" class="custom-control-input" id="{{ tp_id }}" checked="true">
-                                                            <label class="custom-control-label" for="{{ tp_id }}">{{ tp_id }}</label>
+                                                            <input type="checkbox" class="custom-control-input" id="TP:{{ tp_id }}" checked="true">
+                                                            <label class="custom-control-label" for="TP:{{ tp_id }}">{{ tp_id }}</label>
                                                         </div>
                                                     </a>
                                                 {% endfor %}
@@ -259,8 +259,8 @@
                                                 {% for exam_id in id[code].EXAM %}
                                                     <a class="dropdown-item">
                                                         <div class="custom-control custom-checkbox">
-                                                            <input type="checkbox" class="custom-control-input" id="{{ exam_id }}" checked="true">
-                                                            <label class="custom-control-label" for="{{ exam_id }}">{{ exam_id }}</label>
+                                                            <input type="checkbox" class="custom-control-input" id="EXAM:{{ exam_id }}" checked="true">
+                                                            <label class="custom-control-label" for="EXAM:{{ exam_id }}">{{ exam_id }}</label>
                                                         </div>
                                                     </a>
                                                 {% endfor %}
@@ -272,8 +272,8 @@
                                                 {% for oral_id in id[code].ORAL %}
                                                     <a class="dropdown-item">
                                                         <div class="custom-control custom-checkbox">
-                                                            <input type="checkbox" class="custom-control-input" id="{{ oral_id }}" checked="true">
-                                                            <label class="custom-control-label" for="{{ oral_id }}">{{ oral_id }}</label>
+                                                            <input type="checkbox" class="custom-control-input" id="ORAL:{{ oral_id }}" checked="true">
+                                                            <label class="custom-control-label" for="ORAL:{{ oral_id }}">{{ oral_id }}</label>
                                                         </div>
                                                     </a>
                                                 {% endfor %}
@@ -285,8 +285,8 @@
                                                 {% for other_id in id[code].Other %}
                                                     <a class="dropdown-item">
                                                         <div class="custom-control custom-checkbox">
-                                                            <input type="checkbox" class="custom-control-input" id="{{ other_id }}" checked=true>
-                                                            <label class="custom-control-label" for="{{ other_id }}">{{ other_id }}</label>
+                                                            <input type="checkbox" class="custom-control-input" id="Other:{{ other_id }}" checked=true>
+                                                            <label class="custom-control-label" for="Other:{{ other_id }}">{{ other_id }}</label>
                                                         </div>
                                                     </a>
                                                 {% endfor %}
@@ -352,32 +352,32 @@
             for (let i=0; i < course_codes.length; i++) {
                 // CM
                 for (let j = 0; j < course_ids[course_codes[i]].CM.length; j++) {
-                    if (document.getElementById(course_ids[course_codes[i]].CM[j]).getAttribute("checked")) {
-                        selected_ids.push(course_ids[course_codes[i]].CM[j]);
+                    if (document.getElementById('CM:'+ course_ids[course_codes[i]].CM[j]).getAttribute("checked")) {
+                        selected_ids.push('CM:'+ course_ids[course_codes[i]].CM[j]);
                     }
                 }
                 // TP
                 for (let j = 0; j < course_ids[course_codes[i]].TP.length; j++) {
-                    if (document.getElementById(course_ids[course_codes[i]].TP[j]).getAttribute("checked")) {
-                        selected_ids.push(course_ids[course_codes[i]].TP[j]);
+                    if (document.getElementById('TP:'+ course_ids[course_codes[i]].TP[j]).getAttribute("checked")) {
+                        selected_ids.push('TP:'+ course_ids[course_codes[i]].TP[j]);
                     }
                 }
                 // Exam
                 for (let j = 0; j < course_ids[course_codes[i]].EXAM.length; j++) {
-                    if (document.getElementById(course_ids[course_codes[i]].EXAM[j]).getAttribute("checked")) {
-                        selected_ids.push(course_ids[course_codes[i]].EXAM[j]);
+                    if (document.getElementById('EXAM:'+ course_ids[course_codes[i]].EXAM[j]).getAttribute("checked")) {
+                        selected_ids.push('EXAM:'+ course_ids[course_codes[i]].EXAM[j]);
                     }
                 }
                 // Oral
                 for (let j = 0; j < course_ids[course_codes[i]].ORAL.length; j++) {
-                    if (document.getElementById(course_ids[course_codes[i]].ORAL[j]).getAttribute("checked")) {
-                        selected_ids.push(course_ids[course_codes[i]].ORAL[j]);
+                    if (document.getElementById('ORAL:'+ course_ids[course_codes[i]].ORAL[j]).getAttribute("checked")) {
+                        selected_ids.push('ORAL:'+ course_ids[course_codes[i]].ORAL[j]);
                     }
                 }
                 // Other
                 for (let j = 0; j < course_ids[course_codes[i]].Other.length; j++) {
-                    if (document.getElementById(course_ids[course_codes[i]].Other[j]).getAttribute("checked")) {
-                        selected_ids.push(course_ids[course_codes[i]].Other[j]);
+                    if (document.getElementById('Other:'+ course_ids[course_codes[i]].Other[j]).getAttribute("checked")) {
+                        selected_ids.push('Other:'+ course_ids[course_codes[i]].Other[j]);
                     }
                 }
             }
@@ -398,6 +398,10 @@
         let dragToCopy = false;
         function send_fts_to_serv() {
             $.post('/get/fts', {'fts': JSON.stringify(forbiddenTimeSlots)});
+            if ($('#btn-compute').hasClass('btn-success')) {
+                $('#btn-compute').removeClass('btn-success');
+                $('#btn-compute').addClass('btn-danger');
+            }
         }
 
         // FullCalendar initialization
