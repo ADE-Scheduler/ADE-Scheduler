@@ -103,7 +103,6 @@ def fetch_courses():
     fetch_id()
     events = chain.from_iterable(chain.from_iterable(extractEvents(courses, view=session['id_list'])))
     session['data_base'] = JSONfromEvents(events)
-    print(session['data_base'])
     session.modified = True
 
 
@@ -144,22 +143,25 @@ def delete_course(code):
         session.modified = True
 
 
-def download_calendar():
-    courses = getCoursesFromCodes(session['codes'])
-    fts = list()
-    for el in session['fts']:
-        t0 = parse(el['start']).astimezone(tz)
-        t1 = parse(el['end']).astimezone(tz)
-        dt = t1 - t0
-        if el['title'] == 'High':
-            fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=5))
-        elif el['title'] == 'Medium':
-            fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=3))
-        elif el['title'] == 'Low':
-            fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=1))
-    events = compute_best(courses, fts=fts, nbest=3, view=session['id_list'])
-
+def download_calendar(choice):
     calendar = Calendar()
-    for event in events[1]:
-        calendar.events.add(event)
+    if choice < 0:
+        print("ADE Shedule")
+    else:
+        courses = getCoursesFromCodes(session['codes'])
+        fts = list()
+        for el in session['fts']:
+            t0 = parse(el['start']).astimezone(tz)
+            t1 = parse(el['end']).astimezone(tz)
+            dt = t1 - t0
+            if el['title'] == 'High':
+                fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=5))
+            elif el['title'] == 'Medium':
+                fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=3))
+            elif el['title'] == 'Low':
+                fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=1))
+        events = compute_best(courses, fts=fts, nbest=3, view=session['id_list'])
+        for event in events[choice]:
+            calendar.events.add(event)
+
     return str(calendar)
