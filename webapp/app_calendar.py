@@ -71,6 +71,12 @@ def init():
     session['basic_context'] = {'up_to_date': True, 'safe_compute': None, 'locale': 'en', 'gradient': color_gradient,
                                 'police': color_police}
 
+def add_courses(code):
+    pattern = re.compile("^\s+|\s*,\s*|\s+$")
+    codes = [x for x in pattern.split(code) if x]
+    print(codes)
+    for c in codes:
+        add_course(c)
 
 def add_course(code):
     if len(code) > 12:
