@@ -46,14 +46,6 @@ def calendar():
         if request.form['submit'] == 'Add':
             code = request.form['course_code'].upper()
             add_courses(code)
-        # COMPUTE
-        if request.form['submit'] == 'Compute':
-            compute()
-        # CLEAR
-        if request.form['submit'] == 'Clear':
-            clear()
-    else:
-        fetch_id()
 
     session['basic_context']['codes'] = session['codes']
     session.modified = True
@@ -67,6 +59,13 @@ def compute_schedules():
     session['id_list'] = json.loads(request.form['IDs'])
     get_id()
     compute()
+    return redirect(url_for('calendar'))
+
+
+# To clear the data
+@app.route('/clear', methods=['POST'])
+def clear_all():
+    clear()
     return redirect(url_for('calendar'))
 
 
@@ -102,6 +101,7 @@ def download(choice):
     return resp
 
 
+# To get the calendar's ics file via the subscription link
 @app.route('/getcalendar/<link>', methods=['GET'])
 def getCalendar(link):
     print(link)
