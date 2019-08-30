@@ -12,7 +12,6 @@
             --sched-2-color: #5be4ff;
             --sched-3-color: #fff117;
         }
-        .btn-group + .btn-group {margin-left: -5px;}
         #calendar {
             width: 100%;
             height: 100%;
@@ -122,19 +121,19 @@
                 </ul>
                 <ul class="navbar-nav">
                     <div>
-                        <form class="btn-group" method="post" action="/">
-                            {% if up_to_date == False %}
-                                <button class="btn btn-danger" type="submit" name="submit" value="Compute" style="width: 100%;" id="btn-compute"><strong>{{ _('Compute') }}</strong></button>
-                            {% else %}
-                                <button class="btn btn-success" type="submit" name="submit" value="Compute" style="width: 100%;" id="btn-compute"><strong>{{ _('Compute') }}</strong></button>
-                            {% endif %}
-                        </form>
-                        <div class="btn-group">
+                        <div class="btn-group" role="group">
+                            <form method="post" action="/">
+                                {% if up_to_date == False %}
+                                    <button class="btn btn-danger" type="submit" name="submit" value="Compute" style="width: 100%;" id="btn-compute"><strong>{{ _('Compute') }}</strong></button>
+                                {% else %}
+                                    <button class="btn btn-success" type="submit" name="submit" value="Compute" style="width: 100%;" id="btn-compute"><strong>{{ _('Compute') }}</strong></button>
+                                {% endif %}
+                            </form>
                             <button class="btn btn-secondary" type="button" onclick=refreshFunction(); style="width: 100%;"><strong>{{ _('Refresh') }}</strong></button>
+                            <form method="post" action="/">
+                                <button class="btn btn-warning" type="submit" name="submit" value="Clear" style="width: 100%;" onclick=clearButton();><strong>{{ _('Clear') }}</strong></button>
+                            </form>
                         </div>
-                        <form class="btn-group" method="post" action="/">
-                            <button class="btn btn-warning" type="submit" name="submit" value="Clear" style="width: 100%;" onclick=clearButton();><strong>{{ _('Clear') }}</strong></button>
-                        </form>
                     </div>
                 </ul>
             </div>
@@ -151,13 +150,13 @@
                     <div class="btn-group-vertical" style="width: 48%; margin-right: 2%; float: left">
                         <h5 style="text-align: center"><strong>{{ _('Start') }}</strong></h5>
                         <div class="input-group clockpicker">
-                            <input type="text" class="form-control" value="08:00" id="start_time" maxlength="5">
+                            <input type="time" class="form-control" value="08:00" id="start_time" maxlength="5">
                         </div>
                     </div>
                     <div class="btn-group-vertical" style="width: 48%; margin-left: 2%; float: right">
                         <h5 style="text-align: center"><strong>{{ _('End') }}</strong></h5>
                         <div class="input-group clockpicker">
-                            <input type="text" class="form-control" value="10:00" id="end_time" maxlength="5">
+                            <input type="time" class="form-control" value="10:00" id="end_time" maxlength="5">
                         </div>
                     </div>
                 </div>
@@ -171,20 +170,52 @@
 
     <!-- EXPORT PROMPT (modal) -->
     <div class="modal fade" tabindex="-1" role="dialog" id="exportPrompt" role="dialog">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Export schedule</h5>
+                    <h5 class="modal-title">{{ _('Export Schedule') }}</h5>
                     <button type="button" class="close" data-dismiss="modal">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Choose the schedule you want to export and under which format (subscription link or .ics file)</p>
+                    <div class="row">
+                        <div class="col-3">
+                            <select class="custom-select mr-sm-2" id="select-sched-download">
+                                <option value="" selected>{{ _('Choose...') }}</option>
+                                <option value="0">{{ _('ADE Schedule') }}</option>
+                                <option value="1">{{ _('First schedule') }}</option>
+                                <option value="2">{{ _('Second schedule') }}</option>
+                                <option value="3">{{ _('Third schedule') }}</option>
+                            </select>
+                            <small class="form-text text-muted">{{ _('Select your schedule.') }}</small>
+                        </div>
+                        <div class="col-xl-9 ml-auto">
+                            <div class="float-right" style="width: 100%">
+                                <div class="input-group" style="width: 100%;">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">#</div>
+                                    </div>
+                                    <input class="form-control bg-light" type="text" placeholder="{{ _('ex: adescheduler.com/getcalendar?=subscription_link') }}" readonly>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="button">{{ _('Generate link') }}</button>
+                                    </div>
+                                </div>
+                                <small class="form-text text-muted" style="float: right">{{ _('Generate a subscription link') }}</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="alert alert-danger hide" id="download-alert1" style="width: 70%; float: left; margin-bottom: 0">
+                        <button type="button" class="close" onclick="alertButton();">&times;</button>
+                        Your schedules are not updated ! Please compute first.
+                    </div>
+                    <button class="btn btn-primary btn-sm" style="float: right; margin-top: 10px;" data-toggle="tooltip" data-placement="bottom" title="{{ _('Copy link') }}">
+                        {{ _('Copy') }}
+                    </button>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">{{ _('Cancel') }}</button>
+                    <button type="button" class="btn btn-success" onclick=downloadButton();>{{ _('Download file') }}</button>
                 </div>
             </div>
         </div>
@@ -378,6 +409,22 @@
     </script>
 
     <script>
+        function downloadButton() {
+            let choice = $('#select-sched-download :selected').val();
+            if (!{{ up_to_date|tojson }}) {
+                $('#download-alert1').removeClass('hide');
+                console.log('pourquoi tu te montre pas ? :(');
+            } else if (choice) {
+                $("<form method='POST' action='/download/schedule/" + choice + "'></form>").appendTo("body").submit();
+            }
+        }
+
+        function alertButton() {
+            $('#download-alert1').addClass('hide');
+        }
+    </script>
+
+    <script>
         // Save checkbox state on check
         $('#course-body input[type="checkbox"]').change(function() {
             // small delay so every checkbox has time to 'react'
@@ -403,7 +450,9 @@
             if (checkboxValues) {
                 Object.keys(checkboxValues).forEach(function (element) {
                     let checked = checkboxValues[element];
-                    document.getElementById(element).checked = checked;
+                    let htmlElement = document.getElementById(element);
+                    if (htmlElement)
+                        htmlElement.checked = checked;
                 });
             }
         }
