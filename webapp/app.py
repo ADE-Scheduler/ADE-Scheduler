@@ -102,10 +102,11 @@ def download(choice):
     return resp
 
 
-@app.route('/getCalendar')
-def getCalendar():
-    n = request.args.get('number', default=0, type=int)
-    return send_file(library.getCalendar(n), as_attachment=True)
+@app.route('/getcalendar/<link>', methods=['GET'])
+def getCalendar(link):
+    print(link)
+    # n = request.args.get('number', default=0, type=int)
+    return redirect(url_for('calendar'))
 
 
 # Page for user preferences
