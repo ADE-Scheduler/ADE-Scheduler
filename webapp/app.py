@@ -95,9 +95,9 @@ def getIDs():
 # To download the calendar's .ics file
 @app.route('/download/schedule/<choice>', methods=['POST'])
 def download(choice):
-    print(int(choice))
     _cal = download_calendar(int(choice)-1)
     resp = make_response(_cal)
+    resp.mimetype = 'text/calendar'
     resp.headers["Content-Disposition"] = "attachment; filename=calendar.ics"
     return resp
 
