@@ -204,8 +204,12 @@
                         </div>
                     </div>
                     <div class="alert alert-danger hide" id="download-alert1" style="width: 70%; float: left; margin-bottom: 0">
-                        <button type="button" class="close" onclick="alertButton();">&times;</button>
-                        Your schedules are not updated ! Please compute first.
+                        <button type="button" class="close" onclick="alert1Button();">&times;</button>
+                        {{ _('Your schedules are not updated ! Please compute first.') }}
+                    </div>
+                    <div class="alert alert-danger hide" id="download-alert2" style="width: 70%; float: left; margin-bottom: 0">
+                        <button type="button" class="close" onclick="alert2Button();">&times;</button>
+                        {{ _('Please specify a schedule to download.') }}
                     </div>
                     <button class="btn btn-primary btn-sm" style="float: right; margin-top: 10px;" data-toggle="tooltip" data-placement="bottom" title="{{ _('Copy link') }}">
                         {{ _('Copy') }}
@@ -409,16 +413,29 @@
     <script>
         function downloadButton() {
             let choice = $('#select-sched-download :selected').val();
-            if (!{{ up_to_date|tojson }}) {
+            if (!choice) {
+                if (!$('#download-alert1').hasClass('hide'))
+                    $('#download-alert1').addClass('hide');
+                $('#download-alert2').removeClass('hide');
+            } else if (!{{ up_to_date|tojson }} && choice !== '0') {
+                if (!$('#download-alert2').hasClass('hide'))
+                    $('#download-alert2').addClass('hide');
                 $('#download-alert1').removeClass('hide');
-                console.log('pourquoi tu te montre pas ? :(');
-            } else if (choice) {
+            } else {
+                if (!$('#download-alert2').hasClass('hide'))
+                    $('#download-alert2').addClass('hide');
+                if (!$('#download-alert1').hasClass('hide'))
+                    $('#download-alert1').addClass('hide');
                 $("<form method='POST' action='/download/schedule/" + choice + "'></form>").appendTo("body").submit();
             }
         }
 
-        function alertButton() {
+        function alert1Button() {
             $('#download-alert1').addClass('hide');
+        }
+
+        function alert2Button() {
+            $('#download-alert2').addClass('hide');
         }
 
         // Clear
@@ -510,9 +527,7 @@
                 });
             }
         }
-    </script>
 
-    <script>
         // Group checkboxes
         let course_codes = {{ codes|safe }};
         for (let i=0; i < course_codes.length; i++) {
