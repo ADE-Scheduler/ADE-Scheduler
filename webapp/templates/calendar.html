@@ -123,14 +123,12 @@
                     <div>
                         <div class="btn-group" role="group">
                             {% if up_to_date == False %}
-                                <button class="btn btn-danger" type="submit" name="submit" value="Compute" style="width: 100%;" id="btn-compute" onclick=computeButton();><strong>{{ _('Compute') }}</strong></button>
+                                <button class="btn btn-danger" type="button" style="width: 100%;" id="btn-compute" onclick=computeButton();><strong>{{ _('Compute') }}</strong></button>
                             {% else %}
-                                <button class="btn btn-success" type="submit" name="submit" value="Compute" style="width: 100%;" id="btn-compute" onclick=computeButton()><strong>{{ _('Compute') }}</strong></button>
+                                <button class="btn btn-success" type="button" style="width: 100%;" id="btn-compute" onclick=computeButton()><strong>{{ _('Compute') }}</strong></button>
                             {% endif %}
                             <button class="btn btn-secondary" type="button" onclick=refreshButton(); style="width: 100%;"><strong>{{ _('Refresh') }}</strong></button>
-                            <form method="post" action="/">
-                                <button class="btn btn-warning" type="submit" name="submit" value="Clear" style="width: 100%;" onclick=clearButton();><strong>{{ _('Clear') }}</strong></button>
-                            </form>
+                            <button class="btn btn-warning" type="button" style="width: 100%;" onclick=clearButton();><strong>{{ _('Clear') }}</strong></button>
                         </div>
                     </div>
                 </ul>
@@ -453,6 +451,7 @@
         // Clear
         function clearButton() {
             localStorage.removeItem('checkboxValues');
+            $.post("/clear", {}, () => location = location)
         }
 
         function computeButton() {
@@ -625,7 +624,7 @@
                 header: {
                     left: 'prev,next, today',
                     center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                    right: 'dayGridMonth,timeGridWeek,listWeek'
                 },
                 minTime: '08:00:00',
                 maxTime: '20:00:00',
