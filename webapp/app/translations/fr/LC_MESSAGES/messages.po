@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-08-26 15:48+0200\n"
+"POT-Creation-Date: 2019-08-30 16:20+0200\n"
 "PO-Revision-Date: 2019-08-24 23:58+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -18,107 +18,167 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.7.0\n"
 
-#: templates/base.html:110
+#: templates/base.html:125
 msgid "Calendar"
 msgstr "Calendrier"
 
-#: templates/base.html:115
+#: templates/base.html:130
 msgid "User preferences"
 msgstr "Préférences utilisateur"
 
-#: templates/base.html:120
+#: templates/base.html:135
 msgid "Help"
 msgstr "Aide"
 
-#: templates/calendar.html:61
+#: templates/calendar.html:47
 msgid "ADE schedule"
 msgstr "Horaire ADE"
 
-#: templates/calendar.html:65 templates/calendar.html:69
-#: templates/calendar.html:104
+#: templates/calendar.html:51 templates/calendar.html:55
+#: templates/calendar.html:90
 msgid "1st schedule"
 msgstr "1er horaire"
 
-#: templates/calendar.html:74 templates/calendar.html:78
-#: templates/calendar.html:111
+#: templates/calendar.html:60 templates/calendar.html:64
+#: templates/calendar.html:97
 msgid "2nd schedule"
 msgstr "2ème horaire"
 
-#: templates/calendar.html:83 templates/calendar.html:87
-#: templates/calendar.html:119
+#: templates/calendar.html:69 templates/calendar.html:73
+#: templates/calendar.html:105
 msgid "3rd schedule"
 msgstr "3ème horaire"
 
-#: templates/calendar.html:92 templates/calendar.html:131
+#: templates/calendar.html:78 templates/calendar.html:117
 msgid "Compare"
 msgstr "Comparer"
 
-#: templates/calendar.html:98
+#: templates/calendar.html:84 templates/calendar.html:186
 msgid "ADE Schedule"
 msgstr "Horaire ADE"
 
-#: templates/calendar.html:140 templates/calendar.html:142
+#: templates/calendar.html:127 templates/calendar.html:129
 msgid "Compute"
 msgstr "Calculer"
 
-#: templates/calendar.html:146
+#: templates/calendar.html:132
 msgid "Refresh"
 msgstr "Rafraichir"
 
-#: templates/calendar.html:149
+#: templates/calendar.html:134
 msgid "Clear"
 msgstr "Réinitialiser"
 
-#: templates/calendar.html:165
+#: templates/calendar.html:151
 msgid "Start"
 msgstr "Début"
 
-#: templates/calendar.html:171
+#: templates/calendar.html:157
 msgid "End"
 msgstr "Fin"
 
-#: templates/calendar.html:178
+#: templates/calendar.html:164 templates/calendar.html:213
 msgid "Cancel"
 msgstr "Annuler"
 
-#: templates/calendar.html:179
+#: templates/calendar.html:165
 msgid "Confirm"
 msgstr "Confirmer"
 
-#: templates/calendar.html:194
+#: templates/calendar.html:176
+msgid "Export Schedule"
+msgstr "Exporter l'horaire"
+
+#: templates/calendar.html:185
+msgid "Choose..."
+msgstr "Choisir..."
+
+#: templates/calendar.html:187
+msgid "First schedule"
+msgstr "Premier horaire"
+
+#: templates/calendar.html:188
+msgid "Second schedule"
+msgstr "Second horaire"
+
+#: templates/calendar.html:189
+msgid "Third schedule"
+msgstr "Troisième horaire"
+
+#: templates/calendar.html:191
+msgid "Select your schedule."
+msgstr "Sélectionner un horaire."
+
+#: templates/calendar.html:199
+msgid "ex: adescheduler.com/getcalendar?=your_subscription_link"
+msgstr "ex: adescheduler.com/getcalendar?=lien_d_abonnement"
+
+#: templates/calendar.html:201
+msgid "Generate link"
+msgstr "Générer"
+
+#: templates/calendar.html:204
+msgid "Generate a subscription link"
+msgstr "Générer un lien d'abonnement"
+
+#: templates/calendar.html:208
+msgid "Copy link"
+msgstr "Copier le lien"
+
+#: templates/calendar.html:209
+msgid "Copy"
+msgstr "Copier"
+
+#: templates/calendar.html:214
+msgid "Download file"
+msgstr "Télécharger le fichier"
+
+#: templates/calendar.html:229
 msgid "Block Time Slots"
 msgstr "Bloquer un Horaire"
 
-#: templates/calendar.html:197
+#: templates/calendar.html:232
 msgid "Low"
 msgstr "Bas"
 
-#: templates/calendar.html:198
+#: templates/calendar.html:233
 msgid "Medium"
 msgstr "Moyen"
 
-#: templates/calendar.html:199
+#: templates/calendar.html:234
 msgid "High"
 msgstr "Haut"
 
-#: templates/calendar.html:206
+#: templates/calendar.html:241
 msgid "Current Courses"
 msgstr "Cours ajoutés"
 
-#: templates/calendar.html:225
+#: templates/calendar.html:249
+msgid "None"
+msgstr "Aucun"
+
+#: templates/calendar.html:260
 msgid "No event found !"
 msgstr "Aucun événement trouvé"
 
-#: templates/calendar.html:316
+#: templates/calendar.html:372
 msgid "Add a course"
 msgstr "Ajouter un cours"
 
-#: templates/calendar.html:509 templates/calendar.html:553
-#: templates/calendar.html:578
+#: templates/calendar.html:382
+msgid "Export"
+msgstr "Exporter"
+
+#: templates/calendar.html:661 templates/calendar.html:711
+#: templates/calendar.html:736
 msgid "A time slot where the user would like to be free"
 msgstr "Un moment ou l'utilisateur voudrait être libre"
 
-#: templates/calendar.html:629
+#: templates/calendar.html:667
+msgid "You specified a wrong time format ! Please try again."
+msgstr ""
+
+#: templates/calendar.html:788
 msgid "Please select at least a schedule to compare !"
 msgstr "Sélectionnez au moins un horaire à comparer !"
 
