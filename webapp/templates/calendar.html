@@ -194,9 +194,9 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">#</div>
                                     </div>
-                                    <input class="form-control bg-light" type="text" placeholder="{{ _('ex: adescheduler.com/getcalendar?=subscription_link') }}" readonly>
+                                    <input class="form-control bg-light" id="input-generate-link" type="text" placeholder="{{ _('ex: adescheduler.com/getcalendar?=subscription_link') }}" readonly>
                                     <div class="input-group-append">
-                                        <button class="btn btn-primary" type="button">{{ _('Generate link') }}</button>
+                                        <button class="btn btn-primary" type="button" onclick="generateButton();">{{ _('Generate link') }}</button>
                                     </div>
                                 </div>
                                 <small class="form-text text-muted" style="float: right">{{ _('Generate a subscription link') }}</small>
@@ -211,7 +211,7 @@
                         <button type="button" class="close" onclick="alert2Button();">&times;</button>
                         {{ _('Please specify a schedule to download.') }}
                     </div>
-                    <button class="btn btn-primary btn-sm" style="float: right; margin-top: 10px;" data-toggle="tooltip" data-placement="bottom" title="{{ _('Copy link') }}">
+                    <button class="btn btn-primary btn-sm" id="btn-copy-link" type="button" onclick=copyButton(); style="float: right; margin-top: 10px;" data-toggle="tooltip" data-placement="bottom" title="{{ _('Copy link') }}">
                         {{ _('Copy') }}
                     </button>
                 </div>
@@ -411,6 +411,18 @@
     </script>
 
     <script>
+        function generateButton() {
+            $('#input-generate-link').val('ADE Scheduler >>> ADE');
+        }
+
+        function copyButton() {
+            try {
+                let toCopy = $('#input-generate-link');
+                toCopy.select();
+                document.execCommand('copy');
+            } catch(err) { }
+        }
+
         function downloadButton() {
             let choice = $('#select-sched-download :selected').val();
             if (!choice) {
