@@ -3,6 +3,7 @@ from lxml import html
 ***REMOVED***
 from pickle import dumps, loads
 ***REMOVED***
+from static_data import N_WEEKS
 
 
 from professor import Professor
@@ -13,7 +14,7 @@ import re
 SPLITTED_COURSES = ['(LANGL)']
 
 
-def getCoursesFromCodes(codes, projectID=9, weeks=range(52)):
+def getCoursesFromCodes(codes, projectID=9, weeks=range(N_WEEKS)):
     """
     Fetches course schedule from Redis' course cache
     :param codes: list of str
