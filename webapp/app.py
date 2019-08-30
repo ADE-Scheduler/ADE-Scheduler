@@ -61,6 +61,15 @@ def calendar():
                            data_sched=session['data_sched'], fts=json.dumps(session['fts']), id=session['id_tab'])
 
 
+# To compute the schedules
+@app.route('/compute', methods=['POST'])
+def compute_schedules():
+    session['id_list'] = json.loads(request.form['IDs'])
+    get_id()
+    compute()
+    return redirect(url_for('calendar'))
+
+
 # To fetch the FTS
 @app.route('/get/fts', methods=['POST'])
 def getFTS():
