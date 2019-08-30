@@ -45,7 +45,7 @@ def calendar():
         # ADD CODE
         if request.form['submit'] == 'Add':
             code = request.form['course_code'].upper()
-            add_course(code)
+            add_courses(code)
         # COMPUTE
         if request.form['submit'] == 'Compute':
             compute()
