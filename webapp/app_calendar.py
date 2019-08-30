@@ -37,20 +37,7 @@ def compute():
         clear()
     else:
         courses = getCoursesFromCodes(session['codes'])
-        tz = timezone('Europe/Brussels')
-        fts = list()
-        for el in session['fts']:
-            t0 = parse(el['start']).astimezone(tz)
-            t1 = parse(el['end']).astimezone(tz)
-            dt = t1 - t0
-            if el['title'] == 'High':
-                fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=5))
-            elif el['title'] == 'Medium':
-                fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=3))
-            elif el['title'] == 'Low':
-                fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=1))
-
-        for i, sched in enumerate(compute_best(courses, fts=fts, nbest=3, view=session['id_list'])):
+        for i, sched in enumerate(compute_best(courses, fts=load_fts(), nbest=3, view=session['id_list'])):
             session['data_sched']['sched_' + str(i + 1)] = json.dumps(JSONfromEvents(sched))
         session['basic_context']['up_to_date'] = True
     session.modified = True
@@ -149,19 +136,23 @@ def download_calendar(choice):
         print("ADE Shedule")
     else:
         courses = getCoursesFromCodes(session['codes'])
-        fts = list()
-        for el in session['fts']:
-            t0 = parse(el['start']).astimezone(tz)
-            t1 = parse(el['end']).astimezone(tz)
-            dt = t1 - t0
-            if el['title'] == 'High':
-                fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=5))
-            elif el['title'] == 'Medium':
-                fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=3))
-            elif el['title'] == 'Low':
-                fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=1))
-        events = compute_best(courses, fts=fts, nbest=3, view=session['id_list'])
+        events = compute_best(courses, fts=load_fts(), nbest=3, view=session['id_list'])
         for event in events[choice]:
             calendar.events.add(event)
-
     return str(calendar)
+
+
+def load_fts():
+    tz = timezone('Europe/Brussels')
+    fts = list()
+    for el in session['fts']:
+        t0 = parse(el['start']).astimezone(tz)
+        t1 = parse(el['end']).astimezone(tz)
+        dt = t1 - t0
+        if el['title'] == 'High':
+            fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=5))
+        elif el['title'] == 'Medium':
+            fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=3))
+        elif el['title'] == 'Low':
+            fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=1))
+    return fts;
