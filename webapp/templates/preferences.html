@@ -10,7 +10,7 @@
                 <ul class="navbar-nav">
                     <form class="form-vertical" action="/" method="post">
                         <div class="btn-group" role="group">
-                            <button class="btn btn-secondary" type="submit" name="submit" value="Clear" style="width: 100%;"><strong>Save Preferences</strong></button>
+                            <button class="btn btn-secondary" type="submit" name="submit" value="Preferences" style="width: 100%;" form="form-user-preferences"><strong>Save Preferences</strong></button>
                         </div>
                     </form>
                 </ul>
@@ -31,7 +31,7 @@
                     </div>
                     <!-- /.box-header -->
                     <!-- form start -->
-                    <form role="form" action="/" method="post">
+                    <form role="form" action="/" method="post" id="form-user-preferences">
                         <div class="box-body">
                             <div class="checkbox">
                                 <label>
@@ -50,10 +50,6 @@
                             </select>
                         </div>
                         <!-- /.box-body -->
-
-                        <div class="box-footer">
-                            <button type="submit" name="submit" class="btn btn-primary" value="Preferences">Submit</button>
-                        </div>
                     </form>
               </div>
               <!-- /.box -->
