@@ -410,7 +410,14 @@
 
     <script>
         function generateButton() {
-            $('#input-generate-link').val('ADE Scheduler >>> ADE');
+            let link = '';
+            let linkLength = 50;
+            let charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let values = window.crypto.getRandomValues(new Uint32Array(linkLength));
+            for (let i=0; i < linkLength; i++) {
+                link += charset.charAt(values[i] % charset.length);
+            }
+            $('#input-generate-link').val('/getcalendar/' + link);
         }
 
         function copyButton() {
