@@ -64,9 +64,9 @@ def init():
     session['id_list'] = None
 
     # Other variables
-    color_gradient = ['', '#374955', '#005376', '#00c0ff', '#1f789d', '#4493ba', '#64afd7', '#83ccf5', '#a1eaff',
+    color_gradient = ['', '#374955', '#005376', '#00c0ff', '#1f789d', '#4493ba', '#64afd7', '#83ccf5', '#3635ff',
                       '#006c5a', '#3d978a']
-    color_police = ['', 'white', 'white', 'black', 'black', 'black', 'black', 'black', 'black', 'black', 'black',
+    color_police = ['white', 'white', 'white', 'white', 'white', 'white', 'white', 'white', 'white', 'white', 'white',
                     'black', 'black']
     session['basic_context'] = {'up_to_date': True, 'safe_compute': None, 'locale': 'en', 'gradient': color_gradient,
                                 'police': color_police}
@@ -75,7 +75,6 @@ def init():
 def add_courses(codes):
     pattern = re.compile("^\s+|\s*,\s*|\s+$")
     codes = [x for x in pattern.split(codes) if x]
-    print(codes)
     for code in codes:
         add_course(code)
 
