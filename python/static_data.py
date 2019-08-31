@@ -1,5 +1,6 @@
 SMART_WEEK = 5
 ID = 9
+ACADEMIC_YEARS = [{'year':'2018-2019', 'id':2}, {'year':'2019-2020', 'id':9}]
 N_WEEKS = 53
 Q1_START = 0; Q1_START_DATE = '16/09/2019'
 Q2_START = 20; Q2_START_DATE = '04/02/2020'

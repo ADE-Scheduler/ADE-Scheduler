@@ -5,6 +5,7 @@ from flask_babel import Babel
 from flask_session import Session
 ***REMOVED***
 import personnal_data
+from static_data import ACADEMIC_YEARS
 
 
 app = Flask(__name__)
@@ -46,6 +47,12 @@ def calendar():
         if request.form['submit'] == 'Add':
             code = request.form['course_code'].upper()
             add_courses(code)
+        
+        # SAVE PREFERENCES
+        if request.form['submit'] == 'Preferences':
+            safe_compute = request.form['safe-compute']
+            project_year = request.form['projectid-select']
+            # Deal with it now
 
     session['basic_context']['codes'] = session['codes']
     session.modified = True
@@ -124,7 +131,9 @@ def getCalendar(link):
 # Page for user preferences
 @app.route('/preferences')
 def preferences():
-    return render_template('preferences.html', **session['basic_context'])
+    preferences_session = session['basic_context'].copy()
+    preferences_session['academic_years'] = ACADEMIC_YEARS
+    return render_template('preferences.html', **preferences_session)
 
 
 # Page for user's help guide
