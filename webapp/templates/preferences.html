@@ -7,18 +7,6 @@
     <div>
         <nav class="navbar navbar-expand-lg" style="padding: 0;">
             <div class="navbar-collapse collapse">
-                <ul class="navbar-nav mr-auto">
-                    <ul class="nav nav-tabs" id="tab-preferences">
-                        <li class="nav-item">
-                            <a class="nav-link active" data-toggle="tab" id="tab-global" href="#global-pref" role="tab">Global preferences</a>
-                        </li>
-                        {% for code in codes %}
-                            <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" id="tab-{{ code }}" href="#{{ code }}-pref" role="tab">{{ code }}</a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </ul>
                 <ul class="navbar-nav">
                     <form class="form-vertical" action="/" method="post">
                         <div class="btn-group" role="group">
@@ -43,34 +31,33 @@
                     </div>
                     <!-- /.box-header -->
                     <!-- form start -->
-                    <form role="form" action="/change/preferences" method="post">
+                    <form role="form" action="/" method="post">
                         <div class="box-body">
                             <div class="checkbox">
                                 <label>
                                     {% if safe_compute == False %}
                                         <input type="checkbox" name="safe-compute" id="safe-compute"> Safe compute (see <a href="/help">Help section</a>)
                                     {% else %}
-                                    <input type="checkbox" name="safe-compute" id="safe-compute" checked> Safe compute (see <a href="/help">Help section</a>)
+                                        <input type="checkbox" name="safe-compute" id="safe-compute" checked> Safe compute (see <a href="/help">Help section</a>)
                                     {% endif %}
                                 </label>
                             </div>
+                            <label for="exampleSelect1">{{ _('Academic Year') }}</label>
+                            <select class="form-control" id="projectid-select" name="projectid-select">
+                                {% for year in academic_years %}
+                                    <option value={{ year.id }}>{{ year.year }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                         <!-- /.box-body -->
 
                         <div class="box-footer">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" name="submit" class="btn btn-primary" value="Preferences">Submit</button>
                         </div>
                     </form>
               </div>
               <!-- /.box -->
             </div>
-        </div>
-        <div class="form-group">
-            <label for="exampleSelect1">{{ _('Academic Year') }}</label>
-            <select class="form-control" id="projectid-select">
-                <option id="pid-2">2018-2019</option>
-                <option id="pid-9">2019-2020</option>
-            </select>
         </div>
 
         <!-- COURSE-SPECIFIC PARAMETERS -->
