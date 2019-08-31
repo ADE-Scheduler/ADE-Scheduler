@@ -52,6 +52,7 @@ def calendar():
         if request.form['submit'] == 'Preferences':
             safe_compute = request.form['safe-compute']
             project_year = request.form['projectid-select']
+            print(project_year)
             # Deal with it now
 
     session['basic_context']['codes'] = session['codes']
