@@ -111,7 +111,6 @@ def getCalendar(link):
         print('Requested schedule: ' + request.form['param'])
         # do the processing...
         # save IDs, courses, etc
-        # TODO: what to do if we generate a duplicate of an existing link ? (super highly unlikely but still)
 
     if request.method == 'GET':
         # CALENDAR REQUESTED (fetch the infos relative to this subscription link)
