@@ -207,14 +207,14 @@
                     </div>
                     <div class="alert alert-danger hide" id="download-alert2" style="width: 70%; float: left; margin-bottom: 0">
                         <button type="button" class="close" onclick="alert2Button();">&times;</button>
-                        {{ _('Please specify a schedule to download.') }}
+                        {{ _('Please specify a schedule first.') }}
                     </div>
                     <button class="btn btn-primary btn-sm" id="btn-copy-link" type="button" onclick=copyButton(); style="float: right; margin-top: 10px;" data-toggle="tooltip" data-placement="bottom" title="{{ _('Copy link') }}">
                         {{ _('Copy') }}
                     </button>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">{{ _('Cancel') }}</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">{{ _('Close') }}</button>
                     <button type="button" class="btn btn-success" onclick=downloadButton();>{{ _('Download file') }}</button>
                 </div>
             </div>
@@ -410,14 +410,31 @@
 
     <script>
         function generateButton() {
-            let link = '';
-            let linkLength = 50;
-            let charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            let values = window.crypto.getRandomValues(new Uint32Array(linkLength));
-            for (let i=0; i < linkLength; i++) {
-                link += charset.charAt(values[i] % charset.length);
+            let choice = $('#select-sched-download :selected').val();
+            if (!choice) {
+                if (!$('#download-alert1').hasClass('hide'))
+                    $('#download-alert1').addClass('hide');
+                $('#download-alert2').removeClass('hide');
+            } else if (!{{ up_to_date|tojson }} && choice !== '0') {
+                if (!$('#download-alert2').hasClass('hide'))
+                    $('#download-alert2').addClass('hide');
+                $('#download-alert1').removeClass('hide');
+            } else {
+                if (!$('#download-alert2').hasClass('hide'))
+                    $('#download-alert2').addClass('hide');
+                if (!$('#download-alert1').hasClass('hide'))
+                    $('#download-alert1').addClass('hide');
+
+                let link = '/getcalendar/';
+                let linkLength = 50;
+                let charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                let values = window.crypto.getRandomValues(new Uint32Array(linkLength));
+                for (let i=0; i < linkLength; i++) {
+                    link += charset.charAt(values[i] % charset.length);
+                }
+                $('#input-generate-link').val(link);
+                $.post(link, {'param': $('#select-sched-download :selected').val()})
             }
-            $('#input-generate-link').val('/getcalendar/' + link);
         }
 
         function copyButton() {
