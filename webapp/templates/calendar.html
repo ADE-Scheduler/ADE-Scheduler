@@ -425,7 +425,7 @@
                 if (!$('#download-alert1').hasClass('hide'))
                     $('#download-alert1').addClass('hide');
 
-                let link = '/getcalendar/';
+                let link = '/getcalendar/' + new Date().getTime();
                 let linkLength = 50;
                 let charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
                 let values = window.crypto.getRandomValues(new Uint32Array(linkLength));
@@ -488,7 +488,7 @@
             $.post("/get/id", {'IDs': data}, () => location = location);
         }
 
-        // When the refresh button is pressed
+        // Fetches the current selected IDs
         function refreshFunction() {
             let course_codes = {{ codes|safe }};
             let course_ids = {{ id|safe }};
