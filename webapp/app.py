@@ -101,11 +101,23 @@ def download(choice):
     return resp
 
 
-# To get the calendar's ics file via the subscription link
-@app.route('/getcalendar/<link>', methods=['GET'])
+# To get the calendar's ics file via the subscription link [GET]
+# OR to get generate a subscription link [POST]
+@app.route('/getcalendar/<link>', methods=['GET', 'POST'])
 def getCalendar(link):
-    print(link)
-    # n = request.args.get('number', default=0, type=int)
+    if request.method == 'POST':
+        # GENERATE THE SUBSCRIPTION LINK
+        print('Subscription generated with link: ' + link)
+        print('Requested schedule: ' + str(request.form['param']))
+        # do the processing...
+        # TODO: what to do if we generate a duplicate of an existing link ? (super highly unlikely but still)
+
+    if request.method == 'GET':
+        # CALENDAR REQUESTED (fetch the infos relative to this subscription link)
+        print('Calendar requested with link: ' + link)
+        # do the processing...
+        # TODO: if the subscription link is invalid, display an error page or sthg like that
+
     return redirect(url_for('calendar'))
 
 
