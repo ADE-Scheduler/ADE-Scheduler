@@ -108,8 +108,9 @@ def getCalendar(link):
     if request.method == 'POST':
         # GENERATE THE SUBSCRIPTION LINK
         print('Subscription generated with link: ' + link)
-        print('Requested schedule: ' + str(request.form['param']))
+        print('Requested schedule: ' + request.form['param'])
         # do the processing...
+        # save IDs, courses, etc
         # TODO: what to do if we generate a duplicate of an existing link ? (super highly unlikely but still)
 
     if request.method == 'GET':
