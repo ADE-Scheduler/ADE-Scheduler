@@ -12,10 +12,17 @@
         <p>This page does not exist</p>
 </div>
 <canvas id="myCanvas" width="480" height="320"></canvas>
-</canvas>
 
 
 <script src="/static/js/tennisAI.js"></script>
+<script>
+    window.addEventListener("keydown", function(e) {
+    // space and arrow keys
+    if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+        e.preventDefault();
+    }
+}, false);
+</script>
 
 </div>
 
