@@ -16,7 +16,7 @@
             width: 100%;
             height: 100%;
         }
-        .dropdown-menu {
+        .dropdown-max-size{
             max-height: 200px;
             overflow-y:auto;
         }
@@ -108,7 +108,6 @@
                                         {% endif %}
 
                                     </div>
-                                    <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" id="btn-sched-compare" style="cursor: pointer">Go !</a>
                                 </div>
                             </li>
@@ -221,6 +220,42 @@
         </div>
     </div>
 
+    <!-- NO COMPARAISON SPECIFIED (modal) -->
+    <div class="modal modal-warning fade in" id="modal-no-comp" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body">
+                <p>{{ _('Please select at least a schedule to compare !') }}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-light" data-dismiss="modal">{{ _('Close') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WRONG FORMAT (modal) -->
+    <div class="modal modal-danger fade in" id="modal-wrong-format" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body">
+                <p>{{ _('You specified a wrong time format ! Please try again.') }}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-light" data-dismiss="modal">{{ _('Close') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- calendar body -->
     <div class="card border-primary mb-3" style="float: right; clear: right; width: 88%;">
         <div class="card-body">
@@ -259,7 +294,7 @@
                             <td style="word-break: break-all; padding: 0;">
                                 <div class="dropdown dropright" style="margin: 0; padding: 0;">
                                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" style="margin-right: -.125rem; margin-left: 0; padding: 0; word-break: break-all">{{ code }}</a>
-                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-start">
+                                    <div class="dropdown-menu dropdown-menu-right dropdown-max-size" x-placement="bottom-start">
                                         {% if id[code]|length == 0 %}
                                             <label class="custom-control-label" style="margin-left: 5px"><strong>{{ _('No event found !') }}</strong></label>
                                         {% else %}
@@ -433,7 +468,7 @@
                     link += charset.charAt(values[i] % charset.length);
                 }
                 $('#input-generate-link').val(link);
-                $.post(link, {'param': $('#select-sched-download :selected').val()})
+                $.post(link, {'param': $('#select-sched-download :selected').val()});
             }
         }
 
@@ -725,7 +760,6 @@
                             dateEnd.setHours(parseInt(endTime.split(':')[0]));
                             dateEnd.setMinutes(parseInt(endTime.split(':')[1]));
 
-
                             let text = arg.draggedEl.textContent;
                             let color = window.getComputedStyle(arg.draggedEl, null).getPropertyValue("background-color");
 
@@ -742,10 +776,7 @@
                             send_fts_to_serv();
                             calendar.refetchEvents();
                         } catch(err) {
-                            bootbox.alert({
-                                message: {{ _('You specified a wrong time format ! Please try again.')|tojson }},
-                                centerVertical: true,
-                            });
+                            $('#modal-wrong-format').modal('show');
                         }
                     }
 
@@ -858,18 +889,14 @@
 
             // Display course comparaison
             $('#btn-sched-compare').on('click', function(event) {
-                eventsArray = [];
                 if (!$('#check-sched-default').is(':checked') &&
                     !$('#check-sched-1').is(':checked') &&
                     !$('#check-sched-2').is(':checked') &&
                     !$('#check-sched-3').is(':checked')) {
-                    bootbox.alert({
-                        message: {{ _('Please select at least a schedule to compare !')|tojson }},
-                        centerVertical: true,
-                    });
-                    eventsArray = {{ data_base|safe }};
+                    $('#modal-no-comp').modal('show');
                 } else {
                     compIsRequested = true;
+                    eventsArray = [];
                     if ($('#check-sched-default').is(':checked')) {
                         eventsArray = {{ data_base|safe }};
                     }
