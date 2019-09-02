@@ -209,7 +209,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">#</div>
                                     </div>
-                                    <input class="form-control bg-light" id="input-generate-link" type="text" placeholder="{{ _('ex: adescheduler.com/getcalendar?=subscription_link') }}" readonly>
+                                    <input class="form-control" id="input-generate-link" type="text" placeholder="{{ _('ex: adescheduler.com/getcalendar?=subscription_link') }}" readonly>
                                     <div class="input-group-append">
                                         <button class="btn btn-primary" type="button" onclick="generateButton();">{{ _('Generate link') }}</button>
                                     </div>
@@ -489,8 +489,10 @@
                 for (let i=0; i < linkLength; i++) {
                     link += charset.charAt(values[i] % charset.length);
                 }
-                $('#input-generate-link').val(link);
-                $.post(link, {'param': $('#select-sched-download :selected').val()});
+                $.post(link, {'param': $('#select-sched-download :selected').val()}, function() {
+                    $('#input-generate-link').val(link);
+                    $('#input-generate-link').addClass('is-valid');
+                });
             }
         }
 
