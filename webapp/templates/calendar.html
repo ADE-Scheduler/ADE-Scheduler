@@ -550,41 +550,15 @@
         // Fetches the current selected IDs
         function refreshFunction() {
             let course_codes = {{ codes|safe }};
-            let course_ids = {{ id|safe }};
             let selected_ids = [];
             for (let i=0; i < course_codes.length; i++) {
-                // CM
-                for (let j = 0; j < course_ids[course_codes[i]].CM.length; j++) {
-                    if (document.getElementById('CM:'+ course_ids[course_codes[i]].CM[j]).checked) {
-                        selected_ids.push('CM:'+ course_ids[course_codes[i]].CM[j]);
-                    }
-                }
-                // TP
-                for (let j = 0; j < course_ids[course_codes[i]].TP.length; j++) {
-                    if (document.getElementById('TP:'+ course_ids[course_codes[i]].TP[j]).checked) {
-                        selected_ids.push('TP:'+ course_ids[course_codes[i]].TP[j]);
-                    }
-                }
-                // EXAM
-                for (let j = 0; j < course_ids[course_codes[i]].EXAM.length; j++) {
-                    if (document.getElementById('EXAM:'+ course_ids[course_codes[i]].EXAM[j]).checked) {
-                        selected_ids.push('EXAM:'+ course_ids[course_codes[i]].EXAM[j]);
-                    }
-                }
-                // ORAL
-                for (let j = 0; j < course_ids[course_codes[i]].ORAL.length; j++) {
-                    if (document.getElementById('ORAL:'+ course_ids[course_codes[i]].ORAL[j]).checked) {
-                        selected_ids.push('ORAL:'+ course_ids[course_codes[i]].ORAL[j]);
-                    }
-                }
-                // Other
-                for (let j = 0; j < course_ids[course_codes[i]].Other.length; j++) {
-                    if (document.getElementById('Other:'+ course_ids[course_codes[i]].Other[j]).checked) {
-                        selected_ids.push('Other:'+ course_ids[course_codes[i]].Other[j]);
-                    }
-                }
+                Object.entries({{ id|safe }}[course_codes[i]]).forEach(function (entry) {
+                    Object.values(entry[1]).forEach(function (value) {
+                        if (document.getElementById(entry[0] + ':' + value).checked)
+                            selected_ids.push(entry[0] + ':' + value);
+                    });
+                });
             }
-
             return JSON.stringify(selected_ids);
         }
     </script>
@@ -625,40 +599,13 @@
         // Group checkboxes
         let course_codes = {{ codes|safe }};
         for (let i=0; i < course_codes.length; i++) {
-            // CM
-            $('#CM-' + course_codes[i] + '-all').change(function() {
-                let all_checkboxes = $('#CM-' + course_codes[i] + ' input[type="checkbox"]');
-                for (let j=0; j < all_checkboxes.length; j++) {
-                    all_checkboxes[j].checked = this.checked;
-                }
-            });
-            // TP
-            $('#TP-' + course_codes[i] + '-all').change(function() {
-                let all_checkboxes = $('#TP-' + course_codes[i] + ' input[type="checkbox"]');
-                for (let j=0; j < all_checkboxes.length; j++) {
-                    all_checkboxes[j].checked = this.checked;
-                }
-            });
-            // EXAM
-            $('#EXAM-' + course_codes[i] + '-all').change(function() {
-                let all_checkboxes = $('#EXAM-' + course_codes[i] + ' input[type="checkbox"]');
-                for (let j=0; j < all_checkboxes.length; j++) {
-                    all_checkboxes[j].checked = this.checked;
-                }
-            });
-            // ORAL
-            $('#ORAL-' + course_codes[i] + '-all').change(function() {
-                let all_checkboxes = $('#ORAL-' + course_codes[i] + ' input[type="checkbox"]');
-                for (let j=0; j < all_checkboxes.length; j++) {
-                    all_checkboxes[j].checked = this.checked;
-                }
-            });
-            // Other
-            $('#Other-' + course_codes[i] + '-all').change(function() {
-                let all_checkboxes = $('#Other-' + course_codes[i] + ' input[type="checkbox"]');
-                for (let j=0; j < all_checkboxes.length; j++) {
-                    all_checkboxes[j].checked = this.checked;
-                }
+            Object.keys({{ id|safe }}[course_codes[i]]).forEach(function (key) {
+                $('#' + key + '-' + course_codes[i] + '-all').change(function() {
+                    let all_checkboxes = $('#' + key + '-' + course_codes[i] + ' input[type="checkbox"]');
+                    for (let j=0; j < all_checkboxes.length; j++) {
+                        all_checkboxes[j].checked = this.checked;
+                    }
+                });
             });
         }
 
