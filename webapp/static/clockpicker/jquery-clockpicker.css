@@ -206,7 +206,10 @@
  * Licensed under MIT (https://github.com/weareoutman/clockpicker/blob/gh-pages/LICENSE)
  */
 
-.clockpicker .input-group-addon {
+.clockpicker .input-group-prepend {
+	cursor: pointer;
+}
+.clockpicker .input-group-append {
 	cursor: pointer;
 }
 .clockpicker-moving {
