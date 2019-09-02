@@ -162,4 +162,4 @@ def load_fts():
             fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=3))
         elif el['title'] == 'Low':
             fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=1))
-    return fts;
+    return fts
