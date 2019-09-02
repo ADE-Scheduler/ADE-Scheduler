@@ -119,14 +119,14 @@ def getCalendar(link):
         print('Requested schedule: ' + request.form['param'])
         # do the processing...
         # save IDs, courses, etc
+        return link
 
     if request.method == 'GET':
         # CALENDAR REQUESTED (fetch the infos relative to this subscription link)
         print('Calendar requested with link: ' + link)
         # do the processing...
         # TODO: if the subscription link is invalid, display an error page or sthg like that
-
-    return redirect(url_for('calendar'))
+        return redirect(url_for('calendar'))
 
 
 # Page for user preferences

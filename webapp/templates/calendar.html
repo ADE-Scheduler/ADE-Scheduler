@@ -227,12 +227,18 @@
                                     <label class="col col-form-label-sm" for="input-link-login"><b>{{ _('Login') }}</b></label>
                                     <div class="col-auto">
                                         <input type="text" class="form-control" id="input-link-login" placeholder={{ _('Login') }}>
+                                        <div class="invalid-feedback">
+                                            {{ _('Please choose an unique login') }}
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col col-form-label-sm" for="input-link-password"><b>{{ _('Password') }}</b></label>
                                     <div class="col-auto">
                                         <input type="password" class="form-control" id="input-link-password" placeholder={{ _('Password') }}>
+                                        <div class="invalid-feedback">
+                                            {{ _('Please choose a password') }}
+                                        </div>
                                     </div>
                                 </div>
                             </form>
@@ -489,31 +495,64 @@
     <script>
         function generateButton() {
             let choice = $('#select-sched-download :selected').val();
-            if (!choice) {
-                if (!$('#download-alert1').hasClass('hide'))
-                    $('#download-alert1').addClass('hide');
+            if (!choice) {                                              // No schedule selected
+                $('#download-alert1').addClass('hide');
                 $('#download-alert2').removeClass('hide');
-            } else if (!{{ up_to_date|tojson }} && choice !== '0') {
-                if (!$('#download-alert2').hasClass('hide'))
-                    $('#download-alert2').addClass('hide');
+            } else if (!{{ up_to_date|tojson }} && choice !== '0') {    // Computation not up-to-date
+                $('#download-alert2').addClass('hide');
                 $('#download-alert1').removeClass('hide');
             } else {
-                if (!$('#download-alert2').hasClass('hide'))
-                    $('#download-alert2').addClass('hide');
-                if (!$('#download-alert1').hasClass('hide'))
-                    $('#download-alert1').addClass('hide');
+                $('#download-alert2').addClass('hide');
+                $('#download-alert1').addClass('hide');
 
-                let link = '/getcalendar/' + new Date().getTime();
-                let linkLength = 50;
-                let charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-                let values = window.crypto.getRandomValues(new Uint32Array(linkLength));
-                for (let i=0; i < linkLength; i++) {
-                    link += charset.charAt(values[i] % charset.length);
+                if ($('#switch-password').prop('checked')) {
+                    // User has requested a "protected & modifiable link
+                    if (!$('#input-link-login').val() || !$('#input-link-password').val()) {
+                        if (!$('#input-link-login').val()) {
+                            $('#input-link-login').addClass('is-invalid');
+                        }
+                        if (!$('#input-link-password').val()) {
+                            $('#input-link-password').addClass('is-invalid');
+                        }
+                    } else {
+                        $.ajax({    //TODO: PASSWORD MUST BE SECURED (salt + hash) BEFORE BEING SENT
+                            url: '',
+                            type: 'POST',
+                            data: {'login': $('#input-link-login').val(), 'password': $('#input-link-password'), 'param': $('#select-sched-download :selected').val()},
+                            success: function (data) {
+                                $('#input-link-login').removeClass('is-invalid');
+                                $('#input-link-login').addClass('is-valid');
+                                $('#input-link-password').removeClass('is-invalid');
+                                $('#input-link-password').addClass('is-valid');
+                                $('#input-generate-link').val(data);
+                                $('#input-generate-link').addClass('is-valid');
+                            },
+                            error: function (data) {
+                                //TODO: Handle errors (mainly: duplicate login)
+                            },
+                            dataType: 'text'
+                        });
+                    }
+                } else {
+                    // User has requested a random link without login
+                    let link = '/getcalendar/' + new Date().getTime();
+                    let linkLength = 50;
+                    let charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                    let values = window.crypto.getRandomValues(new Uint32Array(linkLength));
+                    for (let i=0; i < linkLength; i++) {
+                        link += charset.charAt(values[i] % charset.length);
+                    }
+                    $.ajax({
+                        url: link,
+                        type: 'POST',
+                        data:  {'param': $('#select-sched-download :selected').val()},
+                        success: function(data) {
+                             $('#input-generate-link').val(data);
+                             $('#input-generate-link').addClass('is-valid');
+                        },
+                        dataType: 'text'
+                    });
                 }
-                $.post(link, {'param': $('#select-sched-download :selected').val()}, function() {
-                    $('#input-generate-link').val(link);
-                    $('#input-generate-link').addClass('is-valid');
-                });
             }
         }
 
