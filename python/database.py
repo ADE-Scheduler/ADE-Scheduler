@@ -197,32 +197,33 @@ def getSettingsLink(link):
     resp = cursor.fetchone()
     if resp:
         s, = resp
+        db.close()
     else:
+        db.close()
         return None
-    db.close()
     return _pickle.loads(s)
 
-def getLink(hash):
+def isLinkPresent(link):
     """
-    Get link from the links table with the corresponding hash.
+    Tell if the link link is present in links table
     Parameters:
     -----------
-    hash : string
-        The hash to be in the table
+    link : string
+        The link to be in the table
     Returns:
     --------
-    link : the link
+    True if the link is in the table, False elsewhere
     """
     db = sqlite3.connect(db_path)
     cursor = db.cursor()
     cursor.execute("SELECT link FROM links WHERE link=?", (hash,))
     resp = cursor.fetchone()
     if resp:
-        link, = resp
+        db.close()
+        return True
     else:
-        return None
-    db.close()
-    return _pickle.loads(link)
+        db.close()
+        return False
 
 def setLink(link, settings=None):
     """
@@ -235,17 +236,12 @@ def setLink(link, settings=None):
         the settings of the calendar
     Returns:
     --------
-    True if the link was not present, False elsewhere
+    None
     """
     db = sqlite3.connect(db_path)
     cursor = db.cursor()
-    try:
-        cursor.execute("INSERT INTO links(link,settings) VALUES (%s, %s)" % (link, settings))
-        db.close()
-        return True
-    except Exception:
-        db.close()
-        return False
+    cursor.execute("INSERT OR IGNORE INTO links(link,settings) VALUES (%s, %s)" % (link, settings))
+    db.close()
 
 def updateSettings(link, settings=None):
     """
@@ -258,17 +254,13 @@ def updateSettings(link, settings=None):
         the settings of the calendar
     Returns:
     --------
-    True if the link was present (no error), False elsewhere
+    None
     """
     db = sqlite3.connect(db_path)
     cursor = db.cursor()
-    try:
-        cursor.execute("UPDATE links SET s=? WHERE link=?", (settings, link))
-        db.close()
-        return True
-    except Exception:
-        db.close()
-        return False
+    cursor.execute("UPDATE OR IGNORE links SET s=? WHERE link=?", (settings, link))
+    db.close()
+    return None
 
 def deleteLink(link):
     """
@@ -288,7 +280,7 @@ def deleteLink(link):
     finally:
         db.close()
 
-def loginPresent(login):
+def isLoginPresent(login):
     """
     Tell if login is in the links table
     Parameters:
@@ -309,3 +301,25 @@ def loginPresent(login):
         log = False
     db.close()
     return log
+
+def getLinkFromUsername(username):
+    """
+    Get link from the links table at a given username
+    Parameters:
+    -----------
+    username: text
+        the username to retrive the information
+    Returns:
+    --------
+    The link associated to the username, None if not present
+    """
+    db = sqlite3.connect(db_path)
+    cursor = db.cursor()
+    cursor.execute("SELECT s FROM links WHERE username=?", (username,))
+    resp = cursor.fetchone()
+    if resp:
+        link, = resp
+    else:
+        return None
+    db.close()
+    return _pickle.loads(link)
