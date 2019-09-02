@@ -114,15 +114,24 @@ def download(choice):
 @app.route('/getcalendar/<link>', methods=['GET', 'POST'])
 def getCalendar(link):
     if request.method == 'POST':
-        # GENERATE THE SUBSCRIPTION LINK
-        print('Subscription generated with link: ' + link)
-        print('Requested schedule: ' + request.form['param'])
-        # do the processing...
-        # save IDs, courses, etc
-        return link
+        if link == 'secure_link':
+            # SECURE URL WITH LOGIN/PWD
+            print('Subscription requested: login = ' + request.form['login'] + 'and password = ' + request.form['password'])
+            print('Requested schedule: ' + request.form['param'])
+            # do the processing...
+            # using Jerome's encrypt.py
+            return link
+        else:
+            # RANDOM URL
+            print('Subscription generated with link: ' + link)
+            print('Requested schedule: ' + request.form['param'])
+            # do the processing...
+            # save IDs, courses, etc
+            return link
 
     if request.method == 'GET':
-        # CALENDAR REQUESTED (fetch the infos relative to this subscription link)
+        # CALENDAR REQUESTED (fetch the infos relative to this subscription link
+        # /!\ MUST WORK FOR SECURE & NON-SECURE LINKS ALIKE /!\
         print('Calendar requested with link: ' + link)
         # do the processing...
         # TODO: if the subscription link is invalid, display an error page or sthg like that
