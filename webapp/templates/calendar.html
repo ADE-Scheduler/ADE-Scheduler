@@ -39,99 +39,97 @@
 
 {% block bodyhead %}
     <div>
-        <nav class="navbar navbar-expand-lg" style="padding: 0;">
-            <div class="navbar-collapse collapse">
-                <ul class="navbar-nav mr-auto">
-                    <ul class="nav nav-tabs" id="nav-tab-cal">
+        <nav class="navbar navbar-expand" style="padding: 0;">
+            <ul class="navbar-nav mr-auto">
+                <ul class="nav nav-tabs" id="nav-tab-cal">
+                    <li class="nav-item" style="cursor: pointer;">
+                        <a class="nav-link active" id="nav-brut" data-toggle="tab" aria-expanded="false">{{ _('ADE schedule') }}</a>
+                    </li>
+                    {% if data_sched|length > 0 %}
                         <li class="nav-item" style="cursor: pointer;">
-                            <a class="nav-link active" id="nav-brut" data-toggle="tab" aria-expanded="false">{{ _('ADE schedule') }}</a>
+                            <a class="nav-link" id="nav-sched-1" data-toggle="tab" aria-expanded="false">{{ _('1st schedule') }}</a>
                         </li>
-                        {% if data_sched|length > 0 %}
-                            <li class="nav-item" style="cursor: pointer;">
-                                <a class="nav-link" id="nav-sched-1" data-toggle="tab" aria-expanded="false">{{ _('1st schedule') }}</a>
-                            </li>
-                        {% else %}
-                            <li class="nav-item" style="cursor: not-allowed">
-                                <a class="nav-link disabled">{{ _('1st schedule') }}</a>
-                            </li>
-                        {% endif %}
-                        {% if data_sched|length > 1 %}
-                            <li class="nav-item" style="cursor: pointer;">
-                                <a class="nav-link" id="nav-sched-2" data-toggle="tab" aria-expanded="false">{{ _('2nd schedule') }}</a>
-                            </li>
-                        {% else %}
-                            <li class="nav-item" style="cursor: not-allowed">
-                                <a class="nav-link disabled">{{ _('2nd schedule') }}</a>
-                            </li>
-                        {% endif %}
-                        {% if data_sched|length > 2 %}
-                            <li class="nav-item" style="cursor: pointer;">
-                                <a class="nav-link" id="nav-sched-3" data-toggle="tab" aria-expanded="false">{{ _('3rd schedule') }}</a>
-                            </li>
-                        {% else %}
-                            <li class="nav-item" style="cursor: not-allowed">
-                                <a class="nav-link disabled">{{ _('3rd schedule') }}</a>
-                            </li>
-                        {% endif %}
-                        {% if data_sched|length > 0 %}
-                            <li class="nav-item dropdown" id="dropdown-compare">
-                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button">{{ _('Compare') }}</a>
-                                <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 39px, 0px); top: 0px; left: 0px; will-change: transform;">
-                                    <div class="form-group">
+                    {% else %}
+                        <li class="nav-item" style="cursor: not-allowed">
+                            <a class="nav-link disabled">{{ _('1st schedule') }}</a>
+                        </li>
+                    {% endif %}
+                    {% if data_sched|length > 1 %}
+                        <li class="nav-item" style="cursor: pointer;">
+                            <a class="nav-link" id="nav-sched-2" data-toggle="tab" aria-expanded="false">{{ _('2nd schedule') }}</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item" style="cursor: not-allowed">
+                            <a class="nav-link disabled">{{ _('2nd schedule') }}</a>
+                        </li>
+                    {% endif %}
+                    {% if data_sched|length > 2 %}
+                        <li class="nav-item" style="cursor: pointer;">
+                            <a class="nav-link" id="nav-sched-3" data-toggle="tab" aria-expanded="false">{{ _('3rd schedule') }}</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item" style="cursor: not-allowed">
+                            <a class="nav-link disabled">{{ _('3rd schedule') }}</a>
+                        </li>
+                    {% endif %}
+                    {% if data_sched|length > 0 %}
+                        <li class="nav-item dropdown" id="dropdown-compare">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button">{{ _('Compare') }}</a>
+                            <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 39px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                <div class="form-group">
+                                    <a class="dropdown-item">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="check-sched-default">
+                                            <label class="custom-control-label" for="check-sched-default">{{ _('ADE Schedule') }}</label>
+                                        </div>
+                                    </a>
+                                    <a class="dropdown-item">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="check-sched-1">
+                                            <label class="custom-control-label" for="check-sched-1">{{ _('1st schedule') }}</label>
+                                        </div>
+                                    </a>
+                                    {% if data_sched|length > 1 %}
                                         <a class="dropdown-item">
                                             <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="check-sched-default">
-                                                <label class="custom-control-label" for="check-sched-default">{{ _('ADE Schedule') }}</label>
+                                                <input type="checkbox" class="custom-control-input" id="check-sched-2">
+                                                <label class="custom-control-label" for="check-sched-2">{{ _('2nd schedule') }}</label>
                                             </div>
                                         </a>
+                                    {% endif %}
+                                    {% if data_sched|length > 2 %}
                                         <a class="dropdown-item">
                                             <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="check-sched-1">
-                                                <label class="custom-control-label" for="check-sched-1">{{ _('1st schedule') }}</label>
+                                                <input type="checkbox" class="custom-control-input" id="check-sched-3">
+                                                <label class="custom-control-label" for="check-sched-3">{{ _('3rd schedule') }}</label>
                                             </div>
                                         </a>
-                                        {% if data_sched|length > 1 %}
-                                            <a class="dropdown-item">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="check-sched-2">
-                                                    <label class="custom-control-label" for="check-sched-2">{{ _('2nd schedule') }}</label>
-                                                </div>
-                                            </a>
-                                        {% endif %}
-                                        {% if data_sched|length > 2 %}
-                                            <a class="dropdown-item">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="check-sched-3">
-                                                    <label class="custom-control-label" for="check-sched-3">{{ _('3rd schedule') }}</label>
-                                                </div>
-                                            </a>
-                                        {% endif %}
+                                    {% endif %}
 
-                                    </div>
-                                    <a class="dropdown-item" id="btn-sched-compare" style="cursor: pointer">Go !</a>
                                 </div>
-                            </li>
+                                <a class="dropdown-item" id="btn-sched-compare" style="cursor: pointer">Go !</a>
+                            </div>
+                        </li>
+                    {% else %}
+                        <li class="nav-item dropdown" style="cursor: not-allowed">
+                            <a class="nav-link disabled">{{ _('Compare') }}</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </ul>
+            <ul class="navbar-nav">
+                <div>
+                    <div class="btn-group" role="group">
+                        {% if up_to_date == False %}
+                            <button class="btn btn-danger" type="button" style="width: 100%;" id="btn-compute" onclick=computeButton();><strong>{{ _('Compute') }}</strong></button>
                         {% else %}
-                            <li class="nav-item dropdown" style="cursor: not-allowed">
-                                <a class="nav-link disabled">{{ _('Compare') }}</a>
-                            </li>
+                            <button class="btn btn-success" type="button" style="width: 100%;" id="btn-compute" onclick=computeButton()><strong>{{ _('Compute') }}</strong></button>
                         {% endif %}
-                    </ul>
-                </ul>
-                <ul class="navbar-nav">
-                    <div>
-                        <div class="btn-group" role="group">
-                            {% if up_to_date == False %}
-                                <button class="btn btn-danger" type="button" style="width: 100%;" id="btn-compute" onclick=computeButton();><strong>{{ _('Compute') }}</strong></button>
-                            {% else %}
-                                <button class="btn btn-success" type="button" style="width: 100%;" id="btn-compute" onclick=computeButton()><strong>{{ _('Compute') }}</strong></button>
-                            {% endif %}
-                            <button class="btn btn-secondary" type="button" onclick=refreshButton(); style="width: 100%;"><strong>{{ _('Refresh') }}</strong></button>
-                            <button class="btn btn-warning" type="button" style="width: 100%;" onclick=clearButton();><strong>{{ _('Clear') }}</strong></button>
-                        </div>
+                        <button class="btn btn-secondary" type="button" onclick=refreshButton(); style="width: 100%;"><strong>{{ _('Refresh') }}</strong></button>
+                        <button class="btn btn-warning" type="button" style="width: 100%;" onclick=clearButton();><strong>{{ _('Clear') }}</strong></button>
                     </div>
-                </ul>
-            </div>
+                </div>
+            </ul>
         </nav>
     </div>
 {% endblock %}
@@ -213,7 +211,7 @@
                                     </div>
                                     <input class="form-control" id="input-generate-link" type="text" placeholder="{{ _('ex: adescheduler.com/getcalendar?=subscription_link') }}" readonly>
                                     <div class="input-group-append">
-                                        <button class="btn btn-primary" type="button" onclick="generateButton();">{{ _('Generate link') }}</button>
+                                        <button class="btn btn-primary" id="btn-link-generate" type="button" onclick="generateButton();">{{ _('Generate link') }}</button>
                                     </div>
                                 </div>
                                 <small class="form-text text-muted" style="float: right">{{ _('Generate a subscription link') }}</small>
@@ -228,7 +226,7 @@
                                     <div class="col-auto">
                                         <input type="text" class="form-control" id="input-link-login" placeholder={{ _('Login') }}>
                                         <div class="invalid-feedback">
-                                            {{ _('Please choose an unique login') }}
+                                            {{ _('Please specify a login') }}
                                         </div>
                                     </div>
                                 </div>
@@ -515,10 +513,12 @@
                             $('#input-link-password').addClass('is-invalid');
                         }
                     } else {
+                        let login = $('#input-link-login').val();
+                        let pwd = $('#input-link-password').val();
                         $.ajax({    //TODO: PASSWORD MUST BE SECURED (salt + hash) BEFORE BEING SENT
-                            url: '',
+                            url: '/getcalendar/secure_link',
                             type: 'POST',
-                            data: {'login': $('#input-link-login').val(), 'password': $('#input-link-password'), 'param': $('#select-sched-download :selected').val()},
+                            data: {'login': login, 'password': pwd, 'param': $('#select-sched-download :selected').val()},
                             success: function (data) {
                                 $('#input-link-login').removeClass('is-invalid');
                                 $('#input-link-login').addClass('is-valid');
@@ -526,6 +526,7 @@
                                 $('#input-link-password').addClass('is-valid');
                                 $('#input-generate-link').val(data);
                                 $('#input-generate-link').addClass('is-valid');
+                                $('#btn-link-generate').prop('disabled', true);
                             },
                             error: function (data) {
                                 //TODO: Handle errors (mainly: duplicate login)
@@ -549,6 +550,7 @@
                         success: function(data) {
                              $('#input-generate-link').val(data);
                              $('#input-generate-link').addClass('is-valid');
+                             $('#btn-link-generate').prop('disabled', true);
                         },
                         dataType: 'text'
                     });
