@@ -138,20 +138,38 @@
 
 {% block body %}
     <!-- TIME PROMPT (modal) -->
-    <div class="modal fade" id="time-prompt" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal fade" id="time-prompt" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-body" style="height: 90px">
-                    <div class="btn-group-vertical" style="width: 48%; margin-right: 2%; float: left">
-                        <h5 style="text-align: center"><strong>{{ _('Start') }}</strong></h5>
-                        <div class="input-group clockpicker">
-                            <input type="time" class="form-control" value="08:00" id="start_time" maxlength="5">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ _('Forbidden Time Slot') }}</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col">
+                            <label for="start_time"><strong>{{ _('Start') }}</strong></label>
+                            <div class="input-group mb-3 clockpicker" data-placement="left">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-clock"></i>
+                                    </span>
+                                </div>
+                                <input type="time" class="form-control" value="08:00" id="start_time" maxlength="5">
+                            </div>
                         </div>
-                    </div>
-                    <div class="btn-group-vertical" style="width: 48%; margin-left: 2%; float: right">
-                        <h5 style="text-align: center"><strong>{{ _('End') }}</strong></h5>
-                        <div class="input-group clockpicker">
-                            <input type="time" class="form-control" value="10:00" id="end_time" maxlength="5">
+                        <div class="col">
+                            <label for="end_time" style="justify-content: flex-end;"><strong>{{ _('End') }}</strong></label>
+                            <div class="input-group mb-3 clockpicker" data-placement="right">
+                                <input type="time" class="form-control" value="10:00" id="end_time" maxlength="5">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-clock"></i>
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -164,7 +182,7 @@
     </div>
 
     <!-- EXPORT PROMPT (modal) -->
-    <div class="modal fade" tabindex="-1" role="dialog" id="exportPrompt" role="dialog">
+    <div class="modal fade" id="exportPrompt" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -225,8 +243,10 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span></button>
+                    <h5 class="modal-title">{{ _('WARNING') }}</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>×</span>
+                    </button>
                 </div>
                 <div class="modal-body">
                 <p>{{ _('Please select at least a schedule to compare !') }}</p>
@@ -243,8 +263,10 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span></button>
+                    <h5 class="modal-title">{{ _('ERROR') }}</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>×</span>
+                    </button>
                 </div>
                 <div class="modal-body">
                 <p>{{ _('You specified a wrong time format ! Please try again.') }}</p>
@@ -938,18 +960,7 @@
     <script>
         // Time picker for FTS
         $('.clockpicker').clockpicker({
-            placement: 'top',
             autoclose: true,
-        });
-    </script>
-
-    <script>
-        // Prevent closing dropdown
-        $('.dropdown-toggle').on('click', function (e) {
-            $(this).next().toggle();
-        });
-        $('.dropdown-menu.keep-open').on('click', function (e) {
-            e.stopPropagation();
         });
     </script>
 {% endblock %}
