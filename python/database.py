@@ -24,7 +24,8 @@ def dropTables():
     cursor = db.cursor()
     cursor.executescript("""
                         DROP TABLE courses;
-                        DROP TABLE settings""")
+                        DROP TABLE settings
+                        DROP TABLE links""")
     db.commit()
     db.close()
 
@@ -44,7 +45,12 @@ def init():
                         CREATE TABLE IF NOT EXISTS settings(
                         id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
                         s TEXT
-                    );""")
+                    );
+                    
+                        CREATE TABLE IF NOT EXISTS links(
+                        username TEXT PRIMARY KEY UNIQUE,
+                        link TEXT UNIQUE,
+                        s TEXT""")
     db.commit()
     db.close()
 
@@ -171,3 +177,135 @@ def updateSettings(id, settings):
     cursor.execute("UPDATE settings SET s=? where id=?", (s, id))
     db.commit()
     db.close()
+
+# At the moment, the name is not correct, because of above
+def getSettingsLink(link):
+    """
+    Get settings from the links table with the corresponding link (unique per settings).
+    Parameters:
+    -----------
+    link : string
+        The key needed to get the settings back.
+    Returns:
+    --------
+    s : iterable of str or None
+        None if settings not found. Otherwise, the settings previously saved.
+    """
+    db = sqlite3.connect(db_path)
+    cursor = db.cursor()
+    cursor.execute("SELECT s FROM links WHERE link=?", (link,))
+    resp = cursor.fetchone()
+    if resp:
+        s, = resp
+    else:
+        return None
+    db.close()
+    return _pickle.loads(s)
+
+def getLink(hash):
+    """
+    Get link from the links table with the corresponding hash.
+    Parameters:
+    -----------
+    hash : string
+        The hash to be in the table
+    Returns:
+    --------
+    link : the link
+    """
+    db = sqlite3.connect(db_path)
+    cursor = db.cursor()
+    cursor.execute("SELECT link FROM links WHERE link=?", (hash,))
+    resp = cursor.fetchone()
+    if resp:
+        link, = resp
+    else:
+        return None
+    db.close()
+    return _pickle.loads(link)
+
+def setLink(link, settings=None):
+    """
+    Set link with the setting into the links table
+    Parameters:
+    -----------
+    link : string
+        the link of the calendar
+    settings: string
+        the settings of the calendar
+    Returns:
+    --------
+    True if the link was not present, False elsewhere
+    """
+    db = sqlite3.connect(db_path)
+    cursor = db.cursor()
+    try:
+        cursor.execute("INSERT INTO links(link,settings) VALUES (%s, %s)" % (link, settings))
+        db.close()
+        return True
+    except Exception:
+        db.close()
+        return False
+
+def updateSettings(link, settings=None):
+    """
+    Update the settings from links table with the corresponding link
+    Parameters:
+    -----------
+    link : string
+        the link of the calendar
+    settings: string
+        the settings of the calendar
+    Returns:
+    --------
+    True if the link was present (no error), False elsewhere
+    """
+    db = sqlite3.connect(db_path)
+    cursor = db.cursor()
+    try:
+        cursor.execute("UPDATE links SET s=? WHERE link=?", (settings, link))
+        db.close()
+        return True
+    except Exception:
+        db.close()
+        return False
+
+def deleteLink(link):
+    """
+    Delete the link with the settings from links table
+    Parameters:
+    -----------
+    link: string
+        the link to be deleted, with the settings
+    Returns:
+    --------
+    None
+    """
+    db = sqlite3.connect(db_path)
+    cursor = db.cursor()
+    try:
+        cursor.execute("DELETE FROM links WHERE link=?", link)
+    finally:
+        db.close()
+
+def loginPresent(login):
+    """
+    Tell if login is in the links table
+    Parameters:
+    -----------
+    login : text
+        the login
+    Returns:
+    --------
+    True if the login is present, False elsewhere
+    """
+    db = sqlite3.connect(db_path)
+    cursor = db.cursor()
+    cursor.execute("SELECT login FROM links WHERE login=?", login)
+    resp = cursor.fetchone()
+    if resp:
+        log = True
+    else:
+        log = False
+    db.close()
+    return log
