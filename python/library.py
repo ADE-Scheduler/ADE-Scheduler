@@ -1,73 +1,115 @@
-import os
-from pickle import dump, load
-from glob import glob
 from ade import getCoursesFromCodes
-from itertools import chain
+from computation import extractEvents
+from database import setLink, getSettingsFromLink, updateSettingsFromLink, isLinkPresent
 from ics import Calendar
-from event import gregorianToADE
-from static_data import ID
-
-current = os.path.dirname(__file__)
-save_folder = os.path.join(current, 'saves')
-save_type = os.path.join(save_folder, '*.p')
-
+from computation import compute_best
+from itertools import chain
+from pytz import timezone
+from dateutil.parser import parse
+from event import CustomEvent
+from static_data import N_WEEKS
 """
 settings format :
-{codes:[list of codes],
-    weeks:{
-        dict containing (key->int, value->[list of ids])
-    }}
+{
+    choice: user's schedule choice (int),
+    projectID: int,
+    codes: [list of codes],
+    fts: [list of fts],
+    id_list: [list of selected ids],
+    weeks: [[list of IDs], [list of IDs], ..., [list of IDs]}
+}
 """
 
 
-def get(settings: dict):
-    courses = getCoursesFromCodes(settings['codes'], weeks=map(gregorianToADE, settings['weeks'].keys()), projectID=ID)
-    events = (chain(*course.getView(week, ids)) for course in courses for week, ids in settings['weeks'].items())
-    return chain(*events)
-
-
-def getCalendar(n=0):
-    settings = getSettings(n)
-    events = get(settings)
-    c = Calendar(events=events)
-    file = os.path.join(save_folder, str(n) + '.ics')
-    with open(file, 'w') as f:
-        f.writelines(c)
-    return file
-
-
-def clearLibrary():
-    for file in glob(save_type):
-        os.remove(file)
-
-
-def addSettings(settings):
-    files = sorted(glob(save_type))
-
-    if len(files) == 0:
-        next_name = 0
-        file = os.path.join(save_folder, '0.p')  # first file
+def saveSettings(link, session, choice=0, username=None):
+    """
+    Saves a user's session in the database with the corresponding link
+    :param link: str, given to the user
+    :param session: dict, the user's session
+    :param choice: int, the choice of schedule to save
+    :param username: if specified, the user's username
+    :return: /
+    """
+    # TODO check if link already exists
+    courses = getCoursesFromCodes(session['codes'], session['basic_context']['projectID'])
+    if choice < 0:
+        events = list(chain.from_iterable(chain.from_iterable(extractEvents(courses, view=session['id_list']))))
+        weeks = [[event.getId() for event in events if event.getweek() == week] for week in range(N_WEEKS)]
     else:
-        name, _ = os.path.splitext(os.path.basename(files[-1]))  # get last file added
-        next_name = 1 + int(name)
-        file = os.path.join(save_folder, str(next_name) + '.p')
-
-    f = open(file, 'wb')
-    dump(settings, f)
-    return next_name
-
-
-def getSettings(n):
-    # TODO: on devrait gerer les erreurs si le fichier n'existe pas
-    file = os.path.join(save_folder, str(n) + '.p')
-    f = open(file, 'rb')
-    return load(f)
+        events = compute_best(courses, fts=load_fts(session['fts']), nbest=3, view=session['id_list'])[choice]
+        weeks = [[event.getId() for event in events if event.getweek() == week] for week in range(N_WEEKS)]
+    settings = {
+        'choice': choice,
+        'projectID': session['basic_context']['projectID'],
+        'codes': session['codes'],
+        'fts': session['fts'],
+        'id_list': session['id_list'],
+        'weeks': weeks
+    }
+    setLink(link=link, username=username, settings=settings)
 
 
-def settingsFromEvents(events):
-    events = list(events)
-    codes = set(event.code for event in events)
-    weeks = set(event.getweek() for event in events)
-    settings = {'codes': codes,
-                'weeks': {week: {event.getId() for event in events if event.getweek() == week} for week in weeks}}
-    return settings
+def updateSettings(link, session, choice=0):
+    """
+    Update a link's corresponding settings, after modifications imposed by the user
+    :param link: str, given to the user
+    :param session: dict, the user's session
+    :param choice: int, the choice of schedule to save
+    :param username: if specified, the user's username
+    :return: /
+    """
+    courses = getCoursesFromCodes(session['codes'], session['basic_context']['projectID'])
+    if choice < 0:
+        events = list(chain.from_iterable(chain.from_iterable(extractEvents(courses, view=session['id_list']))))
+        weeks = [[event.getId() for event in events if event.getweek() == week] for week in range(N_WEEKS)]
+    else:
+        events = compute_best(courses, fts=load_fts(session['fts']), nbest=3, view=session['id_list'])[choice]
+        weeks = [[event.getId() for event in events if event.getweek() == week] for week in range(N_WEEKS)]
+    settings = {
+        'choice': choice,
+        'projectID': session['basic_context']['projectID'],
+        'codes': session['codes'],
+        'fts': session['fts'],
+        'id_list': session['id_list'],
+        'weeks': weeks
+    }
+    updateSettingsFromLink(link=link, settings=settings)
+
+
+def loadSettings(link):
+    """
+
+    :param link: str, given by the user
+    :return: this link's corresponding settings
+    """
+    return getSettingsFromLink(link)
+
+
+def getCalendarFromLink(link):
+    """
+    Returns the user's saved calendar in .ics format
+    :param link: str, given by the user
+    :return: str, the calendar in .ics format, or None if the link doesn't exist
+    """
+    if not isLinkPresent(link):
+        return None
+    settings = getSettingsFromLink(link)
+    courses = getCoursesFromCodes(settings['codes'], projectID=settings['projectID'])
+    events = (chain(*course.getView(week, ids)) for course in courses for week, ids in enumerate(settings['weeks']))
+    return str(Calendar(events=chain(*events)))
+
+
+def load_fts(fts_json):
+    tz = timezone('Europe/Brussels')
+    fts = list()
+    for el in fts_json:
+        t0 = parse(el['start']).astimezone(tz)
+        t1 = parse(el['end']).astimezone(tz)
+        dt = t1 - t0
+        if el['title'] == 'High':
+            fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=5))
+        elif el['title'] == 'Medium':
+            fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=3))
+        elif el['title'] == 'Low':
+            fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=1))
+    return fts
