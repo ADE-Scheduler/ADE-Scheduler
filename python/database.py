@@ -54,8 +54,8 @@ def init(test=False):
                     );
                     
                         CREATE TABLE IF NOT EXISTS links(
-                        username TEXT PRIMARY KEY UNIQUE,
-                        link TEXT UNIQUE,
+                        username TEXT PRIMARY KEY UNIQUE NOT NULL,
+                        link TEXT UNIQUE NOT NULL,
                         s TEXT
                     );""")
     db.commit()
