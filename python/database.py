@@ -4,7 +4,7 @@ import os
 from time import time
 
 current_folder = os.path.dirname(__file__)
-db_path = os.path.join(current_folder, 'database.db')  # database is stored in the same folder as this file
+db_path = os.path.join(current_folder, 'database_test.db')  # database is stored in the same folder as this file
 max_delay = 26 * 60 * 60  # One day in seconds
 
 """
@@ -24,7 +24,7 @@ def dropTables():
     cursor = db.cursor()
     cursor.executescript("""
                         DROP TABLE courses;
-                        DROP TABLE settings
+                        DROP TABLE settings;
                         DROP TABLE links""")
     db.commit()
     db.close()
@@ -50,7 +50,8 @@ def init():
                         CREATE TABLE IF NOT EXISTS links(
                         username TEXT PRIMARY KEY UNIQUE,
                         link TEXT UNIQUE,
-                        s TEXT""")
+                        s TEXT
+                    );""")
     db.commit()
     db.close()
 
@@ -201,7 +202,7 @@ def getSettingsLink(link):
     else:
         db.close()
         return None
-    return _pickle.loads(s)
+    return s
 
 def isLinkPresent(link):
     """
@@ -216,8 +217,8 @@ def isLinkPresent(link):
     """
     db = sqlite3.connect(db_path)
     cursor = db.cursor()
-    cursor.execute("SELECT link FROM links WHERE link=?", (hash,))
-    resp = cursor.fetchone()
+    cursor.execute("SELECT * FROM links WHERE link=?", (link,))
+    resp = cursor.fetchall()
     if resp:
         db.close()
         return True
@@ -225,13 +226,15 @@ def isLinkPresent(link):
         db.close()
         return False
 
-def setLink(link, settings=None):
+def setLink(link, username, settings=None):
     """
     Set link with the setting into the links table
     Parameters:
     -----------
     link : string
         the link of the calendar
+    username: string
+        the username of the link
     settings: string
         the settings of the calendar
     Returns:
@@ -240,7 +243,9 @@ def setLink(link, settings=None):
     """
     db = sqlite3.connect(db_path)
     cursor = db.cursor()
-    cursor.execute("INSERT OR IGNORE INTO links(link,settings) VALUES (%s, %s)" % (link, settings))
+    cursor.execute('''INSERT INTO links(username,link,s) 
+        VALUES(?,?,?);''',(username,link,settings))
+    db.commit()
     db.close()
 
 def updateSettings(link, settings=None):
@@ -259,6 +264,7 @@ def updateSettings(link, settings=None):
     db = sqlite3.connect(db_path)
     cursor = db.cursor()
     cursor.execute("UPDATE OR IGNORE links SET s=? WHERE link=?", (settings, link))
+    db.commit()
     db.close()
     return None
 
@@ -276,8 +282,9 @@ def deleteLink(link):
     db = sqlite3.connect(db_path)
     cursor = db.cursor()
     try:
-        cursor.execute("DELETE FROM links WHERE link=?", link)
+        cursor.execute("DELETE FROM links WHERE link=?", (link,))
     finally:
+        db.commit()
         db.close()
 
 def isLoginPresent(login):
@@ -293,7 +300,7 @@ def isLoginPresent(login):
     """
     db = sqlite3.connect(db_path)
     cursor = db.cursor()
-    cursor.execute("SELECT login FROM links WHERE login=?", login)
+    cursor.execute("SELECT username FROM links WHERE username=?", (login,))
     resp = cursor.fetchone()
     if resp:
         log = True
@@ -315,11 +322,11 @@ def getLinkFromUsername(username):
     """
     db = sqlite3.connect(db_path)
     cursor = db.cursor()
-    cursor.execute("SELECT s FROM links WHERE username=?", (username,))
+    cursor.execute("SELECT link FROM links WHERE username=?", (username,))
     resp = cursor.fetchone()
     if resp:
         link, = resp
     else:
         return None
     db.close()
-    return _pickle.loads(link)
+    return link
