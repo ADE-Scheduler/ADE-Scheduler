@@ -1,11 +1,11 @@
-# BACK-END FILES
 from app_calendar import *
-from flask import Flask, request, url_for, render_template, redirect, make_response, send_file
+from flask import Flask, request, url_for, render_template, redirect, make_response, abort
 from flask_babel import Babel
 from flask_session import Session
 ***REMOVED***
 import personnal_data
 from static_data import ACADEMIC_YEARS
+import library
 
 
 app = Flask(__name__)
@@ -118,24 +118,26 @@ def getCalendar(link):
             # SECURE URL WITH LOGIN/PWD
             print('Subscription requested: login = ' + request.form['login'] + 'and password = ' + request.form['password'])
             print('Requested schedule: ' + request.form['param'])
-            # do the processing...
+            # TODO: do the processing...
             # using Jerome's encrypt.py
+            # library.saveSettings(link, session, choice=int(request.form['param']) - 1, username=request.form['login'])
             return link
         else:
             # RANDOM URL
-            print('Subscription generated with link: ' + link)
-            print('Requested schedule: ' + request.form['param'])
-            # do the processing...
-            # save IDs, courses, etc
+            library.saveSettings(link, session, choice=int(request.form['param'])-1)
+            # TODO: in case of error ?
             return link
 
     if request.method == 'GET':
         # CALENDAR REQUESTED (fetch the infos relative to this subscription link
-        # /!\ MUST WORK FOR SECURE & NON-SECURE LINKS ALIKE /!\
-        print('Calendar requested with link: ' + link)
-        # do the processing...
-        # TODO: if the subscription link is invalid, display an error page or sthg like that
-        return redirect(url_for('calendar'))
+        _cal = library.getCalendarFromLink(link)
+        if _cal:
+            resp = make_response(_cal)
+            resp.mimetype = 'text/calendar'
+            resp.headers["Content-Disposition"] = "attachment; filename=calendar.ics"
+            return resp
+        else:
+            return 'BAD REQUEST: This link does not exist !', 400
 
 
 # Page for user preferences
