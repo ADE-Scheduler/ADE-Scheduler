@@ -1,18 +1,13 @@
 import _pickle
 import sqlite3
 import os
-from time import time
 
 current_folder = os.path.dirname(__file__)
 db_path = os.path.join(current_folder, 'database.db')  # database is stored in the same folder as this file
-max_delay = 26 * 60 * 60  # One day in seconds
 
 """
 database.db : sqlite3 database containing
-    - table "courses" containing Course objects that can be retrieved using their Course.code.
-    Only returns something if the Course objet is not outdated (defined by max_delay).
-    - table "settings" containing informations to reconstruct a course.
-    When adding a setting to the database, returns the id to needed to get it back later.
+    - table link:
 """
 
 
@@ -51,7 +46,8 @@ def init(test=False):
     db.commit()
     db.close()
 
-def getSettingsfromLink(link):
+
+def getSettingsFromLink(link):
     """
     Get settings from the links table with the corresponding link (unique per settings).
     Parameters:
@@ -75,6 +71,7 @@ def getSettingsfromLink(link):
         return None
     return _pickle.loads(s)
 
+
 def isLinkPresent(link):
     """
     Tell if the link link is present in links table
@@ -97,6 +94,7 @@ def isLinkPresent(link):
         db.close()
         return False
 
+
 def setLink(link, username=None, settings=None):
     """
     Set link with the setting into the links table
@@ -106,7 +104,7 @@ def setLink(link, username=None, settings=None):
         the link of the calendar
     username: string
         the username of the link
-    settings: string
+    settings: dict
         the settings of the calendar
     Returns:
     --------
@@ -116,9 +114,10 @@ def setLink(link, username=None, settings=None):
     db = sqlite3.connect(db_path)
     cursor = db.cursor()
     cursor.execute('''INSERT INTO links(link,username,settings) 
-        VALUES(?,?,?);''',(link,username,s))
+        VALUES(?,?,?);''', (link, username, s))
     db.commit()
     db.close()
+
 
 def updateSettingsFromLink(link, settings=None):
     """
@@ -127,7 +126,7 @@ def updateSettingsFromLink(link, settings=None):
     -----------
     link : string
         the link of the calendar
-    settings: string
+    settings: dict
         the settings of the calendar
     Returns:
     --------
@@ -140,6 +139,7 @@ def updateSettingsFromLink(link, settings=None):
     db.commit()
     db.close()
     return None
+
 
 def deleteLink(link):
     """
@@ -159,6 +159,7 @@ def deleteLink(link):
     finally:
         db.commit()
         db.close()
+
 
 def isLoginPresent(login):
     """
@@ -181,6 +182,7 @@ def isLoginPresent(login):
         log = False
     db.close()
     return log
+
 
 def getLinkFromUsername(username):
     """

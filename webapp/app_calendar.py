@@ -36,7 +36,7 @@ def compute():
     if len(session['codes']) == 0:
         clear()
     else:
-        courses = getCoursesFromCodes(session['codes'])
+        courses = getCoursesFromCodes(session['codes'], projectID=session['basic_context']['projectID'])
         for i, sched in enumerate(compute_best(courses, fts=load_fts(), nbest=3, view=session['id_list'])):
             session['data_sched']['sched_' + str(i + 1)] = json.dumps(JSONfromEvents(sched))
         session['basic_context']['up_to_date'] = True
@@ -69,7 +69,7 @@ def init():
     color_police = ['white', 'white', 'white', 'white', 'white', 'white', 'white', 'white', 'white', 'white', 'white',
                     'white', 'white']
     session['basic_context'] = {'up_to_date': True, 'safe_compute': None, 'locale': 'en', 'gradient': color_gradient,
-                                'police': color_police}
+                                'police': color_police, 'projectID': 9}
 
 
 def add_courses(codes):
@@ -93,7 +93,7 @@ def add_course(code):
 
 
 def fetch_courses():
-    courses = getCoursesFromCodes(session['codes'])
+    courses = getCoursesFromCodes(session['codes'], projectID=session['basic_context']['projectID'])
     fetch_id()
     events = chain.from_iterable(chain.from_iterable(extractEvents(courses, view=session['id_list'])))
     session['data_base'] = JSONfromEvents(events)
@@ -101,7 +101,7 @@ def fetch_courses():
 
 
 def fetch_id():
-    courses = getCoursesFromCodes(session['codes'])
+    courses = getCoursesFromCodes(session['codes'], projectID=session['basic_context']['projectID'])
     for course in courses:
         type_tab = {'CM': list(), 'TP': list(), 'EXAM': list(), 'ORAL': list(), 'Other': list()}
         for course_id in course.getSummary():
@@ -138,14 +138,13 @@ def delete_course(code):
 
 
 def download_calendar(choice):
-    calendar = Calendar()
+    courses = getCoursesFromCodes(session['codes'], projectID=session['basic_context']['projectID'])
     if choice < 0:
-        print("ADE Shedule")
+        events = chain.from_iterable(chain.from_iterable(extractEvents(courses, view=session['id_list'])))
+        calendar = Calendar(events=events)
     else:
-        courses = getCoursesFromCodes(session['codes'])
         events = compute_best(courses, fts=load_fts(), nbest=3, view=session['id_list'])
-        for event in events[choice]:
-            calendar.events.add(event)
+        calendar = Calendar(events=events[choice])
     return str(calendar)
 
 
