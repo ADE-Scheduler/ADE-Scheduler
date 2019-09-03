@@ -26,9 +26,8 @@ def dropTables(test=False):
         db = sqlite3.connect(db_path)
     cursor = db.cursor()
     cursor.executescript("""
-                        DROP TABLE IF EXISTS courses;
-                        DROP TABLE IF EXISTS settings;
-                        DROP TABLE IF EXISTS links""")
+                        DROP TABLE IF EXISTS links;
+                        """)
     db.commit()
     db.close()
 
@@ -42,151 +41,17 @@ def init(test=False):
         db_path = os.path.join(current_folder, 'database_test.db')
     db = sqlite3.connect(db_path)
     cursor = db.cursor()
-    cursor.executescript("""CREATE TABLE IF NOT EXISTS courses(
-                        code TEXT,
-                        course TEXT,
-                        date REAL
-                    );
-
-                        CREATE TABLE IF NOT EXISTS settings(
-                        id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
-                        s TEXT
-                    );
-                    
+    cursor.executescript("""
                         CREATE TABLE IF NOT EXISTS links(
-                        username TEXT PRIMARY KEY UNIQUE NOT NULL,
+                        id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
                         link TEXT UNIQUE NOT NULL,
-                        s TEXT
+                        username TEXT UNIQUE,
+                        settings TEXT
                     );""")
     db.commit()
     db.close()
 
-
-def addSettings(settings):
-    """
-    Add settings to the settings table.
-    Parameters:
-    -----------
-    settings : structure with same format as event.getSettingsFromEvents
-        The settings used to filter events you want to keep.
-    Returns:
-    --------
-    id : int
-        The key needed to get the settings back using getSettings(id).
-    """
-    s = _pickle.dumps(settings, -1)
-    db = sqlite3.connect(db_path)
-    cursor = db.cursor()
-    cursor.execute("INSERT INTO settings(s) VALUES(?)", (s,))
-    id = cursor.lastrowid
-    db.commit()
-    db.close()
-    return id
-
-
-def addCourse(course):
-    """
-    Add course to the courses table only if last version is outdated.
-    Parameters:
-    -----------
-    course : Course
-        An intance of course.Course class.
-    Returns:
-    --------
-    added : bool
-        Whether or not the course has been added.
-    """
-    s = _pickle.dumps(course, -1)
-    db = sqlite3.connect(db_path)
-    cursor = db.cursor()
-    cursor.execute("SELECT date FROM courses WHERE code=?", (course.code,))
-    resp = cursor.fetchone()
-    if resp:  # If course already in table
-        date, = resp
-        if date + max_delay < time():  # If outdated
-            cursor.execute("DELETE from courses where code=?", (course.code,))
-            db.commit()
-        else:  # If still valid
-            return False
-    cursor.execute("""INSERT INTO courses(
-                        code, course, date) VALUES(?, ?, ?)""",
-                   (course.code, s, time()))
-    db.commit()
-    db.close()
-    return True
-
-
-def getSettings(id):
-    """
-    Get settings from the settings table with the corresponding id (unique per settings).
-    Parameters:
-    -----------
-    id : int
-        The key needed to get the settings back.
-    Returns:
-    --------
-    s : iterable of str or None
-        None if settings not found. Otherwise, the settings previously saved.
-    """
-    db = sqlite3.connect(db_path)
-    cursor = db.cursor()
-    cursor.execute("SELECT s FROM settings WHERE id=?", (id,))
-    resp = cursor.fetchone()
-    if resp:
-        s, = resp
-    else:
-        return None
-    db.close()
-    return _pickle.loads(s)
-
-
-def getCourse(code):
-    """
-    Get course from the courses table with the corresponding code (unique per course).
-    Parameters:
-    -----------
-    code : str
-        The code from Course.code.
-    Returns:
-    --------
-    course : Course
-        None if course not found or outdated (deleted in this case). Otherwise, the course previously saved.
-    """
-    db = sqlite3.connect(db_path)
-    cursor = db.cursor()
-    cursor.execute("SELECT course, date FROM courses WHERE code=?", (code,))
-    resp = cursor.fetchone()
-    if resp:
-        course, date = resp
-    else:
-        return None
-    if date + max_delay < time():
-        cursor.execute("DELETE from courses where code=?", (code,))
-        db.commit()
-        return None
-    db.close()
-    return _pickle.loads(course)
-
-
-def updateSettings(id, settings):
-    """
-    Update settings to the settings table at given id.
-    Parameters:
-    -----------
-    id : int
-        The id of the settings you want to update (remplaces old with new settings).
-    settings : iterable of str
-        The settings used to filter events you want to keep.
-    """
-    s = _pickle.dumps(settings, -1)
-    db = sqlite3.connect(db_path)
-    cursor = db.cursor()
-    cursor.execute("UPDATE settings SET s=? where id=?", (s, id))
-    db.commit()
-    db.close()
-
-# At the moment, the name is not correct, because of above
-def getSettingsLink(link):
+def getSettingsfromLink(link):
     """
     Get settings from the links table with the corresponding link (unique per settings).
     Parameters:
@@ -200,7 +65,7 @@ def getSettingsLink(link):
     """
     db = sqlite3.connect(db_path)
     cursor = db.cursor()
-    cursor.execute("SELECT s FROM links WHERE link=?", (link,))
+    cursor.execute("SELECT settings FROM links WHERE link=?", (link,))
     resp = cursor.fetchone()
     if resp:
         s, = resp
@@ -208,7 +73,7 @@ def getSettingsLink(link):
     else:
         db.close()
         return None
-    return s
+    return _pickle.loads(s)
 
 def isLinkPresent(link):
     """
@@ -247,14 +112,15 @@ def setLink(link, username, settings=None):
     --------
     None
     """
+    s = _pickle.dumps(settings, -1)
     db = sqlite3.connect(db_path)
     cursor = db.cursor()
-    cursor.execute('''INSERT INTO links(username,link,s) 
-        VALUES(?,?,?);''',(username,link,settings))
+    cursor.execute('''INSERT INTO links(link,username,settings) 
+        VALUES(?,?,?);''',(link,username,s))
     db.commit()
     db.close()
 
-def updateSettings(link, settings=None):
+def updateSettingsFromLink(link, settings=None):
     """
     Update the settings from links table with the corresponding link
     Parameters:
@@ -267,9 +133,10 @@ def updateSettings(link, settings=None):
     --------
     None
     """
+    s = _pickle.dumps(settings, -1)
     db = sqlite3.connect(db_path)
     cursor = db.cursor()
-    cursor.execute("UPDATE OR IGNORE links SET s=? WHERE link=?", (settings, link))
+    cursor.execute("UPDATE OR IGNORE links SET settings=? WHERE link=?", (s, link))
     db.commit()
     db.close()
     return None
