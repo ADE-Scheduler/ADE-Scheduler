@@ -4,7 +4,7 @@ import os
 from time import time
 
 current_folder = os.path.dirname(__file__)
-db_path = os.path.join(current_folder, 'database_test.db')  # database is stored in the same folder as this file
+db_path = os.path.join(current_folder, 'database.db')  # database is stored in the same folder as this file
 max_delay = 26 * 60 * 60  # One day in seconds
 
 """
@@ -16,24 +16,30 @@ database.db : sqlite3 database containing
 """
 
 
-def dropTables():
+def dropTables(test=False):
     """
     Removes both tables from the database.
     """
-    db = sqlite3.connect(db_path)
+    if test:
+        db = sqlite3.connect(os.path.join(current_folder, 'database_test.db'))
+    else:
+        db = sqlite3.connect(db_path)
     cursor = db.cursor()
     cursor.executescript("""
-                        DROP TABLE courses;
-                        DROP TABLE settings;
-                        DROP TABLE links""")
+                        DROP TABLE IF EXISTS courses;
+                        DROP TABLE IF EXISTS settings;
+                        DROP TABLE IF EXISTS links""")
     db.commit()
     db.close()
 
 
-def init():
+def init(test=False):
     """
     Inits the database, creating it and the two tables if they don't already exist.
     """
+    global db_path
+    if test:
+        db_path = os.path.join(current_folder, 'database_test.db')
     db = sqlite3.connect(db_path)
     cursor = db.cursor()
     cursor.executescript("""CREATE TABLE IF NOT EXISTS courses(

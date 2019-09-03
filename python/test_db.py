@@ -1,8 +1,8 @@
 from .database import *
 
 def test_basic():
-    dropTables()
-    init()
+    dropTables(test=True)
+    init(test=True)
     username = 'my_test_username'
     link = 'my_test_link'
     settings = 'my_test_settings'
@@ -24,4 +24,3 @@ def test_basic():
 
     deleteLink(link)
     assert not isLinkPresent(link)
-
