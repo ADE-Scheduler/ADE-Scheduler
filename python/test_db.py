@@ -24,3 +24,15 @@ def test_basic():
 
     deleteLink(link)
     assert not isLinkPresent(link)
+
+def test_username():
+    dropTables(test=True)
+    init(test=True)
+    link = 'my_second_test_link'
+    setLink(link)
+
+    assert isLinkPresent(link)
+    assert not isLoginPresent('any_string')
+
+    settings = getSettingsfromLink(link)
+    assert settings == None
