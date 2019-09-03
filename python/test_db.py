@@ -5,7 +5,7 @@ def test_basic():
     init(test=True)
     username = 'my_test_username'
     link = 'my_test_link'
-    settings = 'my_test_settings'
+    settings = {'projectID':9, 'codes':'LINGI2261,LINGI2262'}
     setLink(link, username, settings)
 
     assert isLoginPresent(username)
@@ -14,12 +14,12 @@ def test_basic():
     link_from_username = getLinkFromUsername(username)
     assert link_from_username == link
 
-    settings_from_link = getSettingsLink(link)
+    settings_from_link = getSettingsfromLink(link)
     assert settings_from_link == settings
 
     new_settings = 'my_new_test_settings'
-    updateSettings(link, new_settings)
-    settings_from_link = getSettingsLink(link)
+    updateSettingsFromLink(link, new_settings)
+    settings_from_link = getSettingsfromLink(link)
     assert settings_from_link == new_settings
 
     deleteLink(link)
