@@ -97,7 +97,7 @@ def isLinkPresent(link):
         db.close()
         return False
 
-def setLink(link, username, settings=None):
+def setLink(link, username=None, settings=None):
     """
     Set link with the setting into the links table
     Parameters:
