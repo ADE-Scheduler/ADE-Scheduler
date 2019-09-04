@@ -30,6 +30,7 @@ def clear():
     session['id_tab'].clear()
     session['id_list'] = None
     session['basic_context']['up_to_date'] = True
+    session['basic_context']['priority'].clear()
 
 
 def compute():
@@ -69,7 +70,7 @@ def init():
     color_police = ['white', 'white', 'white', 'white', 'white', 'white', 'white', 'white', 'white', 'white', 'white',
                     'white', 'white']
     session['basic_context'] = {'up_to_date': True, 'safe_compute': True, 'locale': 'en', 'gradient': color_gradient,
-                                'police': color_police, 'projectID': 9, 'academic_years': ACADEMIC_YEARS}
+                                'police': color_police, 'projectID': 9, 'academic_years': ACADEMIC_YEARS, 'priority': {}}
 
 
 def add_courses(codes):

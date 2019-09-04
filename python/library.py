@@ -14,6 +14,7 @@ settings format :
     choice: user's schedule choice (int),
     projectID: int,
     codes: [list of codes],
+    priority: {code: priority}
     fts: [list of fts],
     id_list: [list of selected ids],
     weeks: [[list of IDs], [list of IDs], ..., [list of IDs]}
@@ -42,6 +43,7 @@ def saveSettings(link, session, choice=0, username=None):
         'choice': choice,
         'projectID': session['basic_context']['projectID'],
         'codes': session['codes'],
+        'priority': session['basic_context']['priority'],
         'fts': session['fts'],
         'id_list': session['id_list'],
         'weeks': weeks
@@ -69,6 +71,7 @@ def updateSettings(link, session, choice=0):
         'choice': choice,
         'projectID': session['basic_context']['projectID'],
         'codes': session['codes'],
+        'priority': session['basic_context']['priority'],
         'fts': session['fts'],
         'id_list': session['id_list'],
         'weeks': weeks
