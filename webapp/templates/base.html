@@ -32,7 +32,6 @@
             height: 100%;
             overflow-y: hidden; /* don't show content that exceeds my height */
             display: flex;
-            flex-direction: row-reverse;
         }
         .main-footer {
             height: 51px;
@@ -193,7 +192,7 @@ desired effect
                 <div class="box-body">
                     <div style="margin-top: 10px">
                         <label for="projectid-select"><strong>{{ _('Academic Year') }}</strong></label>
-                        <select class="form-control" id="projectid-select" name="projectid-select">
+                        <select class="custom-select" id="projectid-select" name="projectid-select" style="margin-left: 15px; width: 84%;">
                         {% for year in academic_years %}
                             {% if year.id == projectID %}
                                 <option value={{ year.id }} selected>{{ year.year }}</option>
@@ -203,16 +202,33 @@ desired effect
                         {% endfor %}
                     </select>
                     </div>
-                    <div class="custom-control custom-checkbox" style="margin-top: 15px;">
-                        {% if safe_compute %}
-                        <input type="checkbox" class="custom-control-input is-valid" id="safe-compute" name="safe-compute" value=true checked>
-                        {% else %}
-                        <input type="checkbox" class="custom-control-input is-invalid" id="safe-compute" name="safe-compute">
-                        {% endif %}
-                        <label class="custom-control-label" for="safe-compute"><strong>{{ _('Safe compute') }}</strong></label>
-                        <a class="invalid-feedback" href="/help">
-                            {{ _('WARNING: may cause long computation times, see help section.') }}
-                        </a>
+
+                    <div style="margin-top: 15px">
+                        <label><strong>{{ _('Course priority') }}</strong></label>
+                        <div style="margin-left: 15px;">
+                        {% for code in codes %}
+                            <label for="customRange" style="font-size: 11px;">{{ code }}</label>
+                            <input type="range" class="custom-range" id="range-{{ code }}" name="range-{{ code }}" style="width: 90%;">
+                        {% endfor %}
+                            <small class="text-muted">
+                                {{ _('Customize the priority given to a course, from no priority at all to maximum priority.') }}
+                            </small>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 15px">
+                        <label><strong>{{ _('Computation') }}</strong></label>
+                        <div class="custom-control custom-checkbox" style="margin-left: 15px;">
+                            {% if safe_compute %}
+                            <input type="checkbox" class="custom-control-input is-valid" id="safe-compute" name="safe-compute" value=true checked>
+                            {% else %}
+                            <input type="checkbox" class="custom-control-input is-invalid" id="safe-compute" name="safe-compute">
+                            {% endif %}
+                            <label class="custom-control-label" for="safe-compute"><strong>{{ _('Safe compute') }}</strong></label>
+                            <a class="invalid-feedback" href="/help">
+                                {{ _('WARNING: may cause long computation times, see help section.') }}
+                            </a>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -248,7 +264,11 @@ desired effect
                 this.classList.remove('is-valid');
                 this.classList.add('is-invalid')
             }
-        })
+        });
+
+        Object.entries({{ priority|safe }}).forEach(function (el) {
+            $('#range-' + el[0]).val(el[1]);
+        });
     </script>
 
     {%block js%}{%endblock%}
