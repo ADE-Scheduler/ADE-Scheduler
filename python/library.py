@@ -36,7 +36,7 @@ def saveSettings(link, session, choice=0, username=None):
         events = list(chain.from_iterable(chain.from_iterable(extractEvents(courses, view=session['id_list']))))
         weeks = [[event.getId() for event in events if event.getweek() == week] for week in range(N_WEEKS)]
     else:
-        events = compute_best(courses, fts=load_fts(session['fts']), nbest=3, view=session['id_list'])[choice]
+        events = compute_best(courses, fts=load_fts(session['fts']), nbest=3, view=session['id_list'], safe_compute=session['basic_context']['safe_compute'])[choice]
         weeks = [[event.getId() for event in events if event.getweek() == week] for week in range(N_WEEKS)]
     settings = {
         'choice': choice,
@@ -63,7 +63,7 @@ def updateSettings(link, session, choice=0):
         events = list(chain.from_iterable(chain.from_iterable(extractEvents(courses, view=session['id_list']))))
         weeks = [[event.getId() for event in events if event.getweek() == week] for week in range(N_WEEKS)]
     else:
-        events = compute_best(courses, fts=load_fts(session['fts']), nbest=3, view=session['id_list'])[choice]
+        events = compute_best(courses, fts=load_fts(session['fts']), nbest=3, view=session['id_list'], safe_compute=session['basic_context']['safe_compute'])[choice]
         weeks = [[event.getId() for event in events if event.getweek() == week] for week in range(N_WEEKS)]
     settings = {
         'choice': choice,

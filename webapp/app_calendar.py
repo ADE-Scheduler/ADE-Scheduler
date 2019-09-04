@@ -15,7 +15,7 @@ sys.path.insert(0, parentdir + '/python')
 from ade import getCoursesFromCodes
 from computation import compute_best, extractEvents
 from event import CustomEvent, EventCM, JSONfromEvents
-from static_data import COURSE_REGEX
+from static_data import ACADEMIC_YEARS
 import library
 
 # letters + number only regex
@@ -37,7 +37,7 @@ def compute():
         clear()
     else:
         courses = getCoursesFromCodes(session['codes'], projectID=session['basic_context']['projectID'])
-        for i, sched in enumerate(compute_best(courses, fts=load_fts(), nbest=3, view=session['id_list'])):
+        for i, sched in enumerate(compute_best(courses, fts=load_fts(), nbest=3, view=session['id_list'], safe_compute=session['basic_context']['safe_compute'])):
             session['data_sched']['sched_' + str(i + 1)] = json.dumps(JSONfromEvents(sched))
         session['basic_context']['up_to_date'] = True
     session.modified = True
@@ -68,8 +68,8 @@ def init():
                       '#006c5a', '#3d978a']
     color_police = ['white', 'white', 'white', 'white', 'white', 'white', 'white', 'white', 'white', 'white', 'white',
                     'white', 'white']
-    session['basic_context'] = {'up_to_date': True, 'safe_compute': None, 'locale': 'en', 'gradient': color_gradient,
-                                'police': color_police, 'projectID': 9}
+    session['basic_context'] = {'up_to_date': True, 'safe_compute': True, 'locale': 'en', 'gradient': color_gradient,
+                                'police': color_police, 'projectID': 9, 'academic_years': ACADEMIC_YEARS}
 
 
 def add_courses(codes):
@@ -143,7 +143,7 @@ def download_calendar(choice):
         events = chain.from_iterable(chain.from_iterable(extractEvents(courses, view=session['id_list'])))
         calendar = Calendar(events=events)
     else:
-        events = compute_best(courses, fts=load_fts(), nbest=3, view=session['id_list'])
+        events = compute_best(courses, fts=load_fts(), nbest=3, view=session['id_list'], safe_compute=session['basic_context']['safe_compute'])
         calendar = Calendar(events=events[choice])
     return str(calendar)
 
