@@ -37,6 +37,7 @@ def saveSettings(link, session, choice=0, username=None):
         events = list(chain.from_iterable(chain.from_iterable(extractEvents(courses, view=session['id_list']))))
         weeks = [[event.getId() for event in events if event.getweek() == week] for week in range(N_WEEKS)]
     else:
+        for course in courses: course.setEventWeight(session['basic_context']['priority'][course.code])
         events = compute_best(courses, fts=load_fts(session['fts']), nbest=3, view=session['id_list'], safe_compute=session['basic_context']['safe_compute'])[choice]
         weeks = [[event.getId() for event in events if event.getweek() == week] for week in range(N_WEEKS)]
     settings = {
@@ -65,6 +66,7 @@ def updateSettings(link, session, choice=0):
         events = list(chain.from_iterable(chain.from_iterable(extractEvents(courses, view=session['id_list']))))
         weeks = [[event.getId() for event in events if event.getweek() == week] for week in range(N_WEEKS)]
     else:
+        for course in courses: course.setEventWeight(session['basic_context']['priority'][course.code])
         events = compute_best(courses, fts=load_fts(session['fts']), nbest=3, view=session['id_list'], safe_compute=session['basic_context']['safe_compute'])[choice]
         weeks = [[event.getId() for event in events if event.getweek() == week] for week in range(N_WEEKS)]
     settings = {
@@ -110,9 +112,9 @@ def load_fts(fts_json):
         t1 = parse(el['end']).astimezone(tz)
         dt = t1 - t0
         if el['title'] == 'High':
-            fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=5))
+            fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=9))
         elif el['title'] == 'Medium':
-            fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=3))
+            fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=6))
         elif el['title'] == 'Low':
             fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=1))
     return fts

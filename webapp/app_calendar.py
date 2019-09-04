@@ -14,9 +14,8 @@ parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir + '/python')
 from ade import getCoursesFromCodes
 from computation import compute_best, extractEvents
-from event import CustomEvent, EventCM, JSONfromEvents
+from event import CustomEvent, JSONfromEvents
 from static_data import ACADEMIC_YEARS
-import library
 
 # letters + number only regex
 regex = re.compile('[^A-Z0-9]')
@@ -38,6 +37,7 @@ def compute():
         clear()
     else:
         courses = getCoursesFromCodes(session['codes'], projectID=session['basic_context']['projectID'])
+        for course in courses: course.setEventWeight(session['basic_context']['priority'][course.code])
         for i, sched in enumerate(compute_best(courses, fts=load_fts(), nbest=3, view=session['id_list'], safe_compute=session['basic_context']['safe_compute'])):
             session['data_sched']['sched_' + str(i + 1)] = json.dumps(JSONfromEvents(sched))
         session['basic_context']['up_to_date'] = True
@@ -45,7 +45,7 @@ def compute():
 
 
 def init():
-    # Are cookies initialized ?
+    # Is the session initialized ?
     session['init'] = True
 
     # user's course codes
@@ -144,6 +144,7 @@ def download_calendar(choice):
         events = chain.from_iterable(chain.from_iterable(extractEvents(courses, view=session['id_list'])))
         calendar = Calendar(events=events)
     else:
+        for course in courses: course.setEventWeight(session['basic_context']['priority'][course.code])
         events = compute_best(courses, fts=load_fts(), nbest=3, view=session['id_list'], safe_compute=session['basic_context']['safe_compute'])
         calendar = Calendar(events=events[choice])
     return str(calendar)
@@ -157,9 +158,9 @@ def load_fts():
         t1 = parse(el['end']).astimezone(tz)
         dt = t1 - t0
         if el['title'] == 'High':
-            fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=5))
+            fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=9))
         elif el['title'] == 'Medium':
-            fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=3))
+            fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=6))
         elif el['title'] == 'Low':
             fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=1))
     return fts
