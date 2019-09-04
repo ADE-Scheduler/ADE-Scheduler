@@ -28,12 +28,18 @@
         html, body {
             height: 100%;
         }
-        .container-fluid {
+        #main-container {
             height: 100%;
             overflow-y: hidden; /* don't show content that exceeds my height */
+            display: flex;
+            flex-direction: row-reverse;
         }
         .main-footer {
             height: 51px;
+        }
+        a.invalid-feedback:hover {
+            color: #ff3126;
+            text-decoration: none;
         }
     </style>
 
@@ -105,9 +111,9 @@ desired effect
                         </li>
 
                         <!-- Control Sidebar Toggle Button -->
-                        <li style="float: right">
+                        <li style="float: right; margin-left: 15px;">
                             <a href="" data-toggle="control-sidebar" role="button">
-                                <i class="fas fa-cloud"></i>
+                                <i class="fas fa-cogs"></i>
                             </a>
                         </li>
                     </ul>
@@ -125,11 +131,6 @@ desired effect
                     <li>
                         <a href="/">
                             <i class="fa fa-tasks"></i> <span>{{ _('Calendar') }}</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/preferences">
-                            <i class="fa fa-tasks"></i> <span>{{ _('User preferences') }}</span>
                         </a>
                     </li>
                     <li>
@@ -181,12 +182,41 @@ desired effect
         </footer>
 
         <!-- Control Sidebar -->
-        <aside class="control-sidebar control-sidebar-dark">
-
+        <aside class="control-sidebar control-sidebar-dark text-white">
+            <div style=" display: flex; justify-content: space-between; align-items: center; margin-top: 15px; height: 30px;">
+                <h3 style="margin-left: 15px;">
+                    <strong>{{ _('Settings') }}</strong>
+                </h3>
+                <button class="btn btn-outline-light btn-sm" type="submit" name="submit" value="Settings" form="form-user-preferences" style="margin-right: 15px; width: 70px;">{{ _('Save') }}</button>
+            </div>
+            <form role="form" action="/" method="post" id="form-user-preferences">
+                <div class="box-body">
+                    <div style="margin-top: 10px">
+                        <label for="projectid-select"><strong>{{ _('Academic Year') }}</strong></label>
+                        <select class="form-control" id="projectid-select" name="projectid-select">
+                        {% for year in academic_years %}
+                            {% if year.id == projectID %}
+                                <option value={{ year.id }} selected>{{ year.year }}</option>
+                            {% else %}
+                                <option value={{ year.id }}>{{ year.year }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                    </div>
+                    <div class="custom-control custom-checkbox" style="margin-top: 15px;">
+                        {% if safe_compute %}
+                        <input type="checkbox" class="custom-control-input is-valid" id="safe-compute" name="safe-compute" value=true checked>
+                        {% else %}
+                        <input type="checkbox" class="custom-control-input is-invalid" id="safe-compute" name="safe-compute">
+                        {% endif %}
+                        <label class="custom-control-label" for="safe-compute"><strong>{{ _('Safe compute') }}</strong></label>
+                        <a class="invalid-feedback" href="/help">
+                            {{ _('WARNING: may cause long computation times, see help section.') }}
+                        </a>
+                    </div>
+                </div>
+            </form>
         </aside>
-        <!-- /.control-sidebar -->
-        <!-- Add the sidebar's background. This div must be placed
-        immediately after the control sidebar -->
         <div class="control-sidebar-bg"></div>
     </div>
     <!-- ./wrapper -->
@@ -208,6 +238,17 @@ desired effect
         function locale_selector(e) {
             $.get('locale/' + e.value, {}, function(){location = location} )
         }
+
+        $('#safe-compute').on('change', function() {
+            if (this.checked && this.classList.contains('is-invalid')) {
+                this.classList.remove('is-invalid');
+                this.classList.add('is-valid')
+            }
+            if (!this.checked && this.classList.contains('is-valid')) {
+                this.classList.remove('is-valid');
+                this.classList.add('is-invalid')
+            }
+        })
     </script>
 
     {%block js%}{%endblock%}

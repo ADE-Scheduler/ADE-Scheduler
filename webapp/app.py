@@ -49,14 +49,15 @@ def calendar():
             add_courses(code)
         
         # SAVE PREFERENCES
-        if request.form['submit'] == 'Preferences':
-            safe_compute = request.form['safe-compute']
-            project_year = request.form['projectid-select']
-            print(project_year)
-            # Deal with it now
+        if request.form['submit'] == 'Settings':
+            if request.form.getlist('safe-compute'):
+                session['basic_context']['safe_compute'] = True
+            else:
+                session['basic_context']['safe_compute'] = False
+            session['basic_context']['projectID'] = int(request.form['projectid-select'])
+            fetch_courses()
 
     session['basic_context']['codes'] = session['codes']
-    session.modified = True
     return render_template('calendar.html', **(session['basic_context']), data_base=json.dumps(session['data_base']),
                            data_sched=session['data_sched'], fts=json.dumps(session['fts']), id=session['id_tab'])
 
@@ -138,14 +139,6 @@ def getCalendar(link):
             return resp
         else:
             return 'BAD REQUEST: This link does not exist !', 400
-
-
-# Page for user preferences
-@app.route('/preferences')
-def preferences():
-    preferences_session = session['basic_context'].copy()
-    preferences_session['academic_years'] = ACADEMIC_YEARS
-    return render_template('preferences.html', **preferences_session)
 
 
 # Page for user's help guide
