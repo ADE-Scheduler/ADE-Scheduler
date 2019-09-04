@@ -161,7 +161,7 @@ def deleteLink(link):
         db.close()
 
 
-def isLoginPresent(login):
+def isUsernamePresent(username):
     """
     Tell if login is in the links table
     Parameters:
@@ -174,8 +174,9 @@ def isLoginPresent(login):
     """
     db = sqlite3.connect(db_path)
     cursor = db.cursor()
-    cursor.execute("SELECT username FROM links WHERE username=?", (login,))
+    cursor.execute("SELECT username FROM links WHERE username=?", (username,))
     resp = cursor.fetchone()
+    print(resp)
     if resp:
         log = True
     else:
