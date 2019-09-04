@@ -180,7 +180,7 @@ def JSONfromEvents(events):
 
 # Event classes (subclasses of ics.Event)
 class CustomEvent(Event):
-    def __init__(self, name, begin, duration, descr, loc, id=None, weight=1, code=None):
+    def __init__(self, name, begin, duration, descr, loc, id=None, weight=5, code=None):
         super().__init__(name=name, begin=begin, duration=duration, description=descr, location=loc)
         self.weight = weight
         self.id = id
@@ -214,7 +214,7 @@ class CustomEvent(Event):
 
 
 class EventCM(CustomEvent):
-    def __init__(self, begin, duration, code, name, professor, loc, id=None, weight=1):
+    def __init__(self, begin, duration, code, name, professor, loc, id=None, weight=5):
         name = 'CM: ' + code + ' - ' + name
         id = 'CM:' + id
         super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, id=id, weight=weight,
@@ -222,7 +222,7 @@ class EventCM(CustomEvent):
 
 
 class EventTP(CustomEvent):
-    def __init__(self, begin, duration, code, name, professor, loc, id=None, weight=1):
+    def __init__(self, begin, duration, code, name, professor, loc, id=None, weight=5):
         name = 'TP: ' + code + ' - ' + name
         id = 'TP:' + id
         super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, id=id, weight=weight,
@@ -230,7 +230,7 @@ class EventTP(CustomEvent):
 
 
 class EventEXAM(CustomEvent):
-    def __init__(self, begin, duration, code, name, professor, loc, id=None, weight=1):
+    def __init__(self, begin, duration, code, name, professor, loc, id=None, weight=5):
         name = 'EXAM: ' + code + ' - ' + name
         id = 'EXAM:' + id
         super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, id=id, weight=weight,
@@ -238,7 +238,7 @@ class EventEXAM(CustomEvent):
 
 
 class EventORAL(CustomEvent):
-    def __init__(self, begin, duration, code, name, professor, loc, id=None, weight=1):
+    def __init__(self, begin, duration, code, name, professor, loc, id=None, weight=5):
         name = 'ORAL: ' + code + ' - ' + name
         id = 'ORAL:' + id
         super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, id=id, weight=weight,
@@ -246,7 +246,7 @@ class EventORAL(CustomEvent):
 
 
 class EventOTHER(CustomEvent):
-    def __init__(self, begin, duration, code, name, professor, loc, id=None, weight=1):
+    def __init__(self, begin, duration, code, name, professor, loc, id=None, weight=5):
         name = 'Other: ' + code + ' - ' + name
         id = 'Other:' + id
         super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, id=id, weight=weight,

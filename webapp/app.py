@@ -58,7 +58,6 @@ def calendar():
             fetch_courses()
             for code in session['codes']:
                 session['basic_context']['priority'][code] = int(request.form.get('range-' + code))
-            print(session['basic_context']['priority'])
 
     session['basic_context']['codes'] = session['codes']
     return render_template('calendar.html', **(session['basic_context']), data_base=json.dumps(session['data_base']),
