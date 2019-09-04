@@ -1,12 +1,13 @@
 from app_calendar import *
-from flask import Flask, request, url_for, render_template, redirect, make_response, abort
+from flask import Flask, request, url_for, render_template, redirect, make_response
 from flask_babel import Babel
 from flask_session import Session
 from redis import Redis
 import personnal_data
-from static_data import ACADEMIC_YEARS
-import library
 
+import library
+import encrypt
+import database
 
 app = Flask(__name__)
 
@@ -118,17 +119,16 @@ def download(choice):
 def getCalendar(link):
     if request.method == 'POST':
         if link == 'secure_link':
-            # SECURE URL WITH LOGIN/PWD
-            print('Subscription requested: login = ' + request.form['login'] + 'and password = ' + request.form['password'])
-            print('Requested schedule: ' + request.form['param'])
-            # TODO: do the processing...
-            # using Jerome's encrypt.py
-            # library.saveSettings(link, session, choice=int(request.form['param']) - 1, username=request.form['login'])
+            # SECURE & MODIFIABLE URL
+            username = request.form['login']
+            if database.isUsernamePresent(username):
+                return 'USERNAME ALREADY EXISTING', 400
+            link = encrypt.generate_link(username, request.form['password'])
+            library.saveSettings(link, session, choice=int(request.form['param']) - 1, username=username)
             return link
         else:
             # RANDOM URL
             library.saveSettings(link, session, choice=int(request.form['param'])-1)
-            # TODO: in case of error ?
             return link
 
     if request.method == 'GET':
@@ -141,6 +141,17 @@ def getCalendar(link):
             return resp
         else:
             return 'BAD REQUEST: This link does not exist !', 400
+
+
+# To get the user's settings
+@app.route('/getsettings/<user>/<pwd>', methods=['GET', 'POST'])
+def getSettings(user, pwd):
+    link = database.getLinkFromUsername(user)
+    if not link: return 'No way, Jose !'
+    if encrypt.check_id(user, pwd, link):
+        return 'Here ya go !'
+    else:
+        return 'No way, Jose !'
 
 
 # Page for user's help guide

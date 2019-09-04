@@ -37,7 +37,7 @@ def compute():
         clear()
     else:
         courses = getCoursesFromCodes(session['codes'], projectID=session['basic_context']['projectID'])
-        for course in courses: course.setEventWeight(session['basic_context']['priority'][course.code])
+        for course in courses: course.setEventWeight(session['basic_context']['priority'].get(course.code))
         for i, sched in enumerate(compute_best(courses, fts=load_fts(), nbest=3, view=session['id_list'], safe_compute=session['basic_context']['safe_compute'])):
             session['data_sched']['sched_' + str(i + 1)] = json.dumps(JSONfromEvents(sched))
         session['basic_context']['up_to_date'] = True
@@ -144,7 +144,7 @@ def download_calendar(choice):
         events = chain.from_iterable(chain.from_iterable(extractEvents(courses, view=session['id_list'])))
         calendar = Calendar(events=events)
     else:
-        for course in courses: course.setEventWeight(session['basic_context']['priority'][course.code])
+        for course in courses: course.setEventWeight(session['basic_context']['priority'].get(course.code))
         events = compute_best(courses, fts=load_fts(), nbest=3, view=session['id_list'], safe_compute=session['basic_context']['safe_compute'])
         calendar = Calendar(events=events[choice])
     return str(calendar)
