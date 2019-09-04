@@ -5,7 +5,7 @@
 
 
 {% block body %}
-
+<div style="flex-direction: column; flex: 1">
     <h2>{{ _('How does the scheduler work ?') }}</h2>
     <div id="accordion">
 
@@ -106,15 +106,16 @@
 
         <div class="card">
             <h4 class="card-header" style="cursor: pointer" data-toggle="collapse" data-target="#faq-9">
-                Jérôme Eertmans
+                Jérome Eertmans
             </h4>
             <div id="faq-9" class="collapse" data-parent="#accordion">
                 <div class="card-body">
-                    {{ _('Jérôme is a noob. ')}}
+                    {{ _('Jérome is a noob. ')}}
                 </div>
             </div>
         </div>
     </div>
+</div>
 {% endblock %}
 
 

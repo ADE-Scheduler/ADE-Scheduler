@@ -304,17 +304,10 @@
         </div>
     </div>
 
-    <!-- calendar body -->
-    <div class="card border-primary mb-3" style="flex-grow: 1">
-        <div class="card-body">
-            <div id='calendar'></div>
-        </div>
-    </div>
-
-    <div style="margin-right:15px; width: 133px;">
+    <div style="margin-right: 15px; flex-basis: 160px; min-width: 160px;">
         <!-- drag-n-drop body -->
         <div class="card border-primary mb-3">
-            <div class="card-header" style="padding: 5%"><strong>{{ _('Block Time Slots') }}</strong></div>
+            <div class="card-header" style="padding: 5%; text-align: center;"><strong>{{ _('Block Time Slots') }}</strong></div>
             <div class="card-body" style="padding: 5% 10%;">
                 <div id='external-events-list'>
                     <span class="badge badge-success" style="width: 100%; height: 100%; cursor: move;">{{ _('Low') }}</span>
@@ -326,7 +319,7 @@
 
         <!-- course body -->
         <div class="card border-primary mb-3" id="course-body">
-            <div class="card-header" style="padding: 5%"><strong>{{ _('Current Courses') }}</strong></div>
+            <div class="card-header" style="padding: 5%; text-align: center;"><strong>{{ _('Current Courses') }}</strong></div>
             <div class="card-body" style="padding: 5%">
                 <table style="border-collapse: collapse">
                     <tbody>
@@ -341,8 +334,10 @@
                         {% for code in codes %}
                             <tr style="align: center; padding: 0;">
                                 <td style="word-break: break-all; padding: 0;">
-                                    <div class="dropdown dropright" style="margin: 0; padding: 0;">
-                                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" style="margin-right: -.125rem; margin-left: 0; padding: 0; word-break: break-all">{{ code }}</a>
+                                    <div class="dropdown dropright" style="margin: 0; padding: 0; overflow-wrap: break-word;">
+                                        <div class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" style="margin-right: -.125rem; margin-left: 0; padding: 0; overflow: hidden; width: 110px">
+                                             {{ code }}
+                                        </div>
                                         <div class="dropdown-menu dropdown-menu-on-hover dropdown-menu-right dropdown-max-size" x-placement="bottom-start">
                                             {% if id[code]|length == 0 %}
                                                 <label class="custom-control-label" style="margin-left: 5px"><strong>{{ _('No event found !') }}</strong></label>
@@ -468,9 +463,16 @@
         </div>
 
         <!-- Import/Export button group -->
-        <div class="btn-group">
+        <div class="btn-group" style="width: 100%;">
             <button class="btn btn-secondary" data-toggle="modal" data-target="#exportPrompt">{{ _('Export') }}</button>
             <button class="btn btn-secondary" data-toggle="modal" data-target="#importPrompt">{{ _('Import') }}</button>
+        </div>
+    </div>
+
+    <!-- calendar body -->
+    <div class="card border-primary mb-3" style="flex-grow: 1">
+        <div class="card-body">
+            <div id='calendar'></div>
         </div>
     </div>
 {% endblock %}
