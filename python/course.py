@@ -42,6 +42,23 @@ class Course:
     def __repr__(self):
         return str(self)
 
+    def setEventWeight(self, percentage, eventType=None):
+        """
+        Modify this course's events weight
+        :param percentage: int, the "priority" required for this course in (0-100)%
+        :param eventType: if we want to modify the weight of a cetain type of event only
+        :return: /
+        """
+        # No percentage specified, set to default value
+        if percentage is None:  percentage = 50
+        # No event type sepcified, meaning we modify the weight of all events
+        if eventType is None: eventType = self.events.keys()
+        # Set the weight (0 --> 10) as a function of the percentage
+        for eT in eventType:
+            for week in self.events[eT]:
+                for event in week:
+                    event.weight = percentage/10
+
     def getEvents(self, weeks=None, eventTypes=None, swap=False):
         """
         Returns events of this course.
@@ -192,6 +209,6 @@ class Course:
                 for event in week:
                     temp = {'start': str(event.begin), 'end': str(event.end), 'title': event.id, 'editable': False,
                             'description': event.name + '\n' + event.location + ' - ' + str(event.duration) + '\n' +
-                            str(event.description), 'code': event.code}
+                                           str(event.description), 'code': event.code}
                     events.append(temp)
         return events
