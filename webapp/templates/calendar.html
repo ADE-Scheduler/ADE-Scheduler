@@ -225,8 +225,8 @@
                                 <div class="form-group row">
                                     <label class="col col-form-label-sm" for="input-link-login"><b>{{ _('Login') }}</b></label>
                                     <div class="col-auto">
-                                        <input type="text" class="form-control" id="input-link-login" placeholder={{ _('Login') }}>
-                                        <div class="invalid-feedback">
+                                        <input type="text" class="form-control" id="input-link-login" style="width: 200px;" placeholder={{ _('Login') }}>
+                                        <div class="invalid-feedback" id="input-link-login-feedback" style="max-width: 195px; word-break: break-word;">
                                             {{ _('Please specify a login') }}
                                         </div>
                                     </div>
@@ -234,7 +234,7 @@
                                 <div class="form-group row">
                                     <label class="col col-form-label-sm" for="input-link-password"><b>{{ _('Password') }}</b></label>
                                     <div class="col-auto">
-                                        <input type="password" class="form-control" id="input-link-password" placeholder={{ _('Password') }}>
+                                        <input type="password" class="form-control" id="input-link-password" style="width: 200px;" placeholder={{ _('Password') }}>
                                         <div class="invalid-feedback">
                                             {{ _('Please choose a password') }}
                                         </div>
@@ -536,9 +536,12 @@
                                 $('#input-generate-link').val(data);
                                 $('#input-generate-link').addClass('is-valid');
                                 $('#btn-link-generate').prop('disabled', true);
+                                $('#input-link-login-feedback').text({{ _('Please specify a login')|tojson }});
                             },
                             error: function (data) {
-                                //TODO: Handle errors (mainly: duplicate login)
+                                $('#input-link-login').addClass('is-invalid');
+                                $('#input-link-password').removeClass('is-invalid');
+                                $('#input-link-login-feedback').text({{ _('This username was already chosen. Please specify another one.')|tojson }});
                             },
                             dataType: 'text'
                         });
@@ -578,18 +581,14 @@
         function downloadButton() {
             let choice = $('#select-sched-download :selected').val();
             if (!choice) {
-                if (!$('#download-alert1').hasClass('hide'))
-                    $('#download-alert1').addClass('hide');
+                $('#download-alert1').addClass('hide');
                 $('#download-alert2').removeClass('hide');
             } else if (!{{ up_to_date|tojson }} && choice !== '0') {
-                if (!$('#download-alert2').hasClass('hide'))
-                    $('#download-alert2').addClass('hide');
+                $('#download-alert2').addClass('hide');
                 $('#download-alert1').removeClass('hide');
             } else {
-                if (!$('#download-alert2').hasClass('hide'))
-                    $('#download-alert2').addClass('hide');
-                if (!$('#download-alert1').hasClass('hide'))
-                    $('#download-alert1').addClass('hide');
+                $('#download-alert2').addClass('hide');
+                $('#download-alert1').addClass('hide');
                 $("<form method='POST' action='/download/schedule/" + choice + "'></form>").appendTo("body").submit();
             }
         }
