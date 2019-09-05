@@ -69,7 +69,7 @@ def init():
                       '#006c5a', '#3d978a']
     color_police = ['white', 'white', 'white', 'white', 'white', 'white', 'white', 'white', 'white', 'white', 'white',
                     'white', 'white']
-    session['basic_context'] = {'up_to_date': True, 'safe_compute': True, 'locale': 'en', 'gradient': color_gradient,
+    session['basic_context'] = {'up_to_date': True, 'safe_compute': True, 'locale': None, 'gradient': color_gradient,
                                 'police': color_police, 'projectID': 9, 'academic_years': ACADEMIC_YEARS, 'priority': {}}
 
 

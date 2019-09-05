@@ -18,13 +18,15 @@ settings format :
     fts: [list of fts],
     id_list: [list of selected ids],
     weeks: [[list of IDs], [list of IDs], ..., [list of IDs]}
+    check: state of checkboxes (from the UI)
 }
 """
 
 
-def saveSettings(link, session, choice=0, username=None):
+def saveSettings(link, session, choice=0, username=None, check=None):
     """
     Saves a user's session in the database with the corresponding link
+    :param check: state of checkbobxes
     :param link: str, given to the user
     :param session: dict, the user's session
     :param choice: int, the choice of schedule to save
@@ -46,14 +48,16 @@ def saveSettings(link, session, choice=0, username=None):
         'priority': session['basic_context']['priority'],
         'fts': session['fts'],
         'id_list': session['id_list'],
-        'weeks': weeks
+        'weeks': weeks,
+        'check': check
     }
     setLink(link=link, username=username, settings=settings)
 
 
-def updateSettings(link, session, choice=None):
+def updateSettings(link, session, choice=None, check=None):
     """
     Update a link's corresponding settings, after modifications imposed by the user
+    :param check: state of checkboxes
     :param link: str, given to the user
     :param session: dict, the user's session
     :param choice: int, the choice of schedule to save
@@ -79,7 +83,8 @@ def updateSettings(link, session, choice=None):
         'priority': session['basic_context']['priority'],
         'fts': session['fts'],
         'id_list': session['id_list'],
-        'weeks': weeks
+        'weeks': weeks,
+        'check': check
     }
     updateSettingsFromLink(link=link, settings=settings)
 
