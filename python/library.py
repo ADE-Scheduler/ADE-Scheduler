@@ -31,7 +31,6 @@ def saveSettings(link, session, choice=0, username=None):
     :param username: if specified, the user's username
     :return: /
     """
-    # TODO check if link already exists
     courses = getCoursesFromCodes(session['codes'], session['basic_context']['projectID'])
     if choice < 0:
         events = list(chain.from_iterable(chain.from_iterable(extractEvents(courses, view=session['id_list']))))
@@ -52,7 +51,7 @@ def saveSettings(link, session, choice=0, username=None):
     setLink(link=link, username=username, settings=settings)
 
 
-def updateSettings(link, session, choice=0):
+def updateSettings(link, session, choice=None):
     """
     Update a link's corresponding settings, after modifications imposed by the user
     :param link: str, given to the user
@@ -61,6 +60,10 @@ def updateSettings(link, session, choice=0):
     :param username: if specified, the user's username
     :return: /
     """
+    if choice is None:
+        old_settings = getSettingsFromLink(link)
+        choice = old_settings['choice']
+
     courses = getCoursesFromCodes(session['codes'], session['basic_context']['projectID'])
     if choice < 0:
         events = list(chain.from_iterable(chain.from_iterable(extractEvents(courses, view=session['id_list']))))
