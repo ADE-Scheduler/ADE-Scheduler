@@ -539,7 +539,7 @@
             <form class="form-horizontal" action="/" method="post">
                 <label class="control-label"><strong>{{ _('Add a course') }}</strong></label>
                 <div class="input-group mb-3">
-                    <input type="text" id='course-input' class="form-control" name="course_code" placeholder="Code" maxlength="70">
+                    <input type="text" id='course-input' class="form-control" name="course_code" placeholder="Code">
                     <div class="input-group-append">
                         <button class="btn btn-secondary" type="submit" name="submit" value="Add"><strong>+</strong></button>
                     </div>
@@ -601,6 +601,7 @@
                     type: 'POST',
                     data: {'login': login, 'password': pwd, 'reqType': 'load'},
                     success: function (data) {
+                        localStorage.setItem('checkboxValues', data);
                         $('#loginPrompt').modal('hide');
                         location = location;
                     },
@@ -626,10 +627,11 @@
                 let login = $('#input-load-login').val();
                 let pwd = $('#input-load-password').val();
                 let choice = $('#select-sched-save :selected').val();
+                let checkState = localStorage.getItem('checkboxValues');
                 $.ajax({
                     url: '/getsettings',
                     type: 'POST',
-                    data: {'login': login, 'password': pwd, 'reqType': 'save', 'choice': choice},
+                    data: {'login': login, 'password': pwd, 'reqType': 'save', 'choice': choice, 'check': checkState},
                     success: function (data) {
                         $('#input-load-login').removeClass('is-invalid');
                         $('#input-load-password').removeClass('is-invalid');
@@ -706,10 +708,11 @@
                     } else {
                         let login = $('#input-link-login').val();
                         let pwd = $('#input-link-password').val();
+                        let checkState = localStorage.getItem('checkboxValues');
                         $.ajax({    //TODO: Password security ? Hash/SSL certificate ?
                             url: '/getcalendar/secure_link',
                             type: 'POST',
-                            data: {'login': login, 'password': pwd, 'param': $('#select-sched-download :selected').val()},
+                            data: {'login': login, 'password': pwd, 'param': $('#select-sched-download :selected').val(), 'check': checkState},
                             success: function (data) {
                                 $('#input-link-login').removeClass('is-invalid');
                                 $('#input-link-login').addClass('is-valid');
@@ -816,14 +819,14 @@
             // small delay so every checkbox has time to 'react'
             setTimeout(function() {
                 saveCheckbox();
-            }, 5);
+            }, 1);
         });
 
         // Save checkbox state
         function saveCheckbox() {
             setTimeout(function() {
                 let checkboxValues = {};
-                $(":checkbox").each(function(){
+                $("#course-body :checkbox").each(function(){
                   checkboxValues[this.id] = this.checked;
                 });
                 localStorage.setItem('checkboxValues', JSON.stringify(checkboxValues));
