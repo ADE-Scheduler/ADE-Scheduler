@@ -25,9 +25,13 @@ Session(app)
 
 @babel.localeselector
 def get_locale():
-    if session.get('basic_context').get('locale') is None:
-        session['basic_context']['locale'] = request.accept_languages.best_match(app.config['LANGUAGES'])
-    locale = session['basic_context']['locale']
+    if not session.get('init'):
+        init()
+    if not session.get('basic_context').get('locale'):
+        locale = request.accept_languages.best_match(app.config['LANGUAGES'])
+        session['basic_context']['locale'] = locale
+    else:
+        locale = session['basic_context']['locale']
     return locale
 
 
@@ -124,7 +128,7 @@ def getCalendar(link):
             if database.isUsernamePresent(username):
                 return _('This username already exists. Please choose another one.'), 400
             link = encrypt.generate_link(username, request.form['password'])
-            library.saveSettings(link, session, choice=int(request.form['param']) - 1, username=username)
+            library.saveSettings(link, session, choice=int(request.form['param']) - 1, username=username, check=request.form['check'])
             return link
         else:
             # RANDOM URL
@@ -162,7 +166,7 @@ def getSettings():
             session['basic_context']['priority'] = user_session['priority']
             fetch_courses()
             compute()
-            return redirect(url_for('calendar'))
+            return user_session['check']
         else:
             return _('Wrong credentials. Please try again.'), 400
     elif req == 'save':
@@ -170,9 +174,9 @@ def getSettings():
         if encrypt.check_id(user, pwd, link):
             choice = request.form['choice']
             if choice == 'no-change':
-                library.updateSettings(link, session)
+                library.updateSettings(link, session, check=request.form['check'])
             else:
-                library.updateSettings(link, session, int(choice) - 1)
+                library.updateSettings(link, session, int(choice) - 1, check=request.form['check'])
             return redirect(url_for('calendar'))
         else:
             return _('Wrong credentials. Please try again.'), 400
