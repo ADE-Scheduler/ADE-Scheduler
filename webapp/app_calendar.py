@@ -22,6 +22,10 @@ regex = re.compile('[^A-Z0-9]')
 
 
 def clear():
+    """
+    Called when the Clear button is pressed. Reinitialises this user's session.
+    :return: /
+    """
     session['data_base'].clear()
     session['data_sched'].clear()
     session['codes'].clear()
@@ -33,6 +37,11 @@ def clear():
 
 
 def compute():
+    """
+    Computes the three best schedules based on the user sepcifications/settngs.
+    Stores the result in data_sched.
+    :return: /
+    """
     if len(session['codes']) == 0:
         clear()
     else:
@@ -45,6 +54,10 @@ def compute():
 
 
 def init():
+    """
+    Initializes this user's session.
+    :return: /
+    """
     # Is the session initialized ?
     session['init'] = True
 
@@ -74,6 +87,11 @@ def init():
 
 
 def add_courses(codes):
+    """
+    Adds a course to this user's session (from a list of courses, inputed by the user)
+    :param codes: user input
+    :return: /
+    """
     pattern = re.compile("^\s+|\s*,\s*|\s+$")
     codes = [x for x in pattern.split(codes) if x]
     for code in codes:
@@ -81,6 +99,11 @@ def add_courses(codes):
 
 
 def add_course(code):
+    """
+    Adds one course to this user's session
+    :param code: code of the course to add
+    :return: /
+    """
     if len(code) > 12:
         code = code[0:12]
     code = regex.sub('', code)
@@ -94,6 +117,10 @@ def add_course(code):
 
 
 def fetch_courses():
+    """
+    Fetches all the courses whose codes are given by session['codes'] and stores the resulting data in 'data_base'
+    :return: /
+    """
     courses = getCoursesFromCodes(session['codes'], projectID=session['basic_context']['projectID'])
     fetch_id()
     events = chain.from_iterable(chain.from_iterable(extractEvents(courses, view=session['id_list'])))
@@ -102,6 +129,11 @@ def fetch_courses():
 
 
 def fetch_id():
+    """
+    Generates the list of event IDs from this session's courses (as specified in session['code']).
+    Stores the result in 'id_tab'
+    :return: /
+    """
     courses = getCoursesFromCodes(session['codes'], projectID=session['basic_context']['projectID'])
     for course in courses:
         type_tab = {'CM': list(), 'TP': list(), 'EXAM': list(), 'ORAL': list(), 'Other': list()}
@@ -116,6 +148,11 @@ def fetch_id():
 
 
 def get_fts():
+    """
+    Function called when the user adds a FTS aka "Forbidden Time Slot".
+    Stores the data transferred from the UI in the 'fts' variable.
+    :return: /
+    """
     msg = json.loads(request.form['fts'])
     session['fts'].clear()
     for el in msg:
@@ -125,12 +162,22 @@ def get_fts():
 
 
 def get_id():
+    """
+    Called when the user presses the "Refresh" button. Updates the course data stored in data_sched
+    according to the IDs the user specified on the UI.
+    :return:
+    """
     fetch_courses()
     session['basic_context']['up_to_date'] = False
     session.modified = True
 
 
 def delete_course(code):
+    """
+    Deletes the course whose code is given by 'code'
+    :param code: code of the course to delete
+    :return: /
+    """
     if code in session['codes']:
         session['codes'].remove(code)
         fetch_courses()
@@ -139,6 +186,11 @@ def delete_course(code):
 
 
 def download_calendar(choice):
+    """
+    Generate the calendar's .ics file to be then downloaded.
+    :param choice: choice of the schedule to download
+    :return: string, the calendar's .ics file
+    """
     courses = getCoursesFromCodes(session['codes'], projectID=session['basic_context']['projectID'])
     if choice < 0:
         events = chain.from_iterable(chain.from_iterable(extractEvents(courses, view=session['id_list'])))
@@ -151,6 +203,10 @@ def download_calendar(choice):
 
 
 def load_fts():
+    """
+    FTS parser.
+    :return: list of CustomEvents representing the FTS as specified by the user.
+    """
     tz = timezone('Europe/Brussels')
     fts = list()
     for el in session['fts']:
