@@ -1,6 +1,6 @@
 from app_calendar import *
 from flask import Flask, request, url_for, render_template, redirect, make_response
-from flask_babel import Babel
+from flask_babel import Babel, _
 from flask_session import Session
 ***REMOVED***
 import personnal_data
@@ -122,7 +122,7 @@ def getCalendar(link):
             # SECURE & MODIFIABLE URL
             username = request.form['login']
             if database.isUsernamePresent(username):
-                return 'USERNAME ALREADY EXISTING', 400
+                return _('This username already exists. Please choose another one.'), 400
             link = encrypt.generate_link(username, request.form['password'])
             library.saveSettings(link, session, choice=int(request.form['param']) - 1, username=username)
             return link
@@ -140,18 +140,49 @@ def getCalendar(link):
             resp.headers["Content-Disposition"] = "attachment; filename=calendar.ics"
             return resp
         else:
-            return 'BAD REQUEST: This link does not exist !', 400
+            return _('The link you specified doesn\'t exist in our database !'), 400
 
 
 # To get the user's settings
-@app.route('/getsettings/<user>/<pwd>', methods=['GET', 'POST'])
-def getSettings(user, pwd):
+@app.route('/getsettings', methods=['POST'])
+def getSettings():
+    req = request.form['reqType']
+    user = request.form['login']
+    pwd = request.form['password']
     link = database.getLinkFromUsername(user)
-    if not link: return 'No way, Jose !'
-    if encrypt.check_id(user, pwd, link):
-        return 'Here ya go !'
+    if not link: return _('Wrong credentials. Please try again.'), 400
+    if req == 'load':
+        # LOAD SETTINGS
+        if encrypt.check_id(user, pwd, link):
+            user_session = database.getSettingsFromLink(link)
+            session['codes'] = user_session['codes']
+            session['fts'] = user_session['fts']
+            session['id_list'] = user_session['id_list']
+            session['basic_context']['projectID'] = user_session['projectID']
+            session['basic_context']['priority'] = user_session['priority']
+            fetch_courses()
+            compute()
+            return redirect(url_for('calendar'))
+        else:
+            return _('Wrong credentials. Please try again.'), 400
+    elif req == 'save':
+        # UPDATE SETTINGS
+        if encrypt.check_id(user, pwd, link):
+            choice = request.form['choice']
+            if choice == 'no-change':
+                library.updateSettings(link, session)
+            else:
+                library.updateSettings(link, session, int(choice) - 1)
+            return redirect(url_for('calendar'))
+        else:
+            return _('Wrong credentials. Please try again.'), 400
+    elif req == 'forgot':
+        if encrypt.check_id(user, pwd, link):
+            return link
+        else:
+            return _('Wrong credentials. Please try again.'), 400
     else:
-        return 'No way, Jose !'
+        return 400
 
 
 # Page for user's help guide

@@ -176,7 +176,6 @@ def isUsernamePresent(username):
     cursor = db.cursor()
     cursor.execute("SELECT username FROM links WHERE username=?", (username,))
     resp = cursor.fetchone()
-    print(resp)
     if resp:
         log = True
     else:

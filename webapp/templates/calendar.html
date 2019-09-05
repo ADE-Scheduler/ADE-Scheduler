@@ -206,7 +206,7 @@
                             <div class="float-right" style="width: 100%">
                                 <div class="input-group" style="width: 100%;">
                                     <div class="input-group-prepend">
-                                        <button class="btn btn-secondary" id="btn-copy-link" type="button" onclick=copyButton(); data-toggle="tooltip" data-placement="bottom" title="{{ _('Copy link') }}">
+                                        <button class="btn btn-secondary" id="btn-copy-link" type="button" onclick=copyButton('input-generate-link'); data-toggle="tooltip" data-placement="bottom" title="{{ _('Copy link') }}">
                                             <i class="fas fa-copy"></i>
                                         </button>
                                     </div>
@@ -250,15 +250,100 @@
                 </div>
                 <div class="modal-footer">
                     <div class="alert alert-danger mr-auto hide" id="download-alert1" style="width: 70%; float: left; margin-bottom: 0">
-                        <button type="button" class="close" onclick="alert1Button();">&times;</button>
+                        <button type="button" class="close" onclick="alertButton('download-alert1');">&times;</button>
                         {{ _('Your schedules are not updated ! Please compute first.') }}
                     </div>
                     <div class="alert alert-danger mr-auto hide" id="download-alert2" style="width: 70%; float: left; margin-bottom: 0">
-                        <button type="button" class="close" onclick="alert2Button();">&times;</button>
+                        <button type="button" class="close" onclick="alertButton('download-alert2');">&times;</button>
                         {{ _('Please specify a schedule first.') }}
                     </div>
                     <button type="button" class="btn btn-danger" data-dismiss="modal">{{ _('Close') }}</button>
                     <button type="button" class="btn btn-success" onclick=downloadButton();>{{ _('Download file') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOGIN PROMPT (modal) -->
+    <div class="modal fade" id="loginPrompt" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ _('Get/Modify Schedule') }}</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div style="display: flex; justify-content: space-between; align-content: flex-end;">
+                        <div>
+                            <form id="form-link-login">
+                                <div class="form-group row">
+                                    <label class="col col-form-label-sm" for="input-load-login"><b>{{ _('Login') }}</b></label>
+                                    <div class="col-auto">
+                                        <input type="text" class="form-control" id="input-load-login" style="width: 200px;" placeholder={{ _('Login') }}>
+                                        <div class="invalid-feedback" id="load-login-feedback">
+                                            {{ _('Login is required !') }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row" style="margin-bottom: 0;">
+                                    <label class="col col-form-label-sm" for="input-load-password"><b>{{ _('Password') }}</b></label>
+                                    <div class="col-auto">
+                                        <input type="password" class="form-control" id="input-load-password" style="width: 200px;" placeholder={{ _('Password') }}>
+                                        <div class="invalid-feedback" id="load-pwd-feedback">
+                                            {{ _('Password is required !') }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div>
+                            <div>
+                                <select class="custom-select" id="select-sched-save">
+                                    <option value="no-change" selected>{{ _('Don\'t change') }}</option>
+                                    <option value="0">{{ _('ADE Schedule') }}</option>
+                                    <option value="1">{{ _('1st schedule') }}</option>
+                                    <option value="2">{{ _('2nd schedule') }}</option>
+                                    <option value="3">{{ _('3rd schedule') }}</option>
+                                </select>
+                                <small class="form-text text-muted">{{ _('Update your schedule choice.') }}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="justify-content: space-between;">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">{{ _('Close') }}</button>
+                    <div>
+                        <button type="button" class="btn btn-outline-dark" onclick=forgotButton();>{{ _('Forgot link ?') }}</button>
+                        <button type="button" class="btn btn-primary" onclick=loadButton();>{{ _('Load session') }}</button>
+                        <button type="button" class="btn btn-primary" onclick=saveButton();>{{ _('Save changes') }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FORGOT LINK (modal) -->
+    <div class="modal modal-info fade in" id="modal-forgot-link" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ _('Your Link') }}</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group" style="width: 100%;">
+                        <input class="form-control" id="input-copy-link" type="text" placeholder="{{ _('ex: adescheduler.com/getcalendar?=subscription_link') }}" readonly>
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" id="btn-link-copy" type="button" onclick=copyButton('input-copy-link');>{{ _('Copy link') }}</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-light" data-dismiss="modal">{{ _('Close') }}</button>
                 </div>
             </div>
         </div>
@@ -465,7 +550,7 @@
         <!-- Import/Export button group -->
         <div class="btn-group" style="width: 100%;">
             <button class="btn btn-secondary" data-toggle="modal" data-target="#exportPrompt">{{ _('Export') }}</button>
-            <button class="btn btn-secondary" data-toggle="modal" data-target="#importPrompt">{{ _('Import') }}</button>
+            <button class="btn btn-secondary" data-toggle="modal" data-target="#loginPrompt">{{ _('Log in') }}</button>
         </div>
     </div>
 
@@ -500,6 +585,103 @@
     </script>
 
     <script>
+        function loadButton() {
+            if (!$('#input-load-login').val() || !$('#input-load-password').val()) {
+                if (!$('#input-load-login').val()) {
+                    $('#input-load-login').addClass('is-invalid');
+                }
+                if (!$('#input-load-password').val()) {
+                    $('#input-load-password').addClass('is-invalid');
+                }
+            } else {
+                let login = $('#input-load-login').val();
+                let pwd = $('#input-load-password').val();
+                $.ajax({
+                    url: '/getsettings',
+                    type: 'POST',
+                    data: {'login': login, 'password': pwd, 'reqType': 'load'},
+                    success: function (data) {
+                        $('#loginPrompt').modal('hide');
+                        location = location;
+                    },
+                    error: function (data) {
+                        $('#load-login-feedback').text(data.responseText);
+                        $('#load-pwd-feedback').text(data.responseText);
+                        $('#input-load-password').addClass('is-invalid');
+                        $('#input-load-login').addClass('is-invalid');
+                    },
+                });
+            }
+        }
+
+        function saveButton() {
+            if (!$('#input-load-login').val() || !$('#input-load-password').val()) {
+                if (!$('#input-load-login').val()) {
+                    $('#input-load-login').addClass('is-invalid');
+                }
+                if (!$('#input-load-password').val()) {
+                    $('#input-load-password').addClass('is-invalid');
+                }
+            } else {
+                let login = $('#input-load-login').val();
+                let pwd = $('#input-load-password').val();
+                let choice = $('#select-sched-save :selected').val();
+                $.ajax({
+                    url: '/getsettings',
+                    type: 'POST',
+                    data: {'login': login, 'password': pwd, 'reqType': 'save', 'choice': choice},
+                    success: function (data) {
+                        $('#input-load-login').removeClass('is-invalid');
+                        $('#input-load-password').removeClass('is-invalid');
+                        $('#input-load-login').addClass('is-valid');
+                        $('#input-load-password').addClass('is-valid');
+                        $('#loginPrompt').modal('hide');
+                    },
+                    error: function (data) {
+                        $('#load-login-feedback').text(data.responseText);
+                        $('#load-pwd-feedback').text(data.responseText);
+                        $('#input-load-password').addClass('is-invalid');
+                        $('#input-load-login').addClass('is-invalid');
+                    },
+                });
+            }
+        }
+
+        function forgotButton() {
+            if (!$('#input-load-login').val() || !$('#input-load-password').val()) {
+                if (!$('#input-load-login').val()) {
+                    $('#input-load-login').addClass('is-invalid');
+                }
+                if (!$('#input-load-password').val()) {
+                    $('#input-load-password').addClass('is-invalid');
+                }
+            } else {
+                let login = $('#input-load-login').val();
+                let pwd = $('#input-load-password').val();
+                $.ajax({
+                    url: '/getsettings',
+                    type: 'POST',
+                    data: {'login': login, 'password': pwd, 'reqType': 'forgot'},
+                    success: function (data) {
+                        $('#input-load-login').removeClass('is-invalid');
+                        $('#input-load-password').removeClass('is-invalid');
+                        $('#input-load-login').addClass('is-valid');
+                        $('#input-load-password').addClass('is-valid');
+                        $('#loginPrompt').modal('hide');
+                        $('#input-copy-link').val('/getcalendar/' + data);
+                        $('#modal-forgot-link').modal('show');
+                    },
+                    error: function (data) {
+                        $('#load-login-feedback').text(data.responseText);
+                        $('#load-pwd-feedback').text(data.responseText);
+                        $('#input-load-password').addClass('is-invalid');
+                        $('#input-load-login').addClass('is-invalid');
+                    },
+                    dataType: 'text'
+                });
+            }
+        }
+
         function generateButton() {
             let choice = $('#select-sched-download :selected').val();
             if (!choice) {                                              // No schedule selected
@@ -524,7 +706,7 @@
                     } else {
                         let login = $('#input-link-login').val();
                         let pwd = $('#input-link-password').val();
-                        $.ajax({    //TODO: PASSWORD MUST BE SECURED (salt + hash) BEFORE BEING SENT
+                        $.ajax({    //TODO: Password security ? Hash/SSL certificate ?
                             url: '/getcalendar/secure_link',
                             type: 'POST',
                             data: {'login': login, 'password': pwd, 'param': $('#select-sched-download :selected').val()},
@@ -533,7 +715,7 @@
                                 $('#input-link-login').addClass('is-valid');
                                 $('#input-link-password').removeClass('is-invalid');
                                 $('#input-link-password').addClass('is-valid');
-                                $('#input-generate-link').val(data);
+                                $('#input-generate-link').val('/getcalendar/' + data);
                                 $('#input-generate-link').addClass('is-valid');
                                 $('#btn-link-generate').prop('disabled', true);
                                 $('#input-link-login-feedback').text({{ _('Please specify a login')|tojson }});
@@ -541,7 +723,7 @@
                             error: function (data) {
                                 $('#input-link-login').addClass('is-invalid');
                                 $('#input-link-password').removeClass('is-invalid');
-                                $('#input-link-login-feedback').text({{ _('This username was already chosen. Please specify another one.')|tojson }});
+                                $('#input-link-login-feedback').text(data.responseText);
                             },
                             dataType: 'text'
                         });
@@ -560,7 +742,7 @@
                         type: 'POST',
                         data:  {'param': $('#select-sched-download :selected').val()},
                         success: function(data) {
-                             $('#input-generate-link').val(data);
+                             $('#input-generate-link').val('/getcalendar/' + data);
                              $('#input-generate-link').addClass('is-valid');
                              $('#btn-link-generate').prop('disabled', true);
                         },
@@ -570,9 +752,9 @@
             }
         }
 
-        function copyButton() {
+        function copyButton(id) {
             try {
-                let toCopy = $('#input-generate-link');
+                let toCopy = $('#' + id);
                 toCopy.select();
                 document.execCommand('copy');
             } catch(err) { }
@@ -593,12 +775,8 @@
             }
         }
 
-        function alert1Button() {
-            $('#download-alert1').addClass('hide');
-        }
-
-        function alert2Button() {
-            $('#download-alert2').addClass('hide');
+        function alertButton(id) {
+            $('#' + id).addClass('hide');
         }
 
         // Clear
