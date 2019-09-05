@@ -17,7 +17,7 @@ settings format :
     priority: {code: priority}
     fts: [list of fts],
     id_list: [list of selected ids],
-    weeks: [[list of IDs], [list of IDs], ..., [list of IDs]}
+    weeks: [[list of IDs], [list of IDs], ..., [list of IDs]]
     check: state of checkboxes (from the UI)
 }
 """
