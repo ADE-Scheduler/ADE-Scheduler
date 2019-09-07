@@ -4,7 +4,7 @@ from lxml import html
 from pickle import dumps, loads
 ***REMOVED***
 from static_data import N_WEEKS
-
+from datetime import timedelta
 
 from professor import Professor
 from event import *
@@ -25,23 +25,24 @@ def getCoursesFromCodes(codes, projectID=9, weeks=range(N_WEEKS)):
     ***REMOVED***
     courses = list()
     not_added = list()
+
     for code in codes:
         course = redis.get(str(projectID) + code)
-        if course is None:
+        if not course:
             not_added.append(code)
         else:
             courses.append(loads(course))
 
     for course in getCoursesFromADE(not_added, projectID=projectID, weeks=weeks):
         courses.append(course)
-        redis.set(str(projectID) + code, dumps(course), ex=24*60*60)    # valid for one day
+        redis.setex(str(projectID) + course.code, timedelta(days=1), value=dumps(course))    # valid for one day
 
     return courses
 
 
-def getCoursesFromADE(course_tags, projectID=9, weeks=range(52)):
+def getCoursesFromADE(course_tags, projectID=9, weeks=range(N_WEEKS)):
     """
-    Fetches courses schedule from UCLouvain ADE website
+    Fetches courses schedule from UCLouvain ADE website by parsing HTML code.
     Parameters:
     -----------
     courses : list of str

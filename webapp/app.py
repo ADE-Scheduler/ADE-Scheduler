@@ -51,10 +51,10 @@ def calendar():
         # ADD CODE
         if request.form['submit'] == 'Add':
             code = request.form['course_code'].upper()
-            add_courses(code)
+            add_course(code)
         
-        # SAVE PREFERENCES
         if request.form['submit'] == 'Settings':
+            # SAVE PREFERENCES
             if request.form.getlist('safe-compute'):
                 session['basic_context']['safe_compute'] = True
             else:

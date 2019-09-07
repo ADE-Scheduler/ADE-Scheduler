@@ -91,7 +91,6 @@ def updateSettings(link, session, choice=None, check=None):
 
 def loadSettings(link):
     """
-
     :param link: str, given by the user
     :return: this link's corresponding settings
     """

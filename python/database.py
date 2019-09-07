@@ -1,4 +1,4 @@
-import _pickle
+import pickle
 import sqlite3
 import os
 
@@ -69,7 +69,7 @@ def getSettingsFromLink(link):
     else:
         db.close()
         return None
-    return _pickle.loads(s)
+    return pickle.loads(s)
 
 
 def isLinkPresent(link):
@@ -110,7 +110,7 @@ def setLink(link, username=None, settings=None):
     --------
     None
     """
-    s = _pickle.dumps(settings, -1)
+    s = pickle.dumps(settings, -1)
     db = sqlite3.connect(db_path)
     cursor = db.cursor()
     cursor.execute('''INSERT INTO links(link,username,settings) 
@@ -132,7 +132,7 @@ def updateSettingsFromLink(link, settings=None):
     --------
     None
     """
-    s = _pickle.dumps(settings, -1)
+    s = pickle.dumps(settings, -1)
     db = sqlite3.connect(db_path)
     cursor = db.cursor()
     cursor.execute("UPDATE OR IGNORE links SET settings=? WHERE link=?", (s, link))
