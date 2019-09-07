@@ -1,13 +1,14 @@
-from flask import request, session
-
-from pytz import timezone
-from dateutil.parser import parse
-from itertools import chain
-from ics import Calendar
+import inspect
 import json
+import os
 import re
+import sys
+from itertools import chain
 
-import sys, os, inspect
+from dateutil.parser import parse
+from flask import request, session
+from ics import Calendar
+from pytz import timezone
 
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
