@@ -17,10 +17,10 @@ app.config['BABEL_TRANSLATION_DIRECTORIES'] = 'app/translations'
 babel = Babel(app)
 
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
-app.config['SESSION_TYPE'] = 'redis'
-app.config['SESSION_REDIS'] = Redis(host=personnal_data.redis_ip, port=6379)
-app.config['PERMANENT_SESSION_LIFETIME'] = 60*60*24
-Session(app)
+# app.config['SESSION_TYPE'] = 'redis'
+# app.config['SESSION_REDIS'] = Redis(host=personnal_data.redis_ip, port=6379)
+# app.config['PERMANENT_SESSION_LIFETIME'] = 60*60*24
+# Session(app)
 
 
 @babel.localeselector
@@ -51,7 +51,7 @@ def calendar():
         # ADD CODE
         if request.form['submit'] == 'Add':
             code = request.form['course_code'].upper()
-            add_course(code)
+            add_courses(code)
         
         if request.form['submit'] == 'Settings':
             # SAVE PREFERENCES

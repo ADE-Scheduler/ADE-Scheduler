@@ -81,10 +81,8 @@ def init():
     # Other variables
     color_gradient = ['', '#374955', '#005376', '#00c0ff', '#1f789d', '#4493ba', '#64afd7', '#83ccf5', '#3635ff',
                       '#006c5a', '#3d978a']
-    color_police = ['white', 'white', 'white', 'white', 'white', 'white', 'white', 'white', 'white', 'white', 'white',
-                    'white', 'white']
     session['basic_context'] = {'up_to_date': True, 'safe_compute': True, 'locale': None, 'gradient': color_gradient,
-                                'police': color_police, 'projectID': 9, 'academic_years': ACADEMIC_YEARS, 'priority': {}}
+                                'projectID': 9, 'academic_years': ACADEMIC_YEARS, 'priority': {}}
 
 
 def add_courses(codes):
@@ -105,9 +103,9 @@ def add_course(code):
     :param code: code of the course to add
     :return: /
     """
-    if len(code) > 12:
-        code = code[0:12]
-    code = regex.sub('', code)
+    # if len(code) > 12:
+    #     code = code[0:12]
+    # code = regex.sub('', code)
     if code is '' or code is None:
         return
     if code not in session['codes']:
