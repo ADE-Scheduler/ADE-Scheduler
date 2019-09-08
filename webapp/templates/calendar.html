@@ -782,7 +782,6 @@
             $('#' + id).addClass('hide');
         }
 
-        // Clear
         function clearButton() {
             localStorage.removeItem('checkboxValues');
             $.post("/clear", {}, () => location = location)
@@ -906,7 +905,7 @@
                     right: 'dayGridMonth,timeGridWeek,listWeek'
                 },
                 minTime: '08:00:00',
-                maxTime: '20:00:00',
+                maxTime: '21:00:00',
                 navLinks: true, // can click day/week names to navigate views
                 editable: true,
                 droppable: true,
@@ -930,7 +929,6 @@
                     if (!compIsRequested) {
                         let courses = {{ codes|tojson }};
                         let gradient = {{ gradient|tojson }};
-                        let police = {{ police|tojson }};
                         for (let i = 0, j = 0; i < courses.length; i++, j++) {
                             if (j === gradient.length)
                                 j = 0;
@@ -938,7 +936,6 @@
                                 if (obj.code === courses[i]) {
                                     obj.backgroundColor = gradient[j];
                                     obj.borderColor = gradient[j];
-                                    obj.textColor = police[j];
                                 }
                             })
                         }
@@ -947,6 +944,7 @@
                     }
                     successCallback(eventsArray.concat(forbiddenTimeSlots));
                 },
+                eventTextColor: 'white',
 
                 // Extra info when hovering an event
                 eventRender: function (arg) {
