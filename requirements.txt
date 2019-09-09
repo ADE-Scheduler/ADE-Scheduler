@@ -35,7 +35,6 @@ more-itertools==7.0.0
 mpmath==1.1.0
 msgpack==0.6.1
 multipledispatch==0.6.0
-navigator-updater==0.2.1
 nbconvert==5.5.0
 nbformat==4.4.0
 networkx==2.3
