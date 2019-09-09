@@ -201,6 +201,6 @@ def page_not_found(e):
     return render_template('404.html', **session['basic_context']), 404
 
 
-if __name__ == '__main__':
-    host = personnal_data.local_ip
-    app.run()
+# if __name__ == '__main__':
+#     host = personnal_data.local_ip
+#     app.run()
