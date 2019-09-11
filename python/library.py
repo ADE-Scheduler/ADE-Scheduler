@@ -6,8 +6,8 @@ from computation import compute_best
 from itertools import chain
 from pytz import timezone
 from dateutil.parser import parse
-from event import CustomEvent
 from static_data import N_WEEKS
+from event import CustomEvent
 """
 settings format :
 {

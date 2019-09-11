@@ -15,7 +15,7 @@ def extractEvents(courses, weeks=None, view=None, eventTypes=None):
     """
     # First we merge courses
     if eventTypes is None:
-        eventTypes = {EventTP, EventCM, EventORAL, EventEXAM}
+        eventTypes = {EventTP, EventCM, EventORAL, EventEXAM, EventOTHER}
     else:
         eventTypes = set(eventTypes)
 
@@ -48,7 +48,7 @@ def compute_best(courses, weeks=range(N_WEEKS), fts=None, nbest=5, safe_compute=
         The n best schedules according to the evaluation function (costFunction())
     """
 
-    events = extractEvents(courses, weeks, view=view)
+    events = extractEvents(courses, weeks, view=view, eventTypes={EventTP, EventCM, EventORAL, EventEXAM})
 
     threshold = 10  # Arbitrary value
     # Under a certain amount of permutations, we remove TP that are conflicting CM and same TP at the same period
@@ -78,7 +78,7 @@ def compute_best(courses, weeks=range(N_WEEKS), fts=None, nbest=5, safe_compute=
                     view = set.intersection(view, set.union(*views))
                 else:
                     view = set.union(*views)
-                weekEvents = extractEvents(courses, week, view=view)
+                weekEvents = extractEvents(courses, week, view=view, eventTypes={EventTP, EventCM, EventORAL, EventEXAM})
                 if events:
                     weekEvents = weekEvents[0]
 
@@ -98,11 +98,11 @@ def compute_best(courses, weeks=range(N_WEEKS), fts=None, nbest=5, safe_compute=
                 for j in range(n_temp, nbest):
                     best[j].extend(temp[-1])
 
-    other = list(
-        filter(None, list(chain(list(chain(extractEvents(courses, weeks=weeks, view=view, eventTypes={EventOTHER})))))))
+    other = list(chain.from_iterable(chain.from_iterable(extractEvents(courses, weeks=weeks, view=view, eventTypes={EventOTHER}))))
 
     if other:
-        return [best[i].extend(other) for i in range(nbest)]
+        [sched.extend(other) for sched in best]
+        return best
     else:
         return best
 
