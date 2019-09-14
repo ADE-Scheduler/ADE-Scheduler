@@ -48,7 +48,7 @@ def extractCode(code: str):
         return ''
 
 
-def extractType(type, id):
+def extractType(ctype: str, cid: str):
     """
     Extracts the event type from a string.
     Parameters:
@@ -60,24 +60,24 @@ def extractType(type, id):
     t : CustomEvent constructor
         The constructor of the right event type.
     """
-    # We first try to detect with the given "type"
-    if type == 'Cours magistral':
+    # We first try to detect with the given type
+    if ctype == 'Cours magistral':
         return EventCM
-    elif type == 'TP':              # TODO: Vérifier si il n'y a pas d'autres strings possible en général
+    elif ctype == 'TP':              # TODO: Vérifier si il n'y a pas d'autres strings possible en général
         return EventTP
-    elif type == 'Examen écrit' or type == 'Test / Interrogation / Partiel':
+    elif ctype == 'Examen écrit' or type == 'Test / Interrogation / Partiel':
         return EventEXAM
-    elif type == 'Examen oral':
+    elif ctype == 'Examen oral':
         return EventORAL
 
     # If it fails, do a search using the given ID
-    elif re.search(COURSE_REGEX + "-", id, re.IGNORECASE):
+    elif re.search(COURSE_REGEX + "-", cid, re.IGNORECASE):
         return EventCM
-    elif re.search(COURSE_REGEX + "_", id, re.IGNORECASE):
+    elif re.search(COURSE_REGEX + "_", cid, re.IGNORECASE):
         return EventTP
-    elif re.search(COURSE_REGEX + "=E", id, re.IGNORECASE) or re.search(COURSE_REGEX + "=P", id, re.IGNORECASE):
+    elif re.search(COURSE_REGEX + "=E", cid, re.IGNORECASE) or re.search(COURSE_REGEX + "=P", cid, re.IGNORECASE):
         return EventEXAM
-    elif re.search(COURSE_REGEX + "=O", id, re.IGNORECASE):
+    elif re.search(COURSE_REGEX + "=O", cid, re.IGNORECASE):
         return EventORAL
 
     # The search failed, return the "Other" type
