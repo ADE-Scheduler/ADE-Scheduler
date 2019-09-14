@@ -115,8 +115,8 @@ class Course:
                     for i in range(1, n_events):
                         if c[-1].getId() == course[week][i].getId():  # If we can join [i-1] & [i]
                             id = c[-1].id[c[-1].id.index(':') + 1:]
-                            c[-1] = eventType(c[-1].begin, 2 * c[-1].duration, self.code, self.name, c[-1].description,
-                                              c[-1].location, id)
+                            c[-1] = eventType(c[-1].begin, course[week][i].end, self.code, self.name, c[-1].description,
+                                              c[-1].location, id)   # TODO: FIX HERE
                         else:
                             c.append(course[week][i])
                     self[eventType][week] = c

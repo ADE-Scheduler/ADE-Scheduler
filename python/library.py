@@ -117,11 +117,10 @@ def load_fts(fts_json):
     for el in fts_json:
         t0 = parse(el['start']).astimezone(tz)
         t1 = parse(el['end']).astimezone(tz)
-        dt = t1 - t0
         if el['title'] == 'High':
-            fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=9))
+            fts.append(CustomEvent(el['title'], t0, t1, el['description'], '', weight=9))
         elif el['title'] == 'Medium':
-            fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=6))
+            fts.append(CustomEvent(el['title'], t0, t1, el['description'], '', weight=6))
         elif el['title'] == 'Low':
-            fts.append(CustomEvent(el['title'], t0, dt, el['description'], '', weight=1))
+            fts.append(CustomEvent(el['title'], t0, t1, el['description'], '', weight=1))
     return fts
