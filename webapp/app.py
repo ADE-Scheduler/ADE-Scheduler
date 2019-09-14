@@ -21,7 +21,7 @@ babel = Babel(app)
 app.secret_key = secret_key
 app.config['SESSION_TYPE'] = 'redis'
 app.config['SESSION_REDIS'] = Redis(host=personnal_data.redis_ip, port=6379)
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(month=1)
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=30)
 Session(app)
 
 
