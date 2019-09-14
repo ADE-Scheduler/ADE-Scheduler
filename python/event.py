@@ -48,7 +48,7 @@ def extractCode(code: str):
         return ''
 
 
-def extractType(course):
+def extractType(type, id):
     """
     Extracts the event type from a string.
     Parameters:
@@ -60,30 +60,35 @@ def extractType(course):
     t : CustomEvent constructor
         The constructor of the right event type.
     """
-    if re.search(COURSE_REGEX + "-", course, re.IGNORECASE):
+    # We first try to detect with the given "type"
+    if type == 'Cours magistral':
         return EventCM
-    elif re.search(COURSE_REGEX + "_", course, re.IGNORECASE):
+    elif type == 'TP':              # TODO: Vérifier si il n'y a pas d'autres strings possible en général
         return EventTP
-    elif re.search(COURSE_REGEX + "=E", course, re.IGNORECASE):
+    elif type == 'Examen écrit' or type == 'Test / Interrogation / Partiel':
         return EventEXAM
-    elif re.search(COURSE_REGEX + "=O", course, re.IGNORECASE):
+    elif type == 'Examen oral':
         return EventORAL
+
+    # If it fails, do a search using the given ID
+    elif re.search(COURSE_REGEX + "-", id, re.IGNORECASE):
+        return EventCM
+    elif re.search(COURSE_REGEX + "_", id, re.IGNORECASE):
+        return EventTP
+    elif re.search(COURSE_REGEX + "=E", id, re.IGNORECASE) or re.search(COURSE_REGEX + "=P", id, re.IGNORECASE):
+        return EventEXAM
+    elif re.search(COURSE_REGEX + "=O", id, re.IGNORECASE):
+        return EventORAL
+
+    # The search failed, return the "Other" type
     else:
         return EventOTHER
 
 
-def extractDateTime(date, time, delta):
-    t0 = datetime.strptime(date + '-' + time, '%d/%m/%Y-%Hh%M').astimezone(tz)
-    s = re.findall(r'[0-9]+', delta)
-    if len(s) == 2:
-        h = int(s[0])
-        m = int(s[1])
-    else:
-        h = int(s[0])
-        m = 0
-    dt = timedelta(hours=h, minutes=m)
-    t1 = t0 + dt
-    return t0, t1, dt
+def extractDateTime(date, start, end):
+    t0 = datetime.strptime(date + '-' + start, '%d/%m/%Y-%H:%M').astimezone(tz)
+    t1 = datetime.strptime(date + '-' + end, '%d/%m/%Y-%H:%M').astimezone(tz)
+    return t0, t1
 
 
 def intersect(event1, event2):
@@ -180,8 +185,8 @@ def JSONfromEvents(events):
 
 # Event classes (subclasses of ics.Event)
 class CustomEvent(Event):
-    def __init__(self, name, begin, duration, descr, loc, id=None, weight=5, code=None):
-        super().__init__(name=name, begin=begin, duration=duration, description=descr, location=loc)
+    def __init__(self, name, begin, end, descr, loc, id=None, weight=5, code=None):
+        super().__init__(name=name, begin=begin, end=end, description=descr, location=loc)
         self.weight = weight
         self.id = id
         self.code = code
@@ -214,40 +219,40 @@ class CustomEvent(Event):
 
 
 class EventCM(CustomEvent):
-    def __init__(self, begin, duration, code, name, professor, loc, id=None, weight=5):
+    def __init__(self, begin, end, code, name, professor, loc, id=None, weight=5):
         name = 'CM: ' + code + ' - ' + name
         id = 'CM:' + id
-        super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, id=id, weight=weight,
+        super().__init__(name=name, begin=begin, end=end, descr=str(professor), loc=loc, id=id, weight=weight,
                          code=code)
 
 
 class EventTP(CustomEvent):
-    def __init__(self, begin, duration, code, name, professor, loc, id=None, weight=5):
+    def __init__(self, begin, end, code, name, professor, loc, id=None, weight=5):
         name = 'TP: ' + code + ' - ' + name
         id = 'TP:' + id
-        super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, id=id, weight=weight,
+        super().__init__(name=name, begin=begin, end=end, descr=str(professor), loc=loc, id=id, weight=weight,
                          code=code)
 
 
 class EventEXAM(CustomEvent):
-    def __init__(self, begin, duration, code, name, professor, loc, id=None, weight=5):
+    def __init__(self, begin, end, code, name, professor, loc, id=None, weight=5):
         name = 'EXAM: ' + code + ' - ' + name
         id = 'EXAM:' + id
-        super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, id=id, weight=weight,
+        super().__init__(name=name, begin=begin, end=end, descr=str(professor), loc=loc, id=id, weight=weight,
                          code=code)
 
 
 class EventORAL(CustomEvent):
-    def __init__(self, begin, duration, code, name, professor, loc, id=None, weight=5):
+    def __init__(self, begin, end, code, name, professor, loc, id=None, weight=5):
         name = 'ORAL: ' + code + ' - ' + name
         id = 'ORAL:' + id
-        super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, id=id, weight=weight,
+        super().__init__(name=name, begin=begin, end=end, descr=str(professor), loc=loc, id=id, weight=weight,
                          code=code)
 
 
 class EventOTHER(CustomEvent):
-    def __init__(self, begin, duration, code, name, professor, loc, id=None, weight=5):
+    def __init__(self, begin, end, code, name, professor, loc, id=None, weight=5):
         name = 'Other: ' + code + ' - ' + name
         id = 'Other:' + id
-        super().__init__(name=name, begin=begin, duration=duration, descr=str(professor), loc=loc, id=id, weight=weight,
+        super().__init__(name=name, begin=begin, end=end, descr=str(professor), loc=loc, id=id, weight=weight,
                          code=code)

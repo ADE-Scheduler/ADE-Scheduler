@@ -116,3 +116,4 @@ webapp/dump.rdb
 # For Redis
 webapp/personnal_data.py
 webapp/personnal_data.py
+python/hidden.py
