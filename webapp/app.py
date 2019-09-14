@@ -4,6 +4,7 @@ from flask_babel import Babel, _
 from flask_session import Session
 from redis import Redis
 from hidden import secret_key
+from datetime import timedelta
 import personnal_data
 
 import library
@@ -20,7 +21,7 @@ babel = Babel(app)
 app.secret_key = secret_key
 app.config['SESSION_TYPE'] = 'redis'
 app.config['SESSION_REDIS'] = Redis(host=personnal_data.redis_ip, port=6379)
-app.config['PERMANENT_SESSION_LIFETIME'] = 60*60*24
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(month=1)
 Session(app)
 
 

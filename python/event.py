@@ -1,31 +1,11 @@
 import re
-from static_data import COURSE_REGEX, Q1_START_DATE
-from datetime import datetime, timedelta
+from static_data import COURSE_REGEX
+from datetime import datetime
 from ics import Event
 from pytz import timezone
 
 # We need to set the timezone
 tz = timezone('Europe/Brussels')
-S0 = datetime.strptime(Q1_START_DATE, '%d/%m/%Y').astimezone(tz).isocalendar()[1] - 2
-
-
-def gregorianToADE(m: int):
-    """
-    Returns the ade week number.
-    Parameters:
-    -----------
-    m : int
-        The number of the week following the gregorian calendar (from 0 to 52).
-    Returns:
-    --------
-    n : int
-        The number of the week following the UCL calendar (from 0 to 52) where
-        week 1 is defined in static_data.py.
-    """
-    if m < S0:
-        return 52 + m - S0
-    else:
-        return m - S0
 
 
 def extractCode(code: str):
