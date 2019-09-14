@@ -1,4 +1,3 @@
-import re
 import requests
 from lxml import etree
 from event import extractType, extractDateTime
@@ -8,15 +7,10 @@ from hidden import get_token, user, password
 from redis import Redis
 from pickle import dumps, loads
 from personnal_data import redis_ip
-from static_data import N_WEEKS
 from datetime import timedelta
 
-import time
 
-SPLITTED_COURSES = ['(LANGL)']
-
-
-def getCoursesFromCodes(codes, projectID=9, weeks=range(N_WEEKS)):
+def getCoursesFromCodes(codes, projectID=9):
     """
     Fetches course schedule from Redis' course cache
     :param codes: list of str
@@ -106,7 +100,7 @@ def getCoursesFromADE(codes, projectID, redis=None):
             date = event.attrib['date']
             event_loc = ''
             event_prof = ''
-            event_code = None
+            event_code = ''
             for participant in event[0]:
                 category = participant.attrib.get('category')
                 if category == 'classroom':
@@ -127,11 +121,5 @@ def getCoursesFromADE(codes, projectID, redis=None):
                 course_added.append(event_code)
                 course_list.append(Course(event_code, activity_name))
                 course_list[-1].addEvent(event)
-
-    # # We treat "splitted courses" (such as: LANGL1873)
-    # for splitted_course in SPLITTED_COURSES:
-    #     for course in filter(lambda c: re.search(splitted_course, c.code, re.IGNORECASE), course_list):
-    #         course.join()
-    # TODO: SPLITTED COURSES --> .join() function broken
 
     return course_list
