@@ -2,7 +2,8 @@ from app_calendar import *
 from flask import Flask, request, url_for, render_template, redirect, make_response
 from flask_babel import Babel, _
 from flask_session import Session
-***REMOVED***
+from redis import Redis
+from hidden import secret_key
 import personnal_data
 
 import library
@@ -16,7 +17,7 @@ app.config['LANGUAGES'] = ['en', 'fr']
 app.config['BABEL_TRANSLATION_DIRECTORIES'] = 'app/translations'
 babel = Babel(app)
 
-app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+app.secret_key = secret_key
 app.config['SESSION_TYPE'] = 'redis'
 app.config['SESSION_REDIS'] = Redis(host=personnal_data.redis_ip, port=6379)
 app.config['PERMANENT_SESSION_LIFETIME'] = 60*60*24
