@@ -1,13 +1,13 @@
 import re
-***REMOVED***
-***REMOVED***
+import requests
+from lxml import etree
 from event import extractType, extractDateTime
 from course import Course
 from professor import Professor
-***REMOVED***
-***REMOVED***
+from hidden import get_token, user, password
+from redis import Redis
 from pickle import dumps, loads
-***REMOVED***
+from personnal_data import redis_ip
 from static_data import N_WEEKS
 from datetime import timedelta
 
@@ -24,7 +24,7 @@ def getCoursesFromCodes(codes, projectID=9, weeks=range(N_WEEKS)):
     :param weeks: list of int
     :return: Course list
     """
-    ***REMOVED***
+    redis = Redis(host=redis_ip)
     courses = list()
     not_added = list()
 
@@ -35,11 +35,7 @@ def getCoursesFromCodes(codes, projectID=9, weeks=range(N_WEEKS)):
         else:
             courses.append(loads(course))
 
-    tstart = time.clock()
-    loaded_courses = getCoursesFromADE(not_added, projectID, redis=redis)
-    print('Total time: ' + str(time.clock()-tstart))
-
-    for course in loaded_courses:
+    for course in getCoursesFromADE(not_added, projectID, redis=redis):
         courses.append(course)
         redis.setex(str(projectID) + course.code, timedelta(days=1), value=dumps(course))    # valid for one day
 
@@ -64,36 +60,42 @@ def getCoursesFromADE(codes, projectID, redis=None):
 
     # We retrieve the access token and construct the URL and the headers for the requests
     if not redis:
-        ***REMOVED***
+        token, _ = get_token()
     else:
         token = redis.get('ade_webapi_token')
         if not token:
             token, expiry = get_token()
             if expiry > 10:
-                redis.setex('ade_webapi_token', timedelta(seconds=expiry-10), value=dumps(token))
+                redis.setex('ade_webapi_token', timedelta(seconds=expiry-10), value=token)
         else:
-            token = loads(token)
-    ***REMOVED***
-    ***REMOVED***
+            token = token.decode()
+    headers = {'Authorization': 'Bearer ' + token}
+    url = 'https://api.sgsi.ucl.ac.be:8243/ade/v0/api?login=' + user + '&password=' + password + '&projectId=' + \
           str(projectID) + '&function='
 
-    tstart2 = time.clock()
-
     # We get the ressource IDs for each code
-    resources_id = ''
-    for code in codes:
-        print(code)
-        r = requests.get(url + 'getResources&name=' + code, headers=headers)
-        ***REMOVED***
-        for resource in root.xpath('//resource'):
-            resource_id = resource.attrib['id']
-            resources_id += (resource_id + '|')
-    resources_id = resources_id[0:-1]
-    print('Temps intermédiaire: ' + str(time.clock()-tstart2))
+    if not redis or not redis.exists('ade_webapi_id'):
+        r = requests.get(url + 'getResources&detail=2', headers=headers)
+        root = etree.fromstring(r.content)
+        hash_table = dict(zip(root.xpath('//resource/@name'), root.xpath('//resource/@id')))
+        result = list(filter(None, [hash_table.get(code) for code in codes]))
+        if redis:
+            redis.hmset('ade_webapi_id', hash_table)
+            redis.expire('ade_webapi_id', timedelta(days=1))
+        if result:
+            resources_id = '|'.join(result)
+        else:
+            return list()
+    else:
+        result = list(filter(None, redis.hmget('ade_webapi_id', codes)))
+        if result:
+            resources_id = '|'.join(map(lambda x: x.decode(), result))
+        else:
+            return list()
 
     # We get the events
     r = requests. get(url + 'getActivities&tree=false&detail=17&resources=' + resources_id, headers=headers)
-    ***REMOVED***
+    root = etree.fromstring(r.content)
     for activity in root.xpath('//activity'):
         activity_type = activity.attrib['type']
         activity_id = activity.attrib['name']
