@@ -117,3 +117,4 @@ webapp/dump.rdb
 webapp/personnal_data.py
 webapp/personnal_data.py
 python/hidden.py
+python/test.py
