@@ -720,7 +720,7 @@
                                 $('#input-link-password').addClass('is-valid');
                                 $('#input-generate-link').val('/getcalendar/' + data);
                                 $('#input-generate-link').addClass('is-valid');
-                                $('#btn-link-generate').prop('disabled', true);
+                                {#$('#btn-link-generate').prop('disabled', true);#}
                                 $('#input-link-login-feedback').text({{ _('Please specify a login')|tojson }});
                             },
                             error: function (data) {
@@ -747,7 +747,7 @@
                         success: function(data) {
                              $('#input-generate-link').val('/getcalendar/' + data);
                              $('#input-generate-link').addClass('is-valid');
-                             $('#btn-link-generate').prop('disabled', true);
+                             {#$('#btn-link-generate').prop('disabled', true);#}
                         },
                         dataType: 'text'
                     });
