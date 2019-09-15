@@ -71,7 +71,7 @@ def getCoursesFromADE(codes, projectID, redis=None):
     if not redis or not redis.exists('ade_webapi_id'):
         r = requests.get(url + 'getResources&detail=2', headers=headers)
         root = etree.fromstring(r.content)
-        hash_table = dict(zip(root.xpath('//resource/@name'), root.xpath('//resource/@id')))
+        hash_table = dict(zip(map(lambda x: x.upper(),  root.xpath('//resource/@name')), root.xpath('//resource/@id')))
         result = list(filter(None, [hash_table.get(code) for code in codes]))
         if redis:
             redis.hmset('ade_webapi_id', hash_table)
