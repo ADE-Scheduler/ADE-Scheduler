@@ -15,7 +15,8 @@
             </h4>
             <div id="faq-intro" class="collapse" data-parent="#accordion">
                 <div class="card-body">
-                    {{ _('ADE Scheduler is a free tool designed by engineering students at the Ecole Polytechnique de Louvain. The purpose of the scheduler is to provide an easy-to-use tool to help students from the Université Catholique de Louvain get an overview of their schedule based on their choice of course. It provides a way to get ahead of any possible scheduling conflict and, if possible, resolve them by making the right choices. However, it is not an official tool provided by the UCLouvain and the EPL. You should still consult from official sources as ADE Scheduler does not replace all the instructions professors and university officials may give to the students.') }}
+                    {{ _('ADE Scheduler is a free tool designed by engineering students at the Ecole Polytechnique de Louvain. The purpose of the scheduler is to provide an easy-to-use tool to help students from the Université Catholique de Louvain get an overview of their schedule based on their choice of course. It provides a way to get ahead of any possible scheduling conflict and, if possible, resolve them by making the right choices. <br>
+                    However, it is not an official tool provided by the UCLouvain and the EPL. You should still consult from official sources as ADE Scheduler does not replace all the instructions professors and university officials may give to the students.') }}
                 </div>
             </div>
         </div>
@@ -25,7 +26,8 @@
             </h4>
             <div id="faq-howtouse" class="collapse" data-parent="#accordion">
                 <div class="card-body">
-                    {{ _('It is truly easy: you simply need to specify the code (e.g. "LELEC1530", "LANGL1873", etc.) of the courses you are interested by. The possibilities related to your choice will then be displayed for you as you can find them on the UCLouvain\'s ADE website. Next, simply press "Compute" and voilà ! the three best schedules will be shown. Once you have picked your schedule, you can easily export it to your own agenda by pressing the "Export" button.') }}
+                    {{ _('It is truly easy: you simply need to specify the code (e.g. "LELEC1530", "LANGL1873", etc.) of the courses you are interested by. The possibilities related to your choice will then be displayed for you as you can find them on the UCLouvain\'s ADE website. <br>
+                    Next, simply press "Compute" and voilà ! the three best schedules will be shown. Once you have picked your schedule, you can easily export it to your own agenda by pressing the "Export" button.') }}
                 </div>
                 <div class="embed-responsive embed-responsive-16by9" style="width: 50%; margin: auto auto 10px;">
                     <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/9m4b6rOyxZA" allowfullscreen></iframe>
@@ -57,7 +59,9 @@
             </h4>
             <div id="faq-fts" class="collapse" data-parent="#accordion">
                 <div class="card-body">
-                    {{ _('All the students have a life beside the university and this life sometimes brings its own scheduling constrains. Our Forbidden Time Slots ("FTS") system provides a way for the user to specify when he would like to be free. There are three level of priority you can pick from: low, medium and high. The higher the priority, the harder the scheduling algorithm tries to free a time slot from any university events. However, it does not guaranty that it will be able to find a way around your specifications and wishes. To add a FTS, you simply need to pick one and drag it onto the calendar, at the day you wish to be free. You will then have to specify a start and end time. Once your FTS is created, you can move it around by dragging it and you can even duplicate it (in case your indisponibility would be a recurring event) by pressing the ALT key and dragging it. If you made a mistake, you can easily delete a FTS by clicking on it with the SHIFT key pressed.') }}
+                    {{ _('All the students have a life beside the university and this life sometimes brings its own scheduling constrains. Our Forbidden Time Slots ("FTS") system provides a way for the user to specify when he would like to be free. There are three level of priority you can pick from: low, medium and high. The higher the priority, the harder the scheduling algorithm tries to free a time slot from any university events. <br>
+                    However, it does not guaranty that it will be able to find a way around your specifications and wishes. To add a FTS, you simply need to pick one and drag it onto the calendar, at the day you wish to be free. You will then have to specify a start and end time. <br>
+                    Once your FTS is created, you can move it around by dragging it and you can even duplicate it (in case your indisponibility would be a recurring event) by pressing the ALT key and dragging it. If you made a mistake, you can easily delete a FTS by clicking on it with the SHIFT key pressed.') }}
                 </div>
             </div>
         </div>
@@ -97,8 +101,8 @@
             </h4>
             <div id="faq-safecompute" class="collapse" data-parent="#accordion">
                 <div class="card-body">
-                    {{ _('Computing a all the possible schedules is a very hard and complex problem, known to be NP-Complete. As a result, some course combinations can lead to huge computation times.
-                    The <i>safe compute</i> option acts as a safeguard by removing some obviously conflicted schedules before the computation starts. This guarantees short computation times.
+                    {{ _('Computing a all the possible schedules is a very hard and complex problem, known to be NP-Complete. As a result, some course combinations can lead to huge computation times. <br>
+                    The <i>safe compute</i> option acts as a safeguard by removing some obviously conflicted schedules before the computation starts. This guarantees short computation times. <br>
                     However, you can manually override this option and request for a complete computation. Be warned: the resulting lags can be very important.') }}
                 </div>
             </div>
@@ -118,24 +122,47 @@
 
         <div class="card">
             <h4 class="card-header" style="cursor: pointer" data-toggle="collapse" data-target="#faq-8">
-                Why did we make this project ?
+                {{_('Why did we make this project ?')}}
             </h4>
             <div id="faq-8" class="collapse" data-parent="#accordion">
                 <div class="card-body">
-                    {{ _('Making your own schedule is something that students have been doing for a long time. And sometimes, specially at the EPL, we are drown in all the possibilites to make your own schedule.\n
-                    Options, time conflicts, own comfort: everyone has his own preferences, and sometimes it is not easy to make your own schedule.\n
+                    {{ _('Making your own schedule is something that students have been doing for a long time. And sometimes, specially at the EPL, we are drown in all the possibilites to make your own schedule. <br>
+                    Options, time conflicts, own comfort: everyone has his own preferences, and sometimes it is not easy to make your own schedule. <br>
                     Our tool is here to help you during this reflexion time, and gives you a lot of flexibility to compute your own schedule ! Go in the above sections to see all the potential of it!')}}
                 </div>
             </div>
         </div>
 
         <div class="card">
-            <h4 class="card-header" style="cursor: pointer" data-toggle="collapse" data-target="#faq-9">
-                Jérome Eertmans
+            <h4 class="card-header" style="cursor: pointer" data-toggle="collapse" data-target="#faq-jeje">
+                {{_('Jérome Eertmans')}}
             </h4>
-            <div id="faq-9" class="collapse" data-parent="#accordion">
+            <div id="faq-jeje" class="collapse" data-parent="#accordion">
                 <div class="card-body">
-                    {{ _('Jérome is a noob. ')}}
+                    {{ _('Jérome is a student in the Ecole Polytechnique de Louvain, in civil engineering. He completed his bachelor degree in Electricity and Mechanics. He is now pursuing a master deree in Mechatronics. <br>
+                    Mail: jerome.eertmans@student.uclouvain.be')}}
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <h4 class="card-header" style="cursor: pointer" data-toggle="collapse" data-target="#faq-jyl">
+                {{_('Gilles Poncelet')}}
+            </h4>
+            <div id="faq-jyl" class="collapse" data-parent="#accordion">
+                <div class="card-body">
+                    {{ _('Gilles is a student in the Ecole Polytechnique de Louvain, in civil engineering. He completed his bachelor degree in Electricity and Mechanics. He is now pursuing a master deree in Mechatronics. <br>
+                     Mail: gilles.poncelet@student.uclouvain.be')}}
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <h4 class="card-header" style="cursor: pointer" data-toggle="collapse" data-target="#faq-loui">
+                {{_('Louis Navarre')}}
+            </h4>
+            <div id="faq-loui" class="collapse" data-parent="#accordion">
+                <div class="card-body">
+                    {{ _('Louis is a student at the Ecole Polytechnique de Louvain, in civil engineering. He completed his bachelor degree in Applied Mathematics and Computing Science. He is now pusruing a master degree in Computing Sciences. <br>
+                    Mail: navarre.louis@student.uclouvain.be')}}
                 </div>
             </div>
         </div>
