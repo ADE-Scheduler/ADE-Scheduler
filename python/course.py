@@ -3,6 +3,8 @@ from itertools import chain, repeat
 from operator import itemgetter
 from collections.abc import Iterable
 from static_data import N_WEEKS
+import pandas as pd
+import numpy as np
 
 
 class Course:
@@ -11,6 +13,11 @@ class Course:
         self.code = code
         self.name = name
         self.weight = weight
+        index = ['type', 'id']
+        columns = ['week', 'event']
+
+        self.activities = pd.DataFrame(columns=index+columns)
+        self.activities.set_index(keys=index, inplace=True)
 
         # A course can be composed of 5 different events: CM, TP, Exam, Oral and Other
         # Each event is classed by week
@@ -42,15 +49,32 @@ class Course:
     def __repr__(self):
         return str(self)
 
-    def setEventWeight(self, percentage, eventType=None):
+    def add_activity(self, type_: str, id: str, events: list):
+        data = [[event.getweek(), event] for event in events]
+
+        tuples = list(repeat((type_, id), len(data)))
+        index = pd.MultiIndex.from_tuples(tuples, names=self.activities.index.name)
+        df = pd.DataFrame(data=data, columns=self.activities.columns, index=index)
+
+        self.activities = self.activities.append(df)
+
+        print('activities \n', self.activities)
+
+
+    def setEventWeight(self, percentage=None, eventType=None):
         """
         Modify this course's events weight
         :param percentage: int, the "priority" required for this course in (0-100)%
-        :param eventType: if we want to modify the weight of a cetain type of event only
+        :param eventType: if we want to modify the weight of a certain type of event only
         :return: /
         """
         # No percentage specified, set to default value
         if percentage is None:  percentage = 50
+
+        if eventType is None:
+            self.activities['event'].apply(lambda e: e.set_weight(percentage/10))
+
+
         # No event type sepcified, meaning we modify the weight of all events
         if eventType is None: eventType = self.events.keys()
         # Set the weight (0 --> 10) as a function of the percentage
