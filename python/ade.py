@@ -8,6 +8,7 @@ from redis import Redis
 from pickle import dumps, loads
 from personnal_data import redis_ip
 from datetime import timedelta
+from pandas import DataFrame
 
 
 def getCoursesFromCodes(codes, projectID=9):
@@ -71,14 +72,14 @@ def getCoursesFromADE(codes, projectID, redis=None):
     if not redis or not redis.exists('ade_webapi_id'):
         r = requests.get(url + 'getResources&detail=2', headers=headers)
         root = etree.fromstring(r.content)
-        hash_table = dict(zip(map(lambda x: x.upper(),  root.xpath('//resource/@name')), root.xpath('//resource/@id')))
-        result = list(filter(None, [hash_table.get(code) for code in codes]))
+        df = DataFrame(data=root.xpath('//resource/@id'), index=map(lambda x: x.upper(), root.xpath('//resource/@name'))
+                       , columns=['id'])
+        hash_table = df.groupby(level=0).apply(lambda x: '|'.join(x.to_dict(orient='list')['id'])).to_dict()
+        resources_id = '|'.join(filter(None, [hash_table.get(code) for code in codes]))
         if redis:
             redis.hmset('ade_webapi_id', hash_table)
             redis.expire('ade_webapi_id', timedelta(days=1))
-        if result:
-            resources_id = '|'.join(result)
-        else:
+        if not resources_id:
             return list()
     else:
         result = list(filter(None, redis.hmget('ade_webapi_id', codes)))
