@@ -35,6 +35,59 @@
             </div>
         </div>
 
+        <h2 style="margin-top: 15px">{{ _('Export & Load') }}</h2>
+        <div class="card">
+            <h4 class="card-header" style="cursor: pointer" data-toggle="collapse" data-target="#faq-export-load-possibilities">
+                {{ _('What are the possibilities ?') }}
+            </h4>
+            <div id="faq-export-load-possibilities" class="collapse" data-parent="#accordion">
+                <div class="card-body">
+                    {{ _('ADE Scheduler offers three options to export your schedule to your own calendar:') }}
+                    <ul>
+                        <li>{{ _('Download an iCal file') }}</li>
+                        <li>{{ _('Non-modifiable subscription link') }}</li>
+                        <li>{{ _('Modifiable subscription link') }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <h4 class="card-header" style="cursor: pointer" data-toggle="collapse" data-target="#faq-ical-file">
+                {{ _('Download an iCal file') }}
+            </h4>
+            <div id="faq-ical-file" class="collapse" data-parent="#accordion">
+                <div class="card-body">
+                    {{ _('You can export the schedule of your choice in the iCal (.ics) format and then add it to your own calendar (e.g: Google Calendars offers such an option). <br>
+                    To do so, simply press the "Export" button, choose the schedule you wish to export and press the "Download file" button. The download will start right away.') }}
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <h4 class="card-header" style="cursor: pointer" data-toggle="collapse" data-target="#faq-nonmod-link">
+                {{ _('Non-modifiable link') }}
+            </h4>
+            <div id="faq-nonmod-link" class="collapse" data-parent="#accordion">
+                <div class="card-body">
+                    {{ _('Some calendars offer the possibility to suscribe to a pre-generated calendar. It means that you simply need to give a link to your calendar and it will regularly make a request to our website to automatically load the schedule you chose. This allows your calendar to stay updated, even if there is a last minute change in your schedule (new local, course cancelled, etc.). The calendar automatically requests for new updates every now and then, you do not have to worry about staying up-to-date ! <br>
+                    To do so, simply press the "Export" button, choose the schedule you wish to export and press the "Generate link" button. Then you simply need to copy/paste the link to your calendar\'s subscription system.') }}
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <h4 class="card-header" style="cursor: pointer" data-toggle="collapse" data-target="#faq-mod-link">
+                {{ _('Modifiable link') }}
+            </h4>
+            <div id="faq-mod-link" class="collapse" data-parent="#accordion">
+                <div class="card-body">
+                    {{ _('The modifiable link works in the exact same way as the non-modifiable link. However, you can protect your link with a username and a password. The advantage of doing so is that you will be able to come back at a later time and modify your scheduling wishes without having to start from scratch. You can also retrieve your link in case you lost it. <br>
+                    To create such a link, simply proceed as if it were a non-modifiable link, but toggle the "Modifiable & Protected link" button on and choose a username and password to proceed. Then, click "Generate link". <br>
+                    To retrieve your scheduling wishes, press the "Log in" button, specify your username & password then press "Load session". You can then modify your preferences/courses and save them through the same process, but by pressing "Save changes" instead. <br>
+                    Finally, press the "Forgot link ?" button to retrieve your subscription link.') }}
+                </div>
+            </div>
+        </div>
+
+
         <h2 style="margin-top: 15px">{{ _('Settings & Customization') }}</h2>
         <div class="card">
             <h4 class="card-header" style="cursor: pointer" data-toggle="collapse" data-target="#faq-possibilities">
