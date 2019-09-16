@@ -9,7 +9,7 @@ from pickle import dumps, loads
 from personnal_data import redis_ip
 from datetime import timedelta
 from pandas import DataFrame
-
+from collections import Counter
 
 def getCoursesFromCodes(codes, projectID=9):
     """
@@ -91,6 +91,57 @@ def getCoursesFromADE(codes, projectID, redis=None):
     # We get the events
     r = requests. get(url + 'getActivities&tree=false&detail=17&resources=' + resources_id, headers=headers)
     root = etree.fromstring(r.content)
+
+    courses = dict()
+
+    for activity in root.xpath('//activity'):
+        activity_id = activity.attrib['name']
+        activity_type = activity.attrib['type']
+        activity_name = activity.attrib['code']
+
+        print(activity_type, activity_id, activity_name)
+
+        codes = activity.xpath('.//eventParticipant[@category="category5"]/@name')
+
+        activity_code = Counter(codes).most_common()[0][0]
+
+        print(activity_code)
+
+        events = list()
+
+        if activity_code not in courses.keys():
+            courses[activity_code] = Course(activity_code, activity_name)
+
+        z = activity.xpath('.//event')
+
+        for event in activity.xpath('.//event'):
+            event_date = event.attrib['date']
+            event_start = event.attrib['startHour']
+            event_end = event.attrib['endHour']
+
+            classroom = event.xpath('.//eventParticipant[@category="classroom"]/@name')
+            events_classroom = classroom[0] if classroom else ''
+            instructor = event.xpath('.//eventParticipant[@category="instructor"]/@name')
+            events_instructor = instructor[0] if instructor else ''
+            print(events_classroom, events_instructor)
+
+            # We create the event
+            t0, t1 = extractDateTime(event_date, event_start, event_end)
+            event = extractType(activity_type, activity_id)(t0, t1, activity_code, activity_name,
+                                                            Professor(events_instructor, ''),
+                                                            events_classroom, id=activity_id)
+
+            courses[activity_code].addEvent(event)
+
+            events.append(event)
+
+        courses[activity_code].add_activity(activity_type, activity_id, events)
+
+    print(courses)
+
+    return courses.values()
+
+"""
     for activity in root.xpath('//activity'):
         activity_type = activity.attrib['type']
         activity_id = activity.attrib['name']
@@ -121,6 +172,5 @@ def getCoursesFromADE(codes, projectID, redis=None):
             except ValueError:  # This is a new course
                 course_added.append(event_code)
                 course_list.append(Course(event_code, activity_name))
-                course_list[-1].addEvent(event)
+                course_list[-1].addEvent(event)"""
 
-    return course_list
