@@ -158,9 +158,9 @@ def JSONfromEvents(events):
     """
         Returns the list of events, in "JSON format"
         """
-    return [{'start': str(event.begin), 'end': str(event.end), 'title': event.id, 'editable': False, 'code': event.code,
-             'description': event.name + '\n' + event.location + ' - ' + str(event.duration) + '\n' + str(
-                 event.description)} for event in events]
+    return [{'start': str(event.begin), 'end': str(event.end), 'title': event.id + '\n' + event.location, 'editable':
+            False, 'code': event.code, 'description': event.name + '\n' + event.location + ' - ' + str(event.duration)
+            + '\n' + str(event.description)} for event in events]
 
 
 # Event classes (subclasses of ics.Event)
