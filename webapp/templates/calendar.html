@@ -8,9 +8,9 @@
 
     <style>
         :root {
-            --sched-1-color: #f73dff;
-            --sched-2-color: #5be4ff;
-            --sched-3-color: #fff117;
+            --sched-1-color: #59981a;
+            --sched-2-color: #1e3148;
+            --sched-3-color: #e43d40;
         }
         #calendar {
             width: 100%;
@@ -20,6 +20,7 @@
             max-height: 200px;
             overflow-y:auto;
         }
+        .fc-today { background: #e2e2e2 !important; }
         .dropdown:hover>.dropdown-menu-on-hover {
             display: block;
         }
@@ -555,10 +556,13 @@
     </div>
 
     <!-- calendar body -->
-    <div class="card border-primary mb-3" style="flex-grow: 1">
-        <div class="card-body">
-            <div id='calendar'></div>
+    <div style="flex-direction: column">
+        <div class="card border-primary mb-3" style="flex-grow: 1">
+            <div class="card-body">
+                <div id='calendar'></div>
+            </div>
         </div>
+        <div class="text-danger">{{ _('Disclaimer: this software is not an official UCLouvain tool. It has been designed with the purpose to help the EPL students with scheduling. This tool is based on ADE but does not replace standard scheduling rules, nor the instructions given by university officials and teachers as those may vary from one course to another.') }}</div>
     </div>
 {% endblock %}
 
