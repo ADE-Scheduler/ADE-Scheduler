@@ -194,7 +194,7 @@ desired effect
                         <label for="projectid-select"><strong>{{ _('Academic Year') }}</strong></label>
                         <select class="custom-select" id="projectid-select" name="projectid-select" style="margin-left: 15px; width: 84%;">
                         {% for year in academic_years %}
-                            {% if year.id == projectID %}
+                            {% if year.id == project_id %}
                                 <option value={{ year.id }} selected>{{ year.year }}</option>
                             {% else %}
                                 <option value={{ year.id }}>{{ year.year }}</option>

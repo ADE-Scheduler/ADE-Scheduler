@@ -1,147 +1,99 @@
 import pickle
-import sqlite3
 import os
+import sqlalchemy as sql
+
 
 current_folder = os.path.dirname(__file__)
-db_path = os.path.join(current_folder, 'database.db')  # database is stored in the same folder as this file
+db_type = 'sqlite:///'
+db_name = 'database.db'
+db_path = db_type + current_folder + '/' + db_name
+db_engine = sql.create_engine(db_path)
 
-"""
-database.db : sqlite3 database containing
-    - table link:
-"""
+metadata = sql.MetaData()
+links = sql.Table('links', metadata,
+                  sql.Column('id', sql.Integer, autoincrement=True, primary_key=True),
+                  sql.Column('link', sql.String, unique=True, nullable=False),
+                  sql.Column('username', sql.String, unique=True),
+                  sql.Column('settings', sql.Binary))
+ins = links.insert()
+up = links.update()
+sel = links.select()
+del_ = links.delete()
 
 
-def dropTables(test=False):
+def drop_tables():
     """
-    Removes both tables from the database.
+    removes all tables from the database
     """
-    if test:
-        db = sqlite3.connect(os.path.join(current_folder, 'database_test.db'))
-    else:
-        db = sqlite3.connect(db_path)
-    cursor = db.cursor()
-    cursor.executescript("""
-                        DROP TABLE IF EXISTS links;
-                        """)
-    db.commit()
-    db.close()
+    try:
+        links.drop(db_engine)
+    except sql.exc.OperationalError:
+        pass
 
 
-def init(test=False):
+def init():
     """
     Inits the database, creating it and the two tables if they don't already exist.
     """
-    global db_path
-    if test:
-        db_path = os.path.join(current_folder, 'database_test.db')
-    db = sqlite3.connect(db_path)
-    cursor = db.cursor()
-    cursor.executescript("""
-                        CREATE TABLE IF NOT EXISTS links(
-                        id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
-                        link TEXT UNIQUE NOT NULL,
-                        username TEXT UNIQUE,
-                        settings TEXT
-                    );""")
-    db.commit()
-    db.close()
+    metadata.create_all(db_engine)
 
 
-def getSettingsFromLink(link):
+def get_settings_from_link(link):
     """
-    Get settings from the links table with the corresponding link (unique per settings).
-    Parameters:
-    -----------
-    link : string
-        The key needed to get the settings back.
-    Returns:
-    --------
-    s : iterable of str or None
-        None if settings not found. Otherwise, the settings previously saved.
+    Fetch the settings corresponding to this link from the database
+    :param link: str
+    :return: settings (dict)
     """
-    db = sqlite3.connect(db_path)
-    cursor = db.cursor()
-    cursor.execute("SELECT settings FROM links WHERE link=?", (link,))
-    resp = cursor.fetchone()
+    conn = db_engine.connect()
+    resp = conn.execute(sel.where(links.c.link == link)).fetchone()
+    conn.close()
     if resp:
-        s, = resp
-        db.close()
+        return pickle.loads(resp['settings'])
     else:
-        db.close()
         return None
-    return pickle.loads(s)
 
 
-def isLinkPresent(link):
+def is_link_present(link):
     """
-    Tell if the link link is present in links table
-    Parameters:
-    -----------
-    link : string
-        The link to be in the table
-    Returns:
-    --------
-    True if the link is in the table, False elsewhere
+    Check if this link is present in the database
+    :param link: str
+    :return: /
     """
-    db = sqlite3.connect(db_path)
-    cursor = db.cursor()
-    cursor.execute("SELECT * FROM links WHERE link=?", (link,))
-    resp = cursor.fetchall()
+    conn = db_engine.connect()
+    resp = conn.execute(sel.where(links.c.link == link)).fetchone()
+    conn.close()
     if resp:
-        db.close()
         return True
     else:
-        db.close()
         return False
 
 
-def setLink(link, username=None, settings=None):
+def set_link(link, username=None, settings=None):
     """
-    Set link with the setting into the links table
-    Parameters:
-    -----------
-    link : string
-        the link of the calendar
-    username: string
-        the username of the link
-    settings: dict
-        the settings of the calendar
-    Returns:
-    --------
-    None
+    Adds an entry in the "links" table in the database
+    :param link: str
+    :param username: str
+    :param settings: settings (dict)
+    :return: /
     """
-    s = pickle.dumps(settings, -1)
-    db = sqlite3.connect(db_path)
-    cursor = db.cursor()
-    cursor.execute('''INSERT INTO links(link,username,settings) 
-        VALUES(?,?,?);''', (link, username, s))
-    db.commit()
-    db.close()
+    conn = db_engine.connect()
+    conn.execute(ins, link=link, username=username, settings=pickle.dumps(settings, -1))
+    conn.close()
 
 
-def updateSettingsFromLink(link, settings=None):
+def update_settings_from_link(link, settings=None):
     """
-    Update the settings from links table with the corresponding link
-    Parameters:
-    -----------
-    link : string
-        the link of the calendar
-    settings: dict
-        the settings of the calendar
-    Returns:
-    --------
-    None
+    Updates the settings associated to this link
+    :param link: str
+    :param settings: settings (dict)
+    :return: /
     """
-    s = pickle.dumps(settings, -1)
-    db = sqlite3.connect(db_path)
-    cursor = db.cursor()
-    cursor.execute("UPDATE OR IGNORE links SET settings=? WHERE link=?", (s, link))
-    db.commit()
-    db.close()
-    return None
+    conn = db_engine.connect()
+    conn.execute(up.where(links.c.link == link), settings=pickle.dumps(settings, -1))
+    conn.close()
 
 
-def deleteLink(link):
+def delete_link(link):
     """
     Delete the link with the settings from links table
     Parameters:
@@ -152,56 +104,36 @@ def deleteLink(link):
     --------
     None
     """
-    db = sqlite3.connect(db_path)
-    cursor = db.cursor()
-    try:
-        cursor.execute("DELETE FROM links WHERE link=?", (link,))
-    finally:
-        db.commit()
-        db.close()
+    conn = db_engine.connect()
+    conn.execute(del_.where(links.c.link == link))
+    conn.close()
 
 
-def isUsernamePresent(username):
+def is_username_present(username):
     """
-    Tell if login is in the links table
-    Parameters:
-    -----------
-    login : text
-        the login
-    Returns:
-    --------
-    True if the login is present, False elsewhere
+    Checks if username is present in the database
+    :param username: str
+    :return: boolean
     """
-    db = sqlite3.connect(db_path)
-    cursor = db.cursor()
-    cursor.execute("SELECT username FROM links WHERE username=?", (username,))
-    resp = cursor.fetchone()
+    conn = db_engine.connect()
+    resp = conn.execute(sel.where(links.c.username == username)).fetchone()
+    conn.close()
     if resp:
-        log = True
+        return True
     else:
-        log = False
-    db.close()
-    return log
+        return False
 
 
-def getLinkFromUsername(username):
+def get_link_from_username(username):
     """
-    Get link from the links table at a given username
-    Parameters:
-    -----------
-    username: text
-        the username to retrive the information
-    Returns:
-    --------
-    The link associated to the username, None if not present
+    Returns the link associated to this username in the database
+    :param username: str
+    :return: str, or None if username does not exist
     """
-    db = sqlite3.connect(db_path)
-    cursor = db.cursor()
-    cursor.execute("SELECT link FROM links WHERE username=?", (username,))
-    resp = cursor.fetchone()
+    conn = db_engine.connect()
+    resp = conn.execute(sel.where(links.c.username == username)).fetchone()
+    conn.close()
     if resp:
-        link, = resp
+        return resp['link']
     else:
         return None
-    db.close()
-    return link
