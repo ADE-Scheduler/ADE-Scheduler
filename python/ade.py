@@ -11,11 +11,12 @@ from datetime import timedelta
 from pandas import DataFrame
 from collections import Counter
 
-def getCoursesFromCodes(codes, projectID=9):
+
+def get_courses_from_codes(codes, project_id=9):
     """
     Fetches course schedule from Redis' course cache
     :param codes: list of str
-    :param projectID: int
+    :param project_id: int
     :param weeks: list of int
     :return: Course list
     """
@@ -24,24 +25,24 @@ def getCoursesFromCodes(codes, projectID=9):
     not_added = list()
 
     for code in codes:
-        course = redis.get(str(projectID) + code)
+        course = redis.get(str(project_id) + code)
         if not course:
             not_added.append(code)
         else:
             courses.append(loads(course))
 
-    for course in getCoursesFromADE(not_added, projectID, redis=redis):
+    for course in get_courses_from_ade(not_added, project_id, redis=redis):
         courses.append(course)
-        redis.setex(str(projectID) + course.code, timedelta(days=1), value=dumps(course))    # valid for one day
+        redis.setex(str(project_id) + course.code, timedelta(days=1), value=dumps(course))    # valid for one day
 
     return courses
 
 
-def getCoursesFromADE(codes, projectID, redis=None):
+def get_courses_from_ade(codes, project_id, redis=None):
     """
     Fetches courses schedule from UCLouvain's ADE web API
     :param codes: list of str
-    :param projectID: int
+    :param project_id: int
     :param redis: instance of a Redis server, on which an access token may be stored. If not specified, simply retrieve
                   a new token.
     :return: list of Courses
@@ -66,7 +67,7 @@ def getCoursesFromADE(codes, projectID, redis=None):
             token = token.decode()
     headers = {'Authorization': 'Bearer ' + token}
     url = 'https://api.sgsi.ucl.ac.be:8243/ade/v0/api?login=' + user + '&password=' + password + '&projectId=' + \
-          str(projectID) + '&function='
+          str(project_id) + '&function='
 
     # We get the ressource IDs for each code
     if not redis or not redis.exists('ade_webapi_id'):

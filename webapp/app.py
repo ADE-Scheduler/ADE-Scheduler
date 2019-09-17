@@ -61,7 +61,7 @@ def calendar():
                 session['basic_context']['safe_compute'] = True
             else:
                 session['basic_context']['safe_compute'] = False
-            session['basic_context']['projectID'] = int(request.form['projectid-select'])
+            session['basic_context']['project_id'] = int(request.form['projectid-select'])
             fetch_courses()
             for code in session['codes']:
                 session['basic_context']['priority'][code] = int(request.form.get('range-' + code))
@@ -127,7 +127,7 @@ def getCalendar(link):
         if link == 'secure_link':
             # SECURE & MODIFIABLE URL
             username = request.form['login']
-            if database.isUsernamePresent(username):
+            if database.is_username_present(username):
                 return _('This username already exists. Please choose another one.'), 400
             link = encrypt.generate_link(username, request.form['password'])
             library.saveSettings(link, session, choice=int(request.form['param']) - 1, username=username, check=request.form['check'])
@@ -155,16 +155,16 @@ def getSettings():
     req = request.form['reqType']
     user = request.form['login']
     pwd = request.form['password']
-    link = database.getLinkFromUsername(user)
+    link = database.get_link_from_username(user)
     if not link: return _('Wrong credentials. Please try again.'), 400
     if req == 'load':
         # LOAD SETTINGS
         if encrypt.check_id(user, pwd, link):
-            user_session = database.getSettingsFromLink(link)
+            user_session = database.get_settings_from_link(link)
             session['codes'] = user_session['codes']
             session['fts'] = user_session['fts']
             session['id_list'] = user_session['id_list']
-            session['basic_context']['projectID'] = user_session['projectID']
+            session['basic_context']['project_id'] = user_session['project_id']
             session['basic_context']['priority'] = user_session['priority']
             fetch_courses()
             compute()
