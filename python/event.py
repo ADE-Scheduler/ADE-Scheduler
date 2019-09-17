@@ -43,7 +43,7 @@ def extractType(ctype: str, cid: str):
     # We first try to detect with the given type
     if ctype == 'Cours magistral':
         return EventCM
-    elif ctype == 'TP' or ctype == 'TD':              # TODO: Vérifier si il n'y a pas d'autres strings possible en général
+    elif ctype == 'TP':              # TODO: Vérifier si il n'y a pas d'autres strings possible en général
         return EventTP
     elif ctype == 'Examen écrit' or type == 'Test / Interrogation / Partiel':
         return EventEXAM
@@ -190,9 +190,6 @@ class CustomEvent(Event):
 
     def __repr__(self):
         return self.id
-
-    def set_weight(self, weight):
-        self.weight = weight
 
     def getweek(self):
         """
