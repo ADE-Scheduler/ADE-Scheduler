@@ -13,7 +13,7 @@ from pytz import timezone
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir + '/python')
-from ade import getCoursesFromCodes
+from ade import get_courses_from_codes
 from computation import compute_best, extractEvents
 from event import CustomEvent, JSONfromEvents
 from static_data import ACADEMIC_YEARS
@@ -46,7 +46,7 @@ def compute():
     if len(session['codes']) == 0:
         clear()
     else:
-        courses = getCoursesFromCodes(session['codes'], projectID=session['basic_context']['projectID'])
+        courses = get_courses_from_codes(session['codes'], project_id=session['basic_context']['project_id'])
         for course in courses: course.setEventWeight(session['basic_context']['priority'].get(course.code))
         for i, sched in enumerate(compute_best(courses, fts=load_fts(), nbest=3, view=session['id_list'], safe_compute=session['basic_context']['safe_compute'])):
             session['data_sched']['sched_' + str(i + 1)] = json.dumps(JSONfromEvents(sched))
@@ -82,7 +82,7 @@ def init():
     color_gradient = ['', '#374955', '#005376', '#00c0ff', '#1f789d', '#4493ba', '#64afd7', '#83ccf5', '#3635ff',
                       '#006c5a', '#3d978a']
     session['basic_context'] = {'up_to_date': True, 'safe_compute': True, 'locale': None, 'gradient': color_gradient,
-                                'projectID': 9, 'academic_years': ACADEMIC_YEARS, 'priority': {}}
+                                'project_id': 9, 'academic_years': ACADEMIC_YEARS, 'priority': {}}
 
 
 def add_courses(codes):
@@ -120,7 +120,7 @@ def fetch_courses():
     Fetches all the courses whose codes are given by session['codes'] and stores the resulting data in 'data_base'
     :return: /
     """
-    courses = getCoursesFromCodes(session['codes'], projectID=session['basic_context']['projectID'])
+    courses = get_courses_from_codes(session['codes'], project_id=session['basic_context']['project_id'])
     fetch_id()
     events = chain.from_iterable(chain.from_iterable(extractEvents(courses, view=session['id_list'])))
     session['data_base'] = JSONfromEvents(events)
@@ -133,7 +133,7 @@ def fetch_id():
     Stores the result in 'id_tab'
     :return: /
     """
-    courses = getCoursesFromCodes(session['codes'], projectID=session['basic_context']['projectID'])
+    courses = get_courses_from_codes(session['codes'], project_id=session['basic_context']['project_id'])
     for course in courses:
         type_tab = {'CM': list(), 'TP': list(), 'EXAM': list(), 'ORAL': list(), 'Other': list()}
         for course_id in course.getSummary():
@@ -190,7 +190,7 @@ def download_calendar(choice):
     :param choice: choice of the schedule to download
     :return: string, the calendar's .ics file
     """
-    courses = getCoursesFromCodes(session['codes'], projectID=session['basic_context']['projectID'])
+    courses = get_courses_from_codes(session['codes'], project_id=session['basic_context']['project_id'])
     if choice < 0:
         events = chain.from_iterable(chain.from_iterable(extractEvents(courses, view=session['id_list'])))
         calendar = Calendar(events=events)

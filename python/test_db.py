@@ -5,34 +5,34 @@ def test_basic():
     init(test=True)
     username = 'my_test_username'
     link = 'my_test_link'
-    settings = {'projectID':9, 'codes':'LINGI2261,LINGI2262'}
-    setLink(link, username, settings)
+    settings = {'project_id':9, 'codes':'LINGI2261,LINGI2262'}
+    set_link(link, username, settings)
 
     assert isLoginPresent(username)
-    assert isLinkPresent(link)
+    assert is_link_present(link)
 
-    link_from_username = getLinkFromUsername(username)
+    link_from_username = get_link_from_username(username)
     assert link_from_username == link
 
-    settings_from_link = getSettingsfromLink(link)
+    settings_from_link = get_settings_from_link(link)
     assert settings_from_link == settings
 
     new_settings = 'my_new_test_settings'
-    updateSettingsFromLink(link, new_settings)
-    settings_from_link = getSettingsfromLink(link)
+    update_settings_from_link(link, new_settings)
+    settings_from_link = get_settings_from_link(link)
     assert settings_from_link == new_settings
 
-    deleteLink(link)
-    assert not isLinkPresent(link)
+    delete_link(link)
+    assert not is_link_present(link)
 
 def test_username():
     dropTables(test=True)
     init(test=True)
     link = 'my_second_test_link'
-    setLink(link)
+    set_link(link)
 
-    assert isLinkPresent(link)
+    assert is_link_present(link)
     assert not isLoginPresent('any_string')
 
-    settings = getSettingsfromLink(link)
+    settings = get_settings_from_link(link)
     assert settings == None
