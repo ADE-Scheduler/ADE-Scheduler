@@ -95,15 +95,10 @@ def update_settings_from_link(link, settings=None):
 
 def delete_link(link):
     """
-    Delete the link with the settings from links table
-    Parameters:
-    -----------
-    link: string
-        the link to be deleted, with the settings
-    Returns:
-    --------
-    None
-    """
+    Delete the table's entry corresponding to "link"
+    :param link: str
+    :return: /
+    """""
     conn = db_engine.connect()
     conn.execute(del_.where(links.c.link == link))
     conn.close()

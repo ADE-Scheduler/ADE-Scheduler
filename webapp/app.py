@@ -130,16 +130,16 @@ def getCalendar(link):
             if database.is_username_present(username):
                 return _('This username already exists. Please choose another one.'), 400
             link = encrypt.generate_link(username, request.form['password'])
-            library.saveSettings(link, session, choice=int(request.form['param']) - 1, username=username, check=request.form['check'])
+            library.save_settings(link, session, choice=int(request.form['param']) - 1, username=username, check=request.form['check'])
             return link
         else:
             # RANDOM URL
-            library.saveSettings(link, session, choice=int(request.form['param'])-1)
+            library.save_settings(link, session, choice=int(request.form['param'])-1)
             return link
 
     if request.method == 'GET':
         # CALENDAR REQUESTED (fetch the infos relative to this subscription link
-        _cal = library.getCalendarFromLink(link)
+        _cal = library.get_calendar_from_link(link)
         if _cal:
             resp = make_response(_cal)
             resp.mimetype = 'text/calendar'
@@ -176,9 +176,9 @@ def getSettings():
         if encrypt.check_id(user, pwd, link):
             choice = request.form['choice']
             if choice == 'no-change':
-                library.updateSettings(link, session, check=request.form['check'])
+                library.update_settings(link, session, check=request.form['check'])
             else:
-                library.updateSettings(link, session, int(choice) - 1, check=request.form['check'])
+                library.update_settings(link, session, int(choice) - 1, check=request.form['check'])
             return redirect(url_for('calendar'))
         else:
             return _('Wrong credentials. Please try again.'), 400

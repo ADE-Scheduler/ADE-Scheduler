@@ -11,7 +11,6 @@ from datetime import timedelta
 from pandas import DataFrame
 
 
-
 def get_courses_from_codes(codes, project_id=9):
     """
     Fetches course schedule from Redis' course cache
