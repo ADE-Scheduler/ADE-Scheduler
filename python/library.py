@@ -23,7 +23,7 @@ settings format :
 """
 
 
-def saveSettings(link, session, choice=0, username=None, check=None):
+def save_settings(link, session, choice=0, username=None, check=None):
     """
     Saves a user's session in the database with the corresponding link
     :param check: state of checkbobxes
@@ -54,7 +54,7 @@ def saveSettings(link, session, choice=0, username=None, check=None):
     set_link(link=link, username=username, settings=settings)
 
 
-def updateSettings(link, session, choice=None, check=None):
+def update_settings(link, session, choice=None, check=None):
     """
     Update a link's corresponding settings, after modifications imposed by the user
     :param check: state of checkboxes
@@ -89,7 +89,7 @@ def updateSettings(link, session, choice=None, check=None):
     update_settings_from_link(link=link, settings=settings)
 
 
-def loadSettings(link):
+def load_settings(link):
     """
     :param link: str, given by the user
     :return: this link's corresponding settings
@@ -97,7 +97,7 @@ def loadSettings(link):
     return get_settings_from_link(link)
 
 
-def getCalendarFromLink(link):
+def get_calendar_from_link(link):
     """
     Returns the user's saved calendar in .ics format
     :param link: str, given by the user
