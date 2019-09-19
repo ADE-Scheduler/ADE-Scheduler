@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-09-19 17:20+0200\n"
+"POT-Creation-Date: 2019-09-19 21:41+0200\n"
 "PO-Revision-Date: 2019-08-24 23:58+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -18,46 +18,47 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.7.0\n"
 
-#: templates/base.html:132
+#: templates/base.html:134
 msgid "Calendar"
 msgstr "Calendrier"
 
-#: templates/base.html:137
+#: templates/base.html:139
 msgid "Help"
 msgstr "Aide"
 
-#: templates/base.html:167
+#: templates/base.html:169
 msgid "Open Source software"
 msgstr ""
 
-#: templates/base.html:169
+#: templates/base.html:171
 msgid ""
 "  designed by Gilles Poncelet, Louis Navarre and Jérome Eertmans, "
 "students at the Ecole Polytechnique de Louvain."
-msgstr "  réalisé par Gilles Poncelet, Louis Navarre et Jérome Eertmans, étudiants à l'Ecole Polytechnique de Louvain."
+msgstr ""
+"  réalisé par Gilles Poncelet, Louis Navarre et Jérome Eertmans, "
+"étudiants à l'Ecole Polytechnique de Louvain."
 
-#: templates/base.html:179
+#: templates/base.html:181
 msgid "Contact us"
 msgstr "Nous contacter"
 
-#: templates/base.html:190
+#: templates/base.html:192
 msgid "Settings"
 msgstr "Paramètres"
 
-#: templates/base.html:192
+#: templates/base.html:194
 msgid "Save"
 msgstr "Sauver"
 
-#: templates/base.html:197 templates/help.html:103 templates/help.html:143
-#: templates/preferences.html:46
+#: templates/base.html:199 templates/help.html:103 templates/help.html:143
 msgid "Academic Year"
 msgstr "Année académique"
 
-#: templates/base.html:210 templates/help.html:102 templates/help.html:133
+#: templates/base.html:212 templates/help.html:102 templates/help.html:133
 msgid "Course priority"
 msgstr "Priorité des cours"
 
-#: templates/base.html:217
+#: templates/base.html:219
 msgid ""
 "Customize the priority given to a course, from no priority at all to "
 "maximum priority."
@@ -65,15 +66,15 @@ msgstr ""
 "Customisez la priorité accordée à un cours: d'aucune priorité jusqu'à "
 "priorité maximale."
 
-#: templates/base.html:223
+#: templates/base.html:225
 msgid "Computation"
 msgstr "Calculs"
 
-#: templates/base.html:230 templates/help.html:104 templates/help.html:153
+#: templates/base.html:232 templates/help.html:104 templates/help.html:153
 msgid "Safe compute"
 msgstr "Safe compute"
 
-#: templates/base.html:232
+#: templates/base.html:234
 msgid "WARNING: may cause long computation times, see help section."
 msgstr "AVERTISSEMENT: peut causer de longs temps de calcul, voir la section Aide."
 
@@ -173,7 +174,7 @@ msgstr "Générer un lien d'abonnement"
 msgid "Login"
 msgstr "Identifiant"
 
-#: templates/calendar.html:231 templates/calendar.html:728
+#: templates/calendar.html:231 templates/calendar.html:730
 msgid "Please specify a login"
 msgstr "Choisissez un identifiant"
 
@@ -315,8 +316,8 @@ msgstr ""
 "et les professeurs, car ces informations peuvent changer d'un cours à un "
 "autre."
 
-#: templates/calendar.html:996 templates/calendar.html:1043
-#: templates/calendar.html:1068
+#: templates/calendar.html:998 templates/calendar.html:1045
+#: templates/calendar.html:1070
 msgid "A time slot where the user would like to be free"
 msgstr "Un moment ou l'utilisateur voudrait être libre"
 
@@ -343,9 +344,9 @@ msgid ""
 "university officials may give to the students."
 msgstr ""
 "ADE Scheduler est un outil gratuit, développé pour les étudiants "
-"ingénieurs à l'Ecole Polytechnique de Louvain. Le but de l'application est"
-" de proposer un outil facile d'utilisation pour aider les étudiants de "
-"l'Université Catholique de Louvain à avoir une vue d'ensemble de leur "
+"ingénieurs à l'Ecole Polytechnique de Louvain. Le but de l'application "
+"est de proposer un outil facile d'utilisation pour aider les étudiants de"
+" l'Université Catholique de Louvain à avoir une vue d'ensemble de leur "
 "horaire, basé sur leurs choix de cours. Il offre un moyen de se prévenir "
 "de tout conflit horaire et, si possible, résoudre ceux-ci en prenant les "
 "bons choix. <br>                   Néanmoins, ceci n'est pas un outil "
@@ -659,13 +660,13 @@ msgstr ""
 msgid ""
 "Jérome is a student in the Ecole Polytechnique de Louvain, in civil "
 "engineering. He completed his bachelor degree in Electricity and "
-"Mechanics. He is now pursuing a master deree in Mechatronics. <br>\n"
-"                    Mail: jerome.eertmans@student.uclouvain.be"
-msgstr ""
-"Jérome est un étudiant de l'Ecole Polytechnique de Louvain, en ingénieur "
-"civil.  Il a fini son bachelier en électricité et mécanique. Il est "
-"désormais en cours de master en mécatronique. <br>                   "
-"email: jerome.eertmans@student.uclouvain.be"
+"Mechanics. He is now pursuing a master deree in Mechatronics. <br> "
+msgstr  "Jérome est un étudiant de l'Ecole "
+"Polytechnique de Louvain, en ingénieur "
+"civil.  Il a fini son bachelier en"
+" électricité et mécanique. Il est "
+"désormais en cours de master en "
+"Mécatronique. <br> "
 
 #: templates/help.html:202
 msgid "Gilles Poncelet"
@@ -675,13 +676,13 @@ msgstr ""
 msgid ""
 "Gilles is a student in the Ecole Polytechnique de Louvain, in civil "
 "engineering. He completed his bachelor degree in Electricity and "
-"Mechanics. He is now pursuing a master deree in Mechatronics. <br>\n"
-"                     Mail: gilles.poncelet@student.uclouvain.be"
-msgstr ""
-"Gilles est un étudiant de l'Ecole Polytechnique de Louvain, en ingénieur "
-"civil.  Il a fini son bachelier en électricité et mécanique. Il est "
-"désormais en cours de master en mécatronique. <br>                   "
-"email: gilles.poncelet@student.uclouvain.be"
+"Mechanics. He is now pursuing a master deree in Mechatronics. <br> "
+msgstr  "Gilles est un étudiant de l'Ecole "
+"Polytechnique de Louvain, en ingénieur "
+"civil.  Il a fini son bachelier en"
+" électricité et mécanique. Il est "
+"désormais en cours de master en "
+"Mécatronique. <br> "
 
 #: templates/help.html:213
 msgid "Louis Navarre"
@@ -692,13 +693,14 @@ msgid ""
 "Louis is a student at the Ecole Polytechnique de Louvain, in civil "
 "engineering. He completed his bachelor degree in Applied Mathematics and "
 "Computing Science. He is now pusruing a master degree in Computing "
-"Sciences. <br>\n"
-"                    Mail: navarre.louis@student.uclouvain.be"
+"Sciences. <br> "
 msgstr ""
-"Louis est un étudiant de l'Ecole Polytechnique de Louvain, en ingénieur "
-"civil.  Il a fini son bachelier en informatique et mathématiques "
-"appliquées. Il est désormais en cours de master en intelligence "
-"artificielle                   email: navarre.louis@student.uclouvain.be"
+"Louis est un étudiant de l'Ecole "
+"Polytechnique de Louvain, en ingénieur "
+"civil.  Il a fini son bachelier en"
+" informatique et mathématiques appliquées. "
+"Il est désormais en cours de "
+"master en intelligence artificielle <br>"
 
 #~ msgid ""
 #~ "It is truly easy: you simply need"
@@ -774,4 +776,56 @@ msgstr ""
 #~ "Jérome Eertmans, students at the Ecole"
 #~ " Polytechnique de Louvain."
 #~ msgstr ""
+
+#~ msgid ""
+#~ "Jérome is a student in the Ecole"
+#~ " Polytechnique de Louvain, in civil "
+#~ "engineering. He completed his bachelor "
+#~ "degree in Electricity and Mechanics. He"
+#~ " is now pursuing a master deree "
+#~ "in Mechatronics. <br>\n"
+#~ "                    Mail: jerome.eertmans@student.uclouvain.be"
+#~ msgstr ""
+#~ "Jérome est un étudiant de l'Ecole "
+#~ "Polytechnique de Louvain, en ingénieur "
+#~ "civil.  Il a fini son bachelier en"
+#~ " électricité et mécanique. Il est "
+#~ "désormais en cours de master en "
+#~ "mécatronique. <br>                   email: "
+#~ "jerome.eertmans@student.uclouvain.be"
+
+#~ msgid ""
+#~ "Gilles is a student in the Ecole"
+#~ " Polytechnique de Louvain, in civil "
+#~ "engineering. He completed his bachelor "
+#~ "degree in Electricity and Mechanics. He"
+#~ " is now pursuing a master deree "
+#~ "in Mechatronics. <br>\n"
+#~ "                     Mail: gilles.poncelet@student.uclouvain.be"
+#~ msgstr ""
+#~ "Gilles est un étudiant de l'Ecole "
+#~ "Polytechnique de Louvain, en ingénieur "
+#~ "civil.  Il a fini son bachelier en"
+#~ " électricité et mécanique. Il est "
+#~ "désormais en cours de master en "
+#~ "mécatronique. <br>                   email: "
+#~ "gilles.poncelet@student.uclouvain.be"
+
+#~ msgid ""
+#~ "Louis is a student at the Ecole"
+#~ " Polytechnique de Louvain, in civil "
+#~ "engineering. He completed his bachelor "
+#~ "degree in Applied Mathematics and "
+#~ "Computing Science. He is now pusruing"
+#~ " a master degree in Computing "
+#~ "Sciences. <br>\n"
+#~ "                    Mail: navarre.louis@student.uclouvain.be"
+#~ msgstr ""
+#~ "Louis est un étudiant de l'Ecole "
+#~ "Polytechnique de Louvain, en ingénieur "
+#~ "civil.  Il a fini son bachelier en"
+#~ " informatique et mathématiques appliquées. "
+#~ "Il est désormais en cours de "
+#~ "master en intelligence artificielle"
+#~ "                   email: navarre.louis@student.uclouvain.be"
 

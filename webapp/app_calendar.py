@@ -213,10 +213,10 @@ def load_fts():
     for el in session['fts']:
         t0 = parse(el['start']).astimezone(tz)
         t1 = parse(el['end']).astimezone(tz)
-        if el['title'] == 'High':
+        if el['title'] == 'High' or el['title'] == 'Haut':
             fts.append(CustomEvent(el['title'], t0, t1, el['description'], '', weight=9))
-        elif el['title'] == 'Medium':
+        elif el['title'] == 'Medium' or el['title'] == 'Moyen':
             fts.append(CustomEvent(el['title'], t0, t1, el['description'], '', weight=6))
-        elif el['title'] == 'Low':
+        elif el['title'] == 'Low' or el['title'] == 'Bas':
             fts.append(CustomEvent(el['title'], t0, t1, el['description'], '', weight=1))
     return fts
