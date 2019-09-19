@@ -5,7 +5,6 @@ from flask_session import Session
 from redis import Redis
 from hidden import secret_key
 from datetime import timedelta
-import personnal_data
 
 import library
 import encrypt
@@ -20,7 +19,7 @@ babel = Babel(app)
 
 app.secret_key = secret_key
 app.config['SESSION_TYPE'] = 'redis'
-app.config['SESSION_REDIS'] = Redis(host=personnal_data.redis_ip, port=6379)
+app.config['SESSION_REDIS'] = Redis(host='localhost', port=6379)
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=30)
 Session(app)
 
@@ -204,5 +203,4 @@ def page_not_found(e):
 
 
 if __name__ == '__main__':
-    host = personnal_data.local_ip
-    app.run(host=host)
+    app.run()

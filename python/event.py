@@ -43,7 +43,7 @@ def extractType(ctype: str, cid: str):
     # We first try to detect with the given type
     if ctype == 'Cours magistral':
         return EventCM
-    elif ctype == 'TP':              # TODO: Vérifier si il n'y a pas d'autres strings possible en général
+    elif ctype == 'TP' or 'TD':
         return EventTP
     elif ctype == 'Examen écrit' or type == 'Test / Interrogation / Partiel':
         return EventEXAM
