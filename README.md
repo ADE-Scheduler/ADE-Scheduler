@@ -25,8 +25,9 @@ Doit être fait
 - optimiser la fonction compute
 - suite de tests à effectuer sur tout code pull-request
 - finir videos de la section aide
-- corriger texte (mise en page) de l'aide + lien mailto:
+- corriger texte (mise en page + orthographe) de l'aide
 - créer une version mobile plus accessible
+- automatiquement ajouter les nouveaux project id 
 
 L'utilisateur pourra
 - participer au développement de l'application (pull request) de manière sûre : suite de tests à effectuer sur tout code
@@ -50,4 +51,4 @@ L'utilisateur pourra
 
 ### `JavaScript` pour
 - les pages webs
-- affichage du calendrier avec FullCalendar
+- affichage du calendrier avec FullCalendar (fullcalendar.io)
