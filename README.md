@@ -40,8 +40,10 @@ L'utilisateur pourra
 - effectuer tous les calculs sur les calendriers
 - gestion de l'application avec Flask
 - gestion d'une base de donnée SQLite afin de stocker 
-  - les cours pour 24H et limiter la quantité de requêtes ADE en allant d'abord rechercher ce qu'il existe dans la base
-  - les paramètres afin de reconstruire un calendrier à chaque requête de l'abonnement icalendar
+  - les liens d'abonnements + les paramètres d'un utilisateur afin de pouvoir reconstituer son calendrier/sa session sur demande
+- gestion d'un "cache" de mémoire Redis pour:
+  - stocker les cours pendant 24h afin de limiter la quantité de requêtes ADE
+  - les sessions des utilisateurs d'une actualisation à une autre
 
 ### `HTML` pour
 - les pages webs
