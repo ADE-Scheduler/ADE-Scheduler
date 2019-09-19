@@ -20,13 +20,13 @@ L'utilisateur peut
 
 Doit être fait
 - suivre les normes syntaxiques imposées par pep8
-- intégrer un maximum le package panda pour un stockage des évènements plus facile
+- intégrer un maximum le package pandas pour un stockage des évènements plus facile
 - obtenir les statistiques du site
 - optimiser la fonction compute
 - suite de tests à effectuer sur tout code pull-request
 - finir videos de la section aide
 - corriger texte (mise en page) de l'aide + lien mailto:
-- creer une version mobile plus accessible
+- créer une version mobile plus accessible
 
 L'utilisateur pourra
 - participer au développement de l'application (pull request) de manière sûre : suite de tests à effectuer sur tout code
