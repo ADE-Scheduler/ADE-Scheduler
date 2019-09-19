@@ -6,7 +6,6 @@ from professor import Professor
 from hidden import get_token, user, password
 from redis import Redis
 from pickle import dumps, loads
-from personnal_data import redis_ip
 from datetime import timedelta
 from pandas import DataFrame
 
@@ -19,7 +18,7 @@ def get_courses_from_codes(codes, project_id=9):
     :param weeks: list of int
     :return: Course list
     """
-    redis = Redis(host=redis_ip)
+    redis = Redis(host='localhost')
     courses = list()
     not_added = list()
 

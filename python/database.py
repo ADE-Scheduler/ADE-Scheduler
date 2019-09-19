@@ -4,7 +4,7 @@ import sqlalchemy as sql
 
 
 current_folder = os.path.dirname(__file__)
-db_type = 'sqlite:///'
+db_type = 'sqlite:////'
 db_name = 'database.db'
 db_path = db_type + current_folder + '/' + db_name
 db_engine = sql.create_engine(db_path)

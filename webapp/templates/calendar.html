@@ -589,6 +589,8 @@
     </script>
 
     <script>
+        var base_url = 'https://ade-scheduler.info.ucl.ac.be';
+
         function loadButton() {
             if (!$('#input-load-login').val() || !$('#input-load-password').val()) {
                 if (!$('#input-load-login').val()) {
@@ -674,7 +676,7 @@
                         $('#input-load-login').addClass('is-valid');
                         $('#input-load-password').addClass('is-valid');
                         $('#loginPrompt').modal('hide');
-                        $('#input-copy-link').val('/getcalendar/' + data);
+                        $('#input-copy-link').val(base_url + '/getcalendar/' + data);
                         $('#modal-forgot-link').modal('show');
                     },
                     error: function (data) {
@@ -713,7 +715,7 @@
                         let login = $('#input-link-login').val();
                         let pwd = $('#input-link-password').val();
                         let checkState = localStorage.getItem('checkboxValues');
-                        $.ajax({    //TODO: Password security ? Hash/SSL certificate ?
+                        $.ajax({
                             url: '/getcalendar/secure_link',
                             type: 'POST',
                             data: {'login': login, 'password': pwd, 'param': $('#select-sched-download :selected').val(), 'check': checkState},
@@ -722,7 +724,7 @@
                                 $('#input-link-login').addClass('is-valid');
                                 $('#input-link-password').removeClass('is-invalid');
                                 $('#input-link-password').addClass('is-valid');
-                                $('#input-generate-link').val('/getcalendar/' + data);
+                                $('#input-generate-link').val(base_url + '/getcalendar/' + data);
                                 $('#input-generate-link').addClass('is-valid');
                                 {#$('#btn-link-generate').prop('disabled', true);#}
                                 $('#input-link-login-feedback').text({{ _('Please specify a login')|tojson }});
@@ -749,7 +751,7 @@
                         type: 'POST',
                         data:  {'param': $('#select-sched-download :selected').val()},
                         success: function(data) {
-                             $('#input-generate-link').val('/getcalendar/' + data);
+                             $('#input-generate-link').val(base_url + '/getcalendar/' + data);
                              $('#input-generate-link').addClass('is-valid');
                              {#$('#btn-link-generate').prop('disabled', true);#}
                         },
