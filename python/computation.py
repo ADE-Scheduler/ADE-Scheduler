@@ -47,6 +47,7 @@ def compute_best(courses, weeks=range(N_WEEKS), fts=None, nbest=5, safe_compute=
     best: list of lists of event.CustomEvents
         The n best schedules according to the evaluation function (costFunction())
     """
+    safe_compute = False
 
     events = extractEvents(courses, weeks, view=view, eventTypes={EventTP, EventCM, EventORAL, EventEXAM})
 
