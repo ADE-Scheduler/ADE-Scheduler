@@ -31,9 +31,10 @@ def get_courses_from_codes(codes, project_id=9):
 
     for code in not_added:
         course = get_courses_from_ade(code, project_id, redis=redis)
-        courses.append(course)
-        redis.hset(name='Project=' + str(project_id), key=course.code, value=dumps(course))
-        redis.expire(course.code, time=timedelta(hours=3))
+        if course is not None:
+            courses.append(course)
+            redis.hset(name='Project=' + str(project_id), key=course.code, value=dumps(course))
+            redis.expire(course.code, time=timedelta(hours=3))
 
     return courses
 
@@ -77,13 +78,13 @@ def get_courses_from_ade(code, project_id, redis=None):
             redis.hmset('ade_webapi_id', hash_table)
             redis.expire('ade_webapi_id', timedelta(days=1))
         if not resources_id:
-            return list()
+            return None
     else:
         result = list(filter(None, redis.hmget('ade_webapi_id', code)))
         if result:
             resources_id = '|'.join(map(lambda x: x.decode(), result))
         else:
-            return list()
+            return None
 
     # We get the events
     r = requests.get(url + 'getActivities&tree=false&detail=17&resources=' + resources_id, headers=headers)
@@ -109,7 +110,4 @@ def get_courses_from_ade(code, project_id, redis=None):
             else:
                 course.addEvent(event)
 
-    if course is None:
-        return list()
-    else:
-        return course
+    return course
