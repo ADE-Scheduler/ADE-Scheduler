@@ -40,24 +40,24 @@ def extractType(ctype: str, cid: str):
     t : CustomEvent constructor
         The constructor of the right event type.
     """
-    # We first try to detect with the given type
-    if ctype == 'Cours magistral':
-        return EventCM
-    elif ctype == 'TP' or 'TD':
-        return EventTP
-    elif ctype == 'Examen écrit' or type == 'Test / Interrogation / Partiel':
-        return EventEXAM
-    elif ctype == 'Examen oral':
-        return EventORAL
-
     # If it fails, do a search using the given ID
-    elif re.search(COURSE_REGEX + "-", cid, re.IGNORECASE):
+    if re.search(COURSE_REGEX + "-", cid, re.IGNORECASE):
         return EventCM
     elif re.search(COURSE_REGEX + "_", cid, re.IGNORECASE):
         return EventTP
     elif re.search(COURSE_REGEX + "=E", cid, re.IGNORECASE) or re.search(COURSE_REGEX + "=P", cid, re.IGNORECASE):
         return EventEXAM
     elif re.search(COURSE_REGEX + "=O", cid, re.IGNORECASE):
+        return EventORAL
+
+    # We first try to detect with the given type
+    elif ctype == 'Cours magistral':
+        return EventCM
+    elif ctype == 'TP' or 'TD':
+        return EventTP
+    elif ctype == 'Examen écrit' or type == 'Test / Interrogation / Partiel':
+        return EventEXAM
+    elif ctype == 'Examen oral':
         return EventORAL
 
     # The search failed, return the "Other" type
