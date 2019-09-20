@@ -23,7 +23,7 @@ def get_courses_from_codes(codes, project_id=9):
     not_added = list()
 
     for code in codes:
-        course = redis.get(str(project_id) + code)
+        course = redis.hget(name='Project=' + str(project_id), key=code)
         if not course:
             not_added.append(code)
         else:
@@ -31,7 +31,8 @@ def get_courses_from_codes(codes, project_id=9):
 
     for course in get_courses_from_ade(not_added, project_id, redis=redis):
         courses.append(course)
-        redis.setex(str(project_id) + course.code, timedelta(days=1), value=dumps(course))    # valid for one day
+        redis.hset(name='Project=' + str(project_id), key=course.code, value=dumps(course))
+        redis.expire(course.code, time=timedelta(hours=3))
 
     return courses
 
