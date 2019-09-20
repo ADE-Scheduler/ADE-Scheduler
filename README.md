@@ -19,7 +19,9 @@ L'utilisateur peut
 ## Mises à jours à venir (par ordre de priorité)
 
 Doit être fait
+- quand on entre une liste de cours (ex. : fsa12ba), le site donne directement la liste de tous les cours
 - suivre les normes syntaxiques imposées par pep8
+- (plus) facilement créer des FTS récurrents
 - intégrer un maximum le package pandas pour un stockage des évènements plus facile
 - obtenir les statistiques du site
 - optimiser la fonction compute
