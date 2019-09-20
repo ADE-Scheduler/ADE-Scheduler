@@ -1,12 +1,58 @@
-from itertools import combinations, product, chain
+from itertools import combinations, product, chain, starmap
 from event import overlap, EventTP, EventCM, EventORAL, EventEXAM, EventOTHER, intersect
 from heapq import nsmallest
 from functools import reduce
 import operator
 from static_data import N_WEEKS
+import pandas as pd
 
 
-def extractEvents(courses, weeks=None, view=None, eventTypes=None):
+def eval_week(week, fts=None):
+    if fts is not None:
+        week = sorted(week + fts)
+    return sum(starmap(lambda e1, e2: e1 * e2, zip(week[:-1], week[1:])))
+
+
+def compute(courses, fts=None, event_types=None, n_best=5, safe_compute=True, mergeTypes={EventTP, EventCM},
+            prior_Types={EventCM}, view=None):
+    df = pd.concat(courses)
+
+    valid = df['type'] != EventOTHER
+
+    df_main, df_other = df['type'][valid], df['type'][~valid]
+
+    threshold = 10  # Arbitrary value
+    # Under a certain amount of permutations, we remove TP that are conflicting CM and same TP at the same period
+
+    best = [[] for i in range(n_best)]
+
+    for _, week_data in df_main.groupby('week'):
+        events = sorted([data.flatten() for _, data in week_data.groupby(level=df.index.names)['event']])
+
+        perm = product(*events)
+
+        if n_best == 1:
+            best.extend(min(perm, key=lambda f: eval_week(f, fts)))
+        else:
+            temp = nsmallest(n_best, perm, key=lambda f: eval_week(f, fts))
+            n_temp = len(temp)
+            for i in range(n_temp):
+                best[i].extend(temp[i])
+            # If we could only find n_temp < nbest best scores, we fill the rest in with same values
+            for j in range(n_temp, n_best):
+                best[j].extend(temp[-1])
+
+    other = df_other['event'].values.flatten().tolist()
+
+    if other:
+        [sched.extend(other) for sched in best]
+        return best
+    else:
+        return best
+
+
+
+def extractEvents(courses, weeks=None, fts=None, eventTypes=None):
     """
     Return a generator containing len(weeks) elements, each
     being a list of all the possible events in form of :
@@ -28,7 +74,7 @@ def extractEvents(courses, weeks=None, view=None, eventTypes=None):
 
 
 def compute_best(courses, weeks=range(N_WEEKS), fts=None, nbest=5, safe_compute=True, mergeTypes={EventTP, EventCM},
-            priorTypes={EventCM}, view=None):
+                 priorTypes={EventCM}, view=None):
     """
     Generates all the possible schedules for given weeks.
     Then evaluates all those possibilities to pick the best one(s).
@@ -78,7 +124,8 @@ def compute_best(courses, weeks=range(N_WEEKS), fts=None, nbest=5, safe_compute=
                     view = set.intersection(view, set.union(*views))
                 else:
                     view = set.union(*views)
-                weekEvents = extractEvents(courses, week, view=view, eventTypes={EventTP, EventCM, EventORAL, EventEXAM})
+                weekEvents = extractEvents(courses, week, view=view,
+                                           eventTypes={EventTP, EventCM, EventORAL, EventEXAM})
                 if events:
                     weekEvents = weekEvents[0]
 
@@ -98,7 +145,8 @@ def compute_best(courses, weeks=range(N_WEEKS), fts=None, nbest=5, safe_compute=
                 for j in range(n_temp, nbest):
                     best[j].extend(temp[-1])
 
-    other = list(chain.from_iterable(chain.from_iterable(extractEvents(courses, weeks=weeks, view=view, eventTypes={EventOTHER}))))
+    other = list(chain.from_iterable(
+        chain.from_iterable(extractEvents(courses, weeks=weeks, view=view, eventTypes={EventOTHER}))))
 
     if other:
         [sched.extend(other) for sched in best]

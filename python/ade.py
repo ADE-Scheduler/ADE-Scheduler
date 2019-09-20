@@ -1,6 +1,6 @@
 import requests
 from lxml import etree
-from event import extractType, extractDateTime
+from event import extractType, extractDateTime, extractCode
 from course import Course
 from professor import Professor
 from hidden import get_token, user, password
@@ -99,22 +99,26 @@ def getCoursesFromADE(codes, projectID, redis=None):
         activity_type = activity.attrib['type']
         activity_name = activity.attrib['code']
 
-        print(activity_type, activity_id, activity_name)
+        #print(activity_type, activity_id, activity_name)
 
         codes = activity.xpath('.//eventParticipant[@category="category5"]/@name')
 
-        activity_code = Counter(codes).most_common()[0][0]
+        events = activity.xpath('.//event')
+
+        print(events)
+
+        if len(events) == 0:
+            activity_code = extractCode(activity_id)
+        else:
+            activity_code = Counter(codes).most_common()[0][0]
 
         print(activity_code)
-
-        events = list()
+        events_list = list()
 
         if activity_code not in courses.keys():
             courses[activity_code] = Course(activity_code, activity_name)
 
-        z = activity.xpath('.//event')
-
-        for event in activity.xpath('.//event'):
+        for event in events:
             event_date = event.attrib['date']
             event_start = event.attrib['startHour']
             event_end = event.attrib['endHour']
@@ -123,21 +127,23 @@ def getCoursesFromADE(codes, projectID, redis=None):
             events_classroom = classroom[0] if classroom else ''
             instructor = event.xpath('.//eventParticipant[@category="instructor"]/@name')
             events_instructor = instructor[0] if instructor else ''
-            print(events_classroom, events_instructor)
+            #print(events_classroom, events_instructor)
 
             # We create the event
             t0, t1 = extractDateTime(event_date, event_start, event_end)
-            event = extractType(activity_type, activity_id)(t0, t1, activity_code, activity_name,
+
+            event_type = extractType(activity_type, activity_id)
+            event = event_type(t0, t1, activity_code, activity_name,
                                                             Professor(events_instructor, ''),
                                                             events_classroom, id=activity_id)
 
             courses[activity_code].addEvent(event)
 
-            events.append(event)
+            events_list.append(event)
 
-        courses[activity_code].add_activity(activity_type, activity_id, events)
+        courses[activity_code].add_activity(event_type, activity_id, events_list)
 
-    print(courses)
+    #print(courses)
 
     return courses.values()
 

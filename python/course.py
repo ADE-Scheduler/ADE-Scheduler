@@ -49,19 +49,21 @@ class Course:
     def __repr__(self):
         return str(self)
 
-    def add_activity(self, type_: str, id: str, events: list):
+    def add_activity(self, event_type: str, id: str, events: list):
+
+        if len(events) == 0:
+            return
+
         data = [[event.getweek(), event] for event in events]
 
-        tuples = list(repeat((type_, id), len(data)))
+        tuples = list(repeat((event_type, id), len(data)))
         index = pd.MultiIndex.from_tuples(tuples, names=self.activities.index.name)
         df = pd.DataFrame(data=data, columns=self.activities.columns, index=index)
 
         self.activities = self.activities.append(df)
 
-        print('activities \n', self.activities)
 
-
-    def setEventWeight(self, percentage=None, eventType=None):
+    def setEventWeight(self, percentage=None, event_type=None):
         """
         Modify this course's events weight
         :param percentage: int, the "priority" required for this course in (0-100)%
@@ -71,17 +73,15 @@ class Course:
         # No percentage specified, set to default value
         if percentage is None:  percentage = 50
 
-        if eventType is None:
-            self.activities['event'].apply(lambda e: e.set_weight(percentage/10))
+        def f(event):
+            event.set_weight(percentage/10)
 
-
-        # No event type sepcified, meaning we modify the weight of all events
-        if eventType is None: eventType = self.events.keys()
-        # Set the weight (0 --> 10) as a function of the percentage
-        for eT in eventType:
-            for week in self.events[eT]:
-                for event in week:
-                    event.weight = percentage/10
+        if event_type is None:
+            self.activities['event'] = self.activities['event'].apply(f)
+        else:
+            level = self.activities.index.names.index(event_type)
+            valid = self.activities.index.get_level_values(level) == event_type
+            self.activities['event'][valid] = self.activities['event'][valid].apply(f)
 
     def getEvents(self, weeks=None, eventTypes=None, swap=False):
         """
@@ -227,12 +227,4 @@ class Course:
         """
         Returns the list of events for this course, in "JSON format"
         """
-        events = list()
-        for course in self.events.values():
-            for week in course:
-                for event in week:
-                    temp = {'start': str(event.begin), 'end': str(event.end), 'title': event.id + '\n' + event.location,
-                            'editable': False, 'description': event.name + '\n' + event.location + ' - ' +
-                            str(event.duration) + '\n' + str(event.description), 'code': event.code}
-                    events.append(temp)
-        return events
+        return list(map(lambda e: e.json(), self.activities['event'].values))

@@ -200,6 +200,22 @@ class CustomEvent(Event):
         """
         return self.begin.isocalendar()[1] - 1
 
+    def json(self):
+        return {'start': str(self.begin), 'end': str(self.end), 'title': self.id + '\n' + self.location,
+                'editable': False, 'description': self.name + '\n' + self.location + ' - ' +
+                                                  str(self.duration) + '\n' + str(self.description),
+                'code': self.code}
+
+    def intersects(self, other):
+        return self.end > other.begin and self.end > other.begin  # not(A or B) = notA and notB
+
+    __xor__ = intersect
+
+    def overlap(self, other):
+        return self.weight * other.weight * self.intersect(other)
+
+    __mul__ = overlap
+
 
 class EventCM(CustomEvent):
     def __init__(self, begin, end, code, name, professor, loc, id=None, weight=5):
