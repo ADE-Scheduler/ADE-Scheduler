@@ -68,7 +68,10 @@ def extractType(ctype: str, cid: str):
 def extractDateTime(date, start, end):
     t0 = datetime.strptime(date + '-' + start, '%d/%m/%Y-%H:%M').astimezone(tz)
     t1 = datetime.strptime(date + '-' + end, '%d/%m/%Y-%H:%M').astimezone(tz)
-    return t0, t1
+    if t0 < t1:
+        return t0, t1
+    else:
+        return t1, t0
 
 
 def intersect(event1, event2):
