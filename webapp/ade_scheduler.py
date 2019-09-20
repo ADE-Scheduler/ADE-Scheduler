@@ -1,5 +1,5 @@
 from app_calendar import *
-from flask import Flask, request, url_for, render_template, redirect, make_response
+from flask import Flask, request, url_for, render_template, redirect, make_response, g
 from flask_babel import Babel, _
 from flask_session import Session
 from redis import Redis
@@ -10,18 +10,27 @@ import library
 import encrypt
 import database
 
+from flask_track_usage import TrackUsage
+from flask_track_usage.storage.sql import SQLStorage
+from database import db_engine
+
 app = Flask(__name__)
+
 
 # BABEL
 app.config['LANGUAGES'] = ['en', 'fr']
 app.config['BABEL_TRANSLATION_DIRECTORIES'] = 'app/translations'
 babel = Babel(app)
 
+# User memory cache
 app.secret_key = secret_key
 app.config['SESSION_TYPE'] = 'redis'
 app.config['SESSION_REDIS'] = Redis(host='localhost', port=6379)
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=30)
 Session(app)
+
+# Website statistics
+t = TrackUsage(app, SQLStorage(engine=db_engine))
 
 
 @babel.localeselector
@@ -43,6 +52,7 @@ def locale_selector(locale):
     return redirect(url_for('calendar'))
 
 
+@t.include
 @app.route('/', methods=['GET', 'POST'])
 def calendar():
     if not session.get('init'):
@@ -53,6 +63,7 @@ def calendar():
         if request.form['submit'] == 'Add':
             code = request.form['course_code'].upper()
             add_courses(code)
+            g.track_var['optional'] = code
         
         if request.form['submit'] == 'Settings':
             # SAVE PREFERENCES
@@ -120,6 +131,7 @@ def download(choice):
 
 # To get the calendar's ics file via the subscription link [GET]
 # OR to get generate a subscription link [POST]
+@t.include
 @app.route('/getcalendar/<link>', methods=['GET', 'POST'])
 def getCalendar(link):
     if request.method == 'POST':
@@ -143,6 +155,7 @@ def getCalendar(link):
             resp = make_response(_cal)
             resp.mimetype = 'text/calendar'
             resp.headers["Content-Disposition"] = "attachment; filename=calendar.ics"
+            g.track_var['optional'] = 'file downloaded from link'
             return resp
         else:
             return _('The link you specified doesn\'t exist in our database !'), 400
