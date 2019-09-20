@@ -40,7 +40,7 @@ def extractType(ctype: str, cid: str):
     t : CustomEvent constructor
         The constructor of the right event type.
     """
-    # If it fails, do a search using the given ID
+    # We first try to detect the type with the ID regex
     if re.search(COURSE_REGEX + "-", cid, re.IGNORECASE):
         return EventCM
     elif re.search(COURSE_REGEX + "_", cid, re.IGNORECASE):
@@ -50,7 +50,7 @@ def extractType(ctype: str, cid: str):
     elif re.search(COURSE_REGEX + "=O", cid, re.IGNORECASE):
         return EventORAL
 
-    # We first try to detect with the given type
+    # If it fails, we look at the given type (there are some mistakes in the data from ADE, not always trustworthy)
     elif ctype == 'Cours magistral':
         return EventCM
     elif ctype == 'TP' or 'TD':
