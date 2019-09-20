@@ -20,6 +20,7 @@ L'utilisateur peut
 
 Doit être fait
 - suivre les normes syntaxiques imposées par pep8
+- (plus) facilement créer des FTS récurrents
 - intégrer un maximum le package pandas pour un stockage des évènements plus facile
 - obtenir les statistiques du site
 - optimiser la fonction compute
