@@ -54,11 +54,11 @@ def get_courses_from_ade(code, project_id, redis=None):
     if not redis:
         token, _ = get_token()
     else:
-        token = redis.get('ade_webapi_token')
+        token = redis.get('ADE_WEBAPI_TOKEN')
         if not token:
             token, expiry = get_token()
             if expiry > 10:
-                redis.setex('ade_webapi_token', timedelta(seconds=expiry - 10), value=token)
+                redis.setex('ADE_WEBAPI_TOKEN', timedelta(seconds=expiry - 10), value=token)
         else:
             token = token.decode()
     headers = {'Authorization': 'Bearer ' + token}
@@ -66,7 +66,7 @@ def get_courses_from_ade(code, project_id, redis=None):
           str(project_id) + '&function='
 
     # We get the ressource ID
-    if not redis or not redis.exists('ade_webapi_id'):
+    if not redis or not redis.exists('{Project=' + str(project_id) + '}ADE_WEBAPI_ID'):
         r = requests.get(url + 'getResources&detail=2', headers=headers)
         root = etree.fromstring(r.content)
         df = DataFrame(data=root.xpath('//resource/@id'), index=map(lambda x: x.upper(), root.xpath('//resource/@name'))
@@ -74,12 +74,12 @@ def get_courses_from_ade(code, project_id, redis=None):
         hash_table = df.groupby(level=0).apply(lambda x: '|'.join(x.to_dict(orient='list')['id'])).to_dict()
         resources_id = '|'.join(filter(None, [hash_table.get(code)]))
         if redis:
-            redis.hmset('ade_webapi_id', hash_table)
-            redis.expire('ade_webapi_id', timedelta(days=1))
+            redis.hmset('{Project=' + str(project_id) + '}ADE_WEBAPI_ID', hash_table)
+            redis.expire('{Project=' + str(project_id) + '}ADE_WEBAPI_ID', timedelta(days=1))
         if not resources_id:
             return None
     else:
-        result = list(filter(None, redis.hmget('ade_webapi_id', code)))
+        result = list(filter(None, redis.hmget('{Project=' + str(project_id) + '}ADE_WEBAPI_ID', code)))
         if result:
             resources_id = '|'.join(map(lambda x: x.decode(), result))
         else:

@@ -3,12 +3,13 @@ import json
 import os
 import re
 import sys
-from itertools import chain
 
+from itertools import chain
 from dateutil.parser import parse
 from flask import request, session
 from ics import Calendar
 from pytz import timezone
+from redis import Redis
 
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
@@ -16,10 +17,11 @@ sys.path.insert(0, parentdir + '/python')
 from ade import get_courses_from_codes
 from computation import compute_best, extractEvents
 from event import CustomEvent, JSONfromEvents
-from static_data import ACADEMIC_YEARS
+from background_job import update_projects
 
 # letters + number only regex
 regex = re.compile('[^A-Z0-9]')
+redis = Redis(host='localhost', port=6379)
 
 
 def clear():
@@ -82,8 +84,10 @@ def init():
     # Other variables
     color_gradient = ['', '#374955', '#005376', '#00c0ff', '#1f789d', '#4493ba', '#64afd7', '#83ccf5', '#3635ff',
                       '#006c5a', '#3d978a']
+    if not redis.exists('ADE_PROJECTS'): update_projects()
     session['basic_context'] = {'up_to_date': True, 'safe_compute': True, 'locale': None, 'gradient': color_gradient,
-                                'project_id': 9, 'academic_years': ACADEMIC_YEARS, 'priority': {}}
+                                'project_id': 9, 'academic_years': json.loads(redis.get('ADE_PROJECTS')),
+                                'priority': dict()}
 
 
 def add_courses(codes):
