@@ -15,7 +15,6 @@ def get_courses_from_codes(codes, project_id=9):
     Fetches course schedule from Redis' course cache
     :param codes: list of str
     :param project_id: int
-    :param weeks: list of int
     :return: Course list
     """
     redis = Redis(host='localhost')
@@ -23,7 +22,7 @@ def get_courses_from_codes(codes, project_id=9):
     not_added = list()
 
     for code in codes:
-        course = redis.hget(name='Project=' + str(project_id), key=code)
+        course = redis.get(name='{Project=' + str(project_id) + '}' + code)
         if not course:
             not_added.append(code)
         else:
@@ -33,8 +32,8 @@ def get_courses_from_codes(codes, project_id=9):
         course = get_courses_from_ade(code, project_id, redis=redis)
         if course is not None:
             courses.append(course)
-            redis.hset(name='Project=' + str(project_id), key=course.code, value=dumps(course))
-            redis.expire(course.code, time=timedelta(hours=3))
+            redis.setex(name='{Project=' + str(project_id) + '}' + course.code, value=dumps(course),
+                        time=timedelta(hours=3))
 
     return courses
 
