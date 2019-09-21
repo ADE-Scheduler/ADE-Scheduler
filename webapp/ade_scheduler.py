@@ -2,7 +2,6 @@ from app_calendar import *
 from flask import Flask, request, url_for, render_template, redirect, make_response, g
 from flask_babel import Babel, _
 from flask_session import Session
-from redis import Redis
 from hidden import secret_key
 from datetime import timedelta
 
@@ -16,7 +15,6 @@ from database import db_engine
 
 app = Flask(__name__)
 
-
 # BABEL
 app.config['LANGUAGES'] = ['en', 'fr']
 app.config['BABEL_TRANSLATION_DIRECTORIES'] = 'app/translations'
@@ -25,7 +23,7 @@ babel = Babel(app)
 # User memory cache
 app.secret_key = secret_key
 app.config['SESSION_TYPE'] = 'redis'
-app.config['SESSION_REDIS'] = Redis(host='localhost', port=6379)
+app.config['SESSION_REDIS'] = redis
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=30)
 Session(app)
 
@@ -47,6 +45,8 @@ def get_locale():
 
 @app.route('/locale/<locale>', methods=['GET'])
 def locale_selector(locale):
+    if not session.get('init'):
+        init()
     if request.method == 'GET':
         session['basic_context']['locale'] = locale
     return redirect(url_for('calendar'))
@@ -57,6 +57,8 @@ def locale_selector(locale):
 def calendar():
     if not session.get('init'):
         init()
+    if not redis.exists('ADE_PROJECTS'):
+        update_projects()
 
     if request.method == 'POST':
         # ADD CODE
@@ -77,6 +79,7 @@ def calendar():
                 session['basic_context']['priority'][code] = int(request.form.get('range-' + code))
 
     session['basic_context']['codes'] = session['codes']
+    session['basic_context']['academic_years'] = json.loads(redis.get('ADE_PROJECTS'))
     return render_template('calendar.html', **(session['basic_context']), data_base=json.dumps(session['data_base']),
                            data_sched=session['data_sched'], fts=json.dumps(session['fts']), id=session['id_tab'])
 
@@ -206,6 +209,8 @@ def getSettings():
 # Page for user's help guide
 @app.route('/help')
 def help_guide():
+    if not session.get('init'):
+        init()
     return render_template('help.html', **session['basic_context'])
 
 
