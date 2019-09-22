@@ -71,89 +71,6 @@ def extractDateTime(date, start, end):
     return t0, t1
 
 
-def intersect(event1, event2):
-    """
-    Check if two events intersect. No safe check is operated.
-    Parameters
-    ----------
-    event1, event2 : ics.Event
-        Two events to be compared.
-    Returns
-    -------
-    c : bool
-        True if events intersect, False otherwise.
-    """
-    return event1.end > event2.begin and event2.end > event1.begin  # not(A or B) = notA and notB
-
-
-def overlap(event1, event2):
-    """
-    Check if two events intersect. No safe check is operated.
-    Parameters
-    ----------
-    event1, event2 : ics.Event
-        Two events to be compared.
-    Returns
-    -------
-    c : int
-        The product of the weights if events intersect, 0 otherwise.
-    """
-    return event1.weight * event2.weight * intersect(event1, event2)
-
-
-def overlappingTime(event1, event2, onlyPositive=True):
-    """
-    Compute the overlapping time between two events.
-    In option, it can count non-overlap time as negative overlap, in others words, the time between two events.
-    Parameters
-    ----------
-    event1, event2 : ics.Event
-        Two events to be compared.
-    onlyPositive : boolean
-        If True, only positive overlap is counted.
-    Returns
-    -------
-    c : int
-        The total overlapping time, multiplied by the weights, in seconds.
-    Raises
-    ------
-    TypeError
-        If event1 or event2 are not subclass of ics.Event.
-    """
-
-    if event1 == event2:  # No overlap if same event
-        return 0
-    if not isinstance(event1, CustomEvent) or not isinstance(event2, CustomEvent):
-        raise TypeError
-
-    time = event1.weight * event2.weight * (
-            min(event1.end, event2.end) - max(event1.begin, event2.begin)).total_seconds()
-    if onlyPositive:  # Only positive overlap is counted
-        return max(time, 0)
-    else:
-        return time
-
-
-def settingsFromEvents(events):
-    """
-    settings format :
-    {codes:[list of Course.code],
-        weeks:{
-            dict containing (key->int, value->[list of ids])
-        }
-    }
-    where:
-        key is week # (following ADE's numbering).
-        value contains all the ids to pass as a view to a Course object.
-    """
-    events = list(events)
-    codes = set(event.code for event in events)
-    weeks = set(map(gregorianToADE), (event.getweek() for event in events))
-    settings = {'codes': codes,
-                'weeks': {week: {event.getId() for event in events if event.getweek() == week} for week in weeks}}
-    return settings
-
-
 def JSONfromEvents(events):
     """
         Returns the list of events, in "JSON format"
@@ -162,6 +79,18 @@ def JSONfromEvents(events):
             False, 'code': event.code, 'description': event.name + '\n' + event.location + ' - ' + str(event.duration)
             + '\n' + str(event.description)} for event in events]
 
+
+def event_prefix(event_type):
+    if event_type == EventTP:
+        return 'TP:'
+    elif event_type == EventCM:
+        return 'CM:'
+    elif event_type == EventEXAM:
+        return 'EXAM:'
+    elif event_type == EventORAL:
+        return 'ORAL:'
+    else:
+        return 'Other:'
 
 # Event classes (subclasses of ics.Event)
 class CustomEvent(Event):
@@ -189,16 +118,14 @@ class CustomEvent(Event):
         return super().__hash__()
 
     def __repr__(self):
-        return self.id
+        tmp = self.id + ':' if self.id is not None else 'FTS:'
+        return tmp + self.begin.strftime('%d/%m - %Hh%M') + ' to ' + self.end.strftime('%Hh%M')
 
     def set_weight(self, weight):
         self.weight = weight
 
-    def getweek(self):
-        """
-        returns the week of this event in the gregorian calendar, starting at 0 for the first week
-        """
-        return self.begin.isocalendar()[1] - 1
+    def __str__(self):
+        return repr(self)
 
     def json(self):
         return {'start': str(self.begin), 'end': str(self.end), 'title': self.id + '\n' + self.location,
@@ -209,12 +136,18 @@ class CustomEvent(Event):
     def intersects(self, other):
         return self.end > other.begin and self.end > other.begin  # not(A or B) = notA and notB
 
-    __xor__ = intersect
+    __xor__ = intersects
 
     def overlap(self, other):
-        return self.weight * other.weight * self.intersect(other)
+        return self.weight * other.weight * self.intersects(other)
 
     __mul__ = overlap
+
+    def get_week(self):
+        """
+        returns the week of this event in the gregorian calendar, starting at 0 for the first week
+        """
+        return self.begin.isocalendar()[1] - 1
 
 
 class EventCM(CustomEvent):

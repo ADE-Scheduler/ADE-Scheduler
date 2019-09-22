@@ -11,12 +11,11 @@ from datetime import timedelta
 from pandas import DataFrame
 from collections import Counter
 
-def getCoursesFromCodes(codes, projectID=9):
+def getCoursesFromCodes(codes, project_id=9):
     """
     Fetches course schedule from Redis' course cache
     :param codes: list of str
-    :param projectID: int
-    :param weeks: list of int
+    :param project_id: int
     :return: Course list
     """
     redis = Redis(host=redis_ip)
@@ -24,15 +23,19 @@ def getCoursesFromCodes(codes, projectID=9):
     not_added = list()
 
     for code in codes:
-        course = redis.get(str(projectID) + code)
+        course = redis.get(name='{Project=' + str(project_id) + '}' + code)
         if not course:
             not_added.append(code)
         else:
             courses.append(loads(course))
 
-    for course in getCoursesFromADE(not_added, projectID, redis=redis):
-        courses.append(course)
-        redis.setex(str(projectID) + course.code, timedelta(days=1), value=dumps(course))    # valid for one day
+    for code in not_added:
+        course = getCoursesFromADE(code, project_id, redis=redis)
+        if len(course) != 0:
+            course = course[0]
+            courses.append(course)
+            redis.setex(name='{Project=' + str(project_id) + '}' + course.code, value=dumps(course),
+                        time=timedelta(hours=3))
 
     return courses
 
@@ -47,11 +50,9 @@ def getCoursesFromADE(codes, projectID, redis=None):
     :return: list of Courses
     """
     if not codes:
-        return list()
-
-    # Some variables
-    course_added = []
-    course_list = []
+        return None
+    elif isinstance(codes, str):
+        codes = [codes]
 
     # We retrieve the access token and construct the URL and the headers for the requests
     if not redis:
@@ -75,6 +76,8 @@ def getCoursesFromADE(codes, projectID, redis=None):
         df = DataFrame(data=root.xpath('//resource/@id'), index=map(lambda x: x.upper(), root.xpath('//resource/@name'))
                        , columns=['id'])
         hash_table = df.groupby(level=0).apply(lambda x: '|'.join(x.to_dict(orient='list')['id'])).to_dict()
+
+
         resources_id = '|'.join(filter(None, [hash_table.get(code) for code in codes]))
         if redis:
             redis.hmset('ade_webapi_id', hash_table)
@@ -99,20 +102,17 @@ def getCoursesFromADE(codes, projectID, redis=None):
         activity_type = activity.attrib['type']
         activity_name = activity.attrib['code']
 
-        #print(activity_type, activity_id, activity_name)
+        event_type = extractType(activity_type, activity_id)
 
         codes = activity.xpath('.//eventParticipant[@category="category5"]/@name')
 
         events = activity.xpath('.//event')
 
-        print(events)
-
-        if len(events) == 0:
+        if len(codes) == 0:
             activity_code = extractCode(activity_id)
         else:
             activity_code = Counter(codes).most_common()[0][0]
 
-        print(activity_code)
         events_list = list()
 
         if activity_code not in courses.keys():
@@ -127,56 +127,17 @@ def getCoursesFromADE(codes, projectID, redis=None):
             events_classroom = classroom[0] if classroom else ''
             instructor = event.xpath('.//eventParticipant[@category="instructor"]/@name')
             events_instructor = instructor[0] if instructor else ''
-            #print(events_classroom, events_instructor)
 
             # We create the event
             t0, t1 = extractDateTime(event_date, event_start, event_end)
 
-            event_type = extractType(activity_type, activity_id)
             event = event_type(t0, t1, activity_code, activity_name,
-                                                            Professor(events_instructor, ''),
-                                                            events_classroom, id=activity_id)
-
-            courses[activity_code].addEvent(event)
+                               Professor(events_instructor, ''),
+                               events_classroom, id=activity_id)
 
             events_list.append(event)
 
         courses[activity_code].add_activity(event_type, activity_id, events_list)
 
-    #print(courses)
-
-    return courses.values()
-
-"""
-    for activity in root.xpath('//activity'):
-        activity_type = activity.attrib['type']
-        activity_id = activity.attrib['name']
-        activity_name = activity.attrib['code']
-        for event in activity[0]:
-            start = event.attrib['startHour']
-            end = event.attrib['endHour']
-            date = event.attrib['date']
-            event_loc = ''
-            event_prof = ''
-            event_code = ''
-            for participant in event[0]:
-                category = participant.attrib.get('category')
-                if category == 'classroom':
-                    event_loc = participant.attrib['name']
-                elif category == 'instructor':
-                    event_prof = participant.attrib['name']
-                elif category == 'category5':
-                    event_code = participant.attrib['name']
-
-            # We create the event
-            t0, t1 = extractDateTime(date, start, end)
-            event = extractType(activity_type, activity_id)(t0, t1, event_code, activity_name, Professor(event_prof,''),
-                                                            event_loc, id=activity_id)
-            try:  # The course was already added
-                i = course_added.index(event_code)
-                course_list[i].addEvent(event)
-            except ValueError:  # This is a new course
-                course_added.append(event_code)
-                course_list.append(Course(event_code, activity_name))
-                course_list[-1].addEvent(event)"""
+    return list(courses.values())
 

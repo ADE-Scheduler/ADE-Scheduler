@@ -1,5 +1,5 @@
 from ade import getCoursesFromCodes
-from computation import extractEvents
+from computation import extract_events
 from database import setLink, getSettingsFromLink, updateSettingsFromLink, isLinkPresent
 from ics import Calendar
 from computation import compute_best
@@ -35,11 +35,11 @@ def saveSettings(link, session, choice=0, username=None, check=None):
     """
     courses = getCoursesFromCodes(session['codes'], session['basic_context']['projectID'])
     if choice < 0:
-        events = list(chain.from_iterable(chain.from_iterable(extractEvents(courses, view=session['id_list']))))
+        events = extract_events(courses, view=session['id_list'])
         weeks = [[event.getId() for event in events if event.getweek() == week] for week in range(N_WEEKS)]
     else:
         for course in courses: course.setEventWeight(session['basic_context']['priority'].get(course.code))
-        events = compute_best(courses, fts=load_fts(session['fts']), nbest=3, view=session['id_list'], safe_compute=session['basic_context']['safe_compute'])[choice]
+        events = compute_best(courses, fts=load_fts(session['fts']), n_best=3, view=session['id_list'], safe_compute=session['basic_context']['safe_compute'])[choice]
         weeks = [[event.getId() for event in events if event.getweek() == week] for week in range(N_WEEKS)]
     settings = {
         'choice': choice,

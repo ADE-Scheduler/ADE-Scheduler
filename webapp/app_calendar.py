@@ -14,7 +14,7 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir + '/python')
 from ade import getCoursesFromCodes
-from computation import compute_best, extractEvents
+from computation import extract_events, compute_best
 from event import CustomEvent, JSONfromEvents
 from static_data import ACADEMIC_YEARS
 
@@ -46,10 +46,13 @@ def compute():
     if len(session['codes']) == 0:
         clear()
     else:
-        courses = getCoursesFromCodes(session['codes'], projectID=session['basic_context']['projectID'])
-        for course in courses: course.setEventWeight(session['basic_context']['priority'].get(course.code))
-        for i, sched in enumerate(compute_best(courses, fts=load_fts(), nbest=3, view=session['id_list'], safe_compute=session['basic_context']['safe_compute'])):
-            session['data_sched']['sched_' + str(i + 1)] = json.dumps(JSONfromEvents(sched))
+        courses = getCoursesFromCodes(session['codes'], project_id=session['basic_context']['projectID'])
+        for course in courses:
+            course.setEventWeight(session['basic_context']['priority'].get(course.code))
+
+        for i, schedule in enumerate(compute_best(courses, fts=load_fts(), n_best=3, view=session['id_list'],
+                                               safe_compute=session['basic_context']['safe_compute'])):
+            session['data_sched']['sched_' + str(i + 1)] = json.dumps(JSONfromEvents(schedule))
         session['basic_context']['up_to_date'] = True
     session.modified = True
 
@@ -120,9 +123,10 @@ def fetch_courses():
     Fetches all the courses whose codes are given by session['codes'] and stores the resulting data in 'data_base'
     :return: /
     """
-    courses = getCoursesFromCodes(session['codes'], projectID=session['basic_context']['projectID'])
+    courses = getCoursesFromCodes(session['codes'], project_id=session['basic_context']['projectID'])
+
     fetch_id()
-    events = chain.from_iterable(chain.from_iterable(extractEvents(courses, view=session['id_list'])))
+    events = extract_events(courses, view=session['id_list'])
     session['data_base'] = JSONfromEvents(events)
     session.modified = True
 
@@ -133,10 +137,10 @@ def fetch_id():
     Stores the result in 'id_tab'
     :return: /
     """
-    courses = getCoursesFromCodes(session['codes'], projectID=session['basic_context']['projectID'])
+    courses = getCoursesFromCodes(session['codes'], project_id=session['basic_context']['projectID'])
     for course in courses:
         type_tab = {'CM': list(), 'TP': list(), 'EXAM': list(), 'ORAL': list(), 'Other': list()}
-        for course_id in course.getSummary():
+        for course_id in course.get_summary():
             temp = course_id.split(':')
             type_tab[temp[0]].append(temp[1])
         session['id_tab'][course.code] = type_tab
@@ -190,13 +194,13 @@ def download_calendar(choice):
     :param choice: choice of the schedule to download
     :return: string, the calendar's .ics file
     """
-    courses = getCoursesFromCodes(session['codes'], projectID=session['basic_context']['projectID'])
+    courses = getCoursesFromCodes(session['codes'], project_id=session['basic_context']['projectID'])
     if choice < 0:
-        events = chain.from_iterable(chain.from_iterable(extractEvents(courses, view=session['id_list'])))
+        events = extract_events(courses, view=session['id_list'])
         calendar = Calendar(events=events)
     else:
         for course in courses: course.setEventWeight(session['basic_context']['priority'].get(course.code))
-        events = compute_best(courses, fts=load_fts(), nbest=3, view=session['id_list'], safe_compute=session['basic_context']['safe_compute'])
+        events = compute_best(courses, fts=load_fts(), n_best=3, view=session['id_list'], safe_compute=session['basic_context']['safe_compute'])
         calendar = Calendar(events=events[choice])
     return str(calendar)
 
@@ -217,4 +221,5 @@ def load_fts():
             fts.append(CustomEvent(el['title'], t0, t1, el['description'], '', weight=6))
         elif el['title'] == 'Low':
             fts.append(CustomEvent(el['title'], t0, t1, el['description'], '', weight=1))
+
     return fts
