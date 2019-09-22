@@ -85,8 +85,9 @@ def init():
     color_gradient = ['', '#374955', '#005376', '#00c0ff', '#1f789d', '#4493ba', '#64afd7', '#83ccf5', '#3635ff',
                       '#006c5a', '#3d978a']
     if not redis.exists('ADE_PROJECTS'): update_projects()
+    ade_projects = json.loads(redis.get('ADE_PROJECTS'))
     session['basic_context'] = {'up_to_date': True, 'safe_compute': True, 'locale': None, 'gradient': color_gradient,
-                                'project_id': 9, 'academic_years': json.loads(redis.get('ADE_PROJECTS')),
+                                'project_id': ade_projects[0]['id'], 'academic_years': ade_projects,
                                 'priority': dict()}
 
 
@@ -115,6 +116,10 @@ def add_course(code):
         return
     if code not in session['codes']:
         session['codes'].append(code)
+        if session['id_list'] is not None:
+            course = get_courses_from_codes([code], project_id=session['basic_context']['project_id'])[0]
+            for id_ in course.getSummary():
+                session['id_list'].append(id_)
         fetch_courses()
         session['basic_context']['up_to_date'] = False
         session.modified = True
