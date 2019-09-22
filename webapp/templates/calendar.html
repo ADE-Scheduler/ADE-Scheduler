@@ -211,7 +211,7 @@
                                             <i class="fas fa-copy"></i>
                                         </button>
                                     </div>
-                                    <input class="form-control" id="input-generate-link" type="text" placeholder="{{ _('ex: ade-scheduler.info.ucl.ac.be/getcalendar/your_link') }}" readonly>
+                                    <input class="form-control" id="input-generate-link" type="text" placeholder="{{ _('ex: adescheduler.com/getcalendar?=subscription_link') }}" readonly>
                                     <div class="input-group-append">
                                         <button class="btn btn-primary" id="btn-link-generate" type="button" onclick="generateButton();">{{ _('Generate link') }}</button>
                                     </div>
@@ -222,7 +222,7 @@
                     </div>
                     <div style="display: flex; justify-content: space-between; align-content: flex-end;">
                         <div style="margin-top: 20px">
-                            <form class="collapse show" id="form-link-login">
+                            <form class="collapse" id="form-link-login">
                                 <div class="form-group row">
                                     <label class="col col-form-label-sm" for="input-link-login"><b>{{ _('Login') }}</b></label>
                                     <div class="col-auto">
@@ -235,7 +235,7 @@
                                 <div class="form-group row">
                                     <label class="col col-form-label-sm" for="input-link-password"><b>{{ _('Password') }}</b></label>
                                     <div class="col-auto">
-                                        <input type="password" class="form-control" id="input-link-password" style="max-width: 200px;" placeholder={{ _('Password') }}>
+                                        <input type="password" class="form-control" id="input-link-password" style="width: 200px;" placeholder={{ _('Password') }}>
                                         <div class="invalid-feedback">
                                             {{ _('Please choose a password') }}
                                         </div>
@@ -243,24 +243,23 @@
                                 </div>
                             </form>
                             <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="switch-password" data-toggle="collapse" data-target="#form-link-login" checked>
+                                <input type="checkbox" class="custom-control-input" id="switch-password" data-toggle="collapse" data-target="#form-link-login">
                                 <label class="custom-control-label" for="switch-password">{{ _('Modifiable & protected link') }}</label>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <div class="alert alert-danger mr-auto hide" id="download-alert1" style="width: 50%; float: left; margin-bottom: 0">
+                    <div class="alert alert-danger mr-auto hide" id="download-alert1" style="width: 70%; float: left; margin-bottom: 0">
                         <button type="button" class="close" onclick="alertButton('download-alert1');">&times;</button>
                         {{ _('Your schedules are not updated ! Please compute first.') }}
                     </div>
-                    <div class="alert alert-danger mr-auto hide" id="download-alert2" style="width: 50%; float: left; margin-bottom: 0">
+                    <div class="alert alert-danger mr-auto hide" id="download-alert2" style="width: 70%; float: left; margin-bottom: 0">
                         <button type="button" class="close" onclick="alertButton('download-alert2');">&times;</button>
                         {{ _('Please specify a schedule first.') }}
                     </div>
                     <button type="button" class="btn btn-danger" data-dismiss="modal">{{ _('Close') }}</button>
                     <button type="button" class="btn btn-success" onclick=downloadButton();>{{ _('Download file') }}</button>
-                    <button class="btn btn-primary" id="btn-create-acc" type="button" onclick="generateButton();">{{ _('Create account') }}</button>
                 </div>
             </div>
         </div>
@@ -590,12 +589,6 @@
     </script>
 
     <script>
-        var base_url = 'https://ade-scheduler.info.ucl.ac.be';
-
-        $('#switch-password').change(function () {
-            $('#btn-create-acc').toggle(this.checked);
-        });
-
         function loadButton() {
             if (!$('#input-load-login').val() || !$('#input-load-password').val()) {
                 if (!$('#input-load-login').val()) {
@@ -681,7 +674,7 @@
                         $('#input-load-login').addClass('is-valid');
                         $('#input-load-password').addClass('is-valid');
                         $('#loginPrompt').modal('hide');
-                        $('#input-copy-link').val(base_url + '/getcalendar/' + data);
+                        $('#input-copy-link').val('/getcalendar/' + data);
                         $('#modal-forgot-link').modal('show');
                     },
                     error: function (data) {
@@ -720,7 +713,7 @@
                         let login = $('#input-link-login').val();
                         let pwd = $('#input-link-password').val();
                         let checkState = localStorage.getItem('checkboxValues');
-                        $.ajax({
+                        $.ajax({    //TODO: Password security ? Hash/SSL certificate ?
                             url: '/getcalendar/secure_link',
                             type: 'POST',
                             data: {'login': login, 'password': pwd, 'param': $('#select-sched-download :selected').val(), 'check': checkState},
@@ -729,7 +722,7 @@
                                 $('#input-link-login').addClass('is-valid');
                                 $('#input-link-password').removeClass('is-invalid');
                                 $('#input-link-password').addClass('is-valid');
-                                $('#input-generate-link').val(base_url + '/getcalendar/' + data);
+                                $('#input-generate-link').val('/getcalendar/' + data);
                                 $('#input-generate-link').addClass('is-valid');
                                 {#$('#btn-link-generate').prop('disabled', true);#}
                                 $('#input-link-login-feedback').text({{ _('Please specify a login')|tojson }});
@@ -756,7 +749,7 @@
                         type: 'POST',
                         data:  {'param': $('#select-sched-download :selected').val()},
                         success: function(data) {
-                             $('#input-generate-link').val(base_url + '/getcalendar/' + data);
+                             $('#input-generate-link').val('/getcalendar/' + data);
                              $('#input-generate-link').addClass('is-valid');
                              {#$('#btn-link-generate').prop('disabled', true);#}
                         },

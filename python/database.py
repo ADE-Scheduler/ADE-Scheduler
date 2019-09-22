@@ -1,10 +1,11 @@
 import pickle
+import sqlite3
 import os
 import sqlalchemy as sql
 
 
 current_folder = os.path.dirname(__file__)
-db_type = 'sqlite:////'
+db_type = 'sqlite:///'
 db_name = 'database.db'
 db_path = db_type + current_folder + '/' + db_name
 db_engine = sql.create_engine(db_path)
@@ -18,17 +19,22 @@ links = sql.Table('links', metadata,
 ins = links.insert()
 up = links.update()
 sel = links.select()
-del_ = links.delete()
 
 
-def drop_tables():
+def dropTables(test=False):
     """
-    removes all tables from the database
+    Removes both tables from the database.
     """
-    try:
-        links.drop(db_engine)
-    except sql.exc.OperationalError:
-        pass
+    if test:
+        db = sqlite3.connect(os.path.join(current_folder, 'database_test.db'))
+    else:
+        db = sqlite3.connect(db_path)
+    cursor = db.cursor()
+    cursor.executescript("""
+                        DROP TABLE IF EXISTS links;
+                        """)
+    db.commit()
+    db.close()
 
 
 def init():
@@ -38,7 +44,7 @@ def init():
     metadata.create_all(db_engine)
 
 
-def get_settings_from_link(link):
+def getSettingsFromLink(link):
     """
     Fetch the settings corresponding to this link from the database
     :param link: str
@@ -53,7 +59,7 @@ def get_settings_from_link(link):
         return None
 
 
-def is_link_present(link):
+def isLinkPresent(link):
     """
     Check if this link is present in the database
     :param link: str
@@ -68,7 +74,7 @@ def is_link_present(link):
         return False
 
 
-def set_link(link, username=None, settings=None):
+def setLink(link, username=None, settings=None):
     """
     Adds an entry in the "links" table in the database
     :param link: str
@@ -81,7 +87,7 @@ def set_link(link, username=None, settings=None):
     conn.close()
 
 
-def update_settings_from_link(link, settings=None):
+def updateSettingsFromLink(link, settings=None):
     """
     Updates the settings associated to this link
     :param link: str
@@ -93,18 +99,27 @@ def update_settings_from_link(link, settings=None):
     conn.close()
 
 
-def delete_link(link):
+def deleteLink(link):
     """
-    Delete the table's entry corresponding to "link"
-    :param link: str
-    :return: /
-    """""
-    conn = db_engine.connect()
-    conn.execute(del_.where(links.c.link == link))
-    conn.close()
+    Delete the link with the settings from links table
+    Parameters:
+    -----------
+    link: string
+        the link to be deleted, with the settings
+    Returns:
+    --------
+    None
+    """
+    db = sqlite3.connect(db_path)
+    cursor = db.cursor()
+    try:
+        cursor.execute("DELETE FROM links WHERE link=?", (link,))
+    finally:
+        db.commit()
+        db.close()
 
 
-def is_username_present(username):
+def isUsernamePresent(username):
     """
     Checks if username is present in the database
     :param username: str
@@ -119,7 +134,7 @@ def is_username_present(username):
         return False
 
 
-def get_link_from_username(username):
+def getLinkFromUsername(username):
     """
     Returns the link associated to this username in the database
     :param username: str

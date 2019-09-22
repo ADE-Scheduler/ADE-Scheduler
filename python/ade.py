@@ -6,8 +6,11 @@ from professor import Professor
 from hidden import get_token, user, password
 from redis import Redis
 from pickle import dumps, loads
+from personnal_data import redis_ip
 from datetime import timedelta
 from pandas import DataFrame
+from collections import Counter
+
 def getCoursesFromCodes(codes, project_id=9):
     """
     Fetches course schedule from Redis' course cache
@@ -15,7 +18,7 @@ def getCoursesFromCodes(codes, project_id=9):
     :param project_id: int
     :return: Course list
     """
-    redis = Redis(host='localhost')
+    redis = Redis(host=redis_ip)
     courses = list()
     not_added = list()
 
@@ -37,14 +40,14 @@ def getCoursesFromCodes(codes, project_id=9):
     return courses
 
 
-def get_courses_from_ade(code, project_id, redis=None):
+def getCoursesFromADE(codes, projectID, redis=None):
     """
     Fetches courses schedule from UCLouvain's ADE web API
-    :param code: str
-    :param project_id: int
+    :param codes: list of str
+    :param projectID: int
     :param redis: instance of a Redis server, on which an access token may be stored. If not specified, simply retrieve
                   a new token.
-    :return: Course object
+    :return: list of Courses
     """
     if not codes:
         return None
@@ -55,40 +58,41 @@ def get_courses_from_ade(code, project_id, redis=None):
     if not redis:
         token, _ = get_token()
     else:
-        token = redis.get('ADE_WEBAPI_TOKEN')
+        token = redis.get('ade_webapi_token')
         if not token:
             token, expiry = get_token()
             if expiry > 10:
-                redis.setex('ADE_WEBAPI_TOKEN', timedelta(seconds=expiry - 10), value=token)
+                redis.setex('ade_webapi_token', timedelta(seconds=expiry-10), value=token)
         else:
             token = token.decode()
     headers = {'Authorization': 'Bearer ' + token}
     url = 'https://api.sgsi.ucl.ac.be:8243/ade/v0/api?login=' + user + '&password=' + password + '&projectId=' + \
-          str(project_id) + '&function='
+          str(projectID) + '&function='
 
-    # We get the ressource ID
-    if not redis or not redis.exists('{Project=' + str(project_id) + '}ADE_WEBAPI_ID'):
+    # We get the ressource IDs for each code
+    if not redis or not redis.exists('ade_webapi_id'):
         r = requests.get(url + 'getResources&detail=2', headers=headers)
         root = etree.fromstring(r.content)
         df = DataFrame(data=root.xpath('//resource/@id'), index=map(lambda x: x.upper(), root.xpath('//resource/@name'))
                        , columns=['id'])
         hash_table = df.groupby(level=0).apply(lambda x: '|'.join(x.to_dict(orient='list')['id'])).to_dict()
-        resources_id = '|'.join(filter(None, [hash_table.get(code) for code in codes]))
 
+
+        resources_id = '|'.join(filter(None, [hash_table.get(code) for code in codes]))
         if redis:
-            redis.hmset('{Project=' + str(project_id) + '}ADE_WEBAPI_ID', hash_table)
-            redis.expire('{Project=' + str(project_id) + '}ADE_WEBAPI_ID', timedelta(days=1))
+            redis.hmset('ade_webapi_id', hash_table)
+            redis.expire('ade_webapi_id', timedelta(days=1))
         if not resources_id:
-            return None
+            return list()
     else:
-        result = list(filter(None, redis.hmget('{Project=' + str(project_id) + '}ADE_WEBAPI_ID', code)))
+        result = list(filter(None, redis.hmget('ade_webapi_id', codes)))
         if result:
             resources_id = '|'.join(map(lambda x: x.decode(), result))
         else:
-            return None
+            return list()
 
     # We get the events
-    r = requests.get(url + 'getActivities&tree=false&detail=17&resources=' + resources_id, headers=headers)
+    r = requests. get(url + 'getActivities&tree=false&detail=17&resources=' + resources_id, headers=headers)
     root = etree.fromstring(r.content)
 
     courses = dict()
@@ -136,3 +140,4 @@ def get_courses_from_ade(code, project_id, redis=None):
         courses[activity_code].add_activity(event_type, activity_id, events_list)
 
     return list(courses.values())
+

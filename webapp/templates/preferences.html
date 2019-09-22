@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+
+{% block head %}
+{% endblock %}
+
+{% block bodyhead %}
+    <div>
+        <nav class="navbar navbar-expand-lg" style="padding: 0;">
+            <div class="navbar-collapse collapse">
+                <ul class="navbar-nav">
+                    <form class="form-vertical" action="/" method="post">
+                        <div class="btn-group" role="group">
+                            <button class="btn btn-secondary" type="submit" name="submit" value="Preferences" style="width: 100%;" form="form-user-preferences"><strong>Save Preferences</strong></button>
+                        </div>
+                    </form>
+                </ul>
+            </div>
+        </nav>
+    </div>
+{% endblock %}
+
+{% block body %}
+    <div class="tab-content" id="myTabContent">
+        <!-- GENERAL PARAMETERS -->
+        <div class="tab-pane fade show active" id="global-pref" role="tabpanel">
+            <div class="col-md-6">
+                  <!-- general form elements -->
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">User preferences</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <!-- form start -->
+                    <form role="form" action="/" method="post" id="form-user-preferences">
+                        <div class="box-body">
+                            <div class="checkbox">
+                                <label>
+                                    {% if safe_compute == False %}
+                                        <input type="checkbox" name="safe-compute" id="safe-compute"> Safe compute (see <a href="/help">Help section</a>)
+                                    {% else %}
+                                        <input type="checkbox" name="safe-compute" id="safe-compute" checked> Safe compute (see <a href="/help">Help section</a>)
+                                    {% endif %}
+                                </label>
+                            </div>
+                            <label for="exampleSelect1">{{ _('Academic Year') }}</label>
+                            <select class="form-control" id="projectid-select" name="projectid-select">
+                                {% for year in academic_years %}
+                                    <option value={{ year.id }}>{{ year.year }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <!-- /.box-body -->
+                    </form>
+              </div>
+              <!-- /.box -->
+            </div>
+        </div>
+
+        <!-- COURSE-SPECIFIC PARAMETERS -->
+        {% for code in codes %}
+            <div class="tab-pane fade" id="{{ code }}-pref" role="tabpanel" aria-labelledby="profile-tab">
+                <div class="card border-primary mb-3" style="float: left; clear: left; text-align: center;">
+                    <div class="card-header" style="padding: 5%"><strong>{{ code }}</strong></div>
+                    <div class="card-body" style="padding: 5%">
+                        content goes there
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+
+{% block js %}
+    <script>
+        {% for code in codes %}
+            console.log({{ id|safe }}.{{ code }}.CM);
+        {% endfor %}
+    </script>
+{% endblock %}

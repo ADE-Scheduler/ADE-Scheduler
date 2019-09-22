@@ -5,8 +5,6 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="ADE Scheduler for UCLouvain students">
-    <meta name="keywords" content="ADE, horaire, schedule, UCL, UCLouvain, EPL">
 
     <title>ADE Scheduler</title>
 
@@ -165,10 +163,7 @@ desired effect
         <!-- Main Footer -->
         <footer class="main-footer" id="footer-relou">
             <div style="float: left">
-                <a href="https://github.com/SnaKyEyeS/ADE-Scheduler" style="text-decoration: underline; color: #444;">
-                    <b>{{ _('Open Source software') }}</b>
-                </a>
-                {{ _('  designed by Gilles Poncelet, Louis Navarre and Jérome Eertmans, students at the Ecole Polytechnique de Louvain.') }}
+                {{ _('<b>Open Source software</b> designed by Gilles Poncelet, Louis Navarre and Jérome Eertmans, students at the Ecole Polytechnique de Louvain.') }}
             </div>
             <div style="float: right; display: flex;">
                 <div class="form-group" style="width: 70px; margin-right: 15px; margin-bottom: 0; margin-top: -3px;">
@@ -199,7 +194,7 @@ desired effect
                         <label for="projectid-select"><strong>{{ _('Academic Year') }}</strong></label>
                         <select class="custom-select" id="projectid-select" name="projectid-select" style="margin-left: 15px; width: 84%;">
                         {% for year in academic_years %}
-                            {% if year.id == project_id %}
+                            {% if year.id == projectID %}
                                 <option value={{ year.id }} selected>{{ year.year }}</option>
                             {% else %}
                                 <option value={{ year.id }}>{{ year.year }}</option>

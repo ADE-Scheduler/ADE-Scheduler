@@ -1,0 +1,26 @@
+************************************************  TO  DO  LIST   ****************************************************
+
+Si on veut tout porter en javascript :
+- ics.py => https://github.com/nwcell/ics.js/
+- itertools => https://github.com/abozhilov/ES-Iter/blob/master/src/Iter.js
+
+** PROJET LOCAL (BACK-END)
+OK	- Web scraping (recuperer les donnees sur ADE)
+	- Stocker les donnees sous un format efficace pour la suite
+	- Generation d'une semaine type + conflits
+	- Algorithme d'optimisation en fonctions de parametres utilisateurs
+		--> fonction qui genere les permutations (en tenant eventuellement compte de hard-contraintes utilisateur)
+		--> fonction d'evalutation des differents horaires selon differents parametres utilisateur
+	- Export resultat final
+	- Creation d'un lien d'abonnement 
+	        --> il faut un url qui renvoit un fichier ics (soit ADE le fait, soit on le fait avec le pakcage ics.py ?)
+
+** WEB-APP (FRONT-END)
+LOCAL	- Hebergement (gratos ?) du site -> tutoriel https://realpython.com/python-web-applications/
+Flask	- Creation de l'interface graphique (site internet)
+Flask	- Creation de l'interface entre le back-end et le front-end
+	- Créer un bouton refresh qui actualise la liste de cours sans compute (comme ça on peut rajouter les FTS puis compute)
+	- En utilisant la fonction Course.getSummary(self), créer un onglet où l'on peut cocher / décocher les cours (ex : choisir TP1 ou TP2) pour après pouvoir finaliser notre horaire
+	- Compute devrait sauver une liste de "id" (id TP1 != id TP2) pour après pouvoir facilement refaire le même horaire par après, sans devoir à nouveau compute
+	- Rempir la page aide (expliquer un maximum de fonctionnalités)
+	- Si on fait tout en anglais, il faudrait alors écrire une section en français dans la page aide

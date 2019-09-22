@@ -40,24 +40,24 @@ def extractType(ctype: str, cid: str):
     t : CustomEvent constructor
         The constructor of the right event type.
     """
-    # We first try to detect the type with the ID regex
-    if re.search(COURSE_REGEX + "-", cid, re.IGNORECASE):
+    # We first try to detect with the given type
+    if ctype == 'Cours magistral':
+        return EventCM
+    elif ctype == 'TP' or ctype == 'TD':              # TODO: Vérifier si il n'y a pas d'autres strings possible en général
+        return EventTP
+    elif ctype == 'Examen écrit' or type == 'Test / Interrogation / Partiel':
+        return EventEXAM
+    elif ctype == 'Examen oral':
+        return EventORAL
+
+    # If it fails, do a search using the given ID
+    elif re.search(COURSE_REGEX + "-", cid, re.IGNORECASE):
         return EventCM
     elif re.search(COURSE_REGEX + "_", cid, re.IGNORECASE):
         return EventTP
     elif re.search(COURSE_REGEX + "=E", cid, re.IGNORECASE) or re.search(COURSE_REGEX + "=P", cid, re.IGNORECASE):
         return EventEXAM
     elif re.search(COURSE_REGEX + "=O", cid, re.IGNORECASE):
-        return EventORAL
-
-    # If it fails, we look at the given type (there are some mistakes in the data from ADE, not always trustworthy)
-    elif ctype == 'Cours magistral':
-        return EventCM
-    elif ctype == 'TP' or 'TD':
-        return EventTP
-    elif ctype == 'Examen écrit' or type == 'Test / Interrogation / Partiel':
-        return EventEXAM
-    elif ctype == 'Examen oral':
         return EventORAL
 
     # The search failed, return the "Other" type
@@ -68,10 +68,7 @@ def extractType(ctype: str, cid: str):
 def extractDateTime(date, start, end):
     t0 = datetime.strptime(date + '-' + start, '%d/%m/%Y-%H:%M').astimezone(tz)
     t1 = datetime.strptime(date + '-' + end, '%d/%m/%Y-%H:%M').astimezone(tz)
-    if t0 < t1:
-        return t0, t1
-    else:
-        return t1, t0
+    return t0, t1
 
 
 def JSONfromEvents(events):

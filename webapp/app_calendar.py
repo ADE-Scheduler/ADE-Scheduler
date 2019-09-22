@@ -3,13 +3,12 @@ import json
 import os
 import re
 import sys
-
 from itertools import chain
+
 from dateutil.parser import parse
 from flask import request, session
 from ics import Calendar
 from pytz import timezone
-from redis import Redis
 
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
@@ -17,11 +16,10 @@ sys.path.insert(0, parentdir + '/python')
 from ade import getCoursesFromCodes
 from computation import extract_events, compute_best
 from event import CustomEvent, JSONfromEvents
-from background_job import update_projects
+from static_data import ACADEMIC_YEARS
 
 # letters + number only regex
 regex = re.compile('[^A-Z0-9]')
-redis = Redis(host='localhost', port=6379)
 
 
 def clear():
@@ -86,11 +84,8 @@ def init():
     # Other variables
     color_gradient = ['', '#374955', '#005376', '#00c0ff', '#1f789d', '#4493ba', '#64afd7', '#83ccf5', '#3635ff',
                       '#006c5a', '#3d978a']
-    if not redis.exists('ADE_PROJECTS'): update_projects()
-    ade_projects = json.loads(redis.get('ADE_PROJECTS'))
     session['basic_context'] = {'up_to_date': True, 'safe_compute': True, 'locale': None, 'gradient': color_gradient,
-                                'project_id': ade_projects[0]['id'], 'academic_years': ade_projects,
-                                'priority': dict()}
+                                'projectID': 9, 'academic_years': ACADEMIC_YEARS, 'priority': {}}
 
 
 def add_courses(codes):
@@ -118,10 +113,6 @@ def add_course(code):
         return
     if code not in session['codes']:
         session['codes'].append(code)
-        if session['id_list'] is not None:
-            course = get_courses_from_codes([code], project_id=session['basic_context']['project_id'])[0]
-            for id_ in course.getSummary():
-                session['id_list'].append(id_)
         fetch_courses()
         session['basic_context']['up_to_date'] = False
         session.modified = True
@@ -224,11 +215,11 @@ def load_fts():
     for el in session['fts']:
         t0 = parse(el['start']).astimezone(tz)
         t1 = parse(el['end']).astimezone(tz)
-        if el['title'] == 'High' or el['title'] == 'Haut':
+        if el['title'] == 'High':
             fts.append(CustomEvent(el['title'], t0, t1, el['description'], '', weight=9))
-        elif el['title'] == 'Medium' or el['title'] == 'Moyen':
+        elif el['title'] == 'Medium':
             fts.append(CustomEvent(el['title'], t0, t1, el['description'], '', weight=6))
-        elif el['title'] == 'Low' or el['title'] == 'Bas':
+        elif el['title'] == 'Low':
             fts.append(CustomEvent(el['title'], t0, t1, el['description'], '', weight=1))
 
     return fts
