@@ -3,8 +3,6 @@ from itertools import chain, repeat
 from operator import itemgetter
 from collections.abc import Iterable
 from static_data import N_WEEKS
-import pandas as pd
-import numpy as np
 
 
 class Course:

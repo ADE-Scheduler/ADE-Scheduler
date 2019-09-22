@@ -1,5 +1,5 @@
 # Spécifications de l'application ADE-scheduler
-Sur base des données fournies par le site ADE-UCLouvain, l'application obtient les données et les traite.
+Sur base des données fournies par l'api ade de l'UCLouvain, l'application obtient les données et les traite.
 
 ## Objectifs
 L'utilisateur peut
@@ -14,10 +14,27 @@ L'utilisateur peut
 - sauvegarder son calendrier (sauve les paramètres dans une base de donnée) et obtenir un code pour récupérer à tout moment la dernière version du calendrier selon les dernières informations de ADE-UCLouvain
   - utilité : via une url, récupérer un calendrier (via son code) en format .ics -> ceci peut faire office de lien d'abonnement iCalendar
 - avoir le site en : anglais / français
+- participer au développement de l'application (pull request)
 
-## Objectifs bonus
-L'utilisateur peut
-- se connecter avec son compte MyUCL afin que l'application obtienne la liste des cours auquel il est inscrit et la mette par défaut dans le calendrier
+## Mises à jours à venir (par ordre de priorité)
+
+Doit être fait
+- quand on entre une liste de cours (ex. : fsa12ba), le site donne directement la liste de tous les cours
+- suivre les normes syntaxiques imposées par pep8
+- (plus) facilement créer des FTS récurrents
+- intégrer un maximum le package pandas pour un stockage des évènements plus facile
+- obtenir les statistiques du site
+- optimiser la fonction compute
+- suite de tests à effectuer sur tout code pull-request
+- finir videos de la section aide
+- corriger texte (mise en page + orthographe) de l'aide
+- créer une version mobile plus accessible
+- automatiquement ajouter les nouveaux project id 
+
+L'utilisateur pourra
+- participer au développement de l'application (pull request) de manière sûre : suite de tests à effectuer sur tout code
+- integrer un calendrier personnel externe (.ics / abonnement)
+- se connecter avec son compte MyUCL afin que l'application obtienne la liste des cours auquel il est inscrit et la mette par défaut dans le calendrier [?]
 
 ## Langages utilisés
 
@@ -26,12 +43,14 @@ L'utilisateur peut
 - effectuer tous les calculs sur les calendriers
 - gestion de l'application avec Flask
 - gestion d'une base de donnée SQLite afin de stocker 
-  - les cours pour 24H et limiter la quantité de requêtes ADE en allant d'abord rechercher ce qu'il existe dans la base
-  - les paramètres afin de reconstruire un calendrier à chaque requête de l'abonnement icalendar
+  - les liens d'abonnements + les paramètres d'un utilisateur afin de pouvoir reconstituer son calendrier/sa session sur demande
+- gestion d'un "cache" de mémoire Redis pour:
+  - stocker les cours pendant 24h afin de limiter la quantité de requêtes ADE
+  - les sessions des utilisateurs d'une actualisation à une autre
 
 ### `HTML` pour
 - les pages webs
 
 ### `JavaScript` pour
 - les pages webs
-- affichage du calendrier avec FullCalendar
+- affichage du calendrier avec FullCalendar (fullcalendar.io)

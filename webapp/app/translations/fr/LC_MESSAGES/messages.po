@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-09-15 11:51+0200\n"
+"POT-Creation-Date: 2019-09-20 13:38+0200\n"
 "PO-Revision-Date: 2019-08-24 23:58+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -18,36 +18,47 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.7.0\n"
 
-#: templates/base.html:132
+#: templates/base.html:134
 msgid "Calendar"
 msgstr "Calendrier"
 
-#: templates/base.html:137
+#: templates/base.html:139
 msgid "Help"
 msgstr "Aide"
 
-#: templates/base.html:176
+#: templates/base.html:169
+msgid "Open Source software"
+msgstr ""
+
+#: templates/base.html:171
+msgid ""
+"  designed by Gilles Poncelet, Louis Navarre and Jérome Eertmans, "
+"students at the Ecole Polytechnique de Louvain."
+msgstr ""
+"  réalisé par Gilles Poncelet, Louis Navarre et Jérome Eertmans, "
+"étudiants à l'Ecole Polytechnique de Louvain."
+
+#: templates/base.html:181
 msgid "Contact us"
 msgstr "Nous contacter"
 
-#: templates/base.html:187
+#: templates/base.html:192
 msgid "Settings"
 msgstr "Paramètres"
 
-#: templates/base.html:189
+#: templates/base.html:194
 msgid "Save"
 msgstr "Sauver"
 
-#: templates/base.html:194 templates/help.html:45 templates/help.html:83
-#: templates/preferences.html:46
+#: templates/base.html:199 templates/help.html:106 templates/help.html:146
 msgid "Academic Year"
 msgstr "Année académique"
 
-#: templates/base.html:207 templates/help.html:44 templates/help.html:73
+#: templates/base.html:212 templates/help.html:105 templates/help.html:136
 msgid "Course priority"
 msgstr "Priorité des cours"
 
-#: templates/base.html:214
+#: templates/base.html:219
 msgid ""
 "Customize the priority given to a course, from no priority at all to "
 "maximum priority."
@@ -55,253 +66,276 @@ msgstr ""
 "Customisez la priorité accordée à un cours: d'aucune priorité jusqu'à "
 "priorité maximale."
 
-#: templates/base.html:220
+#: templates/base.html:225
 msgid "Computation"
 msgstr "Calculs"
 
-#: templates/base.html:227 templates/help.html:46 templates/help.html:93
+#: templates/base.html:232 templates/help.html:107 templates/help.html:156
 msgid "Safe compute"
 msgstr "Safe compute"
 
-#: templates/base.html:229
+#: templates/base.html:234
 msgid "WARNING: may cause long computation times, see help section."
 msgstr "AVERTISSEMENT: peut causer de longs temps de calcul, voir la section Aide."
 
-#: templates/calendar.html:47
+#: templates/calendar.html:48
 msgid "ADE schedule"
 msgstr "Horaire ADE"
 
-#: templates/calendar.html:51 templates/calendar.html:55
-#: templates/calendar.html:90 templates/calendar.html:199
-#: templates/calendar.html:306
+#: templates/calendar.html:52 templates/calendar.html:56
+#: templates/calendar.html:91 templates/calendar.html:200
+#: templates/calendar.html:308
 msgid "1st schedule"
 msgstr "1er horaire"
 
-#: templates/calendar.html:60 templates/calendar.html:64
-#: templates/calendar.html:97 templates/calendar.html:200
-#: templates/calendar.html:307
+#: templates/calendar.html:61 templates/calendar.html:65
+#: templates/calendar.html:98 templates/calendar.html:201
+#: templates/calendar.html:309
 msgid "2nd schedule"
 msgstr "2ème horaire"
 
-#: templates/calendar.html:69 templates/calendar.html:73
-#: templates/calendar.html:105 templates/calendar.html:201
-#: templates/calendar.html:308
+#: templates/calendar.html:70 templates/calendar.html:74
+#: templates/calendar.html:106 templates/calendar.html:202
+#: templates/calendar.html:310
 msgid "3rd schedule"
 msgstr "3ème horaire"
 
-#: templates/calendar.html:78 templates/calendar.html:116
+#: templates/calendar.html:79 templates/calendar.html:117
 msgid "Compare"
 msgstr "Comparer"
 
-#: templates/calendar.html:84 templates/calendar.html:198
-#: templates/calendar.html:305
+#: templates/calendar.html:85 templates/calendar.html:199
+#: templates/calendar.html:307
 msgid "ADE Schedule"
 msgstr "Horaire ADE"
 
-#: templates/calendar.html:125 templates/calendar.html:127
+#: templates/calendar.html:126 templates/calendar.html:128
 msgid "Compute"
 msgstr "Calculer"
 
-#: templates/calendar.html:129
+#: templates/calendar.html:130
 msgid "Refresh"
 msgstr "Rafraichir"
 
-#: templates/calendar.html:130
+#: templates/calendar.html:131
 msgid "Clear"
 msgstr "Réinitialiser"
 
-#: templates/calendar.html:144
+#: templates/calendar.html:145
 msgid "Forbidden Time Slot"
 msgstr "Bloquer un horaire"
 
-#: templates/calendar.html:152
+#: templates/calendar.html:153
 msgid "Start"
 msgstr "Début"
 
-#: templates/calendar.html:163
+#: templates/calendar.html:164
 msgid "End"
 msgstr "Fin"
 
-#: templates/calendar.html:176
+#: templates/calendar.html:177
 msgid "Cancel"
 msgstr "Annuler"
 
-#: templates/calendar.html:177
+#: templates/calendar.html:178
 msgid "Confirm"
 msgstr "Confirmer"
 
-#: templates/calendar.html:188
+#: templates/calendar.html:189
 msgid "Export Schedule"
 msgstr "Exporter l'horaire"
 
-#: templates/calendar.html:197
+#: templates/calendar.html:198
 msgid "Choose..."
 msgstr "Choisir..."
 
-#: templates/calendar.html:203
+#: templates/calendar.html:204
 msgid "Select your schedule."
 msgstr "Sélectionner un horaire."
 
-#: templates/calendar.html:209 templates/calendar.html:341
+#: templates/calendar.html:210 templates/calendar.html:343
 msgid "Copy link"
 msgstr "Copier le lien"
 
-#: templates/calendar.html:213 templates/calendar.html:339
-msgid "ex: adescheduler.com/getcalendar?=subscription_link"
-msgstr "ex: adescheduler.com/getcalendar?=lien_d_abonnement"
+#: templates/calendar.html:214
+msgid "ex: ade-scheduler.info.ucl.ac.be/getcalendar/your_link"
+msgstr ""
 
-#: templates/calendar.html:215
+#: templates/calendar.html:216
 msgid "Generate link"
 msgstr "Générer"
 
-#: templates/calendar.html:218
+#: templates/calendar.html:219
 msgid "Generate a subscription link"
 msgstr "Générer un lien d'abonnement"
 
-#: templates/calendar.html:226 templates/calendar.html:228
-#: templates/calendar.html:282 templates/calendar.html:284
+#: templates/calendar.html:227 templates/calendar.html:229
+#: templates/calendar.html:284 templates/calendar.html:286
 msgid "Login"
 msgstr "Identifiant"
 
-#: templates/calendar.html:230 templates/calendar.html:724
+#: templates/calendar.html:231 templates/calendar.html:735
 msgid "Please specify a login"
 msgstr "Choisissez un identifiant"
 
-#: templates/calendar.html:235 templates/calendar.html:237
-#: templates/calendar.html:291 templates/calendar.html:293
+#: templates/calendar.html:236 templates/calendar.html:238
+#: templates/calendar.html:293 templates/calendar.html:295
 msgid "Password"
 msgstr "Mot de passe"
 
-#: templates/calendar.html:239
+#: templates/calendar.html:240
 msgid "Please choose a password"
 msgstr "Choisissez un mot de passe"
 
-#: templates/calendar.html:246
+#: templates/calendar.html:247
 msgid "Modifiable & protected link"
-msgstr ""
+msgstr "Lien modifiable & protégé"
 
-#: templates/calendar.html:254
+#: templates/calendar.html:255
 msgid "Your schedules are not updated ! Please compute first."
 msgstr "Les horaires ne sont  pas à jour ! Calculez-les d'abord."
 
-#: templates/calendar.html:258
+#: templates/calendar.html:259
 msgid "Please specify a schedule first."
 msgstr "Spécifiez un horaire."
 
-#: templates/calendar.html:260 templates/calendar.html:316
-#: templates/calendar.html:346 templates/calendar.html:366
-#: templates/calendar.html:386
+#: templates/calendar.html:261 templates/calendar.html:318
+#: templates/calendar.html:348 templates/calendar.html:368
+#: templates/calendar.html:388
 msgid "Close"
 msgstr "Fermer"
 
-#: templates/calendar.html:261
+#: templates/calendar.html:262
 msgid "Download file"
 msgstr "Télécharger le fichier"
 
-#: templates/calendar.html:272
+#: templates/calendar.html:263
+msgid "Create account"
+msgstr "Créer un compte"
+
+#: templates/calendar.html:274
 msgid "Get/Modify Schedule"
 msgstr "Récupérer/Modifier l'horaire"
 
-#: templates/calendar.html:286
+#: templates/calendar.html:288
 msgid "Login is required !"
 msgstr "identifiant requis !"
 
-#: templates/calendar.html:295
+#: templates/calendar.html:297
 msgid "Password is required !"
 msgstr "Mot de passe requis !"
 
-#: templates/calendar.html:304
+#: templates/calendar.html:306
 msgid "Don't change"
 msgstr "Ne pas changer"
 
-#: templates/calendar.html:310
+#: templates/calendar.html:312
 msgid "Update your schedule choice."
 msgstr "Changer votre choix d'horaire."
 
-#: templates/calendar.html:318
+#: templates/calendar.html:320
 msgid "Forgot link ?"
 msgstr "Lien oublié ?"
 
-#: templates/calendar.html:319
+#: templates/calendar.html:321
 msgid "Load session"
 msgstr "Charger"
 
-#: templates/calendar.html:320
+#: templates/calendar.html:322
 msgid "Save changes"
 msgstr "Sauvegarder"
 
-#: templates/calendar.html:332
+#: templates/calendar.html:334
 msgid "Your Link"
 msgstr "Votre URL"
 
-#: templates/calendar.html:357
+#: templates/calendar.html:341
+msgid "ex: adescheduler.com/getcalendar?=subscription_link"
+msgstr "ex: adescheduler.com/getcalendar?=lien_d_abonnement"
+
+#: templates/calendar.html:359
 msgid "WARNING"
 msgstr "AVERTISSEMENT"
 
-#: templates/calendar.html:363
+#: templates/calendar.html:365
 msgid "Please select at least a schedule to compare !"
 msgstr "Sélectionnez au moins un horaire à comparer !"
 
-#: templates/calendar.html:377
+#: templates/calendar.html:379
 msgid "ERROR"
 msgstr "ERREUR"
 
-#: templates/calendar.html:383
+#: templates/calendar.html:385
 msgid "You specified a wrong time format ! Please try again."
 msgstr "Le format utilisé est incorrect ! Essayez à nouveau."
 
-#: templates/calendar.html:395
+#: templates/calendar.html:397
 msgid "Block Time Slots"
 msgstr "Bloquer un Horaire"
 
-#: templates/calendar.html:398
+#: templates/calendar.html:400
 msgid "Low"
 msgstr "Bas"
 
-#: templates/calendar.html:399
+#: templates/calendar.html:401
 msgid "Medium"
 msgstr "Moyen"
 
-#: templates/calendar.html:400
+#: templates/calendar.html:402
 msgid "High"
 msgstr "Haut"
 
-#: templates/calendar.html:407
+#: templates/calendar.html:409
 msgid "Current Courses"
 msgstr "Cours ajoutés"
 
-#: templates/calendar.html:415
+#: templates/calendar.html:417
 msgid "None"
 msgstr "Aucun"
 
-#: templates/calendar.html:428
+#: templates/calendar.html:430
 msgid "No event found !"
 msgstr "Aucun événement trouvé !"
 
-#: templates/calendar.html:540
+#: templates/calendar.html:542
 msgid "Add a course"
 msgstr "Ajouter un cours"
 
-#: templates/calendar.html:552
+#: templates/calendar.html:554
 msgid "Export"
 msgstr "Exporter"
 
-#: templates/calendar.html:553
+#: templates/calendar.html:555
 msgid "Log in"
 msgstr "Connexion"
 
-#: templates/calendar.html:992 templates/calendar.html:1039
-#: templates/calendar.html:1064
+#: templates/calendar.html:566
+msgid ""
+"Disclaimer: this software is not an official UCLouvain tool. It has been "
+"designed with the purpose to help the EPL students with scheduling. This "
+"tool is based on ADE but does not replace standard scheduling rules, nor "
+"the instructions given by university officials and teachers as those may "
+"vary from one course to another."
+msgstr ""
+"Attention: ce software n'est pas un outil officiel de l'UCLouvain. Il a "
+"été développé dans le but d'aider les étudiants de l'EPL pour la "
+"composition de leur horaire. Cet outil est basé sur ADE mais ne remplace "
+"ni les règles déjà existantes, les instructions données par l'université "
+"et les professeurs, car ces informations peuvent changer d'un cours à un "
+"autre."
+
+#: templates/calendar.html:1003 templates/calendar.html:1050
+#: templates/calendar.html:1075
 msgid "A time slot where the user would like to be free"
 msgstr "Un moment ou l'utilisateur voudrait être libre"
 
 #: templates/help.html:11
 msgid "ADE Scheduler"
-msgstr ""
+msgstr "ADE Scheduler"
 
 #: templates/help.html:14
 msgid "What is ADE Scheduler ?"
-msgstr ""
+msgstr "Qu'est-ce qu'ADE Scheduler ?"
 
 #: templates/help.html:18
 msgid ""
@@ -311,67 +345,202 @@ msgid ""
 "Catholique de Louvain get an overview of their schedule based on their "
 "choice of course. It provides a way to get ahead of any possible "
 "scheduling conflict and, if possible, resolve them by making the right "
-"choices. However, it is not an official tool provided by the UCLouvain "
-"and the EPL. You should still consult from official sources as ADE "
-"Scheduler does not replace all the instructions professors and university"
-" officials may give to the students."
+"choices. <br>\n"
+"                    However, it is not an official tool provided by the "
+"UCLouvain and the EPL. You should still consult from official sources as "
+"ADE Scheduler does not replace all the instructions professors and "
+"university officials may give to the students."
 msgstr ""
+"ADE Scheduler est un outil gratuit, développé pour les étudiants "
+"ingénieurs à l'Ecole Polytechnique de Louvain. Le but de l'application "
+"est de proposer un outil facile d'utilisation pour aider les étudiants de"
+" l'Université Catholique de Louvain à avoir une vue d'ensemble de leur "
+"horaire, basé sur leurs choix de cours. Il offre un moyen de se prévenir "
+"de tout conflit horaire et, si possible, résoudre ceux-ci en prenant les "
+"bons choix. <br>                   Néanmoins, ceci n'est pas un outil "
+"officiel fourni par l'UCLouvain et l'EPL. Vous devez toujours consulter "
+"les sources officielles, puisqu'ADE Scheduler ne remplace pas les "
+"instructions des professeurs and de l'Université."
 
-#: templates/help.html:24
+#: templates/help.html:25
 msgid "How to use ADE Scheduler ?"
-msgstr ""
+msgstr "Comment utiliser ADE Scheduler ?"
 
-#: templates/help.html:28
+#: templates/help.html:29
 msgid ""
 "It is truly easy: you simply need to specify the code (e.g. "
 "\"LELEC1530\", \"LANGL1873\", etc.) of the courses you are interested by."
 " The possibilities related to your choice will then be displayed for you "
-"as you can find them on the UCLouvain's ADE website. Next, simply press "
-"\"Compute\" and voilà ! the three best schedules will be shown. Once you "
-"have picked your schedule, you can easily export it to your own agenda by"
-" pressing the \"Export\" button."
+"as you can find them on the UCLouvain's ADE website. <br>\n"
+"                    Next, simply press \"Compute\" and voilà ! the three "
+"best schedules will be shown. Once you have picked your schedule, you can"
+" easily export it to your own agenda by pressing the \"Export\" button."
 msgstr ""
+"C'est réellement simple: vous devez spécifier le matricule (par exemple, "
+"\"LELEC1530\\“, \"LANGL1873\", ... (sans les guillemets)) des cours qui "
+"vous intéressent. Les possibilités en lien avec vos choix seront "
+"affichées pour vous, de la même manière que vous pourriez les trouver sur"
+" le site officel de l'UCLouvai, ADE. <br>                   Ensuite, il "
+"suffit de \"Calculer\" et voilà ! Les trois meilleurs horaires seront "
+"affichés. Une fois votre agenda choisi, vous pouvez facilement l'exporter"
+" dans votre propre agenda en cliquand sur \"Exporter\"."
 
-#: templates/help.html:33
-msgid "Settings & Customization"
-msgstr ""
+#: templates/help.html:38
+msgid "Export & Load"
+msgstr "Exporter & Télécharger"
 
-#: templates/help.html:36
+#: templates/help.html:41 templates/help.html:97
 msgid "What are the possibilities ?"
-msgstr ""
+msgstr "Quelles sont les possibilités ?"
 
-#: templates/help.html:40
+#: templates/help.html:45
+msgid ""
+"ADE Scheduler offers three options to export your schedule to your own "
+"calendar:"
+msgstr ""
+"ADE Scheduler offre trois options pour exporter votre agenda vers votre "
+"propre application de calendrier préférée:"
+
+#: templates/help.html:47 templates/help.html:59
+msgid "Download an iCal file"
+msgstr "Télécharger un fichier iCal"
+
+#: templates/help.html:48
+msgid "Non-modifiable subscription link"
+msgstr "Lien d'abbonnement non-modifiable"
+
+#: templates/help.html:49
+msgid "Modifiable subscription link"
+msgstr "Lien d'abonnement modifiable"
+
+#: templates/help.html:63
+msgid ""
+"You can export the schedule of your choice in the iCal (.ics) format and "
+"then add it to your own calendar (e.g: Google Calendars offers such an "
+"option). <br>\n"
+"                    To do so, simply press the \"Export\" button, choose "
+"the schedule you wish to export and press the \"Download file\" button. "
+"The download will start right away."
+msgstr ""
+"Vous pouvez exporter l'agenda de votre choix dans le format iCal (.ics) "
+"et l'ajouter à votre propre application de calendrier (par exemple: "
+"Google  Calendars offre ce type d'option). <br>                   Il "
+"suffit simplement de choisir \"Exporter\", de choisir l'agenda à exporter"
+" et ensuite de choisir \"Télécharger le fichier\". Le téléchargement se "
+"fera immédiatement."
+
+#: templates/help.html:70
+msgid "Non-modifiable link"
+msgstr "Lien non-modifiable"
+
+#: templates/help.html:74
+msgid ""
+"Some calendars offer the possibility to suscribe to a pre-generated "
+"calendar. It means that you simply need to give a link to your calendar "
+"and it will regularly make a request to our website to automatically load"
+" the schedule you chose. This allows your calendar to stay updated, even "
+"if there is a last minute change in your schedule (new local, course "
+"cancelled, etc.). The calendar automatically requests for new updates "
+"every now and then, you do not have to worry about staying up-to-date ! "
+"<br>\n"
+"                    To do so, simply press the \"Export\" button, choose "
+"the schedule you wish to export and press the \"Generate link\" button. "
+"Then you simply need to copy/paste the link to your calendar's "
+"subscription system."
+msgstr ""
+"Quelques applications de calendrier offrent la possibilité de s'abonner à"
+" un agenda pré-généré. Cela signifie qu'il suffit de donner un lien vers "
+"cet agenda, et l'application effectuera régulièrement une requête vers "
+"notre site pour récupérer automatiquement l'agenda de votre choix. Ceci "
+"permet, contrairement à un fichier statique (par exemple), de garder un "
+"agenda à jour, même s'il y a un changement de dernière minute (nouveau "
+"local, cours annulé ou déplacé, ...). Tout se fait donc automatiquement, "
+"sans besoin d'intervention de votre part"
+
+#: templates/help.html:81
+msgid "Modifiable link"
+msgstr "Lien modifiable"
+
+#: templates/help.html:85
+msgid ""
+"The modifiable link works in the exact same way as the non-modifiable "
+"link. However, you can protect your link with a username and a password. "
+"The advantage of doing so is that you will be able to come back at a "
+"later time and modify your scheduling wishes without having to start from"
+" scratch. You can also retrieve your link in case you lost it. <br>\n"
+"                    To create such a link, simply proceed as if it were a"
+" non-modifiable link, but toggle the \"Modifiable & Protected link\" "
+"button on and choose a username and password to proceed. Then, click "
+"\"Generate link\". <br>\n"
+"                    To retrieve your scheduling wishes, press the \"Log "
+"in\" button, specify your username & password then press \"Load "
+"session\". You can then modify your preferences/courses and save them "
+"through the same process, but by pressing \"Save changes\" instead. <br>"
+"\n"
+"                    Finally, press the \"Forgot link ?\" button to "
+"retrieve your subscription link."
+msgstr ""
+"Le lien modifiable fonctionne exactement de la même manière que le lien "
+"non-modifiable. Cependant, vous pouvez protéger votre lien avec un compte"
+" personnel (identifiant, mot de passe). Agir de la sorte vous permet de "
+"revenir n'importe quand, pour modifier votre agenda sans repartir de zéro"
+" (vos données de cours sont sauvegardées personnellement). De plus, "
+"garder le même lien permet de ne pas devoir remettre à jour votre "
+"application de calendrier à jour en cas de changement d'agenda. Enfin, en"
+" cas de perte de votre lienvous pouvez le récupérer facilement grâce à "
+"votre compte. <br>                   Pour créer un lien modifiable, il "
+"suffit d'agir de la même manière que pour un lien non modifiable, mais "
+"sélectionner le \"Lien modifiable et protégé\", choisir un identifiant et"
+" mot de passe et confirmer. Ensuite, choisissez \"Générer lien\". <br>"
+"                   Pour récupérer votre calendrier déjà créé, choisissez "
+"\"Connexion\", spécifiez vos informations de compte, et cliquez \"Charger"
+" la session\". Vous pouvez ensuite modifier vos préférences/cours et "
+"sauvegarder ces changements de la même manière, en cliquant \"Sauvegarder"
+" les changements\". <br>                   Enfin, choisissez \"Oublier "
+"lien\" pour détruire votre lien d'abonnement."
+
+#: templates/help.html:94
+msgid "Settings & Customization"
+msgstr "Paramètres & personnalisation"
+
+#: templates/help.html:101
 msgid ""
 "ADE Scheduler offers various customization possibilites, so that you can "
 "compose a schedule that best fits your own needs and wishes. Here is a "
 "list of those possibilites, which we will dive into more in details in "
 "the following sections:"
 msgstr ""
+"ADE Scheduler offre plusieurs possibilités de personnalisation, vous "
+"offrant la possibilité de construire l'agenda qui correspond le mieux à "
+"vos attentes et vos besoins. Voici une liste de possibilités, que nous "
+"développons dans les sections suivantes:"
 
-#: templates/help.html:42 templates/help.html:53
+#: templates/help.html:103 templates/help.html:114
 msgid "Forbidden Time Slots"
-msgstr ""
+msgstr "Slots horaires protégés (FTS)"
 
-#: templates/help.html:43 templates/help.html:63
+#: templates/help.html:104 templates/help.html:126
 msgid "Course IDs selection"
-msgstr ""
+msgstr "Sélection des IDs de cours"
 
-#: templates/help.html:57
+#: templates/help.html:118
 msgid ""
 "All the students have a life beside the university and this life "
 "sometimes brings its own scheduling constrains. Our Forbidden Time Slots "
 "(\"FTS\") system provides a way for the user to specify when he would "
 "like to be free. There are three level of priority you can pick from: "
 "low, medium and high. The higher the priority, the harder the scheduling "
-"algorithm tries to free a time slot from any university events. However, "
-"it does not guaranty that it will be able to find a way around your "
-"specifications and wishes. To add a FTS, you simply need to pick one and "
-"drag it onto the calendar, at the day you wish to be free. You will then "
-"have to specify a start and end time. Once your FTS is created, you can "
-"move it around by dragging it and you can even duplicate it (in case your"
-" indisponibility would be a recurring event) by pressing the ALT key and "
-"dragging it. If you made a mistake, you can easily delete a FTS by "
-"clicking on it with the SHIFT key pressed."
+"algorithm tries to free a time slot from any university events. <br>\n"
+"                    However, it does not guaranty that it will be able to"
+" find a way around your specifications and wishes. To add a FTS, you "
+"simply need to pick one and drag it onto the calendar, at the day you "
+"wish to be free. You will then have to specify a start and end time. <br>"
+"\n"
+"                    Once your FTS is created, you can move it around by "
+"dragging it and you can even duplicate it (in case your indisponibility "
+"would be a recurring event) by pressing the ALT key and dragging it. If "
+"you made a mistake, you can easily delete a FTS by clicking on it with "
+"the SHIFT key pressed."
 msgstr ""
 "Chaque étudiant a une vie à côté de l'université, et cela amène parfois "
 "des contraintes à certains horaires. Notre system de <i>Forbidden Time "
@@ -390,11 +559,18 @@ msgstr ""
 "simplement supprimer le bloc en appuyant sur SHIFT tout en sélectionnant "
 "le bloc."
 
-#: templates/help.html:67
-msgid "ID list"
+#: templates/help.html:130
+msgid ""
+"You can select/deselect certain courses so they will not appear on the "
+"calendar. This is a great tool to comply with university instructions "
+"regarding imposed CM or TP."
 msgstr ""
+"Vous pouvez sélectionner/désélectionner certains cours afin qu'il "
+"n'apparaissent pas dans l'agenda. Cet outil est très utile pour, par "
+"exemple, se conformer avec les séances de TP/CM déjà assignées par "
+"l'université."
 
-#: templates/help.html:77
+#: templates/help.html:140
 msgid ""
 "You can customize the priority of each course you have selected. This "
 "priority is used, for example, in case of conflict. To adjust the "
@@ -405,7 +581,7 @@ msgstr ""
 "cours. Pour modifier la priorité d'un cours, déplacez le curseur "
 "correspondant dans le menu Paramètres."
 
-#: templates/help.html:87
+#: templates/help.html:150
 msgid ""
 "If you want to check your schedule for the next year, you can change the "
 "Academic Year from the Settings menu. The scheduler will automatically "
@@ -415,14 +591,14 @@ msgstr ""
 " changer l'Année Académique dans le menu Paramètres. Le calendrier "
 "récupérera automatiquement les cours pour l'année correspondante."
 
-#: templates/help.html:97
+#: templates/help.html:160
 msgid ""
 "Computing a all the possible schedules is a very hard and complex "
 "problem, known to be NP-Complete. As a result, some course combinations "
-"can lead to huge computation times.\n"
+"can lead to huge computation times. <br>\n"
 "                    The <i>safe compute</i> option acts as a safeguard by"
 " removing some obviously conflicted schedules before the computation "
-"starts. This guarantees short computation times.\n"
+"starts. This guarantees short computation times. <br>\n"
 "                    However, you can manually override this option and "
 "request for a complete computation. Be warned: the resulting lags can be "
 "very important."
@@ -438,52 +614,220 @@ msgstr ""
 "option, pour exiger un calcul de calendrier tout à fait complet. "
 "Attention: les performances peuvent être fortement atteintes."
 
-#: templates/help.html:104
+#: templates/help.html:167
 msgid "About us"
-msgstr ""
+msgstr "A propos de nous"
 
-#: templates/help.html:111
+#: templates/help.html:170
+msgid "Who are we ?"
+msgstr "Qui sommes-nous ?"
+
+#: templates/help.html:174
 msgid ""
 "We are three students from UCLouvain. By the time we started this "
 "project, we were finishing our bachelor's degree in engineering "
 "(electricity and mechanics for Jerome and Gilles; informatics and applied"
 " mathematics for Louis)."
 msgstr ""
+"Nous sommes trois étudiants de l'UCLouvain. Lorsque nous avons commencé "
+"ce projet, nous finissions notre bachelier en ingénieur civil "
+"(électricité et mécanique pour Jérome et Gilles; informatique et "
+"mathématiques appliquées pour Louis)."
 
-#: templates/help.html:122
+#: templates/help.html:181
+msgid "Why did we make this project ?"
+msgstr "Pourquoi avons-nous fait ce projet ?"
+
+#: templates/help.html:185
 msgid ""
 "Making your own schedule is something that students have been doing for a"
 " long time. And sometimes, specially at the EPL, we are drown in all the "
-"possibilites to make your own schedule.\n"
-"\n"
+"possibilites to make your own schedule. <br>\n"
 "                    Options, time conflicts, own comfort: everyone has "
 "his own preferences, and sometimes it is not easy to make your own "
-"schedule.\n"
-"\n"
+"schedule. <br>\n"
 "                    Our tool is here to help you during this reflexion "
 "time, and gives you a lot of flexibility to compute your own schedule ! "
 "Go in the above sections to see all the potential of it!"
 msgstr ""
+"Organiser son propre agenda est quelque chose que les étudiants font "
+"depuis bien longtemps. Et parfois, spécialement à l'EPL, nous sommes "
+"plongés dans toutes les possibilités pour créer son propre horaire. <br>"
+"                   Options, conflits horaires, son propre confort: tout "
+"le monde a ses propres préférences, et parfois il n'est pas facile de "
+"créer son propre horaire. <br>                   Notre outil est ici pour"
+" vous aider durant votre réflexion, et vous offre beaucouup de "
+"flexibilité pour créer votre agenda !Naviguez parmis les sections ci-"
+"dessus pour découvrir tout son potentiel !"
 
-#: templates/help.html:135
-msgid "Jérome is a noob. "
+#: templates/help.html:194
+msgid "Jérome Eertmans"
 msgstr ""
 
-#~ msgid "User preferences"
-#~ msgstr "Préférences utilisateur"
+#: templates/help.html:198
+msgid ""
+"Jérome is a student in the Ecole Polytechnique de Louvain, in civil "
+"engineering. He completed his bachelor degree in Electricity and "
+"Mechanics. He is now pursuing a master deree in Mechatronics. <br> "
+msgstr ""
+"Jérome est un étudiant de l'Ecole Polytechnique de Louvain, en ingénieur "
+"civil.  Il a fini son bachelier en électricité et mécanique. Il est "
+"désormais en cours de master en Mécatronique. <br> "
 
-#~ msgid "Please specify a schedule to download."
-#~ msgstr "Spécifiez un horaire à télécharger !"
+#: templates/help.html:205
+msgid "Gilles Poncelet"
+msgstr ""
 
-#~ msgid "Copy"
-#~ msgstr "Copier"
+#: templates/help.html:209
+msgid ""
+"Gilles is a student in the Ecole Polytechnique de Louvain, in civil "
+"engineering. He completed his bachelor degree in Electricity and "
+"Mechanics. He is now pursuing a master deree in Mechatronics. <br> "
+msgstr ""
+"Gilles est un étudiant de l'Ecole Polytechnique de Louvain, en ingénieur "
+"civil.  Il a fini son bachelier en électricité et mécanique. Il est "
+"désormais en cours de master en Mécatronique. <br> "
 
-#~ msgid "How does the scheduler work ?"
-#~ msgstr "Comment est ce que le scheduler fonctionne ?"
+#: templates/help.html:216
+msgid "Louis Navarre"
+msgstr ""
 
-#~ msgid "What are the options ?"
-#~ msgstr "Quelles sont les options ?"
+#: templates/help.html:220
+msgid ""
+"Louis is a student at the Ecole Polytechnique de Louvain, in civil "
+"engineering. He completed his bachelor degree in Applied Mathematics and "
+"Computing Science. He is now pusruing a master degree in Computing "
+"Sciences. <br> "
+msgstr ""
+"Louis est un étudiant de l'Ecole Polytechnique de Louvain, en ingénieur "
+"civil.  Il a fini son bachelier en informatique et mathématiques "
+"appliquées. Il est désormais en cours de master en intelligence "
+"artificielle <br>"
 
-#~ msgid "qsf"
+#~ msgid ""
+#~ "It is truly easy: you simply need"
+#~ " to specify the code (e.g. "
+#~ "\"LELEC1530\", \"LANGL1873\", etc.) of the "
+#~ "courses you are interested by. The "
+#~ "possibilities related to your choice "
+#~ "will then be displayed for you as"
+#~ " you can find them on the "
+#~ "UCLouvain's ADE website. <br>\n"
+#~ "                    Next, simply press "
+#~ "\"Compute\" and voilà ! The three "
+#~ "best schedules will be shown. Once "
+#~ "you have picked your schedule, you "
+#~ "can easily export it to your own"
+#~ " agenda by pressing the \"Export\" "
+#~ "button."
 #~ msgstr ""
+#~ "C'est réellement simple: vous devez "
+#~ "spécifier le matricule (par exemple, "
+#~ "\"LELEC1530\\“, \"LANGL1873\", ... (sans les"
+#~ " guillemets)) des cours qui vous "
+#~ "intéressent. Les possibilités en lien "
+#~ "avec vos choix seront affichées pour "
+#~ "vous, de la même manière que vous"
+#~ " pourriez les trouver sur le site "
+#~ "officel de l'UCLouvai, ADE. <br>"
+#~ "                   Ensuite, il suffit de "
+#~ "\"Calculer\" et voilà ! Les trois "
+#~ "meilleurs horaires seront affichés. Une "
+#~ "fois votre agenda choisi, vous pouvez"
+#~ " facilement l'exporter dans votre propre"
+#~ " agenda en cliquand sur \"Exporter\"."
+
+#~ msgid ""
+#~ "Jérome is a student in the Ecole"
+#~ " Polytechnique de Louvain, in engineering."
+#~ " He completed his bachelor degree in"
+#~ " Electricity and Mechanics. He is now"
+#~ " pursuing a master deree in "
+#~ "Mechatronics. <br>\n"
+#~ "                    Mail: jerome.eertmans@student.uclouvain.be"
+#~ msgstr ""
+#~ "Jérome est un étudiant de l'Ecole "
+#~ "Polytechnique de Louvain, en ingénieur "
+#~ "civil.  Il a fini son bachelier en"
+#~ " électricité et mécanique. Il est "
+#~ "désormais en cours de master en "
+#~ "mécatronique. <br>                   email: "
+#~ "jerome.eertmans@student.uclouvain.be"
+
+#~ msgid ""
+#~ "Louis is a student at the Ecole"
+#~ " Polytechnique de Louvain, in civil "
+#~ "engineering. He completed his bachelor "
+#~ "degree in Applied Mathematics and "
+#~ "Computing Science. He is now pusruing"
+#~ " a master degree in artificial "
+#~ "intelligence. <br>\n"
+#~ "                    Mail: navarre.louis@student.uclouvain.be"
+#~ msgstr ""
+#~ "Louis est un étudiant de l'Ecole "
+#~ "Polytechnique de Louvain, en ingénieur "
+#~ "civil.  Il a fini son bachelier en"
+#~ " informatique et mathématiques appliquées. "
+#~ "Il est désormais en cours de "
+#~ "master en intelligence artificielle"
+#~ "                   email: navarre.louis@student.uclouvain.be"
+
+#~ msgid ""
+#~ "<b>Open Source software</b> designed by "
+#~ "Gilles Poncelet, Louis Navarre and "
+#~ "Jérome Eertmans, students at the Ecole"
+#~ " Polytechnique de Louvain."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Jérome is a student in the Ecole"
+#~ " Polytechnique de Louvain, in civil "
+#~ "engineering. He completed his bachelor "
+#~ "degree in Electricity and Mechanics. He"
+#~ " is now pursuing a master deree "
+#~ "in Mechatronics. <br>\n"
+#~ "                    Mail: jerome.eertmans@student.uclouvain.be"
+#~ msgstr ""
+#~ "Jérome est un étudiant de l'Ecole "
+#~ "Polytechnique de Louvain, en ingénieur "
+#~ "civil.  Il a fini son bachelier en"
+#~ " électricité et mécanique. Il est "
+#~ "désormais en cours de master en "
+#~ "mécatronique. <br>                   email: "
+#~ "jerome.eertmans@student.uclouvain.be"
+
+#~ msgid ""
+#~ "Gilles is a student in the Ecole"
+#~ " Polytechnique de Louvain, in civil "
+#~ "engineering. He completed his bachelor "
+#~ "degree in Electricity and Mechanics. He"
+#~ " is now pursuing a master deree "
+#~ "in Mechatronics. <br>\n"
+#~ "                     Mail: gilles.poncelet@student.uclouvain.be"
+#~ msgstr ""
+#~ "Gilles est un étudiant de l'Ecole "
+#~ "Polytechnique de Louvain, en ingénieur "
+#~ "civil.  Il a fini son bachelier en"
+#~ " électricité et mécanique. Il est "
+#~ "désormais en cours de master en "
+#~ "mécatronique. <br>                   email: "
+#~ "gilles.poncelet@student.uclouvain.be"
+
+#~ msgid ""
+#~ "Louis is a student at the Ecole"
+#~ " Polytechnique de Louvain, in civil "
+#~ "engineering. He completed his bachelor "
+#~ "degree in Applied Mathematics and "
+#~ "Computing Science. He is now pusruing"
+#~ " a master degree in Computing "
+#~ "Sciences. <br>\n"
+#~ "                    Mail: navarre.louis@student.uclouvain.be"
+#~ msgstr ""
+#~ "Louis est un étudiant de l'Ecole "
+#~ "Polytechnique de Louvain, en ingénieur "
+#~ "civil.  Il a fini son bachelier en"
+#~ " informatique et mathématiques appliquées. "
+#~ "Il est désormais en cours de "
+#~ "master en intelligence artificielle"
+#~ "                   email: navarre.louis@student.uclouvain.be"
 

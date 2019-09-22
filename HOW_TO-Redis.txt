@@ -1,5 +1,0 @@
-The file web app/personnal_data.py is used to be able to set your own IP to use Redis. Change this file to have your own IP for this.
-
-Maybe use the command:
-git update-index --assume-unchanged [<file>...]
-to untrack the changes of the file.

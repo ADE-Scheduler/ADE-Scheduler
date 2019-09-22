@@ -114,14 +114,10 @@ webapp/static/.DS_Store
 webapp/dump.rdb
 
 # For Redis
-webapp/personnal_data.py
-webapp/personnal_data.py
+personnal_data.py
+
 
 # Private data
-python/database.db
-python/hidden.py
-python/test.py
-
-webapp/hidden.py
-
-webapp/test.py
+database.db
+hidden.py
+test.py

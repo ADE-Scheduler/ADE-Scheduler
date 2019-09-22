@@ -1,9 +1,8 @@
-# Tuto ici:
+# Tuto ici:pybabel compile -d app/translations
 https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xiii-i18n-and-l10n
 
 # Fetch les nouvelles traductions
-pybabel extract -F babel.cfg -k _l -o messages.pot .
-pybabel update -i messages.pot -d app/translations
+pybabel extract -F babel.cfg -k _l -o messages.pot . && pybabel update -i messages.pot -d app/translations
 
 # Compiler le fichier de traduction 
 pybabel compile -d app/translations
