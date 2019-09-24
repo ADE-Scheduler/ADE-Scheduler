@@ -39,7 +39,7 @@ def save_settings(link, session, choice=0, username=None, check=None):
         weeks = [[event.getId() for event in events if event.getweek() == week] for week in range(N_WEEKS)]
     else:
         for course in courses: course.setEventWeight(session['basic_context']['priority'].get(course.code))
-        events = compute_best(courses, fts=load_fts(session['fts']), nbest=3, view=session['id_list'],
+        events = compute_best(courses, fts=load_fts(session['fts']), n_best=3, view=session['id_list'],
                               safe_compute=session['basic_context']['safe_compute'])[choice]
         weeks = [[event.getId() for event in events if event.getweek() == week] for week in range(N_WEEKS)]
     settings = {
@@ -75,7 +75,7 @@ def update_settings(link, session, choice=None, check=None):
         weeks = [[event.getId() for event in events if event.getweek() == week] for week in range(N_WEEKS)]
     else:
         for course in courses: course.setEventWeight(session['basic_context']['priority'].get(course.code))
-        events = compute_best(courses, fts=load_fts(session['fts']), nbest=3, view=session['id_list'],
+        events = compute_best(courses, fts=load_fts(session['fts']), n_best=3, view=session['id_list'],
                               safe_compute=session['basic_context']['safe_compute'])[choice]
         weeks = [[event.getId() for event in events if event.getweek() == week] for week in range(N_WEEKS)]
     settings = {

@@ -15,7 +15,7 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir + '/python')
 from ade import get_courses_from_codes
-from computation import compute_best, extractEvents
+from computation import compute_best, extract_events
 from event import CustomEvent, JSONfromEvents
 from background_job import update_projects
 
@@ -49,10 +49,11 @@ def compute():
         clear()
     else:
         courses = get_courses_from_codes(session['codes'], project_id=session['basic_context']['project_id'])
-        for course in courses: course.setEventWeight(session['basic_context']['priority'].get(course.code))
-        for i, sched in enumerate(compute_best(courses, fts=load_fts(), nbest=3, view=session['id_list'],
-                                               safe_compute=session['basic_context']['safe_compute'])):
-            session['data_sched']['sched_' + str(i + 1)] = json.dumps(JSONfromEvents(sched))
+        for course in courses:
+            course.setEventWeight(session['basic_context']['priority'].get(course.code))
+        for i, schedule in enumerate(compute_best(courses, fts=load_fts(), n_best=3, view=session['id_list'],
+                                     safe_compute=session['basic_context']['safe_compute'])):
+            session['data_sched']['sched_' + str(i + 1)] = json.dumps(JSONfromEvents(schedule))
         session['basic_context']['up_to_date'] = True
     session.modified = True
 
@@ -114,12 +115,14 @@ def add_course(code):
     # code = regex.sub('', code)
     if code is '' or code is None:
         return
-    if code not in session['codes']:
-        session['codes'].append(code)
-        if session['id_list'] is not None:
-            course = get_courses_from_codes([code], project_id=session['basic_context']['project_id'])[0]
-            for id_ in course.getSummary():
-                session['id_list'].append(id_)
+    else:
+        courses = get_courses_from_codes(code, project_id=session['basic_context']['project_id'])
+        for course in courses:
+            if course.code not in session['codes']:
+                session['codes'].append(course.code)
+                if session['id_list'] is not None:
+                    for id_ in course.get_summary():
+                        session['id_list'].append(id_)
         fetch_courses()
         session['basic_context']['up_to_date'] = False
         session.modified = True
@@ -132,7 +135,7 @@ def fetch_courses():
     """
     courses = get_courses_from_codes(session['codes'], project_id=session['basic_context']['project_id'])
     fetch_id()
-    events = chain.from_iterable(chain.from_iterable(extractEvents(courses, view=session['id_list'])))
+    events = extract_events(courses, view=session['id_list'])
     session['data_base'] = JSONfromEvents(events)
     session.modified = True
 
@@ -146,7 +149,7 @@ def fetch_id():
     courses = get_courses_from_codes(session['codes'], project_id=session['basic_context']['project_id'])
     for course in courses:
         type_tab = {'CM': list(), 'TP': list(), 'EXAM': list(), 'ORAL': list(), 'Other': list()}
-        for course_id in course.getSummary():
+        for course_id in course.get_summary():
             temp = course_id.split(':')
             type_tab[temp[0]].append(temp[1])
         session['id_tab'][course.code] = type_tab
@@ -202,11 +205,12 @@ def download_calendar(choice):
     """
     courses = get_courses_from_codes(session['codes'], project_id=session['basic_context']['project_id'])
     if choice < 0:
-        events = chain.from_iterable(chain.from_iterable(extractEvents(courses, view=session['id_list'])))
+        events = extract_events(courses, view=session['id_list'])
         calendar = Calendar(events=events)
     else:
-        for course in courses: course.setEventWeight(session['basic_context']['priority'].get(course.code))
-        events = compute_best(courses, fts=load_fts(), nbest=3, view=session['id_list'],
+        for course in courses:
+            course.setEventWeight(session['basic_context']['priority'].get(course.code))
+        events = compute_best(courses, fts=load_fts(), n_best=3, view=session['id_list'],
                               safe_compute=session['basic_context']['safe_compute'])
         calendar = Calendar(events=events[choice])
     return str(calendar)

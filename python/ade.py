@@ -22,6 +22,9 @@ def get_courses_from_codes(codes, project_id=9):
     courses = list()
     not_added = list()
 
+    if isinstance(codes, str):
+        codes = [codes]
+
     for code in codes:
         course = redis.get(name='{Project=' + str(project_id) + '}' + code)
         if not course:
@@ -108,7 +111,10 @@ def get_courses_from_ade(codes, project_id, redis=None):
         if len(event_codes) == 0:
             activity_code = extractCode(activity_id)
         else:
-            activity_code = Counter(codes).most_common()[0][0]
+            activity_code = Counter(event_codes).most_common()[0][0]
+
+        if activity_code not in courses.keys():
+            courses[activity_code] = Course(activity_code, activity_name)
 
         for event in events:
             event_date = event.attrib['date']
