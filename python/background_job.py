@@ -1,3 +1,4 @@
+#!/home/technics/ADE-Scheduler/venv/bin/python3.6
 # BACKGROUND JOBS
 # To be run every 24 hours:
 # schedule a job using the cron command on the server.
