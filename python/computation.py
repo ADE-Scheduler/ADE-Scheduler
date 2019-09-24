@@ -1,131 +1,93 @@
-from itertools import combinations, product, chain
-from event import overlap, EventTP, EventCM, EventORAL, EventEXAM, EventOTHER, intersect
+from itertools import product, chain, starmap, repeat
+from event import EventOTHER
 from heapq import nsmallest
-from functools import reduce
 import operator
-from static_data import N_WEEKS
+import pandas as pd
 
 
-def extractEvents(courses, weeks=None, view=None, eventTypes=None):
+def eval_week(week, fts=None):
     """
-    Return a generator containing len(weeks) elements, each
-    being a list of all the possible events in form of :
-        [[ELEC TP1, ELEC TP2], [ELEC CM1], [MATH TP1, MATH TP2, MATH TP3], ...]
-    Allows passing a view to pre-select events.
+    Evaluates the how much a given from contains conflicts.
+    :param week: an iterable of event.CustomEvent objects
+    :param fts: a list of event.CustomEvent objects
+    :return: the sum of all the conflicts
     """
-    # First we merge courses
-    if eventTypes is None:
-        eventTypes = {EventTP, EventCM, EventORAL, EventEXAM, EventOTHER}
+    week = sorted(chain.from_iterable(week))
+
+    if fts is not None:
+        week = sorted(week + fts)
+    return sum(starmap(operator.mul, zip(week[:-1], week[1:])))
+
+
+def extract_events(courses, view=None):
+    """
+    Extract all the events matching ids in the view list.
+    :param courses: a list of course.Course objects
+    :param view: if None extracts everything, otherwise must be a list of ids
+    :return: the array of events
+    """
+    if courses is None or len(courses) == 0:
+        return []
+
+    df = pd.concat(course.activities for course in courses)
+
+    if view is None:
+        return df['event'].values
     else:
-        eventTypes = set(eventTypes)
-
-    courses_m = (course.getViews(weeks=weeks, views=view, eventTypes=eventTypes, swap=True, repeatView=True) for course
-                 in courses)
-    return [list(filter(None,
-                        [list(filter(None,
-                                     [weekEvent for weekEvent in weekEvents])) for course in weekCourses for weekEvents
-                         in course])) for weekCourses in zip(*courses_m)]
+        valid = df.index.isin(values=view, level='id')
+        return df['event'][valid].values
 
 
-def compute_best(courses, weeks=range(N_WEEKS), fts=None, nbest=5, safe_compute=True, mergeTypes={EventTP, EventCM},
-            priorTypes={EventCM}, view=None):
+def compute_best(courses, fts=None, n_best=5, safe_compute=True, view=None):
     """
-    Generates all the possible schedules for given weeks.
-    Then evaluates all those possibilities to pick the best one(s).
-    Parameters:
-    -----------
-    courses: list of course.Course
-        The different courses to be added to the schedule
-    week: iterable of int
-        The number of the to-be-scheduled week
-    fts: list of event.CustomEvents
-        The slots that are marked as "busy" by the user
-    nbest : int
-        The n-bests weeks you want to save (lower is better for performance).
-    Returns:
-    --------
-    best: list of lists of event.CustomEvents
-        The n best schedules according to the evaluation function (costFunction())
+    Computes bests schedules trying to minimize conflicts selecting, for each type of event, one event.
+    :param courses: a list of course.Course objects
+    :param fts: a list of event.CustomEvent objects
+    :param n_best: number of best schedules to produce
+    :param safe_compute: if True, ignore all redundant events
+    :param view: list of ids to filter
+    :return: the n_best schedules
     """
-    safe_compute = False
+    df = pd.concat(course.activities for course in courses)
 
-    events = extractEvents(courses, weeks, view=view, eventTypes={EventTP, EventCM, EventORAL, EventEXAM})
+    if view is not None:
+        valid = df.index.isin(values=view, level='id')
+        df = df[valid]
 
-    threshold = 10  # Arbitrary value
-    # Under a certain amount of permutations, we remove TP that are conflicting CM and same TP at the same period
+    valid = df.index.get_level_values('type') != EventOTHER
+    df_main, df_other = df[valid], df[~valid]
+    best = [[] for i in range(n_best)]
 
-    best = [[] for i in range(nbest)]
+    for _, week_data in df_main.groupby('week'):
+        if safe_compute:  # We remove events of from same course that happen at the same time
+            for _, data in week_data.groupby(level=['code', 'type']):
+                tmp = list()
+                for index, row in data.iterrows():
+                    e = row['event']
+                    r = repeat(e)
+                    if any(starmap(operator.xor, zip(tmp, r))):
+                        week_data.drop(index=index, inplace=True, errors='ignore')
+                    else:
+                        tmp.append(e)
 
-    for weekEvents, week in zip(events, weeks):
-        if safe_compute and weekEvents:
-            n_perm = reduce(operator.mul, (len(list_e) for list_e in weekEvents), 1)
-            if n_perm > threshold:
-                if view: view = set(view)
-                # views of courses where multiple TP at same period are omitted
-                views = [course.mergeEvents(mergeTypes, week) for course in courses]
+        events = [[data_id.values for _, data_id in data.groupby(level='id')]
+                  for _, data in week_data.groupby(level=['code', 'type'])['event']]
+        permutations = product(*events)
 
-                # We remove all non-prior events that interesect prior events
-                # !! List comprehesion read loop from left to right
-                prior = (e for course in courses for eventType in priorTypes for e in course[eventType])
-                non_prior = (e for course in courses for eventType in set(course.events.keys()) - priorTypes for e in
-                             course[eventType])
+        if n_best == 1:
+            best.extend(chain.from_iterable(min(permutations, key=lambda f: eval_week(f, fts))))
+        else:
+            temp = nsmallest(n_best, permutations, key=lambda f: eval_week(f, fts))
+            n_temp = len(temp)
+            for i in range(n_temp):
+                best[i].extend(chain.from_iterable(temp[i]))
+            # If we could only find n_temp < n_best best scores, we fill the rest in with same values
+            for j in range(n_temp, n_best):
+                best[j].extend(chain.from_iterable(temp[-1]))
 
-                to_reject = [set(map(lambda t: t[1].getId(),
-                                     filter(lambda t: intersect(t[0], t[1]), product(p, n)))) for p, n in
-                             zip(prior, non_prior)]
-
-                views = [view - view_reject for view, view_reject in zip(views, to_reject)]
-                if view:
-                    view = set.intersection(view, set.union(*views))
-                else:
-                    view = set.union(*views)
-                weekEvents = extractEvents(courses, week, view=view, eventTypes={EventTP, EventCM, EventORAL, EventEXAM})
-                if events:
-                    weekEvents = weekEvents[0]
-
-        if weekEvents:
-            # All possible weeks by selecting one element in each list of the list
-            perm = product(*weekEvents)
-
-            # Selecting the best possible schedule
-            if nbest == 1:
-                best.extend(min(perm, key=lambda f: costFunction(f, fts)))
-            else:
-                temp = nsmallest(nbest, perm, key=lambda f: costFunction(f, fts))
-                n_temp = len(temp)
-                for i in range(n_temp):
-                    best[i].extend(temp[i])
-                # If we could only find n_temp < nbest best scores, we fill the rest in with same values
-                for j in range(n_temp, nbest):
-                    best[j].extend(temp[-1])
-
-    other = list(chain.from_iterable(chain.from_iterable(extractEvents(courses, weeks=weeks, view=view, eventTypes={EventOTHER}))))
-
+    other = df_other['event'].values.flatten().tolist()
     if other:
-        [sched.extend(other) for sched in best]
+        [schedule.extend(other) for schedule in best]
         return best
     else:
         return best
-
-
-def costFunction(weekEvents, fts=None):
-    """
-    Function that evaluates the "quality" of a given schedule based on diverse parameters
-    Parameters:
-    -----------
-    weekEvents : array of event.CustomEvent
-        The schedule that is to be evaluated (corresponding to a week)
-    fts: list of event.CustomEvents
-        The slots that are marked as "busy" by the user
-    Returns:
-    --------
-    int, the "cost" of this particular schedule
-    """
-    # do a n^2 comparison for all overlaps
-    p = sum(overlap(*e) for e in combinations(weekEvents, 2))
-
-    if fts:
-        f = sum(overlap(*e) for e in product(weekEvents, fts))
-        return p + f
-    else:
-        return p

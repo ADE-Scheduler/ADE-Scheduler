@@ -30,15 +30,10 @@ def extractCode(code: str):
 
 def extractType(ctype: str, cid: str):
     """
-    Extracts the event type from a string.
-    Parameters:
-    -----------
-    code : str
-        The string from which the type is to be extracted.
-    Returns:
-    --------
-    t : CustomEvent constructor
-        The constructor of the right event type.
+    # TODO
+    :param ctype:
+    :param cid:
+    :return:
     """
     # We first try to detect the type with the ID regex
     if re.search(COURSE_REGEX + "-", cid, re.IGNORECASE):
@@ -66,6 +61,13 @@ def extractType(ctype: str, cid: str):
 
 
 def extractDateTime(date, start, end):
+    """
+    # TODO
+    :param date:
+    :param start:
+    :param end:
+    :return:
+    """
     t0 = datetime.strptime(date + '-' + start, '%d/%m/%Y-%H:%M').astimezone(tz)
     t1 = datetime.strptime(date + '-' + end, '%d/%m/%Y-%H:%M').astimezone(tz)
     if t0 < t1:
@@ -74,93 +76,30 @@ def extractDateTime(date, start, end):
         return t1, t0
 
 
-def intersect(event1, event2):
+def event_prefix(event_type):
     """
-    Check if two events intersect. No safe check is operated.
-    Parameters
-    ----------
-    event1, event2 : ics.Event
-        Two events to be compared.
-    Returns
-    -------
-    c : bool
-        True if events intersect, False otherwise.
+    # TODO
+    :param event_type:
+    :return:
     """
-    return event1.end > event2.begin and event2.end > event1.begin  # not(A or B) = notA and notB
-
-
-def overlap(event1, event2):
-    """
-    Check if two events intersect. No safe check is operated.
-    Parameters
-    ----------
-    event1, event2 : ics.Event
-        Two events to be compared.
-    Returns
-    -------
-    c : int
-        The product of the weights if events intersect, 0 otherwise.
-    """
-    return event1.weight * event2.weight * intersect(event1, event2)
-
-
-def overlappingTime(event1, event2, onlyPositive=True):
-    """
-    Compute the overlapping time between two events.
-    In option, it can count non-overlap time as negative overlap, in others words, the time between two events.
-    Parameters
-    ----------
-    event1, event2 : ics.Event
-        Two events to be compared.
-    onlyPositive : boolean
-        If True, only positive overlap is counted.
-    Returns
-    -------
-    c : int
-        The total overlapping time, multiplied by the weights, in seconds.
-    Raises
-    ------
-    TypeError
-        If event1 or event2 are not subclass of ics.Event.
-    """
-
-    if event1 == event2:  # No overlap if same event
-        return 0
-    if not isinstance(event1, CustomEvent) or not isinstance(event2, CustomEvent):
-        raise TypeError
-
-    time = event1.weight * event2.weight * (
-            min(event1.end, event2.end) - max(event1.begin, event2.begin)).total_seconds()
-    if onlyPositive:  # Only positive overlap is counted
-        return max(time, 0)
+    if event_type == EventTP:
+        return 'TP:'
+    elif event_type == EventCM:
+        return 'CM:'
+    elif event_type == EventEXAM:
+        return 'EXAM:'
+    elif event_type == EventORAL:
+        return 'ORAL:'
     else:
-        return time
-
-
-def settingsFromEvents(events):
-    """
-    settings format :
-    {codes:[list of Course.code],
-        weeks:{
-            dict containing (key->int, value->[list of ids])
-        }
-    }
-    where:
-        key is week # (following ADE's numbering).
-        value contains all the ids to pass as a view to a Course object.
-    """
-    events = list(events)
-    codes = set(event.code for event in events)
-    weeks = set(map(gregorianToADE), (event.getweek() for event in events))
-    settings = {'codes': codes,
-                'weeks': {week: {event.getId() for event in events if event.getweek() == week} for week in weeks}}
-    return settings
+        return 'Other:'
 
 
 def JSONfromEvents(events):
     """
-        Returns the list of events, in "JSON format"
-        """
+    # TODO s'en débarasser (utiliser la fonction de la classe Course...)
+    :param events:
+    :return:
+    """
     return [{'start': str(event.begin), 'end': str(event.end), 'title': event.id + '\n' + event.location, 'editable':
             False, 'code': event.code, 'description': event.name + '\n' + event.location + ' - ' + str(event.duration)
             + '\n' + str(event.description)} for event in events]
@@ -192,9 +131,31 @@ class CustomEvent(Event):
         return super().__hash__()
 
     def __repr__(self):
-        return self.id
+        tmp = self.id + ':' if self.id is not None else 'FTS:'
+        return tmp + self.begin.strftime('%d/%m - %Hh%M') + ' to ' + self.end.strftime('%Hh%M')
 
-    def getweek(self):
+    def set_weight(self, weight):
+        self.weight = weight
+
+    def __str__(self):
+        return repr(self)
+
+    def json(self):
+        return {'start': str(self.begin), 'end': str(self.end), 'title': self.id + '\n' + self.location,
+                'editable': False, 'description': self.name + '\n' + self.location + ' - ' +
+                str(self.duration) + '\n' + str(self.description), 'code': self.code}
+
+    def intersects(self, other):
+        return self.end > other.begin and self.end > other.begin  # not(A or B) = notA and notB
+
+    __xor__ = intersects
+
+    def overlap(self, other):
+        return self.weight * other.weight * self.intersects(other)
+
+    __mul__ = overlap
+
+    def get_week(self):
         """
         returns the week of this event in the gregorian calendar, starting at 0 for the first week
         """
