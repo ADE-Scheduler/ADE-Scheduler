@@ -1,5 +1,5 @@
 from ade import get_courses_from_codes
-from computation import extractEvents
+from computation import extract_events
 from database import set_link, get_settings_from_link, update_settings_from_link, is_link_present
 from ics import Calendar
 from computation import compute_best
@@ -35,11 +35,12 @@ def save_settings(link, session, choice=0, username=None, check=None):
     """
     courses = get_courses_from_codes(session['codes'], session['basic_context']['project_id'])
     if choice < 0:
-        events = list(chain.from_iterable(chain.from_iterable(extractEvents(courses, view=session['id_list']))))
+        events = extract_events(courses, view=session['id_list'])
         weeks = [[event.getId() for event in events if event.getweek() == week] for week in range(N_WEEKS)]
     else:
         for course in courses: course.setEventWeight(session['basic_context']['priority'].get(course.code))
-        events = compute_best(courses, fts=load_fts(session['fts']), nbest=3, view=session['id_list'], safe_compute=session['basic_context']['safe_compute'])[choice]
+        events = compute_best(courses, fts=load_fts(session['fts']), nbest=3, view=session['id_list'],
+                              safe_compute=session['basic_context']['safe_compute'])[choice]
         weeks = [[event.getId() for event in events if event.getweek() == week] for week in range(N_WEEKS)]
     settings = {
         'choice': choice,
@@ -70,11 +71,12 @@ def update_settings(link, session, choice=None, check=None):
 
     courses = get_courses_from_codes(session['codes'], session['basic_context']['project_id'])
     if choice < 0:
-        events = list(chain.from_iterable(chain.from_iterable(extractEvents(courses, view=session['id_list']))))
+        events = extract_events(courses, view=session['id_list'])
         weeks = [[event.getId() for event in events if event.getweek() == week] for week in range(N_WEEKS)]
     else:
         for course in courses: course.setEventWeight(session['basic_context']['priority'].get(course.code))
-        events = compute_best(courses, fts=load_fts(session['fts']), nbest=3, view=session['id_list'], safe_compute=session['basic_context']['safe_compute'])[choice]
+        events = compute_best(courses, fts=load_fts(session['fts']), nbest=3, view=session['id_list'],
+                              safe_compute=session['basic_context']['safe_compute'])[choice]
         weeks = [[event.getId() for event in events if event.getweek() == week] for week in range(N_WEEKS)]
     settings = {
         'choice': choice,
