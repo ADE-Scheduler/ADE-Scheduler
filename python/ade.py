@@ -1,6 +1,6 @@
 import requests
 from lxml import etree
-from event import extractType, extractDateTime, extractCode
+from event import extract_type, extract_datetime, extract_code
 from course import Course
 from professor import Professor
 from hidden import get_token, user, password
@@ -103,13 +103,13 @@ def get_courses_from_ade(codes, project_id, redis=None):
         activity_type = activity.attrib['type']
         activity_name = activity.attrib['code']
 
-        event_type = extractType(activity_type, activity_id)
+        event_type = extract_type(activity_type, activity_id)
         event_codes = activity.xpath('.//eventParticipant[@category="category5"]/@name')
         events = activity.xpath('.//event')
         events_list = list()
 
         if len(event_codes) == 0:
-            activity_code = extractCode(activity_id)
+            activity_code = extract_code(activity_id)
         else:
             activity_code = Counter(event_codes).most_common()[0][0]
 
@@ -124,7 +124,7 @@ def get_courses_from_ade(codes, project_id, redis=None):
             event_instructor = ' '.join(event.xpath('.//eventParticipant[@category="instructor"]/@name'))
 
             # We create the event
-            t0, t1 = extractDateTime(event_date, event_start, event_end)
+            t0, t1 = extract_datetime(event_date, event_start, event_end)
             event = event_type(t0, t1, activity_code, activity_name, Professor(event_instructor, ''), event_classroom,
                                id=activity_id)
             events_list.append(event)

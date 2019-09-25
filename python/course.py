@@ -16,21 +16,6 @@ class Course:
         self.activities = pd.DataFrame(columns=index+columns)
         self.activities.set_index(keys=index, inplace=True)
 
-        # A course can be composed of 5 different events: CM, TP, Exam, Oral and Other
-        # Each event is classed by week
-        CM = [[] for i in range(N_WEEKS)]  # EventCM
-        TP = [[] for i in range(N_WEEKS)]  # EventTP
-        E = [[] for i in range(N_WEEKS)]  # EventEXAM
-        O = [[] for i in range(N_WEEKS)]  # EventORAL
-        Other = [[] for i in range(N_WEEKS)]  # EventOTHER
-        self.events = {EventCM: CM, EventTP: TP, EventEXAM: E, EventORAL: O, EventOTHER: Other}
-
-    def __getitem__(self, item):
-        return self.events[item]
-
-    def __setitem__(self, name, value):
-        self.events[name] = value
-
     def __eq__(self, other):
         if isinstance(other, Course):
             return self.code == other.code
@@ -84,12 +69,56 @@ class Course:
             valid = self.activities.index.get_level_values(level) == event_type
             self.activities['event'][valid].apply(f)
 
+    def set_weights(self, percentage=None, event_type=None):
+        """
+        Modify this course's events weight
+        :param percentage: int, the "priority" required for this course in (0-100)%
+        :param event_type: if we want to modify the weight of a certain type of event only
+        :return: /
+        """
+        # No percentage specified, set to default value
+        if percentage is None:
+            percentage = 50
+
+        def f(event):
+            event.set_weight(percentage/10)
+
+        if event_type is None:
+            self.activities['event'].apply(f)
+        else:
+            level = self.activities.index.names.index(event_type)
+            valid = self.activities.index.get_level_values(level) == event_type
+            self.activities['event'][valid].apply(f)
+
     def get_summary(self):
         """
         # TODO
         :return:
         """
         return self.activities.index.get_level_values('id').unique()
+
+    def get_view(self, weeks):
+        """
+        Return a list of events that matches correct ids.
+        :param weeks: list of ids, or dict {week_number : ids}
+        :return: list of events
+        """
+        if isinstance(weeks, list):
+            valid = self.activities.index.get_level_values('id').isin(weeks)
+            return self.activities['event'][valid].values
+        elif isinstance(weeks, dict):
+            events = list()
+
+            grp_weeks = self.activities.groupby('week')
+
+            # weeks that are both in ids dict and in activities
+            valid_weeks = set(weeks.keys()).intersection(set(grp_weeks.groups.keys()))
+
+            for week in valid_weeks:
+                week_data = grp_weeks.get_group(week)
+                valid = week_data.index.get_level_values('id').isin(weeks[week])
+                events.extend(week_data['event'][valid].values.tolist())
+            return events
 
     def getEventsJSON(self):
         """

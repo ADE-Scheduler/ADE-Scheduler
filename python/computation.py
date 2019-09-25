@@ -1,4 +1,5 @@
 from itertools import product, chain, starmap, repeat
+from collections import deque
 from event import EventOTHER
 from heapq import nsmallest
 import operator
@@ -61,14 +62,16 @@ def compute_best(courses, fts=None, n_best=5, safe_compute=True, view=None):
     for _, week_data in df_main.groupby('week'):
         if safe_compute:  # We remove events of from same course that happen at the same time
             for _, data in week_data.groupby(level=['code', 'type']):
-                tmp = list()
+                tmp = deque()  # Better for appending
                 for index, row in data.iterrows():
                     e = row['event']
                     r = repeat(e)
+
                     if any(starmap(operator.xor, zip(tmp, r))):
                         week_data.drop(index=index, inplace=True, errors='ignore')
                     else:
-                        tmp.append(e)
+                        # We append to left because last event is most likely to conflict (if sorted)
+                        tmp.appendleft(e)
 
         events = [[data_id.values for _, data_id in data.groupby(level='id')]
                   for _, data in week_data.groupby(level=['code', 'type'])['event']]

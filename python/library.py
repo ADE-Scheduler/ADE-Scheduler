@@ -6,8 +6,9 @@ from computation import compute_best
 from itertools import chain
 from pytz import timezone
 from dateutil.parser import parse
-from static_data import N_WEEKS
 from event import CustomEvent
+from itertools import groupby
+
 """
 settings format :
 {
@@ -17,10 +18,16 @@ settings format :
     priority: {code: priority}
     fts: [list of fts],
     id_list: [list of selected ids],
-    weeks: [[list of IDs], [list of IDs], ..., [list of IDs]]
+    weeks: dict {week_number : ids}
     check: state of checkboxes (from the UI)
 }
 """
+
+
+def generate_weeks(events):
+    grp = groupby(events, key=lambda e: e.get_week())
+    weeks = ((week, [e.get_id() for e in e_list]) for week, e_list in grp)
+    return dict(weeks)
 
 
 def save_settings(link, session, choice=0, username=None, check=None):
@@ -36,12 +43,11 @@ def save_settings(link, session, choice=0, username=None, check=None):
     courses = get_courses_from_codes(session['codes'], session['basic_context']['project_id'])
     if choice < 0:
         events = extract_events(courses, view=session['id_list'])
-        weeks = [[event.getId() for event in events if event.getweek() == week] for week in range(N_WEEKS)]
     else:
         for course in courses: course.setEventWeight(session['basic_context']['priority'].get(course.code))
         events = compute_best(courses, fts=load_fts(session['fts']), n_best=3, view=session['id_list'],
                               safe_compute=session['basic_context']['safe_compute'])[choice]
-        weeks = [[event.getId() for event in events if event.getweek() == week] for week in range(N_WEEKS)]
+    weeks = generate_weeks(events)
     settings = {
         'choice': choice,
         'project_id': session['basic_context']['project_id'],
@@ -72,12 +78,11 @@ def update_settings(link, session, choice=None, check=None):
     courses = get_courses_from_codes(session['codes'], session['basic_context']['project_id'])
     if choice < 0:
         events = extract_events(courses, view=session['id_list'])
-        weeks = [[event.getId() for event in events if event.getweek() == week] for week in range(N_WEEKS)]
     else:
         for course in courses: course.setEventWeight(session['basic_context']['priority'].get(course.code))
         events = compute_best(courses, fts=load_fts(session['fts']), n_best=3, view=session['id_list'],
                               safe_compute=session['basic_context']['safe_compute'])[choice]
-        weeks = [[event.getId() for event in events if event.getweek() == week] for week in range(N_WEEKS)]
+    weeks = generate_weeks(events)
     settings = {
         'choice': choice,
         'project_id': session['basic_context']['project_id'],
@@ -108,9 +113,19 @@ def get_calendar_from_link(link):
     if not is_link_present(link):
         return None
     settings = get_settings_from_link(link)
+
     courses = get_courses_from_codes(settings['codes'], project_id=settings['project_id'])
-    events = (chain(*course.getView(week, ids)) for course in courses for week, ids in enumerate(settings['weeks']))
-    return str(Calendar(events=chain(*events)))
+
+    if isinstance(settings['weeks'], list):
+        if not isinstance(settings['weeks'][0], list):
+            weeks = settings['weeks'][0]
+        else:
+            weeks = dict(enumerate(settings['weeks']))
+    elif isinstance(settings['weeks'], dict):
+        weeks = settings['weeks']
+
+    events = chain.from_iterable(course.get_view(weeks) for course in courses)
+    return str(Calendar(events=events))
 
 
 def load_fts(fts_json):
@@ -126,4 +141,3 @@ def load_fts(fts_json):
         elif el['title'] == 'Low' or el['title'] == 'Bas':
             fts.append(CustomEvent(el['title'], t0, t1, el['description'], '', weight=1))
     return fts
-
