@@ -33,7 +33,10 @@ def get_courses_from_codes(codes, project_id=9):
             courses[code] = loads(course)
 
     for code in not_added:
-        tab = get_courses_from_ade(code, project_id, redis=redis)
+        if 'LOCAL-' in code:
+            tab = get_courses_from_ade(code.split('-')[-1], project_id, redis=redis, is_local=True)
+        else:
+            tab = get_courses_from_ade(code, project_id, redis=redis)
         courses[code] = tab
         redis.setex(name='{Project=' + str(project_id) + '}' + code, value=dumps(tab),
                     time=timedelta(hours=3))
@@ -41,9 +44,10 @@ def get_courses_from_codes(codes, project_id=9):
     return courses
 
 
-def get_courses_from_ade(codes, project_id, redis=None):
+def get_courses_from_ade(codes, project_id, redis=None, is_local=False):
     """
     Fetches courses schedule from UCLouvain's ADE web API
+    :param is_local: boolean
     :param codes: str or list of str
     :param project_id: int
     :param redis: instance of a Redis server, on which an access token may be stored. If not specified, simply retrieve
@@ -111,9 +115,8 @@ def get_courses_from_ade(codes, project_id, redis=None):
             activity_code = extract_code(activity_id)
         else:
             activity_code = Counter(event_codes).most_common()[0][0]
-
-        if activity_code not in courses.keys():
-            courses[activity_code] = Course(activity_code, activity_name)
+        if activity_code is '':
+            activity_code = 'Other'
 
         for event in events:
             event_date = event.attrib['date']
@@ -122,12 +125,19 @@ def get_courses_from_ade(codes, project_id, redis=None):
             event_classroom = ' '.join(event.xpath('.//eventParticipant[@category="classroom"]/@name'))
             event_instructor = ' '.join(event.xpath('.//eventParticipant[@category="instructor"]/@name'))
 
+            # Check if the event is taking place in the requested local
+            if is_local and codes[0].lower() not in event_classroom.lower():
+                continue
+
             # We create the event
             t0, t1 = extract_datetime(event_date, event_start, event_end)
             event = event_type(t0, t1, activity_code, activity_name, Professor(event_instructor, ''), event_classroom,
                                id=activity_id)
             events_list.append(event)
 
-        courses[activity_code].add_activity(event_type, activity_id, events_list)
+        if activity_code not in courses and events_list:
+            courses[activity_code] = Course(activity_code, activity_name)
+        if events_list:
+            courses[activity_code].add_activity(event_type, activity_id, events_list)
 
     return list(courses.values())
