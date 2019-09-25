@@ -16,7 +16,7 @@ parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir + '/python')
 from ade import get_courses_from_codes
 from computation import compute_best, extract_events
-from event import CustomEvent, JSONfromEvents
+from event import CustomEvent, json_from_events
 from background_job import update_projects
 
 # letters + number only regex
@@ -53,7 +53,7 @@ def compute():
             course.setEventWeight(session['basic_context']['priority'].get(course.code))
         for i, schedule in enumerate(compute_best(courses, fts=load_fts(), n_best=3, view=session['id_list'],
                                      safe_compute=session['basic_context']['safe_compute'])):
-            session['data_sched']['sched_' + str(i + 1)] = json.dumps(JSONfromEvents(schedule))
+            session['data_sched']['sched_' + str(i + 1)] = json.dumps(json_from_events(schedule))
         session['basic_context']['up_to_date'] = True
     session.modified = True
 
@@ -136,7 +136,7 @@ def fetch_courses():
     courses = get_courses_from_codes(session['codes'], project_id=session['basic_context']['project_id'])
     fetch_id()
     events = extract_events(courses, view=session['id_list'])
-    session['data_base'] = JSONfromEvents(events)
+    session['data_base'] = json_from_events(events)
     session.modified = True
 
 

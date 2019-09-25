@@ -8,7 +8,7 @@ from pytz import timezone
 tz = timezone('Europe/Brussels')
 
 
-def extractCode(code: str):
+def extract_code(code: str):
     """
     Extracts the course code from a string. Any course should start with something like
         " LEPL1104 "
@@ -28,7 +28,7 @@ def extractCode(code: str):
         return ''
 
 
-def extractType(ctype: str, cid: str):
+def extract_type(ctype: str, cid: str):
     """
     # TODO
     :param ctype:
@@ -60,7 +60,7 @@ def extractType(ctype: str, cid: str):
         return EventOTHER
 
 
-def extractDateTime(date, start, end):
+def extract_datetime(date, start, end):
     """
     # TODO
     :param date:
@@ -94,9 +94,9 @@ def event_prefix(event_type):
         return 'Other:'
 
 
-def JSONfromEvents(events):
+def json_from_events(events):
     """
-    # TODO s'en débarasser (utiliser la fonction de la classe Course...)
+    # TODO
     :param events:
     :return:
     """
@@ -115,7 +115,7 @@ class CustomEvent(Event):
 
     def __eq__(self, other):
         if isinstance(other, CustomEvent):
-            return (self.getId() == other.getId()
+            return (self.get_id() == other.get_id()
                     and self.begin == other.begin
                     and self.duration == other.duration)
         else:
@@ -124,7 +124,7 @@ class CustomEvent(Event):
     def __ne__(self, other):
         return not self.__eq__(other)
 
-    def getId(self):
+    def get_id(self):
         return self.id
 
     def __hash__(self):
@@ -137,16 +137,13 @@ class CustomEvent(Event):
     def set_weight(self, weight):
         self.weight = weight
 
-    def __str__(self):
-        return repr(self)
-
     def json(self):
         return {'start': str(self.begin), 'end': str(self.end), 'title': self.id + '\n' + self.location,
                 'editable': False, 'description': self.name + '\n' + self.location + ' - ' +
                 str(self.duration) + '\n' + str(self.description), 'code': self.code}
 
     def intersects(self, other):
-        return self.end > other.begin and self.end > other.begin  # not(A or B) = notA and notB
+        return self.end > other.begin and other.end > self.begin  # not(A or B) = notA and notB
 
     __xor__ = intersects
 
