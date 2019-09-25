@@ -49,8 +49,9 @@ def compute():
         clear()
     else:
         courses = get_courses_from_codes(session['codes'], project_id=session['basic_context']['project_id'])
+        courses = list(chain.from_iterable(courses.values()))
         for course in courses:
-            course.setEventWeight(session['basic_context']['priority'].get(course.code))
+            course.set_weights(session['basic_context']['priority'].get(course.code))
         for i, schedule in enumerate(compute_best(courses, fts=load_fts(), n_best=3, view=session['id_list'],
                                      safe_compute=session['basic_context']['safe_compute'])):
             session['data_sched']['sched_' + str(i + 1)] = json.dumps(json_from_events(schedule))
@@ -117,10 +118,11 @@ def add_course(code):
         return
     else:
         courses = get_courses_from_codes(code, project_id=session['basic_context']['project_id'])
-        for course in courses:
-            if course.code not in session['codes']:
-                session['codes'].append(course.code)
-                if session['id_list'] is not None:
+        courses = list(chain.from_iterable(courses))
+        if code not in session['codes']:
+            session['codes'].append(code)
+            if session['id_list'] is not None:
+                for course in courses:
                     for id_ in course.get_summary():
                         session['id_list'].append(id_)
         fetch_courses()
@@ -130,10 +132,12 @@ def add_course(code):
 
 def fetch_courses():
     """
-    Fetches all the courses whose codes are given by session['codes'] and stores the resulting data in 'data_base'
+    Fetches all the events of the courses whose codes are given by session['codes'] and stores the resulting data in
+    session['data_base']
     :return: /
     """
     courses = get_courses_from_codes(session['codes'], project_id=session['basic_context']['project_id'])
+    courses = list(chain.from_iterable(courses.values()))
     fetch_id()
     events = extract_events(courses, view=session['id_list'])
     session['data_base'] = json_from_events(events)
@@ -147,15 +151,16 @@ def fetch_id():
     :return: /
     """
     courses = get_courses_from_codes(session['codes'], project_id=session['basic_context']['project_id'])
-    for course in courses:
-        type_tab = {'CM': list(), 'TP': list(), 'EXAM': list(), 'ORAL': list(), 'Other': list()}
-        for course_id in course.get_summary():
-            temp = course_id.split(':')
-            type_tab[temp[0]].append(temp[1])
-        session['id_tab'][course.code] = type_tab
-    for code in session['codes']:
-        if code not in session['id_tab'].keys():
-            session['id_tab'][code] = {}
+    for master in courses.keys():
+        session['id_tab'][master] = dict()
+        for course in courses[master]:
+            ids = course.get_summary()
+            if True:
+                type_tab = {'CM': list(), 'TP': list(), 'EXAM': list(), 'ORAL': list(), 'Other': list()}
+                for id_ in ids:
+                    temp = id_.split(':')
+                    type_tab[temp[0]].append(temp[1])
+                session['id_tab'][master][course.code] = type_tab
     session.modified = True
 
 
@@ -204,12 +209,13 @@ def download_calendar(choice):
     :return: string, the calendar's .ics file
     """
     courses = get_courses_from_codes(session['codes'], project_id=session['basic_context']['project_id'])
+    courses = list(chain.from_iterable(courses.values()))
     if choice < 0:
         events = extract_events(courses, view=session['id_list'])
         calendar = Calendar(events=events)
     else:
         for course in courses:
-            course.setEventWeight(session['basic_context']['priority'].get(course.code))
+            course.set_weights(session['basic_context']['priority'].get(course.code))
         events = compute_best(courses, fts=load_fts(), n_best=3, view=session['id_list'],
                               safe_compute=session['basic_context']['safe_compute'])
         calendar = Calendar(events=events[choice])

@@ -418,118 +418,125 @@
                                 </td>
                             </tr>
                         {% endif %}
-                        {% for code in codes %}
-                            <tr style="align: center; padding: 0;">
-                                <td style="word-break: break-all; padding: 0;">
-                                    <div class="dropdown dropright" style="margin: 0; padding: 0; overflow-wrap: break-word;">
-                                        <div class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" style="margin-right: -.125rem; margin-left: 0; padding: 0; overflow: hidden; width: 110px">
-                                             {{ code }}
+                        {% for master in codes %}
+                            <div style="display: flex; justify-content: space-between;">
+                                <h5 data-toggle="collapse" data-target="#accordion-{{ master }}">
+                                    {{ master }}
+                                </h5>
+                                <form method="post" action="/remove/code/{{ master }}">
+                                    <button class="btn btn-default" type="submit" style="background-color: transparent; border-color: transparent;">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                            <div id="accordion-{{ master }}" class="collapse">
+                                {% if id[master]|length == 0 %}
+                                    <label class="custom-control-label" style="margin-left: 5px"><strong>{{ _('No event found !') }}</strong></label>
+                                {% else %}
+                                    {% for code in id[master].keys() %}
+                                        <div class="dropdown dropright" style="margin: 0; padding: 0; overflow-wrap: break-word;">
+                                            <div class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" style="margin-right: -.125rem; margin-left: 10px; padding: 0; overflow: hidden; width: 110px">
+                                                 {{ code }}
+                                            </div>
+                                            <div class="dropdown-menu dropdown-menu-on-hover dropdown-menu-right dropdown-max-size" x-placement="bottom-start">
+                                                {% if id[master][code]|length == 0 %}
+                                                    <label class="custom-control-label" style="margin-left: 5px"><strong>{{ _('No event found !') }}</strong></label>
+                                                {% else %}
+                                                    <!-- ID OF CMs -->
+                                                    {% if id[master][code].CM|length > 0 %}
+                                                        <div class="custom-control custom-checkbox" style="margin-left: 3px">
+                                                            <input type="checkbox" class="custom-control-input" id="CM-{{ code }}-all" checked>
+                                                            <label class="custom-control-label" for="CM-{{ code }}-all"><strong>CM:</strong></label>
+                                                        </div>
+                                                        <div id="CM-{{ code }}" onclick=areCheckboxesChecked(this.id);>
+                                                            {% for cm_id in id[master][code].CM %}
+                                                                <a class="dropdown-item">
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input type="checkbox" class="custom-control-input" id="CM:{{ cm_id }}" checked>
+                                                                        <label class="custom-control-label" for="CM:{{ cm_id }}">{{ cm_id }}</label>
+                                                                    </div>
+                                                                </a>
+                                                            {% endfor %}
+                                                        </div>
+                                                    {% endif %}
+
+                                                    <!-- ID OF TPs -->
+                                                    {% if id[master][code].TP|length > 0 %}
+                                                        <div class="custom-control custom-checkbox" style="margin-left: 3px">
+                                                            <input type="checkbox" class="custom-control-input" id="TP-{{ code }}-all" checked>
+                                                            <label class="custom-control-label" for="TP-{{ code }}-all"><strong>TP:</strong></label>
+                                                        </div>
+                                                        <div id="TP-{{ code }}" onclick=areCheckboxesChecked(this.id);>
+                                                            {% for tp_id in id[master][code].TP %}
+                                                                <a class="dropdown-item">
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input type="checkbox" class="custom-control-input" id="TP:{{ tp_id }}" checked>
+                                                                        <label class="custom-control-label" for="TP:{{ tp_id }}">{{ tp_id }}</label>
+                                                                    </div>
+                                                                </a>
+                                                            {% endfor %}
+                                                        </div>
+                                                    {% endif %}
+
+                                                    <!-- ID OF Exams -->
+                                                    {% if id[master][code].EXAM|length > 0 %}
+                                                        <div class="custom-control custom-checkbox" style="margin-left: 3px">
+                                                            <input type="checkbox" class="custom-control-input" id="EXAM-{{ code }}-all" checked>
+                                                            <label class="custom-control-label" for="EXAM-{{ code }}-all"><strong>Exam:</strong></label>
+                                                        </div>
+                                                        <div id="EXAM-{{ code }}" onclick=areCheckboxesChecked(this.id);>
+                                                            {% for exam_id in id[master][code].EXAM %}
+                                                                <a class="dropdown-item">
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input type="checkbox" class="custom-control-input" id="EXAM:{{ exam_id }}" checked>
+                                                                        <label class="custom-control-label" for="EXAM:{{ exam_id }}">{{ exam_id }}</label>
+                                                                    </div>
+                                                                </a>
+                                                            {% endfor %}
+                                                        </div>
+                                                    {% endif %}
+
+                                                    <!-- ID OF Orals -->
+                                                    {% if id[master][code].ORAL|length > 0 %}
+                                                        <div class="custom-control custom-checkbox" style="margin-left: 3px">
+                                                            <input type="checkbox" class="custom-control-input" id="ORAL-{{ code }}-all" checked>
+                                                            <label class="custom-control-label" for="ORAL-{{ code }}-all"><strong>Oral:</strong></label>
+                                                        </div>
+                                                        <div id="ORAL-{{ code }}" onclick=areCheckboxesChecked(this.id);>
+                                                            {% for oral_id in id[master][code].ORAL %}
+                                                                <a class="dropdown-item">
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input type="checkbox" class="custom-control-input" id="ORAL:{{ oral_id }}" checked>
+                                                                        <label class="custom-control-label" for="ORAL:{{ oral_id }}">{{ oral_id }}</label>
+                                                                    </div>
+                                                                </a>
+                                                            {% endfor %}
+                                                        </div>
+                                                    {% endif %}
+
+                                                    <!-- ID OF Others -->
+                                                    {% if id[master][code].Other|length > 0 %}
+                                                        <div class="custom-control custom-checkbox" style="margin-left: 3px">
+                                                            <input type="checkbox" class="custom-control-input" id="Other-{{ code }}-all" checked>
+                                                            <label class="custom-control-label" for="Other-{{ code }}-all"><strong>Other:</strong></label>
+                                                        </div>
+                                                        <div id="Other-{{ code }}" onclick=areCheckboxesChecked(this.id);>
+                                                            {% for other_id in id[master][code].Other %}
+                                                                <a class="dropdown-item">
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input type="checkbox" class="custom-control-input" id="Other:{{ other_id }}" checked>
+                                                                        <label class="custom-control-label" for="Other:{{ other_id }}">{{ other_id }}</label>
+                                                                    </div>
+                                                                </a>
+                                                            {% endfor %}
+                                                        </div>
+                                                    {% endif %}
+                                                {% endif %}
+                                            </div>
                                         </div>
-                                        <div class="dropdown-menu dropdown-menu-on-hover dropdown-menu-right dropdown-max-size" x-placement="bottom-start">
-                                            {% if id[code]|length == 0 %}
-                                                <label class="custom-control-label" style="margin-left: 5px"><strong>{{ _('No event found !') }}</strong></label>
-                                            {% else %}
-                                                <!-- ID OF CMs -->
-                                                {% if id[code].CM|length > 0 %}
-                                                    <div class="custom-control custom-checkbox" style="margin-left: 3px">
-                                                        <input type="checkbox" class="custom-control-input" id="CM-{{ code }}-all" checked>
-                                                        <label class="custom-control-label" for="CM-{{ code }}-all"><strong>CM:</strong></label>
-                                                    </div>
-                                                    <div id="CM-{{ code }}" onclick=areCheckboxesChecked(this.id);>
-                                                        {% for cm_id in id[code].CM %}
-                                                            <a class="dropdown-item">
-                                                                <div class="custom-control custom-checkbox">
-                                                                    <input type="checkbox" class="custom-control-input" id="CM:{{ cm_id }}" checked>
-                                                                    <label class="custom-control-label" for="CM:{{ cm_id }}">{{ cm_id }}</label>
-                                                                </div>
-                                                            </a>
-                                                        {% endfor %}
-                                                    </div>
-                                                {% endif %}
-
-                                                <!-- ID OF TPs -->
-                                                {% if id[code].TP|length > 0 %}
-                                                    <div class="custom-control custom-checkbox" style="margin-left: 3px">
-                                                        <input type="checkbox" class="custom-control-input" id="TP-{{ code }}-all" checked>
-                                                        <label class="custom-control-label" for="TP-{{ code }}-all"><strong>TP:</strong></label>
-                                                    </div>
-                                                    <div id="TP-{{ code }}" onclick=areCheckboxesChecked(this.id);>
-                                                        {% for tp_id in id[code].TP %}
-                                                            <a class="dropdown-item">
-                                                                <div class="custom-control custom-checkbox">
-                                                                    <input type="checkbox" class="custom-control-input" id="TP:{{ tp_id }}" checked>
-                                                                    <label class="custom-control-label" for="TP:{{ tp_id }}">{{ tp_id }}</label>
-                                                                </div>
-                                                            </a>
-                                                        {% endfor %}
-                                                    </div>
-                                                {% endif %}
-
-                                                <!-- ID OF Exams -->
-                                                {% if id[code].EXAM|length > 0 %}
-                                                    <div class="custom-control custom-checkbox" style="margin-left: 3px">
-                                                        <input type="checkbox" class="custom-control-input" id="EXAM-{{ code }}-all" checked>
-                                                        <label class="custom-control-label" for="EXAM-{{ code }}-all"><strong>Exam:</strong></label>
-                                                    </div>
-                                                    <div id="EXAM-{{ code }}" onclick=areCheckboxesChecked(this.id);>
-                                                        {% for exam_id in id[code].EXAM %}
-                                                            <a class="dropdown-item">
-                                                                <div class="custom-control custom-checkbox">
-                                                                    <input type="checkbox" class="custom-control-input" id="EXAM:{{ exam_id }}" checked>
-                                                                    <label class="custom-control-label" for="EXAM:{{ exam_id }}">{{ exam_id }}</label>
-                                                                </div>
-                                                            </a>
-                                                        {% endfor %}
-                                                    </div>
-                                                {% endif %}
-
-                                                <!-- ID OF Orals -->
-                                                {% if id[code].ORAL|length > 0 %}
-                                                    <div class="custom-control custom-checkbox" style="margin-left: 3px">
-                                                        <input type="checkbox" class="custom-control-input" id="ORAL-{{ code }}-all" checked>
-                                                        <label class="custom-control-label" for="ORAL-{{ code }}-all"><strong>Oral:</strong></label>
-                                                    </div>
-                                                    <div id="ORAL-{{ code }}" onclick=areCheckboxesChecked(this.id);>
-                                                        {% for oral_id in id[code].ORAL %}
-                                                            <a class="dropdown-item">
-                                                                <div class="custom-control custom-checkbox">
-                                                                    <input type="checkbox" class="custom-control-input" id="ORAL:{{ oral_id }}" checked>
-                                                                    <label class="custom-control-label" for="ORAL:{{ oral_id }}">{{ oral_id }}</label>
-                                                                </div>
-                                                            </a>
-                                                        {% endfor %}
-                                                    </div>
-                                                {% endif %}
-
-                                                <!-- ID OF Others -->
-                                                {% if id[code].Other|length > 0 %}
-                                                    <div class="custom-control custom-checkbox" style="margin-left: 3px">
-                                                        <input type="checkbox" class="custom-control-input" id="Other-{{ code }}-all" checked>
-                                                        <label class="custom-control-label" for="Other-{{ code }}-all"><strong>Other:</strong></label>
-                                                    </div>
-                                                    <div id="Other-{{ code }}" onclick=areCheckboxesChecked(this.id);>
-                                                        {% for other_id in id[code].Other %}
-                                                            <a class="dropdown-item">
-                                                                <div class="custom-control custom-checkbox">
-                                                                    <input type="checkbox" class="custom-control-input" id="Other:{{ other_id }}" checked>
-                                                                    <label class="custom-control-label" for="Other:{{ other_id }}">{{ other_id }}</label>
-                                                                </div>
-                                                            </a>
-                                                        {% endfor %}
-                                                    </div>
-                                                {% endif %}
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                </td>
-                                <td style="padding: 0">
-                                    <form method="post" action="/remove/code/{{ code }}">
-                                        <button class="btn btn-default" type="submit" style="background-color: transparent; border-color: transparent;">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
                         {% endfor %}
                     </tbody>
                 </table>
@@ -811,11 +818,13 @@
         // Fetches the current selected IDs
         function refreshFunction() {
             let selected_ids = [];
-            {{ codes|safe }}.forEach(function (code) {
-                Object.entries({{ id|safe }}[code]).forEach(function (entry) {
-                    Object.values(entry[1]).forEach(function (value) {
-                        if (document.getElementById(entry[0] + ':' + value).checked)
-                            selected_ids.push(entry[0] + ':' + value);
+            {{ codes|safe }}.forEach(function (master) {
+                Object.values({{ id|safe }}[master]).forEach(function (value) {
+                    Object.entries(value).forEach(function (entry) {
+                        Object.values(entry[1]).forEach(function (value) {
+                            if (document.getElementById(entry[0] + ':' + value).checked)
+                                selected_ids.push(entry[0] + ':' + value);
+                        });
                     });
                 });
             });
@@ -857,13 +866,15 @@
         }
 
         // Group checkboxes
-        {{ codes|safe }}.forEach(function (code) {
-            Object.keys({{ id|safe }}[code]).forEach(function (key) {
-                $('#' + key + '-' + code + '-all').change(function() {
-                    let all_checkboxes = $('#' + key + '-' + code + ' input[type="checkbox"]');
-                    for (let j=0; j < all_checkboxes.length; j++) {
-                        all_checkboxes[j].checked = this.checked;
-                    }
+        {{ codes|safe }}.forEach(function (master) {
+            Object.entries({{ id|safe }}[master]).forEach(function (entry) {
+                Object.keys(entry[1]).forEach(function(key) {
+                    $('#' + key + '-' + entry[0] + '-all').change(function() {
+                        let all_checkboxes = $('#' + key + '-' + entry[0] + ' input[type="checkbox"]');
+                        for (let j=0; j < all_checkboxes.length; j++) {
+                            all_checkboxes[j].checked = this.checked;
+                        }
+                    });
                 });
             });
         });
@@ -938,13 +949,20 @@
                 // Fetches the events in eventsArray and forbiddenTimeSlots
                 events: function (fetchInfo, successCallback, failureCallback) {
                     if (!compIsRequested) {
-                        let courses = {{ codes|tojson }};
+                        let temp = {{ id|safe }};
+                        let code_list = [];
+                        Object.values(temp).forEach(function (master) {
+                            Object.keys(master).forEach(function (code) {
+                                code_list.push(code);
+                            });
+                        });
+
                         let gradient = {{ gradient|tojson }};
-                        for (let i = 0, j = 0; i < courses.length; i++, j++) {
+                        for (let i = 0, j = 0; i < code_list.length; i++, j++) {
                             if (j === gradient.length)
                                 j = 0;
                             eventsArray.map(function (obj) {
-                                if (obj.code === courses[i]) {
+                                if (obj.code === code_list[i]) {
                                     obj.backgroundColor = gradient[j];
                                     obj.borderColor = gradient[j];
                                 }
