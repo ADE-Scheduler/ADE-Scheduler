@@ -41,10 +41,11 @@ def save_settings(link, session, choice=0, username=None, check=None):
     :return: /
     """
     courses = get_courses_from_codes(session['codes'], session['basic_context']['project_id'])
+    courses = list(chain.from_iterable(courses.values()))
     if choice < 0:
         events = extract_events(courses, view=session['id_list'])
     else:
-        for course in courses: course.setEventWeight(session['basic_context']['priority'].get(course.code))
+        for course in courses: course.set_weights(session['basic_context']['priority'].get(course.code))
         events = compute_best(courses, fts=load_fts(session['fts']), n_best=3, view=session['id_list'],
                               safe_compute=session['basic_context']['safe_compute'])[choice]
     weeks = generate_weeks(events)
@@ -76,10 +77,11 @@ def update_settings(link, session, choice=None, check=None):
         choice = old_settings['choice']
 
     courses = get_courses_from_codes(session['codes'], session['basic_context']['project_id'])
+    courses = list(chain.from_iterable(courses.values()))
     if choice < 0:
         events = extract_events(courses, view=session['id_list'])
     else:
-        for course in courses: course.setEventWeight(session['basic_context']['priority'].get(course.code))
+        for course in courses: course.set_weights(session['basic_context']['priority'].get(course.code))
         events = compute_best(courses, fts=load_fts(session['fts']), n_best=3, view=session['id_list'],
                               safe_compute=session['basic_context']['safe_compute'])[choice]
     weeks = generate_weeks(events)
@@ -115,7 +117,7 @@ def get_calendar_from_link(link):
     settings = get_settings_from_link(link)
 
     courses = get_courses_from_codes(settings['codes'], project_id=settings['project_id'])
-
+    courses = list(chain.from_iterable(courses.values()))
     if isinstance(settings['weeks'], list):
         if not isinstance(settings['weeks'][0], list):
             weeks = settings['weeks'][0]

@@ -48,27 +48,6 @@ class Course:
         df = pd.DataFrame(data=data, columns=self.activities.columns, index=index)
         self.activities = self.activities.append(df)
 
-    def setEventWeight(self, percentage=None, event_type=None):
-        """
-        Modify this course's events weight
-        :param percentage: int, the "priority" required for this course in (0-100)%
-        :param event_type: if we want to modify the weight of a certain type of event only
-        :return: /
-        """
-        # No percentage specified, set to default value
-        if percentage is None:
-            percentage = 50
-
-        def f(event):
-            event.set_weight(percentage/10)
-
-        if event_type is None:
-            self.activities['event'].apply(f)
-        else:
-            level = self.activities.index.names.index(event_type)
-            valid = self.activities.index.get_level_values(level) == event_type
-            self.activities['event'][valid].apply(f)
-
     def set_weights(self, percentage=None, event_type=None):
         """
         Modify this course's events weight

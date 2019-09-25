@@ -16,10 +16,10 @@ def get_courses_from_codes(codes, project_id=9):
     Fetches course schedule from Redis' course cache
     :param codes: list of str
     :param project_id: int
-    :return: Course list
+    :return: dict with: {code1: list of Courses, code2: list of Courses, ...}
     """
     redis = Redis(host='localhost')
-    courses = list()
+    courses = dict()
     not_added = list()
 
     if isinstance(codes, str):
@@ -30,14 +30,13 @@ def get_courses_from_codes(codes, project_id=9):
         if not course:
             not_added.append(code)
         else:
-            courses.append(loads(course))
+            courses[code] = loads(course)
 
     for code in not_added:
         tab = get_courses_from_ade(code, project_id, redis=redis)
-        for course in tab:
-            courses.append(course)
-            redis.setex(name='{Project=' + str(project_id) + '}' + course.code, value=dumps(course),
-                        time=timedelta(hours=3))
+        courses[code] = tab
+        redis.setex(name='{Project=' + str(project_id) + '}' + code, value=dumps(tab),
+                    time=timedelta(hours=3))
 
     return courses
 
@@ -45,11 +44,11 @@ def get_courses_from_codes(codes, project_id=9):
 def get_courses_from_ade(codes, project_id, redis=None):
     """
     Fetches courses schedule from UCLouvain's ADE web API
-    :param code: str or list of str
+    :param codes: str or list of str
     :param project_id: int
     :param redis: instance of a Redis server, on which an access token may be stored. If not specified, simply retrieve
                   a new token.
-    :return: Course object
+    :return: list of Courses
     """
     if not codes:
         return list()
