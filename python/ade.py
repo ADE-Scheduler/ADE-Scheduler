@@ -126,7 +126,7 @@ def get_courses_from_ade(codes, project_id, redis=None, is_local=False):
             event_instructor = ' '.join(event.xpath('.//eventParticipant[@category="instructor"]/@name'))
 
             # Check if the event is taking place in the requested local
-            if is_local and codes[0].lower() not in event_classroom.lower():
+            if is_local and any(c.lower() not in event_classroom.lower() for c in codes):
                 continue
 
             # We create the event
