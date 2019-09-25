@@ -414,16 +414,16 @@
                 {% endif %}
                 {% for master in codes %}
                     <div style="display: flex; justify-content: space-between;">
-                        <h5 data-toggle="collapse" data-target="#accordion-{{ master }}" style="margin-top: auto; margin-bottom: auto; cursor: pointer">
+                        <h6 data-toggle="collapse" data-target="#accordion-{{ master }}" style="margin-top: auto; margin-bottom: auto; cursor: pointer; word-break: break-all">
                             <b>{{ master }}</b>
-                        </h5>
+                        </h6>
                         <form method="post" action="/remove/code/{{ master }}">
                             <button class="btn btn-default" type="submit" style="background-color: transparent; border-color: transparent;">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </form>
                     </div>
-                    <div id="accordion-{{ master }}" class="collapse">
+                    <div id="accordion-{{ master }}" class="collapse" style="margin-bottom: 10px;">
                         {% if id[master]|length == 0 %}
                             <label class="custom-control-label" style="margin-left: 5px"><strong>{{ _('No event found !') }}</strong></label>
                         {% else %}
