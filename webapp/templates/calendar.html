@@ -172,6 +172,34 @@
                             </div>
                         </div>
                     </div>
+                    <div style="display: flex; justify-content: space-between; align-content: flex-end;">
+                        <div style="margin-top: 20px">
+                            <form class="collapse show" id="form-link-login">
+                                <div class="form-group row">
+                                    <label class="col col-form-label-sm" for="input-link-login"><b>{{ _('Start repeat') }}</b></label>
+                                    <div class="col-auto">
+                                        <input type="text" class="form-control" id="input-link-login" style="width: 200px;" placeholder={{ _('To change') }}>
+                                        <div class="invalid-feedback" id="input-link-login-feedback" style="max-width: 195px; word-break: break-word;">
+                                            {{ _('To change') }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col col-form-label-sm" for="input-link-password"><b>{{ _('End of repeat') }}</b></label>
+                                    <div class="col-auto">
+                                        <input type="password" class="form-control" id="input-link-password" style="max-width: 200px;" placeholder={{ _('To change') }}>
+                                        <div class="invalid-feedback">
+                                            {{ _('To change') }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="switch-password" data-toggle="collapse" data-target="#form-link-login" checked>
+                                <label class="custom-control-label" for="switch-password">{{ _('Repeat this forbidden time slot') }}</label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal" style="float: left;">{{ _('Cancel') }}</button>
