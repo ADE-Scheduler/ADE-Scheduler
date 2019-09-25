@@ -118,7 +118,7 @@ def add_course(code):
         return
     else:
         courses = get_courses_from_codes(code, project_id=session['basic_context']['project_id'])
-        courses = list(chain.from_iterable(courses))
+        courses = list(chain.from_iterable(courses.values()))
         if code not in session['codes']:
             session['codes'].append(code)
             if session['id_list'] is not None:
