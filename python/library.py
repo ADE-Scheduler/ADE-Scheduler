@@ -12,19 +12,24 @@ from itertools import groupby
 """
 settings format :
 {
-    choice: user's schedule choice (int),
+    choice:     int, user's schedule choice,
     project_id: int,
-    codes: [list of codes],
-    priority: {code: priority}
-    fts: [list of fts],
-    id_list: [list of selected ids],
-    weeks: dict {week_number : ids}
-    check: state of checkboxes (from the UI)
+    codes:      [list of codes],
+    priority:   {code: priority}
+    fts:        [list of fts],
+    id_list:    [list of selected ids],
+    weeks:      dict {week_number : ids}
+    check:      state of checkboxes (from the UI)
 }
 """
 
 
 def generate_weeks(events):
+    """
+    Generates the weeks dict used in settings. Group events by list and retrieve their id's.
+    :param events: iterable, list of event.CustomEvent's
+    :return: dict, {week_number : ids}
+    """
     grp = groupby(events, key=lambda e: e.get_week())
     weeks = ((week, [e.get_id() for e in e_list]) for week, e_list in grp)
     return dict(weeks)
@@ -32,12 +37,12 @@ def generate_weeks(events):
 
 def save_settings(link, session, choice=0, username=None, check=None):
     """
-    Saves a user's session in the database with the corresponding link
-    :param check: state of checkbobxes
+    Saves a user's session in the database with the corresponding link.
     :param link: str, given to the user
     :param session: dict, the user's session
     :param choice: int, the choice of schedule to save
-    :param username: if specified, the user's username
+    :param username: str or None, if specified, the user's username
+    :param check: state of checkboxes
     :return: /
     """
     courses = get_courses_from_codes(session['codes'], session['basic_context']['project_id'])
@@ -64,12 +69,11 @@ def save_settings(link, session, choice=0, username=None, check=None):
 
 def update_settings(link, session, choice=None, check=None):
     """
-    Update a link's corresponding settings, after modifications imposed by the user
-    :param check: state of checkboxes
+    Updates a link's corresponding settings, after modifications imposed by the user.
     :param link: str, given to the user
     :param session: dict, the user's session
     :param choice: int, the choice of schedule to save
-    :param username: if specified, the user's username
+    :param check: state of checkboxes
     :return: /
     """
     if choice is None:
@@ -100,15 +104,16 @@ def update_settings(link, session, choice=None, check=None):
 
 def load_settings(link):
     """
+    Loads the settings attached to a link stored in the database.
     :param link: str, given by the user
-    :return: this link's corresponding settings
+    :return: dict, this link's corresponding settings
     """
     return get_settings_from_link(link)
 
 
 def get_calendar_from_link(link):
     """
-    Returns the user's saved calendar in .ics format
+    Returns the user's saved calendar in .ics format.
     :param link: str, given by the user
     :return: str, the calendar in .ics format, or None if the link doesn't exist
     """
@@ -131,6 +136,11 @@ def get_calendar_from_link(link):
 
 
 def load_fts(fts_json):
+    """
+    Loads the forbidden time slots as a list of event.CustomEvent's.
+    :param fts_json: list of dict,
+    :return: list, the forbidden time slots
+    """
     tz = timezone('Europe/Brussels')
     fts = list()
     for el in fts_json:

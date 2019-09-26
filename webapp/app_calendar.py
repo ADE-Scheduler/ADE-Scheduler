@@ -14,6 +14,7 @@ from redis import Redis
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir + '/python')
+
 from ade import get_courses_from_codes
 from computation import compute_best, extract_events
 from event import CustomEvent, json_from_events
