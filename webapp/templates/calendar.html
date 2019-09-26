@@ -5,6 +5,7 @@
     <link href='/static/fullcalendar/timegrid/main.css' rel='stylesheet' />
     <link href='/static/fullcalendar/list/main.css' rel='stylesheet' />
     <link href='/static/clockpicker/bootstrap-clockpicker.min.css' rel='stylesheet' />
+    <link href="/static/datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet">
 
     <style>
         :root {
@@ -174,29 +175,33 @@
                     </div>
                     <div style="display: flex; justify-content: space-between; align-content: flex-end;">
                         <div style="margin-top: 20px">
-                            <form class="collapse show" id="form-link-login">
-                                <div class="form-group row">
-                                    <label class="col col-form-label-sm" for="input-link-login"><b>{{ _('Start repeat') }}</b></label>
-                                    <div class="col-auto">
-                                        <input type="text" class="form-control" id="input-link-login" style="width: 200px;" placeholder={{ _('To change') }}>
-                                        <div class="invalid-feedback" id="input-link-login-feedback" style="max-width: 195px; word-break: break-word;">
-                                            {{ _('To change') }}
+                            <div class="collapse show" id="info-fts">
+                                <div class="container">
+                                    <div class='col-md-5'>
+                                        <div class="form-group">
+                                            <div class='input-group date' id='datetimepicker6'>
+                                                <input type='date' class="form-control" />
+                                                <span class="input-group-addon">
+                                                    <span class="fas fa-calendar"></span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='col-md-5'>
+                                        <div class="form-group">
+                                            <div class='input-group date' id='datetimepicker7'>
+                                                <input type='date' class="form-control" />
+                                                <span class="input-group-addon">
+                                                    <span class="fas fa-calendar"></span>
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label class="col col-form-label-sm" for="input-link-password"><b>{{ _('End of repeat') }}</b></label>
-                                    <div class="col-auto">
-                                        <input type="password" class="form-control" id="input-link-password" style="max-width: 200px;" placeholder={{ _('To change') }}>
-                                        <div class="invalid-feedback">
-                                            {{ _('To change') }}
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
+                            </div>
                             <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="switch-password" data-toggle="collapse" data-target="#form-link-login" checked>
-                                <label class="custom-control-label" for="switch-password">{{ _('Repeat this forbidden time slot') }}</label>
+                                <input type="checkbox" class="custom-control-input" id="switch-fts" data-toggle="collapse" data-target="#info-fts" checked>
+                                <label class="custom-control-label" for="switch-fts">{{ _('Repeat this forbidden time slot') }}</label>
                             </div>
                         </div>
                     </div>
@@ -607,6 +612,7 @@
     <script src='/static/bootbox/bootbox.min.js'></script>
     <script src='/static/bootbox/bootbox.locales.min.js'></script>
     <script src='/static/js/colorgradient.js'></script>
+    <script src='/static/datepicker/js/bootstrap-datepicker.min.js'></script>
 
     <script>
         // On load: focus on course-input + repopulate checkboxes
@@ -1204,6 +1210,21 @@
         // Time picker for FTS
         $('.clockpicker').clockpicker({
             autoclose: true,
+        });
+    </script>
+
+    <script>
+        $(function () {
+            $('#datetimepicker6').datetimepicker();
+            $('#datetimepicker7').datetimepicker({
+                useCurrent: false //Important! See issue #1075
+            });
+            $("#datetimepicker6").on("dp.change", function (e) {
+                $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
+            });
+            $("#datetimepicker7").on("dp.change", function (e) {
+                $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
+            });
         });
     </script>
 {% endblock %}
