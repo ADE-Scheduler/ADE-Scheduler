@@ -22,7 +22,7 @@ def eval_week(week, fts=None):
 
 def extract_events(courses, view=None):
     """
-    Extract all the events matching ids in the view list.
+    Extracts all the events matching ids in the view list.
     :param courses: a list of course.Course objects
     :param view: if None extracts everything, otherwise must be a list of ids
     :return: the array of events
@@ -45,7 +45,7 @@ def compute_best(courses, fts=None, n_best=5, safe_compute=True, view=None):
     :param courses: a list of course.Course objects
     :param fts: a list of event.CustomEvent objects
     :param n_best: number of best schedules to produce
-    :param safe_compute: if True, ignore all redundant events
+    :param safe_compute: if True, ignore all redundant events at same time period
     :param view: list of ids to filter
     :return: the n_best schedules
     """
