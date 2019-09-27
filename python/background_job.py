@@ -60,8 +60,8 @@ def update_resources_ids():
         df = DataFrame(data=root.xpath('//resource/@id'), index=map(lambda x: x.upper(), root.xpath('//resource/@name'))
                        , columns=['id'])
         hash_table = df.groupby(level=0).apply(lambda x: '|'.join(x.to_dict(orient='list')['id'])).to_dict()
-        redis.hmset('{Project=' + str(id_) + '}' + 'ade_webapi_id', hash_table)
-        redis.expire('{Project=' + str(id_) + '}' + 'ade_webapi_id', timedelta(days=1))
+        redis.hmset('{Project=' + str(id_) + '}' + 'ADE_WEBAPI_ID', hash_table)
+        redis.expire('{Project=' + str(id_) + '}' + 'ADE_WEBAPI_ID', timedelta(days=1))
 
 
 if __name__ == '__main__':
