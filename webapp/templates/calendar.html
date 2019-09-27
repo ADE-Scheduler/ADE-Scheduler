@@ -173,42 +173,36 @@
                             </div>
                         </div>
                     </div>
-                    <div style="display: flex; justify-content: space-between; align-content: flex-end;">
-                        <div style="margin-top: 20px">
-                            <div class="collapse show" id="info-fts">
-                                <div class="row">
-                                    <div class='col'>
-                                        <div class="form-group">
-                                            <label for="begin_repeat" style="justify-content: space-between;"><strong>{{ _('Begin of repetition') }}</strong></label>
-                                            <div class='input-group mb-3 date' data-placement="right" id='datetimepicker6'>
-                                                <input type='date' class="form-control" />
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text">
-                                                        <i class="fas fa-calendar"></i>
-                                                    </span>
-                                                </div>
-                                            </div>
+                    <div style="margin-top: 20px">
+                        <div class="collapse show" id="info-fts" >
+                            <div style="display: flex; justify-content: space-between; flex-direction: row;">
+                                <div>
+                                    <label for="begin_repeat"><strong>{{ _('Begin of repetition') }}</strong></label>
+                                    <div class='input-group mb-3 date' data-placement="right" id='datetimepicker6'>
+                                        <input type='date' class="form-control"/>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-calendar"></i>
+                                            </span>
                                         </div>
                                     </div>
-                                    <div class='col'>
-                                        <div class="form-group">
-                                            <label for="end_repeat" style="justify-content: flex-end;"><strong>{{ _('End of repetition') }}</strong></label>
-                                            <div class='input-group mb-3 date' data-placement="right" id='datetimepicker7'>
-                                                <input type='date' class="form-control" />
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text">
-                                                        <i class="fas fa-calendar"></i>
-                                                    </span>
-                                                </div>
-                                            </div>
+                                </div>
+                                <div>
+                                    <label for="end_repeat"><strong>{{ _('End of repetition') }}</strong></label>
+                                    <div class='input-group mb-3 date' data-placement="right" id='datetimepicker7'>
+                                        <input type='date' class="form-control"/>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-calendar"></i>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="switch-fts" data-toggle="collapse" data-target="#info-fts" checked>
-                                <label class="custom-control-label" for="switch-fts">{{ _('Repeat this forbidden time slot') }}</label>
-                            </div>
+                        </div>
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="switch-fts" data-toggle="collapse" data-target="#info-fts" checked>
+                            <label class="custom-control-label" for="switch-fts">{{ _('Repeat this forbidden time slot') }}</label>
                         </div>
                     </div>
                 </div>
