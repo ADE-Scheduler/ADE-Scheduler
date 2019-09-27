@@ -46,7 +46,7 @@ def compute():
     :return: /
     """
     if len(session['codes']) == 0:
-        clear()
+        return
     else:
         courses = get_courses_from_codes(session['codes'], project_id=session['basic_context']['project_id'])
         courses = list(chain.from_iterable(courses.values()))
