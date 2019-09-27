@@ -1059,8 +1059,8 @@
                                             description: {{ _('A time slot where the user would like to be free')|tojson }}
                                         });
                                     }
-                                    startRecur = new Date(startRecur.valueOf() + 864E5);
-                                    startRecurEnd = new Date(startRecurEnd.valueOf() + 864E5);
+                                    startRecur.setDate(startRecur.getDate()+1);
+                                    startRecurEnd.setDate(startRecurEnd.getDate()+1);
                                 }
                             } else {
                                 console.log('new event');
