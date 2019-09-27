@@ -8,6 +8,7 @@ from pytz import timezone
 from dateutil.parser import parse
 from event import CustomEvent
 from itertools import groupby
+import pandas as pd
 
 """
 settings format :
@@ -19,7 +20,7 @@ settings format :
     fts:        [list of fts],
     id_list:    [list of selected ids],
     weeks:      dict {week_number : ids}
-    check:      state of checkboxes (from the UI)
+    check:      dict, state of checkboxes (from the UI)
 }
 """
 
@@ -30,9 +31,13 @@ def generate_weeks(events):
     :param events: iterable, list of event.CustomEvent's
     :return: dict, {week_number : ids}
     """
-    grp = groupby(events, key=lambda e: e.get_week())
-    weeks = ((week, [e.get_id() for e in e_list]) for week, e_list in grp)
-    return dict(weeks)
+
+    data = [[e.get_week(), e.get_id()] for e in events]
+    df = pd.DataFrame(data=data, columns=['week', 'id'])
+
+    grp = df.groupby('week')
+
+    return grp['id'].apply(list).to_dict()
 
 
 def save_settings(link, session, choice=0, username=None, check=None):
@@ -64,6 +69,7 @@ def save_settings(link, session, choice=0, username=None, check=None):
         'weeks': weeks,
         'check': check
     }
+
     set_link(link=link, username=username, settings=settings)
 
 

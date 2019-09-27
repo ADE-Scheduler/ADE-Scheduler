@@ -97,6 +97,7 @@ class Course:
                 week_data = grp_weeks.get_group(week)
                 valid = week_data.index.get_level_values('id').isin(weeks[week])
                 events.extend(week_data['event'][valid].values.tolist())
+
             return events
 
     def getEventsJSON(self):
