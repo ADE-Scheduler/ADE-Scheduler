@@ -176,24 +176,30 @@
                     <div style="display: flex; justify-content: space-between; align-content: flex-end;">
                         <div style="margin-top: 20px">
                             <div class="collapse show" id="info-fts">
-                                <div class="container">
-                                    <div class='col-md-5'>
+                                <div class="row">
+                                    <div class='col'>
                                         <div class="form-group">
-                                            <div class='input-group date' id='datetimepicker6'>
+                                            <label for="begin_repeat" style="justify-content: space-between;"><strong>{{ _('Begin of repetition') }}</strong></label>
+                                            <div class='input-group mb-3 date' data-placement="right" id='datetimepicker6'>
                                                 <input type='date' class="form-control" />
-                                                <span class="input-group-addon">
-                                                    <span class="fas fa-calendar"></span>
-                                                </span>
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">
+                                                        <i class="fas fa-calendar"></i>
+                                                    </span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class='col-md-5'>
+                                    <div class='col'>
                                         <div class="form-group">
-                                            <div class='input-group date' id='datetimepicker7'>
+                                            <label for="end_repeat" style="justify-content: flex-end;"><strong>{{ _('End of repetition') }}</strong></label>
+                                            <div class='input-group mb-3 date' data-placement="right" id='datetimepicker7'>
                                                 <input type='date' class="form-control" />
-                                                <span class="input-group-addon">
-                                                    <span class="fas fa-calendar"></span>
-                                                </span>
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">
+                                                        <i class="fas fa-calendar"></i>
+                                                    </span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
