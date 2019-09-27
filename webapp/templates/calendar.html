@@ -177,20 +177,20 @@
                         <div class="collapse show" id="info-fts" >
                             <div style="display: flex; justify-content: space-between; flex-direction: row;">
                                 <div>
-                                    <label for="begin_repeat"><strong>{{ _('Begin of repetition') }}</strong></label>
-                                    <div class='input-group mb-3 date' data-placement="right" id='datetimepicker6'>
-                                        <input type='date' class="form-control"/>
+                                    <label for="begin_repeat"><strong>{{ _('Start of repetition') }}</strong></label>
+                                    <div class='input-group date' data-placement="right">
                                         <div class="input-group-append">
                                             <span class="input-group-text">
                                                 <i class="fas fa-calendar"></i>
                                             </span>
                                         </div>
+                                        <input type='date' class="form-control"  id="fts-start-recur"/>
                                     </div>
                                 </div>
                                 <div>
                                     <label for="end_repeat"><strong>{{ _('End of repetition') }}</strong></label>
-                                    <div class='input-group mb-3 date' data-placement="right" id='datetimepicker7'>
-                                        <input type='date' class="form-control"/>
+                                    <div class='input-group date' data-placement="right">
+                                        <input type='date' class="form-control" id="fts-end-recur"/>
                                         <div class="input-group-append">
                                             <span class="input-group-text">
                                                 <i class="fas fa-calendar"></i>
@@ -200,7 +200,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="custom-control custom-switch">
+                        <div class="custom-control custom-switch" style="margin-top: 10px">
                             <input type="checkbox" class="custom-control-input" id="switch-fts" data-toggle="collapse" data-target="#info-fts" checked>
                             <label class="custom-control-label" for="switch-fts">{{ _('Repeat this forbidden time slot') }}</label>
                         </div>
@@ -1019,10 +1019,9 @@
                     let modal = $('#time-prompt');
 
                     function timePromptConfirm(e) {
-                        try {
+                        //try {
                             let startTime = $('#start_time').val().substring(0, 5);
                             let endTime = $('#end_time').val().substring(0, 5);
-                            modal.modal('hide');
 
                             let dateStart = new Date(arg.date.getFullYear(), arg.date.getMonth(), arg.date.getDate());
                             dateStart.setHours(parseInt(startTime.split(':')[0]));
@@ -1034,21 +1033,54 @@
                             let text = arg.draggedEl.textContent;
                             let color = window.getComputedStyle(arg.draggedEl, null).getPropertyValue("background-color");
 
-                            // NEW EVENT
-                            forbiddenTimeSlots.push({
-                                title: text,
-                                start: dateStart.toISOString(),
-                                end: dateEnd.toISOString(),
-                                backgroundColor: color,
-                                borderColor: color,
-                                editable: true,
-                                description: {{ _('A time slot where the user would like to be free')|tojson }}
-                            });
+                            // Recurring event
+                            if ($('#switch-fts').prop('checked')) {
+                                let startRecur = new Date($('#fts-start-recur').val());
+                                startRecur.setHours(parseInt(startTime.split(':')[0]));
+                                startRecur.setMinutes(parseInt(startTime.split(':')[1]));
+                                let startRecurEnd = new Date($('#fts-start-recur').val());
+                                startRecurEnd.setHours(parseInt(endTime.split(':')[0]));
+                                startRecurEnd.setMinutes(parseInt(endTime.split(':')[1]));
+
+                                let endRecur = new Date($('#fts-end-recur').val());
+                                endRecur.setHours(parseInt(startTime.split(':')[0]));
+                                endRecur.setMinutes(parseInt(startTime.split(':')[1]));
+
+                                let dayOfWeek = dateStart.getDay();
+                                while (startRecur.getTime() <= endRecur.getTime()) {
+                                    if (startRecur.getDay() === dayOfWeek) {
+                                        forbiddenTimeSlots.push({
+                                            title: text,
+                                            start: startRecur.toISOString(),
+                                            end: startRecurEnd.toISOString(),
+                                            backgroundColor: color,
+                                            borderColor: color,
+                                            editable: true,
+                                            description: {{ _('A time slot where the user would like to be free')|tojson }}
+                                        });
+                                    }
+                                    startRecur = new Date(startRecur.valueOf() + 864E5);
+                                    startRecurEnd = new Date(startRecurEnd.valueOf() + 864E5);
+                                }
+                            } else {
+                                console.log('new event');
+                                forbiddenTimeSlots.push({
+                                    title: text,
+                                    start: dateStart.toISOString(),
+                                    end: dateEnd.toISOString(),
+                                    backgroundColor: color,
+                                    borderColor: color,
+                                    editable: true,
+                                    description: {{ _('A time slot where the user would like to be free')|tojson }}
+                                });
+                            }
+
+                            modal.modal('hide');
                             send_fts_to_serv();
                             calendar.refetchEvents();
-                        } catch(err) {
-                            $('#modal-wrong-format').modal('show');
-                        }
+                        //} catch(err) {
+                        //    $('#modal-wrong-format').modal('show');
+                        //}
                     }
 
                     modal.on('click', '#time-prompt-confirm', timePromptConfirm);
@@ -1210,21 +1242,6 @@
         // Time picker for FTS
         $('.clockpicker').clockpicker({
             autoclose: true,
-        });
-    </script>
-
-    <script>
-        $(function () {
-            $('#datetimepicker6').datetimepicker();
-            $('#datetimepicker7').datetimepicker({
-                useCurrent: false //Important! See issue #1075
-            });
-            $("#datetimepicker6").on("dp.change", function (e) {
-                $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
-            });
-            $("#datetimepicker7").on("dp.change", function (e) {
-                $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
-            });
         });
     </script>
 {% endblock %}
