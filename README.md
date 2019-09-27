@@ -19,17 +19,11 @@ L'utilisateur peut
 ## Mises à jours à venir (par ordre de priorité)
 
 Doit être fait
-- quand on entre une liste de cours (ex. : fsa12ba), le site donne directement la liste de tous les cours
-- suivre les normes syntaxiques imposées par pep8
 - (plus) facilement créer des FTS récurrents
-- intégrer un maximum le package pandas pour un stockage des évènements plus facile
-- obtenir les statistiques du site
-- optimiser la fonction compute
 - suite de tests à effectuer sur tout code pull-request
 - finir videos de la section aide
 - corriger texte (mise en page + orthographe) de l'aide
 - créer une version mobile plus accessible
-- automatiquement ajouter les nouveaux project id 
 
 L'utilisateur pourra
 - participer au développement de l'application (pull request) de manière sûre : suite de tests à effectuer sur tout code
