@@ -558,7 +558,7 @@
                         </div>
                     {% else %}
                         <div style="display: flex; justify-content: space-between;">
-                            <h6 data-toggle="collapse" data-target="#accordion-{{ master }}" style="margin-top: auto; margin-bottom: auto; cursor: pointer; word-break: break-all">
+                            <h6 data-toggle="collapse" data-target="#accordion-{{ master.replace(' ','').replace('.','') }}" style="margin-top: auto; margin-bottom: auto; cursor: pointer; word-break: break-all">
                                 <b>{{ master }}</b>
                             </h6>
                             <form method="post" action="/remove/code/{{ master }}">
@@ -567,7 +567,7 @@
                                 </button>
                             </form>
                         </div>
-                        <div id="accordion-{{ master }}" class="collapse show">
+                        <div id="accordion-{{ master.replace(' ','').replace('.','') }}" class="collapse show">
                             {% for code in id[master].keys() %}
                                 <div class="dropright drop-on-hover" style="margin: 0; padding: 0; overflow-wrap: break-word;">
                                     <div class="dropdown-toggle" data-toggle="dropdown" role="button" style="margin-right: -.125rem; margin-left: 10px; padding: 0; overflow: hidden; width: 110px">
