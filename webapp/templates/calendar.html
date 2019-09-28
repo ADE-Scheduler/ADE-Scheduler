@@ -5,6 +5,7 @@
     <link href='/static/fullcalendar/timegrid/main.css' rel='stylesheet' />
     <link href='/static/fullcalendar/list/main.css' rel='stylesheet' />
     <link href='/static/clockpicker/bootstrap-clockpicker.min.css' rel='stylesheet' />
+    <link href="/static/datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet">
 
     <style>
         :root {
@@ -170,6 +171,38 @@
                                     </span>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 20px">
+                        <div class="collapse show" id="info-fts" >
+                            <div style="display: flex; justify-content: space-between; flex-direction: row;">
+                                <div>
+                                    <label for="begin_repeat"><strong>{{ _('Start of repetition') }}</strong></label>
+                                    <div class='input-group date' data-placement="right">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-calendar"></i>
+                                            </span>
+                                        </div>
+                                        <input type='date' class="form-control"  id="fts-start-recur"/>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="end_repeat"><strong>{{ _('End of repetition') }}</strong></label>
+                                    <div class='input-group date' data-placement="right">
+                                        <input type='date' class="form-control" id="fts-end-recur"/>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-calendar"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="custom-control custom-switch" style="margin-top: 10px">
+                            <input type="checkbox" class="custom-control-input" id="switch-fts" data-toggle="collapse" data-target="#info-fts" checked>
+                            <label class="custom-control-label" for="switch-fts">{{ _('Repeat this forbidden time slot') }}</label>
                         </div>
                     </div>
                 </div>
@@ -687,6 +720,7 @@
     <script src='/static/bootbox/bootbox.min.js'></script>
     <script src='/static/bootbox/bootbox.locales.min.js'></script>
     <script src='/static/js/colorgradient.js'></script>
+    <script src='/static/datepicker/js/bootstrap-datepicker.min.js'></script>
 
     <script>
         // On load: focus on course-input + repopulate checkboxes
@@ -1095,12 +1129,11 @@
                     function timePromptConfirm(e) {
                         try {
                             let startTime = $('#start_time').val().substring(0, 5);
-                            let endTime = $('#end_time').val().substring(0, 5);
-                            modal.modal('hide');
-
                             let dateStart = new Date(arg.date.getFullYear(), arg.date.getMonth(), arg.date.getDate());
                             dateStart.setHours(parseInt(startTime.split(':')[0]));
                             dateStart.setMinutes(parseInt(startTime.split(':')[1]));
+
+                            let endTime = $('#end_time').val().substring(0, 5);
                             let dateEnd = new Date(arg.date.getFullYear(), arg.date.getMonth(), arg.date.getDate());
                             dateEnd.setHours(parseInt(endTime.split(':')[0]));
                             dateEnd.setMinutes(parseInt(endTime.split(':')[1]));
@@ -1108,16 +1141,48 @@
                             let text = arg.draggedEl.textContent;
                             let color = window.getComputedStyle(arg.draggedEl, null).getPropertyValue("background-color");
 
-                            // NEW EVENT
-                            forbiddenTimeSlots.push({
-                                title: text,
-                                start: dateStart.toISOString(),
-                                end: dateEnd.toISOString(),
-                                backgroundColor: color,
-                                borderColor: color,
-                                editable: true,
-                                description: {{ _('A time slot where the user would like to be free')|tojson }}
-                            });
+                            // Recurring event
+                            if ($('#switch-fts').prop('checked')) {
+                                let startRecur = new Date($('#fts-start-recur').val());
+                                startRecur.setHours(parseInt(startTime.split(':')[0]));
+                                startRecur.setMinutes(parseInt(startTime.split(':')[1]));
+                                let startRecurEnd = new Date($('#fts-start-recur').val());
+                                startRecurEnd.setHours(parseInt(endTime.split(':')[0]));
+                                startRecurEnd.setMinutes(parseInt(endTime.split(':')[1]));
+
+                                let endRecur = new Date($('#fts-end-recur').val());
+                                endRecur.setHours(parseInt(startTime.split(':')[0]));
+                                endRecur.setMinutes(parseInt(startTime.split(':')[1]));
+
+                                let dayOfWeek = dateStart.getDay();
+                                while (startRecur.getTime() <= endRecur.getTime()) {
+                                    if (startRecur.getDay() === dayOfWeek) {
+                                        forbiddenTimeSlots.push({
+                                            title: text,
+                                            start: startRecur.toISOString(),
+                                            end: startRecurEnd.toISOString(),
+                                            backgroundColor: color,
+                                            borderColor: color,
+                                            editable: true,
+                                            description: {{ _('A time slot where the user would like to be free')|tojson }}
+                                        });
+                                    }
+                                    startRecur.setDate(startRecur.getDate()+1);
+                                    startRecurEnd.setDate(startRecurEnd.getDate()+1);
+                                }
+                            } else {
+                                forbiddenTimeSlots.push({
+                                    title: text,
+                                    start: dateStart.toISOString(),
+                                    end: dateEnd.toISOString(),
+                                    backgroundColor: color,
+                                    borderColor: color,
+                                    editable: true,
+                                    description: {{ _('A time slot where the user would like to be free')|tojson }}
+                                });
+                            }
+
+                            modal.modal('hide');
                             send_fts_to_serv();
                             calendar.refetchEvents();
                         } catch(err) {
