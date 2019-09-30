@@ -3,32 +3,18 @@
 # To be run every 24 hours:
 # schedule a job using the cron command on the server.
 
-import requests
 import json
-
-from lxml import etree
 from datetime import timedelta
 from redis import Redis
-from hidden import get_token, user, password
 from pandas import DataFrame
+from ade import ade_request
 
 
 redis = Redis(host='localhost', port=6379)
 
 
 def update_projects():
-    token = redis.get('ADE_WEBAPI_TOKEN')
-    if not token:
-        token, expiry = get_token()
-        if expiry > 10:
-            redis.setex('ADE_WEBAPI_TOKEN', timedelta(seconds=expiry - 10), value=token)
-    else:
-        token = token.decode()
-    headers = {'Authorization': 'Bearer ' + token}
-    url = 'https://api.sgsi.ucl.ac.be:8243/ade/v0/api?login=' + user + '&password=' + password + \
-          '&function=getProjects&detail=2'
-    r = requests.get(url, headers=headers)
-    root = etree.fromstring(r.content)
+    root = ade_request(redis, 'function=getProjects', 'detail=2')
     ids = root.xpath('//project/@id')
     years = root.xpath('//project/@name')
 
@@ -43,27 +29,51 @@ def update_resources_ids():
     if not redis.exists('ADE_PROJECTS'):
         update_projects()
 
-    token = redis.get('ADE_WEBAPI_TOKEN')
-    if not token:
-        token, expiry = get_token()
-        if expiry > 10:
-            redis.setex('ADE_WEBAPI_TOKEN', timedelta(seconds=expiry - 10), value=token)
-    else:
-        token = token.decode()
-
-    for id_ in map(lambda x: x['id'], json.loads(redis.get('ADE_PROJECTS'))):
-        headers = {'Authorization': 'Bearer ' + token}
-        url = 'https://api.sgsi.ucl.ac.be:8243/ade/v0/api?login=' + user + '&password=' + password + '&projectId=' + \
-              str(id_) + '&function=getResources&detail=2'
-        r = requests.get(url + 'getResources&detail=2', headers=headers)
-        root = etree.fromstring(r.content)
+    for project_id in map(lambda x: x['id'], json.loads(redis.get('ADE_PROJECTS'))):
+        root = ade_request(redis, 'projectId=%d' % project_id, 'function=getResources', 'detail=2')
         df = DataFrame(data=root.xpath('//resource/@id'), index=map(lambda x: x.upper(), root.xpath('//resource/@name'))
                        , columns=['id'])
         hash_table = df.groupby(level=0).apply(lambda x: '|'.join(x.to_dict(orient='list')['id'])).to_dict()
-        redis.hmset('{Project=' + str(id_) + '}' + 'ADE_WEBAPI_ID', hash_table)
-        redis.expire('{Project=' + str(id_) + '}' + 'ADE_WEBAPI_ID', timedelta(days=1))
+        h_map = '{Project=%d}ADE_WEBAPI_ID' % project_id
+        redis.hmset(h_map, hash_table)
+        redis.expire(h_map, timedelta(days=1))
+
+
+def update_classrooms():
+    if not redis.exists('ADE_PROJECTS'):
+        update_projects()
+
+    for project_id in map(lambda x: x['id'], json.loads(redis.get('ADE_PROJECTS'))):
+        h_map = '{Project=%d}ADE_WEBAPI_ID' % project_id
+        if not redis.exists(h_map):
+            update_resources_ids()  # should be called max once
+
+        root = ade_request(redis, 'projectId=%d' % project_id, 'function=getResources',
+                           'detail=13', 'tree=false', 'category=classroom')
+
+        names = root.xpath('//room/@name')
+        types = root.xpath('//room/@type')
+        sizes = root.xpath('//room/@size')
+        zip_codes = root.xpath('//room/@zipCode')
+        countries = root.xpath('//room/@country')
+        addresses_1 = root.xpath('//room/@address1')
+        addresses_2 = root.xpath('//room/@address2')
+        cities = root.xpath('//room/@city')
+
+        d = {'name': names, 'type': types, 'size': sizes, 'zipCode': zip_codes,
+             'country': countries, 'address_1': addresses_1, 'address_2': addresses_2, 'city': cities}
+
+        df = DataFrame(data=d, dtype=str)
+        df.drop_duplicates('name', inplace=True)
+        df.set_index('name', inplace=True)
+        hash_table = {key: json.dumps(values) for key, values in df.to_dict('index').items()}
+        h_map = '{Project=%d}CLASSROOMS' % project_id
+
+        redis.hmset(h_map, hash_table)
+        redis.expire(h_map, timedelta(days=1))
 
 
 if __name__ == '__main__':
     update_projects()
     update_resources_ids()
+    update_classrooms()
