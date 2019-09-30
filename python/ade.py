@@ -7,9 +7,23 @@ from hidden import get_token, user, password
 from redis import Redis
 from pickle import dumps, loads
 from datetime import timedelta
-from pandas import DataFrame
 from collections import Counter
+import json
 
+
+def ade_request(redis, *args):
+    token = redis.get('ADE_WEBAPI_TOKEN')
+    if not token:
+        token, expiry = get_token()
+        if expiry > 10:
+            redis.setex('ADE_WEBAPI_TOKEN', timedelta(seconds=expiry - 10), value=token)
+    else:
+        token = token.decode()
+    headers = {'Authorization': 'Bearer ' + token}
+    url = 'https://api.sgsi.ucl.ac.be:8243/ade/v0/api?login=' + user + '&password=' + password + '&' + '&'.join(args)
+
+    r = requests.get(url=url, headers=headers)
+    return etree.fromstring(r.content)
 
 def get_courses_from_codes(codes, project_id=9):
     """
@@ -62,44 +76,28 @@ def get_courses_from_ade(codes, project_id, redis=None, is_local=False):
     # Courses to be returned
     courses = dict()
 
-    # We retrieve the access token and construct the URL and the headers for the requests
-    if not redis:
-        token, _ = get_token()
-    else:
-        token = redis.get('ADE_WEBAPI_TOKEN')
-        if not token:
-            token, expiry = get_token()
-            if expiry > 10:
-                redis.setex('ADE_WEBAPI_TOKEN', timedelta(seconds=expiry - 10), value=token)
-        else:
-            token = token.decode()
-    headers = {'Authorization': 'Bearer ' + token}
-    url = 'https://api.sgsi.ucl.ac.be:8243/ade/v0/api?login=' + user + '&password=' + password + '&projectId=' + \
-          str(project_id) + '&function='
+    # We get the resources ID
+    h_map = '{Project=%d}ADE_WEBAPI_ID' % project_id
+    if not redis or not redis.exists(h_map):
+        from background_job import update_resources_ids
+        update_resources_ids()
 
-    # We get the ressource ID
-    if not redis or not redis.exists('{Project=' + str(project_id) + '}ADE_WEBAPI_ID'):
-        r = requests.get(url + 'getResources&detail=2', headers=headers)
-        root = etree.fromstring(r.content)
-        df = DataFrame(data=root.xpath('//resource/@id'), index=map(lambda x: x.upper(), root.xpath('//resource/@name'))
-                       , columns=['id'])
-        hash_table = df.groupby(level=0).apply(lambda x: '|'.join(x.to_dict(orient='list')['id'])).to_dict()
-        resources_id = '|'.join(filter(None, [hash_table.get(code) for code in codes]))
-        if redis:
-            redis.hmset('{Project=' + str(project_id) + '}ADE_WEBAPI_ID', hash_table)
-            redis.expire('{Project=' + str(project_id) + '}ADE_WEBAPI_ID', timedelta(days=1))
-        if not resources_id:
-            return list()
+    result = list(filter(None, redis.hmget(h_map, codes)))
+    if result:
+        resources_id = '|'.join(map(lambda x: x.decode(), result))
     else:
-        result = list(filter(None, redis.hmget('{Project=' + str(project_id) + '}ADE_WEBAPI_ID', codes)))
-        if result:
-            resources_id = '|'.join(map(lambda x: x.decode(), result))
-        else:
-            return list()
+        return list()
+
+    # We get the classrooms
+    h_map = '{Project=%d}CLASSROOMS' % project_id
+    if not redis or not redis.exists(h_map):
+        from background_job import update_classrooms
+        update_classrooms()
 
     # We get the events
-    r = requests.get(url + 'getActivities&tree=false&detail=17&resources=' + resources_id, headers=headers)
-    root = etree.fromstring(r.content)
+    root = ade_request(redis, 'projectId=%d' % project_id,
+                       'function=getActivities', 'tree=false',
+                       'detail=17', 'resources=' + resources_id)
 
     for activity in root.xpath('//activity'):
         activity_id = activity.attrib['name']
@@ -122,7 +120,41 @@ def get_courses_from_ade(codes, project_id, redis=None, is_local=False):
             event_date = event.attrib['date']
             event_start = event.attrib['startHour']
             event_end = event.attrib['endHour']
-            event_classroom = ' '.join(event.xpath('.//eventParticipant[@category="classroom"]/@name'))
+            classrooms = event.xpath('.//eventParticipant[@category="classroom"]/@name')
+
+            location = ''
+
+            for classroom in classrooms:
+                infos = redis.hmget(h_map, classroom)
+                if infos is not None:
+                    address = json.loads(infos[0])
+                    location = ''
+                    if address['type'] != '':
+                        location += '\n' + address['type']
+                    if address['size'] != '':
+                        if location == '':
+                            location += '\nTaille :' + address['size']
+                        else:
+                            location += ', taille :' + address['size']
+                    if address['address_2'] != '':
+                        location += '\n' + address['address_2']
+                    if address['address_1'] != '':
+                        if location != '' and ['address_2'] != '':
+                            location += ' ' + address['address_1']
+                        else:
+                            location += '\n' + address['address_1']
+                    if address['zipCode'] != '':
+                        location += '\n' + address['zipCode']
+                    if address['city'] != '':
+                        if location != '' and address['zipCode'] != '':
+                            location += ' ' + address['city']
+                        else:
+                            location += '\n' + address['city']
+                    if address['country'] != '':
+                        location += '\n' + address['country']
+                    break
+
+            event_classroom = ' '.join(classrooms) + location
             event_instructor = ' '.join(event.xpath('.//eventParticipant[@category="instructor"]/@name'))
 
             # Check if the event is taking place in the requested local
