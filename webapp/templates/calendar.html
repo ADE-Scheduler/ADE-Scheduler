@@ -174,7 +174,7 @@
                         </div>
                     </div>
                     <div style="margin-top: 20px">
-                        <div class="collapse show" id="info-fts" >
+                        <div class="collapse" id="info-fts" >
                             <div style="display: flex; justify-content: space-between; flex-direction: row;">
                                 <div>
                                     <label for="begin_repeat"><strong>{{ _('Start of repetition') }}</strong></label>
@@ -201,7 +201,7 @@
                             </div>
                         </div>
                         <div class="custom-control custom-switch" style="margin-top: 10px">
-                            <input type="checkbox" class="custom-control-input" id="switch-fts" data-toggle="collapse" data-target="#info-fts" checked>
+                            <input type="checkbox" class="custom-control-input" id="switch-fts" data-toggle="collapse" data-target="#info-fts">
                             <label class="custom-control-label" for="switch-fts">{{ _('Repeat this forbidden time slot') }}</label>
                         </div>
                     </div>
@@ -1153,6 +1153,10 @@
                                 let endRecur = new Date($('#fts-end-recur').val());
                                 endRecur.setHours(parseInt(startTime.split(':')[0]));
                                 endRecur.setMinutes(parseInt(startTime.split(':')[1]));
+
+                                if (isNaN(startRecur) || isNaN(endRecur)) {
+                                    throw new RangeError('Invalid date format');
+                                }
 
                                 let dayOfWeek = dateStart.getDay();
                                 while (startRecur.getTime() <= endRecur.getTime()) {
