@@ -8,7 +8,6 @@ from redis import Redis
 from pickle import dumps, loads
 from datetime import timedelta
 from collections import Counter
-import json
 
 
 def ade_request(redis, *args):
@@ -126,31 +125,7 @@ def get_courses_from_ade(codes, project_id, redis=None, is_local=False):
             for classroom in classrooms:
                 infos = redis.hmget(h_map, classroom)
                 if infos[0] is not None:
-                    address = json.loads(infos[0])
-                    location = ''
-                    if address['type'] != '':
-                        location += '\n' + address['type']
-                    if address['size'] != '':
-                        if location == '':
-                            location += '\nTaille :' + address['size']
-                        else:
-                            location += ', taille :' + address['size']
-                    if address['address_2'] != '':
-                        location += '\n' + address['address_2']
-                    if address['address_1'] != '':
-                        if location != '' and ['address_2'] != '':
-                            location += ' ' + address['address_1']
-                        else:
-                            location += '\n' + address['address_1']
-                    if address['zipCode'] != '':
-                        location += '\n' + address['zipCode']
-                    if address['city'] != '':
-                        if location != '' and address['zipCode'] != '':
-                            location += ' ' + address['city']
-                        else:
-                            location += '\n' + address['city']
-                    if address['country'] != '':
-                        location += '\n' + address['country']
+                    location = infos[0].decode()
                     break
 
             event_classroom = ' '.join(classrooms)
