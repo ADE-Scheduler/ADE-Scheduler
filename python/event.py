@@ -62,11 +62,11 @@ def extract_type(ctype: str, cid: str):
 
 def extract_datetime(date, start, end):
     """
-    # TODO
-    :param date:
-    :param start:
-    :param end:
-    :return:
+    Parses info to return the start and end time of an event
+    :param date: str
+    :param start: str
+    :param end: str
+    :return: datetime object
     """
     t0 = datetime.strptime(date + '-' + start, '%d/%m/%Y-%H:%M').astimezone(tz)
     t1 = datetime.strptime(date + '-' + end, '%d/%m/%Y-%H:%M').astimezone(tz)
@@ -96,22 +96,23 @@ def event_prefix(event_type):
 
 def json_from_events(events):
     """
-    # TODO
-    :param events:
-    :return:
+    Converts the events into a json-like format
+    :param events: list of CustomEvents
+    :return: list of dict
     """
-    return [{'start': str(event.begin), 'end': str(event.end), 'title': event.id + '\n' + event.location, 'editable':
+    return [{'start': str(event.begin), 'end': str(event.end), 'title': event.id + '\n' + event.classroom, 'editable':
             False, 'code': event.code, 'description': event.name + '\n' + event.location + ' - ' + str(event.duration)
             + '\n' + str(event.description)} for event in events]
 
 
 # Event classes (subclasses of ics.Event)
 class CustomEvent(Event):
-    def __init__(self, name, begin, end, descr, loc, id=None, weight=5, code=None):
+    def __init__(self, name, begin, end, descr, loc, classroom=None, id=None, weight=5, code=None):
         super().__init__(name=name, begin=begin, end=end, description=descr, location=loc)
         self.weight = weight
         self.id = id
         self.code = code
+        self.classroom = classroom
 
     def __eq__(self, other):
         if isinstance(other, CustomEvent):
@@ -138,7 +139,7 @@ class CustomEvent(Event):
         self.weight = weight
 
     def json(self):
-        return {'start': str(self.begin), 'end': str(self.end), 'title': self.id + '\n' + self.location,
+        return {'start': str(self.begin), 'end': str(self.end), 'title': self.id + '\n' + self.classroom,
                 'editable': False, 'description': self.name + '\n' + self.location + ' - ' +
                 str(self.duration) + '\n' + str(self.description), 'code': self.code}
 
@@ -160,40 +161,40 @@ class CustomEvent(Event):
 
 
 class EventCM(CustomEvent):
-    def __init__(self, begin, end, code, name, professor, loc, id=None, weight=5):
+    def __init__(self, begin, end, code, name, professor, loc, classroom=None, id=None, weight=5):
         name = 'CM: ' + code + ' - ' + name
         id = 'CM:' + id
-        super().__init__(name=name, begin=begin, end=end, descr=str(professor), loc=loc, id=id, weight=weight,
-                         code=code)
+        super().__init__(name=name, begin=begin, end=end, descr=str(professor), loc=loc, classroom=classroom, id=id,
+                         weight=weight, code=code)
 
 
 class EventTP(CustomEvent):
-    def __init__(self, begin, end, code, name, professor, loc, id=None, weight=5):
+    def __init__(self, begin, end, code, name, professor, loc, classroom=None, id=None, weight=5):
         name = 'TP: ' + code + ' - ' + name
         id = 'TP:' + id
-        super().__init__(name=name, begin=begin, end=end, descr=str(professor), loc=loc, id=id, weight=weight,
-                         code=code)
+        super().__init__(name=name, begin=begin, end=end, descr=str(professor), loc=loc, classroom=classroom, id=id,
+                         weight=weight, code=code)
 
 
 class EventEXAM(CustomEvent):
-    def __init__(self, begin, end, code, name, professor, loc, id=None, weight=5):
+    def __init__(self, begin, end, code, name, professor, loc, classroom=None, id=None, weight=5):
         name = 'EXAM: ' + code + ' - ' + name
         id = 'EXAM:' + id
-        super().__init__(name=name, begin=begin, end=end, descr=str(professor), loc=loc, id=id, weight=weight,
-                         code=code)
+        super().__init__(name=name, begin=begin, end=end, descr=str(professor), loc=loc, classroom=classroom, id=id,
+                         weight=weight, code=code)
 
 
 class EventORAL(CustomEvent):
-    def __init__(self, begin, end, code, name, professor, loc, id=None, weight=5):
+    def __init__(self, begin, end, code, name, professor, loc, classroom=None, id=None, weight=5):
         name = 'ORAL: ' + code + ' - ' + name
         id = 'ORAL:' + id
-        super().__init__(name=name, begin=begin, end=end, descr=str(professor), loc=loc, id=id, weight=weight,
-                         code=code)
+        super().__init__(name=name, begin=begin, end=end, descr=str(professor), loc=loc, classroom=classroom, id=id,
+                         weight=weight, code=code)
 
 
 class EventOTHER(CustomEvent):
-    def __init__(self, begin, end, code, name, professor, loc, id=None, weight=5):
+    def __init__(self, begin, end, code, name, professor, loc, classroom=None, id=None, weight=5):
         name = 'Other: ' + code + ' - ' + name
         id = 'Other:' + id
-        super().__init__(name=name, begin=begin, end=end, descr=str(professor), loc=loc, id=id, weight=weight,
-                         code=code)
+        super().__init__(name=name, begin=begin, end=end, descr=str(professor), loc=loc, classroom=classroom, id=id,
+                         weight=weight, code=code)

@@ -25,6 +25,7 @@ def ade_request(redis, *args):
     r = requests.get(url=url, headers=headers)
     return etree.fromstring(r.content)
 
+
 def get_courses_from_codes(codes, project_id=9):
     """
     Fetches course schedule from Redis' course cache
@@ -121,12 +122,10 @@ def get_courses_from_ade(codes, project_id, redis=None, is_local=False):
             event_start = event.attrib['startHour']
             event_end = event.attrib['endHour']
             classrooms = event.xpath('.//eventParticipant[@category="classroom"]/@name')
-
             location = ''
-
             for classroom in classrooms:
                 infos = redis.hmget(h_map, classroom)
-                if infos is not None:
+                if infos[0] is not None:
                     address = json.loads(infos[0])
                     location = ''
                     if address['type'] != '':
@@ -154,7 +153,8 @@ def get_courses_from_ade(codes, project_id, redis=None, is_local=False):
                         location += '\n' + address['country']
                     break
 
-            event_classroom = ' '.join(classrooms) + location
+            event_classroom = ' '.join(classrooms)
+            event_address = event_classroom + location
             event_instructor = ' '.join(event.xpath('.//eventParticipant[@category="instructor"]/@name'))
 
             # Check if the event is taking place in the requested local
@@ -163,8 +163,8 @@ def get_courses_from_ade(codes, project_id, redis=None, is_local=False):
 
             # We create the event
             t0, t1 = extract_datetime(event_date, event_start, event_end)
-            event = event_type(t0, t1, activity_code, activity_name, Professor(event_instructor, ''), event_classroom,
-                               id=activity_id)
+            event = event_type(t0, t1, activity_code, activity_name, Professor(event_instructor, ''), event_address,
+                               classroom=event_classroom, id=activity_id)
             events_list.append(event)
 
         if activity_code not in courses and events_list:
