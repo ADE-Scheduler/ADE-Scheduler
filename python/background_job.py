@@ -43,6 +43,34 @@ def update_classrooms():
     if not redis.exists('ADE_PROJECTS'):
         update_projects()
 
+    def __location__(address):
+        location = ''
+        if address['type'] != '':
+            location += address['type']
+        if address['size'] != '':
+            if location == '':
+                location += 'Taille :' + address['size']
+            else:
+                location += ', taille :' + address['size']
+        if address['address_2'] != '':
+            location += '\n' + address['address_2']
+        if address['address_1'] != '':
+            if location != '' and ['address_2'] != '':
+                location += ' ' + address['address_1']
+            else:
+                location += '\n' + address['address_1']
+        if address['zipCode'] != '':
+            location += '\n' + address['zipCode']
+        if address['city'] != '':
+            if location != '' and address['zipCode'] != '':
+                location += ' ' + address['city']
+            else:
+                location += '\n' + address['city']
+        if address['country'] != '':
+            location += '\n' + address['country']
+
+        return location
+
     for project_id in map(lambda x: x['id'], json.loads(redis.get('ADE_PROJECTS'))):
         h_map = '{Project=%d}ADE_WEBAPI_ID' % project_id
         if not redis.exists(h_map):
@@ -66,7 +94,7 @@ def update_classrooms():
         df = DataFrame(data=d, dtype=str)
         df.drop_duplicates('name', inplace=True)
         df.set_index('name', inplace=True)
-        hash_table = {key: json.dumps(values) for key, values in df.to_dict('index').items()}
+        hash_table = {key: __location__(values) for key, values in df.to_dict('index').items()}
         h_map = '{Project=%d}CLASSROOMS' % project_id
 
         redis.hmset(h_map, hash_table)
