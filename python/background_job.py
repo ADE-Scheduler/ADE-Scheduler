@@ -4,6 +4,7 @@
 # schedule a job using the cron command on the server.
 
 import json
+import pickle
 from datetime import timedelta
 from redis import Redis
 from pandas import DataFrame
@@ -80,6 +81,7 @@ def update_classrooms():
                            'detail=13', 'tree=false', 'category=classroom')
 
         names = root.xpath('//room/@name')
+        codes = root.xpath('//room/@code')
         types = root.xpath('//room/@type')
         sizes = root.xpath('//room/@size')
         zip_codes = root.xpath('//room/@zipCode')
@@ -88,11 +90,17 @@ def update_classrooms():
         addresses_2 = root.xpath('//room/@address2')
         cities = root.xpath('//room/@city')
 
-        d = {'name': names, 'type': types, 'size': sizes, 'zipCode': zip_codes,
+        d = {'name': names, 'code': codes, 'type': types, 'size': sizes, 'zipCode': zip_codes,
              'country': countries, 'address_1': addresses_1, 'address_2': addresses_2, 'city': cities}
 
         df = DataFrame(data=d, dtype=str)
         df.drop_duplicates('name', inplace=True)
+        df.sort_values('name', inplace=True)
+        df.reset_index(inplace=True, drop=True)
+
+        h_map = '{Project=%d}ADDRESSES' % project_id
+        redis.setex(h_map, timedelta(days=1), value=pickle.dumps(df))
+
         df.set_index('name', inplace=True)
         hash_table = {key: __location__(values) for key, values in df.to_dict('index').items()}
         h_map = '{Project=%d}CLASSROOMS' % project_id
