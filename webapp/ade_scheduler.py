@@ -4,6 +4,7 @@ from flask_babel import Babel, _
 from flask_session import Session
 from hidden import secret_key
 from datetime import timedelta
+import pickle, json
 
 import library
 import encrypt
@@ -66,7 +67,7 @@ def calendar():
             code = request.form['course_code'].upper()
             add_courses(code)
             g.track_var['optional'] = code
-        
+
         if request.form['submit'] == 'Settings':
             # SAVE PREFERENCES
             if request.form.getlist('safe-compute'):
@@ -125,7 +126,7 @@ def getIDs():
 # To download the calendar's .ics file
 @app.route('/download/schedule/<choice>', methods=['POST'])
 def download(choice):
-    _cal = download_calendar(int(choice)-1)
+    _cal = download_calendar(int(choice) - 1)
     resp = make_response(_cal)
     resp.mimetype = 'text/calendar'
     resp.headers["Content-Disposition"] = "attachment; filename=calendar.ics"
@@ -144,11 +145,12 @@ def getCalendar(link):
             if database.is_username_present(username):
                 return _('This username already exists. Please choose another one.'), 400
             link = encrypt.generate_link(username, request.form['password'])
-            library.save_settings(link, session, choice=int(request.form['param']) - 1, username=username, check=request.form['check'])
+            library.save_settings(link, session, choice=int(request.form['param']) - 1, username=username,
+                                  check=request.form['check'])
             return link
         else:
             # RANDOM URL
-            library.save_settings(link, session, choice=int(request.form['param'])-1)
+            library.save_settings(link, session, choice=int(request.form['param']) - 1)
             return link
 
     if request.method == 'GET':
@@ -212,6 +214,27 @@ def help_guide():
     if not session.get('init'):
         init()
     return render_template('help.html', **session['basic_context'])
+
+
+@app.route('/search_address', methods=['POST'])
+def search_address():
+    data = pickle.loads(redis.get('{Project=9}ADDRESSES'))
+    label = request.form['label']
+    text = request.form['text']
+    data.dropna(subset=[label], inplace=True)
+    data = data[data[label].str.contains(text, case=False, regex=False)]
+    df = data.fillna('')
+
+    return render_template('map.html', **session['basic_context'], tables=[df.to_html(classes='table',
+                                                                                      index=False,
+                                                                                      index_names=False)])
+
+
+@app.route('/map')
+def location_map():
+    if not session.get('init'):
+        init()
+    return render_template('map.html', **session['basic_context'])
 
 
 # ERROR HANDLER

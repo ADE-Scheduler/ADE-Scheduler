@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block head %}
+{% endblock %}
+
+
+{% block body %}
+    <div style="flex-direction: column; flex: 1">
+       <div class="form-group" style="margin-bottom: -5px">
+            <form class="form-horizontal" action="/search_address" method="post">
+                <label class="control-label"><strong>Recherche parmis</strong></label>
+                <div class="input-group mb-3">
+                    <select name="label">
+                        <option value="name">Nom</option>
+                        <option value="code">Code</option>
+                        <option value="country">Pays</option>
+                    </select>
+                    <input type="text" id='text-value' class="form-control" name="text" placeholder="search_map">
+                    <div class="input-group-append">
+                        <button class="btn btn-secondary" type="submit" style="width: 100%;" name="submit" value="search_address"><strong>Rechercher</strong></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        {% for table in tables %}
+            {{ table|safe }}
+        {% endfor %}
+    </div>
+{% endblock %}
+
+
+{% block js %}
+{% endblock %}
