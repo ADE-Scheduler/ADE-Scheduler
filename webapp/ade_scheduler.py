@@ -224,12 +224,7 @@ def search_address():
         update_classrooms()
 
     data = pickle.loads(redis.get('{Project=9}ADDRESSES'))
-    label = 'name'
-    text = ''
-    data.dropna(subset=[label], inplace=True)
-    data = data[data[label].str.contains(text, case=False, regex=False)]
     df = data.fillna('')
-
     return render_template('map.html', **session['basic_context'], tables=df.to_dict(orient='index'))
 
 
@@ -241,11 +236,11 @@ def location_map():
         update_classrooms()
 
     text = request.form['text']
-    label = 'name'
 
     data = pickle.loads(redis.get('{Project=9}ADDRESSES'))
-    data.dropna(subset=[label], inplace=True)
-    data = data[data[label].str.contains(text, case=False, regex=False)]
+    data.dropna(subset=['name', 'code'], inplace=True)
+    data = data[data['name'].str.contains(text, case=False, regex=False) | data['code'].str.contains(text, case=False,
+                                                                                                     regex=False)]
     df = data.fillna('')
 
     return df.to_dict(orient='index')

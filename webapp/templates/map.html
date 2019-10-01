@@ -6,36 +6,35 @@
 
 {% block body %}
     <div style="flex-direction: column; flex: 1">
-        <div class="form-group" style="margin-bottom: -5px">
-            <form class="form-horizontal" action="/search_address" method="post">
-                <label class="control-label"><strong>Recherche parmis</strong></label>
-                <div class="input-group mb-3">
-                    <select name="label">
-                        <option value="name">Nom</option>
-                        <option value="code">Code</option>
-                        <option value="country">Pays</option>
-                    </select>
-                    <input type="text" id='search-local-input' class="form-control" name="text" placeholder="search_map">
-                    <div class="input-group-append">
-                        <button class="btn btn-secondary" type="submit" style="width: 100%;" name="submit" value="search_address"><strong>Rechercher</strong></button>
-                    </div>
-                </div>
-            </form>
-        </div>
+        <input class="form-control mr-sm-2" type="text" id="search-local-input" placeholder="Search">
+{#        <div class="form-group" style="margin-bottom: -5px">#}
+{#            <label class="control-label"><strong>Recherche parmis</strong></label>#}
+{#            <div class="input-group mb-3">#}
+{#                <select name="label">#}
+{#                    <option value="name">Nom</option>#}
+{#                    <option value="code">Code</option>#}
+{#                    <option value="country">Pays</option>#}
+{#                </select>#}
+{#                <input type="text" id='search-local-input' class="form-control" name="text" placeholder="search_map">#}
+{#                <div class="input-group-append">#}
+{#                    <button class="btn btn-secondary" type="submit" style="width: 100%;" name="submit" value="search_address"><strong>Rechercher</strong></button>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
 
         <table class="table">
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Name</th>
+                    <th scope="col">{{ _('Name') }}</th>
                     <th scope="col">Code</th>
                     <th scope="col">Type</th>
-                    <th scope="col">Size</th>
-                    <th scope="col">Zip Code</th>
-                    <th scope="col">Country</th>
-                    <th scope="col">Adress 1</th>
-                    <th scope="col">Adress 2</th>
-                    <th scope="col">Ville</th>
+                    <th scope="col">{{ _('Size') }}</th>
+                    <th scope="col">{{ _('Zip Code') }}</th>
+                    <th scope="col">{{ _('Country') }}</th>
+                    <th scope="col">{{ _('Address 1') }}</th>
+                    <th scope="col">{{ _('Address 2') }}</th>
+                    <th scope="col">{{ _('City') }}</th>
                 </tr>
             </thead>
 
@@ -58,8 +57,20 @@
 
         function setUpBody(rooms) {
             Object.keys(rooms).forEach(function(row) {
-                let code = '<tr> <th scope="row">' + row + '</th> <td>' + rooms[row]['name'] + '</td> <td>' + rooms[row]['code'] + '</td> <td>' + rooms[row]['type'] + '</td> <td>' + rooms[row]['size'] + '</td> <td>' + rooms[row]['zipCode'] + '</td> <td>' + rooms[row]['country'] + '</td> <td>' + rooms[row]['address_1'] + '</td> <td>' + rooms[row]['address_2'] + '</td> <td>' + rooms[row]['city'] + '</td> </tr>';
-                $('#local-addr-body').append(code);
+                let html = `
+                    <tr>
+                        <th scope="row">` + row + `</th>
+                        <td>` + rooms[row]['name'] + `</td>
+                        <td>` + rooms[row]['code'] + `</td>
+                        <td>` + rooms[row]['type'] + `</td>
+                        <td>` + rooms[row]['size'] + `</td>
+                        <td>` + rooms[row]['zipCode'] + `</td>
+                        <td>` + rooms[row]['country'] + `</td>
+                        <td>` + rooms[row]['address_1'] + `</td>
+                        <td>` + rooms[row]['address_2'] + `</td>
+                        <td>` + rooms[row]['city'] + `</td>
+                    </tr>`;
+                $('#local-addr-body').append(html);
             });
         }
 
@@ -70,9 +81,7 @@
                 data: {'text': $('#search-local-input').val()},
                 success: function (data) {
                     $('#local-addr-body').empty();
-                    console.log('Processing...');
                     setUpBody(data);
-                    console.log('Done !')
                 },
             });
         })
