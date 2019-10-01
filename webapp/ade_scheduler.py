@@ -216,30 +216,46 @@ def help_guide():
     return render_template('help.html', **session['basic_context'])
 
 
-@app.route('/search_address', methods=['POST'])
+@app.route('/map')
 def search_address():
+    if not session.get('init'):
+        init()
+    if not redis.exists('{Project=9}ADDRESSES'):
+        update_classrooms()
+
     data = pickle.loads(redis.get('{Project=9}ADDRESSES'))
-    label = request.form['label']
-    text = request.form['text']
+    label = 'name'
+    text = ''
     data.dropna(subset=[label], inplace=True)
     data = data[data[label].str.contains(text, case=False, regex=False)]
     df = data.fillna('')
 
-    return render_template('map.html', **session['basic_context'], tables=[df.to_html(classes='table',
-                                                                                      index=False,
-                                                                                      index_names=False)])
+    return render_template('map.html', **session['basic_context'], tables=df.to_dict(orient='index'))
 
 
-@app.route('/map')
+@app.route('/search_address', methods=['POST'])
 def location_map():
     if not session.get('init'):
         init()
-    return render_template('map.html', **session['basic_context'])
+    if not redis.exists('{Project=9}ADDRESSES'):
+        update_classrooms()
+
+    text = request.form['text']
+    label = 'name'
+
+    data = pickle.loads(redis.get('{Project=9}ADDRESSES'))
+    data.dropna(subset=[label], inplace=True)
+    data = data[data[label].str.contains(text, case=False, regex=False)]
+    df = data.fillna('')
+
+    return df.to_dict(orient='index')
 
 
 # ERROR HANDLER
 @app.errorhandler(404)
 def page_not_found(e):
+    if not session.get('init'):
+        init()
     return render_template('404.html', **session['basic_context']), 404
 
 
