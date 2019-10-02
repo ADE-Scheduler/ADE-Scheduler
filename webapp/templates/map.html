@@ -1,28 +1,49 @@
 {% extends 'base.html' %}
 
 {% block head %}
+    <link href='/static/fullcalendar/core/main.css' rel='stylesheet'/>
+    <link href='/static/fullcalendar/daygrid/main.css' rel='stylesheet' />
+    <link href='/static/fullcalendar/timegrid/main.css' rel='stylesheet' />
+    <link href='/static/fullcalendar/list/main.css' rel='stylesheet' />
+
+    <style>
+        .modal-lg {
+            max-width: 80%;
+        }
+        .fc-today { background: #e2e2e2 !important; }
+    </style>
 {% endblock %}
 
 
 {% block body %}
-    <div style="flex-direction: column; flex: 1">
-        <input class="form-control mr-sm-2" type="text" id="search-local-input" placeholder="Search">
-{#        <div class="form-group" style="margin-bottom: -5px">#}
-{#            <label class="control-label"><strong>Recherche parmis</strong></label>#}
-{#            <div class="input-group mb-3">#}
-{#                <select name="label">#}
-{#                    <option value="name">Nom</option>#}
-{#                    <option value="code">Code</option>#}
-{#                    <option value="country">Pays</option>#}
-{#                </select>#}
-{#                <input type="text" id='search-local-input' class="form-control" name="text" placeholder="search_map">#}
-{#                <div class="input-group-append">#}
-{#                    <button class="btn btn-secondary" type="submit" style="width: 100%;" name="submit" value="search_address"><strong>Rechercher</strong></button>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
+    <!-- TIME PROMPT (modal) -->
+    <div class="modal fade" id="modal-classroom-location" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ _('Classroom occupation') }}</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id='calendar' style="min-height: 100px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        <table class="table">
+
+    <div style="flex-direction: column; flex: 1">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text">
+                    <i class="fas fa-search"></i>
+                </span>
+            </div>
+            <input class="form-control" type="text" id="search-local-input" placeholder={{ _('Search') }}>
+        </div>
+        <table class="table table-striped">
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">#</th>
@@ -37,9 +58,7 @@
                     <th scope="col">{{ _('City') }}</th>
                 </tr>
             </thead>
-
             <tbody id="local-addr-body">
-
             </tbody>
         </table>
     </div>
@@ -47,9 +66,6 @@
 
 
 {% block js %}
-
-
-
     <script>
         window.onload = function() {
             setUpBody({{ tables|safe }})
@@ -59,7 +75,12 @@
             Object.keys(rooms).forEach(function(row) {
                 let html = `
                     <tr>
-                        <th scope="row">` + row + `</th>
+                        <th scope="row">
+                            <div class="btn-group">
+                                <button class="btn btn-outline-dark" style="padding-top: 0px; padding-bottom: 0px;" name="` + rooms[row]['name'] + `" onclick=displayOccupationButton(this.name);><i class="fas fa-calendar-alt" /></button>
+                                <button class="btn btn-outline-dark" style="padding-top: 0px; padding-bottom: 0px;"><i class="fas fa-map-marked-alt" /></button>
+                            </div>
+                        </th>
                         <td>` + rooms[row]['name'] + `</td>
                         <td>` + rooms[row]['code'] + `</td>
                         <td>` + rooms[row]['type'] + `</td>
@@ -85,5 +106,82 @@
                 },
             });
         })
+    </script>
+
+    <script>
+        function displayOccupationButton(classroom) {
+            $.ajax({
+                type: "POST",
+                url: '/get_classroom_occupation',
+                data: {'classroom': classroom},
+                success: function (data) {
+                    eventsArray = JSON.parse(data);
+                    calendar.refetchEvents();
+                    $('#modal-classroom-location').modal();
+                },
+            });
+        }
+    </script>
+
+    <script src='/static/fullcalendar/core/main.js'></script>
+    <script src='/static/fullcalendar/interaction/main.js'></script>
+    <script src='/static/fullcalendar/daygrid/main.js'></script>
+    <script src='/static/fullcalendar/list/main.js'></script>
+    <script src='/static/fullcalendar/timegrid/main.js'></script>
+    <script src='/static/fullcalendar/bootstrap/main.js'></script>
+    <script src='/static/fullcalendar/core/locales/fr.js'></script>
+    <script>
+        var calendar;
+        var eventsArray = [];
+
+        // FullCalendar initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize the calendar
+            let calendarEl = document.getElementById('calendar');
+            calendar = new FullCalendar.Calendar(calendarEl, {
+                plugins: ['interaction', 'dayGrid', 'list', 'timeGrid', 'bootstrap'],
+                themeSystem: 'bootstrap',
+                height: 'auto',
+                width: 'parent',
+                header: {
+                    left: 'prev,next, today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,listWeek'
+                },
+                minTime: '08:00:00',
+                maxTime: '21:00:00',
+                navLinks: true, // can click day/week names to navigate views
+                editable: true,
+                droppable: true,
+                eventLimit: false, // allow "more" link when too many events
+                weekNumberCalculation: 'ISO',
+
+                // Language selection
+                locale: {{ locale|tojson }},
+
+                // Remember where the user left the calendar
+                defaultView: (localStorage.getItem("mapFcDefaultView") !== null ? localStorage.getItem("fcDefaultView") : 'dayGridWeek'),
+                defaultDate: (localStorage.getItem("mapFcDefaultDate") !== null ? parseInt(localStorage.getItem("fcDefaultDate")) : Date.now()),
+                datesRender: function (arg) {
+                    localStorage.setItem("mapFcDefaultView", arg.view.type);
+                    localStorage.setItem("mapFcDefaultDate", arg.view.currentStart.getTime());
+                },
+
+                events: function (fetchInfo, successCallback, failureCallback) {
+
+                    let gradient = {{ gradient|tojson }};
+                    for (let i = 0, j = 0; i < eventsArray.length; i++, j++) {
+                        if (j === gradient.length)
+                            j = 0;
+                        eventsArray[i].backgroundColor = gradient[j];
+                        eventsArray[i].borderColor = gradient[j];
+                    }
+
+                    successCallback(eventsArray);
+                },
+                eventTextColor: 'white'
+            });
+            calendar.render();
+        });
     </script>
 {% endblock %}
