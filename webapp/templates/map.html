@@ -72,23 +72,44 @@
 
         function setUpBody(rooms) {
             Object.keys(rooms).forEach(function(row) {
-                let html = `
-                    <tr>
-                        <th scope="row">
-                            <div class="btn-group">
-                                <button class="btn btn-outline-dark" style="padding-top: 0px; padding-bottom: 0px;" name="` + rooms[row]['name'] + `" onclick=displayOccupationButton(this.name);><i class="fas fa-calendar-alt" /></button>
-                                <button class="btn btn-outline-dark" style="padding-top: 0px; padding-bottom: 0px;" name="` + rooms[row]['name'] + `" onclick=openMapsButton(this.name);><i class="fas fa-map-marked-alt" /></button>
-                            </div>
-                        </th>
-                        <td>` + rooms[row]['name'] + `</td>
-                        <td>` + rooms[row]['code'] + `</td>
-                        <td>` + rooms[row]['type'] + `</td>
-                        <td>` + rooms[row]['size'] + `</td>
-                        <td>` + rooms[row]['zipCode'] + `</td>
-                        <td>` + rooms[row]['country'] + `</td>
-                        <td>` + rooms[row]['address_1'] + `</td>
-                        <td>` + rooms[row]['city'] + `</td>
-                    </tr>`;
+                let html;
+                if (rooms[row]['zipCode'] === '' || rooms[row]['address_1'] === '') {
+                    html = `
+                        <tr>
+                            <th scope="row">
+                                <div class="btn-group">
+                                    <button class="btn btn-outline-dark" style="padding-top: 0px; padding-bottom: 0px;" name="` + rooms[row]['name'] + `" onclick=displayOccupationButton(this.name);><i class="fas fa-calendar-alt"></i></button>
+                                    <button class="btn btn-outline-dark" style="padding-top: 0px; padding-bottom: 0px;" disabled><i class="fas fa-map-marked-alt"></i></button>
+                                </div>
+                            </th>
+                            <td>` + rooms[row]['name'] + `</td>
+                            <td>` + rooms[row]['code'] + `</td>
+                            <td>` + rooms[row]['type'] + `</td>
+                            <td>` + rooms[row]['size'] + `</td>
+                            <td>` + rooms[row]['zipCode'] + `</td>
+                            <td>` + rooms[row]['country'] + `</td>
+                            <td>` + rooms[row]['address_1'] + `</td>
+                            <td>` + rooms[row]['city'] + `</td>
+                        </tr>`;
+                } else {
+                    html = `
+                        <tr>
+                            <th scope="row">
+                                <div class="btn-group">
+                                    <button class="btn btn-outline-dark" style="padding-top: 0px; padding-bottom: 0px;" name="` + rooms[row]['name'] + `" onclick=displayOccupationButton(this.name);><i class="fas fa-calendar-alt" /></button>
+                                    <button class="btn btn-outline-dark" style="padding-top: 0px; padding-bottom: 0px;" name="` + rooms[row]['name'] + `" onclick=openMapsButton(this.name);><i class="fas fa-map-marked-alt" /></button>
+                                </div>
+                            </th>
+                            <td>` + rooms[row]['name'] + `</td>
+                            <td>` + rooms[row]['code'] + `</td>
+                            <td>` + rooms[row]['type'] + `</td>
+                            <td>` + rooms[row]['size'] + `</td>
+                            <td>` + rooms[row]['zipCode'] + `</td>
+                            <td>` + rooms[row]['country'] + `</td>
+                            <td>` + rooms[row]['address_1'] + `</td>
+                            <td>` + rooms[row]['city'] + `</td>
+                        </tr>`;
+                }
                 $('#local-addr-body').append(html);
             });
         }
@@ -126,9 +147,7 @@
                 url: '/get_address',
                 data: {'classroom': classroom},
                 success: function (data) {
-
                     window.open('https://www.google.com/maps/search/?api=1&query=' + data);
-                    console.log(data);
                 },
             });
         }
