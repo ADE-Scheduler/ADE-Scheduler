@@ -4,6 +4,7 @@ from flask_babel import Babel, _
 from flask_session import Session
 from hidden import secret_key
 from datetime import timedelta
+import pickle, json
 
 import library
 import encrypt
@@ -66,7 +67,7 @@ def calendar():
             code = request.form['course_code'].upper()
             add_courses(code)
             g.track_var['optional'] = code
-        
+
         if request.form['submit'] == 'Settings':
             # SAVE PREFERENCES
             if request.form.getlist('safe-compute'):
@@ -125,7 +126,7 @@ def getIDs():
 # To download the calendar's .ics file
 @app.route('/download/schedule/<choice>', methods=['POST'])
 def download(choice):
-    _cal = download_calendar(int(choice)-1)
+    _cal = download_calendar(int(choice) - 1)
     resp = make_response(_cal)
     resp.mimetype = 'text/calendar'
     resp.headers["Content-Disposition"] = "attachment; filename=calendar.ics"
@@ -144,11 +145,12 @@ def getCalendar(link):
             if database.is_username_present(username):
                 return _('This username already exists. Please choose another one.'), 400
             link = encrypt.generate_link(username, request.form['password'])
-            library.save_settings(link, session, choice=int(request.form['param']) - 1, username=username, check=request.form['check'])
+            library.save_settings(link, session, choice=int(request.form['param']) - 1, username=username,
+                                  check=request.form['check'])
             return link
         else:
             # RANDOM URL
-            library.save_settings(link, session, choice=int(request.form['param'])-1)
+            library.save_settings(link, session, choice=int(request.form['param']) - 1)
             return link
 
     if request.method == 'GET':
@@ -214,9 +216,52 @@ def help_guide():
     return render_template('help.html', **session['basic_context'])
 
 
+@app.route('/map')
+def search_address():
+    if not session.get('init'):
+        init()
+    if not redis.exists('{Project=%d}ADDRESSES' % session['basic_context']['project_id']):
+        update_classrooms()
+
+    data = pickle.loads(redis.get('{Project=%d}ADDRESSES' % session['basic_context']['project_id']))
+    df = data.fillna('')
+    return render_template('map.html', **session['basic_context'], tables=df.to_dict(orient='index'))
+
+
+@app.route('/search_address', methods=['POST'])
+def location_map():
+    text = request.form['text']
+
+    data = pickle.loads(redis.get('{Project=%d}ADDRESSES' % session['basic_context']['project_id']))
+    data.dropna(subset=['name', 'code'], inplace=True)
+    data = data[data['name'].str.contains(text, case=False, regex=False) | data['code'].str.contains(text, case=False,
+                                                                                                     regex=False)]
+    df = data.fillna('')
+
+    return df.to_dict(orient='index')
+
+
+@app.route('/get_classroom_occupation', methods=['POST'])
+def get_occupation():
+    classroom = request.form['classroom'].upper()
+    class_occupation = get_courses_from_codes('LOCAL-'+classroom, project_id=session['basic_context']['project_id'])
+    class_events = extract_events(list(chain.from_iterable(class_occupation.values())))
+
+    return json.dumps(json_from_events(class_events))
+
+
+@app.route('/get_address', methods=['POST'])
+def get_address():
+    classroom = request.form['classroom']
+    address = redis.hmget('{Project=%d}CLASSROOMS' % session['basic_context']['project_id'], classroom)[0].decode()
+    return address.replace(' ', '+').replace('\n', '+').replace(',', '%2C')
+
+
 # ERROR HANDLER
 @app.errorhandler(404)
 def page_not_found(e):
+    if not session.get('init'):
+        init()
     return render_template('404.html', **session['basic_context']), 404
 
 
