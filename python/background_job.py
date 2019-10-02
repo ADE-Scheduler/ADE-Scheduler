@@ -46,15 +46,8 @@ def update_classrooms():
 
     def __location__(address):
         location = ''
-        if address['type'] != '':
-            location += address['type']
-        if address['size'] != '':
-            if location == '':
-                location += 'Taille :' + address['size']
-            else:
-                location += ', taille :' + address['size']
         if address['address_2'] != '':
-            location += '\n' + address['address_2']
+            location += address['address_2']
         if address['address_1'] != '':
             if location != '' and ['address_2'] != '':
                 location += ' ' + address['address_1']
@@ -102,6 +95,7 @@ def update_classrooms():
         redis.setex(h_map, timedelta(days=1), value=pickle.dumps(df))
 
         df.set_index('name', inplace=True)
+        df.fillna('')
         hash_table = {key: __location__(values) for key, values in df.to_dict('index').items()}
         h_map = '{Project=%d}CLASSROOMS' % project_id
 

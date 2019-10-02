@@ -53,8 +53,7 @@
                     <th scope="col">{{ _('Size') }}</th>
                     <th scope="col">{{ _('Zip Code') }}</th>
                     <th scope="col">{{ _('Country') }}</th>
-                    <th scope="col">{{ _('Address 1') }}</th>
-                    <th scope="col">{{ _('Address 2') }}</th>
+                    <th scope="col">{{ _('Address') }}</th>
                     <th scope="col">{{ _('City') }}</th>
                 </tr>
             </thead>
@@ -78,7 +77,7 @@
                         <th scope="row">
                             <div class="btn-group">
                                 <button class="btn btn-outline-dark" style="padding-top: 0px; padding-bottom: 0px;" name="` + rooms[row]['name'] + `" onclick=displayOccupationButton(this.name);><i class="fas fa-calendar-alt" /></button>
-                                <button class="btn btn-outline-dark" style="padding-top: 0px; padding-bottom: 0px;"><i class="fas fa-map-marked-alt" /></button>
+                                <button class="btn btn-outline-dark" style="padding-top: 0px; padding-bottom: 0px;" name="` + rooms[row]['name'] + `" onclick=openMapsButton(this.name);><i class="fas fa-map-marked-alt" /></button>
                             </div>
                         </th>
                         <td>` + rooms[row]['name'] + `</td>
@@ -88,7 +87,6 @@
                         <td>` + rooms[row]['zipCode'] + `</td>
                         <td>` + rooms[row]['country'] + `</td>
                         <td>` + rooms[row]['address_1'] + `</td>
-                        <td>` + rooms[row]['address_2'] + `</td>
                         <td>` + rooms[row]['city'] + `</td>
                     </tr>`;
                 $('#local-addr-body').append(html);
@@ -118,6 +116,19 @@
                     eventsArray = JSON.parse(data);
                     calendar.refetchEvents();
                     $('#modal-classroom-location').modal();
+                },
+            });
+        }
+
+        function openMapsButton(classroom) {
+            $.ajax({
+                type: "POST",
+                url: '/get_address',
+                data: {'classroom': classroom},
+                success: function (data) {
+
+                    window.open('https://www.google.com/maps/search/?api=1&query=' + data);
+                    console.log(data);
                 },
             });
         }

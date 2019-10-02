@@ -250,6 +250,13 @@ def get_occupation():
     return json.dumps(json_from_events(class_events))
 
 
+@app.route('/get_address', methods=['POST'])
+def get_address():
+    classroom = request.form['classroom']
+    address = redis.hmget('{Project=%d}CLASSROOMS' % session['basic_context']['project_id'], classroom)[0].decode()
+    return address.replace(' ', '+').replace('\n', '+').replace(',', '%2C')
+
+
 # ERROR HANDLER
 @app.errorhandler(404)
 def page_not_found(e):
