@@ -37,7 +37,7 @@ def update_resources_ids():
         hash_table = df.groupby(level=0).apply(lambda x: '|'.join(x.to_dict(orient='list')['id'])).to_dict()
         h_map = '{Project=%d}ADE_WEBAPI_ID' % project_id
         redis.hmset(h_map, hash_table)
-        redis.expire(h_map, timedelta(days=1))
+        redis.expire(h_map, timedelta(hours=25))
 
 
 def update_classrooms():
@@ -92,7 +92,7 @@ def update_classrooms():
         df.reset_index(inplace=True, drop=True)
 
         h_map = '{Project=%d}ADDRESSES' % project_id
-        redis.setex(h_map, timedelta(days=1), value=pickle.dumps(df))
+        redis.setex(h_map, timedelta(hours=25), value=pickle.dumps(df))
 
         df.set_index('name', inplace=True)
         df.fillna('')
@@ -100,7 +100,7 @@ def update_classrooms():
         h_map = '{Project=%d}CLASSROOMS' % project_id
 
         redis.hmset(h_map, hash_table)
-        redis.expire(h_map, timedelta(days=1))
+        redis.expire(h_map, timedelta(hours=25))
 
 
 if __name__ == '__main__':
