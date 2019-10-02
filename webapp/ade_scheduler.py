@@ -220,30 +220,34 @@ def help_guide():
 def search_address():
     if not session.get('init'):
         init()
-    if not redis.exists('{Project=9}ADDRESSES'):
+    if not redis.exists('{Project=%d}ADDRESSES' % session['basic_context']['project_id']):
         update_classrooms()
 
-    data = pickle.loads(redis.get('{Project=9}ADDRESSES'))
+    data = pickle.loads(redis.get('{Project=%d}ADDRESSES' % session['basic_context']['project_id']))
     df = data.fillna('')
     return render_template('map.html', **session['basic_context'], tables=df.to_dict(orient='index'))
 
 
 @app.route('/search_address', methods=['POST'])
 def location_map():
-    if not session.get('init'):
-        init()
-    if not redis.exists('{Project=9}ADDRESSES'):
-        update_classrooms()
-
     text = request.form['text']
 
-    data = pickle.loads(redis.get('{Project=9}ADDRESSES'))
+    data = pickle.loads(redis.get('{Project=%d}ADDRESSES' % session['basic_context']['project_id']))
     data.dropna(subset=['name', 'code'], inplace=True)
     data = data[data['name'].str.contains(text, case=False, regex=False) | data['code'].str.contains(text, case=False,
                                                                                                      regex=False)]
     df = data.fillna('')
 
     return df.to_dict(orient='index')
+
+
+@app.route('/get_classroom_occupation', methods=['POST'])
+def get_occupation():
+    classroom = request.form['classroom'].upper()
+    class_occupation = get_courses_from_codes('LOCAL-'+classroom, project_id=session['basic_context']['project_id'])
+    class_events = extract_events(list(chain.from_iterable(class_occupation.values())))
+
+    return json.dumps(json_from_events(class_events))
 
 
 # ERROR HANDLER
