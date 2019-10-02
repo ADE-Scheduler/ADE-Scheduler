@@ -121,3 +121,5 @@ personnal_data.py
 database.db
 hidden.py
 test.py
+
+webapp/templates/map_bis.html

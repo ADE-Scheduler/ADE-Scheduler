@@ -18,7 +18,7 @@ sys.path.insert(0, parentdir + '/python')
 from ade import get_courses_from_codes
 from computation import compute_best, extract_events
 from event import CustomEvent, json_from_events
-from background_job import update_projects
+from background_job import update_projects, update_classrooms
 
 # letters + number only regex
 regex = re.compile('[^A-Z0-9]')

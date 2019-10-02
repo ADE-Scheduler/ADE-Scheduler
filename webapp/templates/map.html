@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <link href='/static/fullcalendar/core/main.css' rel='stylesheet'/>
+    <link href='/static/fullcalendar/daygrid/main.css' rel='stylesheet' />
+    <link href='/static/fullcalendar/timegrid/main.css' rel='stylesheet' />
+    <link href='/static/fullcalendar/list/main.css' rel='stylesheet' />
+
+    <style>
+        .modal-lg {
+            max-width: 80%;
+        }
+        .fc-today { background: #e2e2e2 !important; }
+    </style>
+{% endblock %}
+
+
+{% block body %}
+    <!-- TIME PROMPT (modal) -->
+    <div class="modal fade" id="modal-classroom-location" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ _('Classroom occupation') }}</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id='calendar' style="min-height: 100px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div style="flex-direction: column; flex: 1">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text">
+                    <i class="fas fa-search"></i>
+                </span>
+            </div>
+            <input class="form-control" type="text" id="search-local-input" placeholder={{ _('Search') }}>
+        </div>
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">{{ _('Name') }}</th>
+                    <th scope="col">Code</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">{{ _('Size') }}</th>
+                    <th scope="col">{{ _('Zip Code') }}</th>
+                    <th scope="col">{{ _('Country') }}</th>
+                    <th scope="col">{{ _('Address') }}</th>
+                    <th scope="col">{{ _('City') }}</th>
+                </tr>
+            </thead>
+            <tbody id="local-addr-body">
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+
+{% block js %}
+    <script>
+        window.onload = function() {
+            setUpBody({{ tables|safe }})
+        };
+
+        function setUpBody(rooms) {
+            Object.keys(rooms).forEach(function(row) {
+                let html;
+                if (rooms[row]['zipCode'] === '' || rooms[row]['address_1'] === '') {
+                    html = `
+                        <tr>
+                            <th scope="row">
+                                <div class="btn-group">
+                                    <button class="btn btn-outline-dark" style="padding-top: 0px; padding-bottom: 0px;" name="` + rooms[row]['name'] + `" onclick=displayOccupationButton(this.name);><i class="fas fa-calendar-alt"></i></button>
+                                    <button class="btn btn-outline-dark" style="padding-top: 0px; padding-bottom: 0px;" disabled><i class="fas fa-map-marked-alt"></i></button>
+                                </div>
+                            </th>
+                            <td>` + rooms[row]['name'] + `</td>
+                            <td>` + rooms[row]['code'] + `</td>
+                            <td>` + rooms[row]['type'] + `</td>
+                            <td>` + rooms[row]['size'] + `</td>
+                            <td>` + rooms[row]['zipCode'] + `</td>
+                            <td>` + rooms[row]['country'] + `</td>
+                            <td>` + rooms[row]['address_1'] + `</td>
+                            <td>` + rooms[row]['city'] + `</td>
+                        </tr>`;
+                } else {
+                    html = `
+                        <tr>
+                            <th scope="row">
+                                <div class="btn-group">
+                                    <button class="btn btn-outline-dark" style="padding-top: 0px; padding-bottom: 0px;" name="` + rooms[row]['name'] + `" onclick=displayOccupationButton(this.name);><i class="fas fa-calendar-alt" /></button>
+                                    <button class="btn btn-outline-dark" style="padding-top: 0px; padding-bottom: 0px;" name="` + rooms[row]['name'] + `" onclick=openMapsButton(this.name);><i class="fas fa-map-marked-alt" /></button>
+                                </div>
+                            </th>
+                            <td>` + rooms[row]['name'] + `</td>
+                            <td>` + rooms[row]['code'] + `</td>
+                            <td>` + rooms[row]['type'] + `</td>
+                            <td>` + rooms[row]['size'] + `</td>
+                            <td>` + rooms[row]['zipCode'] + `</td>
+                            <td>` + rooms[row]['country'] + `</td>
+                            <td>` + rooms[row]['address_1'] + `</td>
+                            <td>` + rooms[row]['city'] + `</td>
+                        </tr>`;
+                }
+                $('#local-addr-body').append(html);
+            });
+        }
+
+        $('#search-local-input').on('input', function (e) {
+            $.ajax({
+                type: "POST",
+                url: '/search_address',
+                data: {'text': $('#search-local-input').val()},
+                success: function (data) {
+                    $('#local-addr-body').empty();
+                    setUpBody(data);
+                },
+            });
+        })
+    </script>
+
+    <script>
+        function displayOccupationButton(classroom) {
+            $.ajax({
+                type: "POST",
+                url: '/get_classroom_occupation',
+                data: {'classroom': classroom},
+                success: function (data) {
+                    eventsArray = JSON.parse(data);
+                    calendar.refetchEvents();
+                    $('#modal-classroom-location').modal();
+                },
+            });
+        }
+
+        function openMapsButton(classroom) {
+            $.ajax({
+                type: "POST",
+                url: '/get_address',
+                data: {'classroom': classroom},
+                success: function (data) {
+                    window.open('https://www.google.com/maps/search/?api=1&query=' + data);
+                },
+            });
+        }
+    </script>
+
+    <script src='/static/fullcalendar/core/main.js'></script>
+    <script src='/static/fullcalendar/interaction/main.js'></script>
+    <script src='/static/fullcalendar/daygrid/main.js'></script>
+    <script src='/static/fullcalendar/list/main.js'></script>
+    <script src='/static/fullcalendar/timegrid/main.js'></script>
+    <script src='/static/fullcalendar/bootstrap/main.js'></script>
+    <script src='/static/fullcalendar/core/locales/fr.js'></script>
+    <script>
+        var calendar;
+        var eventsArray = [];
+
+        // FullCalendar initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize the calendar
+            let calendarEl = document.getElementById('calendar');
+            calendar = new FullCalendar.Calendar(calendarEl, {
+                plugins: ['interaction', 'dayGrid', 'list', 'timeGrid', 'bootstrap'],
+                themeSystem: 'bootstrap',
+                height: 'auto',
+                width: 'parent',
+                header: {
+                    left: 'prev,next, today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,listWeek'
+                },
+                minTime: '08:00:00',
+                maxTime: '21:00:00',
+                navLinks: true, // can click day/week names to navigate views
+                editable: true,
+                droppable: true,
+                eventLimit: false, // allow "more" link when too many events
+                weekNumberCalculation: 'ISO',
+
+                // Language selection
+                locale: {{ locale|tojson }},
+
+                // Remember where the user left the calendar
+                defaultView: (localStorage.getItem("mapFcDefaultView") !== null ? localStorage.getItem("fcDefaultView") : 'dayGridWeek'),
+                defaultDate: (localStorage.getItem("mapFcDefaultDate") !== null ? parseInt(localStorage.getItem("fcDefaultDate")) : Date.now()),
+                datesRender: function (arg) {
+                    localStorage.setItem("mapFcDefaultView", arg.view.type);
+                    localStorage.setItem("mapFcDefaultDate", arg.view.currentStart.getTime());
+                },
+
+                events: function (fetchInfo, successCallback, failureCallback) {
+
+                    let gradient = {{ gradient|tojson }};
+                    for (let i = 0, j = 0; i < eventsArray.length; i++, j++) {
+                        if (j === gradient.length)
+                            j = 0;
+                        eventsArray[i].backgroundColor = gradient[j];
+                        eventsArray[i].borderColor = gradient[j];
+                    }
+
+                    successCallback(eventsArray);
+                },
+                eventTextColor: 'white'
+            });
+            calendar.render();
+        });
+    </script>
+{% endblock %}

@@ -4,6 +4,7 @@
 # schedule a job using the cron command on the server.
 
 import json
+import pickle
 from datetime import timedelta
 from redis import Redis
 from pandas import DataFrame
@@ -36,7 +37,7 @@ def update_resources_ids():
         hash_table = df.groupby(level=0).apply(lambda x: '|'.join(x.to_dict(orient='list')['id'])).to_dict()
         h_map = '{Project=%d}ADE_WEBAPI_ID' % project_id
         redis.hmset(h_map, hash_table)
-        redis.expire(h_map, timedelta(days=1))
+        redis.expire(h_map, timedelta(hours=25))
 
 
 def update_classrooms():
@@ -45,15 +46,8 @@ def update_classrooms():
 
     def __location__(address):
         location = ''
-        if address['type'] != '':
-            location += address['type']
-        if address['size'] != '':
-            if location == '':
-                location += 'Taille :' + address['size']
-            else:
-                location += ', taille :' + address['size']
         if address['address_2'] != '':
-            location += '\n' + address['address_2']
+            location += address['address_2']
         if address['address_1'] != '':
             if location != '' and ['address_2'] != '':
                 location += ' ' + address['address_1']
@@ -80,6 +74,7 @@ def update_classrooms():
                            'detail=13', 'tree=false', 'category=classroom')
 
         names = root.xpath('//room/@name')
+        codes = root.xpath('//room/@code')
         types = root.xpath('//room/@type')
         sizes = root.xpath('//room/@size')
         zip_codes = root.xpath('//room/@zipCode')
@@ -88,17 +83,24 @@ def update_classrooms():
         addresses_2 = root.xpath('//room/@address2')
         cities = root.xpath('//room/@city')
 
-        d = {'name': names, 'type': types, 'size': sizes, 'zipCode': zip_codes,
+        d = {'name': names, 'code': codes, 'type': types, 'size': sizes, 'zipCode': zip_codes,
              'country': countries, 'address_1': addresses_1, 'address_2': addresses_2, 'city': cities}
 
         df = DataFrame(data=d, dtype=str)
         df.drop_duplicates('name', inplace=True)
+        df.sort_values('name', inplace=True)
+        df.reset_index(inplace=True, drop=True)
+
+        h_map = '{Project=%d}ADDRESSES' % project_id
+        redis.setex(h_map, timedelta(hours=25), value=pickle.dumps(df))
+
         df.set_index('name', inplace=True)
+        df.fillna('')
         hash_table = {key: __location__(values) for key, values in df.to_dict('index').items()}
         h_map = '{Project=%d}CLASSROOMS' % project_id
 
         redis.hmset(h_map, hash_table)
-        redis.expire(h_map, timedelta(days=1))
+        redis.expire(h_map, timedelta(hours=25))
 
 
 if __name__ == '__main__':
