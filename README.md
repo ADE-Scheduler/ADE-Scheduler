@@ -12,7 +12,7 @@ Nous sommes trois étudiants de l'EPL et entrions tout juste en master 1 quand n
 
 ## Raison d'existence
 
-Face au service très peu intuitif qu'est le service d'horaire [ade](http://horaire.uclouvain.be/direct/) fourni par l'UCLouvain, nous avons décidé de créer cet outil afin de faciliter la création d'horaire via une interface plus esthitique, plus complète et offrant [un panel d'options assez large](##Fonctionnalités).
+Face au service très peu intuitif qu'est le service d'horaire [ade](http://horaire.uclouvain.be/direct/) fourni par l'UCLouvain, nous avons décidé de créer cet outil afin de faciliter la création d'horaire via une interface plus esthitique, plus complète et offrant un panel d'options assez large.
 
 ## Dates importantes
 
