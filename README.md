@@ -37,7 +37,7 @@ Les données sont essentiellement traitées avec du Python pure et des méthodes
 
 Nous utilisons un serveur [redis](https://redis.io) afin de stocker toutes les sessions des utilisateurs mais aussi les résultats des requêtes afin de minimiser l'utilisation d'ADE.
 
-#### Front-end <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1024px-Python-logo-notext.svg.png" alt="python" width="20" height="20"></img> <img src="https://www.w3.org/html/logo/downloads/HTML5_Badge_512.png" alt="html" width="20" height="20"></img> <img src="https://i1.wp.com/www.thekitchencrew.com/wp-content/uploads/2016/03/js-logo.png?fit=500%2C500" alt="js" width="20" height="20"></img>
+### Front-end <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1024px-Python-logo-notext.svg.png" alt="python" width="20" height="20"></img> <img src="https://www.w3.org/html/logo/downloads/HTML5_Badge_512.png" alt="html" width="20" height="20"></img> <img src="https://i1.wp.com/www.thekitchencrew.com/wp-content/uploads/2016/03/js-logo.png?fit=500%2C500" alt="js" width="20" height="20"></img>
 
 L'application web est entièrement gérée grâce au module [Flask](https://pypi.org/project/Flask/). Le côté esthétique est en grosse partie dû à l'usage de deux bibliothèques : [FullCalendar](https://fullcalendar.io) et [Bootstrap](https://getbootstrap.com/).
 
@@ -60,11 +60,11 @@ Ici, sont listées les différentes fonctionnalités qu'offre notre site web :
 - liste de tous les locaux de l'UCLouvain avec, si dispobible, leur adresse
 - possibiblité de voir le planning horaire lié à un local
 
-### Documentation
+## Documentation
 
 La documentation du site web est disponible sur [la page d'aide](https://ade-scheduler.info.ucl.ac.be/help) de ce dernier.
 
-### Améliorations futures
+## Améliorations futures
 
 Ici, sont listées, par ordre de priorité, les améliorations que nous jugeons intéressantes à ajouter dans un futur plus ou moins proche :
 - créer une version mobile du site plus accessible
@@ -72,7 +72,7 @@ Ici, sont listées, par ordre de priorité, les améliorations que nous jugeons 
 - finir videos de la section aide
 - corriger texte (mise en page + orthographe) de l'aide
 
-### Contribuer
+## Contribuer
 
 Cette application étant open-source, vous êtes invités à contribuer à cette dernière de quelque manière !
 
