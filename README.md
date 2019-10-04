@@ -76,4 +76,4 @@ Ici, sont listées, par ordre de priorité, les améliorations que nous jugeons 
 
 Cette application étant open-source, vous êtes invités à contribuer à cette dernière de quelque manière !
 
-Cette section est encore en cours de développement mais n'hésitez pas à nous contacter par [mail](adescheduler@gmail.com) ou sur ce repo !
+Cette section est encore en cours de développement mais n'hésitez pas à nous contacter par [mail](mailto:adescheduler@gmail.com) ou sur ce repo !
