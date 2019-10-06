@@ -14,6 +14,8 @@ Nous sommes trois étudiants de l'EPL et entrions tout juste en master 1 quand n
 
 Face au service très peu intuitif qu'est le service d'horaire [ade](http://horaire.uclouvain.be/direct/) fourni par l'UCLouvain, nous avons décidé de créer cet outil afin de faciliter la création d'horaire via une interface plus esthitique, plus complète et offrant un panel d'options assez large.
 
+Avant cela, nous utilisions le très bon outil [ADE2ICS](https://github.com/cdamman/UCL2ICS), réalisé par Corentin Damman, qui nous permettait de créer des liens d'abonnements dans lequel on pouvait choisir nos TPs / CMs. ADE-Scheduler est donc une amélioration de cet outil.
+
 ## Dates importantes
 
 - **Début août 2019** : début du projet
