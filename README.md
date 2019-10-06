@@ -60,6 +60,24 @@ Ici, sont listées les différentes fonctionnalités qu'offre notre site web :
 - liste de tous les locaux de l'UCLouvain avec, si dispobible, leur adresse
 - possibiblité de voir le planning horaire lié à un local
 
+### Tableau comparatif avec ADE
+Dans un objectif de palier aux problèmes rencontrés sur ADE, voici les solutions que nous avons mises en place :
+
+| Problème sur ADE                             | Notre solution                                      |
+|----------------------------------------------|-----------------------------------------------------|
+| Connexion avec mot de passe                  | Pas de mot de passe requis                          |
+| Session d'une durée très courte              | Pas de déconnexion de session en cours              |
+| Aucune sauvegarde de la session              | Votre session est sauvergardée sur notre serveur    |
+| Pas de lien d'abonnement                     | Possibilité de lien d'abonnement                    |
+| Pas de compte personnel                      | Création d'un compte personnel                      |
+| \                                            | Possibilité de mettre à jour son abonnement         |
+| Sélection de plusieurs cours difficile       | Sélection de plusieurs cours très aisée             |
+| Encodage des TP / CM peu lisible             | Décodage des TP / CM                                |
+| Sélection d'un TP parmi plusieurs impossible | Sélections des TP / CM au choix                     |
+| Pas de couleur                               | Une couleur par code                                |
+| Pas d'adresse des locaux                     | Adresse du local quand disponible                   |
+| Peu de description de l'événement            | Description max. de l'événement (prof., cours, ...) |
+
 ## Documentation
 
 La documentation du site web est disponible sur [la page d'aide](https://ade-scheduler.info.ucl.ac.be/help) de ce dernier.
