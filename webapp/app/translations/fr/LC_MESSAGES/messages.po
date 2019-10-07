@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-10-02 23:19+0200\n"
+"POT-Creation-Date: 2019-10-07 21:40+0200\n"
 "PO-Revision-Date: 2019-08-24 23:58+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -88,19 +88,19 @@ msgstr "Horaire ADE"
 
 #: templates/calendar.html:52 templates/calendar.html:56
 #: templates/calendar.html:91 templates/calendar.html:232
-#: templates/calendar.html:340
+#: templates/calendar.html:343
 msgid "1st schedule"
 msgstr "1er horaire"
 
 #: templates/calendar.html:61 templates/calendar.html:65
 #: templates/calendar.html:98 templates/calendar.html:233
-#: templates/calendar.html:341
+#: templates/calendar.html:344
 msgid "2nd schedule"
 msgstr "2ème horaire"
 
 #: templates/calendar.html:70 templates/calendar.html:74
 #: templates/calendar.html:106 templates/calendar.html:234
-#: templates/calendar.html:342
+#: templates/calendar.html:345
 msgid "3rd schedule"
 msgstr "3ème horaire"
 
@@ -109,7 +109,7 @@ msgid "Compare"
 msgstr "Comparer"
 
 #: templates/calendar.html:85 templates/calendar.html:231
-#: templates/calendar.html:339
+#: templates/calendar.html:342
 msgid "ADE Schedule"
 msgstr "Horaire ADE"
 
@@ -169,7 +169,7 @@ msgstr "Choisir..."
 msgid "Select your schedule."
 msgstr "Sélectionner un horaire."
 
-#: templates/calendar.html:242 templates/calendar.html:375
+#: templates/calendar.html:242 templates/calendar.html:378
 msgid "Copy link"
 msgstr "Copier le lien"
 
@@ -190,7 +190,7 @@ msgstr "Générer un lien d'abonnement"
 msgid "Login"
 msgstr "Identifiant"
 
-#: templates/calendar.html:263 templates/calendar.html:874
+#: templates/calendar.html:263 templates/calendar.html:882
 msgid "Please specify a login"
 msgstr "Choisissez un identifiant"
 
@@ -215,9 +215,9 @@ msgstr "Les horaires ne sont  pas à jour ! Calculez-les d'abord."
 msgid "Please specify a schedule first."
 msgstr "Spécifiez un horaire."
 
-#: templates/calendar.html:293 templates/calendar.html:350
-#: templates/calendar.html:380 templates/calendar.html:400
-#: templates/calendar.html:420
+#: templates/calendar.html:293 templates/calendar.html:353
+#: templates/calendar.html:383 templates/calendar.html:403
+#: templates/calendar.html:423
 msgid "Close"
 msgstr "Fermer"
 
@@ -241,91 +241,95 @@ msgstr "identifiant requis !"
 msgid "Password is required !"
 msgstr "Mot de passe requis !"
 
-#: templates/calendar.html:338
+#: templates/calendar.html:335
+msgid "No account ? Sign up now !"
+msgstr "Pas de compte ? Créez-en un maintenant !"
+
+#: templates/calendar.html:341
 msgid "Don't change"
 msgstr "Ne pas changer"
 
-#: templates/calendar.html:344
+#: templates/calendar.html:347
 msgid "Update your schedule choice."
 msgstr "Changer votre choix d'horaire."
 
-#: templates/calendar.html:352
+#: templates/calendar.html:355
 msgid "Forgot link ?"
 msgstr "Lien oublié ?"
 
-#: templates/calendar.html:353
+#: templates/calendar.html:356
 msgid "Load session"
 msgstr "Charger"
 
-#: templates/calendar.html:354
+#: templates/calendar.html:357
 msgid "Save changes"
 msgstr "Sauvegarder"
 
-#: templates/calendar.html:366
+#: templates/calendar.html:369
 msgid "Your Link"
 msgstr "Votre URL"
 
-#: templates/calendar.html:373
+#: templates/calendar.html:376
 msgid "ex: adescheduler.com/getcalendar?=subscription_link"
 msgstr "ex: adescheduler.com/getcalendar?=lien_d_abonnement"
 
-#: templates/calendar.html:391
+#: templates/calendar.html:394
 msgid "WARNING"
 msgstr "AVERTISSEMENT"
 
-#: templates/calendar.html:397
+#: templates/calendar.html:400
 msgid "Please select at least a schedule to compare !"
 msgstr "Sélectionnez au moins un horaire à comparer !"
 
-#: templates/calendar.html:411
+#: templates/calendar.html:414
 msgid "ERROR"
 msgstr "ERREUR"
 
-#: templates/calendar.html:417
+#: templates/calendar.html:420
 msgid "You specified a wrong time format ! Please try again."
 msgstr "Le format utilisé est incorrect ! Essayez à nouveau."
 
-#: templates/calendar.html:429
+#: templates/calendar.html:432
 msgid "Block Time Slots"
 msgstr "Bloquer un Horaire"
 
-#: templates/calendar.html:432
+#: templates/calendar.html:435
 msgid "Low"
 msgstr "Bas"
 
-#: templates/calendar.html:433
+#: templates/calendar.html:436
 msgid "Medium"
 msgstr "Moyen"
 
-#: templates/calendar.html:434
+#: templates/calendar.html:437
 msgid "High"
 msgstr "Haut"
 
-#: templates/calendar.html:441
+#: templates/calendar.html:444
 msgid "Current Courses"
 msgstr "Cours ajoutés"
 
-#: templates/calendar.html:445
+#: templates/calendar.html:448
 msgid "None"
 msgstr "Aucun"
 
-#: templates/calendar.html:456 templates/calendar.html:577
+#: templates/calendar.html:459 templates/calendar.html:580
 msgid "No event found !"
 msgstr "Aucun événement trouvé !"
 
-#: templates/calendar.html:681
+#: templates/calendar.html:684
 msgid "Add a course"
 msgstr "Ajouter un cours"
 
-#: templates/calendar.html:693
+#: templates/calendar.html:696
 msgid "Export"
 msgstr "Exporter"
 
-#: templates/calendar.html:694
+#: templates/calendar.html:697
 msgid "Log in"
 msgstr "Connexion"
 
-#: templates/calendar.html:705
+#: templates/calendar.html:708
 msgid ""
 "Disclaimer: this software is not an official UCLouvain tool. It has been "
 "designed with the purpose to help the EPL students with scheduling. This "
@@ -340,8 +344,8 @@ msgstr ""
 "et les professeurs, car ces informations peuvent changer d'un cours à un "
 "autre."
 
-#: templates/calendar.html:1169 templates/calendar.html:1183
-#: templates/calendar.html:1233 templates/calendar.html:1258
+#: templates/calendar.html:1177 templates/calendar.html:1191
+#: templates/calendar.html:1241 templates/calendar.html:1266
 msgid "A time slot where the user would like to be free"
 msgstr "Un moment ou l'utilisateur voudrait être libre"
 
