@@ -66,6 +66,11 @@
 
 {% block js %}
     <script>
+        $(function () {
+          $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+    <script>
         window.onload = function() {
             setUpBody({{ tables|safe }})
         };
@@ -78,7 +83,7 @@
                         <tr>
                             <th scope="row">
                                 <div class="btn-group">
-                                    <button class="btn btn-outline-dark" style="padding-top: 0px; padding-bottom: 0px;" name="` + rooms[row]['name'] + `" onclick=displayOccupationButton(this.name);><i class="fas fa-calendar-alt"></i></button>
+                                    <button class="btn btn-outline-dark" data-toggle="tooltip" data-placement="top" title="View occupation" style="padding-top: 0px; padding-bottom: 0px;" name="` + rooms[row]['name'] + `" onclick=displayOccupationButton(this.name);><i class="fas fa-calendar-alt"></i></button>
                                     <button class="btn btn-outline-dark" style="padding-top: 0px; padding-bottom: 0px;" disabled><i class="fas fa-map-marked-alt"></i></button>
                                 </div>
                             </th>
@@ -96,8 +101,8 @@
                         <tr>
                             <th scope="row">
                                 <div class="btn-group">
-                                    <button class="btn btn-outline-dark" style="padding-top: 0px; padding-bottom: 0px;" name="` + rooms[row]['name'] + `" onclick=displayOccupationButton(this.name);><i class="fas fa-calendar-alt" /></button>
-                                    <button class="btn btn-outline-dark" style="padding-top: 0px; padding-bottom: 0px;" name="` + rooms[row]['name'] + `" onclick=openMapsButton(this.name);><i class="fas fa-map-marked-alt" /></button>
+                                    <button class="btn btn-outline-dark" data-toggle="tooltip" data-placement="top" title="View occupation" style="padding-top: 0px; padding-bottom: 0px;" name="` + rooms[row]['name'] + `" onclick=displayOccupationButton(this.name);><i class="fas fa-calendar-alt" /></button>
+                                    <button class="btn btn-outline-dark" data-toggle="tooltip" data-placement="top" title="Location on Maps" style="padding-top: 0px; padding-bottom: 0px;" name="` + rooms[row]['name'] + `" onclick=openMapsButton(this.name);><i class="fas fa-map-marked-alt" /></button>
                                 </div>
                             </th>
                             <td>` + rooms[row]['name'] + `</td>
