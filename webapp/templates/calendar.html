@@ -331,6 +331,9 @@
                                     </div>
                                 </div>
                             </form>
+                            <label style="margin-top: 15px; margin-bottom: 0;">
+                                <a class="text-dark" onclick="linkFunction()" href="#">{{ _('No account ? Sign up now !') }}</a>
+                            </label>
                         </div>
                         <div>
                             <div>
@@ -734,6 +737,11 @@
         $('#switch-password').change(function () {
             $('#btn-create-acc').toggle(this.checked);
         });
+
+        function linkFunction() {
+            $('#loginPrompt').modal('hide');
+            $('#exportPrompt').modal();
+        }
 
         function loadButton() {
             if (!$('#input-load-login').val() || !$('#input-load-password').val()) {
