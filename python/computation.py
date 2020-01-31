@@ -8,16 +8,16 @@ import pandas as pd
 
 def eval_week(week, fts=None):
     """
-    Evaluates the how much a given from contains conflicts.
+    Evaluates the how much a given week contains conflicts.
     :param week: an iterable of event.CustomEvent objects
     :param fts: a list of event.CustomEvent objects
     :return: the sum of all the conflicts
     """
-    week = sorted(chain.from_iterable(week))
+    week = sorted(chain.from_iterable(week))  # We sort all the events
 
     if fts is not None:
-        week = sorted(week + fts)
-    return sum(starmap(operator.mul, zip(week[:-1], week[1:])))
+        week = sorted(week + fts)  # We additionally sort the fts, within the week
+    return sum(starmap(operator.mul, zip(week[:-1], week[1:])))  # We sum all the overlaps
 
 
 def extract_events(courses, view=None):
@@ -41,7 +41,7 @@ def extract_events(courses, view=None):
 
 def compute_best(courses, fts=None, n_best=5, safe_compute=True, view=None):
     """
-    Computes bests schedules trying to minimize conflicts selecting, for each type of event, one event.
+    Computes best schedules trying to minimize conflicts selecting, for each type of event, one event.
     :param courses: a list of course.Course objects
     :param fts: a list of event.CustomEvent objects
     :param n_best: number of best schedules to produce
@@ -55,18 +55,20 @@ def compute_best(courses, fts=None, n_best=5, safe_compute=True, view=None):
         valid = df.index.isin(values=view, level='id')
         df = df[valid]
 
+    # We only take care of events which are not of type EvenOTHER
     valid = df.index.get_level_values('type') != EventOTHER
     df_main, df_other = df[valid], df[~valid]
-    best = [[] for i in range(n_best)]
+    best = [[] for i in range(n_best)]  # We create an empty list which will contain best schedules
 
     for _, week_data in df_main.groupby('week'):
-        if safe_compute:  # We remove events of from same course that happen at the same time
+        if safe_compute:  # We remove events from same course that happen at the same time
             for _, data in week_data.groupby(level=['code', 'type']):
                 tmp = deque()  # Better for appending
+                # For each event in a given course, for a given type...
                 for index, row in data.iterrows():
                     e = row['event']
                     r = repeat(e)
-
+                    # If that event overlaps with any of the events in tmp
                     if any(starmap(operator.xor, zip(tmp, r))):
                         week_data.drop(index=index, inplace=True, errors='ignore')
                     else:
