@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% block head %}
     <link href={{ url_for('static', filename='css/calendar.css') }} rel="stylesheet">
-    <link href='/static/fullcalendar/core/main.css' rel='stylesheet'/>
-    <link href='/static/fullcalendar/daygrid/main.css' rel='stylesheet' />
-    <link href='/static/fullcalendar/timegrid/main.css' rel='stylesheet' />
-    <link href='/static/fullcalendar/list/main.css' rel='stylesheet' />
+    <link href='static/lib/fullcalendar/core/main.css' rel='stylesheet'/>
+    <link href='static/lib/fullcalendar/daygrid/main.css' rel='stylesheet' />
+    <link href='static/lib/fullcalendar/timegrid/main.css' rel='stylesheet' />
+    <link href='static/lib/fullcalendar/list/main.css' rel='stylesheet' />
 {% endblock %}
 
 
@@ -84,11 +84,11 @@
 
 {% block js %}
     <script src={{ url_for('static', filename='js/calendar.js') }}></script>
-    <script src='static/fullcalendar/core/main.js'></script>
-    <script src='static/fullcalendar/interaction/main.js'></script>
-    <script src='static/fullcalendar/daygrid/main.js'></script>
-    <script src='static/fullcalendar/list/main.js'></script>
-    <script src='static/fullcalendar/timegrid/main.js'></script>
-    <script src='static/fullcalendar/bootstrap/main.js'></script>
-    <script src='static/fullcalendar/core/locales/fr.js'></script>
+    <script src='static/lib/fullcalendar/core/main.js'></script>
+    <script src='static/lib/fullcalendar/interaction/main.js'></script>
+    <script src='static/lib/fullcalendar/daygrid/main.js'></script>
+    <script src='static/lib/fullcalendar/list/main.js'></script>
+    <script src='static/lib/fullcalendar/timegrid/main.js'></script>
+    <script src='static/lib/fullcalendar/bootstrap/main.js'></script>
+    <script src='static/lib/fullcalendar/core/locales/fr.js'></script>
 {% endblock %}
