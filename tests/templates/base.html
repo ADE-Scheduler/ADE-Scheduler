@@ -14,9 +14,14 @@
 
         <!-- Custom styles for this page -->
         <link href={{ url_for('static', filename='css/base.css') }} rel="stylesheet">
+
+        <!-- FontAwesome -->
+        <link href={{ url_for('static', filename='fontawesome/css/all.min.css') }} rel="stylesheet" >
+
+        {%block head%}{%endblock%}
     </head>
 
-    <body class="bg-success">
+    <body class="bg-light">
         <!-- Main navbar -->
         <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
             <a class="navbar-brand mr-auto mr-lg-0" href="#">
@@ -56,79 +61,8 @@
             </div>
         </nav>
 
-        <!-- Defiling menu -->
-        <div class="nav-scroller bg-white shadow-sm">
-            <nav class="nav nav-underline">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#sidebarMenu">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <a class="nav-link active" data-toggle="collapse" data-target="#sidebarMenu">Dashboard</a>
-                <a class="nav-link" href="#">
-                    Friends
-                    <span class="badge badge-pill bg-light align-text-bottom">27</span>
-                </a>
-                <a class="nav-link" href="#">Explore</a>
-                <a class="nav-link" href="#">Suggestions</a>
-                <a class="nav-link" href="#">Link</a>
-                <a class="nav-link" href="#">Link</a>
-                <a class="nav-link" href="#">Link</a>
-                <a class="nav-link" href="#">Link</a>
-                <a class="nav-link" href="#">Link</a>
-            </nav>
-        </div>
-
-        <div class="container-fluid">
-            <div class="row">
-                <!-- Sidebar -->
-                <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-                    <div class="sidebar-sticky pt-3">
-                        <ul class="nav flex-column">
-                          <li class="nav-item">
-                            <a class="nav-link active" href="#">
-                              <span data-feather="home"></span>
-                              Dashboard <span class="sr-only">(current)</span>
-                            </a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link" href="#">
-                              <span data-feather="file"></span>
-                              Orders
-                            </a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link" href="#">
-                              <span data-feather="shopping-cart"></span>
-                              Products
-                            </a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link" href="#">
-                              <span data-feather="users"></span>
-                              Customers
-                            </a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link" href="#">
-                              <span data-feather="bar-chart-2"></span>
-                              Reports
-                            </a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link" href="#">
-                              <span data-feather="layers"></span>
-                              Integrations
-                            </a>
-                          </li>
-                        </ul>
-                    </div>
-                </nav>
-
-                <!-- Main content -->
-                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-                    Hello World :-)
-                </main>
-            </div>
-        </div>
+        {% block body %}
+        {% endblock %}
 
         <!-- jQuery -->
         <script src={{ url_for('static', filename='js/lib/jquery.min.js') }}></script>
@@ -138,5 +72,7 @@
 
         <!-- JS Code for this page -->
         <script src={{ url_for('static', filename='js/base.js') }}></script>
+
+        {%block js%}{%endblock%}
     </body>
 </html>
