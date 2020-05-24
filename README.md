@@ -92,6 +92,46 @@ Ici, sont listées, par ordre de priorité, les améliorations que nous jugeons 
 - finir videos de la section aide
 - corriger texte (mise en page + orthographe) de l'aide
 
+## Installation
+
+### 1.Installez Redis
+Pour installer un serveur Redis, référez-vous au site https://redis.io/topics/quickstart.
+
+### 2. Clonez ce repo
+
+`git clone https://github.com/SnaKyEyeS/ADE-Scheduler`
+
+### 3. (optionnel) Créez un environnement virtuel Python
+
+Placez-vous dans le dossier du projet
+
+`cd <repo>`
+
+`pip3 install venv`
+
+`source venv/bin/activate`
+
+
+### 4. Installez packages nécessaires
+
+`pip3 install -r requirements.txt`
+
+### 5. Accès à l'API de ADE
+
+#### 5.1 Accéder grâce à des identifiants
+
+Si vous possédez des identifiants d'accès à l'API de ADE, enregistrez les quelque part sur votre ordinateur dans un fichier JSON. Le contenu attendu est spéficié dans la classe **Credential** dans /backend/credentials.py.
+
+Pour lier vos identifiants au projet :
+
+`python3` -> `from backend.credentials import Credentials; Credentials.set_credentials("identifiants.json")`
+
+Un message vous attirera l'attention sur le fait que ce lien est ephémère : il faudra refaire cette commande pour chaque processus Python. Des solutions permanentes sont proposéss par ce message.
+
+#### 5.2 Accéder sans identifiants
+
+Il n'est pas possible d'accéder à l'API sans identifiants valides et nous ne vous en fournirons pas. Cependant, une réplique de l'API peut être interfacée via la classe **DummyClient** dans /backend/ade_api.py.
+
 ## Contribuer
 
 Cette application étant open-source, vous êtes invités à contribuer à cette dernière de quelque manière !
