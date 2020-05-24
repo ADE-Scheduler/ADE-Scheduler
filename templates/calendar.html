@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block head %}
+    <link href={{ url_for('static', filename='css/calendar.css') }} rel="stylesheet">
+    <link href='static/lib/fullcalendar/core/main.css' rel='stylesheet'/>
+    <link href='static/lib/fullcalendar/daygrid/main.css' rel='stylesheet' />
+    <link href='static/lib/fullcalendar/timegrid/main.css' rel='stylesheet' />
+    <link href='static/lib/fullcalendar/list/main.css' rel='stylesheet' />
+{% endblock %}
+
+
+{% block body %}
+    <!-- Defiling menu -->
+    <div class="nav-scroller bg-white shadow-sm">
+        <nav class="nav nav-underline">
+            <a class="nav-link active" data-toggle="collapse" data-target="#sidebarMenu">Dashboard</a>
+            <a class="nav-link" href="#">
+                Friends
+                <span class="badge badge-pill bg-light align-text-bottom">27</span>
+            </a>
+            <a class="nav-link" href="#">Explore</a>
+            <a class="nav-link" href="#">Suggestions</a>
+            <a class="nav-link" href="#">Link</a>
+            <a class="nav-link" href="#">Link</a>
+            <a class="nav-link" href="#">Link</a>
+            <a class="nav-link" href="#">Link</a>
+            <a class="nav-link" href="#">Link</a>
+        </nav>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                <div class="sidebar-sticky pt-3">
+                    <ul class="nav flex-column">
+                      <li class="nav-item">
+                        <a class="nav-link active" href="#">
+                          <span data-feather="home"></span>
+                          Dashboard <span class="sr-only">(current)</span>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="#">
+                          <span data-feather="file"></span>
+                          Orders
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="#">
+                          <span data-feather="shopping-cart"></span>
+                          Products
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="#">
+                          <span data-feather="users"></span>
+                          Customers
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="#">
+                          <span data-feather="bar-chart-2"></span>
+                          Reports
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="#">
+                          <span data-feather="layers"></span>
+                          Integrations
+                        </a>
+                      </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Main content -->
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                <div id='calendar'></div>
+            </main>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block js %}
+    <script src={{ url_for('static', filename='js/calendar.js') }}></script>
+    <script src='static/lib/fullcalendar/core/main.js'></script>
+    <script src='static/lib/fullcalendar/interaction/main.js'></script>
+    <script src='static/lib/fullcalendar/daygrid/main.js'></script>
+    <script src='static/lib/fullcalendar/list/main.js'></script>
+    <script src='static/lib/fullcalendar/timegrid/main.js'></script>
+    <script src='static/lib/fullcalendar/bootstrap/main.js'></script>
+    <script src='static/lib/fullcalendar/core/locales/fr.js'></script>
+{% endblock %}
