@@ -9,6 +9,7 @@ class Client:
         self.expiration = expiration
 
     def is_expired(self):
+        # TODO: verify validity of this relation
         return self.expiration > time.time()
 
     def renew_token(self, credentials):
@@ -28,7 +29,7 @@ if __name__ == "__main__":
 
     from backend.credentials import Credentials
 
-    credentials = Credentials.get_credentials()
+    credentials = Credentials.get_credentials(Credentials.ADE_API_CREDENTIALS)
 
     token, _ = Client.get_token(credentials)
 
