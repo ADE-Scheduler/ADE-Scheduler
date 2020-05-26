@@ -1,3 +1,8 @@
+
+<p align="center">
+  <img src="https://github.com/SnaKyEyeS/ADE-Scheduler/blob/AS-2.0/static/img/ade_scheduler_icon.png" width="200" height="200"> </img>
+</p>
+
 # ADE-Scheduler : un outil horaire destiné aux étudiants
 
 [ADE-Scheduler](https://ade-scheduler.info.ucl.ac.be/) est un outil créé par des étudiants et à destination des membres de l'UCLouvain, et plus particulièrement les étudiants de l'EPL.
