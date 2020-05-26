@@ -99,7 +99,7 @@ Ici, sont listées, par ordre de priorité, les améliorations que nous jugeons 
 
 ## Installation
 
-### 1.Installez Redis
+### 1. Installez Redis
 Pour installer un serveur Redis, référez-vous au site https://redis.io/topics/quickstart.
 
 ### 2. Clonez ce repo
@@ -131,7 +131,7 @@ Pour lier vos identifiants au projet :
 
 `python3` -> `from backend.credentials import Credentials; Credentials.set_credentials("identifiants.json")`
 
-Un message vous attirera l'attention sur le fait que ce lien est ephémère : il faudra refaire cette commande pour chaque processus Python. Des solutions permanentes sont proposéss par ce message.
+Un message vous attirera l'attention sur le fait que ce lien est ephémère : il faudra refaire cette commande pour chaque processus Python. Des solutions permanentes sont proposées par ce message.
 
 #### 5.2 Accéder sans identifiants
 
