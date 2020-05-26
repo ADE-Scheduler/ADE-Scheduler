@@ -8,6 +8,11 @@ def main():
     return render_template('calendar.html')
 
 
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+
 if __name__ == '__main__':
     # app.run()
     app.run(host="10.42.0.1")
