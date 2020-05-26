@@ -20,7 +20,7 @@
 
         <!-- Favicon -->
         <link href="{{ url_for('static', filename='img/favicon.ico') }}" rel="shortcut icon">
-        
+
         {%block head%}{%endblock%}
     </head>
 
@@ -64,8 +64,16 @@
             </div>
         </nav>
 
-        {% block body %}
-        {% endblock %}
+        <main role="main">
+            {% block body %}
+            {% endblock %}
+        </main>
+
+        <footer class="footer mt-auto py-2 fixed-bottom">
+          <div class="container">
+            <span class="text-muted">Place sticky footer content here.</span>
+          </div>
+        </footer>
 
         <!-- jQuery -->
         <script src={{ url_for('static', filename='js/lib/jquery.min.js') }}></script>
