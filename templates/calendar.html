@@ -9,15 +9,37 @@
 
 
 {% block body %}
+    <!-- Modals -->
+    <div class="modal fade" id="eventModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <!-- Defiling menu -->
     <div class="nav-scroller bg-white shadow-sm">
         <nav class="nav nav-underline">
-            <a class="nav-link active" data-toggle="collapse" data-target="#sidebarMenu">Dashboard</a>
+            <a class="nav-link active" href="#" data-toggle="collapse" data-target="#sidebarMenu">Dashboard</a>
             <a class="nav-link" href="#">
                 Friends
                 <span class="badge badge-pill bg-light align-text-bottom">27</span>
             </a>
-            <a class="nav-link" href="#">Explore</a>
+            <a class="nav-link" href="#" data-toggle="modal" data-target="#eventModal">Explore</a>
             <a class="nav-link" href="#">Suggestions</a>
             <a class="nav-link" href="#">Link</a>
             <a class="nav-link" href="#">Link</a>
@@ -31,34 +53,59 @@
         <!-- Sidebar -->
         <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
             <div class="sidebar-sticky pt-2">
+                <div class="list-group m-2">
+                    <button class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" data-toggle="modal" data-target="#eventModal">
+                        LMECA2660
+                        <a href="#" class="badge badge-danger">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </button>
+                    <button class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        LINGI2315
+                        <a href="#" class="badge badge-danger">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </button>
+                    <button class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        LELEC2760
+                        <a href="#" class="badge badge-danger">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </button>
+                    <li class="list-group-item p-0 list-code-input">
+                        <div class="input-group">
+                            <input class="form-control code-input" type="text" placeholder="Enter code" id="codeInput">
+                            <a href="#" class="input-group-btn badge badge-success" id="codeValidation">
+                                <i class="fas fa-plus"></i>
+                            </a>
+                        </div>
+                    </li>
+                </div>
+
+
                 <ul class="nav flex-column">
                     <li class="nav-item">
                         <a class="nav-link active" href="#">
-                            <span data-feather="home"></span>
                             Dashboard <span class="sr-only">(current)</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">
-                            <span data-feather="file"></span>
                             Orders
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">
-                            <span data-feather="shopping-cart"></span>
                             Products
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">
-                            <span data-feather="users"></span>
                             Customers
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">
-                            <span data-feather="bar-chart-2"></span>
                             Reports
                         </a>
                     </li>

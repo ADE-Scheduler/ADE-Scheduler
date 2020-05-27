@@ -21,6 +21,10 @@
     padding: 3px 6px;
 }
 
+/*
+ *  Modal
+ */
+
 
 /*
  * Nav scroller
@@ -49,13 +53,34 @@
 
 .container-fluid {
     padding-top: 45px;
-    padding-bottom: 40px;
+    /* padding-bottom: 40px; */
 }
 
 
 /*
  * Sidebar
  */
+.code-input {
+    min-width: unset;
+    border-width: 0px;
+    padding: 12px 0px 12px 20px;
+}
+.code-input:focus {
+    border-color: transparent;
+    box-shadow: none;
+}
+
+/* .list-code-input:focus-within {
+    z-index: 3;
+    border-color: #80bdff;
+    box-shadow: 0 0 0 .2rem rgba(0, 123, 255, .25);
+} */
+
+#codeValidation {
+    margin: 10px 20px 10px;
+    margin-left: 0;
+}
+
 .sidebar {
     position: fixed;
     top: 0;
@@ -93,18 +118,8 @@
     color: #333;
 }
 
-.sidebar .nav-link .feather {
-    margin-right: 4px;
-    color: #999;
-}
-
 .sidebar .nav-link.active {
     color: #007bff;
-}
-
-.sidebar .nav-link:hover .feather,
-.sidebar .nav-link.active .feather {
-    color: inherit;
 }
 
 .sidebar-heading {
