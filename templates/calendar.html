@@ -14,7 +14,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Modal title</h5>
+                    <h5 class="modal-title">Numerical Methods in Fluid Mechanics</h5>
                     <button type="button" class="close" data-dismiss="modal">
                         <span>&times;</span>
                     </button>
@@ -24,7 +24,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-danger">Delete</button>
                 </div>
             </div>
         </div>
@@ -53,27 +53,29 @@
         <!-- Sidebar -->
         <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
             <div class="sidebar-sticky pt-2">
-                <div class="list-group m-2">
-                    <button class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" data-toggle="modal" data-target="#eventModal">
-                        LMECA2660
+                <div class="list-group list-code m-2">
+                    <li class="list-group-item code-item d-flex justify-content-between align-items-center">
+                        <span class="code-tag" data-toggle="modal" data-target="#eventModal">
+                            LMECA2660
+                        </span>
                         <a href="#" class="badge badge-danger">
                             <i class="fas fa-trash"></i>
                         </a>
-                    </button>
-                    <button class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                        LINGI2315
+                    </li>
+                    <li class="list-group-item code-item d-flex justify-content-between align-items-center">
+                        <span class="code-tag">LINGI2315</span>
                         <a href="#" class="badge badge-danger">
                             <i class="fas fa-trash"></i>
                         </a>
-                    </button>
-                    <button class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                        LELEC2760
+                    </li>
+                    <li class="list-group-item code-item d-flex justify-content-between align-items-center">
+                        <span class="code-tag">LELEC2760</span>
                         <a href="#" class="badge badge-danger">
                             <i class="fas fa-trash"></i>
                         </a>
-                    </button>
+                    </li>
                     <li class="list-group-item p-0 list-code-input">
-                        <div class="input-group">
+                        <div class="input-group my-1">
                             <input class="form-control code-input" type="text" placeholder="Enter code" id="codeInput">
                             <a href="#" class="input-group-btn badge badge-success" id="codeValidation">
                                 <i class="fas fa-plus"></i>
@@ -81,41 +83,6 @@
                         </div>
                     </li>
                 </div>
-
-
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">
-                            Dashboard <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            Orders
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            Products
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            Customers
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            Reports
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="layers"></span>
-                            Integrations
-                        </a>
-                    </li>
-                </ul>
             </div>
         </nav>
 
