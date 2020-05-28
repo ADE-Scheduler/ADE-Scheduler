@@ -3,7 +3,7 @@ from flask import Flask, render_template, url_for
 app = Flask(__name__)
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
 def main():
     return render_template('calendar.html')
 
@@ -11,6 +11,11 @@ def main():
 @app.route('/login')
 def login():
     return render_template('login.html')
+
+
+@app.route('/signup')
+def signup():
+    return render_template('signup.html')
 
 
 if __name__ == '__main__':
