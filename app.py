@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request
+from flask import Flask, render_template, url_for, request, redirect
 
 app = Flask(__name__)
 
@@ -16,6 +16,7 @@ def login():
         print(request.form['password'])
         if request.form.get('remember'):
             print('Remember me please senpai !')
+        return redirect(url_for('main'))
 
     return render_template('login.html')
 
@@ -26,6 +27,7 @@ def signup():
     if request.method == 'POST':
         print(request.form['email'])
         print(request.form['password'])
+        return redirect(url_for('main'))
 
     return render_template('signup.html')
 
