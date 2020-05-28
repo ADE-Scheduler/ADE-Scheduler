@@ -45,9 +45,11 @@ def login():
     # Assume POST
     email = request.form['email']
     password = request.form['password']
-    remember_me = request.form['remember']
-    user = User.query.filter_by(username=email).first()
+    remember_me = request.form.get('remember') is not None
+    # user = User.query.filter_by(username=email).first()
+    user = None
     if user is None or not user.check_password(password):
+        print('passage')
         flash('Invalid username or password')
         return redirect(url_for('login'))
     login_user(user, remember=remember_me)
@@ -66,5 +68,5 @@ def signup():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
     # app.run(host="10.42.0.1")
