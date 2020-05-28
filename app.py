@@ -36,7 +36,6 @@ def main():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    print('coucou')
     if current_user.is_authenticated:  # Already authenticated but goes to /login
         return redirect(url_for('main'))
     
@@ -44,9 +43,9 @@ def login():
         return render_template('login.html')
     
     # Assume POST
-    email = request.form['inputEmail']
-    password = request.form['inputPassword']
-    remember_me = request.form['rememberMe']
+    email = request.form['email']
+    password = request.form['password']
+    remember_me = request.form['remember']
     user = User.query.filter_by(username=email).first()
     if user is None or not user.check_password(password):
         flash('Invalid username or password')
@@ -55,9 +54,14 @@ def login():
     return redirect(url_for('main'))
 
 
-
-@app.route('/signup')
+@app.route('/signup', methods=['GET', 'POST'])
 def signup():
+
+    if request.method == 'POST':
+        print(request.form['email'])
+        print(request.form['password'])
+        return redirect(url_for('main'))
+
     return render_template('signup.html')
 
 
