@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, request
 
 app = Flask(__name__)
 
@@ -8,16 +8,28 @@ def main():
     return render_template('calendar.html')
 
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+
+    if request.method == 'POST':
+        print(request.form['email'])
+        print(request.form['password'])
+        if request.form.get('remember'):
+            print('Remember me please senpai !')
+
     return render_template('login.html')
 
 
-@app.route('/signup')
+@app.route('/signup', methods=['GET', 'POST'])
 def signup():
+
+    if request.method == 'POST':
+        print(request.form['email'])
+        print(request.form['password'])
+
     return render_template('signup.html')
 
 
 if __name__ == '__main__':
-    # app.run()
-    app.run(host="10.42.0.1")
+    # app.run(debug=True)
+    app.run(host="10.42.0.1", debug=True)

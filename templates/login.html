@@ -5,16 +5,16 @@
 
 
 {% block body %}
-    <form class="form-signin">
-        <img class="d-block mx-auto my-4" src="static/img/logo.png" width="30%">
+    <form class="form-signin" action={{ url_for('login') }} method="post">
+        <img class="d-block mx-auto my-4" src="static/img/ade_scheduler_icon.png" width="30%">
         <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
         <label for="inputEmail" class="sr-only">Email address</label>
-        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+        <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
         <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
         <div class="checkbox">
             <label>
-                <input type="checkbox" value="remember-me"> Remember me
+                <input type="checkbox" name="remember"> Remember me
             </label>
         </div>
         <div class="mb-3">
