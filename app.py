@@ -68,5 +68,5 @@ def signup():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
-    # app.run(host="10.42.0.1")
+    # app.run(debug=True)
+    app.run(host="10.42.0.1")
