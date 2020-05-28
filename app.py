@@ -2,9 +2,10 @@ from flask import Flask, render_template, url_for, redirect, request, flash
 from flask_session import Session
 from redis import Redis
 from datetime import timedelta
+from flask_security import Security, login_required, SQLAlchemySessionUserDatastore
 from flask_login import LoginManager, UserMixin, current_user, login_user
-
-from backend.login import User
+from backend.database import db_session, init_db
+from backend.models import Role, User  #, Link, Schedule
 
 app = Flask(__name__)
 
@@ -12,15 +13,28 @@ app = Flask(__name__)
 redis = Redis(host='localhost', port=6379)
 
 # Session
-secret_key = 'JYL_FRONT_END'  # TODO: change asbolutely
-app.secret_key = secret_key
+# secret_key = 'JYL_FRONT_END'  # TODO: change asbolutely
+# app.secret_key = secret_key
+app.config['SECRET_KEY'] = 'super-secret'
 app.config['SESSION_TYPE'] = 'redis'
 app.config['SESSION_REDIS'] = redis
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=30)
 
-# Login
+# Setup Flask-Security
+user_datastore = SQLAlchemySessionUserDatastore(db_session, User, Role)
+
+security = Security(app, user_datastore)
+
 login_manager = LoginManager()
-login_manager.init_app(app)  # Handles the session creation
+login_manager.init_app(app)
+
+
+# Create a user to test with
+# @app.before_first_request
+def create_user():
+    init_db()
+    user_datastore.create_user(email='test@ade-scheduler.com', password_hash='42')
+    db_session.commit()
 
 
 # TODO: change but where ?
@@ -46,8 +60,7 @@ def login():
     email = request.form['email']
     password = request.form['password']
     remember_me = request.form.get('remember') is not None
-    # user = User.query.filter_by(username=email).first()
-    user = None
+    user = User.query.filter_by(username=email).first()
     if user is None or not user.check_password(password):
         print('passage')
         flash('Invalid username or password')
@@ -68,5 +81,5 @@ def signup():
 
 
 if __name__ == '__main__':
-    # app.run(debug=True)
-    app.run(host="10.42.0.1")
+    app.run(debug=True)
+    # app.run(host="10.42.0.1")
