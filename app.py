@@ -4,7 +4,7 @@ from redis import Redis
 from datetime import timedelta
 from flask_security import Security, login_required, SQLAlchemySessionUserDatastore
 from flask_login import LoginManager, UserMixin, current_user, login_user
-from backend.database import db_session
+from backend.database import db_session, init_db
 from backend.models import Role, User  #, Link, Schedule
 
 # Setup app
@@ -18,11 +18,34 @@ app.config['SECURITY_RECOVERABLE'] = True
 app.config['SECURITY_PASSWORD_SALT'] = 'a_very_complex_and_indeciphrable_salt'  # TODO: change !
 security = Security(app, SQLAlchemySessionUserDatastore(db_session, User, Role))
 
-# Setup Flask-Session
+# Session
+# secret_key = 'JYL_FRONT_END'  # TODO: change asbolutely
+# app.secret_key = secret_key
+app.config['SECRET_KEY'] = 'super-secret'
 app.config['SESSION_TYPE'] = 'redis'
 app.config['SESSION_REDIS'] = Redis(host='localhost', port=6379)
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=30)
 Session(app)
+
+
+security = Security(app, user_datastore)
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+
+# Create a user to test with
+# @app.before_first_request
+def create_user():
+    init_db()
+    user_datastore.create_user(email='test@ade-scheduler.com', password_hash='42')
+    db_session.commit()
+
+
+# TODO: change but where ?
+@login_manager.user_loader
+def load_user(id):
+    return User.query.get(int(id))
 
 
 @app.route('/')
