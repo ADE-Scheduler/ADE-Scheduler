@@ -19,6 +19,7 @@ app.config['SECRET_KEY'] = 'super-secret'
 app.config['SESSION_TYPE'] = 'redis'
 app.config['SESSION_REDIS'] = redis
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=30)
+app.config['SECURITY_REGISTERABLE'] = True
 
 # Setup Flask-Security
 user_datastore = SQLAlchemySessionUserDatastore(db_session, User, Role)
@@ -69,15 +70,15 @@ def login():
     return redirect(url_for('main'))
 
 
-@app.route('/signup', methods=['GET', 'POST'])
-def signup():
+@app.route('/register', methods=['GET', 'POST'])
+def register():
 
     if request.method == 'POST':
         print(request.form['email'])
         print(request.form['password'])
         return redirect(url_for('main'))
 
-    return render_template('security/register_user.html')
+    # return render_template('security/register_user.html')
 
 
 if __name__ == '__main__':
