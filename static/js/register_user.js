@@ -34,4 +34,4 @@ function validityCheck() {
             }, false)
         })
     }, false)
-}())
+}());

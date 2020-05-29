@@ -1,6 +1,7 @@
 {% extends "base.html" %}
+{% from "custom_macros.html" import render_login_field %}
 {% block head %}
-    <link href={{ url_for('static', filename='css/login.css') }} rel="stylesheet">
+    <link href={{ url_for('static', filename='css/login_user.css') }} rel="stylesheet">
 {% endblock %}
 
 
@@ -9,17 +10,16 @@
         {{ login_user_form.hidden_tag() }}
         <img class="d-block mx-auto my-4" src="static/img/ade_scheduler_icon.png" width="30%">
         <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-        <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
-        <div class="checkbox">
+        {{ render_login_field(login_user_form.email, login_user_form.password, 'Specify an email address and a password') }}
+        <div class="checkbox mt-3">
             <label>
-                <input type="checkbox" name="remember" value="y"> Remember me
+                {{ login_user_form.remember }} Remember me
             </label>
         </div>
         <div class="mb-3">
             <small><a href="/">Forgot password ?</a></small>
         </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit" name="submit" value="Login">Sign in</button>
+        {{ login_user_form.submit(class="btn btn-lg btn-primary btn-block") }}
         <div class="mt-2">
             <small>New to ADE Scheduler ? <a href={{ url_for('security.register') }}>Sign up now !</a></small>
         </div>
