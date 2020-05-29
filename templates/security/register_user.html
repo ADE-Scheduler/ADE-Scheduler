@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% from "custom_macros.html" import render_input_field %}
 {% block head %}
-    <link href={{ url_for('static', filename='css/register_user.css') }} rel="stylesheet">
+    <link href={{ url_for('static', filename='css/security/register_user.css') }} rel="stylesheet">
 {% endblock %}
 
 
@@ -15,7 +15,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">@</span>
                 </div>
-                {{ render_input_field(register_user_form.email, 'Invalid email address.', type="email", placeholder="you@example.com", required="") }}
+                {{ render_input_field(register_user_form.email, 'Invalid email address.', placeholder="you@example.com", required="") }}
             </div>
         </div>
 
@@ -31,7 +31,7 @@
             <label for="password_confirm">Confirm</label>
             {{ render_input_field(register_user_form.password_confirm, 'Password do not match.', placeholder="Password", required="", minlength="6", autocomplete="new-password") }}
         </div>
-        <hr class="mb-4">
+        <hr class="mb-3">
         {{ register_user_form.submit(class="btn btn-lg btn-primary btn-block") }}
     </form>
 {% endblock %}

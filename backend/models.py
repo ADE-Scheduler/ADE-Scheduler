@@ -22,12 +22,13 @@ class User(UserMixin, Base):
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
     email = Column(String(120), index=True, unique=True)
-    password_hash = Column(String(128))
+    password = Column(String(128))
+    active = Column(Boolean())
     roles = relationship('Role', secondary='roles_users',
                          backref=backref('users', lazy='dynamic'))
 
     def __repr__(self):
-        return '<User {}>'.format(self.email)  
+        return '<User {}>'.format(self.email)
 
 """
 class Link(Base):

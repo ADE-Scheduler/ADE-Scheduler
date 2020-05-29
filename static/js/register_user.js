@@ -1,5 +1,6 @@
 const valid_pwd = document.getElementById('password_confirm');
 const       pwd = document.getElementById('password');
+const     email = document.getElementById('email');
 
 function validityCheck() {
     if (valid_pwd.value === pwd.value ) {
@@ -29,6 +30,17 @@ function validityCheck() {
 
                 valid_pwd.addEventListener("input", validityCheck);
                       pwd.addEventListener("input", validityCheck);
+                    email.addEventListener("input", () => {
+                        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email.value)) {
+                            email.classList.add("is-valid");
+                            email.classList.remove("is-invalid");
+                            email.setCustomValidity("");
+                        } else {
+                            email.classList.add("is-invalid");
+                            email.classList.remove("is-valid");
+                            email.setCustomValidity("Invalid field.");
+                        }
+                    });
 
                 form.classList.add('was-validated')
             }, false)
