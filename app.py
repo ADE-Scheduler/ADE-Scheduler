@@ -52,10 +52,10 @@ def main():
 def login():
     if current_user.is_authenticated:  # Already authenticated but goes to /login
         return redirect(url_for('main'))
-    
+
     if request.method == 'GET':
         return render_template('login.html')
-    
+
     # Assume POST
     email = request.form['email']
     password = request.form['password']
@@ -82,4 +82,4 @@ def signup():
 
 if __name__ == '__main__':
     app.run(debug=True)
-    # app.run(host="10.42.0.1")
+    app.run(host="10.42.0.1", debug=True)
