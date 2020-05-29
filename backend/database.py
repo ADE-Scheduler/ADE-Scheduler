@@ -3,7 +3,6 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
 # TODO: Remove this (replaced in class Database)
-""""
 engine = create_engine('sqlite:////tmp/test.db', convert_unicode=True)
 db_session = scoped_session(sessionmaker(autocommit=False,
                                          autoflush=False,
@@ -17,9 +16,8 @@ def init_db():
     # you will have to import them first before calling init_db()
     import backend.models
     Base.metadata.create_all(bind=engine)
+
 """
-
-
 class Database(declarative_base()):
 
     def __init__(self, name):
@@ -33,3 +31,4 @@ class Database(declarative_base()):
 
         # Pas sur
         super().__init__()
+"""

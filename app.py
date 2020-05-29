@@ -28,26 +28,6 @@ app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=30)
 Session(app)
 
 
-security = Security(app, user_datastore)
-
-login_manager = LoginManager()
-login_manager.init_app(app)
-
-
-# Create a user to test with
-# @app.before_first_request
-def create_user():
-    init_db()
-    user_datastore.create_user(email='test@ade-scheduler.com', password_hash='42')
-    db_session.commit()
-
-
-# TODO: change but where ?
-@login_manager.user_loader
-def load_user(id):
-    return User.query.get(int(id))
-
-
 @app.route('/')
 def main():
     return render_template('calendar.html', **session)
