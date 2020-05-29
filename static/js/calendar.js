@@ -29,3 +29,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     calendar.render();
 });
+
+$(function () {
+    $('[data-toggle="popover"]').popover({
+        container: 'body',
+        trigger: 'focus'
+    });
+});

@@ -1,16 +1,37 @@
+/*
+ *  Calendar
+ */
 #calendar {
-    min-height: calc(100vh-121px);
     width: 100%;
     height: 100%;
     padding: 10px;
 }
+
+.fc-left > button, .fc-left > .btn-group > button {
+    font-size: min(3vw, 1em)!important;
+    padding: 3px 6px;
+}
+
+.fc-center > h2 {
+    font-size: min(3.5vw, 2em) !important;
+}
+
+.fc-right > button, .fc-right > .btn-group > button {
+    font-size: min(2.7vw, 1em) !important;
+    padding: 3px 6px;
+}
+
+/*
+ *  Modal
+ */
 
 
 /*
  * Nav scroller
  */
 .nav-scroller {
-    position: relative;
+    position: fixed;
+    width: 100%;
     z-index: 150;
     height: 2.75rem;
     overflow-y: hidden;
@@ -30,10 +51,53 @@
     -webkit-overflow-scrolling: touch;
 }
 
+.container-fluid {
+    padding-top: 45px;
+    /* padding-bottom: 40px; */
+}
+
 
 /*
  * Sidebar
  */
+.badge-info-custom {
+    position: absolute;
+    top: 11px;
+    left: 3px;
+    z-index: 2;
+}
+
+.list-code > .code-item:hover {
+    background-color: #f8f9fa;
+}
+
+.code-tag {
+    cursor: pointer;
+    width: 100%;
+}
+
+.code-input {
+    min-width: unset;
+    border-width: 0px;
+    padding: 12px 0px 12px 20px;
+}
+.code-input:focus {
+    border-color: transparent;
+    box-shadow: none;
+}
+
+/* .list-code-input:focus-within {
+    z-index: 3;
+    border-color: #80bdff;
+    box-shadow: 0 0 0 .2rem rgba(0, 123, 255, .25);
+} */
+
+#codeValidation {
+    margin: 10px 20px 10px;
+    margin-left: 0;
+    z-index: 5;
+}
+
 .sidebar {
     position: fixed;
     top: 0;
@@ -55,7 +119,6 @@
     position: relative;
     top: 0;
     height: calc(100vh - 101px);
-    padding-top: 0;
     overflow-x: hidden;
     overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
 }
@@ -72,18 +135,8 @@
     color: #333;
 }
 
-.sidebar .nav-link .feather {
-    margin-right: 4px;
-    color: #999;
-}
-
 .sidebar .nav-link.active {
     color: #007bff;
-}
-
-.sidebar .nav-link:hover .feather,
-.sidebar .nav-link.active .feather {
-    color: inherit;
 }
 
 .sidebar-heading {

@@ -18,14 +18,18 @@
         <!-- FontAwesome -->
         <link href={{ url_for('static', filename='lib/fontawesome/css/all.min.css') }} rel="stylesheet" >
 
+        <!-- Favicon -->
+        <link href="{{ url_for('static', filename='img/favicon.ico') }}" rel="shortcut icon">
+
         {%block head%}{%endblock%}
     </head>
 
     <body class="bg-light">
         <!-- Main navbar -->
         <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
-            <a class="navbar-brand mr-auto mr-lg-0" href="#">
-                ADE-Scheduler
+            <a class="navbar-brand mr-auto mr-lg-0" href="/">
+                <!-- <img src="static/img/ade_scheduler_icon_white.png" height="26px"> -->
+                ADE Scheduler
             </a>
             <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">
                 <span class="navbar-toggler-icon"></span>
@@ -43,7 +47,7 @@
                         <a class="nav-link" href="#">Profile</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Switch account</a>
+                        <a class="nav-link" href="{{ url_for('security.login') }}">Switch account</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Settings</a>
@@ -61,11 +65,22 @@
             </div>
         </nav>
 
-        {% block body %}
-        {% endblock %}
+        <main role="main">
+            {% block body %}
+            {% endblock %}
+        </main>
+
+        <!-- <footer class="footer mt-auto py-2 fixed-bottom">
+            <div class="container">
+                <span class="text-muted">Place sticky footer content here.</span>
+            </div>
+        </footer> -->
 
         <!-- jQuery -->
         <script src={{ url_for('static', filename='js/lib/jquery.min.js') }}></script>
+
+        <!-- Popover -->
+        <script src={{ url_for('static', filename='js/lib/popper.min.js') }}></script>
 
         <!-- Bootstrap -->
         <script src={{ url_for('static', filename='js/lib/bootstrap.min.js') }}></script>
