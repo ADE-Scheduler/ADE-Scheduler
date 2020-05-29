@@ -77,9 +77,9 @@ def signup():
         print(request.form['password'])
         return redirect(url_for('main'))
 
-    return render_template('signup.html')
+    return render_template('security/register_user.html')
 
 
 if __name__ == '__main__':
     app.run(debug=True)
-    app.run(host="10.42.0.1", debug=True)
+    # app.run(host="10.42.0.1", debug=True)
