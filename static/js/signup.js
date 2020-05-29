@@ -1,4 +1,4 @@
-const valid_pwd = document.getElementById('verify-password');
+const valid_pwd = document.getElementById('password_confirm');
 const       pwd = document.getElementById('password');
 
 function validityCheck() {
