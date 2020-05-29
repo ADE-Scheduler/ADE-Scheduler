@@ -5,7 +5,8 @@
 
 
 {% block body %}
-    <form class="form-signin" action={{ url_for('security.login') }} method="post">
+    <form class="form-signin" action={{ url_for('security.login') }} method="POST" name="login_user_form">
+        {{ login_user_form.hidden_tag() }}
         <img class="d-block mx-auto my-4" src="static/img/ade_scheduler_icon.png" width="30%">
         <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
         <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
