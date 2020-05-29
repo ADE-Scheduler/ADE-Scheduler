@@ -4,7 +4,7 @@ from redis import Redis
 from datetime import timedelta
 from flask_security import Security, login_required, SQLAlchemySessionUserDatastore
 from flask_login import LoginManager, UserMixin, current_user, login_user
-from backend.database import db_session, init_db
+from backend.database import db_session
 from backend.models import Role, User  #, Link, Schedule
 
 # Setup app
