@@ -4,13 +4,17 @@ from redis import Redis
 from datetime import timedelta
 from flask_security import Security, login_required, SQLAlchemySessionUserDatastore
 from flask_login import LoginManager, UserMixin, current_user, login_user
-from backend.database import db_session, init_db
+from backend.database import Database
 from backend.models import Role, User  #, Link, Schedule
 
 app = Flask(__name__)
 
 # Redis for Session
 redis = Redis(host='localhost', port=6379)
+
+# Database
+db = Database('test')
+db_session = db.session
 
 # Session
 # secret_key = 'JYL_FRONT_END'  # TODO: change asbolutely
@@ -33,7 +37,7 @@ login_manager.init_app(app)
 # Create a user to test with
 # @app.before_first_request
 def create_user():
-    init_db()
+    # init_db()
     user_datastore.create_user(email='test@ade-scheduler.com', password_hash='42')
     db_session.commit()
 

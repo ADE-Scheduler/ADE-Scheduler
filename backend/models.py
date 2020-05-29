@@ -11,6 +11,7 @@ class RolesUsers(Base):
     user_id = Column('user_id', Integer(), ForeignKey('user.id'))
     role_id = Column('role_id', Integer(), ForeignKey('role.id'))
 
+
 class Role(Base, RoleMixin):
     __tablename__ = 'role'
     id = Column(Integer(), primary_key=True)
