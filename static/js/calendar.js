@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
         header: {
             left: 'prev,next today',
             center: 'title',
-            right: 'dayGridMonth,timeGridDay,listWeek'
+            right: 'dayGridMonth,timeGridWeek,listWeek'
         },
         minTime: '08:00:00',
         maxTime: '21:00:00',
@@ -16,10 +16,21 @@ document.addEventListener('DOMContentLoaded', function() {
         editable: true,
         droppable: true,
         eventLimit: false, // allow "more" link when too many events
-        weekNumberCalculation: 'ISO',
+
+        // Week display
+        weekLabel: 'S',
+        weekNumbers: true,
+        weekNumbersWithinDays: true,
+        weekNumberCalculation: (d) => {
+            d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
+            // Get first day of year
+            let yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+            // Calculate full weeks to nearest Thursday
+            return weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
+        },
 
         // Remember where the user left the calendar
-        defaultView: (localStorage.getItem("fcDefaultView") !== null ? localStorage.getItem("fcDefaultView") : 'dayGridWeek'),
+        defaultView: (localStorage.getItem("fcDefaultView") !== null ? localStorage.getItem("fcDefaultView") : 'timeGridWeek'),
         defaultDate: (localStorage.getItem("fcDefaultDate") !== null ? parseInt(localStorage.getItem("fcDefaultDate")) : Date.now()),
         datesRender: function (arg) {
             localStorage.setItem("fcDefaultView", arg.view.type);
