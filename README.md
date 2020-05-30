@@ -121,6 +121,14 @@ Placez-vous dans le dossier du projet
 
 `pip3 install -r requirements.txt`
 
+### 5. Modifiez l'installation de flask-security
+
+`pip3 remove flask_security`
+
+`pip3 install git+https://github.com/mattupstate/flask-security`
+
+Comme décrit au lieu suivant: https://stackoverflow.com/questions/50105057/flask-security-error-valueerror-too-many-values-to-unpack
+
 ### 5. Accès à l'API de ADE (optionnel)
 
 #### 5.1 Accéder grâce à des identifiants
