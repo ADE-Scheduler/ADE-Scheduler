@@ -121,7 +121,7 @@ Placez-vous dans le dossier du projet
 
 `pip3 install -r requirements.txt`
 
-### 5. Modifiez l'installation de flask-security
+#### 4.1. Modifiez l'installation de flask-security
 
 `pip3 remove flask_security`
 
