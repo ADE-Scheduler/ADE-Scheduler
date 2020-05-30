@@ -7,6 +7,14 @@
     padding: 10px;
 }
 
+.spinner-compute {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    display: none
+}
+
 .fc-left > button, .fc-left > .btn-group > button {
     font-size: min(3vw, 1em)!important;
     padding: 3px 6px;
@@ -32,7 +40,7 @@
 .nav-scroller {
     position: fixed;
     width: 100%;
-    z-index: 150;
+    z-index: 5;
     height: 2.75rem;
     overflow-y: hidden;
 }
@@ -49,6 +57,10 @@
     text-align: center;
     white-space: nowrap;
     -webkit-overflow-scrolling: touch;
+}
+
+.nav-scroller > nav > .active {
+    display: none;
 }
 
 .container-fluid {
@@ -86,6 +98,10 @@
     box-shadow: none;
 }
 
+.btn-compute-clear {
+    width: calc(100% - 1rem);
+}
+
 /* .list-code-input:focus-within {
     z-index: 3;
     border-color: #80bdff;
@@ -95,7 +111,7 @@
 #codeValidation {
     margin: 10px 20px 10px;
     margin-left: 0;
-    z-index: 5;
+    z-index: 2;
 }
 
 .sidebar {
@@ -103,7 +119,7 @@
     top: 0;
     bottom: 0;
     left: 0;
-    z-index: 100; /* Behind the navbar */
+    z-index: 3; /* Behind the navbar */
     padding: 101px 0 0; /* Height of navbar */
     box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
 }
@@ -112,6 +128,10 @@
     .sidebar {
         top: 5rem;
         padding-top: 21px;
+    }
+
+    .nav-scroller > nav > .active {
+        display: block;
     }
 }
 

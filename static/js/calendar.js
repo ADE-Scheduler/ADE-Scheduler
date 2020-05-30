@@ -36,3 +36,22 @@ $(function () {
         trigger: 'focus'
     });
 });
+
+/*
+ *  Button callbacks
+ */
+function computeButton() {
+    let cal = $('#calendar');
+    let spinner = $('#spinner-compute');
+
+    // Computing data...
+    $('#sidebarMenu').collapse('hide');
+    cal.css('opacity', '0.2');
+    spinner.css('display', 'initial');
+
+    // Done (to be replaced by an AJAX request...)
+    setTimeout(() => {
+        cal.css('opacity', '1');
+        spinner.css('display', 'none');
+    }, 2e3);
+}

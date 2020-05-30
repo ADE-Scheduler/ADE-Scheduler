@@ -21,15 +21,15 @@
 
         <div class="mb-3">
             <label for="password">Password</label>
-            {{ render_input_field(register_user_form.password, 'No password specified', placeholder="Password", required="", minlength="6", autocomplete="new-password") }}
+            {{ render_input_field(register_user_form.password, 'No password specified', placeholder="Password", required="", minlength="8", autocomplete="new-password") }}
             <small class="form-text text-muted">
-                Must be at least 6 characters long.
+                Must be at least 8 characters long.
             </small>
         </div>
 
         <div class="mb-3">
             <label for="password_confirm">Confirm password</label>
-            {{ render_input_field(register_user_form.password_confirm, 'Password do not match', placeholder="Password", required="", minlength="6", autocomplete="new-password") }}
+            {{ render_input_field(register_user_form.password_confirm, 'Password do not match', placeholder="Password", required="", minlength="8", autocomplete="new-password") }}
         </div>
         <hr class="mb-3">
         {{ register_user_form.submit(class="btn btn-lg btn-primary btn-block") }}
