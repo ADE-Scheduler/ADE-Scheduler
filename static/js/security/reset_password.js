@@ -26,7 +26,6 @@ function validityCheck() {
                     event.preventDefault()
                     event.stopPropagation()
                 }
-
                 valid_pwd.addEventListener("input", validityCheck);
                       pwd.addEventListener("input", validityCheck);
 

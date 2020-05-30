@@ -36,6 +36,11 @@ main {
         -webkit-transform: translateX(-100%);
         transform: translateX(-100%);
     }
+    .user-status-div {
+        position: absolute;
+        bottom: 16px;
+        width: calc(100vw - 32px);
+    }
 }
 
 .nav-underline .nav-link {

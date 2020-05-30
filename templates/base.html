@@ -58,10 +58,20 @@
                         </div>
                     </li>
                 </ul>
-                <form class="form-inline my-2 my-lg-0">
+                <!-- <form class="form-inline my-2 my-lg-0">
                     <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                </form>
+                </form> -->
+                {% if current_user.is_authenticated %}
+                <div class="btn-group user-status-div">
+                    <button class="btn btn-outline-danger btn-sm" type="button" onclick="window.location.href='/logout'">Logout</button>
+                </div>
+                {% else %}
+                <div class="btn-group user-status-div" style="min-width: 170px">
+                    <button class="btn btn-outline-light btn-sm w-50" type="button" onclick="window.location.href='/login'">Login</button>
+                    <button class="btn btn-outline-light btn-sm w-50" type="button" onclick="window.location.href='/register'">Register</button>
+                </div>
+                {% endif %}
             </div>
         </nav>
 
