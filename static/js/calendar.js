@@ -5,11 +5,6 @@ document.addEventListener('DOMContentLoaded', function() {
         themeSystem: 'bootstrap',
         height: 'auto',
         width: 'parent',
-        header: {
-            left: 'prev,next today',
-            center: 'title',
-            right: 'dayGridMonth,timeGridWeek,listWeek'
-        },
         minTime: '08:00:00',
         maxTime: '21:00:00',
         navLinks: true, // can click day/week names to navigate views
@@ -27,6 +22,19 @@ document.addEventListener('DOMContentLoaded', function() {
             let yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
             // Calculate full weeks to nearest Thursday
             return weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
+        },
+
+        // Custom header Button
+        customButtons: {
+            addEvent: {
+                text: '+',
+                click: () => { $('#eventModal').modal('show'); }
+            }
+        },
+        header: {
+            left: 'prev,next today addEvent',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek'
         },
 
         // Remember where the user left the calendar

@@ -79,13 +79,19 @@
     z-index: 2;
 }
 
+.list-code > .code-item {
+    padding: 0;
+}
 .list-code > .code-item:hover {
     background-color: #f8f9fa;
 }
-
+.code-item > .badge {
+    margin-right: 20px;
+}
 .code-tag {
     cursor: pointer;
     width: 100%;
+    padding: 12px 0 12px 20px;
 }
 
 .code-input {

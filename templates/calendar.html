@@ -10,7 +10,7 @@
 
 {% block body %}
     <!-- Modals -->
-    <div class="modal fade" id="eventModal" tabindex="-1">
+    <div class="modal fade" id="detailsModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -88,6 +88,28 @@
         </div>
     </div>
 
+    <div class="modal fade" id="eventModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add an event</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Defiling menu -->
     <div class="nav-scroller bg-white shadow-sm">
@@ -113,7 +135,7 @@
                 </a>
                 <div class="list-group list-code m-2">
                     <li class="list-group-item code-item d-flex justify-content-between align-items-center">
-                        <span class="code-tag" data-toggle="modal" data-target="#eventModal">
+                        <span class="code-tag" data-toggle="modal" data-target="#detailsModal">
                             LMECA2660
                         </span>
                         <a href="#" class="badge badge-danger">
