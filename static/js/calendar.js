@@ -74,3 +74,16 @@ function computeButton() {
         spinner.css('display', 'none');
     }, 2e3);
 }
+
+function clearButton() {
+    console.log("Calendar cleared !");
+}
+
+function addCodeButton() {
+    let code = $('#codeInput').val();
+    console.log(code);
+}
+
+function removeCodeButton() {
+    console.log("Code removed !");
+}

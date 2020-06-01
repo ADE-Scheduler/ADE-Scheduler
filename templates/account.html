@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block head %}
+    <link href={{ url_for('static', filename='css/account.css') }} rel="stylesheet">
+{% endblock %}
+
+
+{% block body %}
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-8 col-lg-9">
+                <div class="card m-3">
+                    <div class="card-header">
+                        Some STUFF mate !
+                    </div>
+                    <div class="card-body">
+                        <blockquote class="blockquote mb-0">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+                        <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 col-lg-3">
+                <div class="row">
+                    <div class="col">
+                        <h4 class="d-flex justify-content-between align-items-center my-3">
+                            <span class="text-muted">Schedules</span>
+                        </h4>
+                        <ul class="list-group list-schedules mb-3">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <h6 class="text-truncate my-0">Schedule 1</h6>
+                                <div class="d-flex flex-nowrap">
+                                    <a class="text-secondary mx-2" href="#"><i class="far fa-eye"></i></a>
+                                    <a class="text-danger" href="#"><i class="fas fa-times"></i></a>
+                                </div>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <h6 class="text-truncate my-0">Schedule 2</h6>
+                                <div class="d-flex flex-nowrap">
+                                    <a class="text-secondary mx-2" href="#"><i class="far fa-eye"></i></a>
+                                    <a class="text-danger" href="#"><i class="fas fa-times"></i></a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col">
+                        <h4 class="d-flex justify-content-between align-items-center my-3">
+                            <span class="text-muted">Subscription Links</span>
+                        </h4>
+                        <ul class="list-group list-links mb-3">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <h6 class="text-truncate my-0">Link 1</h6>
+                                <div class="d-flex flex-nowrap">
+                                    <a class="text-secondary mx-2" href="#"><i class="far fa-copy"></i></a>
+                                    <a class="text-danger" href="#"><i class="fas fa-times"></i></a>
+                                </div>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <h6 class="text-truncate my-0">Link 2</h6>
+                                <div class="d-flex flex-nowrap">
+                                    <a class="text-secondary mx-2" href="#"><i class="far fa-copy"></i></a>
+                                    <a class="text-danger" href="#"><i class="fas fa-times"></i></a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block js %}
+    <script src={{ url_for('static', filename='js/account.js') }}></script>
+{% endblock %}
