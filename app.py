@@ -8,14 +8,14 @@ from redis import Redis
 from datetime import timedelta
 from backend.database import db_session, init_db
 from backend.models import Role, User  #, Link, Schedule
-from backend.credentials import Credentials
+import backend.credentials as creds
 
 # Setup app
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'super-secret'   # TODO: change !
 
 # Setup Flask-Mail
-mail_credentials = Credentials.get_credentials(Credentials.GMAIL_CREDENTIALS)
+mail_credentials = creds.get_credentials(creds.GMAIL_CREDENTIALS)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
@@ -50,13 +50,14 @@ def account():
 
 
 if __name__ == '__main__':
-    from diagnostics import Diagnostician
+    import diagnostics as diags
 
-    print('Is everything ready to initialize ?')
-    ready, diagnostics = Diagnostician.ready_to_initialize()
-    if ready:
-        print('\tEverything is clear!')
-    else:
-        print('\tSome error(s) occured:', diagnostics)
+    # TODO: there is a class Credentials still somewhere in diagnostics :-)
+    # print('Is everything ready to initialize ?')
+    # ready, diagnostics = diags.ready_to_initialize()
+    # if ready:
+    #     print('\tEverything is clear!')
+    # else:
+    #     print('\tSome error(s) occured:', diagnostics)
 
     app.run(host=os.environ['ADE_FLASK_HOSTNAME'], debug=True)
