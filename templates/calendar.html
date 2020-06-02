@@ -89,7 +89,7 @@
     </div>
 
     <div class="modal fade" id="eventModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Add an event</h5>
@@ -99,8 +99,47 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
+                        <div class="col-6">
+                            <label>Title</label>
+                            <input class="form-control" type="text"/>
 
+                            <label>Location</label>
+                            <input class="form-control" type="text"/>
+                        </div>
+
+                        <div class="col-6 text-right">
+                            <label>Notes</label>
+                            <textarea class="form-control" type="text" rows="4"></textarea>
+                        </div>
                     </div>
+
+                    <!-- Repeting event ? -->
+                    <div class="custom-control custom-switch" style="margin-top: 10px">
+                        <input type="checkbox" class="custom-control-input" id="switch-repetition" data-toggle="collapse" data-target="#event-repetition">
+                        <label class="custom-control-label" for="switch-repetition">Recurring event ?</label>
+                    </div>
+                    <div class="row collapse justify-content-between mt-3" id="event-repetition">
+                        <div class="col-6">
+                            <label for="start-repetition">Start of repetition</label>
+                            <div class="input-group date" data-placement="right">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                </div>
+                                <input type="date" class="form-control"  id="fts-start-recur"/>
+                            </div>
+                        </div>
+
+                        <div class=" col-6 text-right">
+                            <label for="start-repetition">End of repetition</label>
+                            <div class="input-group date">
+                                <input type="date" class="form-control" id="fts-start-recur"/>
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

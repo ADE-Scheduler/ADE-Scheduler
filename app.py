@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, render_template, url_for, redirect, request, session
 from flask_session import Session
 from flask_security import Security, login_required, SQLAlchemySessionUserDatastore
@@ -57,5 +59,4 @@ if __name__ == '__main__':
     else:
         print('\tSome error(s) occured:', diagnostics)
 
-    app.run(debug=True)
-    # app.run(host="10.42.0.1", debug=True)
+    app.run(host=os.environ['ADE_FLASK_HOSTNAME'], debug=True)
