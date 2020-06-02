@@ -26,17 +26,8 @@ class Client:
         return self.expiration - time.time()
 
     def renew_token(self):
-        self.token, self.expiration = Client.get_token(self.credentials)
+        self.token, self.expiration = get_token(self.credentials)
         self.expiration += time.time()
-
-    @staticmethod
-    def get_token(credentials):
-        url = credentials['url']
-        data = credentials['data']
-        authorization = credentials['Authorization']
-        header = {'Authorization': authorization}
-        r = requests.post(url=url, headers=header, data=data).json()
-        return r['access_token'], int(r['expires_in'])
 
     def request(self, **kwargs):
 
@@ -65,77 +56,83 @@ class Client:
                             tree='false', detail=17, resources='|'.join(resource_ids))
 
 
-class DataParser:
+def get_token(credentials):
+    url = credentials['url']
+    data = credentials['data']
+    authorization = credentials['Authorization']
+    header = {'Authorization': authorization}
+    r = requests.post(url=url, headers=header, data=data).json()
+    return r['access_token'], int(r['expires_in'])
 
-    @staticmethod
-    def request_to_root(request):
-        return etree.fromstring(request.content)
 
-    @staticmethod
-    def request_to_project_ids(request):
-        root = DataParser.request_to_root(request)
-        ids = root.xpath('//project/@id')
-        years = root.xpath('//project/@name')
+def request_to_root(request):
+    return etree.fromstring(request.content)
 
-        return zip(map(int, ids), years)
 
-    @staticmethod
-    def request_to_classrooms(request):
-        from backend.classrooms import Classroom, Address
+def request_to_project_ids(request):
+    root = request_to_root(request)
+    ids = root.xpath('//project/@id')
+    years = root.xpath('//project/@name')
 
-        root = DataParser.request_to_root(request)
+    return zip(map(int, ids), years)
 
-        rooms = root.xpath('//room')
 
-        classrooms = []
-        for room in rooms:
-            address = Address(
-                address1=room.get('address1'),
-                address2=room.get('address2'),
-                zipCode=room.get('zipCode'),
-                city=room.get('city'),
-                country=room.get('country')
-            )
-            classroom = Classroom(
-                name=room.get('name'),
-                type=room.get('type'),
-                size=room.get('size'),
-                id=room.get('id'),
-                address=address
-            )
-            classrooms.append(classroom)
+def request_to_classrooms(request):
+    from backend.classrooms import Classroom, Address
 
-        return classrooms
+    root = request_to_root(request)
 
-    @staticmethod
-    def request_to_resource_ids(request):
-        root = DataParser.request_to_root(request)
-        df = pd.DataFrame(data=root.xpath('//resource/@id'), index=map(lambda x: x.upper(),
-                                                                       root.xpath('//resource/@name'))
-                          , columns=['id'])
-        return df.groupby(level=0).apply(lambda x: '|'.join(x.to_dict(orient='list')['id'])).to_dict()
+    rooms = root.xpath('//room')
+
+    classrooms = []
+    for room in rooms:
+        address = Address(
+            address1=room.get('address1'),
+            address2=room.get('address2'),
+            zipCode=room.get('zipCode'),
+            city=room.get('city'),
+            country=room.get('country')
+        )
+        classroom = Classroom(
+            name=room.get('name'),
+            type=room.get('type'),
+            size=room.get('size'),
+            id=room.get('id'),
+            address=address
+        )
+        classrooms.append(classroom)
+
+    return classrooms
+
+
+def request_to_resource_ids(request):
+    root = request_to_root(request)
+    df = pd.DataFrame(data=root.xpath('//resource/@id'), index=map(lambda x: x.upper(),
+                                                                   root.xpath('//resource/@name'))
+                      , columns=['id'])
+    return df.groupby(level=0).apply(lambda x: '|'.join(x.to_dict(orient='list')['id'])).to_dict()
 
 
 if __name__ == "__main__":
 
-    from backend.credentials import Credentials
+    import backend.credentials as credentials
 
     filename = "/home/jerome/ade_api.json"
 
-    Credentials.set_credentials(filename, Credentials.ADE_API_CREDENTIALS)
+    credentials.set_credentials(filename, credentials.ADE_API_CREDENTIALS)
 
-    credentials = Credentials.get_credentials(Credentials.ADE_API_CREDENTIALS)
+    credentials = credentials.get_credentials(credentials.ADE_API_CREDENTIALS)
 
     client = Client(credentials)
 
     request = client.get_project_id()
 
-    ids_years = DataParser.request_to_project_ids(request)
+    ids_years = request_to_project_ids(request)
 
     # On peut l'obtenir de ids_years
     project_id = 9
 
     request = client.get_classrooms(project_id)
 
-    resources_ids = DataParser.request_to_classrooms(request)
+    resources_ids = request_to_classrooms(request)
     print(resources_ids)

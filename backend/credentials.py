@@ -2,6 +2,9 @@ import os
 import json
 import warnings
 
+ADE_API_CREDENTIALS = "ADE_API_CREDENTIALS"
+GMAIL_CREDENTIALS = "GMAIL_CREDENTIALS"
+
 
 class CredentialsEncoder(json.JSONEncoder):
 
@@ -24,9 +27,36 @@ class CredentialsDecoder(json.JSONDecoder):
         return decoded
 
 
+def set_credentials(filename, credentials_name):
+    """
+    Set a environment variable to link toward credentials file.
+    :param filename: path with .json extension
+    :param credentials_name: the environment variable as a string
+    :return: /
+    """
+    os.environ[credentials_name] = filename
+    venv = "venv/bin/activate"
+    warnings.warn("\nWarning, Python cannot set environment variables permanently!\n"
+                  "In order to make this change persistent, type in a terminal:\n"
+                  f"[UNIX]:\n"
+                  f"\techo \"export {credentials_name}=\\\"{filename}\\\"\">> ~/.bashrc \n"
+                  f"[UNIX + Python in Virtual env. @ /venv]:\n"
+                  f"\techo \"export {credentials_name}=\\\"{filename}\\\"\">> {venv} \n"
+                  )
+
+
+def get_credentials(credentials_name):
+    """
+    Reads a credentials file from environment variable and returns the credentials in it.
+    lists of ints are converted into lists of bytes.
+    :param credentials_name: the environment variable as a string
+    :return: a dict of credentials
+    """
+    with open(os.environ[credentials_name], 'r') as f:
+        return Credentials(**json.load(f, cls=CredentialsDecoder))
+
+
 class Credentials:
-    ADE_API_CREDENTIALS = "ADE_API_CREDENTIALS"
-    GMAIL_CREDENTIALS = "GMAIL_CREDENTIALS"
 
     def __init__(self, **kwargs):
         """
@@ -54,35 +84,6 @@ class Credentials:
     def __getitem__(self, item):
         return self.credentials[item]
 
-    @staticmethod
-    def set_credentials(filename, credentials_name):
-        """
-        Set a environment variable to link toward credentials file.
-        :param filename: path with .json extension
-        :param credentials_name: the environment variable as a string
-        :return: /
-        """
-        os.environ[credentials_name] = filename
-        venv = "venv/bin/activate"
-        warnings.warn("\nWarning, Python cannot set environment variables permanently!\n"
-                      "In order to make this change persistent, type in a terminal:\n"
-                      f"[UNIX]:\n"
-                      f"\techo \"export {credentials_name}=\\\"{filename}\\\"\">> ~/.bashrc \n"
-                      f"[UNIX + Python in Virtual env. @ /venv]:\n"
-                      f"\techo \"export {credentials_name}=\\\"{filename}\\\"\">> {venv} \n"
-                      )
-
-    @staticmethod
-    def get_credentials(credentials_name):
-        """
-        Reads a credentials file from environment variable and returns the credentials in it.
-        lists of ints are converted into lists of bytes.
-        :param credentials_name: the environment variable as a string
-        :return: a dict of credentials
-        """
-        with open(os.environ[credentials_name], 'r') as f:
-            return Credentials(**json.load(f, cls=CredentialsDecoder))
-
 
 if __name__ == "__main__":
 
@@ -93,15 +94,15 @@ if __name__ == "__main__":
 
     filename = "/home/jerome/ade_api.json"
 
-    Credentials.set_credentials(filename, Credentials.ADE_API_CREDENTIALS)
+    set_credentials(filename, ADE_API_CREDENTIALS)
 
     filename = "/home/jerome/as_gmail.json"
 
-    Credentials.set_credentials(filename, Credentials.GMAIL_CREDENTIALS)
+    set_credentials(filename, GMAIL_CREDENTIALS)
 
     # Call this function any time you want to retrieve the credentials
 
-    credentials = Credentials.get_credentials(Credentials.ADE_API_CREDENTIALS)
+    credentials = get_credentials(ADE_API_CREDENTIALS)
 
 
     print(credentials)

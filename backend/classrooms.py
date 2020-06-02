@@ -15,7 +15,6 @@ class Address:
     def __repr__(self):
         return str(self)
 
-    @staticmethod
     def __str__(self):
         location = ''
         if self.address['address2'] != '':
