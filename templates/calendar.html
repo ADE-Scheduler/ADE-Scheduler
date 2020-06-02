@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block head %}
     <link href={{ url_for('static', filename='css/calendar.css') }} rel="stylesheet">
+    <link href={{ url_for('static', filename='css/lib/tempusdominus.css') }} rel="stylesheet">
     <link href='static/lib/fullcalendar/core/main.css' rel='stylesheet'/>
     <link href='static/lib/fullcalendar/daygrid/main.css' rel='stylesheet' />
     <link href='static/lib/fullcalendar/timegrid/main.css' rel='stylesheet' />
@@ -9,7 +10,7 @@
 
 
 {% block body %}
-    <!-- Modals -->
+    <!-- Course details Modal -->
     <div class="modal fade" id="detailsModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
@@ -88,6 +89,7 @@
         </div>
     </div>
 
+    <!-- Add an event Modal -->
     <div class="modal fade" id="eventModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -113,33 +115,82 @@
                         </div>
                     </div>
 
-                    <!-- Repeting event ? -->
-                    <div class="custom-control custom-switch" style="margin-top: 10px">
-                        <input type="checkbox" class="custom-control-input" id="switch-repetition" data-toggle="collapse" data-target="#event-repetition">
-                        <label class="custom-control-label" for="switch-repetition">Recurring event ?</label>
-                    </div>
-                    <div class="row collapse justify-content-between mt-3" id="event-repetition">
+                    <!-- Start-end inputs -->
+                    <div class="row justify-content-between mt-3">
                         <div class="col-6">
-                            <label for="start-repetition">Start of repetition</label>
-                            <div class="input-group date" data-placement="right">
+                            <label>From</label>
+                            <div class="input-group date mb-2" id="date-start">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                 </div>
-                                <input type="date" class="form-control"  id="fts-start-recur"/>
+                                <input type="date" class="form-control text-truncate"/>
+                            </div>
+                            <div class="input-group time" id="time-start">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="fa fa-clock"></i></div>
+                                </div>
+                                <input type="time" class="form-control"/>
                             </div>
                         </div>
-
-                        <div class=" col-6 text-right">
-                            <label for="start-repetition">End of repetition</label>
-                            <div class="input-group date">
-                                <input type="date" class="form-control" id="fts-start-recur"/>
+                        <div class="col-6 text-right">
+                            <label>To</label>
+                            <div class="input-group date mb-2" id="date-end">
+                                <input type="date" class="form-control text-truncate"/>
                                 <div class="input-group-append">
-                                    <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                            <div class="input-group time" id="time-end">
+                                <input type="time" class="form-control"/>
+                                <div class="input-group-append">
+                                    <div class="input-group-text"><i class="fa fa-clock"></i></div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
+                    <!-- Repeting event ? -->
+                    <!-- <hr class="mb-3"> -->
+                    <div class="row justify-content-between mt-3">
+                        <div class="col-6">
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="switch-repetition" data-toggle="collapse" data-target="#event-repetition,#recurring-start-end">
+                                <label class="custom-control-label" for="switch-repetition">Recurring event</label>
+                            </div>
+                        </div>
+                        <div class="col-6 text-right collapse" id="event-repetition">
+                            <label for="start-repetition">Days of week</label>
+                            <select class="custom-select" multiple>
+                                <option value="1">Monday</option>
+                                <option value="2">Tuesday</option>
+                                <option value="3">Wednesday</option>
+                                <option value="3">Thursday</option>
+                                <option value="3">Friday</option>
+                                <option value="3">Saturday</option>
+                                <option value="3">Sunday</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row justify-content-between mt-3 collapse" id="recurring-start-end">
+                        <div class="col-6">
+                            <label>Start</label>
+                            <div class="input-group date mb-2" id="recurring-start">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                                <input type="date" class="form-control text-truncate"/>
+                            </div>
+                        </div>
+                        <div class="col-6 text-right">
+                            <label>End</label>
+                            <div class="input-group date mb-2" id="recurring-end">
+                                <input type="date" class="form-control text-truncate"/>
+                                <div class="input-group-append">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -149,8 +200,7 @@
         </div>
     </div>
 
-
-    <!-- Defiling menu -->
+    <!-- Horizontal defiling menu -->
     <div class="nav-scroller bg-white shadow-sm">
         <nav class="nav nav-underline">
             <a class="nav-link active" href="#" data-toggle="collapse" data-target="#sidebarMenu">Menu</a>
@@ -223,6 +273,8 @@
 
 {% block js %}
     <script src={{ url_for('static', filename='js/calendar.js') }}></script>
+    <script src={{ url_for('static', filename='js/lib/moment.min.js') }}></script>
+    <script src={{ url_for('static', filename='js/lib/tempusdominus.min.js') }}></script>
     <script src='static/lib/fullcalendar/core/main.js'></script>
     <script src='static/lib/fullcalendar/interaction/main.js'></script>
     <script src='static/lib/fullcalendar/daygrid/main.js'></script>
