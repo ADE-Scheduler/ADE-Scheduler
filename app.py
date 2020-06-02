@@ -49,5 +49,14 @@ def account():
 
 
 if __name__ == '__main__':
+    from diagnostics import Diagnostician
+
+    print('Is everything ready to initialize ?')
+    ready, diagnostics = Diagnostician.ready_to_initialize()
+    if ready:
+        print('\tEverything is clear!')
+    else:
+        print('\tSome error(s) occured:', diagnostics)
+
     app.run(debug=True)
     # app.run(host="10.42.0.1", debug=True)
