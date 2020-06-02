@@ -4,10 +4,108 @@ from ics import Event
 from datetime import datetime
 
 
+# We need to set the timezone
+TZ = timezone('Europe/Brussels')
+COURSE_REGEX = '([A-Z]+[0-9]+)'
+
+def extract_code(code: str):
+    """
+    Extracts the course code from a string. Any course should start with something like
+        " LEPL1104 "
+    Parameters:
+    -----------
+    code : str
+        The string from which the code is to be extracted.
+    Returns:
+    --------
+    s : str
+        The code of the course. None if nothing matched the pattern required
+    """
+    s = re.search(COURSE_REGEX, code, re.IGNORECASE)
+    if s:
+        return s.group(1)
+    else:
+        return ''
+
+
+def extract_type(ctype: str, cid: str):
+    """
+    # TODO
+    :param ctype:
+    :param cid:
+    :return:
+    """
+    # We first try to detect the type with the ID regex
+    if re.search(COURSE_REGEX + "-", cid, re.IGNORECASE):
+        return EventCM
+    elif re.search(COURSE_REGEX + "_", cid, re.IGNORECASE):
+        return EventTP
+    elif re.search(COURSE_REGEX + "=E", cid, re.IGNORECASE) or re.search(COURSE_REGEX + "=P", cid, re.IGNORECASE):
+        return EventEXAM
+    elif re.search(COURSE_REGEX + "=O", cid, re.IGNORECASE):
+        return EventORAL
+
+    # If it fails, we look at the given type (there are some mistakes in the data from ADE, not always trustworthy)
+    elif ctype == 'Cours magistral':
+        return EventCM
+    elif ctype == 'TP' or 'TD':
+        return EventTP
+    elif ctype == 'Examen écrit' or type == 'Test / Interrogation / Partiel':
+        return EventEXAM
+    elif ctype == 'Examen oral':
+        return EventORAL
+
+    # The search failed, return the "Other" type
+    else:
+        return EventOTHER
+
+
+def extract_datetime(date, start, end):
+    """
+    Parses info to return the start and end time of an event
+    :param date: str
+    :param start: str
+    :param end: str
+    :return: datetime object
+    """
+    t0 = datetime.strptime(date + '-' + start, '%d/%m/%Y-%H:%M').astimezone(tz)
+    t1 = datetime.strptime(date + '-' + end, '%d/%m/%Y-%H:%M').astimezone(tz)
+    if t0 < t1:
+        return t0, t1
+    else:
+        return t1, t0
+
+
+def event_prefix(event_type):
+    """
+    # TODO
+    :param event_type:
+    :return:
+    """
+    if event_type == EventTP:
+        return 'TP:'
+    elif event_type == EventCM:
+        return 'CM:'
+    elif event_type == EventEXAM:
+        return 'EXAM:'
+    elif event_type == EventORAL:
+        return 'ORAL:'
+    else:
+        return 'Other:'
+
+
+def json_from_events(events):
+    """
+    Converts the events into a json-like format
+    :param events: list of CustomEvents
+    :return: list of dict
+    """
+    return [{'start': str(event.begin), 'end': str(event.end), 'title': event.id + '\n' + event.classroom, 'editable':
+            False, 'code': event.code, 'description': event.name + '\n' + event.location + ' - ' + str(event.duration)
+            + '\n' + str(event.description)} for event in events]
+
+
 class AcademicalEvent(Event):
-    # We need to set the timezone
-    TZ = timezone('Europe/Brussels')
-    COURSE_REGEX = '([A-Z]+[0-9]+)'
 
     def __init__(self, name, begin, end, description, loc, classroom=None, id=None, weight=5, code=None):
         super().__init__(name=name, begin=begin, end=end, description=description, location=loc)
@@ -60,104 +158,6 @@ class AcademicalEvent(Event):
         returns the week of this event in the gregorian calendar, starting at 0 for the first week
         """
         return self.begin.isocalendar()[1] - 1
-
-    @staticmethod
-    def extract_code(code: str):
-        """
-        Extracts the course code from a string. Any course should start with something like
-            " LEPL1104 "
-        Parameters:
-        -----------
-        code : str
-            The string from which the code is to be extracted.
-        Returns:
-        --------
-        s : str
-            The code of the course. None if nothing matched the pattern required
-        """
-        s = re.search(AcademicalEvent.COURSE_REGEX, code, re.IGNORECASE)
-        if s:
-            return s.group(1)
-        else:
-            return ''
-
-    @staticmethod
-    def extract_type(ctype: str, cid: str):
-        """
-        # TODO
-        :param ctype:
-        :param cid:
-        :return:
-        """
-        # We first try to detect the type with the ID regex
-        if re.search(AcademicalEvent.COURSE_REGEX + "-", cid, re.IGNORECASE):
-            return EventCM
-        elif re.search(AcademicalEvent.COURSE_REGEX + "_", cid, re.IGNORECASE):
-            return EventTP
-        elif re.search(AcademicalEvent.COURSE_REGEX + "=E", cid, re.IGNORECASE) or\
-                re.search(AcademicalEvent.COURSE_REGEX + "=P", cid, re.IGNORECASE):
-            return EventEXAM
-        elif re.search(AcademicalEvent.COURSE_REGEX + "=O", cid, re.IGNORECASE):
-            return EventORAL
-
-        # If it fails, we look at the given type (there are some mistakes in the data from ADE, not always trustworthy)
-        elif ctype == 'Cours magistral':
-            return EventCM
-        elif ctype == 'TP' or 'TD':
-            return EventTP
-        elif ctype == 'Examen écrit' or type == 'Test / Interrogation / Partiel':
-            return EventEXAM
-        elif ctype == 'Examen oral':
-            return EventORAL
-
-        # The search failed, return the "Other" type
-        else:
-            return EventOTHER
-
-    @staticmethod
-    def extract_datetime(date, start, end):
-        """
-        Parses info to return the start and end time of an event
-        :param date: str
-        :param start: str
-        :param end: str
-        :return: datetime object
-        """
-        t0 = datetime.strptime(date + '-' + start, '%d/%m/%Y-%H:%M').astimezone(AcademicalEvent.TZ)
-        t1 = datetime.strptime(date + '-' + end, '%d/%m/%Y-%H:%M').astimezone(AcademicalEvent.TZ)
-        if t0 < t1:
-            return t0, t1
-        else:
-            return t1, t0
-
-    @staticmethod
-    def event_prefix(event_type):
-        """
-        # TODO
-        :param event_type:
-        :return:
-        """
-        if event_type == EventTP:
-            return 'TP:'
-        elif event_type == EventCM:
-            return 'CM:'
-        elif event_type == EventEXAM:
-            return 'EXAM:'
-        elif event_type == EventORAL:
-            return 'ORAL:'
-        else:
-            return 'Other:'
-
-    @staticmethod
-    def json_from_events(events):
-        """
-        Converts the events into a json-like format
-        :param events: list of CustomEvents
-        :return: list of dict
-        """
-        return [{'start': str(event.begin), 'end': str(event.end), 'title': event.id + '\n' + event.classroom, 'editable':
-                False, 'code': event.code, 'description': event.name + '\n' + event.location + ' - ' + str(event.duration)
-                + '\n' + str(event.description)} for event in events]
 
 
 class EventCM(AcademicalEvent):
