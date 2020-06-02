@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, render_template, url_for, redirect, request, session
 from flask_session import Session
 from flask_security import Security, login_required, SQLAlchemySessionUserDatastore
@@ -30,7 +32,6 @@ app.config['SECURITY_PASSWORD_SALT'] = 'a_very_complex_and_indeciphrable_salt'  
 Security(app, SQLAlchemySessionUserDatastore(db_session, User, Role))
 
 # Setup Flask-Session
-app.config['SECRET_KEY'] = 'super-secret'
 app.config['SESSION_TYPE'] = 'redis'
 app.config['SESSION_REDIS'] = Redis(host='localhost', port=6379)
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=30)
@@ -58,5 +59,4 @@ if __name__ == '__main__':
     else:
         print('\tSome error(s) occured:', diagnostics)
 
-    app.run(debug=True)
-    # app.run(host="10.42.0.1", debug=True)
+    app.run(host=os.environ['ADE_FLASK_HOSTNAME'], debug=True)
