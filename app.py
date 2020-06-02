@@ -42,6 +42,12 @@ def main():
     return render_template('calendar.html', **session)
 
 
+@app.route('/account')
+@login_required
+def account():
+    return render_template('account.html')
+
+
 if __name__ == '__main__':
     app.run(debug=True)
     # app.run(host="10.42.0.1", debug=True)
