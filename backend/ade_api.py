@@ -7,7 +7,7 @@ import pandas as pd
 class ExpiredTokenError(Exception):
 
     def __str__(self):
-        return 'The token you were using is not expired! Renew the token to proceed normally.'
+        return 'The token you were using is now expired! Renew the token to proceed normally.'
 
 
 class Client:
@@ -68,20 +68,48 @@ class Client:
 class DataParser:
 
     @staticmethod
-    def request_to_string(request):
+    def request_to_root(request):
         return etree.fromstring(request.content)
 
     @staticmethod
     def request_to_project_ids(request):
-        root = DataParser.request_to_string(request)
+        root = DataParser.request_to_root(request)
         ids = root.xpath('//project/@id')
         years = root.xpath('//project/@name')
 
         return zip(map(int, ids), years)
 
     @staticmethod
+    def request_to_classrooms(request):
+        from backend.classrooms import Classroom, Address
+
+        root = DataParser.request_to_root(request)
+
+        rooms = root.xpath('//room')
+
+        classrooms = []
+        for room in rooms:
+            address = Address(
+                address1=room.get('address1'),
+                address2=room.get('address2'),
+                zipCode=room.get('zipCode'),
+                city=room.get('city'),
+                country=room.get('country')
+            )
+            classroom = Classroom(
+                name=room.get('name'),
+                type=room.get('type'),
+                size=room.get('size'),
+                id=room.get('id'),
+                address=address
+            )
+            classrooms.append(classroom)
+
+        return classrooms
+
+    @staticmethod
     def request_to_resource_ids(request):
-        root = DataParser.request_to_string(request)
+        root = DataParser.request_to_root(request)
         df = pd.DataFrame(data=root.xpath('//resource/@id'), index=map(lambda x: x.upper(),
                                                                        root.xpath('//resource/@name'))
                           , columns=['id'])
@@ -107,7 +135,7 @@ if __name__ == "__main__":
     # On peut l'obtenir de ids_years
     project_id = 9
 
-    request = client.get_resource_ids(project_id)
-    
-    resources_ids = DataParser.request_to_resource_ids(request)
+    request = client.get_classrooms(project_id)
+
+    resources_ids = DataParser.request_to_classrooms(request)
     print(resources_ids)
