@@ -1,14 +1,22 @@
 const valid_pwd = document.getElementById('password_confirm');
 const       pwd = document.getElementById('password');
+const      form = document.getElementById('reset_password_form');
+
+valid_pwd.addEventListener("input", validityCheck);
+  pwd.addEventListener("input", validityCheck);
 
 function validityCheck() {
     if (valid_pwd.value === pwd.value ) {
-        valid_pwd.classList.add("is-valid");
-        valid_pwd.classList.remove("is-invalid");
+        if (form.classList.contains('was-validated')) {
+            valid_pwd.classList.add("is-valid");
+            valid_pwd.classList.remove("is-invalid");
+        }
         valid_pwd.setCustomValidity("");
     } else {
-        valid_pwd.classList.add("is-invalid");
-        valid_pwd.classList.remove("is-valid");
+        if (form.classList.contains('was-validated')) {
+            valid_pwd.classList.add("is-invalid");
+            valid_pwd.classList.remove("is-valid");
+        }
         valid_pwd.setCustomValidity("Invalid field.");
     }
 }
@@ -16,21 +24,12 @@ function validityCheck() {
 (function () {
     'use strict'
     window.addEventListener('load', function () {
-        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-        var forms = document.getElementsByClassName('needs-validation')
-
-        // Loop over them and prevent submission
-        Array.prototype.filter.call(forms, function (form) {
-            form.addEventListener('submit', function (event) {
-                if (form.checkValidity() === false) {
-                    event.preventDefault()
-                    event.stopPropagation()
-                }
-                valid_pwd.addEventListener("input", validityCheck);
-                      pwd.addEventListener("input", validityCheck);
-
-                form.classList.add('was-validated')
-            }, false)
-        })
+        form.addEventListener('submit', function (event) {
+            if (form.checkValidity() === false) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+            form.classList.add('was-validated')
+        }, false)
     }, false)
 }());
