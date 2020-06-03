@@ -102,7 +102,7 @@
                     <div class="row">
                         <div class="col-6">
                             <label>Title</label>
-                            <input class="form-control" type="text" required/>
+                            <input class="form-control" type="text" required id="event-title"/>
 
                             <label>Location</label>
                             <input class="form-control" type="text"/>
@@ -159,14 +159,14 @@
                         </div>
                         <div class="col-6 text-right collapse" id="event-repetition">
                             <label for="start-repetition">Days of week</label>
-                            <select class="custom-select" multiple id="recurring-days">
+                            <select class="custom-select" multiple id="recurring-days" disabled>
                                 <option value="1">Monday</option>
                                 <option value="2">Tuesday</option>
                                 <option value="3">Wednesday</option>
-                                <option value="3">Thursday</option>
-                                <option value="3">Friday</option>
-                                <option value="3">Saturday</option>
-                                <option value="3">Sunday</option>
+                                <option value="4">Thursday</option>
+                                <option value="5">Friday</option>
+                                <option value="6">Saturday</option>
+                                <option value="0">Sunday</option>
                             </select>
                         </div>
                     </div>
@@ -177,13 +177,13 @@
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                 </div>
-                                <input type="date" class="form-control text-truncate" id="recurring-start"/>
+                                <input type="date" class="form-control text-truncate" id="recurring-start" disabled/>
                             </div>
                         </div>
                         <div class="col-6 text-right">
                             <label>End</label>
                             <div class="input-group date mb-2">
-                                <input type="date" class="form-control text-truncate" id="recurring-end"/>
+                                <input type="date" class="form-control text-truncate" id="recurring-end" disabled/>
                                 <div class="input-group-append">
                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                 </div>

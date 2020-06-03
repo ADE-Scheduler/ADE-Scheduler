@@ -1,6 +1,9 @@
+let eventArray = [];
+let calendar = {};
+
 document.addEventListener('DOMContentLoaded', function() {
     let calendarDiv = document.getElementById('calendar');
-    let calendar = new FullCalendar.Calendar(calendarDiv, {
+    calendar = new FullCalendar.Calendar(calendarDiv, {
         plugins: ['interaction', 'dayGrid', 'list', 'timeGrid', 'bootstrap'],
         themeSystem: 'bootstrap',
         height: 'auto',
@@ -13,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
         eventLimit: false, // allow "more" link when too many events
 
         // Week display
+        firstDay: 1,
         weekLabel: 'S',
         weekNumbers: true,
         weekNumbersWithinDays: true,
@@ -43,6 +47,11 @@ document.addEventListener('DOMContentLoaded', function() {
         datesRender: function (arg) {
             localStorage.setItem("fcDefaultView", arg.view.type);
             localStorage.setItem("fcDefaultDate", arg.view.currentStart.getTime());
+        },
+
+        // Events refresher
+        events: function (fetchInfo, successCallback, failureCallback) {
+            successCallback(eventArray);
         },
     });
 
@@ -93,36 +102,60 @@ function removeCodeButton() {
 /*
  *  Add an event form
  */
- $('#form-add-event').submit((e) => {
-     // Prevent form submission
-     e.preventDefault();
+$('#form-add-event').submit((e) => {
+    // Prevent form submission
+    e.preventDefault();
 
-     console.log("Form sumbitted !");
+    // Assemble the event
+    let evt = {
+        editable: true,
+        title: $('#event-title').val(),
+        location: $('#event-location').val(),
+        notes: $('#event-notes').val(),
+    }
+    if ($('#switch-repetition').is(':checked')) {
+        evt.startTime = $('#time-start').val();
+        evt.startRecur = $('#recurring-start').val();
+        evt.endTime = $('#time-end').val();
+        evt.endRecur = $('#recurring-end').val();
+        evt.daysOfWeek = $('#recurring-days').val();
+    } else {
+        evt.start = $('#date-start').val() + ' ' +$('#time-start').val();
+        evt.end = $('#date-end').val() + ' ' +$('#time-end').val();
+    }
+    eventArray.push(evt);
+    calendar.refetchEvents(evt);
 
+    // Clear the form
+    e.target.reset();
  });
 
- $('#switch-repetition').change((e) => {
-     if (e.target.checked) {
-         $('#recurring-start').attr('required', true);
-         $('#recurring-end').attr('required', true);
-         $('#recurring-days').attr('required', true);
+$('#switch-repetition').change((e) => {
+    if (e.target.checked) {
+        $('#recurring-start').attr('required', true);
+        $('#recurring-end').attr('required', true);
+        $('#recurring-days').attr('required', true);
+        $('#date-start').attr('required', false);
+        $('#date-end').attr('required', false);
 
-         $('#date-start').attr('required', false);
-         $('#date-end').attr('required', false);
+        $('#recurring-start').attr('disabled', false);
+        $('#recurring-end').attr('disabled', false);
+        $('#recurring-days').attr('disabled', false);
+        $('#date-start').attr('disabled', true);
+        $('#date-end').attr('disabled', true);
+    } else {
+        $('#recurring-start').attr('required',false);
+        $('#recurring-end').attr('required', false);
+        $('#recurring-days').attr('required', false);
+        $('#date-start').attr('required', true);
+        $('#date-end').attr('required', true);
 
-         $('#date-start').attr('disabled', true);
-         $('#date-end').attr('disabled', true);
-     } else {
-         $('#recurring-start').attr('required',false);
-         $('#recurring-end').attr('required', false);
-         $('#recurring-days').attr('required', false);
-
-         $('#date-start').attr('required', true);
-         $('#date-end').attr('required', true);
-
-         $('#date-start').attr('disabled', false);
-         $('#date-end').attr('disabled', false);
-     }
+        $('#recurring-start').attr('disabled', true);
+        $('#recurring-end').attr('disabled', true);
+        $('#recurring-days').attr('disabled', true);
+        $('#date-start').attr('disabled', false);
+        $('#date-end').attr('disabled', false);
+    }
  });
 
 $('#date-start').change((e) => {
