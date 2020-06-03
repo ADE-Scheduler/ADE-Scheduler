@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% block head %}
     <link href={{ url_for('static', filename='css/calendar.css') }} rel="stylesheet">
-    <link href={{ url_for('static', filename='css/lib/tempusdominus.css') }} rel="stylesheet">
     <link href='static/lib/fullcalendar/core/main.css' rel='stylesheet'/>
     <link href='static/lib/fullcalendar/daygrid/main.css' rel='stylesheet' />
     <link href='static/lib/fullcalendar/timegrid/main.css' rel='stylesheet' />
@@ -92,7 +91,7 @@
     <!-- Add an event Modal -->
     <div class="modal fade" id="eventModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
+            <form class="modal-content needs-validation" id="form-add-event">
                 <div class="modal-header">
                     <h5 class="modal-title">Add an event</h5>
                     <button type="button" class="close" data-dismiss="modal">
@@ -103,7 +102,7 @@
                     <div class="row">
                         <div class="col-6">
                             <label>Title</label>
-                            <input class="form-control" type="text"/>
+                            <input class="form-control" type="text" required/>
 
                             <label>Location</label>
                             <input class="form-control" type="text"/>
@@ -119,29 +118,29 @@
                     <div class="row justify-content-between mt-3">
                         <div class="col-6">
                             <label>From</label>
-                            <div class="input-group date mb-2" id="date-start">
+                            <div class="input-group date mb-2">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                 </div>
-                                <input type="date" class="form-control text-truncate"/>
+                                <input type="date" class="form-control text-truncate" required id="date-start"/>
                             </div>
-                            <div class="input-group time" id="time-start">
+                            <div class="input-group time">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"><i class="fa fa-clock"></i></div>
                                 </div>
-                                <input type="time" class="form-control"/>
+                                <input type="time" class="form-control" required id="time-start"/>
                             </div>
                         </div>
                         <div class="col-6 text-right">
                             <label>To</label>
-                            <div class="input-group date mb-2" id="date-end">
-                                <input type="date" class="form-control text-truncate"/>
+                            <div class="input-group date mb-2">
+                                <input type="date" class="form-control text-truncate" required id="date-end"/>
                                 <div class="input-group-append">
                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                 </div>
                             </div>
-                            <div class="input-group time" id="time-end">
-                                <input type="time" class="form-control"/>
+                            <div class="input-group time">
+                                <input type="time" class="form-control" required id="time-end"/>
                                 <div class="input-group-append">
                                     <div class="input-group-text"><i class="fa fa-clock"></i></div>
                                 </div>
@@ -160,7 +159,7 @@
                         </div>
                         <div class="col-6 text-right collapse" id="event-repetition">
                             <label for="start-repetition">Days of week</label>
-                            <select class="custom-select" multiple>
+                            <select class="custom-select" multiple id="recurring-days">
                                 <option value="1">Monday</option>
                                 <option value="2">Tuesday</option>
                                 <option value="3">Wednesday</option>
@@ -174,17 +173,17 @@
                     <div class="row justify-content-between mt-3 collapse" id="recurring-start-end">
                         <div class="col-6">
                             <label>Start</label>
-                            <div class="input-group date mb-2" id="recurring-start">
+                            <div class="input-group date mb-2">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                 </div>
-                                <input type="date" class="form-control text-truncate"/>
+                                <input type="date" class="form-control text-truncate" id="recurring-start"/>
                             </div>
                         </div>
                         <div class="col-6 text-right">
                             <label>End</label>
-                            <div class="input-group date mb-2" id="recurring-end">
-                                <input type="date" class="form-control text-truncate"/>
+                            <div class="input-group date mb-2">
+                                <input type="date" class="form-control text-truncate" id="recurring-end"/>
                                 <div class="input-group-append">
                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                 </div>
@@ -194,9 +193,9 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-success">Add</button>
+                    <button type="submit" class="btn btn-success">Add</button>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 
@@ -245,7 +244,7 @@
                     </li>
                     <li class="list-group-item p-0 list-code-input">
                         <div class="input-group my-1">
-                            <input class="form-control code-input" type="text" placeholder="Enter code" id="codeInput">
+                            <input class="form-control-plaintext code-input" type="text" placeholder="Enter code" id="codeInput">
                             <a href="#" class="input-group-btn badge badge-success" id="codeValidation" onclick="addCodeButton()">
                                 <i class="fas fa-plus"></i>
                             </a>
@@ -273,8 +272,6 @@
 
 {% block js %}
     <script src={{ url_for('static', filename='js/calendar.js') }}></script>
-    <script src={{ url_for('static', filename='js/lib/moment.min.js') }}></script>
-    <script src={{ url_for('static', filename='js/lib/tempusdominus.min.js') }}></script>
     <script src='static/lib/fullcalendar/core/main.js'></script>
     <script src='static/lib/fullcalendar/interaction/main.js'></script>
     <script src='static/lib/fullcalendar/daygrid/main.js'></script>

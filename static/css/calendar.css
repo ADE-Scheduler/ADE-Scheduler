@@ -91,21 +91,16 @@
 .code-tag {
     cursor: pointer;
     width: 100%;
-    padding: 12px 0 12px 20px;
-}
-
-.code-input {
-    min-width: unset;
-    border-width: 0px;
-    padding: 12px 0px 12px 20px;
-}
-.code-input:focus {
-    border-color: transparent;
-    box-shadow: none;
+    padding: 12px 8px 12px 12px;
 }
 
 .btn-compute-clear {
     width: calc(100% - 1rem);
+}
+
+.code-input {
+    padding-left: 12px;
+    padding-right: 8px;
 }
 
 /* .list-code-input:focus-within {

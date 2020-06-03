@@ -56,6 +56,7 @@ $(function () {
     });
 });
 
+
 /*
  *  Button callbacks
  */
@@ -87,3 +88,64 @@ function addCodeButton() {
 function removeCodeButton() {
     console.log("Code removed !");
 }
+
+
+/*
+ *  Add an event form
+ */
+ $('#form-add-event').submit((e) => {
+     // Prevent form submission
+     e.preventDefault();
+
+     console.log("Form sumbitted !");
+
+ });
+
+ $('#switch-repetition').change((e) => {
+     if (e.target.checked) {
+         $('#recurring-start').attr('required', true);
+         $('#recurring-end').attr('required', true);
+         $('#recurring-days').attr('required', true);
+
+         $('#date-start').attr('required', false);
+         $('#date-end').attr('required', false);
+
+         $('#date-start').attr('disabled', true);
+         $('#date-end').attr('disabled', true);
+     } else {
+         $('#recurring-start').attr('required',false);
+         $('#recurring-end').attr('required', false);
+         $('#recurring-days').attr('required', false);
+
+         $('#date-start').attr('required', true);
+         $('#date-end').attr('required', true);
+
+         $('#date-start').attr('disabled', false);
+         $('#date-end').attr('disabled', false);
+     }
+ });
+
+$('#date-start').change((e) => {
+    if ($('#date-end').val() === '') {
+        $('#date-end').val(e.target.value);
+    }
+    $('#date-end').attr('min', e.target.value);
+});
+$('#date-end').change((e) => {
+    if ($('#date-start').val() === '') {
+        $('#date-start').val(e.target.value);
+    }
+    $('#date-start').attr('max', e.target.value);
+});
+$('#recurring-start').change((e) => {
+    if ($('#recurring-end').val() === '') {
+        $('#recurring-end').val(e.target.value);
+    }
+    $('#recurring-end').attr('min', e.target.value);
+});
+$('#recurring-end').change((e) => {
+    if ($('#recurring-start').val() === '') {
+        $('#recurring-start').val(e.target.value);
+    }
+    $('#recurring-start').attr('max', e.target.value);
+});
