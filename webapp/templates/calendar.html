@@ -1079,7 +1079,7 @@
                 locale: {{ locale|tojson }},
 
                 // Remember where the user left the calendar
-                defaultView: (localStorage.getItem("fcDefaultView") !== null ? localStorage.getItem("fcDefaultView") : 'dayGridWeek'),
+                defaultView: (localStorage.getItem("fcDefaultView") !== null ? localStorage.getItem("fcDefaultView") : 'timeGridWeek'),
                 defaultDate: (localStorage.getItem("fcDefaultDate") !== null ? parseInt(localStorage.getItem("fcDefaultDate")) : Date.now()),
                 datesRender: function (arg) {
                     localStorage.setItem("fcDefaultView", arg.view.type);
