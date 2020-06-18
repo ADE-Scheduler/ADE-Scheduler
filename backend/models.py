@@ -21,7 +21,7 @@ class Role(Base, RoleMixin):
 
 class User(UserMixin, Base):
     __tablename__ = 'user'
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer(), primary_key=True)
     email = Column(String(120), index=True, unique=True)
     password = Column(String(128))
     active = Column(Boolean())
@@ -31,14 +31,17 @@ class User(UserMixin, Base):
     def __repr__(self):
         return '<User {}>'.format(self.email)
 
-"""
-class Link(Base):
-    id = Column(Integer, primary_key=True)
-    email = Column(String(120), index=True, unique=True)
-    password_hash = Column(String(128))
+
+class Schedule(UserMixin, Base):
+    __tablename__ = 'schedule'
+    id = Column(Integer(), primary_key=True)
+    data = Column(JSON())
+    link = Column(String(100))  # TODO: change the length of the link ?
 
 
-class Schedule(Base):
-    id = Column(Integer, primary_key=True)
-    data = Column(JSON)
-"""
+class Property(UserMixin, Base):
+    __tablename__ = 'property'
+    user_id = Column(Integer(), ForeignKey('user.id'), primary_key=True)
+    schedule_id = Column(Integer(), ForeignKey('schedule.id'), primary_key=True)
+    level = Column(Integer())  # TODO: constrain the values (0 -> 2)
+    

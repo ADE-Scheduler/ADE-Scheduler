@@ -32,10 +32,10 @@ app.config['SECURITY_PASSWORD_SALT'] = 'a_very_complex_and_indeciphrable_salt'  
 Security(app, SQLAlchemySessionUserDatastore(db_session, User, Role))
 
 # Setup Flask-Session
-app.config['SESSION_TYPE'] = 'redis'
-app.config['SESSION_REDIS'] = Redis(host='localhost', port=6379)
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=30)
-Session(app)
+#app.config['SESSION_TYPE'] = 'redis'
+#app.config['SESSION_REDIS'] = Redis(host='localhost', port=6379)
+#app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=30)
+#Session(app)
 
 
 @app.route('/')
