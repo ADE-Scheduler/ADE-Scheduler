@@ -5,6 +5,7 @@ from sqlalchemy.orm import relationship, backref
 from sqlalchemy import Boolean, DateTime, Column, Integer, String, ForeignKey, JSON
 
 
+# Dummy tables for Flask-Security
 class RolesUsers(Base):
     __tablename__ = 'roles_users'
     id = Column(Integer(), primary_key=True)
@@ -19,29 +20,36 @@ class Role(Base, RoleMixin):
     description = Column(String(255))
 
 
-class User(UserMixin, Base):
+# User table
+class User(Base, UserMixin):
     __tablename__ = 'user'
-    id = Column(Integer(), primary_key=True)
-    email = Column(String(120), index=True, unique=True)
-    password = Column(String(128))
+    id = Column(Integer, primary_key=True)
+    email = Column(String(255), unique=True)
+    username = Column(String(255))
+    password = Column(String(255))
+    last_login_at = Column(DateTime())
+    current_login_at = Column(DateTime())
+    last_login_ip = Column(String(100))
+    current_login_ip = Column(String(100))
+    login_count = Column(Integer)
     active = Column(Boolean())
+    fs_uniquifier = Column(String(255))
+    confirmed_at = Column(DateTime())
     roles = relationship('Role', secondary='roles_users',
                          backref=backref('users', lazy='dynamic'))
 
-    def __repr__(self):
-        return '<User {}>'.format(self.email)
 
-
-class Schedule(UserMixin, Base):
+# Schedule table
+class Schedule(Base):
     __tablename__ = 'schedule'
     id = Column(Integer(), primary_key=True)
     data = Column(JSON())
     link = Column(String(100))  # TODO: change the length of the link ?
 
 
-class Property(UserMixin, Base):
+# Property table
+class Property(Base):
     __tablename__ = 'property'
     user_id = Column(Integer(), ForeignKey('user.id'), primary_key=True)
     schedule_id = Column(Integer(), ForeignKey('schedule.id'), primary_key=True)
     level = Column(Integer())  # TODO: constrain the values (0 -> 2)
-    

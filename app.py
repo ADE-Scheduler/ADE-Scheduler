@@ -1,13 +1,17 @@
+# Python imports
 import os
+from redis import Redis
+from datetime import timedelta
 
+# Flask imports
 from flask import Flask, render_template, url_for, redirect, request, session
 from flask_session import Session
 from flask_security import Security, login_required, SQLAlchemySessionUserDatastore
 from flask_mail import Mail
-from redis import Redis
-from datetime import timedelta
-from backend.database import db_session, init_db
-from backend.models import Role, User  #, Link, Schedule
+
+# API imports
+import backend.database as db
+import backend.models as model
 import backend.credentials as creds
 
 # Setup app
@@ -29,13 +33,17 @@ app.config['SECURITY_REGISTERABLE'] = True
 app.config['SECURITY_CHANGEABLE'] = True
 app.config['SECURITY_RECOVERABLE'] = True
 app.config['SECURITY_PASSWORD_SALT'] = 'a_very_complex_and_indeciphrable_salt'  # TODO: change !
-Security(app, SQLAlchemySessionUserDatastore(db_session, User, Role))
+Security(app, SQLAlchemySessionUserDatastore(db.session, model.User, model.Role))
 
 # Setup Flask-Session
 #app.config['SESSION_TYPE'] = 'redis'
 #app.config['SESSION_REDIS'] = Redis(host='localhost', port=6379)
 #app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=30)
 #Session(app)
+
+@app.teardown_appcontext
+def shutdown_session(exception=None):
+    db.session.remove()
 
 
 @app.route('/')
