@@ -55,10 +55,16 @@
                         </div>
                     </li>
                 </ul>
-                <!-- <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                <!-- <form class="form-inline my-2 my-lg-0 mr-2">
+                    <input class="form-control form-control-sm mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success btn-sm my-2 my-sm-0" type="submit">Search</button>
                 </form> -->
+                <!-- <div class="input-group mr-2">
+                    <input class="form-control form-control-sm" type="text", placeholder="Search">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-success btn-sm"><i class="fas fa-search"></i></button>
+                    </div>
+                </div> -->
                 {% if current_user.is_authenticated %}
                 <div class="btn-group user-status-div">
                     <button class="btn btn-outline-danger btn-sm" type="button" onclick="window.location.href='/logout'">Logout</button>
