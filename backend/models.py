@@ -24,7 +24,7 @@ class Role(Base, RoleMixin):
 class User(Base, UserMixin):
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
-    email = Column(String(255), unique=True)
+    email = Column(String(255), unique=True, index=True)
     username = Column(String(255))
     password = Column(String(255))
     last_login_at = Column(DateTime())
@@ -37,19 +37,37 @@ class User(Base, UserMixin):
     confirmed_at = Column(DateTime())
     roles = relationship('Role', secondary='roles_users',
                          backref=backref('users', lazy='dynamic'))
+    
+    def __repr__(self):
+        return '<User {}>'.format(self.email)
 
 
-# Schedule table
 class Schedule(Base):
     __tablename__ = 'schedule'
     id = Column(Integer(), primary_key=True)
     data = Column(JSON())
-    link = Column(String(100), unique=True)  # TODO: change the length of the link ?
 
 
-# Property table
+class Link(Base):
+    __tablename__ = 'link'
+    id = Column(Integer(), ForeignKey('schedule.id'), primary_key=True)
+    link = Column(String(100), unique=True, index=True)  # TODO: change the length of the link ?
+
+
 class Property(Base):
     __tablename__ = 'property'
     user_id = Column(Integer(), ForeignKey('user.id'), primary_key=True)
     schedule_id = Column(Integer(), ForeignKey('schedule.id'), primary_key=True)
     level = Column(Integer())  # TODO: constrain the values (0 -> 2)
+
+
+######################
+# API for the models #
+######################
+
+class DatabaseAPI():
+    def get_user_from_email(email):
+        return User.query.filter(User.email == email).all()
+
+    def get_schedule_from_link(link):
+        pass

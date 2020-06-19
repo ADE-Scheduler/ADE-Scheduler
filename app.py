@@ -68,4 +68,5 @@ if __name__ == '__main__':
     # else:
     #     print('\tSome error(s) occured:', diagnostics)
 
-    app.run(host=os.environ['ADE_FLASK_HOSTNAME'], debug=True)
+    # app.run(host=os.environ['ADE_FLASK_HOSTNAME'], debug=True)
+    print(model.DatabaseAPI.get_user())
