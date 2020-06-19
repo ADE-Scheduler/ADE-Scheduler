@@ -44,7 +44,7 @@ class Schedule(Base):
     __tablename__ = 'schedule'
     id = Column(Integer(), primary_key=True)
     data = Column(JSON())
-    link = Column(String(100))  # TODO: change the length of the link ?
+    link = Column(String(100), unique=True)  # TODO: change the length of the link ?
 
 
 # Property table
