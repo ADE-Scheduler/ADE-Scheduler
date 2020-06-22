@@ -1,4 +1,3 @@
-from event import *
 from itertools import repeat
 import pandas as pd
 
@@ -30,26 +29,25 @@ class Course:
     def __repr__(self):
         return str(self)
 
-    def add_activity(self, event_type, id_: str, events: list):
+    def add_activity(self, events: list):
         """
-        # TODO
-        :param event_type:
-        :param id_:
-        :param events:
-        :return:
+        Add an activity to the current course's activities. An activity is a set of events with the same id.
+        :param events: list of academical events coming from the same activity
+        :return: /
         """
         if len(events) == 0:
             return
         data = [[event.get_week(), event] for event in events]
-        id_ = event_prefix(event_type) + id_
-        tuples = list(repeat((self.code, event_type, id_), len(data)))
+        event_type = type(events[0])
+        id = events[0].id
+        tuples = list(repeat((self.code, event_type, id), len(data)))
         index = pd.MultiIndex.from_tuples(tuples, names=self.activities.index.name)
         df = pd.DataFrame(data=data, columns=self.activities.columns, index=index)
         self.activities = self.activities.append(df)
 
     def set_weights(self, percentage=None, event_type=None):
         """
-        Modify this course's events weight
+        Modifies this course's events weight.
         :param percentage: int, the "priority" required for this course in (0-100)%
         :param event_type: if we want to modify the weight of a certain type of event only
         :return: /
@@ -70,14 +68,14 @@ class Course:
 
     def get_summary(self):
         """
-        # TODO
-        :return:
+        Returns the summary of all activities in the course.
+        :return: list of activity ids
         """
         return self.activities.index.get_level_values('id').unique()
 
     def get_view(self, weeks):
         """
-        Return a list of events that matches correct ids.
+        Returns a list of events that matches correct ids.
         :param weeks: list of ids, or dict {week_number : ids}
         :return: list of events
         """
