@@ -145,7 +145,7 @@ Il n'est pas possible d'accéder à l'API sans identifiants valides et nous ne v
 Afin de faciliter la documentation de nos fonctions, nous utilisons Sphinx. La page contenant la documentation est /docs/build/html/index.html. Pour mettre à jour :
 ```
 cd docs
-sphinx-apidoc -o source ../backend
+sphinx-apidoc -o source/backend ../backend
 make html
 ```
 
