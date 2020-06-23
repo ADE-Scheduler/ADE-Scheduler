@@ -109,12 +109,11 @@ Pour installer un serveur Redis, référez-vous au site https://redis.io/topics/
 ### 3. Créez un environnement virtuel Python (optionnel)
 
 Placez-vous dans le dossier du projet
-
-`cd <repo>`
-
-`pip3 install venv`
-
-`source venv/bin/activate`
+```
+cd <repo>
+pip3 install venv
+source venv/bin/activate
+```
 
 
 ### 4. Installez packages nécessaires
@@ -130,13 +129,25 @@ Si vous possédez des identifiants d'accès à l'API de ADE, enregistrez les que
 
 Pour lier vos identifiants au projet :
 
-`python3` -> `from backend.credentials import Credentials; Credentials.set_credentials("identifiants.json")`
+```
+python3
+from backend.credentials import Credentials; Credentials.set_credentials("identifiants.json")
+```
 
 Un message vous attirera l'attention sur le fait que ce lien est ephémère : il faudra refaire cette commande pour chaque processus Python. Des solutions permanentes sont proposées par ce message.
 
 #### 5.2 Accéder sans identifiants
 
 Il n'est pas possible d'accéder à l'API sans identifiants valides et nous ne vous en fournirons pas. Cependant, une réplique de l'API peut être interfacée via la classe **DummyClient** dans /backend/ade_api.py.
+
+#### 5.3 Documentation
+
+Afin de faciliter la documentation de nos fonctions, nous utilisons Sphinx. La page contenant la documentation est /docs/build/html/index.html. Pour mettre à jour :
+```
+cd docs
+sphinx-apidoc -o source ../backend
+make html
+```
 
 ## Contribuer
 
