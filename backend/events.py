@@ -47,6 +47,7 @@ class AcademicalEvent(Event):
         self.weight = weight
 
     def json(self) -> dict:
+        # TODO: fix ?
         return {'start': str(self.begin), 'end': str(self.end), 'title': self.id + '\n' + self.classrooms,
                 'editable': False, 'description': self.name + '\n' + self.location + ' - ' +
                                                   str(self.duration) + '\n' + str(self.description), 'code': self.code}
@@ -109,7 +110,7 @@ class EventORAL(AcademicalEvent):
 
 
 class EventOTHER(AcademicalEvent):
-    PREFIX = 'Other'
+    PREFIX = 'OTHER'
 
     def __init__(self, name: str, begin: datetime, end: datetime, professor: Professor,
                  classrooms: Iterable[Classroom] = None, id: str = None, weight: float = 5,
@@ -183,6 +184,7 @@ def extract_datetime(date: str, start: str, end: str) -> Tuple[datetime, datetim
 
 def json_from_events(events):
     """
+    TODO: edit
     Converts the events into a json-like format
     :param events: list of CustomEvents
     :return: list of dict

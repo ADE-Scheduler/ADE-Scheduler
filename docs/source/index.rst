@@ -11,6 +11,7 @@ Welcome to ADE-Scheduler's documentation!
    :caption: Contents:
 
    backend/modules
+   main/modules
 
 
 
