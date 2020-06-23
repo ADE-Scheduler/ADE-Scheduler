@@ -1,9 +1,9 @@
-from typing import Dict, Iterable
+from typing import Iterable
 
 
 class Address:
 
-    def __init__(self, **kwargs: Dict[str, str]):
+    def __init__(self, **kwargs: str):
         """
         Creates address object.
         :param kwargs: dict with minimal entries:
@@ -43,7 +43,7 @@ class Address:
 
 class Classroom:
 
-    def __init__(self, **kwargs: Dict[str, str]):
+    def __init__(self, **kwargs: str):
         """
         Creates classroom object.
         :param kwargs: dict with minimal entries:
@@ -68,7 +68,7 @@ class Classroom:
         return str(self)
 
 
-def merge_classrooms(classrooms: Iterable[Classroom]):
+def merge_classrooms(classrooms: Iterable[Classroom]) -> Classroom:
     names = ' | '.join(classroom.name for classroom in classrooms)
     addresses = '\n'.join(str(classroom.address) for classroom in classrooms)
     return Classroom(name=names, address=addresses, id=-1)

@@ -43,7 +43,7 @@ class AcademicalEvent(Event):
         tmp = self.id + ':' if self.id is not None else 'FTS:'
         return tmp + self.begin.strftime('%d/%m - %Hh%M') + ' to ' + self.end.strftime('%Hh%M')
 
-    def set_weight(self, weight: float):
+    def set_weight(self, weight: float) -> None:
         self.weight = weight
 
     def json(self) -> dict:

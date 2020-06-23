@@ -7,6 +7,7 @@ from backend.classrooms import Classroom, Address
 from backend.courses import Course
 from backend import professors
 import backend.events
+from typing import Dict, Union, List, Tuple, Iterator
 
 
 class ExpiredTokenError(Exception):
@@ -15,26 +16,30 @@ class ExpiredTokenError(Exception):
         return 'The token you were using is now expired! Renew the token to proceed normally.'
 
 
+ClientCredentials = Dict[str, Union[str, List[int]]]
+Request = Union[str, int]
+
+
 class Client:
 
-    def __init__(self, credentials):
+    def __init__(self, credentials: ClientCredentials):
         self.credentials = credentials
         self.token = None
         self.expiration = None
         self.renew_token()
 
-    def is_expired(self):
+    def is_expired(self) -> bool:
         # TODO: verify validity of this relation
         return self.expiration < time.time()
 
-    def expire(self):
+    def expire_in(self) -> float:
         return self.expiration - time.time()
 
-    def renew_token(self):
+    def renew_token(self) -> None:
         self.token, self.expiration = get_token(self.credentials)
         self.expiration += time.time()
 
-    def request(self, **kwargs):
+    def request(self, **kwargs: Request) -> requests.Response:
 
         if self.is_expired():
             raise ExpiredTokenError
@@ -46,22 +51,22 @@ class Client:
         url = 'https://api.sgsi.ucl.ac.be:8243/ade/v0/api?login=' + user + '&password=' + password + '&' + args
         return requests.get(url=url, headers=headers)
 
-    def get_project_id(self):
+    def get_project_id(self) -> requests.Response:
         return self.request(function='getProjects', detail=2)
 
-    def get_resource_ids(self, project_id):
+    def get_resource_ids(self, project_id: Union[str, int]) -> requests.Response:
         return self.request(projectId=project_id, function='getResources', detail=2)
 
-    def get_classrooms(self, project_id):
+    def get_classrooms(self, project_id: Union[str, int]) -> requests.Response:
         return self.request(projectId=project_id, function='getResources',
                             detail=13, tree='false', category='classroom')
 
-    def get_activities(self, resource_ids: list, project_id):
+    def get_activities(self, resource_ids: List[Union[str, int]], project_id: Union[str, int]) -> requests.Response:
         return self.request(projectId=project_id, function='getActivities',
                             tree='false', detail=17, resources='|'.join(map(str, resource_ids)))
 
 
-def get_token(credentials):
+def get_token(credentials: ClientCredentials) -> Tuple[str, int]:
     url = credentials['url']
     data = credentials['data']
     authorization = credentials['Authorization']
@@ -70,27 +75,27 @@ def get_token(credentials):
     return r['access_token'], int(r['expires_in'])
 
 
-def request_to_root(request):
-    return etree.fromstring(request.content)
+def response_to_root(response: requests.Response) -> etree.ElementTree:
+    return etree.fromstring(response.content)
 
 
-def request_to_project_ids(project_ids_request):
-    root = request_to_root(project_ids_request)
+def response_to_project_ids(project_ids_response: requests.Response) -> Iterator[Tuple[int, str]]:
+    root = response_to_root(project_ids_response)
     ids = root.xpath('//project/@id')
     years = root.xpath('//project/@name')
 
     return zip(map(int, ids), years)
 
 
-def request_to_resource_ids(resource_ids_request):
-    root = request_to_root(resource_ids_request)
+def response_to_resource_ids(resource_ids_response) -> Dict[str, str]:
+    root = response_to_root(resource_ids_response)
     df = pd.DataFrame(data=root.xpath('//resource/@id'), index=map(lambda x: x.upper(),
                                                                    root.xpath('//resource/@name'))
                       , columns=['id'])
     return df.groupby(level=0).apply(lambda x: '|'.join(x.to_dict(orient='list')['id'])).to_dict()
 
 
-def room_to_classroom(room):
+def room_to_classroom(room: etree.ElementTree) -> Classroom:
     address = Address(
         address1=room.get('address1'),
         address2=room.get('address2'),
@@ -109,9 +114,9 @@ def room_to_classroom(room):
     return classroom
 
 
-def request_to_classrooms(classrooms_request):
+def response_to_classrooms(classrooms_response: requests.Response) -> List[Classroom]:
 
-    root = request_to_root(classrooms_request)
+    root = response_to_root(classrooms_response)
 
     rooms = root.xpath('//room')
 
@@ -123,9 +128,9 @@ def request_to_classrooms(classrooms_request):
     return classrooms
 
 
-def request_to_courses(activities_request):
+def response_to_courses(activities_response: requests.Response) -> List[Course]:
 
-    root = request_to_root(activities_request)
+    root = response_to_root(activities_response)
 
     courses = defaultdict(Course)
 
@@ -176,6 +181,8 @@ def request_to_courses(activities_request):
         if events_list:
             courses[activity_code].add_activity(event_type, activity_id, events_list)
 
+    return list(courses.values())
+
 
 if __name__ == "__main__":
 
@@ -191,14 +198,14 @@ if __name__ == "__main__":
 
     request = client.get_project_id()
 
-    ids_years = request_to_project_ids(request)
+    ids_years = response_to_project_ids(request)
 
     # On peut l'obtenir de ids_years
     project_id = 9
 
     request = client.get_resource_ids(project_id)
 
-    resources_ids = request_to_resource_ids(request)
+    resources_ids = response_to_resource_ids(request)
 
     print('All resources:')
     print(len(resources_ids), resources_ids)
@@ -209,6 +216,6 @@ if __name__ == "__main__":
 
     request = client.get_activities([id], project_id)
 
-    resources_ids = request_to_courses(request)
+    resources_ids = response_to_courses(request)
 
     print(resources_ids)

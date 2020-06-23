@@ -3,42 +3,32 @@ from collections import deque
 from backend.events import EventOTHER, AcademicalEvent
 from heapq import nsmallest
 import operator
-import pandas as pd
 from typing import Iterable
-from backend.courses import Course
+from backend.courses import Course, merge_courses
 
 
 class Schedule:
 
     def __init__(self, courses: Iterable[Course]):
-        self.courses = courses
-        self.activities = pd.concat(course.activities for course in courses)
+        self.master_course = merge_courses(courses, name='schedule')
 
-    def add_course(self, course: Iterable[Course]):
-        self.activities = pd.concat((self.activities, course.activities))
+    def add_course(self, course: Course) -> None:
+        self.master_course = merge_courses((self.master_course, course))
 
-    def remove_course(self, course_code: str):
-        self.activities.drop(index=course_code, inplace=True)
+    def remove_course(self, course_code: str) -> None:
+        self.master_course.activities.drop(index=course_code, inplace=True)
 
-    def update_course(self, course: Course):
+    def update_course(self, course: Course) -> None:
         self.remove_course(course_code=course.code)
         self.add_course(course)
 
-    def get_events(self):
-        return chain.from_iterable(course['event'].values for course in self.courses)
-
-    def extract_events(self, view: Iterable[str] = None):
+    def get_events(self, view: Iterable[str] = None) -> Iterable[AcademicalEvent]:
         """
         Extracts all the events matching ids in the view list.
         :param view: if None extracts everything, otherwise must be a list of ids
         :return: the array of events
         """
-
-        if view is None:
-            return self.activities['event'].values
-        else:
-            valid = self.activities.index.isin(values=view, level='id')
-            return self.activities['event'][valid].values
+        return self.master_course.get_events(view)
 
     def compute_best(self, fts=None, n_best=5, safe_compute=True, view=None):
         """

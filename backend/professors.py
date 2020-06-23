@@ -7,7 +7,7 @@ class Professor:
         self.name = name
         self.email = email
 
-    def __str__(self):
+    def __str__(self) -> None:
         if self.email:
             return f'{self.name} ({self.email})'
         else:

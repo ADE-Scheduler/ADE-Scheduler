@@ -1,6 +1,7 @@
 import os
 import json
 import warnings
+from typing import Any
 
 ADE_API_CREDENTIALS = "ADE_API_CREDENTIALS"
 GMAIL_CREDENTIALS = "GMAIL_CREDENTIALS"
@@ -8,7 +9,7 @@ GMAIL_CREDENTIALS = "GMAIL_CREDENTIALS"
 
 class CredentialsEncoder(json.JSONEncoder):
 
-    def default(self, obj):
+    def default(self, obj: Any) -> Any:
         if isinstance(obj, bytes):
             return list(obj)
         else:
@@ -17,7 +18,7 @@ class CredentialsEncoder(json.JSONEncoder):
 
 class CredentialsDecoder(json.JSONDecoder):
 
-    def decode(self, obj):
+    def decode(self, obj: Any, w: Any = None) -> str:
         decoded = json.JSONDecoder().decode(obj)
 
         for key in decoded:
@@ -27,7 +28,7 @@ class CredentialsDecoder(json.JSONDecoder):
         return decoded
 
 
-def set_credentials(filename, credentials_name):
+def set_credentials(filename: str, credentials_name: str):
     """
     Set a environment variable to link toward credentials file.
     :param filename: path with .json extension
@@ -45,7 +46,7 @@ def set_credentials(filename, credentials_name):
                   )
 
 
-def get_credentials(credentials_name):
+def get_credentials(credentials_name: str) -> 'Credentials':
     """
     Reads a credentials file from environment variable and returns the credentials in it.
     lists of ints are converted into lists of bytes.
@@ -58,14 +59,14 @@ def get_credentials(credentials_name):
 
 class Credentials:
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any):
         """
         Class which stores credentials.
         :param kwargs: dict of credentials
         """
         self.credentials = kwargs
 
-    def save(self, filename):
+    def save(self, filename: str) -> None:
         """
         Save current credentials into a json file.
         bytes are converted into list of ints.
@@ -75,13 +76,13 @@ class Credentials:
         with open(filename, 'w') as f:
             json.dump(self.credentials, f, cls=CredentialsEncoder)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Credentials: {self.credentials}"
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return str(self)
 
-    def __getitem__(self, item):
+    def __getitem__(self, item: str) -> Any:
         return self.credentials[item]
 
 
