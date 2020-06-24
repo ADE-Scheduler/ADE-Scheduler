@@ -149,6 +149,10 @@ sphinx-apidoc -o source/backend ../backend
 make html
 ```
 
+Pour savoir comment documenter votre code de la même manière que nous :
+- https://sphinx-rtd-tutorial.readthedocs.io/en/latest/docstrings.html
+- https://thomas-cokelaer.info/tutorials/sphinx/docstring_python.html
+
 ## Contribuer
 
 Cette application étant open-source, vous êtes invités à contribuer à cette dernière de quelque manière !
