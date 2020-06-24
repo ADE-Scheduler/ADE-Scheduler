@@ -12,7 +12,7 @@ from flask_mail import Mail
 import backend.database as db
 import backend.models as md
 import backend.credentials as cd
-import backend.redis as rd
+import backend.servers as rd
 
 # Setup app
 app = Flask(__name__)

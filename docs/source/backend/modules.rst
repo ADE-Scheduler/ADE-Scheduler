@@ -13,3 +13,4 @@ backend
    models
    professors
    schedules
+   servers

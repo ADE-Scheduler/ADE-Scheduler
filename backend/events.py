@@ -232,10 +232,14 @@ def extract_type(course_type: str, course_id: str) -> Type[AcademicalEvent]:
 def extract_datetime(date: str, start: str, end: str) -> Tuple[datetime, datetime]:
     """
     Parses info to return the start and end time of an event
-    :param date: str
-    :param start: str
-    :param end: str
+    :param date: the date matching %d/%m/%Y format
+    :type date: str
+    :param start: the start hour matching %H:%M format
+    :type start: str
+    :param end: the end hour matching %H:%M format
+    :type end: str
     :return: datetime objects (start date, end date)
+    :rtype: Tuple[datetime, datetime]
     """
     t0 = datetime.strptime(date + '-' + start, '%d/%m/%Y-%H:%M').astimezone(TZ)
     t1 = datetime.strptime(date + '-' + end, '%d/%m/%Y-%H:%M').astimezone(TZ)
@@ -243,15 +247,3 @@ def extract_datetime(date: str, start: str, end: str) -> Tuple[datetime, datetim
         return t0, t1
     else:
         return t1, t0
-
-
-def json_from_events(events):
-    """
-    TODO: edit
-    Converts the events into a json-like format
-    :param events: list of CustomEvents
-    :return: list of dict
-    """
-    return [{'start': str(event.begin), 'end': str(event.end), 'title': event.id + '\n' + event.classroom, 'editable':
-        False, 'code': event.code, 'description': event.name + '\n' + event.location + ' - ' + str(event.duration)
-                                                  + '\n' + str(event.description)} for event in events]

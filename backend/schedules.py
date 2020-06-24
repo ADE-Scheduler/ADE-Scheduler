@@ -4,25 +4,48 @@ from backend.events import EventOTHER, AcademicalEvent
 from heapq import nsmallest
 import operator
 from typing import Iterable
-from backend.courses import Course, merge_courses
+from backend.courses import Course, merge_courses, View
 
 
-class Schedule:
+class Schedule(Course):
+    """
+    A schedule is essentially a combination of courses stored as a master course, from which some events can be removed.
 
+    :param courses: one or multiple courses
+    :type courses: Iterable[Course]
+    """
     def __init__(self, courses: Iterable[Course]):
         self.master_course = merge_courses(courses, name='schedule')
 
     def add_course(self, course: Course) -> None:
+        """
+        Adds a course to the schedule.
+
+        :param course: the course to be added
+        :type course: Course
+        """
         self.master_course = merge_courses((self.master_course, course))
 
     def remove_course(self, course_code: str) -> None:
+        """
+        Removes a course from the schedule.
+
+        :param course_code: the code of the course to be removed
+        :type course_code: str
+        """
         self.master_course.activities.drop(index=course_code, inplace=True)
 
     def update_course(self, course: Course) -> None:
+        """
+        Updates a course to the schedule.
+
+        :param course: the course to be updated
+        :type course: Course
+        """
         self.remove_course(course_code=course.code)
         self.add_course(course)
 
-    def get_events(self, view: Iterable[str] = None) -> Iterable[AcademicalEvent]:
+    def get_events(self, view: View = None) -> Iterable[AcademicalEvent]:
         """
         Extracts all the events matching ids in the view list.
         :param view: if None extracts everything, otherwise must be a list of ids

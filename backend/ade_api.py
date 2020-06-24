@@ -20,6 +20,7 @@ class ExpiredTokenError(Exception):
 
 ClientCredentials = Dict[str, Union[str, List[int]]]
 Request = Union[str, int]
+DEFAULT_PROJECT_ID = 9
 
 
 class Client:

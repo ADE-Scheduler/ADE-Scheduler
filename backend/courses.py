@@ -72,18 +72,15 @@ class Course:
         df = pd.DataFrame(data=data, columns=self.activities.columns, index=index)
         self.activities = self.activities.append(df)
 
-    def set_weights(self, percentage: Optional[float] = None, event_type: Optional[AcademicalEvent] = None) -> None:
+    def set_weights(self, percentage: float = 50, event_type: Optional[AcademicalEvent] = None) -> None:
         """
         Modifies this course's events weight.
 
         :param percentage: the "priority" required for this course in (0-100)%, default is 50%
-        :type percentage: Optional[float]
+        :type percentage: float
         :param event_type: if present, modify the weight of a certain type of event only
         :type event_type: Optional[AcademicalEvent]
         """
-        # No percentage specified, set to default value
-        if percentage is None:
-            percentage = 50
 
         def f(event):
             event.set_weight(percentage/10)
@@ -132,13 +129,6 @@ class Course:
                 events.extend(week_data['event'][valid].values.tolist())
 
             return events
-
-    def getEventsJSON(self):
-        """
-        # TODO
-        :return:
-        """
-        return list(map(lambda e: e.json(), self.activities['event'].values))
 
 
 def merge_courses(courses: Iterable[Course], code: Optional[str] = None,

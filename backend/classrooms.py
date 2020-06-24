@@ -96,7 +96,7 @@ def merge_classrooms(classrooms: Iterable[Classroom]) -> Classroom:
 
     >>> c1 = Classroom(address1, 'classA', 1)
     >>> c2 = Classroom(address2, 'classB', 2)
-    >>> c2 = merge_classrooms((c1, c2))
+    >>> c3 = merge_classrooms((c1, c2))
     """
     names = ' | '.join(classroom.name for classroom in classrooms)
     addresses = '\n'.join(str(classroom.address) for classroom in classrooms)
