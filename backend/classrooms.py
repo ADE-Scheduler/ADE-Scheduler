@@ -1,18 +1,24 @@
-from typing import Iterable
+from typing import Iterable, Union
 
 
 class Address:
+    """
+    Address object made from informations retrieved via ADE API.
 
+    :param kwargs: dict with minimal entries (can be None):
+        - address1
+        - address2
+        - zipCode
+        - city
+        - country
+    :type kwargs: str
+
+    :Example:
+
+    >>> informations = dict(address1='Rue Rose 42', address2=None, zipCode='1300', city='Wavre', country='Belgique')
+    >>> address = Address(**informations)
+    """
     def __init__(self, **kwargs: str):
-        """
-        Creates address object.
-        :param kwargs: dict with minimal entries:
-            - address1
-            - address2
-            - zipCode
-            - city
-            - country
-        """
         self.address = kwargs
 
     def __repr__(self) -> str:
@@ -42,15 +48,18 @@ class Address:
 
 
 class Classroom:
+    """
+    Classroom object containing the address (as string or Address object), the name of the classroom and its id.
 
-    def __init__(self, **kwargs: str):
-        """
-        Creates classroom object.
-        :param kwargs: dict with minimal entries:
-            - address
-            - name
-            - id
-        """
+    :param kwargs: dict with minimal entries:
+        - address
+        - name
+        - id
+    :type kwargs: Union[str, Address]
+
+    Its main purpose is be used with :func:`location`.
+    """
+    def __init__(self, **kwargs: Union[str, Address]):
         self.infos = kwargs
 
     def __str__(self) -> str:
@@ -65,10 +74,30 @@ class Classroom:
         return f'{id}: {name}'
 
     def location(self) -> str:
+        """
+        Returns the location (address) of this classroom.
+
+        :return: the location
+        :rtype: str
+        """
         return str(self)
 
 
 def merge_classrooms(classrooms: Iterable[Classroom]) -> Classroom:
+    """
+    Merges multiple classrooms into one.
+
+    :param classrooms: multiple classrooms
+    :type classrooms: Iterable[Classroom]
+    :return: the new classroom
+    :rtype: Classroom
+
+    :Example:
+
+    >>> c1 = Classroom(address1, 'classA', 1)
+    >>> c2 = Classroom(address2, 'classB', 2)
+    >>> c2 = merge_classrooms((c1, c2))
+    """
     names = ' | '.join(classroom.name for classroom in classrooms)
     addresses = '\n'.join(str(classroom.address) for classroom in classrooms)
     return Classroom(name=names, address=addresses, id=-1)

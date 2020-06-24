@@ -11,7 +11,9 @@ from typing import Dict, Union, List, Tuple, Iterator
 
 
 class ExpiredTokenError(Exception):
-
+    """
+    Exception that will occur if a token is expired.
+    """
     def __str__(self):
         return 'The token you were using is now expired! Renew the token to proceed normally.'
 
@@ -21,7 +23,18 @@ Request = Union[str, int]
 
 
 class Client:
+    """
+    A client is an entity which has granted access to ADE API, via its credentials.
 
+    :param credentials: all information needed to make requests to API
+    :param credentials: ClientCredentials
+
+    :Example:
+
+    >>> import backend.credentials as credentials
+    >>> credentials = credentials.get_credentials(credentials.ADE_API_CREDENTIALS)
+    >>> client = Client(credentials)
+    """
     def __init__(self, credentials: ClientCredentials):
         self.credentials = credentials
         self.token = None
@@ -29,18 +42,41 @@ class Client:
         self.renew_token()
 
     def is_expired(self) -> bool:
+        """
+        Returns whether the current token is expired.
+
+        :return: True if the token is expired
+        :rtype: bool
+        """
         # TODO: verify validity of this relation
         return self.expiration < time.time()
 
     def expire_in(self) -> float:
-        return self.expiration - time.time()
+        """
+        Returns the time remaining before the token expires.
+
+        :return: the time remaining in seconds, 0 if expired
+        :rtype: float
+        """
+        return max(self.expiration - time.time(), 0)
 
     def renew_token(self) -> None:
+        """
+        Renews the current token requesting a new one.
+        """
         self.token, self.expiration = get_token(self.credentials)
         self.expiration += time.time()
 
     def request(self, **kwargs: Request) -> requests.Response:
+        """
+        Performs a request to the API with given parameters.
 
+        :param kwargs: set of key / value parameters that will be merged
+        :type kwargs: Request
+        :return: the response
+        :rtype: request.Response
+        :raises ExpiredTokenError: if the token is expired an exception occurs
+        """
         if self.is_expired():
             raise ExpiredTokenError
 
@@ -51,22 +87,62 @@ class Client:
         url = 'https://api.sgsi.ucl.ac.be:8243/ade/v0/api?login=' + user + '&password=' + password + '&' + args
         return requests.get(url=url, headers=headers)
 
-    def get_project_id(self) -> requests.Response:
+    def get_project_ids(self) -> requests.Response:
+        """
+        Requests the project ids currently available; each year (project) corresponds to an id.
+
+        :return: the response
+        :rtype: request.Response
+        """
         return self.request(function='getProjects', detail=2)
 
     def get_resource_ids(self, project_id: Union[str, int]) -> requests.Response:
+        """
+        Requests the ids of all the resource for a specific project.
+
+        :param project_id: the id of the project
+        :type project_id: Union[str, int]
+        :return: the response
+        :rtype: request.Response
+        """
         return self.request(projectId=project_id, function='getResources', detail=2)
 
     def get_classrooms(self, project_id: Union[str, int]) -> requests.Response:
+        """
+        Requests all the classrooms for a specific project.
+
+        :param project_id: the id of the project
+        :type project_id: Union[str, int]
+        :return: the response
+        :rtype: request.Response
+        """
         return self.request(projectId=project_id, function='getResources',
                             detail=13, tree='false', category='classroom')
 
     def get_activities(self, resource_ids: List[Union[str, int]], project_id: Union[str, int]) -> requests.Response:
+        """
+        Requests all activities (set of events)  for a specific project.
+
+        :param resource_ids: the ids of all the resources the activities are requested
+        :type resource_ids: List[Union[str, int]
+        :param project_id: the id of the project
+        :type project_id: Union[str, int]
+        :return: the response
+        :rtype: request.Response
+        """
         return self.request(projectId=project_id, function='getActivities',
                             tree='false', detail=17, resources='|'.join(map(str, resource_ids)))
 
 
 def get_token(credentials: ClientCredentials) -> Tuple[str, int]:
+    """
+    Requests a new token to the API.
+
+    :param credentials: all information needed to make requests to API
+    :param credentials: ClientCredentials
+    :return: the token and its time to expiration in seconds
+    :rtype: Tuple[str, int]
+    """
     url = credentials['url']
     data = credentials['data']
     authorization = credentials['Authorization']
@@ -76,10 +152,31 @@ def get_token(credentials: ClientCredentials) -> Tuple[str, int]:
 
 
 def response_to_root(response: requests.Response) -> etree.ElementTree:
+    """
+    Parses an API response into a tree structure.
+
+    :param response: a response from the API
+    :type response: requests.Response
+    :return: the tree structure
+    :rtype: etree.ElementTree
+    """
     return etree.fromstring(response.content)
 
 
 def response_to_project_ids(project_ids_response: requests.Response) -> Iterator[Tuple[int, str]]:
+    """
+    Extracts an API response into an iterator of project ids and years.
+
+    :param project_ids_response: a response from the API to the project_ids request
+    :type project_ids_response: requests.Response
+    :return: all the project ids and years
+    :rtype: Iterator[Tuple[int, str]]
+
+    :Example:
+
+    >>> response = client.get_project_ids()
+    >>> ids_years = response_to_project_ids(response)
+    """
     root = response_to_root(project_ids_response)
     ids = root.xpath('//project/@id')
     years = root.xpath('//project/@name')
@@ -88,6 +185,19 @@ def response_to_project_ids(project_ids_response: requests.Response) -> Iterator
 
 
 def response_to_resource_ids(resource_ids_response) -> Dict[str, str]:
+    """
+    Extracts an API response into an dictionary mapping a resource to its ids.
+
+    :param resource_ids_response: a response from the API to the resource_ids request
+    :type resource_ids_response: requests.Response
+    :return: all the resources and their ids
+    :rtype: Dict[str, str]
+
+    :Example:
+
+    >>> response = client.get_resource_ids(9)  # project id for 2019-2020
+    >>> resources_ids = response_to_resource_ids(response)
+    """
     root = response_to_root(resource_ids_response)
     df = pd.DataFrame(data=root.xpath('//resource/@id'), index=map(lambda x: x.upper(),
                                                                    root.xpath('//resource/@name'))
@@ -96,6 +206,14 @@ def response_to_resource_ids(resource_ids_response) -> Dict[str, str]:
 
 
 def room_to_classroom(room: etree.ElementTree) -> Classroom:
+    """
+    Parses the (class)room retrieved from API to a more convenient Classroom object.
+
+    :param room: (class)room as a tree structure
+    :type room: etree.ElementTree
+    :return: the classroom
+    :rtype: Classroom
+    """
     address = Address(
         address1=room.get('address1'),
         address2=room.get('address2'),
@@ -115,7 +233,19 @@ def room_to_classroom(room: etree.ElementTree) -> Classroom:
 
 
 def response_to_classrooms(classrooms_response: requests.Response) -> List[Classroom]:
+    """
+    Extracts an API response into list of classrooms.
 
+    :param classrooms_response: a response from the API to the classrooms request
+    :type classrooms_response: requests.Response
+    :return: all classrooms
+    :rtype: List[Classroom]
+
+    :Example:
+
+    >>> response = client.get_classrooms(9)  # project id for 2019-2020
+    >>> classrooms = response_to_classrooms(response)
+    """
     root = response_to_root(classrooms_response)
 
     rooms = root.xpath('//room')
@@ -129,7 +259,19 @@ def response_to_classrooms(classrooms_response: requests.Response) -> List[Class
 
 
 def response_to_courses(activities_response: requests.Response) -> List[Course]:
+    """
+    Extracts an API response into list of courses.
 
+    :param activities_response: a response from the API to the activities request
+    :type activities_response: requests.Response
+    :return: all courses present in the response
+    :rtype: List[Courses]
+
+    :Example:
+
+    >>> response = client.get_activities(9)  # project id for 2019-2020
+    >>> courses = response_to_courses(response)
+    """
     root = response_to_root(activities_response)
 
     courses = defaultdict(Course)
@@ -196,7 +338,7 @@ if __name__ == "__main__":
 
     client = Client(credentials)
 
-    request = client.get_project_id()
+    request = client.get_project_ids()
 
     ids_years = response_to_project_ids(request)
 

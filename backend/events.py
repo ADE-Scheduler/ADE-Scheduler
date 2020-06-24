@@ -4,7 +4,7 @@ from ics import Event
 from datetime import datetime
 from backend.classrooms import merge_classrooms, Classroom
 from backend.professors import Professor
-from typing import Type, Tuple, Iterable
+from typing import Type, Tuple, Iterable, Optional
 
 # We need to set the timezone
 TZ = timezone('Europe/Brussels')
@@ -12,10 +12,31 @@ COURSE_REGEX = '([A-Z]+[0-9]+)'
 
 
 class AcademicalEvent(Event):
+    """
+    An academical event is an object used to represent any event in the academical calendar.
 
+    :param name: the name of the event
+    :type name: str
+    :param begin: the start of the event
+    :type begin: datetime
+    :param end: the end of the event
+    :type end: datetime
+    :param professor: the professor(s) in charge of this event
+    :type professor: Professor
+    :param classrooms: all the classrooms were this event takes place
+    :type classrooms: Optional[List[Classroom]]
+    :param id: the id of the event
+    :type id: Optional[str]
+    :param weight: the weight attributed to the event
+    :type weight: float
+    :param code: code of the course related to this event
+    :type code: Optional[str]
+    :param prefix: the prefix used for to describe the type of event
+    :type prefix: Optional[str]
+    """
     def __init__(self, name: str, begin: datetime, end: datetime, professor: Professor,
-                 classrooms: Iterable[Classroom] = None, id: str = None, weight: float = 5,
-                 code: str = None, prefix: str = None):
+                 classrooms: Optional[Iterable[Classroom]] = None, id: Optional[str] = None, weight: float = 5,
+                 code: Optional[str] = None, prefix: Optional[str] = None):
 
         super().__init__(name=f'{prefix} {code}-{name}',
                          begin=begin, end=end, description=str(professor),
@@ -34,6 +55,12 @@ class AcademicalEvent(Event):
         return not self.__eq__(other)
 
     def get_id(self) -> str:
+        """
+        Returns the id of this event.
+
+        :return: the id of the event
+        :rtype: str
+        """
         return self.id
 
     def __hash__(self) -> int:
@@ -44,27 +71,62 @@ class AcademicalEvent(Event):
         return tmp + self.begin.strftime('%d/%m - %Hh%M') + ' to ' + self.end.strftime('%Hh%M')
 
     def set_weight(self, weight: float) -> None:
+        """
+        Changes the weight of the event.
+
+        :param weight: the weight
+        :type weight: float
+        """
         self.weight = weight
 
     def json(self) -> dict:
-        # TODO: fix ?
-        return {'start': str(self.begin), 'end': str(self.end), 'title': self.id + '\n' + self.classrooms,
-                'editable': False, 'description': self.name + '\n' + self.location + ' - ' +
-                                                  str(self.duration) + '\n' + str(self.description), 'code': self.code}
+        """
+        Returns the event as a json-like format.
+
+        :return: a dictionary containing relevant information
+        :rtype: dict
+        """
+        return {
+            'start': str(self.begin),
+            'end': str(self.end),
+            'title': self.id,
+            'editable': False,
+            'description': self.name + '\n' + self.location + ' - ' + str(self.duration) + '\n' + str(self.description),
+            'code': self.code
+        }
 
     def intersects(self, other: 'AcademicalEvent') -> bool:
+        """
+        Returns whether two events intersect each other.
+
+        :param other: the event to compare with
+        :type other: AcademicalEvent
+        :return: True if both events intersect
+        :rtype: bool
+        """
         return self.end > other.begin and other.end > self.begin  # not(A or B) = notA and notB
 
     __xor__ = intersects
 
     def overlap(self, other: 'AcademicalEvent') -> float:
+        """
+        If both events intersect, returns the product of the weights.
+
+        :param other: the event to compare with
+        :type other: AcademicalEvent
+        :return: self.weight * other.weight if intersect, else 0
+        :rtype: float
+        """
         return self.weight * other.weight * self.intersects(other)
 
     __mul__ = overlap
 
     def get_week(self) -> int:
         """
-        Returns the week of this event in the gregorian calendar, starting at 0 for the first week
+        Returns the week of this event in the gregorian calendar, starting at 0 for the first week.
+
+        :return: the week number relative to gregorian calendar numbering
+        :rtype: int
         """
         return self.begin.isocalendar()[1] - 1
 
@@ -122,6 +184,7 @@ class EventOTHER(AcademicalEvent):
 def extract_code(course_id: str) -> str:
     """
     Extracts a code from a course id.
+
     :param course_id: str given by ADE API to represent the id
     :return: The code of the course. None if nothing matched the pattern required
     """

@@ -10,7 +10,6 @@ backend
    credentials
    database
    events
-   mail
    models
    professors
    schedules
