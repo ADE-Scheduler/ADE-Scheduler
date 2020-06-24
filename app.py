@@ -1,6 +1,5 @@
 # Python imports
 import os
-from redis import Redis
 from datetime import timedelta
 
 # Flask imports
@@ -11,15 +10,16 @@ from flask_mail import Mail
 
 # API imports
 import backend.database as db
-import backend.models as model
-import backend.credentials as creds
+import backend.models as md
+import backend.credentials as cd
+import backend.redis as rd
 
 # Setup app
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'super-secret'   # TODO: change !
 
 # Setup Flask-Mail
-mail_credentials = creds.get_credentials(creds.GMAIL_CREDENTIALS)
+mail_credentials = cd.get_credentials(cd.GMAIL_CREDENTIALS)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
@@ -33,13 +33,13 @@ app.config['SECURITY_REGISTERABLE'] = True
 app.config['SECURITY_CHANGEABLE'] = True
 app.config['SECURITY_RECOVERABLE'] = True
 app.config['SECURITY_PASSWORD_SALT'] = 'a_very_complex_and_indeciphrable_salt'  # TODO: change !
-Security(app, SQLAlchemySessionUserDatastore(db.session, model.User, model.Role))
+Security(app, SQLAlchemySessionUserDatastore(db.session, md.User, md.Role))
 
 # Setup Flask-Session
-#app.config['SESSION_TYPE'] = 'redis'
-#app.config['SESSION_REDIS'] = Redis(host='localhost', port=6379)
-#app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=30)
-#Session(app)
+app.config['SESSION_TYPE'] = 'redis'
+app.config['SESSION_REDIS'] = rd.conn
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=30)
+Session(app)
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):
@@ -68,5 +68,4 @@ if __name__ == '__main__':
     # else:
     #     print('\tSome error(s) occured:', diagnostics)
 
-    # app.run(host=os.environ['ADE_FLASK_HOSTNAME'], debug=True)
-    print(model.DatabaseAPI.get_user())
+    app.run(host=os.environ['ADE_FLASK_HOSTNAME'], debug=True)
