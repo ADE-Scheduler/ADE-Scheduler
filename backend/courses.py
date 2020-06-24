@@ -1,7 +1,7 @@
 from itertools import repeat
 import pandas as pd
 from backend.events import AcademicalEvent
-from typing import List, Union, Dict, Iterable
+from typing import List, Union, Dict, Iterable, Optional
 
 
 View = Union[List[int], Dict[int, str]]
@@ -9,9 +9,23 @@ View = Union[List[int], Dict[int, str]]
 
 class Course:
     """
-    A course aims to represent one or more courses. It contains its events and is represented with a name and a code.
+    A course aims to represent one or more courses.
+    It contains its events and is represented with a name and a code.
+
+    :param code: the code of the course
+    :type code: str
+    :param name: the full name of the course
+    :type name: str
+    :param weight: the weight attributed to the course
+    :type weight: float
+    :param activities: a structure of all the events indexed by code, type and id
+    :type activities: Optional[pd.Dataframe]
+
+    :Example:
+
+    >>> course = Course('LMECA2732', 'Robotics')
     """
-    def __init__(self, code: str, name: str, weight: float = 1, activities: pd.DataFrame = None):
+    def __init__(self, code: str, name: str, weight: float = 1, activities: Optional[pd.DataFrame] = None):
         # A Course is defined by its code and its name
         self.code = code
         self.name = name
@@ -44,8 +58,9 @@ class Course:
     def add_activity(self, events: List[AcademicalEvent]) -> None:
         """
         Add an activity to the current course's activities. An activity is a set of events with the same id.
+
         :param events: list of academical events coming from the same activity
-        :return: /
+        :type events: List[AcademicalEvent]
         """
         if len(events) == 0:
             return
@@ -57,12 +72,14 @@ class Course:
         df = pd.DataFrame(data=data, columns=self.activities.columns, index=index)
         self.activities = self.activities.append(df)
 
-    def set_weights(self, percentage: float = None, event_type: AcademicalEvent = None) -> None:
+    def set_weights(self, percentage: Optional[float] = None, event_type: Optional[AcademicalEvent] = None) -> None:
         """
         Modifies this course's events weight.
-        :param percentage: int, the "priority" required for this course in (0-100)%
-        :param event_type: if we want to modify the weight of a certain type of event only
-        :return: /
+
+        :param percentage: the "priority" required for this course in (0-100)%, default is 50%
+        :type percentage: Optional[float]
+        :param event_type: if present, modify the weight of a certain type of event only
+        :type event_type: Optional[AcademicalEvent]
         """
         # No percentage specified, set to default value
         if percentage is None:
@@ -81,15 +98,20 @@ class Course:
     def get_summary(self) -> pd.DataFrame:
         """
         Returns the summary of all activities in the course.
+
         :return: list of activity ids
+        :rtype: pd.Dataframe
         """
         return self.activities.index.get_level_values('id').unique()
 
-    def get_events(self, view: View = None) -> Iterable[AcademicalEvent]:
+    def get_events(self, view: Optional[View] = None) -> Iterable[AcademicalEvent]:
         """
-        Returns a list of events that matches correct ids.
-        :param view: list of ids, or dict {week_number : ids}
+        Returns a list of events that optionally matches correct ids.
+
+        :param view: if present, list of ids or dict {week_number : ids}
+        :type view: Optional[View]
         :return: list of events
+        :rtype: Iterable[AcademicalEvent]
         """
         if view is None:
             return self.activities['event'].values
@@ -119,6 +141,21 @@ class Course:
         return list(map(lambda e: e.json(), self.activities['event'].values))
 
 
-def merge_courses(courses: Iterable[Course], code: str = None, name: str = None, weight: float = None) -> Course:
+def merge_courses(courses: Iterable[Course], code: Optional[str] = None,
+                  name: Optional[str] = None, weight: float = 1) -> Course:
+    """
+    Merges multiple courses into one.
+
+    :param courses: multiple courses
+    :type courses: Iterable[Courses]
+    :param code: the new code
+    :type code: Optional[str]
+    :param name: the new name
+    :type name: Optional[str]
+    :param weight: the new weight
+    :type weight: float
+    :return: the new course
+    :rtype: Course
+    """
     activities = pd.concat(course.activities for course in courses)
     return Course(code=code, name=name, weight=weight, activities=activities)

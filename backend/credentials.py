@@ -8,7 +8,9 @@ GMAIL_CREDENTIALS = "GMAIL_CREDENTIALS"
 
 
 class CredentialsEncoder(json.JSONEncoder):
-
+    """
+    Subclass of json encoder aiming to convert bytes into list of integers.
+    """
     def default(self, obj: Any) -> Any:
         if isinstance(obj, bytes):
             return list(obj)
@@ -17,7 +19,9 @@ class CredentialsEncoder(json.JSONEncoder):
 
 
 class CredentialsDecoder(json.JSONDecoder):
-
+    """
+    Subclass of json decoder aiming to convert back the list of integers into bytes.
+    """
     def decode(self, obj: Any, w: Any = None) -> str:
         decoded = json.JSONDecoder().decode(obj)
 
@@ -31,9 +35,18 @@ class CredentialsDecoder(json.JSONDecoder):
 def set_credentials(filename: str, credentials_name: str):
     """
     Set a environment variable to link toward credentials file.
+
+    It will warn you about the fact that environment variables cannot be set permanently using this function.
+
     :param filename: path with .json extension
-    :param credentials_name: the environment variable as a string
-    :return: /
+    :type filename: str
+    :param credentials_name: the environment variable
+    :type credentials_name: str
+
+    :Example:
+
+    >>> filename = 'path/to/ade_api.json'
+    >>> set_credentials(filename, ADE_API_CREDENTIALS)
     """
     os.environ[credentials_name] = filename
     venv = "venv/bin/activate"
@@ -49,16 +62,27 @@ def set_credentials(filename: str, credentials_name: str):
 def get_credentials(credentials_name: str) -> 'Credentials':
     """
     Reads a credentials file from environment variable and returns the credentials in it.
-    lists of ints are converted into lists of bytes.
-    :param credentials_name: the environment variable as a string
-    :return: a dict of credentials
+    Lists of ints are converted into lists of bytes.
+
+    :param credentials_name: the environment variable
+    :type credentials_name: str
+    :return: the credentials
+    :rtype: Credentials
     """
     with open(os.environ[credentials_name], 'r') as f:
         return Credentials(**json.load(f, cls=CredentialsDecoder))
 
 
 class Credentials:
+    """
+    Credentials are essentially contained into dictionary structure.
 
+    They should be located in a private path and accessed using environ variables to ensure security: **don't push your
+    credentials on Github** !
+
+    :param kwargs: the credentials as pairs of key / value
+    :type kwargs: Any
+    """
     def __init__(self, **kwargs: Any):
         """
         Class which stores credentials.
@@ -69,9 +93,10 @@ class Credentials:
     def save(self, filename: str) -> None:
         """
         Save current credentials into a json file.
-        bytes are converted into list of ints.
+        Bytes are converted into list of ints.
+
         :param filename: path with .json extension
-        :return: /
+        :type filename: str
         """
         with open(filename, 'w') as f:
             json.dump(self.credentials, f, cls=CredentialsEncoder)
