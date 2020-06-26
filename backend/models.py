@@ -3,7 +3,7 @@ from flask_security import UserMixin, RoleMixin
 from sqlalchemy import create_engine
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy import Boolean, DateTime, Column, Integer, String, ForeignKey, JSON
-
+from typing import List
 
 # Dummy tables for Flask-Security
 class RolesUsers(Base):
@@ -66,7 +66,7 @@ class Property(Base):
 ######################
 
 def get_user_from_email(email: String) -> List[User]:
-    return User.query.filter(User.email == email).one()
+    return User.query.filter(User.email == email).all()
 
 def get_schedule_from_link(link):
     pass
