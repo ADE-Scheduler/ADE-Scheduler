@@ -5,6 +5,9 @@ from pickle import dumps, loads
 import os
 
 
+conn = Redis(host='localhost', port=6379)
+
+
 class Server(Redis):
     """
     Subclass of Redis object, aiming to simplify the use of the server to few basic commands.

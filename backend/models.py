@@ -65,9 +65,8 @@ class Property(Base):
 # API for the models #
 ######################
 
-class DatabaseAPI():
-    def get_user_from_email(email):
-        return User.query.filter(User.email == email).all()
+def get_user_from_email(email: String) -> List[User]:
+    return User.query.filter(User.email == email).one()
 
-    def get_schedule_from_link(link):
-        pass
+def get_schedule_from_link(link):
+    pass
