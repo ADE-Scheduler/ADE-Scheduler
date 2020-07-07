@@ -77,6 +77,7 @@ class Client:
         :return: the response
         :rtype: request.Response
         :raises ExpiredTokenError: if the token is expired an exception occurs
+        :raises HTTPError: if the request is unsuccessful (oustide the 2XX-3XX range)
         """
         if self.is_expired():
             raise ExpiredTokenError
@@ -86,7 +87,11 @@ class Client:
         password = self.credentials['password']
         args = '&'.join('='.join(map(str, _)) for _ in kwargs.items())
         url = 'https://api.sgsi.ucl.ac.be:8243/ade/v0/api?login=' + user + '&password=' + password + '&' + args
-        return requests.get(url=url, headers=headers)
+
+        resp = requests.get(url=url, headers=headers)
+        resp.raise_for_status()
+
+        return resp
 
     def get_project_ids(self) -> requests.Response:
         """
