@@ -7,12 +7,14 @@ from flask import Flask, render_template, url_for, redirect, request, session
 from flask_session import Session
 from flask_security import Security, login_required, SQLAlchemySessionUserDatastore
 from flask_mail import Mail
+from manager import Manager
 
 # API imports
 import backend.database as db
 import backend.models as md
 import backend.credentials as cd
-import backend.servers as rd
+import backend.servers as srv
+import backend.ade_api as ade
 
 # Setup app
 app = Flask(__name__)
@@ -26,20 +28,25 @@ app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USERNAME'] = mail_credentials['username']
 app.config['MAIL_PASSWORD'] = mail_credentials['password']
 app.config['MAIL_DEFAULT_SENDER'] = mail_credentials['username']
-Mail(app)
+app.config['MAIL_MANAGER'] = Mail(app)
 
 # Setup Flask-Security
 app.config['SECURITY_REGISTERABLE'] = True
 app.config['SECURITY_CHANGEABLE'] = True
 app.config['SECURITY_RECOVERABLE'] = True
 app.config['SECURITY_PASSWORD_SALT'] = 'a_very_complex_and_indeciphrable_salt'  # TODO: change !
-Security(app, SQLAlchemySessionUserDatastore(db.session, md.User, md.Role))
+app.config['SECURITY_MANAGER'] = Security(app, SQLAlchemySessionUserDatastore(db.session, md.User, md.Role))
 
 # Setup Flask-Session
 app.config['SESSION_TYPE'] = 'redis'
-app.config['SESSION_REDIS'] = rd.conn
+app.config['SESSION_REDIS'] = srv.Server(host='localhost', port=6379)
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=30)
-Session(app)
+app.config['SESSION_MANAGER'] = Session(app)
+
+# Setup the API Manager
+ade_api_credentials = cd.get_credentials(cd.ADE_API_CREDENTIALS)
+app.config['MANAGER'] = Manager(ade.Client(ade_api_credentials), app.config['SESSION_REDIS'])
+
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):

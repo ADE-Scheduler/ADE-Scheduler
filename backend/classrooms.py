@@ -26,7 +26,6 @@ class Address:
 
     def __str__(self) -> str:
         location = ''
-        print(self.address)
         if self.address['address2']:
             location += self.address['address2']
         if self.address['address1']:

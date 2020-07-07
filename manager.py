@@ -1,7 +1,8 @@
-from backend import ade_api, servers
 from multiprocessing import Process
 import time
 
+import backend.servers as srv
+import backend.ade_api as ade
 
 class Manager:
     """
@@ -17,7 +18,7 @@ class Manager:
     :param db: the database TODO
     :type db: TODO
     """
-    def __init__(self, client: ade_api.Client, server: servers.Server, db):
+    def __init__(self, client: ade.Client, server: srv.Server):
 
         def run_server():
             while not server.is_running():
@@ -45,6 +46,21 @@ class Manager:
             self.server = server
             self.client = client
 
-        def get_courses(*codes, project_id=ade_api.DEFAULT_PROJECT_ID):
-            prefix = f'[project_id={project_id}]'
-            courses, codes_not_found = self.server.get_multiple_values(*codes,  prefix=prefix)
+    def get_courses(self, *codes, project_id=ade.DEFAULT_PROJECT_ID):
+        prefix = f'[project_id={project_id}]'
+        courses, codes_not_found = self.server.get_multiple_values(*codes,  prefix=prefix)
+
+        # print(courses)
+        # print(codes_not_found)
+
+        courses = ade.response_to_courses(self.client.get_activities(codes_not_found, project_id))
+        print(courses)
+
+
+        # ids = ade.response_to_resource_ids(self.client.get_resource_ids(ade.DEFAULT_PROJECT_ID))
+        # print(ids['LMECA2660'])
+        # print(ids['LINGI2315'])
+
+        # prjs = ade.response_to_project_ids(self.client.get_project_ids())
+        # for prj in prjs:
+        #     print(prj)

@@ -5,7 +5,6 @@ from pickle import dumps, loads
 import os
 
 
-conn = Redis(host='localhost', port=6379)
 
 
 class Server(Redis):
@@ -40,15 +39,16 @@ class Server(Redis):
     def run(self) -> None:
         """
         Runs the server.
+        Since redis is an externally run server, it cannot be started from the
+        python code properly.
         """
-        # TODO: find a better way to run redis...
-        os.system('redis-server')
+        pass
 
     def shutdown(self) -> None:
         """
         Shuts the server down.
         """
-        super().shutdown()
+        super().shutdown(save=True)
 
     def set_value(self, key: str, value: Any, expire_in: Optional[Dict[str, int]] = None) -> None:
         """
@@ -108,11 +108,12 @@ class Server(Redis):
 
         for key in keys:
             value = self.get_value(prefix + key)
-
             if value:
                 values.append(value)
             else:
-                keys_not_found.append(value)
+                keys_not_found.append(key)
+
+        return values, keys_not_found
 
 
 if __name__ == '__main__':

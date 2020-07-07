@@ -284,7 +284,6 @@ def response_to_courses(activities_response: requests.Response) -> List[Course]:
 
     # Each activity has its unique event type
     for activity in root.xpath('//activity'):
-        print('ici')
         activity_id = activity.attrib['name']
         activity_type = activity.attrib['type']
         activity_name = activity.attrib['code']
@@ -307,14 +306,11 @@ def response_to_courses(activities_response: requests.Response) -> List[Course]:
             event_end = event.attrib['endHour']
             rooms = event.xpath('.//eventParticipant[@category="classroom"]')
             classrooms = [room_to_classroom(room) for room in rooms]
-            print('classroom', classrooms)
 
             event_classroom = classrooms
             event_address = backend.classrooms.merge_classrooms(classrooms)
 
             xy = event.xpath('.//eventParticipant[@category="instructor"]')
-            for xyz in xy:
-                print(xyz.keys())
             instructor_names = event.xpath('.//eventParticipant[@category="instructor"]/@name')
             instructor_emails = event.xpath('.//eventParticipant[@category="instructor"]/@id')  # TODO: email ?
             event_instructor = professors.merge_professors(professors.Professor(name, email)
@@ -322,12 +318,14 @@ def response_to_courses(activities_response: requests.Response) -> List[Course]:
 
             # We create the event
             t0, t1 = backend.events.extract_datetime(event_date, event_start, event_end)
-            event = event_type(t0, t1, activity_code, activity_name, event_instructor, event_address,
-                               classroom=event_classroom, id=activity_id)
+            event = event_type(activity_code, t0, t1, event_instructor, event_address,
+                               event_classroom, activity_id)
             events_list.append(event)
 
+        if activity_code not in courses and events_list:
+            courses[activity_code] = Course(activity_code, activity_name)
         if events_list:
-            courses[activity_code].add_activity(event_type, activity_id, events_list)
+            courses[activity_code].add_activity(events_list)
 
     return list(courses.values())
 

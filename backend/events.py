@@ -40,7 +40,8 @@ class AcademicalEvent(Event):
 
         super().__init__(name=f'{prefix} {code}-{name}',
                          begin=begin, end=end, description=str(professor),
-                         location=merge_classrooms(classrooms).location())
+                         location='OMG FIX UR SHIT JEROM')
+                         # TODO: merge_classrooms fait du gros caca ici
         self.weight = weight
         self.id = f'{prefix}{id}'
         self.code = code
