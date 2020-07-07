@@ -1,4 +1,5 @@
 from multiprocessing import Process
+from datetime import timedelta
 import time
 
 import backend.servers as srv
@@ -47,19 +48,65 @@ class Manager:
             self.client = client
 
     def get_courses(self, *codes, project_id=ade.DEFAULT_PROJECT_ID):
+        """
+        ...
+        """
         # Fetch from the server
         prefix = f'[project_id={project_id}]'
         courses, codes_not_found = self.server.get_multiple_values(*codes, prefix=prefix)
 
         # Fetch from the api
-        resource_ids = self.get_resource_ids(*codes_not_found, project_id=project_id)
-        courses_not_found = ade.response_to_courses(self.client.get_activities(resource_ids, project_id))
-        for course in courses_not_found:
-            self.server.set_value(prefix+course.code, course, expire_in={'hours': 10})
+        if codes_not_found:
+            resource_ids = self.get_resource_id(*codes_not_found, project_id=project_id)
+            courses_not_found = ade.response_to_courses(self.client.get_activities(resource_ids, project_id))
+            for course in courses_not_found:
+                self.server.set_value(prefix+course.code, course, expire_in={'hours': 3})
+            courses += courses_not_found
 
-        courses += courses_not_found
         return courses
 
-    def get_resource_ids(self, *codes, project_id=ade.DEFAULT_PROJECT_ID):
-        resources = ade.response_to_resource_ids(self.client.get_resource_ids(ade.DEFAULT_PROJECT_ID))
-        return [resources.get(code) for code in codes]
+    def get_resource_id(self, *codes, project_id=ade.DEFAULT_PROJECT_ID):
+        """
+        ...
+        """
+        hmap = f'[RESOURCE_IDs,project_id={project_id}]'
+        if not self.server.exists(hmap):
+            self.update_resource_id()
+        return map(lambda x: x.decode(), filter(None, self.server.hmget(hmap, codes)))
+
+    def update_resource_id(self):
+        """
+        ...
+        """
+        hmap = f'[PROJECT_IDs]'
+        if not self.server.exists(hmap):
+            self.update_project_id()
+
+        for _, value in self.server.hgetall(hmap).items():
+            value = value.decode()
+            hmap = f'[RESOURCE_IDs,project_id={value}]'
+            resources = ade.response_to_resource_ids(self.client.get_resource_ids(value))
+            self.server.hmset(hmap, resources)
+            self.server.expire(hmap, timedelta(hours=25))
+
+    def get_project_id(self, year):
+        """
+        ...
+        """
+        hmap = f'[PROJECT_IDs]'
+        if not self.server.exists(hmap):
+            self.update_project_id()
+        value = self.server.hmget(hmap, year)
+        if value:
+            return value.decode()
+        else:
+            return None
+
+    def update_project_id(self):
+        """
+        ...
+        """
+        hmap = f'[PROJECT_IDs]'
+        project_ids = ade.response_to_project_ids(self.client.get_project_ids())
+        self.server.hmset(hmap, dict((v, k) for k, v in project_ids))
+        self.server.expire(hmap, timedelta(hours=25))
