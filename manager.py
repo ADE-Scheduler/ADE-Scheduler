@@ -47,20 +47,19 @@ class Manager:
             self.client = client
 
     def get_courses(self, *codes, project_id=ade.DEFAULT_PROJECT_ID):
+        # Fetch from the server
         prefix = f'[project_id={project_id}]'
-        courses, codes_not_found = self.server.get_multiple_values(*codes,  prefix=prefix)
+        courses, codes_not_found = self.server.get_multiple_values(*codes, prefix=prefix)
 
-        # print(courses)
-        # print(codes_not_found)
+        # Fetch from the api
+        resource_ids = self.get_resource_ids(*codes_not_found, project_id=project_id)
+        courses_not_found = ade.response_to_courses(self.client.get_activities(resource_ids, project_id))
+        for course in courses_not_found:
+            self.server.set_value(prefix+course.code, course, expire_in={'hours': 10})
 
-        courses = ade.response_to_courses(self.client.get_activities(codes_not_found, project_id))
-        print(courses)
+        courses += courses_not_found
+        return courses
 
-
-        # ids = ade.response_to_resource_ids(self.client.get_resource_ids(ade.DEFAULT_PROJECT_ID))
-        # print(ids['LMECA2660'])
-        # print(ids['LINGI2315'])
-
-        # prjs = ade.response_to_project_ids(self.client.get_project_ids())
-        # for prj in prjs:
-        #     print(prj)
+    def get_resource_ids(self, *codes, project_id=ade.DEFAULT_PROJECT_ID):
+        resources = ade.response_to_resource_ids(self.client.get_resource_ids(ade.DEFAULT_PROJECT_ID))
+        return [resources.get(code) for code in codes]

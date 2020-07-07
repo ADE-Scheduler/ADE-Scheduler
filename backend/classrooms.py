@@ -66,6 +66,7 @@ class Classroom:
 
     def __getattr__(self, item) -> str:
         return self.infos[item]
+        # TODO: Somethin' fishy going on here when pickled @Jerom
 
     def __repr__(self) -> str:
         id = self.infos['id']
