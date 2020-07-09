@@ -5,10 +5,9 @@ from datetime import timedelta
 # Flask imports
 from flask import Flask, render_template, url_for, redirect, request, session
 from flask_session import Session
-from flask_security import Security, login_required, SQLAlchemySessionUserDatastore
+from flask_security import Security, SQLAlchemySessionUserDatastore
 from flask_mail import Mail
 from flask_assets import Environment
-from manager import Manager
 
 # API imports
 import backend.database as db
@@ -16,19 +15,21 @@ import backend.models as md
 import backend.credentials as cd
 import backend.servers as srv
 import backend.ade_api as ade
+import backend.manager as mng
 
 # Views imports
 from views.calendar import calendar
-from util.assets import bundles
+from views.account import account
 
 
 # Setup app
 app = Flask(__name__)
 app.register_blueprint(calendar, url_prefix='')
+app.register_blueprint(account, url_prefix='/account')
 app.config['SECRET_KEY'] = 'super-secret'   # TODO: change !
 
 # Setup Flask-Assets
-app.config['ASSETS_DEBUG'] = True
+from util.assets import bundles
 assets = Environment(app)
 assets.register(bundles)
 
@@ -57,7 +58,7 @@ app.config['SESSION_MANAGER'] = Session(app)
 
 # Setup the API Manager
 ade_api_credentials = cd.get_credentials(cd.ADE_API_CREDENTIALS)
-app.config['MANAGER'] = Manager(ade.Client(ade_api_credentials), app.config['SESSION_REDIS'])
+app.config['MANAGER'] = mng.Manager(ade.Client(ade_api_credentials), app.config['SESSION_REDIS'])
 
 
 @app.teardown_appcontext
@@ -65,21 +66,5 @@ def shutdown_session(exception=None):
     db.session.remove()
 
 
-@app.route('/account')
-@login_required
-def account():
-    return render_template('account.html')
-
-
 if __name__ == '__main__':
-    import diagnostics as diags
-
-    # TODO: there is a class Credentials still somewhere in diagnostics :-)
-    # print('Is everything ready to initialize ?')
-    # ready, diagnostics = diags.ready_to_initialize()
-    # if ready:
-    #     print('\tEverything is clear!')
-    # else:
-    #     print('\tSome error(s) occured:', diagnostics)
-
     app.run(host=os.environ['ADE_FLASK_HOSTNAME'], debug=True)

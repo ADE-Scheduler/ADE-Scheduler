@@ -122,3 +122,5 @@ hidden.py
 test.py
 
 webapp/templates/map_bis.html
+
+static/gen/

@@ -6,15 +6,13 @@ bundles = {
     'base_css': Bundle(
         'css/lib/bootstrap.min.css',
         'css/base.css',
-        'lib/fontawesome/css/all.min.css',
-        'img/favicon.ico',
-        output='gen/base.css', filters='cssmin'),
+        output='gen/base.min.css', filters='cssmin'),
     'base_js': Bundle(
         'js/lib/jquery.min.js',
         'js/lib/popper.min.js',
         'js/lib/bootstrap.min.js',
         'js/base.js',
-        output='gen/base.js', filters='jsmin'),
+        output='gen/base.min.js', filters='jsmin'),
 
     # Calendar
     'calendar_css': Bundle(
@@ -23,7 +21,7 @@ bundles = {
         'lib/fullcalendar/daygrid/main.css',
         'lib/fullcalendar/timegrid/main.css',
         'lib/fullcalendar/list/main.css',
-        output='gen/calendar.css', filters='cssmin'),
+        output='gen/calendar.min.css', filters='cssmin'),
     'calendar_js': Bundle(
         'js/calendar.js',
         'lib/fullcalendar/core/main.js',
@@ -33,5 +31,13 @@ bundles = {
         'lib/fullcalendar/timegrid/main.js',
         'lib/fullcalendar/bootstrap/main.js',
         'lib/fullcalendar/core/locales/fr.js',
-        output='gen/calendar.js', filters='jsmin'),
+        output='gen/calendar.min.js', filters='jsmin'),
+
+    # Account
+    'account_css': Bundle(
+        'css/account.css',
+        output='gen/account.min.css', filters='cssmin'),
+    'account_js': Bundle(
+        'js/account.js',
+        output='gen/account.min.js', filters='jsmin'),
 }
