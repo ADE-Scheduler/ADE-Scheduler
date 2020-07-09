@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, session
+from flask_security import current_user
 
 
 calendar = Blueprint('calendar', __name__, static_folder='../static')
