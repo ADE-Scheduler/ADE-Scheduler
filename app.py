@@ -3,14 +3,14 @@ import os
 from datetime import timedelta
 
 # Flask imports
-from flask import Flask, render_template, url_for, redirect, request, session
+from flask import Flask
 from flask_session import Session
-from flask_security import Security, SQLAlchemySessionUserDatastore
+from flask_sqlalchemy import SQLAlchemy
+from flask_security import Security, SQLAlchemyUserDatastore
 from flask_mail import Mail
 from flask_assets import Environment
 
 # API imports
-import backend.database as db
 import backend.models as md
 import backend.credentials as cd
 import backend.servers as srv
@@ -43,12 +43,20 @@ app.config['MAIL_PASSWORD'] = mail_credentials['password']
 app.config['MAIL_DEFAULT_SENDER'] = mail_credentials['username']
 app.config['MAIL_MANAGER'] = Mail(app)
 
+# Setup Flask-SQLAlchemy
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['ADE_DB_PATH']
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
+    'pool_pre_ping': True,
+}
+md.db.init_app(app)
+
 # Setup Flask-Security
 app.config['SECURITY_REGISTERABLE'] = True
 app.config['SECURITY_CHANGEABLE'] = True
 app.config['SECURITY_RECOVERABLE'] = True
 app.config['SECURITY_PASSWORD_SALT'] = 'a_very_complex_and_indeciphrable_salt'  # TODO: change !
-app.config['SECURITY_MANAGER'] = Security(app, SQLAlchemySessionUserDatastore(db.session, md.User, md.Role))
+app.config['SECURITY_MANAGER'] = Security(app, SQLAlchemyUserDatastore(md.db, md.User, md.Role))
 
 # Setup Flask-Session
 app.config['SESSION_TYPE'] = 'redis'
@@ -59,11 +67,6 @@ app.config['SESSION_MANAGER'] = Session(app)
 # Setup the API Manager
 ade_api_credentials = cd.get_credentials(cd.ADE_API_CREDENTIALS)
 app.config['MANAGER'] = mng.Manager(ade.Client(ade_api_credentials), app.config['SESSION_REDIS'])
-
-
-@app.teardown_appcontext
-def shutdown_session(exception=None):
-    db.session.remove()
 
 
 if __name__ == '__main__':
