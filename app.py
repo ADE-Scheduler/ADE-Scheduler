@@ -7,6 +7,7 @@ from flask import Flask, render_template, url_for, redirect, request, session
 from flask_session import Session
 from flask_security import Security, login_required, SQLAlchemySessionUserDatastore
 from flask_mail import Mail
+from flask_assets import Environment
 from manager import Manager
 
 # API imports
@@ -16,9 +17,20 @@ import backend.credentials as cd
 import backend.servers as srv
 import backend.ade_api as ade
 
+# Views imports
+from views.calendar import calendar
+from util.assets import bundles
+
+
 # Setup app
 app = Flask(__name__)
+app.register_blueprint(calendar, url_prefix='')
 app.config['SECRET_KEY'] = 'super-secret'   # TODO: change !
+
+# Setup Flask-Assets
+app.config['ASSETS_DEBUG'] = True
+assets = Environment(app)
+assets.register(bundles)
 
 # Setup Flask-Mail
 mail_credentials = cd.get_credentials(cd.GMAIL_CREDENTIALS)
@@ -51,11 +63,6 @@ app.config['MANAGER'] = Manager(ade.Client(ade_api_credentials), app.config['SES
 @app.teardown_appcontext
 def shutdown_session(exception=None):
     db.session.remove()
-
-
-@app.route('/')
-def main():
-    return render_template('calendar.html', **session)
 
 
 @app.route('/account')

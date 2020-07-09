@@ -82,7 +82,7 @@ class Manager:
         if not self.server.exists(hmap):
             self.update_project_id()
 
-        for _, value in self.server.hgetall(hmap).items():
+        for value in self.server.hgetall(hmap).values():
             value = value.decode()
             hmap = f'[RESOURCE_IDs,project_id={value}]'
             resources = ade.response_to_resource_ids(self.client.get_resource_ids(value))
