@@ -69,5 +69,17 @@ ade_api_credentials = cd.get_credentials(cd.ADE_API_CREDENTIALS)
 app.config['MANAGER'] = mng.Manager(ade.Client(ade_api_credentials), app.config['SESSION_REDIS'])
 
 
+@app.shell_context_processor
+def make_shell_context():
+    return {
+        'db': md.db,
+        'Property': md.Property,
+        'Schedule': md.Schedule,
+        'Link': md.Link,
+        'User': md.User,
+        'usr': md.User.query.first(),
+    }
+
+
 if __name__ == '__main__':
     app.run(host=os.environ['ADE_FLASK_HOSTNAME'], debug=True)
