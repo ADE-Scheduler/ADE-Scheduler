@@ -4,6 +4,8 @@ import time
 
 import backend.servers as srv
 import backend.ade_api as ade
+import backend.models  as md
+
 
 class Manager:
     """
@@ -19,7 +21,7 @@ class Manager:
     :param db: the database TODO
     :type db: TODO
     """
-    def __init__(self, client: ade.Client, server: srv.Server):
+    def __init__(self, client: ade.Client, server: srv.Server, database: md.SQLAlchemy):
 
         def run_server():
             while not server.is_running():
@@ -46,6 +48,7 @@ class Manager:
         else:
             self.server = server
             self.client = client
+            self.database = database
 
     def get_courses(self, *codes, project_id=ade.DEFAULT_PROJECT_ID):
         """

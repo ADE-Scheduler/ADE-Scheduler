@@ -28,6 +28,11 @@ app.register_blueprint(calendar, url_prefix='')
 app.register_blueprint(account, url_prefix='/account')
 app.config['SECRET_KEY'] = 'super-secret'   # TODO: change !
 
+# Setup the API Manager
+ade_api_credentials = cd.get_credentials(cd.ADE_API_CREDENTIALS)
+manager = mng.Manager(ade.Client(ade_api_credentials), srv.Server(host='localhost', port=6379), md.db)
+app.config['MANAGER'] = manager
+
 # Setup Flask-Assets
 from util.assets import bundles
 assets = Environment(app)
@@ -49,24 +54,20 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
     'pool_pre_ping': True,
 }
-md.db.init_app(app)
+manager.database.init_app(app)
 
 # Setup Flask-Security
 app.config['SECURITY_REGISTERABLE'] = True
 app.config['SECURITY_CHANGEABLE'] = True
 app.config['SECURITY_RECOVERABLE'] = True
 app.config['SECURITY_PASSWORD_SALT'] = 'a_very_complex_and_indeciphrable_salt'  # TODO: change !
-app.config['SECURITY_MANAGER'] = Security(app, SQLAlchemyUserDatastore(md.db, md.User, md.Role))
+app.config['SECURITY_MANAGER'] = Security(app, SQLAlchemyUserDatastore(manager.database, md.User, md.Role))
 
 # Setup Flask-Session
 app.config['SESSION_TYPE'] = 'redis'
-app.config['SESSION_REDIS'] = srv.Server(host='localhost', port=6379)
+app.config['SESSION_REDIS'] = manager.server
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=30)
 app.config['SESSION_MANAGER'] = Session(app)
-
-# Setup the API Manager
-ade_api_credentials = cd.get_credentials(cd.ADE_API_CREDENTIALS)
-app.config['MANAGER'] = mng.Manager(ade.Client(ade_api_credentials), app.config['SESSION_REDIS'])
 
 
 @app.shell_context_processor
