@@ -3,11 +3,88 @@ from collections import deque
 from backend.events import EventOTHER, AcademicalEvent
 from heapq import nsmallest
 import operator
-from typing import Iterable
+from typing import Iterable, Union
 from backend.courses import Course, merge_courses, View
+from flask import current_app as app
+
+"""
+Schedule needed data:
+{
+    code_list: [LMECA2660, LELEC2760, etc],             // requested course codes
+    filtered_subcodes: [LELEC2760_Q1, LMECA2660_Q2],    // unselected subcodes
+    computed_subcode: [[code1, code2], ..., [code2, code4]]   // filtered subcodes, week by week
+    custom_events: [{event1}, {event2}],                // custom user events
+    priority_levels: {code1: 5, code2: 1, subcode1: 3}, // priority level of the various code & subcodes
+    project_id: id,
+    schedule_id: id,
+}
+"""
 
 
-class Schedule(Course):
+class Schedule():
+    """
+    A schedule is essentially a combination of courses stored as a master course, from which some events can be removed.
+    """
+    def __init__(self, project_id: Union[str,int], schedule_id: int = None):
+        self.project_id = project_id
+        self.schedule_id = schedule_id
+        self.codes = list()
+        self.filtered_subcodes = list()
+        self.computed_subcodes = list()
+        self.custom_events = list()
+        self.proprities = dict()
+
+    def add_course(self, code: Union[Iterable[str], str]) -> None:
+        """
+        Adds a course to the schedule.
+
+        :param code: the code of the course added
+        :type code: Iterable[str] or str
+        """
+        if isinstance(code, str):
+            if code not in self.codes:
+                self.codes.append(code)
+        else:
+            for c in code:
+                if c not in self.codes:
+                    self.codes.append(c)
+
+    def remove_course(self, code: str) -> None:
+        """
+        Removes a course from the schedule.
+
+        :param code: the code of the course to remove
+        :type code: str
+        """
+        if code in self.codes:
+            self.codes.remove(code)
+
+    def get_events(self) -> Iterable[AcademicalEvent]:
+        """
+        Extracts all the events matching ids in the view list.
+        """
+        events = list()
+        mng = app.config['MANAGER']
+        courses = mng.get_courses(*self.codes, project_id=self.project_id)
+        for course in courses:
+            events.append(course.get_events()) # TODO: CHANGER quand JEROM AURA FAIT SON BOULOT
+
+        return list(chain.from_iterable(events))
+
+    def compute_best(self, fts=None, n_best=5, safe_compute=True, view=None):
+        """
+        Computes best schedules trying to minimize conflicts selecting, for each type of event, one event.
+        :param fts: a list of event.CustomEvent objects
+        :param n_best: number of best schedules to produce
+        :param safe_compute: if True, ignore all redundant events at same time period
+        :param view: list of ids to filter
+        :return: the n_best schedules
+        """
+        pass
+
+
+
+class ScheduleOld(Course):
     """
     A schedule is essentially a combination of courses stored as a master course, from which some events can be removed.
 
