@@ -7,6 +7,14 @@ import backend.ade_api as ade
 import backend.models  as md
 
 
+class ScheduleNotOwnedError(Exception):
+    """
+    Exception that will occur if a user tries to manipulate a schedule he does not own.
+    """
+    def __str__(self):
+        return 'The schedule you manipulated is not yours.'
+
+
 class Manager:
     """
     The manager ensures that data is accessible and provides access to it.
@@ -113,3 +121,22 @@ class Manager:
         project_ids = ade.response_to_project_ids(self.client.get_project_ids())
         self.server.hmset(hmap, dict((v, k) for k, v in project_ids))
         self.server.expire(hmap, timedelta(hours=25))
+
+    def save_schedule(self, user, schedule):
+        """
+        ...
+        """
+        if schedule.id is None:     # this schedule is not yet saved
+            schd_db = md.Schedule(label='', data=schedule, user=user)
+            schd_db.data.id = schd_db.id
+            self.database.session.commit()
+            return schd_db.data
+
+        else:                       # this schedule has already been saved
+                                    # TODO: control access levels
+            schd_db = user.get_schedule(id=schedule.id)
+            if schd_db is None:
+                raise ScheduleNotOwnedError
+            else:
+                schd_db.update_data(schedule)
+                return schd_db.data

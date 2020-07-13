@@ -28,6 +28,7 @@ app = Flask(__name__)
 app.register_blueprint(calendar, url_prefix='')
 app.register_blueprint(account, url_prefix='/account')
 app.config['SECRET_KEY'] = 'super-secret'   # TODO: change !
+JSGlue(app)
 
 # Setup the API Manager
 ade_api_credentials = cd.get_credentials(cd.ADE_API_CREDENTIALS)
@@ -70,9 +71,6 @@ app.config['SESSION_REDIS'] = manager.server
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=30)
 app.config['SESSION_MANAGER'] = Session(app)
 
-# Setup Flask-JSGlue
-JSGlue(app)
-
 
 @app.shell_context_processor
 def make_shell_context():
@@ -82,7 +80,6 @@ def make_shell_context():
         'Schedule': md.Schedule,
         'Link': md.Link,
         'User': md.User,
-        'usr': md.User.query.first(),
     }
 
 

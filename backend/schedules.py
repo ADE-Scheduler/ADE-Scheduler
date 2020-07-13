@@ -3,7 +3,7 @@ from collections import deque
 from backend.events import EventOTHER, AcademicalEvent
 from heapq import nsmallest
 import operator
-from typing import Iterable, Union
+from typing import Iterable, Union, List
 from backend.courses import Course, merge_courses, View
 from flask import current_app as app
 
@@ -24,30 +24,38 @@ Schedule needed data:
 class Schedule():
     """
     A schedule is essentially a combination of courses stored as a master course, from which some events can be removed.
+
+    :param id: the schedule id mathching this of the Database it is currently saved in.
+               This parameter is automatically set when the schedule is saved for the first time.
     """
     def __init__(self, project_id: Union[str,int], schedule_id: int = None):
+        self.id = schedule_id
         self.project_id = project_id
-        self.schedule_id = schedule_id
         self.codes = list()
         self.filtered_subcodes = list()
         self.computed_subcodes = list()
         self.custom_events = list()
         self.proprities = dict()
 
-    def add_course(self, code: Union[Iterable[str], str]) -> None:
+    def add_course(self, code: Union[Iterable[str], str]) -> List[str]:
         """
         Adds a course to the schedule.
 
         :param code: the code of the course added
         :type code: Iterable[str] or str
+        :return: the codes that were added to the schedule
         """
         if isinstance(code, str):
             if code not in self.codes:
                 self.codes.append(code)
+                return [code]
         else:
+            added_codes = list()
             for c in code:
                 if c not in self.codes:
                     self.codes.append(c)
+                    added_codes.append(c)
+            return added_codes
 
     def remove_course(self, code: str) -> None:
         """

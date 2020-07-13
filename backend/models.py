@@ -5,6 +5,13 @@ db = SQLAlchemy()
 fsqla.FsModels.set_db_info(db)
 
 
+class ScheduleDoNotMatchError(Exception):
+    """
+    Exception that will occur if a user tries to update a schedule's data with a non-matching ID.
+    """
+    def __str__(self):
+        return 'The schedule ID does not match the given data\'s ID'
+
 
 class Role(db.Model, fsqla.FsRoleMixin):
     pass
@@ -25,11 +32,18 @@ class User(db.Model, fsqla.FsUserMixin):
             self.schedules.remove(schedule)
             db.session.commit()
 
-    def get_schedules(self, level=None):
-        if level is not None:
+    def get_schedule(self, id=None, level=None):
+        if id is not None:          # Return the schedule matching the requested ID (if any)
+            for schedule in self.schedules:
+                if schedule.id == id:
+                    return schedule
+            return None
+
+        elif level is not None:     # Return the schedules matching the ownership level
             return list(map(lambda y: y.schedule, filter(lambda x: x.level == level, self.property)))
+
         else:
-            return self.schedules
+            return self.schedules   # Return all of this user's schedules
 
 
 class Schedule(db.Model):
@@ -38,7 +52,7 @@ class Schedule(db.Model):
     """
     __tablename__ = 'schedule'
     id = db.Column(db.Integer(), primary_key=True)
-    data = db.Column(db.JSON())
+    data = db.Column(db.PickleType())
     label = db.Column(db.String(100))
     users = db.relationship('User', secondary='property')
     link = db.relationship('Link', uselist=False, backref='schedule')
@@ -48,9 +62,18 @@ class Schedule(db.Model):
         Creates a schedule, binds it to its creator.
         """
         self.label = label
-        self.data = data
         self.users = [user]
         db.session.add(self)
+        db.session.flush()
+
+        data.id = self.id
+        self.data = data
+        db.session.commit()
+
+    def update_data(self, data):
+        if data.id is not self.id:
+            raise ScheduleDoNotMatchError
+        self.data = data
         db.session.commit()
 
     def get_link():

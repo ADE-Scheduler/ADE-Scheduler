@@ -85,26 +85,72 @@ $(function () {
 /*
  *  Button callbacks
  */
+function saveButton() {
+    spinner.run = true;
+
+    $.ajax({
+        url: Flask.url_for('calendar.save'),
+        type: 'POST',
+        statusCode: {
+            401: () => {
+                window.location.href = Flask.url_for('security.login');
+            }
+        },
+        success: (data) => {
+            $('#save-success-alert').show();
+        },
+        error: (data) => {
+            $('#error-alert').show()
+        },
+        complete: () => {
+            spinner.run = false;
+        }
+    });
+}
+
+
 function computeButton() {
     spinner.run = true;
 
-    // Done (to be replaced by an AJAX request...)
-    setTimeout(() => {
-        spinner.run = false;
-    }, 2e3);
+    $.ajax({
+        url: Flask.url_for('calendar.compute'),
+        type: 'GET',
+        success: (data) => {},
+        error: (data) => {
+            $('#error-alert').show()
+        },
+        complete: () => {
+            spinner.run = false;
+        }
+    });
 }
 
 function clearButton() {
-    console.log("Calendar cleared !");
+    spinner.run = true;
+
+    $.ajax({
+        url: Flask.url_for('calendar.clear'),
+        type: 'DELETE',
+        success: (data) => {
+            $('.code-item').remove();
+        },
+        error: (data) => {
+            $('#error-alert').show()
+        },
+        complete: () => {
+            spinner.run = false;
+        }
+    });
 }
 
 function addCodeButton() {
     spinner.run = true;
+
     let code = $('#codeInput').val();
     if (code) {
         $.ajax({
             url: Flask.url_for('calendar.add_code', {'code': code}),
-            type: 'PUT',
+            type: 'PATCH',
             success: (data) => {
                 data.codes.forEach((code) => {
                     $('.list-code-input').before(
@@ -120,7 +166,7 @@ function addCodeButton() {
                 $('#codeInput').val('');
             },
             error: (data) => {
-                console.log('Request failed.');
+                $('#error-alert').show()
             },
             complete: () => {
                 spinner.run = false;
@@ -130,15 +176,16 @@ function addCodeButton() {
 }
 
 function removeCodeButton(div, code) {
-    spinnerrun = true;
+    spinner.run = true;
+
     $.ajax({
         url: Flask.url_for('calendar.remove_code', {'code': code}),
-        type: 'PUT',
+        type: 'PATCH',
         success: (data) => {
             $(div).parent().remove();
         },
         error: (data) => {
-            console.log('Request failed.');
+            $('#error-alert').show()
         },
         complete: () => {
             spinner.run = false;
