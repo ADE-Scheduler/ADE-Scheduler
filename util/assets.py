@@ -4,7 +4,6 @@ from flask_assets import Bundle
 bundles = {
     # Template
     'base_css': Bundle(
-        'css/lib/bootstrap.min.css',
         'css/base.css',
         output='gen/base.min.css', filters='cssmin'),
     'base_js': Bundle(

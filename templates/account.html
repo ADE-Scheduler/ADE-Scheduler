@@ -3,9 +3,6 @@
     {% assets "account_css" %}
         <link rel="stylesheet" href="{{ ASSET_URL }}" />
     {% endassets %}
-    {% assets "account_js" %}
-        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-    {% endassets %}
 {% endblock %}
 
 
@@ -79,4 +76,10 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block js %}
+{% assets "account_js" %}
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %}
 {% endblock %}

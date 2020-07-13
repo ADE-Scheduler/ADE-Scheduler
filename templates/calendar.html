@@ -3,9 +3,6 @@
     {% assets "calendar_css" %}
         <link rel="stylesheet" href="{{ ASSET_URL }}" />
     {% endassets %}
-    {% assets "calendar_js" %}
-        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-    {% endassets %}
 {% endblock %}
 
 
@@ -92,7 +89,7 @@
     <!-- Add an event Modal -->
     <div class="modal fade" id="eventModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
-            <form class="modal-content needs-validation" id="form-add-event">
+            <form class="modal-content needs-validation" id="form-add-event" onsubmit="addEventButton(event)">
                 <div class="modal-header">
                     <h5 class="modal-title">Add an event</h5>
                     <button type="button" class="close" data-dismiss="modal">
@@ -234,9 +231,9 @@
                     </li>
                     {% endfor %}
                     <li class="list-group-item p-0 list-code-input">
-                        <form class="input-group my-1">
+                        <form class="input-group my-1" id="form-add-code" onsubmit="addCodeButton(event)">
                             <input class="form-control-plaintext code-input" type="text" placeholder="Enter code" id="codeInput">
-                            <button class="btn input-group-btn badge badge-success" id="codeValidation" onclick="addCodeButton()">
+                            <button class="btn input-group-btn badge badge-success" type="submit" id="codeValidation">
                                 <i class="fas fa-plus"></i>
                             </button>
                         </form>
@@ -270,4 +267,10 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block js %}
+{% assets "calendar_js" %}
+<script type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %}
 {% endblock %}

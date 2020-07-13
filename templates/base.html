@@ -8,18 +8,18 @@
         <meta name="description" content="ADE Scheduler for UCLouvain students">
 
         <title>ADE Scheduler v2.0</title>
+        <!-- Favicon -->
         <link href="{{ url_for('static', filename='img/favicon.ico') }}" rel="shortcut icon">
+        <!-- FontAwesome, does not import properly through Flask-Assets -->
+        <link href="{{ url_for('static', filename='lib/fontawesome/css/all.min.css') }}" rel="stylesheet">
+        <!-- Bootstrap -->
+        <link href={{ url_for('static', filename='css/lib/bootstrap.min.css') }} rel="stylesheet">
+
 
         {% assets "base_css" %}
             <link rel="stylesheet" href="{{ ASSET_URL }}" />
         {% endassets %}
-        {% assets "base_js" %}
-            <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-        {% endassets %}
         {{ JSGlue.include() }}
-
-        <!-- FontAwesome, does not import properly through Flask-Assets -->
-        <link href="{{ url_for('static', filename='lib/fontawesome/css/all.min.css') }}" rel="stylesheet">
 
         {%block head%}{%endblock%}
     </head>
@@ -28,7 +28,6 @@
         <!-- Main navbar -->
         <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
             <a class="navbar-brand mr-auto mr-lg-0" href="/">
-                <!-- <img src="static/img/ade_scheduler_icon_white.png" height="26px"> -->
                 ADE Scheduler
             </a>
             <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">
@@ -88,5 +87,11 @@
                 <span class="text-muted">Place sticky footer content here.</span>
             </div>
         </footer> -->
+
+        {% assets "base_js" %}
+            <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+        {% endassets %}
+        {% block js %}
+        {% endblock %}
     </body>
 </html>

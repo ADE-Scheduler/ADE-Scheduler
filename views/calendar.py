@@ -2,7 +2,7 @@ import re
 import time
 
 from flask import current_app as app
-from flask import Blueprint, render_template, session, jsonify, redirect, url_for
+from flask import Blueprint, render_template, session, jsonify, redirect, url_for, request
 from flask_security import current_user, login_required
 
 import backend.schedules as schd
@@ -63,4 +63,11 @@ def save():
     #       or update existing, according to the situation.
     mng = app.config['MANAGER']
     session['current_schedule'] = mng.save_schedule(current_user, session['current_schedule'])
+    return "Success", 200
+
+
+@calendar.route('/add/custom_event', methods=['POST'])
+def add_custom_event():
+    event = request.json
+    print(event)
     return "Success", 200

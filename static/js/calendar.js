@@ -87,7 +87,6 @@ $(function () {
  */
 function saveButton() {
     spinner.run = true;
-
     $.ajax({
         url: Flask.url_for('calendar.save'),
         type: 'POST',
@@ -108,10 +107,8 @@ function saveButton() {
     });
 }
 
-
 function computeButton() {
     spinner.run = true;
-
     $.ajax({
         url: Flask.url_for('calendar.compute'),
         type: 'GET',
@@ -127,7 +124,6 @@ function computeButton() {
 
 function clearButton() {
     spinner.run = true;
-
     $.ajax({
         url: Flask.url_for('calendar.clear'),
         type: 'DELETE',
@@ -143,11 +139,13 @@ function clearButton() {
     });
 }
 
-function addCodeButton() {
-    spinner.run = true;
+function addCodeButton(e) {
+    // Prevent form submission
+    e.preventDefault();
 
     let code = $('#codeInput').val();
     if (code) {
+        spinner.run = true;
         $.ajax({
             url: Flask.url_for('calendar.add_code', {'code': code}),
             type: 'PATCH',
@@ -176,7 +174,7 @@ function addCodeButton() {
 }
 
 function removeCodeButton(div, code) {
-    spinner.run = true;
+    // spinner.run = true;
 
     $.ajax({
         url: Flask.url_for('calendar.remove_code', {'code': code}),
@@ -188,16 +186,12 @@ function removeCodeButton(div, code) {
             $('#error-alert').show()
         },
         complete: () => {
-            spinner.run = false;
+            // spinner.run = false;
         },
     });
 }
 
-
-/*
- *  Add an event form
- */
-$('#form-add-event').submit((e) => {
+function addEventButton(e) {
     // Prevent form submission
     e.preventDefault();
 
@@ -218,14 +212,31 @@ $('#form-add-event').submit((e) => {
         evt.start = $('#date-start').val() + ' ' +$('#time-start').val();
         evt.end = $('#date-end').val() + ' ' +$('#time-end').val();
     }
-    eventArray.push(evt);
-    calendar.refetchEvents(evt);
 
-    // Clear the form
-    e.target.reset();
- });
+    // Send the request to the server
+    spinner.run = true;
+    $.ajax({
+        url: Flask.url_for('calendar.add_custom_event'),
+        type: 'POST',
+        data: JSON.stringify(evt),
+        contentType: 'application/json;charset=UTF-8',
+        success: (data) => {
+            eventArray.push(evt);
+            calendar.refetchEvents(evt);
 
-$('#switch-repetition').change((e) => {
+            // Clear the form
+            e.target.reset();
+        },
+        error: (data) => {
+            $('#error-alert').show()
+        },
+        complete: () => {
+            spinner.run = false;
+        },
+    });
+ };
+
+$('#switch-repetition').on('change', (e) => {
     if (e.target.checked) {
         $('#recurring-start').attr('required', true);
         $('#recurring-end').attr('required', true);
@@ -251,7 +262,7 @@ $('#switch-repetition').change((e) => {
         $('#date-start').attr('disabled', false);
         $('#date-end').attr('disabled', false);
     }
- });
+});
 $('#date-start').change((e) => {
     if ($('#date-end').val() === '') {
         $('#date-end').val(e.target.value);
