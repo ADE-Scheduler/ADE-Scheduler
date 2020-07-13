@@ -16,6 +16,7 @@
         {% assets "base_js" %}
             <script type="text/javascript" src="{{ ASSET_URL }}"></script>
         {% endassets %}
+        {{ JSGlue.include() }}
 
         <!-- FontAwesome, does not import properly through Flask-Assets -->
         <link href="{{ url_for('static', filename='lib/fontawesome/css/all.min.css') }}" rel="stylesheet">

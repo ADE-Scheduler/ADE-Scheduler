@@ -9,6 +9,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_security import Security, SQLAlchemyUserDatastore
 from flask_mail import Mail
 from flask_assets import Environment
+from flask_jsglue import JSGlue
 
 # API imports
 import backend.models as md
@@ -68,6 +69,9 @@ app.config['SESSION_TYPE'] = 'redis'
 app.config['SESSION_REDIS'] = manager.server
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=30)
 app.config['SESSION_MANAGER'] = Session(app)
+
+# Setup Flask-JSGlue
+JSGlue(app)
 
 
 @app.shell_context_processor

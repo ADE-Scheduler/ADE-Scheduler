@@ -1,5 +1,21 @@
-let eventArray = [];
-let calendar = {};
+var spinner = {
+    run: false,
+    set run(val) {
+        let cal = $('#calendar');
+        let spin = $('#spinner-compute');
+        if (val) {
+            $('#sidebarMenu').collapse('hide');
+            cal.css('opacity', '0.2');
+            spin.css('display', 'initial');
+        } else {
+            cal.css('opacity', '1');
+            spin.css('display', 'none');
+        }
+    },
+};
+
+var eventArray = [];
+var calendar = {};
 
 document.addEventListener('DOMContentLoaded', function() {
     let calendarDiv = document.getElementById('calendar');
@@ -70,18 +86,11 @@ $(function () {
  *  Button callbacks
  */
 function computeButton() {
-    let cal = $('#calendar');
-    let spinner = $('#spinner-compute');
-
-    // Computing data...
-    $('#sidebarMenu').collapse('hide');
-    cal.css('opacity', '0.2');
-    spinner.css('display', 'initial');
+    spinner.run = true;
 
     // Done (to be replaced by an AJAX request...)
     setTimeout(() => {
-        cal.css('opacity', '1');
-        spinner.css('display', 'none');
+        spinner.run = false;
     }, 2e3);
 }
 
@@ -90,12 +99,51 @@ function clearButton() {
 }
 
 function addCodeButton() {
+    spinner.run = true;
     let code = $('#codeInput').val();
-    console.log(code);
+    if (code) {
+        $.ajax({
+            url: Flask.url_for('calendar.add_code', {'code': code}),
+            type: 'PUT',
+            success: (data) => {
+                data.codes.forEach((code) => {
+                    $('.list-code-input').before(
+                        `<li class="list-group-item code-item d-flex justify-content-between align-items-center">
+                        <span class="code-tag" data-toggle="modal" data-target="#detailsModal">`
+                        + code +
+                        `</span>
+                        <a href="#" class="badge badge-danger" onclick="removeCodeButton(this, '`+ code +`')">
+                        <i class="fas fa-trash"></i>
+                        </a>
+                        </li>`);
+                })
+                $('#codeInput').val('');
+            },
+            error: (data) => {
+                console.log('Request failed.');
+            },
+            complete: () => {
+                spinner.run = false;
+            },
+        });
+    }
 }
 
-function removeCodeButton() {
-    console.log("Code removed !");
+function removeCodeButton(div, code) {
+    spinnerrun = true;
+    $.ajax({
+        url: Flask.url_for('calendar.remove_code', {'code': code}),
+        type: 'PUT',
+        success: (data) => {
+            $(div).parent().remove();
+        },
+        error: (data) => {
+            console.log('Request failed.');
+        },
+        complete: () => {
+            spinner.run = false;
+        },
+    });
 }
 
 
@@ -157,7 +205,6 @@ $('#switch-repetition').change((e) => {
         $('#date-end').attr('disabled', false);
     }
  });
-
 $('#date-start').change((e) => {
     if ($('#date-end').val() === '') {
         $('#date-end').val(e.target.value);
