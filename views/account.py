@@ -12,12 +12,22 @@ account = Blueprint('account', __name__, static_folder='../static')
 def before_account_request():
     if not session.get('current_schedule'):
         session['current_schedule'] = schd.Schedule(DEFAULT_PROJECT_ID)
+        session['current_schedule_modified'] = True
 
 
 @account.route('/')
 @login_required
 def dashboard():
-    return render_template('account.html', schedules=current_user.get_schedule(), current_schedule=session['current_schedule'])
+    return render_template('account.html', schedules=current_user.get_schedule(),
+                            current_schedule=session['current_schedule'])
+
+
+@account.route('/get/data', methods=['GET'])
+@login_required
+def get_data():
+    return jsonify({
+        'unsaved': session['current_schedule_modified'],
+    }), 200
 
 
 @account.route('/load/schedule/<id>', methods=['GET'])
@@ -26,9 +36,11 @@ def load_schedule(id):
     schedule = current_user.get_schedule(id=int(id))
     if schedule:
         session['current_schedule'] = schedule.data
+        session['current_schedule_modified'] = False
         return jsonify({
             'id': schedule.data.id,
             'label': schedule.data.label,
+            'unsaved': session['current_schedule_modified'],
         }), 200
     else:
         return '', 403      # Requested id is not in this user's schedule list.
@@ -42,10 +54,12 @@ def delete_schedule(id):
         current_user.remove_schedule(schedule)
         if session['current_schedule'].id == schedule.id:
             session['current_schedule'] = schd.Schedule(DEFAULT_PROJECT_ID)
+            session['current_schedule_modified'] = True
             return jsonify({
                 'no_current_schedule': True,
-                'label': session['current_schedule'].label,
                 'id': session['current_schedule'].id,
+                'label': session['current_schedule'].label,
+                'unsaved': session['current_schedule_modified'],
             }), 200
         return 'OK', 200
     else:
@@ -66,6 +80,7 @@ def update_label(id):
         mng = app.config['MANAGER']
         session['current_schedule'].label = label
         session['current_schedule'] = mng.save_schedule(current_user, session['current_schedule'])
+            # TODO: change the label without saving the whole schedule ??
         return '', 200
     else:
         return '', 403      # Requested id is not in this user's schedule list.

@@ -1,4 +1,21 @@
+var unsaved = true;
+
+window.onload = () => {
+    $.ajax({
+        url: Flask.url_for('account.get_data'),
+        type: 'GET',
+        success: (data) => {
+            unsaved = data.unsaved;
+        },
+        error: (data) => {
+            console.log("An error has occurred")
+        },
+    })
+}
+
+
 function updateCurrentScheduleData(data, selected_div) {
+    unsaved = data.unsaved;
     if (data.no_current_schedule) {
         $('#schedule-label').text(data.label);
         $('#form-update-label').attr('onsubmit', 'updateLabelButton(event, -1)');
@@ -11,31 +28,57 @@ function updateCurrentScheduleData(data, selected_div) {
 }
 
 function loadScheduleButton(div, id) {
-    $.ajax({
-        url: Flask.url_for('account.load_schedule', {'id': id}),
-        type: 'GET',
-        success: (data) => {
-            updateCurrentScheduleData(data, div);
-        },
-        error: (data) => {
-            console.log("An error has occurred")
-        },
-        complete: () => {}
-    });
+    let req = (div, id) => {
+        $.ajax({
+            url: Flask.url_for('account.load_schedule', {'id': id}),
+            type: 'GET',
+            success: (data) => {
+                updateCurrentScheduleData(data, div);
+            },
+            error: (data) => {
+                console.log("An error has occurred")
+            },
+        });
+    }
+
+    if (unsaved) {
+        $('#warningModal').modal('show');
+        $('#warningModal').on('hide.bs.modal', (e) => {
+            if (document.activeElement.id === 'warning-continue') {
+                req(div, id);
+            }
+            $('#warningModal').off('hide.bs.modal');
+        });
+    } else {
+        req(div, id);
+    }
 }
 
 function viewScheduleButton(id) {
-    $.ajax({
-        url: Flask.url_for('account.load_schedule', {'id': id}),
-        type: 'GET',
-        success: (data) => {
-            window.location.href = Flask.url_for('calendar.schedule_viewer');
-        },
-        error: (data) => {
-            console.log("An error has occurred")
-        },
-        complete: () => {}
-    });
+    let req = (id) => {
+        $.ajax({
+            url: Flask.url_for('account.load_schedule', {'id': id}),
+            type: 'GET',
+            success: (data) => {
+                window.location.href = Flask.url_for('calendar.schedule_viewer');
+            },
+            error: (data) => {
+                console.log("An error has occurred")
+            },
+        });
+    }
+
+    if (unsaved) {
+        $('#warningModal').modal('show');
+        $('#warningModal').on('hide.bs.modal', (e) => {
+            if (document.activeElement.id === 'warning-continue') {
+                req(id);
+            }
+            $('#warningModal').off('hide.bs.modal');
+        });
+    } else {
+        req(id);
+    }
 }
 
 function deleteScheduleButton(div, id) {
@@ -51,7 +94,6 @@ function deleteScheduleButton(div, id) {
         error: (data) => {
             console.log("An error has occurred")
         },
-        complete: () => {}
     });
 }
 
@@ -83,7 +125,6 @@ function updateLabelButton(e, id) {
             error: (data) => {
                 console.log("An error has occurred")
             },
-            complete: () => {}
         });
     }
 }
