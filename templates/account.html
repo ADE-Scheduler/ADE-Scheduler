@@ -38,15 +38,11 @@
                             {% else %}
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                             {% endif %}
-                                <h6 class="text-truncate my-0">
-                                    {% if s.data.label %}
-                                        {{ s.data.label }}
-                                    {% else %}
-                                        Schedule {{ loop.index }}
-                                    {% endif %}
+                                <h6 class="text-truncate my-0" onclick="loadScheduleButton(this, {{ s.id }})">
+                                    {{ s.data.label }}
                                 </h6>
                                 <div class="d-flex flex-nowrap">
-                                    <a class="text-secondary mx-2" href="#" onclick="loadScheduleButton({{ s.id }})"><i class="far fa-eye" ></i></a>
+                                    <a class="text-secondary mx-2" href="#" onclick="viewScheduleButton({{ s.id }})"><i class="far fa-eye" ></i></a>
                                     <a class="text-danger" href="#" onclick="deleteScheduleButton(this, {{ s.id }})"><i class="fas fa-times"></i></a>
                                 </div>
                             </li>

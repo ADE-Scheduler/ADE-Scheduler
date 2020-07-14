@@ -1,5 +1,5 @@
 from flask import current_app as app
-from flask import Blueprint, render_template, session, request
+from flask import Blueprint, render_template, session, request, jsonify
 from flask_security import login_required, current_user
 
 import backend.schedules as schd
@@ -26,7 +26,10 @@ def load_schedule(id):
     schedule = current_user.get_schedule(id=int(id))
     if schedule:
         session['current_schedule'] = schedule.data
-        return 'OK', 200
+        return jsonify({
+            'id': schedule.data.id,
+            'label': schedule.data.label,
+        }), 200
     else:
         return '', 403      # Requested id is not in this user's schedule list.
 
@@ -36,9 +39,14 @@ def load_schedule(id):
 def delete_schedule(id):
     schedule = current_user.get_schedule(id=int(id))
     if schedule:
-        if session['current_schedule'].id == schedule.id:
-            session['current_schedule'] = None
         current_user.remove_schedule(schedule)
+        if session['current_schedule'].id == schedule.id:
+            session['current_schedule'] = schd.Schedule(DEFAULT_PROJECT_ID)
+            return jsonify({
+                'no_current_schedule': True,
+                'label': session['current_schedule'].label,
+                'id': session['current_schedule'].id,
+            }), 200
         return 'OK', 200
     else:
         return '', 403      # Requested id is not in this user's schedule list.

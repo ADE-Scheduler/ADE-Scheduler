@@ -1,11 +1,35 @@
+function updateCurrentScheduleData(data, selected_div) {
+    if (data.no_current_schedule) {
+        $('#schedule-label').text(data.label);
+        $('#form-update-label').attr('onsubmit', 'updateLabelButton(event, -1)');
+    } else {
+        $('.current-schedule').removeClass('current-schedule')
+        $(selected_div).parent().addClass('current-schedule');
+        $('#schedule-label').text(data.label);
+        $('#form-update-label').attr('onsubmit', 'updateLabelButton(event,'+data.id+')');
+    }
+}
 
-
-function loadScheduleButton(id) {
+function loadScheduleButton(div, id) {
     $.ajax({
         url: Flask.url_for('account.load_schedule', {'id': id}),
         type: 'GET',
         success: (data) => {
-            window.location.href = Flask.url_for('calendar.schedule_viewer')
+            updateCurrentScheduleData(data, div);
+        },
+        error: (data) => {
+            console.log("An error has occurred")
+        },
+        complete: () => {}
+    });
+}
+
+function viewScheduleButton(id) {
+    $.ajax({
+        url: Flask.url_for('account.load_schedule', {'id': id}),
+        type: 'GET',
+        success: (data) => {
+            window.location.href = Flask.url_for('calendar.schedule_viewer');
         },
         error: (data) => {
             console.log("An error has occurred")
@@ -20,6 +44,9 @@ function deleteScheduleButton(div, id) {
         type: 'DELETE',
         success: (data) => {
             $(div).parent().parent().remove();
+            if (data.no_current_schedule) {
+                updateCurrentScheduleData(data);
+            }
         },
         error: (data) => {
             console.log("An error has occurred")
@@ -37,9 +64,10 @@ function updateLabelButton(e, id) {
     let input = $('#input-label');
     let div = $('#schedule-label');
 
-    if (!input.length) {
+    if (div.length) {
         div.remove();
         form.prepend(`<input class="form-control mr-4" type="text" id="input-label" value="`+ div.text() +`"/>`);
+        $('#input-label').focus();
     } else {
         if (id == null) {id = -1;}
         $.ajax({
