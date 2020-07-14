@@ -31,20 +31,25 @@
                             <span class="text-muted">Schedules</span>
                         </h4>
                         <ul class="list-group list-schedules mb-3">
+                            {% for s in schedules %}
+                            {% if s.id == id %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center bg-current-schedule" data-toggle="tooltip" data-placement="bottom" title="Current schedule">
+                            {% else %}
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <h6 class="text-truncate my-0">Schedule 1</h6>
+                            {% endif %}
+                                <h6 class="text-truncate my-0">
+                                    {% if s.get('label') %}
+                                        {{ s.get('label') }}
+                                    {% else %}
+                                        Schedule {{ loop.index }}
+                                    {% endif %}
+                                </h6>
                                 <div class="d-flex flex-nowrap">
-                                    <a class="text-secondary mx-2" href="#"><i class="far fa-eye"></i></a>
-                                    <a class="text-danger" href="#"><i class="fas fa-times"></i></a>
+                                    <a class="text-secondary mx-2" href="#"><i class="far fa-eye" onclick="loadScheduleButton({{ s.id }})"></i></a>
+                                    <a class="text-danger" href="#"><i class="fas fa-times" onclick="deleteScheduleButton(this, {{ s.id }})"></i></a>
                                 </div>
                             </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <h6 class="text-truncate my-0">Schedule 2</h6>
-                                <div class="d-flex flex-nowrap">
-                                    <a class="text-secondary mx-2" href="#"><i class="far fa-eye"></i></a>
-                                    <a class="text-danger" href="#"><i class="fas fa-times"></i></a>
-                                </div>
-                            </li>
+                            {% endfor %}
                         </ul>
                     </div>
                 </div>

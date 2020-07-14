@@ -14,7 +14,7 @@ calendar = Blueprint('calendar', __name__, static_folder='../static')
 
 @calendar.before_request
 def before_calendar_request():
-    if 'current_schedule' not in session:
+    if not session.get('current_schedule'):
         session['current_schedule'] = schd.Schedule(DEFAULT_PROJECT_ID)
 
 

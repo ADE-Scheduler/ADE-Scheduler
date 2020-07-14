@@ -226,6 +226,7 @@ function addEventButton(e) {
 
             // Clear the form
             e.target.reset();
+            $('#eventModal').modal('hide');
         },
         error: (data) => {
             $('#error-alert').show()

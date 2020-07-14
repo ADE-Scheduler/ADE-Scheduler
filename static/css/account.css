@@ -14,3 +14,10 @@
     width: 100%;
     padding: 12px 0 12px 20px;
 }
+
+.bg-current-schedule {
+    background-color: rgba(40,167,69,0.2);
+}
+.bg-current-schedule:hover {
+    background-color: rgba(40,167,69,0.3) !important;
+}
