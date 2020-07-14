@@ -127,7 +127,7 @@ class Manager:
         ...
         """
         if schedule.id is None:     # this schedule is not yet saved
-            schd_db = md.Schedule(label='', data=schedule, user=user)
+            schd_db = md.Schedule(data=schedule, user=user)
             schd_db.data.id = schd_db.id
             self.database.session.commit()
             return schd_db.data

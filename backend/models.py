@@ -53,15 +53,13 @@ class Schedule(db.Model):
     __tablename__ = 'schedule'
     id = db.Column(db.Integer(), primary_key=True)
     data = db.Column(db.PickleType())
-    label = db.Column(db.String(100))
     users = db.relationship('User', secondary='property')
     link = db.relationship('Link', uselist=False, backref='schedule')
 
-    def __init__(self, label, data, user):
+    def __init__(self, data, user):
         """
         Creates a schedule, binds it to its creator.
         """
-        self.label = label
         self.users = [user]
         db.session.add(self)
         db.session.flush()

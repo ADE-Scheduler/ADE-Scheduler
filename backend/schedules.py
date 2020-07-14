@@ -31,6 +31,7 @@ class Schedule():
     def __init__(self, project_id: Union[str,int], schedule_id: int = None):
         self.id = schedule_id
         self.project_id = project_id
+        self.label = None
         self.codes = list()
         self.filtered_subcodes = list()
         self.computed_subcodes = list()

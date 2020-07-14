@@ -12,9 +12,10 @@
         <div class="row">
             <div class="col-md-8 col-lg-9">
                 <div class="card m-3">
-                    <div class="card-header">
-                        Some STUFF mate !
-                    </div>
+                    <form class="card-header d-flex justify-content-between align-items-center" onsubmit="updateLabelButton(event, {{current_schedule.id if current_schedule.id }} )" id="form-update-label">
+                        <div id="schedule-label">{% if current_schedule.label %}{{current_schedule.label}}{% else %}Current schedule{% endif %}</div>
+                        <a class="text-dark" href="#" onclick="javascript:$('#form-update-label').submit();"><i class="fas fa-pen"></i></a>
+                    </form>
                     <div class="card-body">
                         <blockquote class="blockquote mb-0">
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
@@ -32,21 +33,21 @@
                         </h4>
                         <ul class="list-group list-schedules mb-3">
                             {% for s in schedules %}
-                            {% if s.id == id %}
-                            <li class="list-group-item d-flex justify-content-between align-items-center bg-current-schedule" data-toggle="tooltip" data-placement="bottom" title="Current schedule">
+                            {% if s.id == current_schedule.id %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center current-schedule" data-toggle="tooltip" data-placement="bottom" title="Current schedule">
                             {% else %}
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                             {% endif %}
                                 <h6 class="text-truncate my-0">
-                                    {% if s.get('label') %}
-                                        {{ s.get('label') }}
+                                    {% if s.data.label %}
+                                        {{ s.data.label }}
                                     {% else %}
                                         Schedule {{ loop.index }}
                                     {% endif %}
                                 </h6>
                                 <div class="d-flex flex-nowrap">
-                                    <a class="text-secondary mx-2" href="#"><i class="far fa-eye" onclick="loadScheduleButton({{ s.id }})"></i></a>
-                                    <a class="text-danger" href="#"><i class="fas fa-times" onclick="deleteScheduleButton(this, {{ s.id }})"></i></a>
+                                    <a class="text-secondary mx-2" href="#" onclick="loadScheduleButton({{ s.id }})"><i class="far fa-eye" ></i></a>
+                                    <a class="text-danger" href="#" onclick="deleteScheduleButton(this, {{ s.id }})"><i class="fas fa-times"></i></a>
                                 </div>
                             </li>
                             {% endfor %}
@@ -55,7 +56,7 @@
                 </div>
 
 
-                <div class="row">
+                <!-- <div class="row">
                     <div class="col">
                         <h4 class="d-flex justify-content-between align-items-center my-3">
                             <span class="text-muted">Subscription Links</span>
@@ -77,7 +78,7 @@
                             </li>
                         </ul>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>

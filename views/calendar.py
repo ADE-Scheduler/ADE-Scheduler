@@ -38,13 +38,13 @@ def add_code(code):
 @calendar.route('/remove/<code>', methods=['PATCH'])
 def remove_code(code):
     session['current_schedule'].remove_course(code)
-    return "Success", 200
+    return 'OK', 200
 
 
 @calendar.route('/clear', methods=['DELETE'])
 def clear():
     session['current_schedule'] = schd.Schedule(DEFAULT_PROJECT_ID)
-    return "Success", 200
+    return 'OK', 200
 
 
 @calendar.route('/compute', methods=['GET'])
@@ -63,11 +63,11 @@ def save():
     #       or update existing, according to the situation.
     mng = app.config['MANAGER']
     session['current_schedule'] = mng.save_schedule(current_user, session['current_schedule'])
-    return "Success", 200
+    return 'OK', 200
 
 
 @calendar.route('/add/custom_event', methods=['POST'])
 def add_custom_event():
     event = request.json
     print(event)
-    return "Success", 200
+    return 'OK', 200
