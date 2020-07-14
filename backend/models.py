@@ -1,3 +1,4 @@
+from copy import deepcopy
 from flask_sqlalchemy import SQLAlchemy
 from flask_security.models import fsqla_v2 as fsqla
 
@@ -69,8 +70,25 @@ class Schedule(db.Model):
         db.session.commit()
 
     def update_data(self, data):
+        """
+        Warning: the address of data must be different that of self.data
+        For example:
+        >>> data = schedule.data
+        >>> data.label = "new_label"
+        >>> schedule.update(data)
+        ... does not work ! Instead, do:
+        >>> data = copy.deepcopy(schedule.data)
+        >>> data.label = "new_label"
+        >>> schedule.update(data)
+        """
         if data.id is not self.id:
             raise ScheduleDoNotMatchError
+        self.data = data
+        db.session.commit()
+
+    def update_label(self, label):
+        data = deepcopy(self.data)
+        data.label = label
         self.data = data
         db.session.commit()
 

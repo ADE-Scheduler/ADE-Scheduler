@@ -77,10 +77,8 @@ def update_label(id):
 
     schedule = current_user.get_schedule(id=int(id))
     if schedule and session['current_schedule'].id == int(id):
-        mng = app.config['MANAGER']
         session['current_schedule'].label = label
-        session['current_schedule'] = mng.save_schedule(current_user, session['current_schedule'])
-            # TODO: change the label without saving the whole schedule ??
+        schedule.update_label(label)
         return '', 200
     else:
         return '', 403      # Requested id is not in this user's schedule list.
