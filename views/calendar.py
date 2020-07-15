@@ -26,6 +26,13 @@ def schedule_viewer():
     return render_template('calendar.html', codes=current_schedule.codes)
 
 
+@calendar.route('/get/data', methods=['GET'])
+def get_data():
+    return jsonify({
+        'events': session['current_schedule'].get_json(),
+    }), 200
+
+
 @calendar.route('/add/<code>', methods=['PATCH'])
 def add_code(code):
     pattern = re.compile('^\s+|\s*,\s*|\s+$')
@@ -34,7 +41,7 @@ def add_code(code):
     session['current_schedule_modified'] = True
     return jsonify({
         'codes': codes,
-        'events': [],
+        'events': session['current_schedule'].get_json(),
     }), 200
 
 
@@ -42,7 +49,9 @@ def add_code(code):
 def remove_code(code):
     session['current_schedule'].remove_course(code)
     session['current_schedule_modified'] = True
-    return 'OK', 200
+    return jsonify({
+        'events': session['current_schedule'].get_json(),
+    }), 200
 
 
 @calendar.route('/clear', methods=['DELETE'])
@@ -86,4 +95,6 @@ def add_custom_event():
         event = evt.CustomEvent(*event.values())
     session['current_schedule'].add_event(event)
     session['current_schedule_modified'] = True
-    return 'OK', 200
+    return jsonify({
+        'event': event.json(),
+    }), 200

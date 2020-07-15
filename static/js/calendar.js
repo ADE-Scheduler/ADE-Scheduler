@@ -1,3 +1,5 @@
+var eventArray = [];
+var calendar = {};
 var spinner = {
     run: false,
     set run(val) {
@@ -14,8 +16,24 @@ var spinner = {
     },
 };
 
-var eventArray = [];
-var calendar = {};
+window.onload = () => {
+    // Fetch data
+    spinner.run = true;
+    $.ajax({
+        url: Flask.url_for('calendar.get_data'),
+        type: 'GET',
+        success: (data) => {
+            eventArray = data.events;
+            calendar.refetchEvents();
+        },
+        error: (data) => {
+            $('#error-alert').show()
+        },
+        complete: () => {
+            spinner.run = false;
+        },
+    });
+}
 
 document.addEventListener('DOMContentLoaded', function() {
     let calendarDiv = document.getElementById('calendar');
@@ -129,6 +147,8 @@ function clearButton() {
         type: 'DELETE',
         success: (data) => {
             $('.code-item').remove();
+            eventArray = [];
+            calendar.refetchEvents();
         },
         error: (data) => {
             $('#error-alert').show()
@@ -150,6 +170,9 @@ function addCodeButton(e) {
             url: Flask.url_for('calendar.add_code', {'code': code}),
             type: 'PATCH',
             success: (data) => {
+                eventArray = data.events;
+                calendar.refetchEvents();
+
                 data.codes.forEach((code) => {
                     $('.list-code-input').before(
                         `<li class="list-group-item code-item d-flex justify-content-between align-items-center">
@@ -180,6 +203,9 @@ function removeCodeButton(div, code) {
         url: Flask.url_for('calendar.remove_code', {'code': code}),
         type: 'PATCH',
         success: (data) => {
+            eventArray = data.events;
+            calendar.refetchEvents();
+
             $(div).parent().remove();
         },
         error: (data) => {
@@ -219,12 +245,12 @@ function addEventButton(e) {
         data: JSON.stringify(evt),
         contentType: 'application/json;charset=UTF-8',
         success: (data) => {
-            eventArray.push(evt);
-            calendar.refetchEvents(evt);
+            eventArray.push(data.event);
+            calendar.refetchEvents();
 
             // Clear the form
-            // e.target.reset();
-            // $('#eventModal').modal('hide');
+            e.target.reset();
+            $('#eventModal').modal('hide');
         },
         error: (data) => {
             $('#error-alert').show()

@@ -71,7 +71,13 @@ class CustomEvent(Event):
         :return: a dictionary containing relevant information
         :rtype: dict
         """
-        return {}
+        return {
+            'title': self.name,
+            'start': str(self.begin),
+            'end': str(self.end),
+            'description': self.description + '\n' + self.location,
+            'editable': False,
+        }
 
 
 class RecurringCustomEvent(CustomEvent):
@@ -90,7 +96,16 @@ class RecurringCustomEvent(CustomEvent):
         :return: a dictionary containing relevant information
         :rtype: dict
         """
-        return {}
+        return {
+            'title': self.name,
+            'description': self.description + '\n' + self.location,
+            'daysOfWeek': self.freq,
+            'startTime': self.begin.format('HH:mmZ'),
+            'endTime': self.end.format('HH:mmZ'),
+            'startRecur': str(self.begin),
+            'endRecur': str(self.end_recurr),
+            'editable': False,
+        }
 
     def __str__(self):
         days = ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA']
@@ -175,7 +190,7 @@ class AcademicalEvent(CustomEvent):
         return {
             'start': str(self.begin),
             'end': str(self.end),
-            'title': self.id,
+            'title': self.name,
             'editable': False,
             'description': self.name + '\n' + self.location + ' - ' + str(self.duration) + '\n' + str(self.description),
             'code': self.code

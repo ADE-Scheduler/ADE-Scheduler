@@ -86,7 +86,7 @@ class Schedule():
         courses = mng.get_courses(*self.codes, project_id=self.project_id)
         for course in courses:
             events.append(course.get_events()) # TODO: Jerome - view = self.filtered_subcodes
-        events += self.custom_events
+        events.append(self.custom_events)
 
         return list(chain.from_iterable(events))
 
@@ -95,7 +95,7 @@ class Schedule():
         Extracts all the events matching ids in the filtered_subcodes list.
         """
         events = self.get_events()
-        return map(lambda e: e.json(), events)
+        return list(map(lambda e: e.json(), events))
 
     def compute_best(self, fts=None, n_best=5, safe_compute=True, view=None):
         """
