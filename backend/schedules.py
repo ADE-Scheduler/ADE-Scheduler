@@ -79,16 +79,23 @@ class Schedule():
 
     def get_events(self) -> Iterable[Event]:
         """
-        Extracts all the events matching ids in the view list.
+        Extracts all the events matching ids in the filtered_subcodes list.
         """
         events = list()
         mng = app.config['MANAGER']
         courses = mng.get_courses(*self.codes, project_id=self.project_id)
         for course in courses:
-            events.append(course.get_events()) # TODO: CHANGER quand JEROM AURA FAIT SON BOULOT
+            events.append(course.get_events()) # TODO: Jerome - view = self.filtered_subcodes
         events += self.custom_events
 
         return list(chain.from_iterable(events))
+
+    def get_json(self) -> Iterable[dict]:
+        """
+        Extracts all the events matching ids in the filtered_subcodes list.
+        """
+        events = self.get_events()
+        return map(lambda e: e.json(), events)
 
     def compute_best(self, fts=None, n_best=5, safe_compute=True, view=None):
         """

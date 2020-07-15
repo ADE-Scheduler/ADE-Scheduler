@@ -204,8 +204,8 @@ function addEventButton(e) {
     if ($('#switch-repetition').is(':checked')) {
         evt.begin = $('#recurring-start').val() + ' ' + $('#time-start').val();
         evt.end = $('#recurring-start').val() + ' ' + $('#time-end').val();
-        evt.endRecurr = $('#recurring-end').val() + ' ' + $('#time-end').val();
-        evt.daysOfWeek = $('#recurring-days').val();
+        evt.end_recurr = $('#recurring-end').val() + ' ' + $('#time-end').val();
+        evt.freq = $('#recurring-days').val();
     } else {
         evt.begin = $('#date-start').val() + ' ' +$('#time-start').val();
         evt.end = $('#date-end').val() + ' ' +$('#time-end').val();

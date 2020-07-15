@@ -1,5 +1,5 @@
 import re
-import time
+from datetime import datetime
 
 from flask import current_app as app
 from flask import Blueprint, render_template, session, jsonify, redirect, url_for, request
@@ -55,6 +55,7 @@ def clear():
 @calendar.route('/compute', methods=['GET'])
 def compute():
     # TODO: plug in the current_schedule.compute() function and return relevant data
+    import time
     time.sleep(2)
     session['current_schedule_modified'] = True
     return jsonify({}), 200
@@ -76,7 +77,10 @@ def save():
 @calendar.route('/add/custom_event', methods=['POST'])
 def add_custom_event():
     event = request.json
-    if event.get('daysOfWeek'):
+    event['begin'] = datetime.strptime(event['begin'], '%Y-%m-%d %H:%M').astimezone(evt.TZ)
+    event['end'] = datetime.strptime(event['end'], '%Y-%m-%d %H:%M').astimezone(evt.TZ)
+    if event.get('end_recurr'):
+        event['end_recurr'] = datetime.strptime(event['end_recurr'], '%Y-%m-%d %H:%M').astimezone(evt.TZ)
         event = evt.RecurringCustomEvent(*event.values())
     else:
         event = evt.CustomEvent(*event.values())

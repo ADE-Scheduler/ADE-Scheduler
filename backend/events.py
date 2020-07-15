@@ -14,10 +14,7 @@ COURSE_REGEX = '([A-Z]+[0-9]+)'
 
 class CustomEvent(Event):
     def __init__(self, name, location, description, begin, end):
-        begin = datetime.strptime(begin, '%Y-%m-%d %H:%M').astimezone(TZ)
-        end = datetime.strptime(end, '%Y-%m-%d %H:%M').astimezone(TZ)
         super().__init__(name=name, begin=begin, end=end, location=location, description=description)
-
         self.weight = 5     # default weight
 
     def __hash__(self) -> int:
@@ -58,10 +55,6 @@ class CustomEvent(Event):
         """
         return self.begin.isocalendar()[1] - 1
 
-    def __repr__(self) -> str:
-        tmp = self.id + ':' if self.id is not None else 'FTS:'
-        return tmp + self.begin.strftime('%d/%m - %Hh%M') + ' to ' + self.end.strftime('%Hh%M')
-
     def set_weight(self, weight: float) -> None:
         """
         Changes the weight of the event.
@@ -87,7 +80,6 @@ class RecurringCustomEvent(CustomEvent):
     """
     def __init__(self, name, location, description, begin, end, end_recurr, freq):
         super().__init__(name=name, location=location, description=description, begin=begin, end=end)
-        end_recurr = datetime.strptime(end_recurr, '%Y-%m-%d %H:%M').astimezone(TZ)
         self.end_recurr = get_arrow(end_recurr)
         self.freq = [int(i) for i in freq]
 
@@ -151,6 +143,10 @@ class AcademicalEvent(CustomEvent):
         self.id = f'{prefix}{id}'
         self.code = code
         self.classrooms = classrooms
+
+    def __repr__(self) -> str:
+        tmp = self.id + ':' if self.id is not None else 'FTS:'
+        return tmp + self.begin.strftime('%d/%m - %Hh%M') + ' to ' + self.end.strftime('%Hh%M')
 
     def __eq__(self, other: 'AcademicalEvent') -> bool:
         return (self.get_id() == other.get_id()
