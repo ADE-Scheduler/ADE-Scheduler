@@ -33,11 +33,12 @@
         <div class="row">
             <div class="col-md-8 col-lg-9">
                 <div class="card m-3">
+                    <div class="spinner-border text-primary spinner-compute" id="spinner-compute"></div>
                     <form class="card-header d-flex justify-content-between align-items-center" onsubmit="updateLabelButton(event, {{current_schedule.id if current_schedule.id }} )" id="form-update-label">
                         <div id="schedule-label">{% if current_schedule.label %}{{current_schedule.label}}{% else %}Current schedule{% endif %}</div>
                         <a class="text-dark" href="#" onclick="javascript:$('#form-update-label').submit();"><i class="fas fa-pen"></i></a>
                     </form>
-                    <div class="card-body">
+                    <div class="card-body" id="info-schedule">
                         <blockquote class="blockquote mb-0">
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
                         <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
@@ -55,7 +56,7 @@
                         <ul class="list-group list-schedules mb-3">
                             {% for s in schedules %}
                             {% if s.id == current_schedule.id %}
-                            <li class="list-group-item d-flex justify-content-between align-items-center current-schedule" data-toggle="tooltip" data-placement="bottom" title="Current schedule">
+                            <li class="list-group-item d-flex justify-content-between align-items-center current-schedule">
                             {% else %}
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                             {% endif %}

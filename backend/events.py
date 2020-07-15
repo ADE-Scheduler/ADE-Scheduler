@@ -1,6 +1,7 @@
 import re
 from pytz import timezone
 from ics import Event
+from ics.utils import arrow_to_iso, get_arrow
 from datetime import datetime
 from backend.classrooms import merge_classrooms, Classroom
 from backend.professors import Professor
@@ -11,7 +12,112 @@ TZ = timezone('Europe/Brussels')
 COURSE_REGEX = '([A-Z]+[0-9]+)'
 
 
-class AcademicalEvent(Event):
+class CustomEvent(Event):
+    def __init__(self, name, location, description, begin, end):
+        begin = datetime.strptime(begin, '%Y-%m-%d %H:%M').astimezone(TZ)
+        end = datetime.strptime(end, '%Y-%m-%d %H:%M').astimezone(TZ)
+        super().__init__(name=name, begin=begin, end=end, location=location, description=description)
+
+        self.weight = 5     # default weight
+
+    def __hash__(self) -> int:
+        return super().__hash__()
+
+    def intersects(self, other: 'AcademicalEvent') -> bool:
+        """
+        Returns whether two events intersect each other.
+
+        :param other: the event to compare with
+        :type other: AcademicalEvent
+        :return: True if both events intersect
+        :rtype: bool
+        """
+        return self.end > other.begin and other.end > self.begin  # not(A or B) = notA and notB
+
+    __xor__ = intersects
+
+    def overlap(self, other: 'CustomEvent') -> float:
+        """
+        If both events intersect, returns the product of the weights.
+
+        :param other: the event to compare with
+        :type other: AcademicalEvent
+        :return: self.weight * other.weight if intersect, else 0
+        :rtype: float
+        """
+        return self.weight * other.weight * self.intersects(other)
+
+    __mul__ = overlap
+
+    def get_week(self) -> int:
+        """
+        Returns the week of this event in the gregorian calendar, starting at 0 for the first week.
+
+        :return: the week number relative to gregorian calendar numbering
+        :rtype: int
+        """
+        return self.begin.isocalendar()[1] - 1
+
+    def __repr__(self) -> str:
+        tmp = self.id + ':' if self.id is not None else 'FTS:'
+        return tmp + self.begin.strftime('%d/%m - %Hh%M') + ' to ' + self.end.strftime('%Hh%M')
+
+    def set_weight(self, weight: float) -> None:
+        """
+        Changes the weight of the event.
+
+        :param weight: the weight
+        :type weight: float
+        """
+        self.weight = weight
+
+    def json(self) -> dict:
+        """
+        Returns the event as a json-like format.
+
+        :return: a dictionary containing relevant information
+        :rtype: dict
+        """
+        return {}
+
+
+class RecurringCustomEvent(CustomEvent):
+    """
+    Represents a recurring event, formattable according to iCalendar's rules.
+    """
+    def __init__(self, name, location, description, begin, end, end_recurr, freq):
+        super().__init__(name=name, location=location, description=description, begin=begin, end=end)
+        end_recurr = datetime.strptime(end_recurr, '%Y-%m-%d %H:%M').astimezone(TZ)
+        self.end_recurr = get_arrow(end_recurr)
+        self.freq = [int(i) for i in freq]
+
+    def json(self) -> dict:
+        """
+        Returns the event as a json-like format.
+
+        :return: a dictionary containing relevant information
+        :rtype: dict
+        """
+        return {}
+
+    def __str__(self):
+        days = ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA']
+
+        s = 'BEGIN:VEVENT\n'
+        s += 'DTSTART:' + arrow_to_iso(self.begin) + '\n'
+        s += 'DTEND:' + arrow_to_iso(self.end) + '\n'
+        s += 'RRULE:FREQ=WEEKLY;INTERVAL=1;';
+        s += 'BYDAY=' + ','.join([days[i] for i in self.freq]) + ';'
+        s += 'UNTIL=' + arrow_to_iso(self.end_recurr) + '\n'
+        if self.description:    s += 'DESCRIPTION:' + self.description + '\n'
+        if self.location:       s += 'LOCATION:' + self.location + '\n'
+        if self.name:           s += 'SUMMARY:' + self.name + '\n'
+        if self.uid:            s += 'UID:' + self.uid + '\n'
+        s += 'END:VEVENT'
+        return s
+
+
+class AcademicalEvent(CustomEvent):
     """
     An academical event is an object used to represent any event in the academical calendar.
 
@@ -38,9 +144,8 @@ class AcademicalEvent(Event):
                  classrooms: Optional[Iterable[Classroom]] = None, id: Optional[str] = None, weight: float = 5,
                  code: Optional[str] = None, prefix: Optional[str] = None):
 
-        super().__init__(name=f'{prefix} {code}-{name}',
-                         begin=begin, end=end, description=str(professor),
-                         location='OMG FIX UR SHIT JEROM')
+        super().__init__(name=f'{prefix} {code}-{name}', location='OMG FIX UR SHIT JEROM',
+                         description=str(professor), begin=begin, end=end)
                          # TODO: merge_classrooms fait du gros caca ici
         self.weight = weight
         self.id = f'{prefix}{id}'
@@ -64,22 +169,6 @@ class AcademicalEvent(Event):
         """
         return self.id
 
-    def __hash__(self) -> int:
-        return super().__hash__()
-
-    def __repr__(self) -> str:
-        tmp = self.id + ':' if self.id is not None else 'FTS:'
-        return tmp + self.begin.strftime('%d/%m - %Hh%M') + ' to ' + self.end.strftime('%Hh%M')
-
-    def set_weight(self, weight: float) -> None:
-        """
-        Changes the weight of the event.
-
-        :param weight: the weight
-        :type weight: float
-        """
-        self.weight = weight
-
     def json(self) -> dict:
         """
         Returns the event as a json-like format.
@@ -95,41 +184,6 @@ class AcademicalEvent(Event):
             'description': self.name + '\n' + self.location + ' - ' + str(self.duration) + '\n' + str(self.description),
             'code': self.code
         }
-
-    def intersects(self, other: 'AcademicalEvent') -> bool:
-        """
-        Returns whether two events intersect each other.
-
-        :param other: the event to compare with
-        :type other: AcademicalEvent
-        :return: True if both events intersect
-        :rtype: bool
-        """
-        return self.end > other.begin and other.end > self.begin  # not(A or B) = notA and notB
-
-    __xor__ = intersects
-
-    def overlap(self, other: 'AcademicalEvent') -> float:
-        """
-        If both events intersect, returns the product of the weights.
-
-        :param other: the event to compare with
-        :type other: AcademicalEvent
-        :return: self.weight * other.weight if intersect, else 0
-        :rtype: float
-        """
-        return self.weight * other.weight * self.intersects(other)
-
-    __mul__ = overlap
-
-    def get_week(self) -> int:
-        """
-        Returns the week of this event in the gregorian calendar, starting at 0 for the first week.
-
-        :return: the week number relative to gregorian calendar numbering
-        :rtype: int
-        """
-        return self.begin.isocalendar()[1] - 1
 
 
 class EventCM(AcademicalEvent):

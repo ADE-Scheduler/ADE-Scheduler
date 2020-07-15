@@ -197,19 +197,17 @@ function addEventButton(e) {
 
     // Assemble the event
     let evt = {
-        editable: true,
-        title: $('#event-title').val(),
+        name: $('#event-name').val(),
         location: $('#event-location').val(),
-        notes: $('#event-notes').val(),
+        description: $('#event-description').val(),
     }
     if ($('#switch-repetition').is(':checked')) {
-        evt.startTime = $('#time-start').val();
-        evt.startRecur = $('#recurring-start').val();
-        evt.endTime = $('#time-end').val();
-        evt.endRecur = $('#recurring-end').val();
+        evt.begin = $('#recurring-start').val() + ' ' + $('#time-start').val();
+        evt.end = $('#recurring-start').val() + ' ' + $('#time-end').val();
+        evt.endRecurr = $('#recurring-end').val() + ' ' + $('#time-end').val();
         evt.daysOfWeek = $('#recurring-days').val();
     } else {
-        evt.start = $('#date-start').val() + ' ' +$('#time-start').val();
+        evt.begin = $('#date-start').val() + ' ' +$('#time-start').val();
         evt.end = $('#date-end').val() + ' ' +$('#time-end').val();
     }
 
@@ -225,8 +223,8 @@ function addEventButton(e) {
             calendar.refetchEvents(evt);
 
             // Clear the form
-            e.target.reset();
-            $('#eventModal').modal('hide');
+            // e.target.reset();
+            // $('#eventModal').modal('hide');
         },
         error: (data) => {
             $('#error-alert').show()

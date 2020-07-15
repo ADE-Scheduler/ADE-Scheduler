@@ -6,6 +6,7 @@ from flask import Blueprint, render_template, session, jsonify, redirect, url_fo
 from flask_security import current_user, login_required
 
 import backend.schedules as schd
+import backend.events as evt
 from backend.ade_api import DEFAULT_PROJECT_ID
 
 
@@ -75,6 +76,10 @@ def save():
 @calendar.route('/add/custom_event', methods=['POST'])
 def add_custom_event():
     event = request.json
-    print(event)
+    if event.get('daysOfWeek'):
+        event = evt.RecurringCustomEvent(*event.values())
+    else:
+        event = evt.CustomEvent(*event.values())
+    session['current_schedule'].add_event(event)
     session['current_schedule_modified'] = True
     return 'OK', 200

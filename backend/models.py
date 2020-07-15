@@ -1,4 +1,4 @@
-from copy import deepcopy
+from copy import copy, copy
 from flask_sqlalchemy import SQLAlchemy
 from flask_security.models import fsqla_v2 as fsqla
 
@@ -77,9 +77,10 @@ class Schedule(db.Model):
         >>> data.label = "new_label"
         >>> schedule.update(data)
         ... does not work ! Instead, do:
-        >>> data = copy.deepcopy(schedule.data)
+        >>> data = copy(schedule.data)
         >>> data.label = "new_label"
         >>> schedule.update(data)
+        For more information, see: https://docs.sqlalchemy.org/en/13/orm/extensions/mutable.html
         """
         if data.id is not self.id:
             raise ScheduleDoNotMatchError
@@ -87,7 +88,7 @@ class Schedule(db.Model):
         db.session.commit()
 
     def update_label(self, label):
-        data = deepcopy(self.data)
+        data = copy(self.data)
         data.label = label
         self.data = data
         db.session.commit()

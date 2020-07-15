@@ -1,6 +1,6 @@
 from itertools import product, chain, starmap, repeat
 from collections import deque
-from backend.events import EventOTHER, AcademicalEvent
+from backend.events import EventOTHER, AcademicalEvent, CustomEvent, Event
 from heapq import nsmallest
 import operator
 from typing import Iterable, Union, List
@@ -68,7 +68,16 @@ class Schedule():
         if code in self.codes:
             self.codes.remove(code)
 
-    def get_events(self) -> Iterable[AcademicalEvent]:
+    def add_event(self, event: CustomEvent) -> None:
+        """
+        Adds a custom event to the schedule.
+
+        :param event: the event to add
+        :type event: CustomEvent (or RecurringCustomEvent)
+        """
+        self.custom_events.append(event)
+
+    def get_events(self) -> Iterable[Event]:
         """
         Extracts all the events matching ids in the view list.
         """
@@ -77,6 +86,7 @@ class Schedule():
         courses = mng.get_courses(*self.codes, project_id=self.project_id)
         for course in courses:
             events.append(course.get_events()) # TODO: CHANGER quand JEROM AURA FAIT SON BOULOT
+        events += self.custom_events
 
         return list(chain.from_iterable(events))
 
