@@ -64,7 +64,7 @@ class CustomEvent(Event):
         """
         self.weight = weight
 
-    def json(self) -> dict:
+    def json(self, color='') -> dict:
         """
         Returns the event as a json-like format.
 
@@ -77,6 +77,8 @@ class CustomEvent(Event):
             'end': str(self.end),
             'description': self.description + '\n' + self.location,
             'editable': False,
+            'backgroundColor': color,
+            'borderColor': color,
         }
 
 
@@ -89,7 +91,7 @@ class RecurringCustomEvent(CustomEvent):
         self.end_recurr = get_arrow(end_recurr)
         self.freq = [int(i) for i in freq]
 
-    def json(self) -> dict:
+    def json(self, color='') -> dict:
         """
         Returns the event as a json-like format.
 
@@ -105,6 +107,8 @@ class RecurringCustomEvent(CustomEvent):
             'startRecur': str(self.begin),
             'endRecur': str(self.end_recurr),
             'editable': False,
+            'backgroundColor': color,
+            'borderColor': color,
         }
 
     def __str__(self):
@@ -180,7 +184,7 @@ class AcademicalEvent(CustomEvent):
         """
         return self.id
 
-    def json(self) -> dict:
+    def json(self, color='') -> dict:
         """
         Returns the event as a json-like format.
 
@@ -193,7 +197,9 @@ class AcademicalEvent(CustomEvent):
             'title': self.name,
             'editable': False,
             'description': self.name + '\n' + self.location + ' - ' + str(self.duration) + '\n' + str(self.description),
-            'code': self.code
+            'code': self.code,
+            'backgroundColor': color,
+            'borderColor': color,
         }
 
 

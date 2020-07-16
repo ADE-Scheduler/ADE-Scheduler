@@ -29,7 +29,7 @@ def schedule_viewer():
 @calendar.route('/get/data', methods=['GET'])
 def get_data():
     return jsonify({
-        'events': session['current_schedule'].get_json(),
+        'events': session['current_schedule'].get_events(json=True),
     }), 200
 
 
@@ -41,7 +41,7 @@ def add_code(code):
     session['current_schedule_modified'] = True
     return jsonify({
         'codes': codes,
-        'events': session['current_schedule'].get_json(),
+        'events': session['current_schedule'].get_events(json=True),
     }), 200
 
 
@@ -50,7 +50,7 @@ def remove_code(code):
     session['current_schedule'].remove_course(code)
     session['current_schedule_modified'] = True
     return jsonify({
-        'events': session['current_schedule'].get_json(),
+        'events': session['current_schedule'].get_events(json=True),
     }), 200
 
 

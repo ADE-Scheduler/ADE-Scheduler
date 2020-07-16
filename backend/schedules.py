@@ -37,6 +37,8 @@ class Schedule():
         self.computed_subcodes = list()
         self.custom_events = list()
         self.proprities = dict()
+        self.color_palette = ['', '#374955', '#005376', '#00c0ff', '#1f789d', '#4493ba',
+                                  '#64afd7', '#83ccf5', '#3635ff', '#006c5a', '#3d978a']
 
     def add_course(self, code: Union[Iterable[str], str]) -> List[str]:
         """
@@ -77,25 +79,33 @@ class Schedule():
         """
         self.custom_events.append(event)
 
-    def get_events(self) -> Iterable[Event]:
+    def get_events(self, json: bool = False) -> Iterable[Event]:
         """
         Extracts all the events matching ids in the filtered_subcodes list.
+
+        :param json: wheter or not the events are to be returned in a JSON format
+        :type json: Optional[bool]
         """
         events = list()
         mng = app.config['MANAGER']
         courses = mng.get_courses(*self.codes, project_id=self.project_id)
-        for course in courses:
-            events.append(course.get_events()) # TODO: Jerome - view = self.filtered_subcodes
-        events.append(self.custom_events)
+
+        # Course Events
+        n = len(self.color_palette)
+        for i, course in enumerate(courses):
+            course_events = course.get_events()    # TODO: Jerome - view = self.filtered_subcodes
+            if json:
+                events.append([e.json(self.color_palette[i % n]) for e in course_events])
+            else:
+                events.append(course_events)
+
+        # Custom user events
+        if json:
+            events.append([e.json() for e in self.custom_events])
+        else:
+            events.append(self.custom_events)
 
         return list(chain.from_iterable(events))
-
-    def get_json(self) -> Iterable[dict]:
-        """
-        Extracts all the events matching ids in the filtered_subcodes list.
-        """
-        events = self.get_events()
-        return list(map(lambda e: e.json(), events))
 
     def compute_best(self, fts=None, n_best=5, safe_compute=True, view=None):
         """

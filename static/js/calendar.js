@@ -33,6 +33,13 @@ window.onload = () => {
             spinner.run = false;
         },
     });
+
+    $(function () {
+        $('[data-toggle="popover"]').popover({
+            container: 'body',
+            trigger: 'focus'
+        });
+    });
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -87,18 +94,11 @@ document.addEventListener('DOMContentLoaded', function() {
         events: function (fetchInfo, successCallback, failureCallback) {
             successCallback(eventArray);
         },
+        eventTextColor: 'white',
     });
 
     calendar.render();
 });
-
-$(function () {
-    $('[data-toggle="popover"]').popover({
-        container: 'body',
-        trigger: 'focus'
-    });
-});
-
 
 /*
  *  Button callbacks
