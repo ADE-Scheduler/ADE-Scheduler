@@ -75,8 +75,6 @@ def save():
     if not current_user.is_authenticated:
         return 'Login is required', 401
 
-    # TODO: save the schedule in the current user's schedule list. Either create a new one,
-    #       or update existing, according to the situation.
     mng = app.config['MANAGER']
     session['current_schedule'] = mng.save_schedule(current_user, session['current_schedule'])
     session['current_schedule_modified'] = False
