@@ -5,11 +5,11 @@ bundles = {
     # Template
     'base_css': Bundle(
         'css/base.css',
+        'css/lib/bootstrap.min.css',
         output='gen/base.min.css', filters='cssmin'),
     'base_js': Bundle(
         'js/lib/jquery.min.js',
-        'js/lib/popper.min.js',
-        'js/lib/bootstrap.min.js',
+        'js/lib/bootstrap.bundle.min.js',
         'js/base.js',
         output='gen/base.min.js', filters='jsmin'),
 

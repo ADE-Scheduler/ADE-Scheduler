@@ -36,7 +36,12 @@
                     <div class="spinner-border text-primary spinner-compute" id="spinner-compute"></div>
                     <form class="card-header d-flex justify-content-between align-items-center" onsubmit="updateLabelButton(event, {{current_schedule.id if current_schedule.id }} )" id="form-update-label">
                         <div id="schedule-label">{% if current_schedule.label %}{{current_schedule.label}}{% else %}Current schedule{% endif %}</div>
-                        <a class="text-dark" href="#" onclick="javascript:$('#form-update-label').submit();"><i class="fas fa-pen"></i></a>
+                        <a class="text-dark" href="#" onclick="javascript:$('#form-update-label').submit();">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M11.293 1.293a1 1 0 0 1 1.414 0l2 2a1 1 0 0 1 0 1.414l-9 9a1 1 0 0 1-.39.242l-3 1a1 1 0 0 1-1.266-1.265l1-3a1 1 0 0 1 .242-.391l9-9zM12 2l2 2-9 9-3 1 1-3 9-9z"/>
+                                <path fill-rule="evenodd" d="M12.146 6.354l-2.5-2.5.708-.708 2.5 2.5-.707.708zM3 10v.5a.5.5 0 0 0 .5.5H4v.5a.5.5 0 0 0 .5.5H5v.5a.5.5 0 0 0 .5.5H6v-1.5a.5.5 0 0 0-.5-.5H5v-.5a.5.5 0 0 0-.5-.5H3z"/>
+                            </svg>
+                        </a>
                     </form>
                     <div class="card-body" id="info-schedule">
                         <blockquote class="blockquote mb-0">
@@ -64,8 +69,18 @@
                                     {{ s.data.label }}
                                 </h6>
                                 <div class="d-flex flex-nowrap">
-                                    <a class="text-secondary mx-2" href="#" onclick="viewScheduleButton({{ s.id }})"><i class="far fa-eye" ></i></a>
-                                    <a class="text-danger" href="#" onclick="deleteScheduleButton(this, {{ s.id }})"><i class="fas fa-times"></i></a>
+                                    <a class="text-secondary mx-2" href="#" onclick="viewScheduleButton({{ s.id }})">
+                                        <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-eye-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                                            <path fill-rule="evenodd" d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+                                        </svg>
+                                    </a>
+                                    <a class="text-danger" href="#" onclick="deleteScheduleButton(this, {{ s.id }})">
+                                        <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-x" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M11.854 4.146a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708-.708l7-7a.5.5 0 0 1 .708 0z"/>
+                                            <path fill-rule="evenodd" d="M4.146 4.146a.5.5 0 0 0 0 .708l7 7a.5.5 0 0 0 .708-.708l-7-7a.5.5 0 0 0-.708 0z"/>
+                                        </svg>
+                                    </a>
                                 </div>
                             </li>
                             {% endfor %}

@@ -117,14 +117,19 @@
                         <div class="col-6">
                             <label>From</label>
                             <div class="input-group date mb-2">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                <div class="input-group-text">
+                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-calendar-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M3.5 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5zm9 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5z"/>
+                                        <path d="M2 1a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2H2zm14 4H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V5z"/>
+                                    </svg>
                                 </div>
                                 <input type="date" class="form-control text-truncate" required id="date-start"/>
                             </div>
                             <div class="input-group time">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text"><i class="fa fa-clock"></i></div>
+                                <div class="input-group-text">
+                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-clock-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
+                                    </svg>
                                 </div>
                                 <input type="time" class="form-control" required id="time-start"/>
                             </div>
@@ -133,14 +138,19 @@
                             <label>To</label>
                             <div class="input-group date mb-2">
                                 <input type="date" class="form-control text-truncate" required id="date-end"/>
-                                <div class="input-group-append">
-                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                <div class="input-group-text">
+                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-calendar-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M3.5 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5zm9 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5z"/>
+                                        <path d="M2 1a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2H2zm14 4H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V5z"/>
+                                    </svg>
                                 </div>
                             </div>
                             <div class="input-group time">
                                 <input type="time" class="form-control" required id="time-end"/>
-                                <div class="input-group-append">
-                                    <div class="input-group-text"><i class="fa fa-clock"></i></div>
+                                <div class="input-group-text">
+                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-clock-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
+                                    </svg>
                                 </div>
                             </div>
                         </div>
@@ -150,14 +160,14 @@
                     <!-- <hr class="mb-3"> -->
                     <div class="row justify-content-between mt-3">
                         <div class="col-6">
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="switch-repetition" data-toggle="collapse" data-target="#event-repetition,#recurring-start-end" autocomplete="off">
-                                <label class="custom-control-label" for="switch-repetition">Recurring event</label>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="switch-repetition" data-toggle="collapse" data-target="#event-repetition,#recurring-start-end" autocomplete="off">
+                                <label class="form-check-label" for="switch-repetition">Recurring event</label>
                             </div>
                         </div>
                         <div class="col-6 text-right collapse" id="event-repetition">
                             <label for="start-repetition">Days of week</label>
-                            <select class="custom-select" multiple id="recurring-days" disabled>
+                            <select class="form-select" multiple id="recurring-days" disabled>
                                 <option value="1">Monday</option>
                                 <option value="2">Tuesday</option>
                                 <option value="3">Wednesday</option>
@@ -172,8 +182,11 @@
                         <div class="col-6">
                             <label>Start</label>
                             <div class="input-group date mb-2">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                <div class="input-group-text">
+                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-calendar-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M3.5 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5zm9 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5z"/>
+                                        <path d="M2 1a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2H2zm14 4H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V5z"/>
+                                    </svg>
                                 </div>
                                 <input type="date" class="form-control text-truncate" id="recurring-start" disabled/>
                             </div>
@@ -182,8 +195,11 @@
                             <label>End</label>
                             <div class="input-group date mb-2">
                                 <input type="date" class="form-control text-truncate" id="recurring-end" disabled/>
-                                <div class="input-group-append">
-                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                <div class="input-group-text">
+                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-calendar-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M3.5 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5zm9 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5z"/>
+                                        <path d="M2 1a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2H2zm14 4H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V5z"/>
+                                    </svg>
                                 </div>
                             </div>
                         </div>
@@ -225,17 +241,17 @@
                         <span class="code-tag" data-toggle="modal" data-target="#detailsModal">
                             {{ code }}
                         </span>
-                        <a href="#" class="badge badge-danger" onclick="removeCodeButton(this, '{{ code }}')">
-                            <i class="fas fa-trash"></i>
-                        </a>
+                        <button class="btn btn-danger badge rounded-pill" onclick="removeCodeButton(this, '{{ code }}')">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
+                            </svg>
+                        </button>
                     </li>
                     {% endfor %}
                     <li class="list-group-item p-0 list-code-input">
                         <form class="input-group my-1" id="form-add-code" onsubmit="addCodeButton(event)">
-                            <input class="form-control-plaintext code-input" type="text" placeholder="Enter code" id="codeInput">
-                            <button class="btn input-group-btn badge badge-success" type="submit" id="codeValidation">
-                                <i class="fas fa-plus"></i>
-                            </button>
+                            <input class="form-control code-input" type="text" placeholder="Enter code" id="codeInput">
+                            <button class="btn btn-success badge rounded-pill" type="submit" id="codeValidation">+</button>
                         </form>
                     </li>
                 </div>

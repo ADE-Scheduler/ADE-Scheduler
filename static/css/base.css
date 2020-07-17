@@ -27,19 +27,18 @@ main {
         overflow-y: auto;
         visibility: hidden;
         background-color: #343a40;
-        transition: visibility .3s ease-in-out, -webkit-transform .3s ease-in-out;
         transition: transform .3s ease-in-out, visibility .3s ease-in-out;
-        transition: transform .3s ease-in-out, visibility .3s ease-in-out, -webkit-transform .3s ease-in-out;
     }
     .offcanvas-collapse.open {
         visibility: visible;
-        -webkit-transform: translateX(-100%);
         transform: translateX(-100%);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
     .user-status-div {
-        position: absolute;
-        bottom: 16px;
         width: calc(100vw - 32px);
+        margin-bottom: 1em;
     }
 }
 
@@ -58,15 +57,6 @@ main {
     font-weight: 500;
     color: #343a40;
 }
-
-.text-white-50 { color: rgba(255, 255, 255, .5); }
-
-.bg-purple { background-color: #6f42c1; }
-
-.lh-100 { line-height: 1; }
-.lh-125 { line-height: 1.25; }
-.lh-150 { line-height: 1.5; }
-
 
 /*
  *  Footer

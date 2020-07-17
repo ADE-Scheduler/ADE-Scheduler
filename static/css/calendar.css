@@ -101,6 +101,12 @@
 .code-input {
     padding-left: 12px;
     padding-right: 8px;
+    border-color: transparent;
+}
+
+.code-input:focus {
+    border-color: transparent;
+    box-shadow: none;
 }
 
 /* .list-code-input:focus-within {

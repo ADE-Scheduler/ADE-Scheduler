@@ -10,14 +10,9 @@
         <title>ADE Scheduler v2.0</title>
         <!-- Favicon -->
         <link href="{{ url_for('static', filename='img/favicon.ico') }}" rel="shortcut icon">
-        <!-- FontAwesome, does not import properly through Flask-Assets -->
-        <link href="{{ url_for('static', filename='lib/fontawesome/css/all.min.css') }}" rel="stylesheet">
-        <!-- Bootstrap -->
-        <link href={{ url_for('static', filename='css/lib/bootstrap.min.css') }} rel="stylesheet">
-
 
         {% assets "base_css" %}
-            <link rel="stylesheet" href="{{ ASSET_URL }}" />
+        <link rel="stylesheet" href="{{ ASSET_URL }}" />
         {% endassets %}
         {{ JSGlue.include() }}
 
@@ -26,7 +21,7 @@
 
     <body class="bg-light">
         <!-- Main navbar -->
-        <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark px-2">
             <a class="navbar-brand mr-auto mr-lg-0" href="/">
                 ADE Scheduler
             </a>
@@ -65,11 +60,11 @@
                     </div>
                 </div> -->
                 {% if current_user.is_authenticated %}
-                <div class="btn-group user-status-div">
+                <div class="btn-group align-items-end user-status-div">
                     <button class="btn btn-outline-danger btn-sm" type="button" onclick="window.location.href='/logout'">Logout</button>
                 </div>
                 {% else %}
-                <div class="btn-group user-status-div" style="min-width: 170px">
+                <div class="btn-group align-items-end user-status-div" style="min-width: 170px">
                     <button class="btn btn-outline-light btn-sm w-50" type="button" onclick="window.location.href='/login'">Login</button>
                     <button class="btn btn-outline-light btn-sm w-50" type="button" onclick="window.location.href='/register'">Register</button>
                 </div>
