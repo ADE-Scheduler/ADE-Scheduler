@@ -231,9 +231,12 @@
         <!-- Sidebar -->
         <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
             <div class="sidebar-sticky pt-2">
-                <a tabindex="0" class="badge badge-pill badge-info badge-info-custom text-white" data-toggle="popover" data-trigger="focus"
+                <a tabindex="0" class="badge rounded-pill bg-info badge-info-custom text-white" data-toggle="popover" data-trigger="focus"
                     data-content="To view more info or adapt your schedule, click on a course code." data-title="Note">
-                    <i class="fas fa-info"></i>
+                    <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-info" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588z"/>
+                        <circle cx="8" cy="4.5" r="1"/>
+                    </svg>
                 </a>
                 <div class="list-group list-code m-2">
                     {% for code in codes %}
@@ -265,13 +268,13 @@
         <!-- Main content -->
         <div class="container-fluid">
             <div class="col-md-9 ml-sm-auto col-lg-10 px-md-4 pt-2">
-                <div class="alert alert-success collapse" id="save-success-alert">
+                <div class="alert alert-success alert-dismissible collapse" id="save-success-alert">
                     Schedule successfuly saved !
                     <button type="button" class="close" onclick="$('#save-success-alert').hide()">
                         <span>&times;</span>
                     </button>
                 </div>
-                <div class="alert alert-danger collapse" id="error-alert">
+                <div class="alert alert-danger alert-dissmissible collapse" id="error-alert">
                     A problem has occurred. Please contact us if it happens again.
                     <button type="button" class="close" onclick="$('#error-alert').hide()">
                         <span>&times;</span>

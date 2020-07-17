@@ -15,21 +15,12 @@ bundles = {
 
     # Calendar
     'calendar_css': Bundle(
+        'lib/fullcalendar/main.css',
         'css/calendar.css',
-        'lib/fullcalendar/core/main.css',
-        'lib/fullcalendar/daygrid/main.css',
-        'lib/fullcalendar/timegrid/main.css',
-        'lib/fullcalendar/list/main.css',
         output='gen/calendar.min.css', filters='cssmin'),
     'calendar_js': Bundle(
+        'lib/fullcalendar/main.js',
         'js/calendar.js',
-        'lib/fullcalendar/core/main.js',
-        'lib/fullcalendar/interaction/main.js',
-        'lib/fullcalendar/daygrid/main.js',
-        'lib/fullcalendar/list/main.js',
-        'lib/fullcalendar/timegrid/main.js',
-        'lib/fullcalendar/bootstrap/main.js',
-        'lib/fullcalendar/core/locales/fr.js',
         output='gen/calendar.min.js', filters='jsmin'),
 
     # Account

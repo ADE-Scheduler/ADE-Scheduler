@@ -64,7 +64,7 @@ class CustomEvent(Event):
         """
         self.weight = weight
 
-    def json(self, color='') -> dict:
+    def json(self, color='#9e742f') -> dict:
         """
         Returns the event as a json-like format.
 
@@ -91,7 +91,7 @@ class RecurringCustomEvent(CustomEvent):
         self.end_recurr = get_arrow(end_recurr)
         self.freq = [int(i) for i in freq]
 
-    def json(self, color='') -> dict:
+    def json(self, color='#8a7451') -> dict:
         """
         Returns the event as a json-like format.
 

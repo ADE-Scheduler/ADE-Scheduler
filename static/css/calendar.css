@@ -15,27 +15,41 @@
     display: none
 }
 
-.fc-left > button, .fc-left > .fc-button-group > button {
+.fc-toolbar-chunk > button, .fc-toolbar-chunk > .fc-button-group > button {
     font-size: min(3vw, 1em)!important;
-    padding: 3px 6px;
+    padding: 3px 6px !important;
 }
 
-.fc-center > h2 {
+.fc-toolbar-title {
     font-size: min(3.5vw, 2em) !important;
 }
 
-.fc-right > button, .fc-right > .fc-button-group > button {
-    font-size: min(2.7vw, 1em) !important;
-    padding: 3px 6px;
+.fc-col-header-cell-cushion {
+    text-decoration: none;
+    color: black;
 }
-
-.fc-day-number {
+.fc-col-header-cell-cushion:hover {
+    color: black;
+}
+.fc-daygrid-day-number {
+    text-decoration: none;
+    color: black;
+}
+.fc-daygrid-day-number:hover {
+    text-decoration: none;
+    color: black;
+}
+.fc-timegrid-axis-cushion {
+    text-decoration: none;
+    color: black;
+}
+.fc-timegrid-axis-cushion:hover {
+    text-decoration: none;
+    color: black;
+}
+.fc-daygrid-week-number {
     text-decoration: none;
 }
-
-/*
- *  Modal
- */
 
 
 /*

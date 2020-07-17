@@ -45,22 +45,18 @@ window.onload = () => {
 document.addEventListener('DOMContentLoaded', function() {
     let calendarDiv = document.getElementById('calendar');
     calendar = new FullCalendar.Calendar(calendarDiv, {
-        plugins: ['interaction', 'dayGrid', 'list', 'timeGrid'],
-        // themeSystem: 'bootstrap', + 'bootstrap' in plugins
         height: 'auto',
-        width: 'parent',
-        minTime: '08:00:00',
-        maxTime: '21:00:00',
+        slotMinTime: '08:00:00',
+        slotMaxTime: '21:00:00',
         navLinks: true, // can click day/week names to navigate views
         editable: true,
         droppable: true,
-        eventLimit: false, // allow "more" link when too many events
+        dayMaxEventRows: false, // allow "more" link when too many events
 
         // Week display
         firstDay: 1,
-        weekLabel: 'S',
+        weekText: 'S',
         weekNumbers: true,
-        weekNumbersWithinDays: true,
         weekNumberCalculation: (d) => {
             d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
             // Get first day of year
@@ -76,18 +72,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 click: () => { $('#eventModal').modal('show'); }
             }
         },
-        header: {
+        headerToolbar: {
             left: 'prev,next today addEvent',
             center: 'title',
             right: 'dayGridMonth,timeGridWeek'
         },
 
         // Remember where the user left the calendar
-        defaultView: (localStorage.getItem("fcDefaultView") !== null ? localStorage.getItem("fcDefaultView") : 'timeGridWeek'),
-        defaultDate: (localStorage.getItem("fcDefaultDate") !== null ? parseInt(localStorage.getItem("fcDefaultDate")) : Date.now()),
-        datesRender: function (arg) {
-            localStorage.setItem("fcDefaultView", arg.view.type);
-            localStorage.setItem("fcDefaultDate", arg.view.currentStart.getTime());
+        initialView: (localStorage.getItem("initialView") !== null ? localStorage.getItem("initialView") : 'timeGridWeek'),
+        initialDate: (localStorage.getItem("initialDate") !== null ? parseInt(localStorage.getItem("initialDate")) : Date.now()),
+        dateSet: function (arg) {
+            localStorage.setItem("initialtView", arg.view.type);
+            localStorage.setItem("initialtDate", arg.view.currentStart.getTime());
         },
 
         // Events refresher
@@ -95,6 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
             successCallback(eventArray);
         },
         eventTextColor: 'white',
+        eventDisplay: 'block',
     });
 
     calendar.render();
