@@ -45,8 +45,8 @@ window.onload = () => {
 document.addEventListener('DOMContentLoaded', function() {
     let calendarDiv = document.getElementById('calendar');
     calendar = new FullCalendar.Calendar(calendarDiv, {
-        plugins: ['interaction', 'dayGrid', 'list', 'timeGrid', 'bootstrap'],
-        themeSystem: 'bootstrap',
+        plugins: ['interaction', 'dayGrid', 'list', 'timeGrid'],
+        // themeSystem: 'bootstrap', + 'bootstrap' in plugins
         height: 'auto',
         width: 'parent',
         minTime: '08:00:00',
@@ -80,11 +80,6 @@ document.addEventListener('DOMContentLoaded', function() {
             left: 'prev,next today addEvent',
             center: 'title',
             right: 'dayGridMonth,timeGridWeek'
-        },
-        bootstrapFontAwesome: false,
-        buttonText: {
-            prev: '<',
-            next: '>',
         },
 
         // Remember where the user left the calendar

@@ -15,7 +15,7 @@
     display: none
 }
 
-.fc-left > button, .fc-left > .btn-group > button {
+.fc-left > button, .fc-left > .fc-button-group > button {
     font-size: min(3vw, 1em)!important;
     padding: 3px 6px;
 }
@@ -24,9 +24,13 @@
     font-size: min(3.5vw, 2em) !important;
 }
 
-.fc-right > button, .fc-right > .btn-group > button {
+.fc-right > button, .fc-right > .fc-button-group > button {
     font-size: min(2.7vw, 1em) !important;
     padding: 3px 6px;
+}
+
+.fc-day-number {
+    text-decoration: none;
 }
 
 /*
