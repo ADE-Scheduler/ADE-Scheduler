@@ -79,11 +79,11 @@ document.addEventListener('DOMContentLoaded', function() {
         },
 
         // Remember where the user left the calendar
-        initialView: (localStorage.getItem("initialView") !== null ? localStorage.getItem("initialView") : 'timeGridWeek'),
-        initialDate: (localStorage.getItem("initialDate") !== null ? parseInt(localStorage.getItem("initialDate")) : Date.now()),
-        dateSet: function (arg) {
-            localStorage.setItem("initialtView", arg.view.type);
-            localStorage.setItem("initialtDate", arg.view.currentStart.getTime());
+        initialView: (localStorage.getItem("fcInitialView") !== null ? localStorage.getItem("fcInitialView") : 'timeGridWeek'),
+        initialDate: (localStorage.getItem("fcInitialDate") !== null ? parseInt(localStorage.getItem("fcInitialDate")) : Date.now()),
+        datesSet: function (arg) {
+            localStorage.setItem("fcInitialView", arg.view.type);
+            localStorage.setItem("fcInitialDate", arg.view.currentStart.getTime());
         },
 
         // Events refresher
