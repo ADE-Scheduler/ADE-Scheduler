@@ -101,12 +101,14 @@ class Course:
         """
         return self.activities.index.get_level_values('id').unique()
 
-    def get_events(self, view: Optional[View] = None) -> Iterable[AcademicalEvent]:
+    def get_events(self, view: Optional[View] = None, reverse: bool = False) -> Iterable[AcademicalEvent]:
         """
         Returns a list of events that optionally matches correct ids.
 
         :param view: if present, list of ids or dict {week_number : ids}
         :type view: Optional[View]
+        :param reverse: if True, the View will be removed from events
+        :type reverse: bool
         :return: list of events
         :rtype: Iterable[AcademicalEvent]
         """
@@ -114,6 +116,10 @@ class Course:
             return self.activities['event'].values
         elif isinstance(view, list):
             valid = self.activities.index.get_level_values('id').isin(view)
+
+            if reverse:
+                valid = ~valid
+
             return self.activities['event'][valid].values
         elif isinstance(view, dict):
             events = list()
@@ -126,6 +132,10 @@ class Course:
             for week in valid_weeks:
                 week_data = grp_weeks.get_group(week)
                 valid = week_data.index.get_level_values('id').isin(view[week])
+
+                if reverse:
+                    valid = ~valid
+
                 events.extend(week_data['event'][valid].values.tolist())
 
             return events

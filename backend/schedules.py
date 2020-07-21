@@ -1,5 +1,5 @@
 from itertools import product, chain, starmap, repeat
-from collections import deque
+from collections import deque, defaultdict
 from backend.events import EventOTHER, AcademicalEvent, CustomEvent, Event
 from heapq import nsmallest
 import operator
@@ -11,7 +11,10 @@ from flask import current_app as app
 Schedule needed data:
 {
     code_list: [LMECA2660, LELEC2760, etc],             // requested course codes
-    filtered_subcodes: [LELEC2760_Q1, LMECA2660_Q2],    // unselected subcodes
+    filtered_subcodes: {
+                            LELEC276: [LELEC2760_Q1],
+                            LMECA2660: [LMECA2660_Q2],
+                        }                               // unselected subcodes
     computed_subcode: [[code1, code2], ..., [code2, code4]]   // filtered subcodes, week by week
     custom_events: [{event1}, {event2}],                // custom user events
     priority_levels: {code1: 5, code2: 1, subcode1: 3}, // priority level of the various code & subcodes
@@ -21,22 +24,22 @@ Schedule needed data:
 """
 
 
-class Schedule():
+class Schedule:
     """
     A schedule is essentially a combination of courses stored as a master course, from which some events can be removed.
 
-    :param id: the schedule id mathching this of the Database it is currently saved in.
+    :param project_id: the schedule id matching this of the Database it is currently saved in.
                This parameter is automatically set when the schedule is saved for the first time.
     """
-    def __init__(self, project_id: Union[str,int], schedule_id: int = None, label: str='New schedule'):
+    def __init__(self, project_id: Union[str, int], schedule_id: int = None, label: str = 'New schedule'):
         self.id = schedule_id
         self.project_id = project_id
         self.label = label
         self.codes = list()
-        self.filtered_subcodes = list()
+        self.filtered_subcodes = defaultdict(list)
         self.computed_subcodes = list()
         self.custom_events = list()
-        self.proprities = dict()
+        self.priorities = dict()
         self.color_palette = ['', '#374955', '#005376', '#00c0ff', '#1f789d', '#4493ba',
                                   '#64afd7', '#83ccf5', '#3635ff', '#006c5a', '#3d978a']
 
@@ -45,7 +48,7 @@ class Schedule():
         Adds a course to the schedule.
 
         :param code: the code of the course added
-        :type code: Iterable[str] or str
+        :type code: Union[Iterable[str], str])
         :return: the codes that were added to the schedule
         """
         if isinstance(code, str):
@@ -83,8 +86,8 @@ class Schedule():
         """
         Extracts all the events matching ids in the filtered_subcodes list.
 
-        :param json: wheter or not the events are to be returned in a JSON format
-        :type json: Optional[bool]
+        :param json: whether or not the events are to be returned in a JSON format
+        :type json: bool
         """
         events = list()
         mng = app.config['MANAGER']
@@ -93,7 +96,7 @@ class Schedule():
         # Course Events
         n = len(self.color_palette)
         for i, course in enumerate(courses):
-            course_events = course.get_events()    # TODO: Jerome - view = self.filtered_subcodes
+            course_events = course.get_events(view=self.filtered_subcodes[course.code], reverse=True)
             if json:
                 events.append([e.json(self.color_palette[i % n]) for e in course_events])
             else:

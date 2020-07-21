@@ -2,9 +2,6 @@ from redis import Redis
 from datetime import timedelta
 from typing import Optional, Dict, Any, Tuple, List
 from pickle import dumps, loads
-import os
-
-
 
 
 class Server(Redis):
