@@ -64,6 +64,12 @@ class Classroom:
     def __str__(self) -> str:
         return str(self.infos['name']) + '\n' + str(self.infos['address'])
 
+    def __hash__(self):
+        return hash(self.infos)
+
+    def __eq__(self, other):
+        return self.infos == other.infos
+
     def __getattr__(self, item) -> str:
         return self.infos[item]
         # TODO: Somethin' fishy going on here when pickled @Jerom
