@@ -18,8 +18,7 @@ def before_account_request():
 @account.route('/')
 @login_required
 def dashboard():
-    return render_template('account.html', schedules=current_user.get_schedule(),
-                            current_schedule=session['current_schedule'])
+    return render_template('account.html')
 
 
 @account.route('/get/data', methods=['GET'])
@@ -27,6 +26,14 @@ def dashboard():
 def get_data():
     return jsonify({
         'unsaved': session['current_schedule_modified'],
+        'schedules': list(map(lambda s: {
+            'id': s.id,
+            'label': s.data.label,
+        }, current_user.get_schedule())),
+        'current_schedule': {
+            'id': session['current_schedule'].id,
+            'label': session['current_schedule'].label,
+        },
     }), 200
 
 
@@ -38,8 +45,10 @@ def load_schedule(id):
         session['current_schedule'] = schedule.data
         session['current_schedule_modified'] = False
         return jsonify({
-            'id': schedule.data.id,
-            'label': schedule.data.label,
+            'current_schedule': {
+                'id': schedule.data.id,
+                'label': schedule.data.label,
+            },
             'unsaved': session['current_schedule_modified'],
         }), 200
     else:
@@ -57,8 +66,10 @@ def delete_schedule(id):
             session['current_schedule_modified'] = True
             return jsonify({
                 'no_current_schedule': True,
-                'id': session['current_schedule'].id,
-                'label': session['current_schedule'].label,
+                'current_schedule': {
+                    'id': schedule.data.id,
+                    'label': schedule.data.label,
+                },
                 'unsaved': session['current_schedule_modified'],
             }), 200
         return 'OK', 200

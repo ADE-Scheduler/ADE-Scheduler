@@ -8,7 +8,6 @@ bundles = {
         'css/lib/bootstrap.min.css',
         output='gen/base.min.css', filters='cssmin'),
     'base_js': Bundle(
-        'js/lib/jquery.min.js',
         'js/lib/bootstrap.bundle.min.js',
         'js/lib/vue.dev.js',
         'js/lib/axios.min.js',

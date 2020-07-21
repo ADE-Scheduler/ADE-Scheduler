@@ -39,8 +39,7 @@ var vm = new Vue({
                 this.events = resp.data.events;
             })
             .catch(err => {
-                console.log('An error has occurred');
-                console.log(data);
+                this.error = true;
             })
             .then(() => {
                 this.computing = false;
