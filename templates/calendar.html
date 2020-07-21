@@ -89,7 +89,7 @@
     <!-- Add an event Modal -->
     <div class="modal fade" id="eventModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
-            <form class="modal-content needs-validation" id="form-add-event" onsubmit="addEventButton(event)">
+            <form class="modal-content needs-validation" id="form-add-event" v-on:submit.prevent="addEvent">
                 <div class="modal-header">
                     <h5 class="modal-title">Add an event</h5>
                     <button type="button" class="close" data-dismiss="modal">
@@ -100,15 +100,15 @@
                     <div class="row">
                         <div class="col-6">
                             <label>Name</label>
-                            <input class="form-control" type="text" required id="event-name"/>
+                            <input class="form-control" type="text" required v-model="eventForm.name"/>
 
                             <label>Location</label>
-                            <input class="form-control" type="text" id="event-location"/>
+                            <input class="form-control" type="text" v-model="eventForm.location"/>
                         </div>
 
                         <div class="col-6 text-right">
                             <label>Description</label>
-                            <textarea class="form-control" type="text" rows="4" id="event-description"></textarea>
+                            <textarea class="form-control" type="text" rows="4" v-model="eventForm.description"></textarea>
                         </div>
                     </div>
 
@@ -123,7 +123,7 @@
                                         <path d="M2 1a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2H2zm14 4H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V5z"/>
                                     </svg>
                                 </div>
-                                <input type="date" class="form-control text-truncate" required id="date-start"/>
+                                <input type="date" class="form-control text-truncate" v-model="eventForm.beginDay" v-on:blur="checkMinDay" v-bind:disabled="eventForm.recurring" required/>
                             </div>
                             <div class="input-group time">
                                 <div class="input-group-text">
@@ -131,13 +131,13 @@
                                         <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
                                     </svg>
                                 </div>
-                                <input type="time" class="form-control" required id="time-start"/>
+                                <input type="time" class="form-control" required v-model="eventForm.beginHour" v-on:blur="checkMinHour"/>
                             </div>
                         </div>
                         <div class="col-6 text-right">
                             <label>To</label>
                             <div class="input-group date mb-2">
-                                <input type="date" class="form-control text-truncate" required id="date-end"/>
+                                <input type="date" class="form-control text-truncate" v-model="eventForm.endDay" v-on:blur="checkMaxDay" v-bind:disabled="eventForm.recurring" required/>
                                 <div class="input-group-text">
                                     <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-calendar-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                         <path fill-rule="evenodd" d="M3.5 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5zm9 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5z"/>
@@ -146,7 +146,7 @@
                                 </div>
                             </div>
                             <div class="input-group time">
-                                <input type="time" class="form-control" required id="time-end"/>
+                                <input type="time" class="form-control" required v-model="eventForm.endHour" v-on:blur="checkMaxHour"/>
                                 <div class="input-group-text">
                                     <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-clock-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                         <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
@@ -157,49 +157,52 @@
                     </div>
 
                     <!-- Repeting event ? -->
-                    <!-- <hr class="mb-3"> -->
-                    <div class="row justify-content-between mt-3">
+                    <div class="row mt-3">
                         <div class="col-6">
                             <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="switch-repetition" data-toggle="collapse" data-target="#event-repetition,#recurring-start-end" autocomplete="off">
+                                <input class="form-check-input" type="checkbox" v-model="eventForm.recurring" id="switch-repetition" data-toggle="collapse" data-target="#recurring-inputs">
                                 <label class="form-check-label" for="switch-repetition">Recurring event</label>
                             </div>
                         </div>
-                        <div class="col-6 text-right collapse" id="event-repetition">
-                            <label for="start-repetition">Days of week</label>
-                            <select class="form-select" multiple id="recurring-days" disabled>
-                                <option value="1">Monday</option>
-                                <option value="2">Tuesday</option>
-                                <option value="3">Wednesday</option>
-                                <option value="4">Thursday</option>
-                                <option value="5">Friday</option>
-                                <option value="6">Saturday</option>
-                                <option value="0">Sunday</option>
-                            </select>
-                        </div>
                     </div>
-                    <div class="row justify-content-between mt-3 collapse" id="recurring-start-end">
-                        <div class="col-6">
-                            <label>Start</label>
-                            <div class="input-group date mb-2">
-                                <div class="input-group-text">
-                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-calendar-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill-rule="evenodd" d="M3.5 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5zm9 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5z"/>
-                                        <path d="M2 1a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2H2zm14 4H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V5z"/>
-                                    </svg>
-                                </div>
-                                <input type="date" class="form-control text-truncate" id="recurring-start" disabled/>
+                    <div class="row collapse" id="recurring-inputs">
+                        <div class="row d-flex flex-row-reverse">
+                            <div class="col-6 text-right">
+                                <label for="start-repetition">Days of week</label>
+                                <select class="form-select" multiple v-model="eventForm.freq" v-bind:disabled="!eventForm.recurring" required>
+                                    <option value="1">Monday</option>
+                                    <option value="2">Tuesday</option>
+                                    <option value="3">Wednesday</option>
+                                    <option value="4">Thursday</option>
+                                    <option value="5">Friday</option>
+                                    <option value="6">Saturday</option>
+                                    <option value="0">Sunday</option>
+                                </select>
                             </div>
                         </div>
-                        <div class="col-6 text-right">
-                            <label>End</label>
-                            <div class="input-group date mb-2">
-                                <input type="date" class="form-control text-truncate" id="recurring-end" disabled/>
-                                <div class="input-group-text">
-                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-calendar-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill-rule="evenodd" d="M3.5 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5zm9 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5z"/>
-                                        <path d="M2 1a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2H2zm14 4H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V5z"/>
-                                    </svg>
+                        <div class="row justify-content-between mt-3">
+                            <div class="col-6">
+                                <label>Start</label>
+                                <div class="input-group date mb-2">
+                                    <div class="input-group-text">
+                                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-calendar-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M3.5 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5zm9 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5z"/>
+                                            <path d="M2 1a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2H2zm14 4H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V5z"/>
+                                        </svg>
+                                    </div>
+                                    <input type="date" class="form-control text-truncate" v-model="eventForm.beginRecurrDay" v-on:blur="checkMinRecurrDay" v-bind:disabled="!eventForm.recurring" required>
+                                </div>
+                            </div>
+                            <div class="col-6 text-right">
+                                <label>End</label>
+                                <div class="input-group date mb-2">
+                                    <input type="date" class="form-control text-truncate" v-model="eventForm.endRecurrDay" v-on:blur="checkMaxRecurrDay" v-bind:disabled="!eventForm.recurring" required>
+                                    <div class="input-group-text">
+                                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-calendar-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M3.5 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5zm9 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5z"/>
+                                            <path d="M2 1a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2H2zm14 4H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V5z"/>
+                                        </svg>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -266,15 +269,15 @@
         <!-- Main content -->
         <div class="container-fluid">
             <div class="col-md-9 ml-sm-auto col-lg-10 px-md-4 pt-2">
-                <div class="alert alert-success alert-dismissible collapse" id="save-success-alert">
+                <div class="alert alert-success alert-dismissible" v-show="saveSuccess">
                     Schedule successfuly saved !
-                    <button type="button" class="close" onclick="$('#save-success-alert').hide()">
+                    <button type="button" class="close"v-on:click="saveSuccess = false">
                         <span>&times;</span>
                     </button>
                 </div>
-                <div class="alert alert-danger alert-dissmissible" v-show="error">
+                <div class="alert alert-danger alert-dismissible" v-show="error">
                     A problem has occurred. Please contact us if it happens again.
-                    <button type="button" class="close" v-on:click="error = !error">
+                    <button type="button" class="close" v-on:click="error = false">
                         <span>&times;</span>
                     </button>
                 </div>

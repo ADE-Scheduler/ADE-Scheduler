@@ -1,4 +1,6 @@
-var calendar = new Object();
+var popoverList = [];
+var eventModal = {};
+var calendar = {};
 var vm = new Vue({
     el: '#app',
     data: {
@@ -9,12 +11,25 @@ var vm = new Vue({
         error: false,
         saveSuccess: false,
         code: '',
+        eventForm: {
+            name: '',
+            location: '',
+            description: '',
+            beginDay: '',
+            endDay: '',
+            beginHour: '',
+            endHour: '',
+            freq: [],
+            beginRecurrDay: '',
+            endRecurrDay: '',
+            recurring: false,
+        }
     },
     delimiters: ['[[',']]'],
 
     methods: {
-        fetch: function(e) {
-            this.computing = false;
+        fetchData: function(e) {
+            this.computing = true;
             axios({
                 method: 'GET',
                 url: Flask.url_for('calendar.get_data'),
@@ -40,7 +55,22 @@ var vm = new Vue({
             .then(resp => {
                 this.events = [];
                 this.codes = [];
-                spinner.run = false;
+            })
+            .catch(err => {
+                this.error = true;
+            })
+            .then(() => {
+                this.computing = false;
+            });
+        },
+        compute: function(e) {
+            this.computing = true;
+            axios({
+                method: 'GET',
+                url: Flask.url_for('calendar.compute'),
+            })
+            .then(resp => {
+                console.log('Schedule computed successfuly !');
             })
             .catch(err => {
                 this.error = true;
@@ -56,7 +86,7 @@ var vm = new Vue({
                 url: Flask.url_for('calendar.save'),
             })
             .then(resp => {
-                $('#save-success-alert').show();
+                this.saveSuccess = true;
             })
             .catch(err => {
                 if (err.response.status === 401) {
@@ -88,6 +118,7 @@ var vm = new Vue({
             });
         },
         removeCode: function(e, code) {
+            this.computing = true;
             axios({
                 method: 'PATCH',
                 url: Flask.url_for('calendar.remove_code', {'code': code}),
@@ -98,23 +129,75 @@ var vm = new Vue({
             })
             .catch(err => {
                 this.error = true;
+            })
+            .then(() => {
+                this.computing = false;
             });
         },
-        compute: function(e) {
-            this.computing = true;
+        addEvent: function(e) {
+            let evt = {
+                name: this.eventForm.name,
+                location: this.eventForm.location,
+                description: this.eventForm.description,
+            }
+            if (this.eventForm.recurring) {
+                evt.begin = this.eventForm.beginRecurrDay + ' ' + this.eventForm.beginHour;
+                evt.end = this.eventForm.beginRecurrDay + ' ' + this.eventForm.endHour;
+                evt.end_recurr = this.eventForm.endRecurrDay + ' ' + this.eventForm.endHour;
+                evt.freq = this.eventForm.freq;
+            } else {
+                evt.begin = this.eventForm.beginDay + ' ' + this.eventForm.beginHour;
+                evt.end = this.eventForm.endDay + ' ' + this.eventForm.endHour;
+            }
+
+            computing = true;
             axios({
-                method: 'GET',
-                url: Flask.url_for('calendar.compute'),
+                method: 'POST',
+                url: Flask.url_for('calendar.add_custom_event'),
+                data: evt,
+                header: {'Content-Type': 'application/json'},
             })
             .then(resp => {
-                console.log('Schedule computed successfuly !');
+                vm.events.push(resp.data.event);
+                e.target.reset();
+                eventModal.hide();
             })
             .catch(err => {
                 this.error = true;
             })
             .then(() => {
-                this.computing = false;
+                computing = false;
             });
+        },
+        checkMinDay: function(e) {
+            if (this.eventForm.beginDay > this.eventForm.endDay || !this.eventForm.endDay) {
+                this.eventForm.endDay = this.eventForm.beginDay;
+            }
+        },
+        checkMaxDay: function(e) {
+            if (this.eventForm.beginDay > this.eventForm.endDay || !this.eventForm.beginDay) {
+                this.eventForm.beginDay = this.eventForm.endDay;
+            }
+        },
+        checkMinRecurrDay: function(e) {
+            if (this.eventForm.beginRecurrDay > this.eventForm.endRecurrDay || !this.eventForm.endRecurrDay) {
+                this.eventForm.endRecurrDay = this.eventForm.beginRecurrDay;
+            }
+        },
+        checkMaxRecurrDay: function(e) {
+            if (this.eventForm.beginRecurrDay > this.eventForm.endRecurrDay || !this.eventForm.beginRecurrDay) {
+                this.eventForm.beginRecurrDay = this.eventForm.endRecurrDay;
+            }
+        },
+        checkMinHour: function(e) {
+            if (this.eventForm.beginHour > this.eventForm.endHour || !this.eventForm.endHour) {
+                this.eventForm.endHour = this.eventForm.beginHour;
+            }
+        },
+        checkMaxHour: function(e) {
+            if (this.eventForm.beginHour > this.eventForm.endHour || !this.eventForm.beginHour) {
+                this.eventForm.beginHour = this.eventForm.endHour;
+            }
         },
     },
 
@@ -131,20 +214,22 @@ var vm = new Vue({
     },
 
     created:  function () {
-        this.fetch();
+        this.fetchData();
     },
 });
 
-window.onload = () => {
-    $(function () {
-        $('[data-toggle="popover"]').popover({
-            container: 'body',
-            trigger: 'focus'
-        });
-    });
-}
 
 document.addEventListener('DOMContentLoaded', function() {
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="popover"]'));
+    popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl, {
+            container: 'body',
+            trigger: 'focus',
+        })
+    });
+
+    eventModal = new bootstrap.Modal(document.getElementById('eventModal'));
+
     calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
         height: 'auto',
         slotMinTime: '08:00:00',
@@ -170,7 +255,7 @@ document.addEventListener('DOMContentLoaded', function() {
         customButtons: {
             addEvent: {
                 text: '+',
-                click: () => { $('#eventModal').modal('show'); }
+                click: () => { eventModal.show(); }
             }
         },
         headerToolbar: {
@@ -195,100 +280,4 @@ document.addEventListener('DOMContentLoaded', function() {
         eventDisplay: 'block',
     });
     calendar.render();
-});
-
-function addEventButton(e) {
-    // Prevent form submission
-    e.preventDefault();
-
-    // Assemble the event
-    let evt = {
-        name: $('#event-name').val(),
-        location: $('#event-location').val(),
-        description: $('#event-description').val(),
-    }
-    if ($('#switch-repetition').is(':checked')) {
-        evt.begin = $('#recurring-start').val() + ' ' + $('#time-start').val();
-        evt.end = $('#recurring-start').val() + ' ' + $('#time-end').val();
-        evt.end_recurr = $('#recurring-end').val() + ' ' + $('#time-end').val();
-        evt.freq = $('#recurring-days').val();
-    } else {
-        evt.begin = $('#date-start').val() + ' ' +$('#time-start').val();
-        evt.end = $('#date-end').val() + ' ' +$('#time-end').val();
-    }
-
-    // Send the request to the server
-    spinner.run = true;
-    $.ajax({
-        url: Flask.url_for('calendar.add_custom_event'),
-        type: 'POST',
-        data: JSON.stringify(evt),
-        contentType: 'application/json;charset=UTF-8',
-        success: (data) => {
-            vm.events.push(data.event);
-            calendar.refetchEvents();
-
-            // Clear the form
-            e.target.reset();
-            $('#eventModal').modal('hide');
-        },
-        error: (data) => {
-            $('#error-alert').show()
-        },
-        complete: () => {
-            spinner.run = false;
-        },
-    });
- };
-
-$('#switch-repetition').on('change', (e) => {
-    if (e.target.checked) {
-        $('#recurring-start').attr('required', true);
-        $('#recurring-end').attr('required', true);
-        $('#recurring-days').attr('required', true);
-        $('#date-start').attr('required', false);
-        $('#date-end').attr('required', false);
-
-        $('#recurring-start').attr('disabled', false);
-        $('#recurring-end').attr('disabled', false);
-        $('#recurring-days').attr('disabled', false);
-        $('#date-start').attr('disabled', true);
-        $('#date-end').attr('disabled', true);
-    } else {
-        $('#recurring-start').attr('required',false);
-        $('#recurring-end').attr('required', false);
-        $('#recurring-days').attr('required', false);
-        $('#date-start').attr('required', true);
-        $('#date-end').attr('required', true);
-
-        $('#recurring-start').attr('disabled', true);
-        $('#recurring-end').attr('disabled', true);
-        $('#recurring-days').attr('disabled', true);
-        $('#date-start').attr('disabled', false);
-        $('#date-end').attr('disabled', false);
-    }
-});
-$('#date-start').change((e) => {
-    if ($('#date-end').val() === '') {
-        $('#date-end').val(e.target.value);
-    }
-    $('#date-end').attr('min', e.target.value);
-});
-$('#date-end').change((e) => {
-    if ($('#date-start').val() === '') {
-        $('#date-start').val(e.target.value);
-    }
-    $('#date-start').attr('max', e.target.value);
-});
-$('#recurring-start').change((e) => {
-    if ($('#recurring-end').val() === '') {
-        $('#recurring-end').val(e.target.value);
-    }
-    $('#recurring-end').attr('min', e.target.value);
-});
-$('#recurring-end').change((e) => {
-    if ($('#recurring-start').val() === '') {
-        $('#recurring-start').val(e.target.value);
-    }
-    $('#recurring-start').attr('max', e.target.value);
 });
