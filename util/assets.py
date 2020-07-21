@@ -11,6 +11,7 @@ bundles = {
         'js/lib/jquery.min.js',
         'js/lib/bootstrap.bundle.min.js',
         'js/lib/vue.dev.js',
+        'js/lib/axios.min.js',
         'js/base.js',
         output='gen/base.min.js', filters='jsmin'),
 

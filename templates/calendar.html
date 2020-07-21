@@ -223,7 +223,7 @@
             <a class="nav-link" href="#">Schedule 3</a>
             <a class="nav-link text-dark" href="#">Export</a>
             <a class="nav-link text-dark" href="#">Download</a>
-            <a class="nav-link text-dark" href="#" onclick="saveButton()">Save</a>
+            <a class="nav-link text-dark" href="#" v-on:click="save">Save</a>
         </nav>
     </div>
 
@@ -239,28 +239,26 @@
                     </svg>
                 </a>
                 <div class="list-group list-code m-2">
-                    {% for code in codes %}
-                    <li class="list-group-item code-item d-flex justify-content-between align-items-center">
+                    <li class="list-group-item code-item d-flex justify-content-between align-items-center"  v-for='code in codes'>
                         <span class="code-tag" data-toggle="modal" data-target="#detailsModal">
-                            {{ code }}
+                            [[ code ]]
                         </span>
-                        <button class="btn btn-danger badge rounded-pill" onclick="removeCodeButton(this, '{{ code }}')">
+                        <button class="btn btn-danger badge rounded-pill" v-on:click="removeCode($event, code)">
                             <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
                             </svg>
                         </button>
                     </li>
-                    {% endfor %}
                     <li class="list-group-item p-0 list-code-input">
-                        <form class="input-group my-1" id="form-add-code" onsubmit="addCodeButton(event)">
-                            <input class="form-control code-input" type="text" placeholder="Enter code" id="codeInput">
-                            <button class="btn btn-success badge rounded-pill" type="submit" id="codeValidation">+</button>
+                        <form class="input-group my-1" id="form-add-code" v-on:submit.prevent="addCode">
+                            <input class="form-control code-input" type="text" placeholder="Enter code" v-model="code">
+                            <button class="btn btn-success badge rounded-pill btn-code-validation" type="submit">+</button>
                         </form>
                     </li>
                 </div>
                 <div class="btn-group btn-compute-clear m-2">
-                    <button class="btn btn-outline-dark btn-sm w-50" type="button" onclick="computeButton()">Compute</button>
-                    <button class="btn btn-outline-dark btn-sm w-50" type="button" onclick="clearButton()">Clear</button>
+                    <button class="btn btn-outline-dark btn-sm w-50" type="button" v-on:click="compute">Compute</button>
+                    <button class="btn btn-outline-dark btn-sm w-50" type="button" v-on:click="clear">Clear</button>
                 </div>
             </div>
         </nav>
@@ -274,14 +272,14 @@
                         <span>&times;</span>
                     </button>
                 </div>
-                <div class="alert alert-danger alert-dissmissible collapse" id="error-alert">
+                <div class="alert alert-danger alert-dissmissible" v-show="error">
                     A problem has occurred. Please contact us if it happens again.
-                    <button type="button" class="close" onclick="$('#error-alert').hide()">
+                    <button type="button" class="close" v-on:click="error = !error">
                         <span>&times;</span>
                     </button>
                 </div>
-                <div class="spinner-border text-primary spinner-compute" id="spinner-compute"></div>
-                <div id='calendar'>
+                <div class="spinner-border text-primary spinner-compute" v-show="computing"></div>
+                <div id="calendar" v-bind:style="calendarOpacity" >
                 </div>
             </div>
         </div>

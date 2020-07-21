@@ -11,8 +11,7 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    z-index: 1;
-    display: none
+    z-index: 100;
 }
 
 .fc-toolbar-chunk > button, .fc-toolbar-chunk > .fc-button-group > button {
@@ -133,7 +132,7 @@
     box-shadow: 0 0 0 .2rem rgba(0, 123, 255, .25);
 } */
 
-#codeValidation {
+.btn-code-validation {
     margin: 10px 20px 10px;
     margin-left: 0;
     z-index: 2;

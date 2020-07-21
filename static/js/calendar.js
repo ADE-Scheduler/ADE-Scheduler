@@ -1,39 +1,141 @@
-var eventArray = [];
-var calendar = {};
-var spinner = {
-    run: false,
-    set run(val) {
-        let cal = $('#calendar');
-        let spin = $('#spinner-compute');
-        if (val) {
-            $('#sidebarMenu').collapse('hide');
-            cal.css('opacity', '0.2');
-            spin.css('display', 'initial');
-        } else {
-            cal.css('opacity', '1');
-            spin.css('display', 'none');
-        }
+var calendar = new Object();
+var vm = new Vue({
+    el: '#app',
+    data: {
+        codes: [],
+        events: [],
+        calendar: {},
+        computing: true,
+        error: false,
+        saveSuccess: false,
+        code: '',
     },
-};
+    delimiters: ['[[',']]'],
 
-window.onload = () => {
-    // Fetch data
-    spinner.run = true;
-    $.ajax({
-        url: Flask.url_for('calendar.get_data'),
-        type: 'GET',
-        success: (data) => {
-            eventArray = data.events;
+    methods: {
+        fetch: function(e) {
+            this.computing = false;
+            axios({
+                method: 'GET',
+                url: Flask.url_for('calendar.get_data'),
+            })
+            .then(resp => {
+                this.codes = resp.data.codes;
+                this.events = resp.data.events;
+            })
+            .catch(err => {
+                console.log('An error has occurred');
+                console.log(data);
+            })
+            .then(() => {
+                this.computing = false;
+            });
+        },
+        clear: function(e) {
+            this.computing = true;
+            axios({
+                method: 'DELETE',
+                url: Flask.url_for('calendar.clear'),
+            })
+            .then(resp => {
+                this.events = [];
+                this.codes = [];
+                spinner.run = false;
+            })
+            .catch(err => {
+                this.error = true;
+            })
+            .then(() => {
+                this.computing = false;
+            });
+        },
+        save: function(e) {
+            this.computing = true;
+            axios({
+                method: 'POST',
+                url: Flask.url_for('calendar.save'),
+            })
+            .then(resp => {
+                $('#save-success-alert').show();
+            })
+            .catch(err => {
+                if (err.response.status === 401) {
+                    window.location.href = Flask.url_for('security.login');
+                } else {
+                    this.error = true;
+                }
+            })
+            .then(() => {
+                this.computing = false;
+            });
+        },
+        addCode: function(e) {
+            this.computing = true;
+            axios({
+                method: 'PATCH',
+                url: Flask.url_for('calendar.add_code', {'code': this.code}),
+            })
+            .then(resp => {
+                this.codes = this.codes.concat(resp.data.codes);
+                this.events = resp.data.events;
+                this.code = '';
+            })
+            .catch(err => {
+                this.error = true;
+            })
+            .then(() => {
+                this.computing = false;
+            });
+        },
+        removeCode: function(e, code) {
+            axios({
+                method: 'PATCH',
+                url: Flask.url_for('calendar.remove_code', {'code': code}),
+            })
+            .then(resp => {
+                this.codes.splice(this.codes.indexOf(code), 1);
+                this.events = resp.data.events;
+            })
+            .catch(err => {
+                this.error = true;
+            });
+        },
+        compute: function(e) {
+            this.computing = true;
+            axios({
+                method: 'GET',
+                url: Flask.url_for('calendar.compute'),
+            })
+            .then(resp => {
+                console.log('Schedule computed successfuly !');
+            })
+            .catch(err => {
+                this.error = true;
+            })
+            .then(() => {
+                this.computing = false;
+            });
+        },
+    },
+
+    computed: {
+        calendarOpacity: function() {
+            return {'opacity': this.computing ? '0.2':'1'}
+        },
+    },
+
+    watch: {
+        events: function () {
             calendar.refetchEvents();
         },
-        error: (data) => {
-            $('#error-alert').show()
-        },
-        complete: () => {
-            spinner.run = false;
-        },
-    });
+    },
 
+    created:  function () {
+        this.fetch();
+    },
+});
+
+window.onload = () => {
     $(function () {
         $('[data-toggle="popover"]').popover({
             container: 'body',
@@ -43,8 +145,7 @@ window.onload = () => {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    let calendarDiv = document.getElementById('calendar');
-    calendar = new FullCalendar.Calendar(calendarDiv, {
+    calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
         height: 'auto',
         slotMinTime: '08:00:00',
         slotMaxTime: '21:00:00',
@@ -88,133 +189,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Events refresher
         events: function (fetchInfo, successCallback, failureCallback) {
-            successCallback(eventArray);
+            successCallback(vm.events);
         },
         eventTextColor: 'white',
         eventDisplay: 'block',
     });
-
     calendar.render();
 });
-
-/*
- *  Button callbacks
- */
-function saveButton() {
-    spinner.run = true;
-    $.ajax({
-        url: Flask.url_for('calendar.save'),
-        type: 'POST',
-        statusCode: {
-            401: () => {
-                window.location.href = Flask.url_for('security.login');
-            }
-        },
-        success: (data) => {
-            $('#save-success-alert').show();
-        },
-        error: (data) => {
-            $('#error-alert').show()
-        },
-        complete: () => {
-            spinner.run = false;
-        }
-    });
-}
-
-function computeButton() {
-    spinner.run = true;
-    $.ajax({
-        url: Flask.url_for('calendar.compute'),
-        type: 'GET',
-        success: (data) => {},
-        error: (data) => {
-            $('#error-alert').show()
-        },
-        complete: () => {
-            spinner.run = false;
-        }
-    });
-}
-
-function clearButton() {
-    spinner.run = true;
-    $.ajax({
-        url: Flask.url_for('calendar.clear'),
-        type: 'DELETE',
-        success: (data) => {
-            $('.code-item').remove();
-            eventArray = [];
-            calendar.refetchEvents();
-        },
-        error: (data) => {
-            $('#error-alert').show()
-        },
-        complete: () => {
-            spinner.run = false;
-        }
-    });
-}
-
-function addCodeButton(e) {
-    // Prevent form submission
-    e.preventDefault();
-
-    let code = $('#codeInput').val();
-    if (code) {
-        spinner.run = true;
-        $.ajax({
-            url: Flask.url_for('calendar.add_code', {'code': code}),
-            type: 'PATCH',
-            success: (data) => {
-                eventArray = data.events;
-                calendar.refetchEvents();
-
-                data.codes.forEach((code) => {
-                    $('.list-code-input').before(
-                        `<li class="list-group-item code-item d-flex justify-content-between align-items-center">
-                        <span class="code-tag" data-toggle="modal" data-target="#detailsModal">`
-                        + code +
-                        `</span>
-                        <button class="btn btn-danger badge rounded-pill" onclick="removeCodeButton(this, '`+ code +`')">
-                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
-                            </svg>
-                        </button>
-                        </li>`);
-                })
-                $('#codeInput').val('');
-            },
-            error: (data) => {
-                $('#error-alert').show()
-            },
-            complete: () => {
-                spinner.run = false;
-            },
-        });
-    }
-}
-
-function removeCodeButton(div, code) {
-    // spinner.run = true;
-
-    $.ajax({
-        url: Flask.url_for('calendar.remove_code', {'code': code}),
-        type: 'PATCH',
-        success: (data) => {
-            eventArray = data.events;
-            calendar.refetchEvents();
-
-            $(div).parent().remove();
-        },
-        error: (data) => {
-            $('#error-alert').show()
-        },
-        complete: () => {
-            // spinner.run = false;
-        },
-    });
-}
 
 function addEventButton(e) {
     // Prevent form submission
@@ -244,7 +225,7 @@ function addEventButton(e) {
         data: JSON.stringify(evt),
         contentType: 'application/json;charset=UTF-8',
         success: (data) => {
-            eventArray.push(data.event);
+            vm.events.push(data.event);
             calendar.refetchEvents();
 
             // Clear the form

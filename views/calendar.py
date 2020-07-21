@@ -22,14 +22,14 @@ def before_calendar_request():
 
 @calendar.route('/')
 def schedule_viewer():
-    current_schedule = session['current_schedule']
-    return render_template('calendar.html', codes=current_schedule.codes)
+    return render_template('calendar.html')
 
 
 @calendar.route('/get/data', methods=['GET'])
 def get_data():
     return jsonify({
         'events': session['current_schedule'].get_events(json=True),
+        'codes': session['current_schedule'].codes,
     }), 200
 
 
