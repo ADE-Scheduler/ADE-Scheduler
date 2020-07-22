@@ -53,26 +53,32 @@
                     </a>
                 </div>
                 <div class="card-body" v-bind:style="opacity">
-                    <blockquote class="blockquote mb-0">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-                    <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
-                    </blockquote>
-                    <v-swatches show-fallback fallback-input-type="color" v-for="(color, i) in current_schedule.color_palette" v-model="current_schedule.color_palette[i]"></v-swatches>
-                    <label class="form-label" for="select-project-id">Year</label>
-                    <select class="form-select" style="max-width: 130px;" v-model="current_schedule.project_id" id="select-project-id">
-                        <option v-for="pid in projectId" v-bind:value="pid.id">
-                            [[ pid.year ]]
-                        </option>
-                    </select>
+                    <label class="form-label" for="color-palette">Color palette</label>
+                    <div class="d-flex flex-row flex-wrap justify-content-around mb-3" id="color-palette">
+                        <v-swatches class="mx-1" show-fallback fallback-input-type="color" v-for="(color, i) in current_schedule.color_palette" v-model="current_schedule.color_palette[i]"></v-swatches>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="select-project-id">Academic year</label>
+                        <select class="form-select" style="max-width: 180px;" v-model="current_schedule.project_id" id="select-project-id">
+                            <option v-for="pid in projectId" v-bind:value="pid.id">
+                                [[ pid.year ]]
+                            </option>
+                        </select>
+                    </div>
+                    <div class="btn-group d-flex">
+                        <button class="btn btn-danger" v-on:click="deleteSchedule($event, current_schedule.id)">Delete</button>
+                        <button class="btn btn-dark" v-on:click="viewSchedule($event, current_schedule.id)">View</button>
+                        <button class="btn btn-success" v-on:click="save">Save</button>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="col-md-4 col-lg-3">
-            <h4 class="d-flex justify-content-between align-items-center my-3">
+            <h4 class="d-flex justify-content-between align-items-center mx-3 mt-3">
                 <span class="text-muted">Schedules</span>
             </h4>
-            <ul class="list-group list-schedules mb-3">
+            <ul class="list-group list-schedules mx-3">
                 <li class="list-group-item d-flex justify-content-between align-items-center" v-for="s in schedules" v-bind:key="s.id" v-bind:class="s.id === current_schedule.id ? 'current-schedule' : ''">
                     <h6 class="text-truncate my-0" v-on:click="loadSchedule($event, s.id)">
                         [[ s.label ]]

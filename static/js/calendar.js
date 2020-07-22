@@ -247,7 +247,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
         },
 
-        // Custom header Button
+        // Header bar
         customButtons: {
             addEvent: {
                 text: '+',
@@ -268,7 +268,7 @@ document.addEventListener('DOMContentLoaded', function() {
             localStorage.setItem("fcInitialDate", arg.view.currentStart.getTime());
         },
 
-        // Events refresher
+        // Events
         events: function (fetchInfo, successCallback, failureCallback) {
             successCallback(vm.events);
         },
@@ -278,6 +278,13 @@ document.addEventListener('DOMContentLoaded', function() {
             new bootstrap.Tooltip(arg.el, {
                 container: 'body',
                 title: arg.event.extendedProps.description,
+                sanitize: false,
+                template: `
+                    <div class="tooltip" role="tooltip">
+                        <div class="tooltip-arrow"></div>
+                        <div class="tooltip-inner" style="background-color:` + arg.event.backgroundColor + `"></div>
+                    </div>`,
+                placement: 'auto',
             });
         },
     });
