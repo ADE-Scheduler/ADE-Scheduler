@@ -155,11 +155,11 @@ class AcademicalEvent(CustomEvent):
                  classrooms: Optional[Iterable[Classroom]] = None, id: Optional[str] = None, weight: float = 5,
                  code: Optional[str] = None, prefix: Optional[str] = None):
 
-        super().__init__(name=f'{prefix} {code}-{name}', location='OMG FIX UR SHIT JEROM',
+        super().__init__(name=name, location='OMG FIX UR SHIT JEROM',
                          description=str(professor), begin=begin, end=end)
                          # TODO: merge_classrooms fait du gros caca ici
         self.weight = weight
-        self.id = f'{prefix}{id}'
+        self.id = f'{prefix} {id}'
         self.code = code
         self.classrooms = classrooms
 
@@ -194,7 +194,7 @@ class AcademicalEvent(CustomEvent):
         return {
             'start': str(self.begin),
             'end': str(self.end),
-            'title': self.name,
+            'title': self.id,
             'editable': False,
             'description': self.name + '\n' + self.location + ' - ' + str(self.duration) + '\n' + str(self.description),
             'code': self.code,

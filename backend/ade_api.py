@@ -319,8 +319,8 @@ def response_to_courses(activities_response: requests.Response) -> List[Course]:
 
             # We create the event
             t0, t1 = backend.events.extract_datetime(event_date, event_start, event_end)
-            event = event_type(activity_code, t0, t1, event_instructor, event_address,
-                               event_classroom, activity_id)
+            event = event_type(name=activity_name, begin=t0, end=t1, professor=event_instructor,
+                                classrooms=event_address, id=activity_id, code=activity_code)
             events_list.append(event)
 
         if activity_code not in courses and events_list:
