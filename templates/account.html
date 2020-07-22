@@ -31,14 +31,14 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-8 col-lg-9">
-            <div class="alert alert-danger alert-dismissible m-3" v-show="error">
+        <div class="col-md-8 col-lg-9 p-3">
+            <div class="alert alert-danger alert-dismissible" v-show="error">
                 A problem has occurred. Please contact us if it happens again.
                 <button type="button" class="close" v-on:click="error = false">
                     <span>&times;</span>
                 </button>
             </div>
-            <div class="card m-3">
+            <div class="card">
                 <div class="spinner-border text-primary spinner-compute" v-show="computing"></div>
                 <div class="card-header d-flex justify-content-between align-items-center" id="form-update-label" v-bind:style="opacity">
                     <input class="form-control mr-4" type="text" v-focus v-model="current_schedule.label" v-if="isEditing" v-on:keyup.enter="updateLabel($event, current_schedule.id)" v-on:blur="isEditing = false" v-on:keyup.esc="isEditing = false"/>
@@ -66,19 +66,19 @@
                         </select>
                     </div>
                     <div class="btn-group d-flex">
+                        <button class="btn btn-dark" v-on:click="save">Save</button>
+                        <button class="btn btn-warning" v-on:click="viewSchedule($event, current_schedule.id)">View</button>
                         <button class="btn btn-danger" v-on:click="deleteSchedule($event, current_schedule.id)">Delete</button>
-                        <button class="btn btn-dark" v-on:click="viewSchedule($event, current_schedule.id)">View</button>
-                        <button class="btn btn-success" v-on:click="save">Save</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-4 col-lg-3">
-            <h4 class="d-flex justify-content-between align-items-center mx-3 mt-3">
+        <div class="col-md-4 col-lg-3 p-3">
+            <h4 class="d-flex justify-content-between align-items-center">
                 <span class="text-muted">Schedules</span>
             </h4>
-            <ul class="list-group list-schedules mx-3">
+            <ul class="list-group list-schedules">
                 <li class="list-group-item d-flex justify-content-between align-items-center" v-for="s in schedules" v-bind:key="s.id" v-bind:class="s.id === current_schedule.id ? 'current-schedule' : ''">
                     <h6 class="text-truncate my-0" v-on:click="loadSchedule($event, s.id)">
                         [[ s.label ]]

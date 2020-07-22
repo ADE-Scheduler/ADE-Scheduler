@@ -61,7 +61,7 @@ var vm = new Vue({
                 });
             }
 
-            if (this.unsaved) {
+            if (this.unsaved && this.current_schedule.id != id) {
                 warningModal.show();
             } else {
                 this.request();
@@ -87,7 +87,7 @@ var vm = new Vue({
                 });
             }
 
-            if (this.unsaved) {
+            if (this.unsaved && this.current_schedule.id != id) {
                 warningModal.show();
             } else {
                 this.request();

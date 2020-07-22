@@ -260,8 +260,12 @@
                     </li>
                 </div>
                 <div class="btn-group btn-compute-clear m-2">
-                    <button class="btn btn-outline-dark btn-sm w-50" type="button" v-on:click="compute">Compute</button>
-                    <button class="btn btn-outline-dark btn-sm w-50" type="button" v-on:click="clear">Clear</button>
+                    <button class="btn btn-outline-dark btn-sm w-50" type="button" v-on:click="compute" data-toggle="collapse" data-target="#sidebarMenu">
+                        Compute
+                    </button>
+                    <button class="btn btn-outline-dark btn-sm w-50" type="button" v-on:click="clear" data-toggle="collapse" data-target="#sidebarMenu">
+                        Clear
+                    </button>
                 </div>
             </div>
         </nav>
