@@ -2,7 +2,12 @@
 var warningModal = {};
 var vm = new Vue({
     el: '#app',
+    components: {
+        VSwatches: window['vue-swatches']
+    },
     data: {
+        label: {},
+        projectId: [],
         schedules: [],
         current_schedule: {},
         computing: true,
@@ -11,6 +16,13 @@ var vm = new Vue({
         isEditing: false,
     },
     delimiters: ['[[',']]'],
+    directives: {
+        focus: {
+            inserted: function(el) {
+                el.focus();
+            },
+        },
+    },
     methods: {
         fetchData: function(e) {
             this.computing = true;
@@ -19,6 +31,7 @@ var vm = new Vue({
                 url: Flask.url_for('account.get_data'),
             })
             .then(resp => {
+                this.projectId = resp.data.project_id;
                 this.unsaved = resp.data.unsaved;
                 this.schedules = resp.data.schedules;
                 this.current_schedule = resp.data.current_schedule;

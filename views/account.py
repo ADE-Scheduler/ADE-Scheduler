@@ -24,7 +24,9 @@ def dashboard():
 @account.route('/get/data', methods=['GET'])
 @login_required
 def get_data():
+    mng = app.config['MANAGER']
     return jsonify({
+        'project_id': mng.get_project_id(),
         'unsaved': session['current_schedule_modified'],
         'schedules': list(map(lambda s: {
             'id': s.id,
@@ -32,7 +34,10 @@ def get_data():
         }, current_user.get_schedule())),
         'current_schedule': {
             'id': session['current_schedule'].id,
+            'project_id': session['current_schedule'].project_id,
             'label': session['current_schedule'].label,
+            'filtered': session['current_schedule'].filtered_subcodes,
+            'color_palette': session['current_schedule'].color_palette,
         },
     }), 200
 
@@ -47,7 +52,10 @@ def load_schedule(id):
         return jsonify({
             'current_schedule': {
                 'id': schedule.data.id,
+                'project_id': schedule.data.project_id,
                 'label': schedule.data.label,
+                'filtered': schedule.data.filtered_subcodes,
+                'color_palette': schedule.data.color_palette,
             },
             'unsaved': session['current_schedule_modified'],
         }), 200
@@ -68,7 +76,10 @@ def delete_schedule(id):
                 'no_current_schedule': True,
                 'current_schedule': {
                     'id': schedule.data.id,
+                    'project_id': schedule.data.project_id,
                     'label': schedule.data.label,
+                    'filtered': schedule.data.filtered_subcodes,
+                    'color_palette': schedule.data.color_palette,
                 },
                 'unsaved': session['current_schedule_modified'],
             }), 200

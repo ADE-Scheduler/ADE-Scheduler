@@ -100,18 +100,22 @@ class Manager:
             self.server.hmset(hmap, resources)
             self.server.expire(hmap, timedelta(hours=25))
 
-    def get_project_id(self, year):
+    def get_project_id(self, year=None):
         """
         ...
         """
         hmap = f'[PROJECT_IDs]'
         if not self.server.exists(hmap):
             self.update_project_id()
-        value = self.server.hmget(hmap, year)
-        if value:
-            return value.decode()
+        if year is None:
+            return [{'id': value.decode(), 'year': key.decode()}
+                    for key, value in self.server.hgetall(hmap).items()]
         else:
-            return None
+            value = self.server.hmget(hmap, year)
+            if value:
+                return value.decode()
+            else:
+                return None
 
     def update_project_id(self):
         """

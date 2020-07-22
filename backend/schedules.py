@@ -40,8 +40,8 @@ class Schedule:
         self.computed_subcodes = list()
         self.custom_events = list()
         self.priorities = dict()
-        self.color_palette = ['', '#374955', '#005376', '#00c0ff', '#1f789d', '#4493ba',
-                                  '#64afd7', '#83ccf5', '#3635ff', '#006c5a', '#3d978a']
+        self.color_palette = ['#374955', '#005376', '#00c0ff', '#1f789d', '#4493ba',
+                              '#64afd7', '#83ccf5', '#3635ff', '#006c5a', '#3d978a']
 
     def add_course(self, code: Union[Iterable[str], str]) -> List[str]:
         """

@@ -40,9 +40,9 @@
             </div>
             <div class="card m-3">
                 <div class="spinner-border text-primary spinner-compute" v-show="computing"></div>
-                <form class="card-header d-flex justify-content-between align-items-center" id="form-update-label" v-bind:style="opacity">
-                    <input class="form-control mr-4" type="text" v-model="current_schedule.label" v-if="isEditing" v-on:keyup.enter="updateLabel($event, current_schedule.id)"/>
-                    <div id="schedule-label" v-else>
+                <div class="card-header d-flex justify-content-between align-items-center" id="form-update-label" v-bind:style="opacity">
+                    <input class="form-control mr-4" type="text" v-focus v-model="current_schedule.label" v-if="isEditing" v-on:keyup.enter="updateLabel($event, current_schedule.id)" v-on:blur="isEditing = false" v-on:keyup.esc="isEditing = false"/>
+                    <div id="schedule-label" v-else v-on:click="isEditing = true">
                         [[ current_schedule.label ]]
                     </div>
                     <a class="text-dark" href="#" v-on:click="updateLabel($event, current_schedule.id)">
@@ -51,12 +51,19 @@
                             <path fill-rule="evenodd" d="M12.146 6.354l-2.5-2.5.708-.708 2.5 2.5-.707.708zM3 10v.5a.5.5 0 0 0 .5.5H4v.5a.5.5 0 0 0 .5.5H5v.5a.5.5 0 0 0 .5.5H6v-1.5a.5.5 0 0 0-.5-.5H5v-.5a.5.5 0 0 0-.5-.5H3z"/>
                         </svg>
                     </a>
-                </form>
+                </div>
                 <div class="card-body" v-bind:style="opacity">
                     <blockquote class="blockquote mb-0">
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
                     <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
                     </blockquote>
+                    <v-swatches show-fallback fallback-input-type="color" v-for="(color, i) in current_schedule.color_palette" v-model="current_schedule.color_palette[i]"></v-swatches>
+                    <label class="form-label" for="select-project-id">Year</label>
+                    <select class="form-select" style="max-width: 130px;" v-model="current_schedule.project_id" id="select-project-id">
+                        <option v-for="pid in projectId" v-bind:value="pid.id">
+                            [[ pid.year ]]
+                        </option>
+                    </select>
                 </div>
             </div>
         </div>

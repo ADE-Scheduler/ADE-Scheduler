@@ -26,9 +26,11 @@ bundles = {
 
     # Account
     'account_css': Bundle(
+        'components/vue-swatches/vue-swatches.min.css',
         'css/account.css',
         output='gen/account.min.css', filters='cssmin'),
     'account_js': Bundle(
+        'components/vue-swatches/vue-swatches.min.js',
         'js/account.js',
         output='gen/account.min.js', filters='jsmin'),
 }

@@ -2,9 +2,14 @@
  *  Calendar
  */
 #calendar {
+    /* min-width: 800px; */
     width: 100%;
     height: 100%;
     padding: 10px;
+}
+
+.tooltip-inner {
+    white-space: pre-wrap;
 }
 
 .spinner-compute {
