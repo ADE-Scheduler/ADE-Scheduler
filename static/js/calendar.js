@@ -199,19 +199,16 @@ var vm = new Vue({
             }
         },
     },
-
     computed: {
         calendarOpacity: function() {
             return {'opacity': this.computing ? '0.2':'1'}
         },
     },
-
     watch: {
         events: function () {
             calendar.refetchEvents();
         },
     },
-
     created:  function () {
         this.fetchData();
     },

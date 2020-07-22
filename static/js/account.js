@@ -11,7 +11,6 @@ var vm = new Vue({
         isEditing: false,
     },
     delimiters: ['[[',']]'],
-
     methods: {
         fetchData: function(e) {
             this.computing = true;
@@ -128,13 +127,11 @@ var vm = new Vue({
         warningContinue: function() {this.request()},
         request: function() {},
     },
-
     computed: {
         opacity: function() {
             return {'opacity': this.computing ? '0.2':'1'}
         },
     },
-
     created: function() {
         this.fetchData();
     },
