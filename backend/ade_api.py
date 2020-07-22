@@ -5,6 +5,7 @@ import pandas as pd
 from collections import defaultdict, Counter
 from backend.classrooms import Classroom, Address
 from backend.courses import Course
+from backend.resources import Resource
 from backend import professors
 import backend.events
 from typing import Dict, Union, List, Tuple, Iterator
@@ -102,6 +103,17 @@ class Client:
         """
         return self.request(function='getProjects', detail=2)
 
+    def get_resources(self, project_id: Union[str, int]) -> requests.Response:
+        """
+        Requests the ids of all the resource for a specific project.
+
+        :param project_id: the id of the project
+        :type project_id: Union[str, int]
+        :return: the response
+        :rtype: request.Response
+        """
+        return self.request(projectId=project_id, function='getResources', detail=13, tree='false')
+
     def get_resource_ids(self, project_id: Union[str, int]) -> requests.Response:
         """
         Requests the ids of all the resource for a specific project.
@@ -190,13 +202,32 @@ def response_to_project_ids(project_ids_response: requests.Response) -> Iterator
     return zip(map(int, ids), years)
 
 
+def response_to_resources(resources_response) -> Dict[str, Resource]:
+    """
+    Extracts an API response into an dictionary mapping a resource name to its ids.
+
+    :param resources_response: a response from the API to the resources request
+    :type resources_response: requests.Response
+    :return: all the resources
+    :rtype: Dict[str, Resources]
+
+    :Example:
+
+    >>> response = client.get_resource_ids(9)  # project id for 2019-2020
+    >>> resources_ids = response_to_resource_ids(response)
+    """
+    root = response_to_root(resources_response)
+
+    return {resource.attrib['id']: Resource(**resource.attrib) for resource in root.xpath('//resource')}
+
+
 def response_to_resource_ids(resource_ids_response) -> Dict[str, str]:
     """
-    Extracts an API response into an dictionary mapping a resource to its ids.
+    Extracts an API response into an dictionary mapping a resource name to its ids.
 
-    :param resource_ids_response: a response from the API to the resource_ids request
+    :param resource_ids_response: a response from the API to the resources or resource_ids request
     :type resource_ids_response: requests.Response
-    :return: all the resources and their ids
+    :return: all the resources names and their ids
     :rtype: Dict[str, str]
 
     :Example:
@@ -363,6 +394,19 @@ if __name__ == "__main__":
 
     request = client.get_activities([id], project_id)
 
-    resources_ids = response_to_courses(request)
+    courses = response_to_courses(request)
 
-    print(resources_ids)
+    print(courses)
+
+    response = client.request(projectId=project_id, function='getResources',
+                 detail=13, tree='false')
+
+    root = response_to_root(response)
+
+    ids = [resources_ids['LMECA2732'], resources_ids['FSA11BA'], resources_ids['LEPL1108'], resources_ids['FSA12BA']]
+
+    res = root.xpath('|'.join(f'//resource[@id={id}' for id in ids))
+
+    for r in res:
+        etree.tostring(r)
+

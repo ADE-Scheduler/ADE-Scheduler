@@ -68,6 +68,10 @@ class Manager:
 
         # Fetch from the api
         if codes_not_found:
+
+            if self.client.is_expired():
+                self.client.renew_token()
+
             resource_ids = self.get_resource_id(*codes_not_found, project_id=project_id)
             courses_not_found = ade.response_to_courses(self.client.get_activities(resource_ids, project_id))
             for course in courses_not_found:
@@ -75,6 +79,12 @@ class Manager:
             courses += courses_not_found
 
         return courses
+
+    def update_resources(self):
+        """
+        ...
+        """
+        hmap = f''
 
     def get_resource_id(self, *codes, project_id=ade.DEFAULT_PROJECT_ID):
         """

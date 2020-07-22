@@ -62,11 +62,15 @@ class Server(Redis):
 
         >>> s.set_value('apple', {'weight': 400, 'unit': 'g'}, expire_in={'hours': 10})
         """
+        # TODO: implement hmset (hash map set value)
         dumped_value = dumps(value)
         if expire_in:
             self.setex(key, timedelta(**expire_in), dumped_value)
         else:
             self.set(key, dumped_value)
+
+    def contains(self, keys: str) -> Any:
+        return self.exists(*keys)
 
     def get_value(self, key: str) -> Any:
         """
@@ -88,7 +92,7 @@ class Server(Redis):
         else:
             return None
 
-    def get_multiple_values(self, *keys, prefix: Optional[str] = None) -> Tuple[List[Any], List[str]]:
+    def get_multiple_values(self, *keys, prefix: Optional[str] = '') -> Tuple[List[Any], List[str]]:
         """
         Returns all the values corresponding the given keys. If key does not match any value, the key is returned
         explicitly tell that it is missing. An optional prefix can be added to every key.
