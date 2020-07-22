@@ -32,12 +32,10 @@ main {
     .offcanvas-collapse.open {
         visibility: visible;
         transform: translateX(-100%);
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
     }
     .user-status-div {
         width: calc(100vw - 32px);
+        margin-top: 1em;
         margin-bottom: 1em;
     }
 }

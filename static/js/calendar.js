@@ -274,6 +274,12 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         eventTextColor: 'white',
         eventDisplay: 'block',
+        eventDidMount: function (arg) {
+            new bootstrap.Tooltip(arg.el, {
+                container: 'body',
+                title: arg.event.extendedProps.description,
+            });
+        },
     });
     calendar.render();
 });
