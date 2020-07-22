@@ -93,7 +93,7 @@
     position: absolute;
     top: 11px;
     left: 3px;
-    z-index: 2;
+    z-index: 4;
 }
 
 .list-code > .code-item {
