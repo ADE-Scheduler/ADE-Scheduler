@@ -1,11 +1,12 @@
 from itertools import product, chain, starmap, repeat
 from collections import deque, defaultdict
-from backend.events import EventOTHER, AcademicalEvent, CustomEvent, Event
 from heapq import nsmallest
 import operator
 from typing import Iterable, Union, List
 from backend.courses import Course, merge_courses, View
 from flask import current_app as app
+
+import backend.events as evt
 
 """
 Schedule needed data:
@@ -73,7 +74,7 @@ class Schedule:
         if code in self.codes:
             self.codes.remove(code)
 
-    def add_event(self, event: CustomEvent) -> None:
+    def add_event(self, event: evt.CustomEvent) -> None:
         """
         Adds a custom event to the schedule.
 
@@ -82,7 +83,7 @@ class Schedule:
         """
         self.custom_events.append(event)
 
-    def get_events(self, json: bool = False) -> Iterable[Event]:
+    def get_events(self, json: bool = False) -> Iterable[evt.Event]:
         """
         Extracts all the events matching ids in the filtered_subcodes list.
 
@@ -109,6 +110,20 @@ class Schedule:
             events.append(self.custom_events)
 
         return list(chain.from_iterable(events))
+
+    def get_summary(self):
+        """
+        Returns the summary of all activities within the schedule.
+
+        :return: dict of course summaries
+        :rtype: dict
+        """
+        mng = app.config['MANAGER']
+        courses = mng.get_courses(*self.codes, project_id=self.project_id)
+        summary = dict()
+        for course in courses:
+            summary[course.code] = course.get_summary()
+        return summary
 
     def compute_best(self, fts=None, n_best=5, safe_compute=True, view=None):
         """
@@ -161,7 +176,7 @@ class ScheduleOld(Course):
         self.remove_course(course_code=course.code)
         self.add_course(course)
 
-    def get_events(self, view: View = None) -> Iterable[AcademicalEvent]:
+    def get_events(self, view: View = None) -> Iterable[evt.AcademicalEvent]:
         """
         Extracts all the events matching ids in the view list.
         :param view: if None extracts everything, otherwise must be a list of ids
@@ -185,7 +200,7 @@ class ScheduleOld(Course):
             df = df[valid]
 
         # We only take care of events which are not of type EvenOTHER
-        valid = df.index.get_level_values('type') != EventOTHER
+        valid = df.index.get_level_values('type') != evt.EventOTHER
         df_main, df_other = df[valid], df[~valid]
         best = [[] for i in range(n_best)]  # We create an empty list which will contain best schedules
 
@@ -227,7 +242,7 @@ class ScheduleOld(Course):
             return best
 
 
-def evaluate_week(week: Iterable[AcademicalEvent], fts: Iterable[AcademicalEvent] = None) -> float:
+def evaluate_week(week: Iterable[evt.AcademicalEvent], fts: Iterable[evt.AcademicalEvent] = None) -> float:
     """
     Evaluates the how much a given week contains conflicts.
     :param week: an iterable of event.CustomEvent objects

@@ -2,6 +2,7 @@ from itertools import repeat
 import pandas as pd
 from backend.events import AcademicalEvent
 from typing import List, Union, Dict, Iterable, Optional
+from collections import defaultdict
 
 
 View = Union[List[int], Dict[int, str]]
@@ -96,10 +97,15 @@ class Course:
         """
         Returns the summary of all activities in the course.
 
-        :return: list of activity ids
-        :rtype: pd.Dataframe
+        :return: dict of activity ids, ordered by activity type (CM, TP, etc.)
+        :rtype: dict
         """
-        return self.activities.index.get_level_values('id').unique()
+        summary = defaultdict(list)
+        ids = self.activities.index.get_level_values('id').unique()
+        for id in ids:
+            [type, code] = id.split(': ')
+            summary[type].append(code)
+        return dict(summary)
 
     def get_events(self, view: Optional[View] = None, reverse: bool = False) -> Iterable[AcademicalEvent]:
         """

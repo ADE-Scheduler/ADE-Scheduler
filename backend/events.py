@@ -159,7 +159,7 @@ class AcademicalEvent(CustomEvent):
                          description=str(professor), begin=begin, end=end)
                          # TODO: merge_classrooms fait du gros caca ici
         self.weight = weight
-        self.id = f'{prefix} {id}'
+        self.id = f'{prefix}{id}'
         self.code = code
         self.classrooms = classrooms
 
@@ -204,7 +204,7 @@ class AcademicalEvent(CustomEvent):
 
 
 class EventCM(AcademicalEvent):
-    PREFIX = 'CM:'
+    PREFIX = 'CM: '
 
     def __init__(self, name: str, begin: datetime, end: datetime, professor: Professor,
                  classrooms: Iterable[Classroom] = None, id: str = None, weight: float = 5,
@@ -214,7 +214,7 @@ class EventCM(AcademicalEvent):
 
 
 class EventTP(AcademicalEvent):
-    PREFIX = 'TP:'
+    PREFIX = 'TP: '
 
     def __init__(self, name: str, begin: datetime, end: datetime, professor: Professor,
                  classrooms: Iterable[Classroom] = None, id: str = None, weight: float = 5,
@@ -224,7 +224,7 @@ class EventTP(AcademicalEvent):
 
 
 class EventEXAM(AcademicalEvent):
-    PREFIX = 'EXAM:'
+    PREFIX = 'EXAM: '
 
     def __init__(self, name: str, begin: datetime, end: datetime, professor: Professor,
                  classrooms: Iterable[Classroom] = None, id: str = None, weight: float = 5,
@@ -234,7 +234,7 @@ class EventEXAM(AcademicalEvent):
 
 
 class EventORAL(AcademicalEvent):
-    PREFIX = 'ORAL:'
+    PREFIX = 'ORAL: '
 
     def __init__(self, name: str, begin: datetime, end: datetime, professor: Professor,
                  classrooms: Iterable[Classroom] = None, id: str = None, weight: float = 5,
@@ -244,7 +244,7 @@ class EventORAL(AcademicalEvent):
 
 
 class EventOTHER(AcademicalEvent):
-    PREFIX = 'OTHER'
+    PREFIX = 'OTHER: '
 
     def __init__(self, name: str, begin: datetime, end: datetime, professor: Professor,
                  classrooms: Iterable[Classroom] = None, id: str = None, weight: float = 5,
