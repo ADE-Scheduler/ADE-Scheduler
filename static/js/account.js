@@ -101,12 +101,11 @@ var vm = new Vue({
                 url: Flask.url_for('account.delete_schedule', {'id': id}),
             })
             .then(resp => {
-                if (resp.data.current_schedule.id) {
-                    this.schedules.splice(this.schedules.findIndex(s => s.id === id), 1);
+                let index = this.schedules.findIndex(s => s.id === id);
+                if (index > -1) {
+                    this.schedules.splice(index, 1);
                 }
-                if (resp.data.no_current_schedule) {
-                    this.current_schedule = resp.data.current_schedule;
-                }
+                this.current_schedule = resp.data.current_schedule
             })
             .catch(err => {
                 this.error = true;

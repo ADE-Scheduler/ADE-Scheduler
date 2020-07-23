@@ -66,38 +66,27 @@ def load_schedule(id):
 @account.route('/delete/schedule/<id>', methods=['DELETE'])
 @login_required
 def delete_schedule(id):
-    if int(id) == -1:
+    id = int(id)
+    schedule = current_user.get_schedule(id=id)
+    if schedule is None and id is not -1:
+        return '', 403      # Requested id is not in this user's schedule list.
+
+    if schedule is not None:
+        current_user.remove_schedule(schedule)
+
+    if id is session['current_schedule'].id or id is -1:
         session['current_schedule'] = schd.Schedule(DEFAULT_PROJECT_ID)
         session['current_schedule_modified'] = True
-        return jsonify({
-            'no_current_schedule': True,
-            'current_schedule': {
-                'id': session['current_schedule'].id,
-                'project_id': session['current_schedule'].project_id,
-                'label': session['current_schedule'].label,
-                'color_palette': session['current_schedule'].color_palette,
-            },
-            'unsaved': session['current_schedule_modified'],
-        }), 200
 
-    schedule = current_user.get_schedule(id=int(id))
-    if schedule:
-        current_user.remove_schedule(schedule)
-        if session['current_schedule'].id == schedule.id:
-            session['current_schedule'] = schd.Schedule(DEFAULT_PROJECT_ID)
-            session['current_schedule_modified'] = True
-            return jsonify({
-                'no_current_schedule': True,
-                'current_schedule': {
-                    'id': session['current_schedule'].id,
-                    'project_id': session['current_schedule'].project_id,
-                    'label': session['current_schedule'].label,
-                    'color_palette': session['current_schedule'].color_palette,
-                },
-                'unsaved': session['current_schedule_modified'],
-            }), 200
-        return 'OK', 200
-    return '', 403      # Requested id is not in this user's schedule list.
+    return jsonify({
+        'current_schedule': {
+            'id': session['current_schedule'].id,
+            'project_id': session['current_schedule'].project_id,
+            'label': session['current_schedule'].label,
+            'color_palette': session['current_schedule'].color_palette,
+        },
+        'unsaved': session['current_schedule_modified'],
+    }), 200
 
 
 @account.route('/update/label/<id>', methods=['PATCH'])
