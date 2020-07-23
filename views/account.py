@@ -36,7 +36,6 @@ def get_data():
             'id': session['current_schedule'].id,
             'project_id': session['current_schedule'].project_id,
             'label': session['current_schedule'].label,
-            'filtered': session['current_schedule'].filtered_subcodes,
             'color_palette': session['current_schedule'].color_palette,
         },
     }), 200
@@ -57,7 +56,6 @@ def load_schedule(id):
                 'id': schedule.data.id,
                 'project_id': schedule.data.project_id,
                 'label': schedule.data.label,
-                'filtered': schedule.data.filtered_subcodes,
                 'color_palette': schedule.data.color_palette,
             },
             'unsaved': session['current_schedule_modified'],
@@ -77,7 +75,6 @@ def delete_schedule(id):
                 'id': session['current_schedule'].id,
                 'project_id': session['current_schedule'].project_id,
                 'label': session['current_schedule'].label,
-                'filtered': session['current_schedule'].filtered_subcodes,
                 'color_palette': session['current_schedule'].color_palette,
             },
             'unsaved': session['current_schedule_modified'],
@@ -95,7 +92,6 @@ def delete_schedule(id):
                     'id': session['current_schedule'].id,
                     'project_id': session['current_schedule'].project_id,
                     'label': session['current_schedule'].label,
-                    'filtered': session['current_schedule'].filtered_subcodes,
                     'color_palette': session['current_schedule'].color_palette,
                 },
                 'unsaved': session['current_schedule_modified'],
@@ -125,7 +121,6 @@ def update_label(id):
 @login_required
 def save():
     s = session['current_schedule']
-    s.filtered_subcodes = request.json['filtered']
     s.project_id = request.json['project_id']
     s.color_palette = request.json['color_palette']
     mng = app.config['MANAGER']
