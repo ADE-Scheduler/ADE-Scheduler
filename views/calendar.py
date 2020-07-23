@@ -33,6 +33,25 @@ def get_data():
     }), 200
 
 
+@calendar.route('/get/<code>/info', methods=['GET'])
+def get_info(code):
+    mng = app.config['MANAGER']
+    courses = mng.get_courses(code, project_id=session['current_schedule'].project_id)
+
+    summary = dict()
+    for course in courses:
+        summary[course.code] = course.get_summary()
+
+    if len(courses) is 1:   title = courses[-1].name.upper()
+    else:                   title = 'Course program'
+
+    return jsonify({
+        'title': title,
+        'summary': summary,
+        'filtered': session['current_schedule'].filtered_subcodes,
+    }), 200
+
+
 @calendar.route('/add/<code>', methods=['PATCH'])
 def add_code(code):
     pattern = re.compile('^\s+|\s*,\s*|\s+$')
@@ -68,6 +87,20 @@ def compute():
     time.sleep(2)
     session['current_schedule_modified'] = True
     return jsonify({}), 200
+
+
+@calendar.route('/filter', methods=["PUT"])
+def apply_filter():
+    schedule = session['current_schedule']
+    for code, filters in request.json.items():
+        session['current_schedule'].filtered_subcodes[code] = list()
+        for type, filters in filters.items():
+            for filter, value in filters.items():
+                if not value:
+                    session['current_schedule'].filtered_subcodes[code].append(type + ': ' + filter)
+    return jsonify({
+        'events': session['current_schedule'].get_events(json=True),
+    }), 200
 
 
 @calendar.route('/save', methods=['POST'])

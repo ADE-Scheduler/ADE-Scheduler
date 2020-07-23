@@ -8,79 +8,35 @@
 
 {% block body %}
     <!-- Course details Modal -->
-    <div class="modal fade" id="detailsModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal fade" id="courseModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Numerical Methods in Fluid Mechanics</h5>
+                    <h5 class="modal-title">[[ courseInfo.title ]]</h5>
                     <button type="button" class="close" data-dismiss="modal">
                         <span>&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-
-                        <div class="col-md">
+                    <div class="row" v-for="(value, name) in courseInfo.summary">
+                        <div class="col-md" v-for="(v, n) in value">
                             <div class="card mb-3">
-                                <div class="card-header">
-                                    CM
+                                <div class="card-header form-switch">
+                                    [[ n ]]
                                 </div>
                                 <div class="card-body">
-                                    <blockquote class="blockquote mb-0">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-                                    <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
-                                    </blockquote>
+                                    <div class="d-flex justify-content-between" v-for="id in v">
+                                        [[ id ]]
+                                        <input class="form-check-input" type="checkbox" v-model="courseInfo.filtered[name][n][id]"/>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="col-md">
-                            <div class="card mb-3">
-                                <div class="card-header">
-                                    TP
-                                </div>
-                                <div class="card-body">
-                                    <blockquote class="blockquote mb-0">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-                                    <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
-                                    </blockquote>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md">
-                            <div class="card mb-3">
-                                <div class="card-header">
-                                    Examen
-                                </div>
-                                <div class="card-body">
-                                    <blockquote class="blockquote mb-0">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-                                    <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
-                                    </blockquote>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md">
-                            <div class="card mb-3">
-                                <div class="card-header">
-                                    Other
-                                </div>
-                                <div class="card-body">
-                                    <blockquote class="blockquote mb-0">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-                                    <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
-                                    </blockquote>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-danger">Delete</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal" v-on:click="applyFilter">Apply</button>
                 </div>
             </div>
         </div>
@@ -224,9 +180,9 @@
             <a class="nav-link" href="#">Schedule 1</a>
             <a class="nav-link" href="#">Schedule 2</a>
             <a class="nav-link" href="#">Schedule 3</a>
-            <a class="nav-link text-dark" href="#">Export</a>
-            <a class="nav-link text-dark" href="#">Download</a>
-            <a class="nav-link text-dark" href="#" v-on:click="save">Save</a>
+            <a class="nav-link" href="#">Export</a>
+            <a class="nav-link" href="#">Download</a>
+            <a class="nav-link" href="#" v-on:click="save">Save</a>
         </nav>
     </div>
 
@@ -243,9 +199,9 @@
                 </a>
                 <div class="list-group list-code m-2">
                     <li class="list-group-item code-item d-flex justify-content-between align-items-center"  v-for='code in codes'>
-                        <span class="code-tag" data-toggle="modal" data-target="#detailsModal">
+                        <div class="code-tag" v-on:click="getDetails($event, code)">
                             [[ code ]]
-                        </span>
+                        </div>
                         <button class="btn btn-danger badge rounded-pill" v-on:click="removeCode($event, code)">
                             <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>

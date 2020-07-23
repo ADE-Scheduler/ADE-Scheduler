@@ -1,5 +1,6 @@
 var popoverList = [];
 var eventModal = {};
+var courseModal = {};
 var calendar = {};
 var vm = new Vue({
     el: '#app',
@@ -23,7 +24,13 @@ var vm = new Vue({
             beginRecurrDay: '',
             endRecurrDay: '',
             recurring: false,
-        }
+        },
+        courseInfo: {
+            code: '',
+            title: '',
+            summary: {},
+            filtered: {},
+        },
     },
     delimiters: ['[[',']]'],
 
@@ -198,6 +205,54 @@ var vm = new Vue({
                 this.eventForm.beginHour = this.eventForm.endHour;
             }
         },
+        getDetails: function(e, code) {
+            this.computing = true;
+            axios({
+                method: 'GET',
+                url: Flask.url_for('calendar.get_info', {'code': code}),
+            })
+            .then(resp => {
+                this.courseInfo.code = code;
+                this.courseInfo.title = code + ': ' + resp.data.title;
+                this.courseInfo.summary = resp.data.summary;
+
+                Object.entries(this.courseInfo.summary).forEach(([key, val]) => {
+                    Vue.set(this.courseInfo.filtered, key, {});
+                    Object.entries(val).forEach(([k, v]) => {
+                        Vue.set(this.courseInfo.filtered[key], k, {});
+                        v.forEach(item => {
+                            Vue.set(this.courseInfo.filtered[key][k], item, !resp.data.filtered[key].includes(k + ': ' + item));
+                        });
+                    });
+                });
+
+                courseModal.show();
+            })
+            .catch(err => {
+                this.error = true;
+            })
+            .then(() => {
+                this.computing = false;
+            });
+        },
+        applyFilter: function(e) {
+            this.computing = true;
+            axios({
+                method: 'PUT',
+                url: Flask.url_for('calendar.apply_filter'),
+                data: this.courseInfo.filtered,
+                header: {'Content-Type': 'application/json'},
+            })
+            .then(resp => {
+                this.events = resp.data.events;
+            })
+            .catch(err => {
+                this.error = true;
+            })
+            .then(() => {
+                this.computing = false;
+            });
+        },
     },
     computed: {
         calendarOpacity: function() {
@@ -225,6 +280,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     eventModal = new bootstrap.Modal(document.getElementById('eventModal'));
+    courseModal = new bootstrap.Modal(document.getElementById('courseModal'));
 
     calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
         height: 'auto',

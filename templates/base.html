@@ -3,7 +3,7 @@
 
     <head>
         <meta charset="utf-8">
-        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" name="viewport">
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="description" content="ADE Scheduler for UCLouvain students">
 
@@ -14,6 +14,7 @@
         {% assets "base_css" %}
         <link rel="stylesheet" href="{{ ASSET_URL }}" />
         {% endassets %}
+
         {{ JSGlue.include() }}
 
         {%block head%}{%endblock%}
@@ -40,25 +41,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href={{ url_for('account.dashboard') }}>Account</a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Settings</a>
-                        <div class="dropdown-menu" aria-labelledby="dropdown01">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
-                    </li>
                 </ul>
-                <!-- <form class="form-inline my-2 my-lg-0 mr-2">
-                    <input class="form-control form-control-sm mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success btn-sm my-2 my-sm-0" type="submit">Search</button>
-                </form> -->
-                <!-- <div class="input-group mr-2">
-                    <input class="form-control form-control-sm" type="text", placeholder="Search">
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-success btn-sm"><i class="fas fa-search"></i></button>
-                    </div>
-                </div> -->
                 {% if current_user.is_authenticated %}
                 <div class="btn-group align-items-end user-status-div">
                     <button class="btn btn-outline-danger btn-sm" type="button" onclick="window.location.href='/logout'">Logout</button>
@@ -73,20 +56,12 @@
         </nav>
 
         <main role="main" id="app">
-            {% block body %}
-            {% endblock %}
+        {% block body %}{% endblock %}
         </main>
 
-        <!-- <footer class="footer mt-auto py-2 fixed-bottom">
-            <div class="container">
-                <span class="text-muted">Place sticky footer content here.</span>
-            </div>
-        </footer> -->
-
         {% assets "base_js" %}
-            <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
         {% endassets %}
-        {% block js %}
-        {% endblock %}
+        {% block js %}{% endblock %}
     </body>
 </html>
