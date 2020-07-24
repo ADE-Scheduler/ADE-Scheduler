@@ -1,7 +1,7 @@
 from itertools import repeat
 import pandas as pd
 from backend.events import AcademicalEvent
-from typing import List, Union, Dict, Iterable, Optional
+from typing import List, Union, Dict, Iterable, Optional, Any
 from collections import defaultdict
 
 
@@ -105,17 +105,17 @@ class Course:
         summary = defaultdict(list)
         ids = self.activities.index.get_level_values('id').unique()
         for id in ids:
-            [type, code] = id.split(': ')
-            summary[type].append(code)
+            event_type, code = id.split(': ')
+            summary[event_type].append(code)
         return dict(summary)
 
     def get_activities(self, view: Optional[View] = None, reverse: bool = False) -> pd.DataFrame:
         """
-        Returns a list of events that optionally matches correct ids.
+        Returns a table of all activities that optionally match correct ids.
 
         :param view: if present, list of ids or dict {week_number : ids}
         :type view: Optional[View]
-        :param reverse: if True, the View will be removed from events
+        :param reverse: if True, the activities in View will be removed
         :type reverse: bool
         :return: table containing all the activities and their events
         :rtype: pd.DataFrame
@@ -128,35 +128,14 @@ class Course:
             if reverse:
                 valid = ~valid
 
-            return self.activities['event'][valid].values
-
-    def get_events(self, view: Optional[View] = None, reverse: bool = False) -> Iterable[AcademicalEvent]:
-        """
-        Returns a list of events that optionally matches correct ids.
-
-        :param view: if present, list of ids or dict {week_number : ids}
-        :type view: Optional[View]
-        :param reverse: if True, the View will be removed from events
-        :type reverse: bool
-        :return: list of events
-        :rtype: Iterable[AcademicalEvent]
-        """
-        if view is None:
-            return self.activities['event'].values
-        elif isinstance(view, list):
-            valid = self.activities.index.get_level_values('id').isin(view)
-
-            if reverse:
-                valid = ~valid
-
-            return self.activities['event'][valid].values
+            return self.activities[valid]
         elif isinstance(view, dict):
-            events = list()
+            activities = []
 
             grp_weeks = self.activities.groupby('week')
 
             # weeks that are both in ids dict and in activities
-            valid_weeks = set(view.keys()).intersection(set(grp_weeks.groups.keys()))
+            valid_weeks = set(view.keys()).intersection(grp_weeks.groups.keys())
 
             for week in valid_weeks:
                 week_data = grp_weeks.get_group(week)
@@ -165,13 +144,24 @@ class Course:
                 if reverse:
                     valid = ~valid
 
-                events.extend(week_data['event'][valid].values.tolist())
+                activities.append(week_data[valid])
 
-            return events
+            return pd.concat(activities)
+
+    def get_events(self, **kwargs) -> Iterable[AcademicalEvent]:
+        """
+        Returns a list of events that optionally matches correct ids.
+
+        :param kwargs: parameters that will be passed to :func:`Course.get_activities`
+        :type kwargs: Any
+        :return: list of events
+        :rtype: Iterable[AcademicalEvent]
+        """
+        return self.get_activities(**kwargs)['event'].values
 
 
 def merge_courses(courses: Iterable[Course], code: Optional[str] = None,
-                  name: Optional[str] = None, weight: float = 1) -> Course:
+                  name: Optional[str] = None, weight: float = 1, **kwargs: Any) -> Course:
     """
     Merges multiple courses into one.
 
@@ -183,8 +173,10 @@ def merge_courses(courses: Iterable[Course], code: Optional[str] = None,
     :type name: Optional[str]
     :param weight: the new weight
     :type weight: float
+    :param kwargs: parameters that will be passed to :func:`Course.get_activities`
+    :type kwargs: Any
     :return: the new course
     :rtype: Course
     """
-    activities = pd.concat(course.activities for course in courses)
+    activities = pd.concat(course.get_activities(**kwargs) for course in courses)
     return Course(code=code, name=name, weight=weight, activities=activities)
