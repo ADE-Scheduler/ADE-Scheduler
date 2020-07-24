@@ -10,7 +10,7 @@ from flask_security import Security, SQLAlchemyUserDatastore
 from flask_mail import Mail
 from flask_assets import Environment
 from flask_jsglue import JSGlue
-from flask_babel import Babel
+from flask_babelex import Babel
 
 # API imports
 import backend.models as md
