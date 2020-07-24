@@ -70,10 +70,11 @@ var vm = new Vue({
                     url: Flask.url_for('account.load_schedule', {'id': id}),
                 })
                 .then(resp => {
-                    window.location.href = Flask.url_for('calendar.calendar.index');
+                    window.location.href = Flask.url_for('calendar.index');
                 })
                 .catch(err => {
                     this.error = true;
+                    console.log(err);
                 })
                 .then(() => {
                     this.computing = false;
