@@ -3,7 +3,7 @@ import os
 from datetime import timedelta
 
 # Flask imports
-from flask import Flask
+from flask import Flask, session, request, redirect
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from flask_security import Security, SQLAlchemyUserDatastore
@@ -83,7 +83,16 @@ babel = Babel(app)
 
 @babel.localeselector
 def get_locale():
-    return 'fr'
+    if session.get('locale') is None:
+        session['locale'] = request.accept_languages.best_match(app.config['LANGUAGES'])
+    return session['locale']
+app.jinja_env.globals['get_locale'] = get_locale
+
+@app.route('/locale/<locale>')
+def set_locale(locale):
+    if locale in app.config['LANGUAGES']:
+        session['locale'] = locale
+    return redirect(request.args.get('next'))
 
 
 @app.before_first_request

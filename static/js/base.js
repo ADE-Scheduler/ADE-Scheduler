@@ -9,11 +9,10 @@ var vmBase = new Vue({
     delimiters: ['[[',']]'],
     data: {
         currentPath: window.location.pathname,
-        language: 'English',
     },
     methods: {
-        languageSelector: function(e) {
-
+        localeSelector: function(e, locale) {
+            window.location.href = Flask.url_for('set_locale', {'locale': locale}) + '?next=' + window.location.pathname;
         },
     },
 });
