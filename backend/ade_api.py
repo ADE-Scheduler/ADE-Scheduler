@@ -1,5 +1,7 @@
 import requests
 import time
+import pickle
+import json
 from lxml import etree
 import pandas as pd
 from collections import defaultdict, Counter
@@ -24,7 +26,7 @@ Request = Union[str, int]
 DEFAULT_PROJECT_ID = 9
 
 
-class Client:
+class DummyClient:
     """
     A client is an entity which has granted access to ADE API, via its credentials.
 
@@ -38,10 +40,7 @@ class Client:
     >>> client = Client(credentials)
     """
     def __init__(self, credentials: ClientCredentials):
-        self.credentials = credentials
-        self.token = None
-        self.expiration = None
-        self.renew_token()
+        raise NotImplementedError
 
     def is_expired(self) -> bool:
         """
@@ -50,8 +49,7 @@ class Client:
         :return: True if the token is expired
         :rtype: bool
         """
-        # TODO: verify validity of this relation
-        return self.expiration < time.time()
+        raise NotImplementedError
 
     def expire_in(self) -> float:
         """
@@ -60,14 +58,13 @@ class Client:
         :return: the time remaining in seconds, 0 if expired
         :rtype: float
         """
-        return max(self.expiration - time.time(), 0)
+        raise NotImplementedError
 
     def renew_token(self) -> None:
         """
         Renews the current token requesting a new one.
         """
-        self.token, self.expiration = get_token(self.credentials)
-        self.expiration += time.time()
+        raise NotImplementedError
 
     def request(self, **kwargs: Request) -> requests.Response:
         """
@@ -80,19 +77,7 @@ class Client:
         :raises ExpiredTokenError: if the token is expired an exception occurs
         :raises HTTPError: if the request is unsuccessful (oustide the 2XX-3XX range)
         """
-        if self.is_expired():
-            raise ExpiredTokenError
-
-        headers = {'Authorization': 'Bearer ' + self.token}
-        user = self.credentials['user']
-        password = self.credentials['password']
-        args = '&'.join('='.join(map(str, _)) for _ in kwargs.items())
-        url = 'https://api.sgsi.ucl.ac.be:8243/ade/v0/api?login=' + user + '&password=' + password + '&' + args
-
-        resp = requests.get(url=url, headers=headers)
-        resp.raise_for_status()
-
-        return resp
+        raise NotImplementedError
 
     def get_project_ids(self) -> requests.Response:
         """
@@ -152,6 +137,91 @@ class Client:
                             tree='false', detail=17, resources='|'.join(map(str, resource_ids)))
 
 
+class Client(DummyClient):
+
+    def __init__(self, credentials: ClientCredentials):
+        self.credentials = credentials
+        self.token = None
+        self.expiration = None
+        self.renew_token()
+
+    def is_expired(self) -> bool:
+        return self.expiration < time.time()
+
+    def expire_in(self) -> float:
+        return max(self.expiration - time.time(), 0)
+
+    def renew_token(self) -> None:
+        self.token, self.expiration = get_token(self.credentials)
+        self.expiration += time.time()
+
+    def request(self, **kwargs: Request) -> requests.Response:
+
+        if self.is_expired():
+            raise ExpiredTokenError
+
+        headers = {'Authorization': 'Bearer ' + self.token}
+        user = self.credentials['user']
+        password = self.credentials['password']
+        args = '&'.join('='.join(map(str, _)) for _ in kwargs.items())
+
+        url = 'https://api.sgsi.ucl.ac.be:8243/ade/v0/api?login=' + user + '&password=' + password + '&' + args
+
+        resp = requests.get(url=url, headers=headers)
+        resp.raise_for_status()
+
+        # save_response(resp, args)
+
+        return resp
+
+
+def load_responses():
+    with open(FakeClient.FILENAME, 'r') as f:
+        return json.load(f)
+
+
+def load_response(resquest_name):
+    return pickle.loads(bytes(load_responses()[resquest_name]))
+
+
+def save_response(response, request_name):
+    responses = load_responses()
+    responses[request_name] = list(pickle.dumps(response))
+
+    with open(FakeClient.FILENAME, 'w') as f:
+        json.dump(responses, f)
+
+
+class FakeClient(DummyClient):
+    FILENAME = 'fake_api.json'
+
+    def __init__(self, credentials: ClientCredentials):
+        self.credentials = credentials
+        self.delay = 150  # Delay in seconds
+        self.expiration = 0
+        self.renew_token()
+
+    def is_expired(self) -> bool:
+        return self.expiration < time.time()
+
+    def expire_in(self) -> float:
+        return max(self.expiration - time.time(), 0)
+
+    def renew_token(self) -> None:
+        self.expiration = time.time() + self.delay
+
+    def request(self, **kwargs: Request) -> requests.Response:
+        if self.is_expired():
+            raise ExpiredTokenError
+
+        args = '&'.join('='.join(map(str, _)) for _ in kwargs.items())
+
+        try:
+            return load_response(args)
+        except FileNotFoundError:
+            raise requests.exceptions.HTTPError(f'filename {filename} for request was not found')
+
+
 def get_token(credentials: ClientCredentials) -> Tuple[str, int]:
     """
     Requests a new token to the API.
@@ -181,14 +251,14 @@ def response_to_root(response: requests.Response) -> etree.ElementTree:
     return etree.fromstring(response.content)
 
 
-def response_to_project_ids(project_ids_response: requests.Response) -> Iterator[Tuple[int, str]]:
+def response_to_project_ids(project_ids_response: requests.Response) -> Dict[str, int]:
     """
     Extracts an API response into an iterator of project ids and years.
 
     :param project_ids_response: a response from the API to the project_ids request
     :type project_ids_response: requests.Response
-    :return: all the project ids and years
-    :rtype: Iterator[Tuple[int, str]]
+    :return: all the project ids and years (year as key, id as value)
+    :rtype: Dict[str, int]
 
     :Example:
 
@@ -199,7 +269,7 @@ def response_to_project_ids(project_ids_response: requests.Response) -> Iterator
     ids = root.xpath('//project/@id')
     years = root.xpath('//project/@name')
 
-    return zip(map(int, ids), years)
+    return {year: int(id) for id, year in zip(ids, years)}
 
 
 def response_to_resources(resources_response) -> Dict[str, Resource]:
@@ -213,8 +283,8 @@ def response_to_resources(resources_response) -> Dict[str, Resource]:
 
     :Example:
 
-    >>> response = client.get_resource_ids(9)  # project id for 2019-2020
-    >>> resources_ids = response_to_resource_ids(response)
+    >>> response = client.get_resources(9)  # project id for 2019-2020
+    >>> resources = response_to_resources(response)
     """
     root = response_to_root(resources_response)
 
@@ -351,7 +421,7 @@ def response_to_courses(activities_response: requests.Response) -> List[Course]:
             # We create the event
             t0, t1 = backend.events.extract_datetime(event_date, event_start, event_end)
             event = event_type(name=activity_name, begin=t0, end=t1, professor=event_instructor,
-                                classrooms=event_address, id=activity_id, code=activity_code)
+                                classrooms=classrooms, id=activity_id, code=activity_code)
             events_list.append(event)
 
         if activity_code not in courses and events_list:
@@ -396,17 +466,22 @@ if __name__ == "__main__":
 
     courses = response_to_courses(request)
 
-    print(courses)
+    client.get_classrooms(project_id)
 
-    response = client.request(projectId=project_id, function='getResources',
-                 detail=13, tree='false')
+    response = client.get_resources(9)
 
-    root = response_to_root(response)
+    resources = response_to_resources(response)
 
-    ids = [resources_ids['LMECA2732'], resources_ids['FSA11BA'], resources_ids['LEPL1108'], resources_ids['FSA12BA']]
+    import random
 
-    res = root.xpath('|'.join(f'//resource[@id={id}' for id in ids))
+    for key, val in resources.items():
 
-    for r in res:
-        etree.tostring(r)
+        n = random.randint(1, 50)
 
+        print('doing some requests')
+
+        ids = []
+        while len(ids) < n:
+            ids.append(ids)
+
+        client.get_activities(ids, project_id)

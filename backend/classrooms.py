@@ -70,10 +70,6 @@ class Classroom:
     def __eq__(self, other):
         return self.infos == other.infos
 
-    def __getattr__(self, item) -> str:
-        return self.infos[item]
-        # TODO: Somethin' fishy going on here when pickled @Jerom
-
     def __repr__(self) -> str:
         id = self.infos['id']
         name = self.infos['name']
@@ -104,6 +100,6 @@ def merge_classrooms(classrooms: Iterable[Classroom]) -> Classroom:
     >>> c2 = Classroom(address2, 'classB', 2)
     >>> c3 = merge_classrooms((c1, c2))
     """
-    names = ' | '.join(classroom.name for classroom in classrooms)
-    addresses = '\n'.join(str(classroom.address) for classroom in classrooms)
+    names = ' | '.join(classroom.infos['name'] for classroom in classrooms)
+    addresses = '\n'.join(str(classroom.infos['address']) for classroom in classrooms)
     return Classroom(name=names, address=addresses, id=-1)

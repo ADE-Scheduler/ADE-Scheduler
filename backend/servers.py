@@ -47,7 +47,7 @@ class Server(Redis):
         """
         super().shutdown(save=True)
 
-    def set_value(self, key: str, value: Any, expire_in: Optional[Dict[str, int]] = None) -> None:
+    def set_value(self, key: str, value: Any, expire_in: Optional[Dict[str, int]] = None, hmap: bool = False) -> None:
         """
         Store a pair key / value in the server, with an optional expiration time.
 
@@ -57,27 +57,39 @@ class Server(Redis):
         :type value: Any
         :param expire_in: dictionary of keyword arguments passed used to create a datetime.timedelta object
         :type expire_in: Optional[Dict[str, int]]
+        :param hmap: True if the value passed is a hash-map
+        :type hmap: bool
 
         :Example:
 
         >>> s.set_value('apple', {'weight': 400, 'unit': 'g'}, expire_in={'hours': 10})
         """
-        # TODO: implement hmset (hash map set value)
-        dumped_value = dumps(value)
-        if expire_in:
-            self.setex(key, timedelta(**expire_in), dumped_value)
+        expire_in = None  # Force no expiration for offline working
+
+        if hmap:
+            self.hmset(key, value)
+
+            if expire_in:
+                self.expire(key, timedelta(**expire_in))
+
         else:
-            self.set(key, dumped_value)
+            dumped_value = dumps(value)
+            if expire_in:
+                self.setex(key, timedelta(**expire_in), dumped_value)
+            else:
+                self.set(key, dumped_value)
 
     def contains(self, keys: str) -> Any:
         return self.exists(*keys)
 
-    def get_value(self, key: str) -> Any:
+    def get_value(self, key: str, hmap: Optional[str] = None) -> Any:
         """
         Returns the value with corresponding key stored in the server.
 
         :param key: the key
         :type key: str
+        :param hmap: if present, will look for value stored in hash-map with this name
+        :type hmap: str
         :return: the object stored in the server, None if not object matching the key
         :rtype: Any
 
@@ -86,13 +98,17 @@ class Server(Redis):
         >>> s.get_value('apple')
         {'weight': 400, 'unit': 'g'}
         """
-        value = self.get(key)
-        if value:
-            return loads(value)
+        if hmap:
+            return self.hmget(hmap, key)
         else:
-            return None
+            value = self.get(key)
 
-    def get_multiple_values(self, *keys, prefix: Optional[str] = '') -> Tuple[List[Any], List[str]]:
+            if value:
+                return loads(value)
+            else:
+                return None
+
+    def get_multiple_values(self, *keys, prefix: Optional[str] = '', **kwargs) -> Tuple[List[Any], List[str]]:
         """
         Returns all the values corresponding the given keys. If key does not match any value, the key is returned
         explicitly tell that it is missing. An optional prefix can be added to every key.
@@ -108,7 +124,7 @@ class Server(Redis):
         keys_not_found = []
 
         for key in keys:
-            value = self.get_value(prefix + key)
+            value = self.get_value(prefix + key, **kwargs)
             if value:
                 values.append(value)
             else:
