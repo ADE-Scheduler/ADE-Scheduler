@@ -21,7 +21,7 @@ def before_calendar_request():
 
 
 @calendar.route('/')
-def schedule_viewer():
+def index():
     return render_template('calendar.html')
 
 

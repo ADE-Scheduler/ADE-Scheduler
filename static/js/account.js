@@ -70,7 +70,7 @@ var vm = new Vue({
                     url: Flask.url_for('account.load_schedule', {'id': id}),
                 })
                 .then(resp => {
-                    window.location.href = Flask.url_for('calendar.schedule_viewer');
+                    window.location.href = Flask.url_for('calendar.calendar.index');
                 })
                 .catch(err => {
                     this.error = true;

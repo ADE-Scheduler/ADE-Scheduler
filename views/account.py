@@ -17,7 +17,7 @@ def before_account_request():
 
 @account.route('/')
 @login_required
-def dashboard():
+def index():
     return render_template('account.html')
 
 
