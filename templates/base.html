@@ -31,23 +31,23 @@
             <div class="navbar-collapse offcanvas-collapse">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href={{ url_for('calendar.schedule_viewer') }}>Calendar</a>
+                        <a class="nav-link" href={{ url_for('calendar.schedule_viewer') }}>{{ _('Calendar') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href={{ url_for('classroom.index') }}>Classrooms</a>
+                        <a class="nav-link" href={{ url_for('classroom.index') }}>{{ _('Classrooms' )}}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href={{ url_for('account.dashboard') }}>Account</a>
+                        <a class="nav-link" href={{ url_for('account.dashboard') }}>{{ _('Account') }}</a>
                     </li>
                 </ul>
                 {% if current_user.is_authenticated %}
                 <div class="btn-group align-items-end user-status-div">
-                    <button class="btn btn-outline-danger btn-sm" type="button" onclick="window.location.href='/logout'">Logout</button>
+                    <button class="btn btn-outline-danger btn-sm" type="button" onclick="window.location.href='/logout'">{{ _('Logout') }}</button>
                 </div>
                 {% else %}
                 <div class="btn-group align-items-end user-status-div" style="min-width: 170px">
-                    <button class="btn btn-outline-light btn-sm w-50" type="button" onclick="window.location.href='/login'">Login</button>
-                    <button class="btn btn-outline-light btn-sm w-50" type="button" onclick="window.location.href='/register'">Register</button>
+                    <button class="btn btn-outline-light btn-sm w-50" type="button" onclick="window.location.href='/login'">{{ _('Login') }}</button>
+                    <button class="btn btn-outline-light btn-sm w-50" type="button" onclick="window.location.href='/register'">{{ _('Register') }}</button>
                 </div>
                 {% endif %}
             </div>

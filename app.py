@@ -10,6 +10,7 @@ from flask_security import Security, SQLAlchemyUserDatastore
 from flask_mail import Mail
 from flask_assets import Environment
 from flask_jsglue import JSGlue
+from flask_babel import Babel
 
 # API imports
 import backend.models as md
@@ -22,7 +23,6 @@ import backend.manager as mng
 from views.calendar import calendar
 from views.account import account
 from views.classroom import classroom
-
 
 # Setup app
 app = Flask(__name__)
@@ -72,6 +72,16 @@ app.config['SESSION_TYPE'] = 'redis'
 app.config['SESSION_REDIS'] = manager.server
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=30)
 app.config['SESSION_MANAGER'] = Session(app)
+
+# Setup Flask-Babel
+app.config['LANGUAGES'] = ['en', 'fr']
+app.config['BABEL_TRANSLATION_DIRECTORIES'] = 'translations'
+babel = Babel(app)
+
+
+@babel.localeselector
+def get_locale():
+    return 'fr'
 
 
 @app.before_first_request
