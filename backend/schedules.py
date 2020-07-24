@@ -38,15 +38,28 @@ class Schedule:
         self.label = label
         self.codes = list()
         self.filtered_subcodes = defaultdict(list)
-        self.computed_subcodes = list()
+        self.best_schedules = list()
         self.custom_events = list()
         self.priorities = dict()
         self.color_palette = ['#374955', '#005376', '#00c0ff', '#1f789d', '#4493ba',
                               '#64afd7', '#83ccf5', '#3635ff', '#006c5a', '#3d978a']
 
+    def add_filter(self, code: str, filter: Union[Iterable[str], str]):
+        if isinstance(filter, str):
+            self.filtered_subcodes[code].append(filter)
+        else:
+            self.filtered_subcodes[code].extend(filter)
+
+    def remove_filter(self, code: str, filter: Union[Iterable[str], str]):
+        if isinstance(filter, str):
+            self.filtered_subcodes[code].remove(filter)
+        else:
+            for filt in filter:
+                self.filtered_subcodes[code].remove(filt)
+
     def add_course(self, code: Union[Iterable[str], str]) -> List[str]:
         """
-        Adds a course to the schedule.
+        Adds one or many courses to the schedule.
 
         :param code: the code of the course added
         :type code: Union[Iterable[str], str])
@@ -64,7 +77,7 @@ class Schedule:
                     added_codes.append(c)
             return added_codes
 
-    def remove_course(self, code: str) -> None:
+    def remove_course(self, code: str):
         """
         Removes a course from the schedule.
 
@@ -74,7 +87,7 @@ class Schedule:
         if code in self.codes:
             self.codes.remove(code)
 
-    def add_event(self, event: evt.CustomEvent) -> None:
+    def add_custom_event(self, event: evt.CustomEvent):
         """
         Adds a custom event to the schedule.
 
@@ -82,6 +95,16 @@ class Schedule:
         :type event: CustomEvent (or RecurringCustomEvent)
         """
         self.custom_events.append(event)
+
+    def remove_custom_events(self, event: evt.CustomEvent):
+        """
+        Removes a custom event from the schedule.
+        If this event is present multiple times in the schedule, only delete the first occurrence.
+
+        :param event: the event to remove
+        :type event: CustomEvent
+        """
+        self.custom_events.remove(event)
 
     def get_events(self, json: bool = False) -> Iterable[evt.Event]:
         """
@@ -99,17 +122,17 @@ class Schedule:
         for i, course in enumerate(courses):
             course_events = course.get_events(view=self.filtered_subcodes[course.code], reverse=True)
             if json:
-                events.append([e.json(self.color_palette[i % n]) for e in course_events])
+                events.extend([e.json(self.color_palette[i % n]) for e in course_events])
             else:
-                events.append(course_events)
+                events.extend(course_events)
 
         # Custom user events
         if json:
-            events.append([e.json() for e in self.custom_events])
+            events.extend([e.json() for e in self.custom_events])
         else:
-            events.append(self.custom_events)
+            events.extend(self.custom_events)
 
-        return list(chain.from_iterable(events))
+        return events
 
     def get_summary(self):
         """
@@ -125,7 +148,7 @@ class Schedule:
             summary[course.code] = course.get_summary()
         return summary
 
-    def compute_best(self, fts=None, n_best=5, safe_compute=True, view=None):
+    def compute_best(self, n_best=5, safe_compute=True):
         """
         Computes best schedules trying to minimize conflicts selecting, for each type of event, one event.
         :param fts: a list of event.CustomEvent objects
@@ -134,7 +157,53 @@ class Schedule:
         :param view: list of ids to filter
         :return: the n_best schedules
         """
-        pass
+        df = self.activities
+
+        if view is not None:
+            valid = df.index.isin(values=view, level='id')
+            df = df[valid]
+
+        # We only take care of events which are not of type EvenOTHER
+        valid = df.index.get_level_values('type') != evt.EventOTHER
+        df_main, df_other = df[valid], df[~valid]
+        best = [[] for i in range(n_best)]  # We create an empty list which will contain best schedules
+
+        for _, week_data in df_main.groupby('week'):
+            if safe_compute:  # We remove events from same course that happen at the same time
+                for _, data in week_data.groupby(level=['code', 'type']):
+                    tmp = deque()  # Better for appending
+                    # For each event in a given course, for a given type...
+                    for index, row in data.iterrows():
+                        e = row['event']
+                        r = repeat(e)
+                        # If that event overlaps with any of the events in tmp
+                        if any(starmap(operator.xor, zip(tmp, r))):
+                            week_data.drop(index=index, inplace=True, errors='ignore')
+                        else:
+                            # We append to left because last event is most likely to conflict (if sorted)
+                            tmp.appendleft(e)
+
+            events = [[data_id.values for _, data_id in data.groupby(level='id')]
+                      for _, data in week_data.groupby(level=['code', 'type'])['event']]
+            permutations = product(*events)
+
+            if n_best == 1:
+                best.extend(chain.from_iterable(min(permutations, key=lambda f: evaluate_week(f, fts))))
+            else:
+                temp = nsmallest(n_best, permutations, key=lambda f: evaluate_week(f, fts))
+                n_temp = len(temp)
+                for i in range(n_temp):
+                    best[i].extend(chain.from_iterable(temp[i]))
+                # If we could only find n_temp < n_best best scores, we fill the rest in with same values
+                for j in range(n_temp, n_best):
+                    best[j].extend(chain.from_iterable(temp[-1]))
+
+        other = df_other['event'].values.flatten().tolist()
+        if other:
+            [schedule.extend(other) for schedule in best]
+            return best
+        else:
+            return best
 
 
 
