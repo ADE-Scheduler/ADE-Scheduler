@@ -41,13 +41,15 @@ class Course:
             self.activities = pd.DataFrame(columns=index+columns)
             self.activities.set_index(keys=index, inplace=True)
 
-    def __eq__(self, other: 'Course') -> bool:
+    def __eq__(self, other: Union['Course', str]) -> bool:
         if isinstance(other, Course):
             return self.code == other.code
+        elif isinstance(other, str):
+            return self.code == other
         else:
             raise TypeError
 
-    def __ne__(self, other: 'Course') -> bool:
+    def __ne__(self, other: Union['Course', str]) -> bool:
         return not self.__eq__(other)
 
     def __str__(self) -> str:
@@ -106,6 +108,27 @@ class Course:
             [type, code] = id.split(': ')
             summary[type].append(code)
         return dict(summary)
+
+    def get_activities(self, view: Optional[View] = None, reverse: bool = False) -> pd.DataFrame:
+        """
+        Returns a list of events that optionally matches correct ids.
+
+        :param view: if present, list of ids or dict {week_number : ids}
+        :type view: Optional[View]
+        :param reverse: if True, the View will be removed from events
+        :type reverse: bool
+        :return: table containing all the activities and their events
+        :rtype: pd.DataFrame
+        """
+        if view is None:
+            return self.activities
+        elif isinstance(view, list):
+            valid = self.activities.index.get_level_values('id').isin(view)
+
+            if reverse:
+                valid = ~valid
+
+            return self.activities['event'][valid].values
 
     def get_events(self, view: Optional[View] = None, reverse: bool = False) -> Iterable[AcademicalEvent]:
         """
