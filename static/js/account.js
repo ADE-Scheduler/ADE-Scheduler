@@ -15,13 +15,6 @@ var vm = new Vue({
         isEditing: false,
     },
     delimiters: ['[[',']]'],
-    directives: {
-        focus: {
-            inserted: function(el) {
-                el.focus();
-            },
-        },
-    },
     methods: {
         fetchData: function(e) {
             this.computing = true;

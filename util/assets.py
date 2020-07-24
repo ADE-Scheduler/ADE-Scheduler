@@ -8,6 +8,7 @@ bundles = {
         'css/lib/bootstrap.min.css',
         output='gen/base.min.css', filters='cssmin'),
     'base_js': Bundle(
+        'gen/jsglue.js',
         'js/lib/vue.dev.js',
         'js/lib/axios.min.js',
         'js/lib/bootstrap.bundle.min.js',
@@ -33,4 +34,12 @@ bundles = {
         'components/vue-swatches/vue-swatches.min.js',
         'js/account.js',
         output='gen/account.min.js', filters='jsmin'),
+
+    # Classroom
+    'classroom_css': Bundle(
+        'css/classroom.css',
+        output='gen/classroom.min.css', filters='cssmin'),
+    'classroom_js': Bundle(
+        'js/classroom.js',
+        output='gen/classroom.min.js', filters='jsmin'),
 }

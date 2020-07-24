@@ -206,34 +206,38 @@ var vm = new Vue({
             }
         },
         getDetails: function(e, code) {
-            this.computing = true;
-            axios({
-                method: 'GET',
-                url: Flask.url_for('calendar.get_info', {'code': code}),
-            })
-            .then(resp => {
-                this.courseInfo.code = code;
-                this.courseInfo.title = code + ': ' + resp.data.title;
-                this.courseInfo.summary = resp.data.summary;
+            if (this.courseInfo.code === code) {
+                courseModal.show();
+            } else {
+                this.computing = true;
+                axios({
+                    method: 'GET',
+                    url: Flask.url_for('calendar.get_info', {'code': code}),
+                })
+                .then(resp => {
+                    this.courseInfo.code = code;
+                    this.courseInfo.title = code + ': ' + resp.data.title;
+                    this.courseInfo.summary = resp.data.summary;
 
-                Object.entries(this.courseInfo.summary).forEach(([key, val]) => {
-                    Vue.set(this.courseInfo.filtered, key, {});
-                    Object.entries(val).forEach(([k, v]) => {
-                        Vue.set(this.courseInfo.filtered[key], k, {});
-                        v.forEach(item => {
-                            Vue.set(this.courseInfo.filtered[key][k], item, !resp.data.filtered[key].includes(k + ': ' + item));
+                    Object.entries(this.courseInfo.summary).forEach(([key, val]) => {
+                        Vue.set(this.courseInfo.filtered, key, {});
+                        Object.entries(val).forEach(([k, v]) => {
+                            Vue.set(this.courseInfo.filtered[key], k, {});
+                            v.forEach(item => {
+                                Vue.set(this.courseInfo.filtered[key][k], item, !resp.data.filtered[key].includes(k + ': ' + item));
+                            });
                         });
                     });
-                });
 
-                courseModal.show();
-            })
-            .catch(err => {
-                this.error = true;
-            })
-            .then(() => {
-                this.computing = false;
-            });
+                    courseModal.show();
+                })
+                .catch(err => {
+                    this.error = true;
+                })
+                .then(() => {
+                    this.computing = false;
+                });
+            }
         },
         applyFilter: function(e) {
             this.computing = true;

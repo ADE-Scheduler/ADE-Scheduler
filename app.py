@@ -21,14 +21,16 @@ import backend.manager as mng
 # Views imports
 from views.calendar import calendar
 from views.account import account
+from views.classroom import classroom
 
 
 # Setup app
 app = Flask(__name__)
 app.register_blueprint(calendar, url_prefix='')
 app.register_blueprint(account, url_prefix='/account')
+app.register_blueprint(classroom, url_prefix='/classroom')
 app.config['SECRET_KEY'] = 'super-secret'   # TODO: change !
-JSGlue(app)
+jsglue = JSGlue(app)
 
 # Setup the API Manager
 ade_api_credentials = cd.get_credentials(cd.ADE_API_CREDENTIALS)
@@ -70,6 +72,12 @@ app.config['SESSION_TYPE'] = 'redis'
 app.config['SESSION_REDIS'] = manager.server
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=30)
 app.config['SESSION_MANAGER'] = Session(app)
+
+
+@app.before_first_request
+def before_first_request():
+    with open('static/gen/jsglue.js', 'w') as f:
+        f.write(jsglue.generate_js())
 
 
 @app.shell_context_processor

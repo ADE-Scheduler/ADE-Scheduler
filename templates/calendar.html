@@ -18,14 +18,14 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="row" v-for="(value, name) in courseInfo.summary">
+                    <div class="row" v-for="(value, name) in courseInfo.summary" v-bind:key="name">
                         <div class="col-md" v-for="(v, n) in value">
                             <div class="card mb-3">
                                 <div class="card-header form-switch">
                                     [[ n ]]
                                 </div>
                                 <div class="card-body">
-                                    <div class="d-flex justify-content-between" v-for="id in v">
+                                    <div class="d-flex justify-content-between" v-for="id in v" v-bind:key="id">
                                         [[ id ]]
                                         <input class="form-check-input" type="checkbox" v-model="courseInfo.filtered[name][n][id]"/>
                                     </div>
@@ -210,7 +210,7 @@
                     </li>
                     <li class="list-group-item p-0 list-code-input">
                         <form class="input-group my-1" id="form-add-code" v-on:submit.prevent="addCode">
-                            <input class="form-control code-input" type="text" placeholder="Enter code" v-model="code">
+                            <input class="form-control code-input" type="text" placeholder="Enter code" v-model="code" v-focus>
                             <button class="btn btn-success badge rounded-pill btn-code-validation" type="submit">+</button>
                         </form>
                     </li>
