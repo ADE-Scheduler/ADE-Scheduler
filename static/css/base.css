@@ -12,6 +12,10 @@ main {
     height: 100%;
 }
 
+.active-page {
+    color: rgba(255,255,255,.9) !important;
+}
+
 @media (max-width: 991.98px) {
     .offcanvas-collapse {
         position: fixed;

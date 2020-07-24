@@ -42,4 +42,12 @@ bundles = {
     'classroom_js': Bundle(
         'js/classroom.js',
         output='gen/classroom.min.js', filters='jsmin'),
+
+    # Help
+    'help_css': Bundle(
+        'css/help.css',
+        output='gen/help.min.css', filters='cssmin'),
+    'help_js': Bundle(
+        'js/help.js',
+        output='gen/help.min.js', filters='jsmin'),
 }

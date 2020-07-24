@@ -23,12 +23,14 @@ import backend.manager as mng
 from views.calendar import calendar
 from views.account import account
 from views.classroom import classroom
+from views.help import help
 
 # Setup app
 app = Flask(__name__)
 app.register_blueprint(calendar, url_prefix='')
 app.register_blueprint(account, url_prefix='/account')
 app.register_blueprint(classroom, url_prefix='/classroom')
+app.register_blueprint(help, url_prefix='/help')
 app.config['SECRET_KEY'] = 'super-secret'   # TODO: change !
 jsglue = JSGlue(app)
 
@@ -86,6 +88,8 @@ def get_locale():
 
 @app.before_first_request
 def before_first_request():
+    if not os.path.exists('static/gen'):
+        os.makedirs('static/gen')
     with open('static/gen/jsglue.js', 'w') as f:
         f.write(jsglue.generate_js())
 

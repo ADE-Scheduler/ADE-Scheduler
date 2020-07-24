@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block head %}
+    {% assets "help_css" %}
+        <link rel="stylesheet" href="{{ ASSET_URL }}" />
+    {% endassets %}
+{% endblock %}
+
+
+{% block body %}
+<!-- Course details Modal -->
+<div class="container-fluid">
+    [[ message ]]
+</div>
+{% endblock %}
+
+{% block js %}
+{% assets "help_js" %}
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %}
+{% endblock %}
