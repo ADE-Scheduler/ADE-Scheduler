@@ -229,13 +229,13 @@
         <!-- Main content -->
         <div class="container-fluid">
             <div class="col-md-9 ml-sm-auto col-lg-10 px-md-4 pt-2">
-                <div class="alert alert-success alert-dismissible" v-show="saveSuccess">
+                <div class="alert alert-success alert-dismissible" style="display: none;" v-show="saveSuccess">
                     Schedule successfuly saved !
                     <button type="button" class="close"v-on:click="saveSuccess = false">
                         <span>&times;</span>
                     </button>
                 </div>
-                <div class="alert alert-danger alert-dismissible" v-show="error">
+                <div class="alert alert-danger alert-dismissible" style="display: none;" v-show="error">
                     A problem has occurred. Please contact us if it happens again.
                     <button type="button" class="close" v-on:click="error = false">
                         <span>&times;</span>

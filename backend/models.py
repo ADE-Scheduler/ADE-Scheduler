@@ -103,7 +103,7 @@ class Link(db.Model):
     __tablename__ = 'link'
     id = db.Column(db.Integer(), primary_key=True)
     schedule_id = db.Column(db.Integer(), db.ForeignKey('schedule.id'))
-    link = db.Column(db.String(100), unique=True, index=True)  # TODO: change the length of the link ?
+    link = db.Column(db.String(100), unique=True, index=True)
 
     def __init__(self, schedule):
         """

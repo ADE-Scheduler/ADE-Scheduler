@@ -74,7 +74,6 @@ var vm = new Vue({
                 })
                 .catch(err => {
                     this.error = true;
-                    console.log(err);
                 })
                 .then(() => {
                     this.computing = false;

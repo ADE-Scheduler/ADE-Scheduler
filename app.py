@@ -11,6 +11,7 @@ from flask_mail import Mail
 from flask_assets import Environment
 from flask_jsglue import JSGlue
 from flask_babelex import Babel
+from flask_migrate import Migrate
 
 # API imports
 import backend.models as md
@@ -57,10 +58,8 @@ app.config['MAIL_MANAGER'] = Mail(app)
 # Setup Flask-SQLAlchemy
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['ADE_DB_PATH']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
-    'pool_pre_ping': True,
-}
 manager.database.init_app(app)
+migrate = Migrate(app, manager.database)
 
 # Setup Flask-Security
 app.config['SECURITY_REGISTERABLE'] = True
