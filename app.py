@@ -87,6 +87,7 @@ def get_locale():
     return session['locale']
 app.jinja_env.globals['get_locale'] = get_locale
 
+
 @app.route('/locale/<locale>')
 def set_locale(locale):
     if locale in app.config['LANGUAGES']:

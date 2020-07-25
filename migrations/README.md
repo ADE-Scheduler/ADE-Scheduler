@@ -20,3 +20,5 @@ flask db upgrade
 ```
 
 Il existe aussi la commande `flask db downgrade` pour défaire la dernière migration si nécessaire.
+
+Note: la variable d'environnement `FLASK_APP` doit être définie pour que ça fonctionne.

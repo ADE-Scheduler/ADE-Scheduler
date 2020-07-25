@@ -9,7 +9,89 @@
 {% block body %}
 <!-- Course details Modal -->
 <div class="container-fluid">
-    [[ message ]]
+    <div class="row">
+        <nav class="col-md-3 col-lg-2 d-md-block bg-light navigator collapse" id="faq-navigator">
+            <div class="navigator-sticky pt-2">
+                <a class="nav-link" href="#" v-on:click.prevent="scroll($event, 'faq-1')">Q1</a>
+                <a class="nav-link" href="#" v-on:click.prevent="scroll($event, 'faq-2')">Q2</a>
+                <a class="nav-link" href="#" v-on:click.prevent="scroll($event, 'faq-3')">Q3</a>
+                <a class="nav-link" href="#" v-on:click.prevent="scroll($event, 'faq-4')">Q4</a>
+                <a class="nav-link" href="#" v-on:click.prevent="scroll($event, 'faq-5')">Q5</a>
+            </div>
+        </nav>
+
+        <div class="col-md-9 ml-sm-auto col-lg-10 px-md-4" id="faq-container">
+            <h4 class="mt-5" id="faq-1">Q1</h4>
+            <div>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sit amet ex nec nibh tincidunt ullamcorper at sed tellus. Pellentesque ut diam quis est eleifend accumsan. Cras molestie, dui ut sollicitudin eleifend, sem sem interdum justo, sed malesuada nisi elit aliquet dui. Nulla vitae ante ac mauris dignissim scelerisque a in velit. Donec a massa consectetur, vestibulum nisl a, luctus arcu. Donec ullamcorper ipsum ac risus aliquam faucibus. Donec finibus ut risus et cursus. Nam sollicitudin euismod libero vitae congue. Maecenas pellentesque est mi, at mollis sem pulvinar posuere. Etiam fringilla mauris leo, at pulvinar nisi venenatis nec. Nunc tempus dolor eleifend ex sagittis pharetra sit amet in arcu. Duis convallis, nunc vitae fringilla rutrum, orci nisi imperdiet risus, in mattis mi eros sed quam. Curabitur vehicula volutpat aliquet.
+
+                Vestibulum ut pretium nulla, ac aliquet tellus. Aenean vestibulum a ligula non dignissim. Vestibulum a odio libero. Mauris in lacus vitae magna fringilla luctus. In ultrices erat eget hendrerit vehicula. Aliquam urna nisl, molestie id metus pellentesque, hendrerit bibendum massa. Etiam sit amet tortor pretium, porta libero non, tincidunt leo.
+
+                Nam id arcu ex. Ut in pellentesque elit. Fusce vel risus vel tellus rhoncus maximus. Sed vel mi id felis fermentum lacinia sed sed elit. Quisque in cursus nulla. Morbi mollis dolor eget ultrices dapibus. In ullamcorper felis velit. Donec dictum id ex et eleifend. Pellentesque fermentum ex id quam porta, nec fringilla augue bibendum. Donec in enim nisl. Praesent ultrices consectetur sem nec ultrices. Nam ac auctor enim, eget cursus mi.
+
+                Proin venenatis euismod metus, quis condimentum sem. Maecenas vitae nulla volutpat, efficitur libero sed, commodo nunc. Donec cursus venenatis varius. Morbi orci justo, vehicula euismod mattis eget, porta tempus velit. Nullam iaculis quis orci id egestas. Nulla facilisi. Phasellus quis sem vitae ex porttitor euismod non a diam. Curabitur tempor purus eget nisl vehicula rhoncus. Ut rutrum, ante id molestie pulvinar, metus neque blandit magna, eu fermentum dui ante ac arcu. Nullam tincidunt diam et cursus maximus. Sed egestas, neque non suscipit dignissim, quam sapien ultricies urna, eu mollis libero felis quis nisi. Mauris lacinia lacus eget enim viverra, a vestibulum turpis malesuada. Etiam nec odio varius lectus ullamcorper vulputate in ut quam.
+
+                Phasellus lectus risus, bibendum ac blandit in, egestas in tortor. Nullam purus diam, semper id convallis ac, ullamcorper eu enim. Praesent tempor elit tincidunt, posuere sapien vitae, placerat lectus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas at odio a nisl condimentum finibus. Mauris sit amet malesuada sem. Proin vel lorem scelerisque, congue mi et, semper diam. Sed vel nisl non mi fringilla ullamcorper in eget sem. Integer aliquam consectetur nisi a aliquet. Praesent bibendum luctus pretium.
+            </div>
+            <h4 class="mt-5" id="faq-2">Q2</h4>
+            <div>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sit amet ex nec nibh tincidunt ullamcorper at sed tellus. Pellentesque ut diam quis est eleifend accumsan. Cras molestie, dui ut sollicitudin eleifend, sem sem interdum justo, sed malesuada nisi elit aliquet dui. Nulla vitae ante ac mauris dignissim scelerisque a in velit. Donec a massa consectetur, vestibulum nisl a, luctus arcu. Donec ullamcorper ipsum ac risus aliquam faucibus. Donec finibus ut risus et cursus. Nam sollicitudin euismod libero vitae congue. Maecenas pellentesque est mi, at mollis sem pulvinar posuere. Etiam fringilla mauris leo, at pulvinar nisi venenatis nec. Nunc tempus dolor eleifend ex sagittis pharetra sit amet in arcu. Duis convallis, nunc vitae fringilla rutrum, orci nisi imperdiet risus, in mattis mi eros sed quam. Curabitur vehicula volutpat aliquet.
+
+                Vestibulum ut pretium nulla, ac aliquet tellus. Aenean vestibulum a ligula non dignissim. Vestibulum a odio libero. Mauris in lacus vitae magna fringilla luctus. In ultrices erat eget hendrerit vehicula. Aliquam urna nisl, molestie id metus pellentesque, hendrerit bibendum massa. Etiam sit amet tortor pretium, porta libero non, tincidunt leo.
+
+                Nam id arcu ex. Ut in pellentesque elit. Fusce vel risus vel tellus rhoncus maximus. Sed vel mi id felis fermentum lacinia sed sed elit. Quisque in cursus nulla. Morbi mollis dolor eget ultrices dapibus. In ullamcorper felis velit. Donec dictum id ex et eleifend. Pellentesque fermentum ex id quam porta, nec fringilla augue bibendum. Donec in enim nisl. Praesent ultrices consectetur sem nec ultrices. Nam ac auctor enim, eget cursus mi.
+
+                Proin venenatis euismod metus, quis condimentum sem. Maecenas vitae nulla volutpat, efficitur libero sed, commodo nunc. Donec cursus venenatis varius. Morbi orci justo, vehicula euismod mattis eget, porta tempus velit. Nullam iaculis quis orci id egestas. Nulla facilisi. Phasellus quis sem vitae ex porttitor euismod non a diam. Curabitur tempor purus eget nisl vehicula rhoncus. Ut rutrum, ante id molestie pulvinar, metus neque blandit magna, eu fermentum dui ante ac arcu. Nullam tincidunt diam et cursus maximus. Sed egestas, neque non suscipit dignissim, quam sapien ultricies urna, eu mollis libero felis quis nisi. Mauris lacinia lacus eget enim viverra, a vestibulum turpis malesuada. Etiam nec odio varius lectus ullamcorper vulputate in ut quam.
+
+                Phasellus lectus risus, bibendum ac blandit in, egestas in tortor. Nullam purus diam, semper id convallis ac, ullamcorper eu enim. Praesent tempor elit tincidunt, posuere sapien vitae, placerat lectus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas at odio a nisl condimentum finibus. Mauris sit amet malesuada sem. Proin vel lorem scelerisque, congue mi et, semper diam. Sed vel nisl non mi fringilla ullamcorper in eget sem. Integer aliquam consectetur nisi a aliquet. Praesent bibendum luctus pretium.
+            </div>
+            <h4 class="mt-5" id="faq-3">Q3</h4>
+            <div>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sit amet ex nec nibh tincidunt ullamcorper at sed tellus. Pellentesque ut diam quis est eleifend accumsan. Cras molestie, dui ut sollicitudin eleifend, sem sem interdum justo, sed malesuada nisi elit aliquet dui. Nulla vitae ante ac mauris dignissim scelerisque a in velit. Donec a massa consectetur, vestibulum nisl a, luctus arcu. Donec ullamcorper ipsum ac risus aliquam faucibus. Donec finibus ut risus et cursus. Nam sollicitudin euismod libero vitae congue. Maecenas pellentesque est mi, at mollis sem pulvinar posuere. Etiam fringilla mauris leo, at pulvinar nisi venenatis nec. Nunc tempus dolor eleifend ex sagittis pharetra sit amet in arcu. Duis convallis, nunc vitae fringilla rutrum, orci nisi imperdiet risus, in mattis mi eros sed quam. Curabitur vehicula volutpat aliquet.
+
+                Vestibulum ut pretium nulla, ac aliquet tellus. Aenean vestibulum a ligula non dignissim. Vestibulum a odio libero. Mauris in lacus vitae magna fringilla luctus. In ultrices erat eget hendrerit vehicula. Aliquam urna nisl, molestie id metus pellentesque, hendrerit bibendum massa. Etiam sit amet tortor pretium, porta libero non, tincidunt leo.
+
+                Nam id arcu ex. Ut in pellentesque elit. Fusce vel risus vel tellus rhoncus maximus. Sed vel mi id felis fermentum lacinia sed sed elit. Quisque in cursus nulla. Morbi mollis dolor eget ultrices dapibus. In ullamcorper felis velit. Donec dictum id ex et eleifend. Pellentesque fermentum ex id quam porta, nec fringilla augue bibendum. Donec in enim nisl. Praesent ultrices consectetur sem nec ultrices. Nam ac auctor enim, eget cursus mi.
+
+                Proin venenatis euismod metus, quis condimentum sem. Maecenas vitae nulla volutpat, efficitur libero sed, commodo nunc. Donec cursus venenatis varius. Morbi orci justo, vehicula euismod mattis eget, porta tempus velit. Nullam iaculis quis orci id egestas. Nulla facilisi. Phasellus quis sem vitae ex porttitor euismod non a diam. Curabitur tempor purus eget nisl vehicula rhoncus. Ut rutrum, ante id molestie pulvinar, metus neque blandit magna, eu fermentum dui ante ac arcu. Nullam tincidunt diam et cursus maximus. Sed egestas, neque non suscipit dignissim, quam sapien ultricies urna, eu mollis libero felis quis nisi. Mauris lacinia lacus eget enim viverra, a vestibulum turpis malesuada. Etiam nec odio varius lectus ullamcorper vulputate in ut quam.
+
+                Phasellus lectus risus, bibendum ac blandit in, egestas in tortor. Nullam purus diam, semper id convallis ac, ullamcorper eu enim. Praesent tempor elit tincidunt, posuere sapien vitae, placerat lectus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas at odio a nisl condimentum finibus. Mauris sit amet malesuada sem. Proin vel lorem scelerisque, congue mi et, semper diam. Sed vel nisl non mi fringilla ullamcorper in eget sem. Integer aliquam consectetur nisi a aliquet. Praesent bibendum luctus pretium.
+            </div>
+            <h4 class="mt-5" id="faq-4">Q4</h4>
+            <div>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sit amet ex nec nibh tincidunt ullamcorper at sed tellus. Pellentesque ut diam quis est eleifend accumsan. Cras molestie, dui ut sollicitudin eleifend, sem sem interdum justo, sed malesuada nisi elit aliquet dui. Nulla vitae ante ac mauris dignissim scelerisque a in velit. Donec a massa consectetur, vestibulum nisl a, luctus arcu. Donec ullamcorper ipsum ac risus aliquam faucibus. Donec finibus ut risus et cursus. Nam sollicitudin euismod libero vitae congue. Maecenas pellentesque est mi, at mollis sem pulvinar posuere. Etiam fringilla mauris leo, at pulvinar nisi venenatis nec. Nunc tempus dolor eleifend ex sagittis pharetra sit amet in arcu. Duis convallis, nunc vitae fringilla rutrum, orci nisi imperdiet risus, in mattis mi eros sed quam. Curabitur vehicula volutpat aliquet.
+
+                Vestibulum ut pretium nulla, ac aliquet tellus. Aenean vestibulum a ligula non dignissim. Vestibulum a odio libero. Mauris in lacus vitae magna fringilla luctus. In ultrices erat eget hendrerit vehicula. Aliquam urna nisl, molestie id metus pellentesque, hendrerit bibendum massa. Etiam sit amet tortor pretium, porta libero non, tincidunt leo.
+
+                Nam id arcu ex. Ut in pellentesque elit. Fusce vel risus vel tellus rhoncus maximus. Sed vel mi id felis fermentum lacinia sed sed elit. Quisque in cursus nulla. Morbi mollis dolor eget ultrices dapibus. In ullamcorper felis velit. Donec dictum id ex et eleifend. Pellentesque fermentum ex id quam porta, nec fringilla augue bibendum. Donec in enim nisl. Praesent ultrices consectetur sem nec ultrices. Nam ac auctor enim, eget cursus mi.
+
+                Proin venenatis euismod metus, quis condimentum sem. Maecenas vitae nulla volutpat, efficitur libero sed, commodo nunc. Donec cursus venenatis varius. Morbi orci justo, vehicula euismod mattis eget, porta tempus velit. Nullam iaculis quis orci id egestas. Nulla facilisi. Phasellus quis sem vitae ex porttitor euismod non a diam. Curabitur tempor purus eget nisl vehicula rhoncus. Ut rutrum, ante id molestie pulvinar, metus neque blandit magna, eu fermentum dui ante ac arcu. Nullam tincidunt diam et cursus maximus. Sed egestas, neque non suscipit dignissim, quam sapien ultricies urna, eu mollis libero felis quis nisi. Mauris lacinia lacus eget enim viverra, a vestibulum turpis malesuada. Etiam nec odio varius lectus ullamcorper vulputate in ut quam.
+
+                Phasellus lectus risus, bibendum ac blandit in, egestas in tortor. Nullam purus diam, semper id convallis ac, ullamcorper eu enim. Praesent tempor elit tincidunt, posuere sapien vitae, placerat lectus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas at odio a nisl condimentum finibus. Mauris sit amet malesuada sem. Proin vel lorem scelerisque, congue mi et, semper diam. Sed vel nisl non mi fringilla ullamcorper in eget sem. Integer aliquam consectetur nisi a aliquet. Praesent bibendum luctus pretium.
+            </div>
+            <h4 class="mt-5" id="faq-5">Q5</h4>
+            <div>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sit amet ex nec nibh tincidunt ullamcorper at sed tellus. Pellentesque ut diam quis est eleifend accumsan. Cras molestie, dui ut sollicitudin eleifend, sem sem interdum justo, sed malesuada nisi elit aliquet dui. Nulla vitae ante ac mauris dignissim scelerisque a in velit. Donec a massa consectetur, vestibulum nisl a, luctus arcu. Donec ullamcorper ipsum ac risus aliquam faucibus. Donec finibus ut risus et cursus. Nam sollicitudin euismod libero vitae congue. Maecenas pellentesque est mi, at mollis sem pulvinar posuere. Etiam fringilla mauris leo, at pulvinar nisi venenatis nec. Nunc tempus dolor eleifend ex sagittis pharetra sit amet in arcu. Duis convallis, nunc vitae fringilla rutrum, orci nisi imperdiet risus, in mattis mi eros sed quam. Curabitur vehicula volutpat aliquet.
+
+                Vestibulum ut pretium nulla, ac aliquet tellus. Aenean vestibulum a ligula non dignissim. Vestibulum a odio libero. Mauris in lacus vitae magna fringilla luctus. In ultrices erat eget hendrerit vehicula. Aliquam urna nisl, molestie id metus pellentesque, hendrerit bibendum massa. Etiam sit amet tortor pretium, porta libero non, tincidunt leo.
+
+                Nam id arcu ex. Ut in pellentesque elit. Fusce vel risus vel tellus rhoncus maximus. Sed vel mi id felis fermentum lacinia sed sed elit. Quisque in cursus nulla. Morbi mollis dolor eget ultrices dapibus. In ullamcorper felis velit. Donec dictum id ex et eleifend. Pellentesque fermentum ex id quam porta, nec fringilla augue bibendum. Donec in enim nisl. Praesent ultrices consectetur sem nec ultrices. Nam ac auctor enim, eget cursus mi.
+
+                Proin venenatis euismod metus, quis condimentum sem. Maecenas vitae nulla volutpat, efficitur libero sed, commodo nunc. Donec cursus venenatis varius. Morbi orci justo, vehicula euismod mattis eget, porta tempus velit. Nullam iaculis quis orci id egestas. Nulla facilisi. Phasellus quis sem vitae ex porttitor euismod non a diam. Curabitur tempor purus eget nisl vehicula rhoncus. Ut rutrum, ante id molestie pulvinar, metus neque blandit magna, eu fermentum dui ante ac arcu. Nullam tincidunt diam et cursus maximus. Sed egestas, neque non suscipit dignissim, quam sapien ultricies urna, eu mollis libero felis quis nisi. Mauris lacinia lacus eget enim viverra, a vestibulum turpis malesuada. Etiam nec odio varius lectus ullamcorper vulputate in ut quam.
+
+                Phasellus lectus risus, bibendum ac blandit in, egestas in tortor. Nullam purus diam, semper id convallis ac, ullamcorper eu enim. Praesent tempor elit tincidunt, posuere sapien vitae, placerat lectus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas at odio a nisl condimentum finibus. Mauris sit amet malesuada sem. Proin vel lorem scelerisque, congue mi et, semper diam. Sed vel nisl non mi fringilla ullamcorper in eget sem. Integer aliquam consectetur nisi a aliquet. Praesent bibendum luctus pretium.
+            </div>
+        </div>
+    </div>
+
+    <button class="btn btn-dark btn-nav">
+        <svg v-if="navBtn" v-on:click="toggleNav(false)" width="25px" height="25px" viewBox="0 0 16 16" class="bi bi-chevron-bar-contract" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M3.646 14.854a.5.5 0 0 0 .708 0L8 11.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708zm0-13.708a.5.5 0 0 1 .708 0L8 4.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zM1 8a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 8z"/>
+        </svg>
+        <svg v-else        v-on:click="toggleNav(true)" width="25px" height="25px" viewBox="0 0 16 16" class="bi bi-chevron-bar-expand" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M3.646 10.146a.5.5 0 0 1 .708 0L8 13.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-4.292a.5.5 0 0 0 .708 0L8 2.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708zM1 8a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 8z"/>
+        </svg>
+    </button>
 </div>
 {% endblock %}
 

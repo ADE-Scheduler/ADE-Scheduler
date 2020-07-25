@@ -1,6 +1,7 @@
 var popoverList = [];
 var eventModal = {};
 var courseModal = {};
+var codeMenu = {};
 var calendar = {};
 var vm = new Vue({
     el: '#app',
@@ -31,6 +32,7 @@ var vm = new Vue({
             summary: {},
             filtered: {},
         },
+        navBtn: false,
     },
     delimiters: ['[[',']]'],
 
@@ -257,6 +259,11 @@ var vm = new Vue({
                 this.computing = false;
             });
         },
+        toggleNav: function(show) {
+            this.navBtn = show;
+            if (show)   { codeMenu.show(); }
+            else        { codeMenu.hide(); }
+        },
     },
     computed: {
         calendarOpacity: function() {
@@ -285,6 +292,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     eventModal = new bootstrap.Modal(document.getElementById('eventModal'));
     courseModal = new bootstrap.Modal(document.getElementById('courseModal'));
+    codeMenu = new bootstrap.Collapse(document.getElementById('sidebarMenu'), {
+        toggle: false,
+    });
 
     calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
         height: 'auto',

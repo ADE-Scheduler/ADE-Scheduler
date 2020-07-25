@@ -2,7 +2,6 @@
  *  Calendar
  */
 #calendar {
-    /* min-width: 800px; */
     width: 100%;
     height: 100%;
     padding: 10px;
@@ -87,7 +86,6 @@
 
 .container-fluid {
     padding-top: 45px;
-    /* padding-bottom: 40px; */
 }
 
 .nav-underline .nav-link {
@@ -170,11 +168,6 @@
 }
 
 @media (max-width: 767.98px) {
-    .sidebar {
-        top: 5rem;
-        padding-top: 21px;
-    }
-
     .nav-scroller > nav > .active {
         display: block;
     }
@@ -195,16 +188,18 @@
     }
 }
 
-.sidebar .nav-link {
-    font-weight: 500;
-    color: #333;
+.btn-nav {
+    position: fixed;
+    z-index: 4;
+    bottom: 40px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
 }
-
-.sidebar .nav-link.active {
-    color: #007bff;
-}
-
-.sidebar-heading {
-    font-size: .75rem;
-    text-transform: uppercase;
+@media (min-width: 767.98px) {
+    .btn-nav {
+        display: none;
+    }
 }

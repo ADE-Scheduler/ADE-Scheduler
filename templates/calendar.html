@@ -175,8 +175,7 @@
     <!-- Horizontal defiling menu -->
     <div class="nav-scroller bg-white shadow-sm">
         <nav class="nav nav-underline">
-            <a class="nav-link active" href="#" data-toggle="collapse" data-target="#sidebarMenu">Menu</a>
-            <a class="nav-link" href="#">ADE</a>
+            <a class="nav-link active" href="#">ADE</a>
             <a class="nav-link" href="#">Schedule 1</a>
             <a class="nav-link" href="#">Schedule 2</a>
             <a class="nav-link" href="#">Schedule 3</a>
@@ -216,10 +215,10 @@
                     </li>
                 </div>
                 <div class="btn-group btn-compute-clear m-2">
-                    <button class="btn btn-outline-dark btn-sm w-50" type="button" v-on:click="compute" data-toggle="collapse" data-target="#sidebarMenu">
+                    <button class="btn btn-outline-dark btn-sm w-50" type="button" v-on:click="compute($event); toggleNav(false)">
                         Compute
                     </button>
-                    <button class="btn btn-outline-dark btn-sm w-50" type="button" v-on:click="clear" data-toggle="collapse" data-target="#sidebarMenu">
+                    <button class="btn btn-outline-dark btn-sm w-50" type="button" v-on:click="clear($event); toggleNav(false)">
                         Clear
                     </button>
                 </div>
@@ -247,6 +246,15 @@
             </div>
         </div>
     </div>
+
+    <button class="btn btn-dark btn-nav">
+        <svg v-if="navBtn" v-on:click="toggleNav(false)" width="25px" height="25px" viewBox="0 0 16 16" class="bi bi-chevron-bar-contract" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M3.646 14.854a.5.5 0 0 0 .708 0L8 11.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708zm0-13.708a.5.5 0 0 1 .708 0L8 4.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zM1 8a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 8z"/>
+        </svg>
+        <svg v-else        v-on:click="toggleNav(true)" width="25px" height="25px" viewBox="0 0 16 16" class="bi bi-chevron-bar-expand" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M3.646 10.146a.5.5 0 0 1 .708 0L8 13.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-4.292a.5.5 0 0 0 .708 0L8 2.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708zM1 8a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 8z"/>
+        </svg>
+    </button>
 {% endblock %}
 
 {% block js %}
