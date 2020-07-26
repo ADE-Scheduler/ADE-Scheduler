@@ -22,6 +22,7 @@ bundles = {
         output='gen/calendar.min.css', filters='cssmin'),
     'calendar_js': Bundle(
         'lib/fullcalendar/main.js',
+        'lib/fullcalendar/locale-fr.js',
         'js/calendar.js',
         output='gen/calendar.min.js', filters='jsmin'),
 

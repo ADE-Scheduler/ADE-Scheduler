@@ -22,11 +22,9 @@
     font-size: min(3vw, 1em)!important;
     padding: 3px 6px !important;
 }
-
 .fc-toolbar-title {
     font-size: min(3.5vw, 2em) !important;
 }
-
 .fc-col-header-cell-cushion {
     text-decoration: none;
     color: black;
@@ -53,7 +51,9 @@
 .fc-daygrid-week-number {
     text-decoration: none;
 }
-
+.fc-event {
+    cursor: pointer;
+}
 
 /*
  * Nav scroller

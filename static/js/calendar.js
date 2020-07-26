@@ -304,6 +304,7 @@ document.addEventListener('DOMContentLoaded', function() {
         editable: true,
         droppable: true,
         dayMaxEventRows: false, // allow "more" link when too many events
+        locale: document.getElementById('current-locale').innerText.trim(),
 
         // Week display
         firstDay: 1,
