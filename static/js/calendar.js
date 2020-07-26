@@ -357,6 +357,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 placement: 'auto',
             });
         },
+
+        // Clickable events
+        eventClick: function(info) {
+            // Open course settings
+            vm.getDetails(info.event, info.event.extendedProps.code)
+          }
     });
     calendar.render();
 });
