@@ -79,7 +79,7 @@
                     </div>
 
                     <!-- Start-end inputs -->
-                    <div class="row justify-content-between mt-3">
+                    <div class="row mt-3">
                         <div class="col-6">
                             <label>From</label>
                             <div class="input-group date mb-2" v-show:disabled="!eventForm.recurring">
@@ -122,6 +122,15 @@
                         </div>
                     </div>
 
+                    <!-- Repeting event ? -->
+                    <div class="row mt-3">
+                        <div class="col-6">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" v-model="eventForm.recurring" id="switch-repetition" data-toggle="collapse" data-target="#recurring-inputs">
+                                <label class="form-check-label" for="switch-repetition">Recurring event</label>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row collapse" id="recurring-inputs">
                         <div class="row d-flex flex-row-reverse">
                             <div class="col-6 text-right">
@@ -137,7 +146,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="row justify-content-between mt-3">
+                        <div class="row mt-3">
                             <div class="col-6">
                                 <label>Start</label>
                                 <div class="input-group date mb-2">

@@ -124,7 +124,7 @@ def add_custom_event():
         event = evt.RecurringCustomEvent(*event.values())
     else:
         event = evt.CustomEvent(*event.values())
-    session['current_schedule'].add_event(event)
+    session['current_schedule'].add_custom_event(event)
     session['current_schedule_modified'] = True
     return jsonify({
         'event': event.json(),
