@@ -1,4 +1,5 @@
 var popoverList = [];
+var addEventModal = {};
 var eventModal = {};
 var courseModal = {};
 var codeMenu = {};
@@ -31,6 +32,10 @@ var vm = new Vue({
             title: '',
             summary: {},
             filtered: {},
+        },
+        eventInfo: {
+            event: {},
+            rrule: {},
         },
         navBtn: false,
     },
@@ -168,7 +173,7 @@ var vm = new Vue({
             .then(resp => {
                 vm.events.push(resp.data.event);
                 e.target.reset();
-                eventModal.hide();
+                addEventModal.hide();
             })
             .catch(err => {
                 this.error = true;
@@ -207,7 +212,7 @@ var vm = new Vue({
                 this.eventForm.beginHour = this.eventForm.endHour;
             }
         },
-        getDetails: function(e, code) {
+        getDetails: function(code) {
             if (this.courseInfo.code === code) {
                 courseModal.show();
             } else {
@@ -264,6 +269,22 @@ var vm = new Vue({
             if (show)   { codeMenu.show(); }
             else        { codeMenu.hide(); }
         },
+        removeEvent: function(event) {
+            this.computing = true;
+            axios({
+                method: 'DELETE',
+                url: Flask.url_for('calendar.delete_custom_event', {'id': event.id}),
+            })
+            .then(resp => {
+                event.remove();
+            })
+            .catch(err => {
+                this.error = true;
+            })
+            .then(() => {
+                this.computing = false;
+            });
+        },
     },
     computed: {
         calendarOpacity: function() {
@@ -289,7 +310,7 @@ document.addEventListener('DOMContentLoaded', function() {
             trigger: 'focus',
         })
     });
-
+    addEventModal = new bootstrap.Modal(document.getElementById('addEventModal'));
     eventModal = new bootstrap.Modal(document.getElementById('eventModal'));
     courseModal = new bootstrap.Modal(document.getElementById('courseModal'));
     codeMenu = new bootstrap.Collapse(document.getElementById('sidebarMenu'), {
@@ -301,8 +322,8 @@ document.addEventListener('DOMContentLoaded', function() {
         slotMinTime: '08:00:00',
         slotMaxTime: '21:00:00',
         navLinks: true, // can click day/week names to navigate views
-        editable: true,
-        droppable: true,
+        editable: false,
+        droppable: false,
         dayMaxEventRows: false, // allow "more" link when too many events
         locale: document.getElementById('current-locale').innerText.trim(),
 
@@ -322,7 +343,7 @@ document.addEventListener('DOMContentLoaded', function() {
         customButtons: {
             addEvent: {
                 text: '+',
-                click: () => { eventModal.show(); }
+                click: () => { addEventModal.show(); }
             }
         },
         headerToolbar: {
@@ -358,11 +379,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 placement: 'auto',
             });
         },
-
-        // Clickable events
         eventClick: function(info) {
-            // Open course settings
-            vm.getDetails(info.event, info.event.extendedProps.code)
+            let evt = info.event.toPlainObject({collapseExtendedProps: true});
+            if (evt.id) {
+                vm.eventInfo = evt;
+                vm.eventInfo.event = info.event;
+                eventModal.show();
+            } else {
+                vm.getDetails(evt.code);
+            }
           }
     });
     calendar.render();

@@ -96,7 +96,7 @@ class Schedule:
         """
         self.custom_events.append(event)
 
-    def remove_custom_events(self, event: evt.CustomEvent):
+    def remove_custom_event(self, event: evt.CustomEvent = None, id: str = None):
         """
         Removes a custom event from the schedule.
         If this event is present multiple times in the schedule, only delete the first occurrence.
@@ -104,7 +104,11 @@ class Schedule:
         :param event: the event to remove
         :type event: CustomEvent
         """
-        self.custom_events.remove(event)
+        if event is not None:
+            self.custom_events.remove(event)
+        if id is not None:
+            event = next(e for e in self.custom_events if e.uid == id)
+            self.custom_events.remove(event)
 
     def get_events(self, json: bool = False) -> Iterable[evt.Event]:
         """

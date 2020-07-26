@@ -42,8 +42,41 @@
         </div>
     </div>
 
-    <!-- Add an event Modal -->
+    <!-- Custom event Modal -->
     <div class="modal fade" id="eventModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">[[ eventInfo.title ]]</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Title: [[ eventInfo.title ]]</p>
+                    <p>Location: [[ eventInfo.location ]]</p>
+                    <p>Description: [[ eventInfo.description ]]</p>
+                    <p>Start: [[ eventInfo.start ]]</p>
+                    <p>End: [[ eventInfo.end ]]</p>
+
+                    <div v-if="eventInfo.rrule">
+                        Recurring Event !
+                        <p>Start: [[ eventInfo.rrule.start ]]</p>
+                        <p>End: [[ eventInfo.rrule.end ]]</p>
+                        <p>Days of week: [[ eventInfo.rrule.days ]]</p>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" v-on:click="removeEvent(eventInfo.event)">Delete Event</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add an event Modal -->
+    <div class="modal fade" id="addEventModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <form class="modal-content needs-validation" id="form-add-event" v-on:submit.prevent="addEvent">
                 <div class="modal-header">
@@ -199,7 +232,7 @@
                 </a>
                 <div class="list-group list-code m-2">
                     <li class="list-group-item code-item d-flex justify-content-between align-items-center"  v-for='code in codes'>
-                        <div class="code-tag" v-on:click="getDetails($event, code)">
+                        <div class="code-tag" v-on:click="getDetails(code)">
                             [[ code ]]
                         </div>
                         <button class="btn btn-danger badge rounded-pill" v-on:click="removeCode($event, code)">

@@ -129,3 +129,9 @@ def add_custom_event():
     return jsonify({
         'event': event.json(),
     }), 200
+
+
+@calendar.route('/delete/custom_event/<id>', methods=['DELETE'])
+def delete_custom_event(id):
+    session['current_schedule'].remove_custom_event(id=id)
+    return 'OK', 200

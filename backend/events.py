@@ -7,6 +7,8 @@ from backend.classrooms import merge_classrooms, Classroom
 from backend.professors import Professor
 from typing import Type, Tuple, Iterable, Optional
 
+from flask_babelex import _
+
 # We need to set the timezone
 TZ = timezone('Europe/Brussels')
 COURSE_REGEX = '([A-Z]+[0-9]+)'
@@ -72,10 +74,12 @@ class CustomEvent(Event):
         :rtype: dict
         """
         return {
+            'id': self.uid,
             'title': self.name,
             'start': str(self.begin),
             'end': str(self.end),
-            'description': self.description + '\n' + self.location,
+            'location': self.location,
+            'description': self.description,
             'editable': False,
             'backgroundColor': color,
             'borderColor': color,
@@ -98,9 +102,13 @@ class RecurringCustomEvent(CustomEvent):
         :return: a dictionary containing relevant information
         :rtype: dict
         """
+        days = [_('Sunday'), _('Monday'), _('Tuesday'), _('Wednesday'), _('Thursday'), _('Friday'), _('Saturday')]
+
         return {
+            'id': self.uid,
             'title': self.name,
-            'description': self.description + '\n' + self.location,
+            'location': self.location,
+            'description': self.description,
             'daysOfWeek': self.freq,
             'startTime': self.begin.format('HH:mmZ'),
             'endTime': self.end.format('HH:mmZ'),
@@ -109,6 +117,11 @@ class RecurringCustomEvent(CustomEvent):
             'editable': False,
             'backgroundColor': color,
             'borderColor': color,
+            'rrule': {
+                'days': [days[i] for i in self.freq],
+                'start': str(self.begin),
+                'end': str(self.end),
+            }
         }
 
     def __str__(self):
