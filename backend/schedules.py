@@ -2,7 +2,7 @@ from itertools import product, chain, starmap, repeat
 from collections import deque, defaultdict
 from heapq import nsmallest
 import operator
-from typing import Iterable, Union, List
+from typing import Iterable, Union, List, SupportsInt
 from backend.courses import Course, merge_courses, View
 from flask import current_app as app
 
@@ -32,7 +32,7 @@ class Schedule:
     :param project_id: the schedule id matching this of the Database it is currently saved in.
                This parameter is automatically set when the schedule is saved for the first time.
     """
-    def __init__(self, project_id: Union[str, int], schedule_id: int = None, label: str = 'New schedule'):
+    def __init__(self, project_id: SupportsInt, schedule_id: int = None, label: str = 'New schedule'):
         self.id = schedule_id
         self.project_id = project_id
         self.label = label
