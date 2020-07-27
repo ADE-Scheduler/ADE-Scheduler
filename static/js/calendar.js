@@ -9,6 +9,7 @@ import '../css/calendar.css';
 
 const axios = require('axios');
 
+var isTouchDevice = !!('ontouchstart' in window || navigator.maxTouchPoints);
 var popoverList = [];
 var addEventModal = {};
 var eventModal = {};
@@ -97,17 +98,19 @@ var vm = new Vue({
             eventTextColor: 'white',
             eventDisplay: 'block',
             eventDidMount: function (arg) {
-                new Tooltip(arg.el, {
-                    container: 'body',
-                    title: arg.event.extendedProps.description,
-                    sanitize: false,
-                    template: `
-                        <div class="tooltip" role="tooltip">
-                            <div class="tooltip-arrow"></div>
-                            <div class="tooltip-inner" style="background-color:` + arg.event.backgroundColor + `"></div>
-                        </div>`,
-                    placement: 'auto',
-                });
+                if (!isTouchDevice) {
+                    new Tooltip(arg.el, {
+                        container: 'body',
+                        title: arg.event.extendedProps.description,
+                        sanitize: false,
+                        template: `
+                            <div class="tooltip" role="tooltip">
+                                <div class="tooltip-arrow"></div>
+                                <div class="tooltip-inner" style="background-color:` + arg.event.backgroundColor + `"></div>
+                            </div>`,
+                        placement: 'auto',
+                    });
+                }
             },
             eventClick: function(info) {
                 let evt = info.event.toPlainObject({collapseExtendedProps: true});

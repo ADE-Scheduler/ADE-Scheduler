@@ -110,7 +110,7 @@
  */
 .badge-info-custom {
     position: absolute;
-    top: 11px;
+    top: 3px;
     left: 3px;
     z-index: 4;
 }
@@ -131,7 +131,7 @@
 }
 
 .btn-compute-clear {
-    width: calc(100% - 1rem);
+    width: 100%;
 }
 
 .code-input {

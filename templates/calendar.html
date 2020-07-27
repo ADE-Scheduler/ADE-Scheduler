@@ -220,7 +220,7 @@
     <div class="row">
         <!-- Sidebar -->
         <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-            <div class="sidebar-sticky pt-2">
+            <div class="sidebar-sticky p-3">
                 <a tabindex="0" class="badge rounded-pill bg-info badge-info-custom text-white" data-toggle="popover" data-trigger="focus"
                     data-content="To view more info or adapt your schedule, click on a course code." data-title="Note">
                     <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-info" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -228,7 +228,7 @@
                         <circle cx="8" cy="4.5" r="1"/>
                     </svg>
                 </a>
-                <div class="list-group list-code m-2">
+                <div class="list-group list-code">
                     <li class="list-group-item code-item d-flex justify-content-between align-items-center"  v-for='code in codes'>
                         <div class="code-tag" v-on:click="getDetails(code)">
                             [[ code ]]
@@ -246,7 +246,7 @@
                         </form>
                     </li>
                 </div>
-                <div class="btn-group btn-compute-clear m-2">
+                <div class="btn-group btn-compute-clear mt-3">
                     <button class="btn btn-outline-dark btn-sm w-50" type="button" v-on:click="compute($event); toggleNav(false)">
                         Compute
                     </button>
@@ -259,7 +259,7 @@
 
         <!-- Main content -->
         <div class="container-fluid">
-            <div class="col-md-9 ml-sm-auto col-lg-10 px-md-4 pt-2">
+            <div class="col-md-9 ml-sm-auto col-lg-10 p-3">
                 <div class="alert alert-success alert-dismissible" style="display: none;" v-show="saveSuccess">
                     Schedule successfuly saved !
                     <button type="button" class="close"v-on:click="saveSuccess = false">
