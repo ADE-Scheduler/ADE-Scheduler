@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import '../css/base.css'
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default {
     0: Vue.directive('focus', {
