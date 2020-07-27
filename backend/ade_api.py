@@ -10,7 +10,7 @@ from backend.courses import Course
 from backend.resources import Resource
 from backend import professors
 import backend.events
-from typing import Dict, Union, List, Tuple, Iterator
+from typing import Dict, Union, List, Tuple, SupportsInt
 
 
 class ExpiredTokenError(Exception):
@@ -89,48 +89,48 @@ class DummyClient:
         """
         return self.request(function='getProjects', detail=2)
 
-    def get_resources(self, project_id: Union[str, int]) -> requests.Response:
+    def get_resources(self, project_id: SupportsInt) -> requests.Response:
         """
         Requests the ids of all the resource for a specific project.
 
         :param project_id: the id of the project
-        :type project_id: Union[str, int]
+        :type project_id: SupportsInt
         :return: the response
         :rtype: request.Response
         """
         return self.request(projectId=project_id, function='getResources', detail=13, tree='false')
 
-    def get_resource_ids(self, project_id: Union[str, int]) -> requests.Response:
+    def get_resource_ids(self, project_id: SupportsInt) -> requests.Response:
         """
         Requests the ids of all the resource for a specific project.
 
         :param project_id: the id of the project
-        :type project_id: Union[str, int]
+        :type project_id: SupportsInt
         :return: the response
         :rtype: request.Response
         """
         return self.request(projectId=project_id, function='getResources', detail=2)
 
-    def get_classrooms(self, project_id: Union[str, int]) -> requests.Response:
+    def get_classrooms(self, project_id: SupportsInt) -> requests.Response:
         """
         Requests all the classrooms for a specific project.
 
         :param project_id: the id of the project
-        :type project_id: Union[str, int]
+        :type project_id: SupportsInt
         :return: the response
         :rtype: request.Response
         """
         return self.request(projectId=project_id, function='getResources',
                             detail=13, tree='false', category='classroom')
 
-    def get_activities(self, resource_ids: List[Union[str, int]], project_id: Union[str, int]) -> requests.Response:
+    def get_activities(self, resource_ids: List[SupportsInt], project_id: SupportsInt) -> requests.Response:
         """
         Requests all activities (set of events)  for a specific project.
 
         :param resource_ids: the ids of all the resources the activities are requested
-        :type resource_ids: List[Union[str, int]
+        :type resource_ids: List[SupportsInt]
         :param project_id: the id of the project
-        :type project_id: Union[str, int]
+        :type project_id: SupportsInt
         :return: the response
         :rtype: request.Response
         """

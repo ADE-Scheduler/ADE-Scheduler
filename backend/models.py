@@ -5,6 +5,7 @@ from flask_security.models import fsqla_v2 as fsqla
 db = SQLAlchemy()
 fsqla.FsModels.set_db_info(db)
 
+# TODO: @Louis faut vérifier que tout marche bien et puis bien commenter la docstring :)
 
 class ScheduleDoNotMatchError(Exception):
     """
@@ -93,7 +94,7 @@ class Schedule(db.Model):
         self.data = data
         db.session.commit()
 
-    def get_link():
+    def get_link(self):
         if self.link is None:
             Link(self)
         return self.link
