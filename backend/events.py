@@ -5,7 +5,7 @@ from ics.utils import arrow_to_iso, get_arrow
 from datetime import datetime
 from backend.classrooms import merge_classrooms, Classroom
 from backend.professors import Professor
-from typing import Type, Tuple, Iterable, Optional
+from typing import Type, Tuple, Iterable, Optional, Union, Any, Dict
 
 # We need to set the timezone
 TZ = timezone('Europe/Brussels')
@@ -13,23 +13,37 @@ COURSE_REGEX = '([A-Z]+[0-9]+)'
 
 
 class CustomEvent(Event):
-    def __init__(self, name, location, description, begin, end):
-        super().__init__(name=name, begin=begin, end=end, location=location, description=description)
-        self.weight = 5     # default weight
+    """
+    Subclass of ics.Event, implementing more methods useful to know if two events are conflicting.
+
+    :param weight: the weight of this event
+    :type weight: Union[int, float]
+    :param kwargs: parameters passed to :func:`ics.Event` constructor, but should as least contain :
+        - name: str
+        - begin: datetime
+        - end: datetime
+        - location: str
+        - description: str
+    :type kwargs: Any
+    """
+
+    def __init__(self, weight: Union[int, float] = 5, **kwargs: Any):
+        super().__init__(**kwargs)
+        self.weight = weight
 
     def __hash__(self) -> int:
         return super().__hash__()
 
-    def intersects(self, other: 'AcademicalEvent') -> bool:
+    def intersects(self, other: 'CustomEvent') -> bool:
         """
         Returns whether two events intersect each other.
 
         :param other: the event to compare with
-        :type other: AcademicalEvent
-        :return: True if both events intersect
+        :type other: CustomEvent
+        :return: true if both events intersect
         :rtype: bool
         """
-        return self.end > other.begin and other.end > self.begin  # not(A or B) = notA and notB
+        return self.end > other.begin and other.end > self.begin  # not(a or b) = not(a) and not(b)
 
     __xor__ = intersects
 
@@ -38,7 +52,7 @@ class CustomEvent(Event):
         If both events intersect, returns the product of the weights.
 
         :param other: the event to compare with
-        :type other: AcademicalEvent
+        :type other: CustomEvent
         :return: self.weight * other.weight if intersect, else 0
         :rtype: float
         """
@@ -55,21 +69,23 @@ class CustomEvent(Event):
         """
         return self.begin.isocalendar()[1] - 1
 
-    def set_weight(self, weight: float) -> None:
+    def set_weight(self, weight: float):
         """
-        Changes the weight of the event.
+        changes the weight of the event.
 
         :param weight: the weight
         :type weight: float
         """
         self.weight = weight
 
-    def json(self, color='#9e742f') -> dict:
+    def json(self, color: str = '#9e742f') -> Dict[str, Any]:
         """
         Returns the event as a json-like format.
 
+        :param color: the color of the event
+        :type color: str
         :return: a dictionary containing relevant information
-        :rtype: dict
+        :rtype: Dict[str, Any]
         """
         return {
             'title': self.name,
@@ -84,39 +100,44 @@ class CustomEvent(Event):
 
 class RecurringCustomEvent(CustomEvent):
     """
-    Represents a recurring event, formattable according to iCalendar's rules.
+    Subclass of CustomEvent, representing a recurring event, according to iCalendar's rules.
+
+    :param end_recurrence: the end of the recurrence
+    :type end_recurrence: datetime
+    :param freq: the frequency of the recurrence
+    :type freq: Iterable[str]
+    :param kwargs: parameters passed to :func:`CustomEvent` constructor
+    :type kwargs: Any
     """
-    def __init__(self, name, location, description, begin, end, end_recurr, freq):
-        super().__init__(name=name, location=location, description=description, begin=begin, end=end)
-        self.end_recurr = get_arrow(end_recurr)
+
+    def __init__(self, end_recurrence, freq, **kwargs):
+        super().__init__(**kwargs)
+        self.end_recurrence = get_arrow(end_recurrence)
         self.freq = [int(i) for i in freq]
 
-    def json(self, color='#8a7451') -> dict:
-        """
-        Returns the event as a json-like format.
+    def json(self, color='#8a7451'):
+        r = super().json(color=color)
+        del r['start']
+        del r['end']
+        r.update(
+            {
+                'daysofweek': self.freq,
+                'starttime': self.begin.format('hh:mmz'),
+                'endtime': self.end.format('hh:mmz'),
+                'startrecur': str(self.begin),
+                'endrecur': str(self.end_recurrence),
+            }
+        )
 
-        :return: a dictionary containing relevant information
-        :rtype: dict
-        """
-        return {
-            'title': self.name,
-            'description': self.description + '\n' + self.location,
-            'daysOfWeek': self.freq,
-            'startTime': self.begin.format('HH:mmZ'),
-            'endTime': self.end.format('HH:mmZ'),
-            'startRecur': str(self.begin),
-            'endRecur': str(self.end_recurr),
-            'editable': False,
-            'backgroundColor': color,
-            'borderColor': color,
-        }
+        return r
 
     def __str__(self):
-        days = ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA']
+        # TODO: c'est moche d'écrire comme ça
+        days = ['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa']
 
-        s = 'BEGIN:VEVENT\n'
-        s += 'DTSTART:' + arrow_to_iso(self.begin) + '\n'
-        s += 'DTEND:' + arrow_to_iso(self.end) + '\n'
+        s = 'begin:vevent\n'
+        s += 'dtstart:' + arrow_to_iso(self.begin) + '\n'
+        s += 'dtend:' + arrow_to_iso(self.end) + '\n'
         s += 'RRULE:FREQ=WEEKLY;INTERVAL=1;';
         s += 'BYDAY=' + ','.join([days[i] for i in self.freq]) + ';'
         s += 'UNTIL=' + arrow_to_iso(self.end_recurr) + '\n'
@@ -132,6 +153,8 @@ class AcademicalEvent(CustomEvent):
     """
     An academical event is an object used to represent any event in the academical calendar.
 
+    It subclasses CustomEvent.
+
     :param name: the name of the event
     :type name: str
     :param begin: the start of the event
@@ -145,20 +168,20 @@ class AcademicalEvent(CustomEvent):
     :param id: the id of the event
     :type id: Optional[str]
     :param weight: the weight attributed to the event
-    :type weight: float
+    :type weight: Union[int, float]
     :param code: code of the course related to this event
     :type code: Optional[str]
     :param prefix: the prefix used for to describe the type of event
     :type prefix: Optional[str]
     """
-    def __init__(self, name: str, begin: datetime, end: datetime, professor: Professor,
-                 classrooms: Optional[Iterable[Classroom]] = None, id: Optional[str] = None, weight: float = 5,
-                 code: Optional[str] = None, prefix: Optional[str] = None):
 
+    def __init__(self, name: str, begin: datetime, end: datetime, professor: Professor,
+                 classrooms: Optional[Iterable[Classroom]] = None, id: Optional[str] = None,
+                 weight: Union[int, float] = 5,
+                 code: Optional[str] = None, prefix: Optional[str] = None):
         super().__init__(name=name, location=merge_classrooms(classrooms),
-                         description=str(professor), begin=begin, end=end)
-                         # TODO: merge_classrooms fait du gros caca ici
-        self.weight = weight
+                         description=str(professor), begin=begin, end=end, weight=weight)
+        # TODO: merge_classrooms fait du gros caca ici
         self.id = f'{prefix}{id}'
         self.code = code
         self.classrooms = classrooms
@@ -184,23 +207,18 @@ class AcademicalEvent(CustomEvent):
         """
         return self.id
 
-    def json(self, color='') -> dict:
-        """
-        Returns the event as a json-like format.
-
-        :return: a dictionary containing relevant information
-        :rtype: dict
-        """
-        return {
-            'start': str(self.begin),
-            'end': str(self.end),
-            'title': self.id,
-            'editable': False,
-            'description': self.name + '\n' + str(self.location) + ' - ' + str(self.duration) + '\n' + str(self.description),
-            'code': self.code,
-            'backgroundColor': color,
-            'borderColor': color,
-        }
+    def json(self, color=''):
+        r = super().json(color=color)
+        r.update(
+            {
+                'title': self.id,
+                'description': f'{self.name}\n'
+                               f'{str(self.location)}'
+                               f'{str(self.duration)}\n'
+                               f'{str(self.description)}',
+                'code': self.code
+            }
+        )
 
 
 class EventCM(AcademicalEvent):
@@ -258,7 +276,9 @@ def extract_code(course_id: str) -> str:
     Extracts a code from a course id.
 
     :param course_id: str given by ADE API to represent the id
+    :type course_id: str
     :return: The code of the course. None if nothing matched the pattern required
+    :rtype: str
     """
     s = re.search(COURSE_REGEX, course_id, re.IGNORECASE)
     if s:
@@ -271,9 +291,13 @@ def extract_type(course_type: str, course_id: str) -> Type[AcademicalEvent]:
     """
     Extract the type of Academical event from course type or course id.
     Sometimes, information from ADE API is wrong...
-    :param course_type: str given by ADE API to represent the type
-    :param course_id: str given by ADE API to represent the id
-    :return: AcademicalEvent subclass
+
+    :param course_type: string given by ADE API to represent the type
+    :type course_type: str
+    :param course_id: string given by ADE API to represent the id
+    :type course_id: str
+    :return: the type of the event
+    :rtype: Type[AcademicalEvent]
     """
     # We first try to detect the type with the ID regex
     if re.search(COURSE_REGEX + "-", course_id, re.IGNORECASE):
@@ -303,7 +327,8 @@ def extract_type(course_type: str, course_id: str) -> Type[AcademicalEvent]:
 
 def extract_datetime(date: str, start: str, end: str) -> Tuple[datetime, datetime]:
     """
-    Parses info to return the start and end time of an event
+    Parses infos to return the start and end time of an event.
+
     :param date: the date matching %d/%m/%Y format
     :type date: str
     :param start: the start hour matching %H:%M format
