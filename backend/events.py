@@ -224,51 +224,36 @@ class AcademicalEvent(CustomEvent):
 class EventCM(AcademicalEvent):
     PREFIX = 'CM: '
 
-    def __init__(self, name: str, begin: datetime, end: datetime, professor: Professor,
-                 classrooms: Iterable[Classroom] = None, id: str = None, weight: float = 5,
-                 code: str = None):
-        super().__init__(name=name, begin=begin, end=end, professor=professor, classrooms=classrooms, id=id,
-                         weight=weight, code=code, prefix=EventCM.PREFIX)
+    def __init__(self, **kwargs):
+        super().__init__(prefix=EventCM.PREFIX, **kwargs)
 
 
 class EventTP(AcademicalEvent):
     PREFIX = 'TP: '
 
-    def __init__(self, name: str, begin: datetime, end: datetime, professor: Professor,
-                 classrooms: Iterable[Classroom] = None, id: str = None, weight: float = 5,
-                 code: str = None):
-        super().__init__(name=name, begin=begin, end=end, professor=professor, classrooms=classrooms, id=id,
-                         weight=weight, code=code, prefix=EventTP.PREFIX)
+    def __init__(self, **kwargs):
+        super().__init__(prefix=EventTP.PREFIX, **kwargs)
 
 
 class EventEXAM(AcademicalEvent):
     PREFIX = 'EXAM: '
 
-    def __init__(self, name: str, begin: datetime, end: datetime, professor: Professor,
-                 classrooms: Iterable[Classroom] = None, id: str = None, weight: float = 5,
-                 code: str = None):
-        super().__init__(name=name, begin=begin, end=end, professor=professor, classrooms=classrooms, id=id,
-                         weight=weight, code=code, prefix=EventEXAM.PREFIX)
+    def __init__(self, **kwargs):
+        super().__init__(prefix=EventEXAM.PREFIX, **kwargs)
 
 
 class EventORAL(AcademicalEvent):
     PREFIX = 'ORAL: '
 
-    def __init__(self, name: str, begin: datetime, end: datetime, professor: Professor,
-                 classrooms: Iterable[Classroom] = None, id: str = None, weight: float = 5,
-                 code: str = None):
-        super().__init__(name=name, begin=begin, end=end, professor=professor, classrooms=classrooms, id=id,
-                         weight=weight, code=code, prefix=EventORAL.PREFIX)
+    def __init__(self, **kwargs):
+        super().__init__(prefix=EventORAL.PREFIX, **kwargs)
 
 
 class EventOTHER(AcademicalEvent):
     PREFIX = 'OTHER: '
 
-    def __init__(self, name: str, begin: datetime, end: datetime, professor: Professor,
-                 classrooms: Iterable[Classroom] = None, id: str = None, weight: float = 5,
-                 code: str = None):
-        super().__init__(name=name, begin=begin, end=end, professor=professor, classrooms=classrooms, id=id,
-                         weight=weight, code=code, prefix=EventOTHER.PREFIX)
+    def __init__(self, **kwargs):
+        super().__init__(prefix=EventOTHER.PREFIX, **kwargs)
 
 
 def extract_code(course_id: str) -> str:
