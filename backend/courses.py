@@ -58,9 +58,9 @@ class Course:
     def __repr__(self) -> str:
         return str(self)
 
-    def add_activity(self, events: List[AcademicalEvent]) -> None:
+    def add_activity(self, events: List[AcademicalEvent]):
         """
-        Add an activity to the current course's activities. An activity is a set of events with the same id.
+        Adds an activity to the current course's activities. An activity is a set of events with the same id.
 
         :param events: list of academical events coming from the same activity
         :type events: List[AcademicalEvent]
@@ -75,7 +75,7 @@ class Course:
         df = pd.DataFrame(data=data, columns=self.activities.columns, index=index)
         self.activities = self.activities.append(df)
 
-    def set_weights(self, percentage: float = 50, event_type: Optional[AcademicalEvent] = None) -> None:
+    def set_weights(self, percentage: float = 50, event_type: Optional[AcademicalEvent] = None):
         """
         Modifies this course's events weight.
 
@@ -95,7 +95,7 @@ class Course:
             valid = self.activities.index.get_level_values(level) == event_type
             self.activities['event'][valid].apply(f)
 
-    def get_summary(self) -> pd.DataFrame:
+    def get_summary(self) -> Dict[str, List[str]]:
         """
         Returns the summary of all activities in the course.
 
