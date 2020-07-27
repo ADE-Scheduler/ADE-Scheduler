@@ -11,6 +11,7 @@ module.exports = {
         register_user: "./static/js/security/register_user.js",
         reset_password: "./static/js/security/reset_password.js",
     },
+    devtool: 'inline-source-map',
     resolve: {
         alias: {
             'vue$': 'vue/dist/vue.esm.js'

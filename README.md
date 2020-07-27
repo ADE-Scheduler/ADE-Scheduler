@@ -121,8 +121,8 @@ pip3 install -r requirements.txt
 ```
 
 ### 4. Installez les packages Node requis
-Installez d'abord Node.js si ce n'est pas déjà fait: https://nodejs.org/en/download/  
-Ensuite, installez les modules NodeJS:
+Installez d'abord Node.js et npm si ce n'est pas déjà fait: https://nodejs.org/en/
+Ensuite, installez les modules:
 ```
 cd <repo>
 npm install

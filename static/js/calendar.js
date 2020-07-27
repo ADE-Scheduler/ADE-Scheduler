@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import { Modal, Popover, Tooltip, Collapse } from 'bootstrap';
-import { Calendar } from '@fullcalendar/core';
+import FullCalendar from '@fullcalendar/vue'
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import frLocale from '@fullcalendar/core/locales/fr';
@@ -14,13 +14,11 @@ var addEventModal = {};
 var eventModal = {};
 var courseModal = {};
 var codeMenu = {};
-var calendar = {};
 var vm = new Vue({
     el: '#app',
+    components: { FullCalendar },
     data: {
         codes: [],
-        events: [],
-        calendar: {},
         computing: true,
         error: false,
         saveSuccess: false,
@@ -49,6 +47,79 @@ var vm = new Vue({
             rrule: {},
         },
         navBtn: false,
+        calendarOptions: {
+            plugins: [ dayGridPlugin, timeGridPlugin ],
+            locales: [ frLocale ],
+            locale: document.getElementById('current-locale').innerText.trim(),
+
+            height: 'auto',
+            slotMinTime: '08:00:00',
+            slotMaxTime: '21:00:00',
+            navLinks: true, // can click day/week names to navigate views
+            editable: false,
+            droppable: false,
+            dayMaxEventRows: false, // allow "more" link when too many events
+            allDaySlot: false,
+
+            // Week display
+            firstDay: 1,
+            weekText: 'S',
+            weekNumbers: true,
+            weekNumberCalculation: (d) => {
+                d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
+                let yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+                return Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
+            },
+
+            // Header bar
+            customButtons: {
+                addEvent: {
+                    text: '+',
+                    click: () => { addEventModal.show(); }
+                }
+            },
+            headerToolbar: {
+                left: 'prev,next today addEvent',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek'
+            },
+
+            // Remember where the user left the calendar
+            initialView: (localStorage.getItem("fcInitialView") !== null ? localStorage.getItem("fcInitialView") : 'timeGridWeek'),
+            initialDate: (localStorage.getItem("fcInitialDate") !== null ? parseInt(localStorage.getItem("fcInitialDate")) : Date.now()),
+            datesSet: function (arg) {
+                localStorage.setItem("fcInitialView", arg.view.type);
+                localStorage.setItem("fcInitialDate", arg.view.currentStart.getTime());
+            },
+
+            // Events
+            events: [],
+            eventTextColor: 'white',
+            eventDisplay: 'block',
+            eventDidMount: function (arg) {
+                new Tooltip(arg.el, {
+                    container: 'body',
+                    title: arg.event.extendedProps.description,
+                    sanitize: false,
+                    template: `
+                        <div class="tooltip" role="tooltip">
+                            <div class="tooltip-arrow"></div>
+                            <div class="tooltip-inner" style="background-color:` + arg.event.backgroundColor + `"></div>
+                        </div>`,
+                    placement: 'auto',
+                });
+            },
+            eventClick: function(info) {
+                let evt = info.event.toPlainObject({collapseExtendedProps: true});
+                if (evt.id) {
+                    vm.eventInfo = evt;
+                    vm.eventInfo.event = info.event;
+                    eventModal.show();
+                } else {
+                    vm.getDetails(evt.code);
+                }
+            }
+        },
     },
     delimiters: ['[[',']]'],
 
@@ -61,7 +132,7 @@ var vm = new Vue({
             })
             .then(resp => {
                 this.codes = resp.data.codes;
-                this.events = resp.data.events;
+                this.calendarOptions.events = resp.data.events;
             })
             .catch(err => {
                 this.error = true;
@@ -77,7 +148,7 @@ var vm = new Vue({
                 url: Flask.url_for('calendar.clear'),
             })
             .then(resp => {
-                this.events = [];
+                this.calendarOptions.events = [];
                 this.codes = [];
             })
             .catch(err => {
@@ -131,7 +202,7 @@ var vm = new Vue({
             })
             .then(resp => {
                 this.codes = this.codes.concat(resp.data.codes);
-                this.events = resp.data.events;
+                this.calendarOptions.events = resp.data.events;
                 this.code = '';
             })
             .catch(err => {
@@ -149,7 +220,7 @@ var vm = new Vue({
             })
             .then(resp => {
                 this.codes.splice(this.codes.indexOf(code), 1);
-                this.events = resp.data.events;
+                this.calendarOptions.events = resp.data.events;
             })
             .catch(err => {
                 this.error = true;
@@ -266,7 +337,7 @@ var vm = new Vue({
                 header: {'Content-Type': 'application/json'},
             })
             .then(resp => {
-                this.events = resp.data.events;
+                this.calendarOptions.events = resp.data.events;
             })
             .catch(err => {
                 this.error = true;
@@ -302,11 +373,6 @@ var vm = new Vue({
             return {'opacity': this.computing ? '0.2':'1'}
         },
     },
-    watch: {
-        events: function () {
-            calendar.refetchEvents();
-        },
-    },
     created:  function () {
         this.fetchData();
     },
@@ -314,8 +380,7 @@ var vm = new Vue({
 
 
 document.addEventListener('DOMContentLoaded', function() {
-    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="popover"]'));
-    popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+    popoverList = [].slice.call(document.querySelectorAll('[data-toggle="popover"]')).map(function (popoverTriggerEl) {
         return new Popover(popoverTriggerEl, {
             container: 'body',
             trigger: 'focus',
@@ -327,82 +392,4 @@ document.addEventListener('DOMContentLoaded', function() {
     codeMenu = new Collapse(document.getElementById('sidebarMenu'), {
         toggle: false,
     });
-
-    calendar = new Calendar(document.getElementById('calendar'), {
-        plugins: [ dayGridPlugin, timeGridPlugin ],
-        locales: [ frLocale ],
-        locale: document.getElementById('current-locale').innerText.trim(),
-
-        height: 'auto',
-        slotMinTime: '08:00:00',
-        slotMaxTime: '21:00:00',
-        navLinks: true, // can click day/week names to navigate views
-        editable: false,
-        droppable: false,
-        dayMaxEventRows: false, // allow "more" link when too many events
-
-        // Week display
-        firstDay: 1,
-        weekText: 'S',
-        weekNumbers: true,
-        weekNumberCalculation: (d) => {
-            d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
-            // Get first day of year
-            let yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
-            // Calculate full weeks to nearest Thursday
-            return Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
-        },
-
-        // Header bar
-        customButtons: {
-            addEvent: {
-                text: '+',
-                click: () => { addEventModal.show(); }
-            }
-        },
-        headerToolbar: {
-            left: 'prev,next today addEvent',
-            center: 'title',
-            right: 'dayGridMonth,timeGridWeek'
-        },
-
-        // Remember where the user left the calendar
-        initialView: (localStorage.getItem("fcInitialView") !== null ? localStorage.getItem("fcInitialView") : 'timeGridWeek'),
-        initialDate: (localStorage.getItem("fcInitialDate") !== null ? parseInt(localStorage.getItem("fcInitialDate")) : Date.now()),
-        datesSet: function (arg) {
-            localStorage.setItem("fcInitialView", arg.view.type);
-            localStorage.setItem("fcInitialDate", arg.view.currentStart.getTime());
-        },
-
-        // Events
-        events: function (fetchInfo, successCallback, failureCallback) {
-            successCallback(vm.events);
-        },
-        eventTextColor: 'white',
-        eventDisplay: 'block',
-        eventDidMount: function (arg) {
-            new Tooltip(arg.el, {
-                container: 'body',
-                title: arg.event.extendedProps.description,
-                sanitize: false,
-                template: `
-                    <div class="tooltip" role="tooltip">
-                        <div class="tooltip-arrow"></div>
-                        <div class="tooltip-inner" style="background-color:` + arg.event.backgroundColor + `"></div>
-                    </div>`,
-                placement: 'auto',
-            });
-        },
-        eventClick: function(info) {
-            let evt = info.event.toPlainObject({collapseExtendedProps: true});
-            if (evt.id) {
-                vm.eventInfo = evt;
-                vm.eventInfo.event = info.event;
-                eventModal.show();
-            } else {
-                vm.getDetails(evt.code);
-            }
-          }
-    });
-    calendar.render();
 });

@@ -273,8 +273,7 @@
                     </button>
                 </div>
                 <div class="spinner-border text-primary spinner-compute" v-show="computing"></div>
-                <div id="calendar" v-bind:style="calendarOpacity">
-                </div>
+                <full-calendar v-bind:options="calendarOptions" v-bind:style="calendarOpacity"/>
             </div>
         </div>
     </div>
