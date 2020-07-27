@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% from "custom_macros.html" import render_input_field %}
-{% block head %}
-    <link href={{ url_for('static', filename='css/security/register_user.css') }} rel="stylesheet">
-{% endblock %}
 
+{% block js %}
+<script type="text/javascript" src="{{ url_for('static', filename='dist/register_user.bundle.js') }}"></script>
+{% endblock %}
 
 {% block body %}
     <form class="form-signup needs-validation" novalidate id="register-form" action={{ url_for('security.register') }} method="POST" autocomplete="off" name="register_user_form">
@@ -32,9 +32,4 @@
         <hr class="mb-3">
         {{ register_user_form.submit(class="btn btn-lg btn-primary btn-block") }}
     </form>
-{% endblock %}
-
-
-{% block js %}
-    <script src={{ url_for('static', filename='js/security/register_user.js') }}></script>
 {% endblock %}

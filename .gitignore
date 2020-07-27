@@ -124,3 +124,5 @@ test.py
 webapp/templates/map_bis.html
 
 static/gen/
+
+node_modules/

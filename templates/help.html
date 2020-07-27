@@ -1,10 +1,8 @@
 {% extends "base.html" %}
-{% block head %}
-    {% assets "help_css" %}
-        <link rel="stylesheet" href="{{ ASSET_URL }}" />
-    {% endassets %}
-{% endblock %}
 
+{% block js %}
+<script type="text/javascript" src="{{ url_for('static', filename='dist/help.bundle.js') }}"></script>
+{% endblock %}
 
 {% block body %}
 <!-- Course details Modal -->
@@ -93,10 +91,4 @@
         </svg>
     </button>
 </div>
-{% endblock %}
-
-{% block js %}
-{% assets "help_js" %}
-    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-{% endassets %}
 {% endblock %}

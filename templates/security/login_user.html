@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% from "custom_macros.html" import render_login_field %}
-{% block head %}
-    <link href={{ url_for('static', filename='css/security/login_user.css') }} rel="stylesheet">
-{% endblock %}
 
+{% block js %}
+<script type="text/javascript" src="{{ url_for('static', filename='dist/login_user.bundle.js') }}"></script>
+{% endblock %}
 
 {% block body %}
     <form class="form-signin needs-validation" novalidate action={{ url_for('security.login') }} method="POST" name="login_user_form">
@@ -25,8 +25,4 @@
             <small>New to ADE Scheduler ? <a href={{ url_for('security.register') }}>Sign up now !</a></small>
         </div>
     </form>
-{% endblock %}
-
-
-{% block js %}
 {% endblock %}

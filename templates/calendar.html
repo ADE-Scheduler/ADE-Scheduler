@@ -1,10 +1,8 @@
 {% extends "base.html" %}
-{% block head %}
-    {% assets "calendar_css" %}
-        <link rel="stylesheet" href="{{ ASSET_URL }}" />
-    {% endassets %}
-{% endblock %}
 
+{% block js %}
+<script type="text/javascript" src="{{ url_for('static', filename='dist/calendar.bundle.js') }}"></script>
+{% endblock %}
 
 {% block body %}
     <!-- Course details Modal -->
@@ -289,10 +287,4 @@
             <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
         </svg>
     </button>
-{% endblock %}
-
-{% block js %}
-{% assets "calendar_js" %}
-<script type="text/javascript" src="{{ ASSET_URL }}"></script>
-{% endassets %}
 {% endblock %}

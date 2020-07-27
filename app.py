@@ -8,7 +8,6 @@ from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from flask_security import Security, SQLAlchemyUserDatastore
 from flask_mail import Mail
-from flask_assets import Environment
 from flask_jsglue import JSGlue
 from flask_babelex import Babel
 from flask_migrate import Migrate
@@ -39,11 +38,6 @@ jsglue = JSGlue(app)
 ade_api_credentials = cd.get_credentials(cd.ADE_API_CREDENTIALS)
 manager = mng.Manager(ade.Client(ade_api_credentials), srv.Server(host='localhost', port=6379), md.db)
 app.config['MANAGER'] = manager
-
-# Setup Flask-Assets
-from util.assets import bundles
-assets = Environment(app)
-assets.register(bundles)
 
 # Setup Flask-Mail
 mail_credentials = cd.get_credentials(cd.GMAIL_CREDENTIALS)
@@ -97,9 +91,9 @@ def set_locale(locale):
 
 @app.before_first_request
 def before_first_request():
-    if not os.path.exists('static/gen'):
-        os.makedirs('static/gen')
-    with open('static/gen/jsglue.js', 'w') as f:
+    if not os.path.exists('static/dist'):
+        os.makedirs('static/dist')
+    with open('static/dist/jsglue.js', 'w') as f:
         f.write(jsglue.generate_js())
 
 

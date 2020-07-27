@@ -1,3 +1,8 @@
+import Vue from 'vue';
+import { Collapse } from 'bootstrap';
+import './base.js';
+import '../css/help.css';
+
 var nav = {};
 var vm = new Vue({
     el: '#app',
@@ -25,7 +30,7 @@ var vm = new Vue({
 
 
 document.addEventListener('DOMContentLoaded', function() {
-    nav = new bootstrap.Collapse(document.getElementById('faq-navigator'), {
+    nav = new Collapse(document.getElementById('faq-navigator'), {
         toggle: false,
     });
 });

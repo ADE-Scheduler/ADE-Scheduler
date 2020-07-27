@@ -1,3 +1,6 @@
+import '../base.js';
+import '../../css/security/register_user.css';
+
 const valid_pwd = document.getElementById('password_confirm');
 const       pwd = document.getElementById('password');
 const     email = document.getElementById('email');

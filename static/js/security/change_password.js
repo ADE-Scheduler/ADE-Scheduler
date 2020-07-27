@@ -1,3 +1,6 @@
+import '../base.js';
+import '../../css/security/change_password.css';
+
 const valid_pwd = document.getElementById('new_password_confirm');
 const       pwd = document.getElementById('new_password');
 const      form = document.getElementById('change_password_form');

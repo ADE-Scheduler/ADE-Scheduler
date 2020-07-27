@@ -1,3 +1,6 @@
+import '../base.js';
+import '../../css/security/reset_password.css';
+
 const valid_pwd = document.getElementById('password_confirm');
 const       pwd = document.getElementById('password');
 const      form = document.getElementById('reset_password_form');

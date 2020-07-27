@@ -1,10 +1,16 @@
+import Vue from 'vue';
+import VSwatches from 'vue-swatches';
+import { Modal } from 'bootstrap';
+import './base.js';
+import 'vue-swatches/dist/vue-swatches.css'
+import '../css/account.css';
+
+const axios = require('axios');
 
 var warningModal = {};
 var vm = new Vue({
     el: '#app',
-    components: {
-        VSwatches: window['vue-swatches']
-    },
+    components: { VSwatches },
     data: {
         projectId: [],
         schedules: [],
@@ -173,5 +179,5 @@ var vm = new Vue({
 
 
 document.addEventListener('DOMContentLoaded', function() {
-    warningModal = new bootstrap.Modal(document.getElementById('warningModal'));
+    warningModal = new Modal(document.getElementById('warningModal'));
 });

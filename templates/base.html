@@ -10,11 +10,7 @@
         <title>ADE Scheduler v2.0</title>
         <!-- Favicon -->
         <link href="{{ url_for('static', filename='img/favicon.ico') }}" rel="shortcut icon">
-
-        {% assets "base_css" %}
-        <link rel="stylesheet" href="{{ ASSET_URL }}" />
-        {% endassets %}
-
+        {{ JSGlue.include() }}
         {%block head%}{%endblock%}
     </head>
 
@@ -78,9 +74,6 @@
             </main>
         </div>
 
-        {% assets "base_js" %}
-        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-        {% endassets %}
         {% block js %}{% endblock %}
     </body>
 </html>

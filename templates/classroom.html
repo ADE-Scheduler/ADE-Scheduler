@@ -1,20 +1,12 @@
 {% extends "base.html" %}
-{% block head %}
-    {% assets "classroom_css" %}
-        <link rel="stylesheet" href="{{ ASSET_URL }}" />
-    {% endassets %}
-{% endblock %}
 
+{% block js %}
+<script type="text/javascript" src="{{ url_for('static', filename='dist/classroom.bundle.js') }}"></script>
+{% endblock %}
 
 {% block body %}
 <!-- Course details Modal -->
 <div class="container-fluid">
     [[ message ]]
 </div>
-{% endblock %}
-
-{% block js %}
-{% assets "classroom_js" %}
-    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-{% endassets %}
 {% endblock %}

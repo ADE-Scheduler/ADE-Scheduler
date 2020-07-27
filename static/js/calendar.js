@@ -1,3 +1,14 @@
+import Vue from 'vue';
+import { Modal, Popover, Tooltip, Collapse } from 'bootstrap';
+import { Calendar } from '@fullcalendar/core';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import frLocale from '@fullcalendar/core/locales/fr';
+import './base.js';
+import '../css/calendar.css';
+
+const axios = require('axios');
+
 var popoverList = [];
 var addEventModal = {};
 var eventModal = {};
@@ -305,19 +316,23 @@ var vm = new Vue({
 document.addEventListener('DOMContentLoaded', function() {
     var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="popover"]'));
     popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-        return new bootstrap.Popover(popoverTriggerEl, {
+        return new Popover(popoverTriggerEl, {
             container: 'body',
             trigger: 'focus',
         })
     });
-    addEventModal = new bootstrap.Modal(document.getElementById('addEventModal'));
-    eventModal = new bootstrap.Modal(document.getElementById('eventModal'));
-    courseModal = new bootstrap.Modal(document.getElementById('courseModal'));
-    codeMenu = new bootstrap.Collapse(document.getElementById('sidebarMenu'), {
+    addEventModal = new Modal(document.getElementById('addEventModal'));
+    eventModal = new Modal(document.getElementById('eventModal'));
+    courseModal = new Modal(document.getElementById('courseModal'));
+    codeMenu = new Collapse(document.getElementById('sidebarMenu'), {
         toggle: false,
     });
 
-    calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
+    calendar = new Calendar(document.getElementById('calendar'), {
+        plugins: [ dayGridPlugin, timeGridPlugin ],
+        locales: [ frLocale ],
+        locale: document.getElementById('current-locale').innerText.trim(),
+
         height: 'auto',
         slotMinTime: '08:00:00',
         slotMaxTime: '21:00:00',
@@ -325,7 +340,6 @@ document.addEventListener('DOMContentLoaded', function() {
         editable: false,
         droppable: false,
         dayMaxEventRows: false, // allow "more" link when too many events
-        locale: document.getElementById('current-locale').innerText.trim(),
 
         // Week display
         firstDay: 1,
@@ -336,7 +350,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Get first day of year
             let yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
             // Calculate full weeks to nearest Thursday
-            return weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
+            return Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
         },
 
         // Header bar
@@ -367,7 +381,7 @@ document.addEventListener('DOMContentLoaded', function() {
         eventTextColor: 'white',
         eventDisplay: 'block',
         eventDidMount: function (arg) {
-            new bootstrap.Tooltip(arg.el, {
+            new Tooltip(arg.el, {
                 container: 'body',
                 title: arg.event.extendedProps.description,
                 sanitize: false,
