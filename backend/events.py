@@ -120,7 +120,7 @@ class RecurringCustomEvent(CustomEvent):
             'rrule': {
                 'days': [days[i] for i in self.freq],
                 'start': str(self.begin),
-                'end': str(self.end),
+                'end': str(self.end_recurr),
             }
         }
 
