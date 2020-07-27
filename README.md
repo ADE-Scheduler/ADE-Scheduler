@@ -106,19 +106,34 @@ Pour installer un serveur Redis, référez-vous au site https://redis.io/topics/
 
 `git clone https://github.com/SnaKyEyeS/ADE-Scheduler`
 
-### 3. Créez un environnement virtuel Python (optionnel)
+### 3. Installez les packages Python requis
 
-Placez-vous dans le dossier du projet
+(Optionnel) Créez un environnement virtuel:
 ```
 cd <repo>
 pip3 install venv
 source venv/bin/activate
 ```
 
+L'installation des packages se fait via la commande suivante:
+```
+pip3 install -r requirements.txt
+```
 
-### 4. Installez packages nécessaires
+### 4. Installez les packages Node requis
+Installez d'abord Node.js si ce n'est pas déjà fait: https://nodejs.org/en/download/  
+Ensuite, installez les modules NodeJS:
+```
+cd <repo>
+npm install
+```
 
-`pip3 install -r requirements.txt`
+Pour assembler tous les assets .js et .css, il suffit d'exécter la commande `npx webpack`.  
+Pour éviter de devoir exécuter cette commande à chaque changement dans le code, il est
+possible de dire à Webpack d'automatiquement s'exécuter à chaque changement avec
+la commande `npx webpack --mode development --watch`.
+
+Il est possible qu'une erreur apparaisse concernant le nombre maximum de 'watchers' autorisé. Une solution sur Linux est d'exécuter: `echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p`. (https://stackoverflow.com/questions/53930305/nodemon-error-system-limit-for-number-of-file-watchers-reached)
 
 ### 5. Initialisez la base de données
 
