@@ -11,7 +11,9 @@
         <!-- Favicon -->
         <link href="{{ url_for('static', filename='img/favicon.ico') }}" rel="shortcut icon">
 
-        {{ JSGlue.include() }}
+        <!-- JSGlue -->
+        <script type="text/javascript" src="{{ url_for('static', filename='dist/jsglue.min.js') }}"></script>
+        
         {%block head%}{%endblock%}
     </head>
 

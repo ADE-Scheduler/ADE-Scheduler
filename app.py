@@ -1,6 +1,7 @@
 # Python imports
 import os
 from datetime import timedelta
+from jsmin import jsmin
 
 # Flask imports
 from flask import Flask, session, request, redirect
@@ -98,8 +99,8 @@ def set_locale(locale):
 def before_first_request():
     if not os.path.exists('static/dist'):
         os.makedirs('static/dist')
-    with open('static/dist/jsglue.js', 'w') as f:
-        f.write(jsglue.generate_js())
+    with open('static/dist/jsglue.min.js', 'w') as f:
+        f.write(jsmin(jsglue.generate_js()))
 
 
 @app.shell_context_processor
