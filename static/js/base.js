@@ -1,14 +1,15 @@
 import Vue from 'vue';
 import '../css/base.css'
 
-export default {
-    0: Vue.directive('focus', {
+
+export default document.addEventListener('DOMContentLoaded', function() {
+    Vue.directive('focus', {
         inserted: function (el) {
             el.focus();
         }
-    }),
+    });
 
-    1: new Vue({
+    new Vue({
         el: '#app-base',
         delimiters: ['[[',']]'],
         data: {
@@ -21,9 +22,7 @@ export default {
         },
     }),
 
-    2: document.addEventListener('DOMContentLoaded', function() {
-        document.querySelector('[data-toggle="offcanvas"]').addEventListener('click', function () {
-            document.querySelector('.offcanvas-collapse').classList.toggle('open')
-        })
-    }),
-}
+    document.querySelector('[data-toggle="offcanvas"]').addEventListener('click', function () {
+        document.querySelector('.offcanvas-collapse').classList.toggle('open')
+    })
+});

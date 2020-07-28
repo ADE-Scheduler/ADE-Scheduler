@@ -1,38 +1,41 @@
 import '../base.js';
 import '../../css/security/reset_password.css';
 
-const valid_pwd = document.getElementById('password_confirm');
-const       pwd = document.getElementById('password');
-const      form = document.getElementById('reset_password_form');
 
-valid_pwd.addEventListener("input", validityCheck);
-  pwd.addEventListener("input", validityCheck);
+document.addEventListener('DOMContentLoaded', function() {
+    const valid_pwd = document.getElementById('password_confirm');
+    const       pwd = document.getElementById('password');
+    const      form = document.getElementById('reset_password_form');
 
-function validityCheck() {
-    if (valid_pwd.value === pwd.value ) {
-        if (form.classList.contains('was-validated')) {
-            valid_pwd.classList.add("is-valid");
-            valid_pwd.classList.remove("is-invalid");
-        }
-        valid_pwd.setCustomValidity("");
-    } else {
-        if (form.classList.contains('was-validated')) {
-            valid_pwd.classList.add("is-invalid");
-            valid_pwd.classList.remove("is-valid");
-        }
-        valid_pwd.setCustomValidity("Invalid field.");
-    }
-}
+    valid_pwd.addEventListener("input", validityCheck);
+      pwd.addEventListener("input", validityCheck);
 
-(function () {
-    'use strict'
-    window.addEventListener('load', function () {
-        form.addEventListener('submit', function (event) {
-            if (form.checkValidity() === false) {
-                event.preventDefault()
-                event.stopPropagation()
+    function validityCheck() {
+        if (valid_pwd.value === pwd.value ) {
+            if (form.classList.contains('was-validated')) {
+                valid_pwd.classList.add("is-valid");
+                valid_pwd.classList.remove("is-invalid");
             }
-            form.classList.add('was-validated')
+            valid_pwd.setCustomValidity("");
+        } else {
+            if (form.classList.contains('was-validated')) {
+                valid_pwd.classList.add("is-invalid");
+                valid_pwd.classList.remove("is-valid");
+            }
+            valid_pwd.setCustomValidity("Invalid field.");
+        }
+    }
+
+    (function () {
+        'use strict'
+        window.addEventListener('load', function () {
+            form.addEventListener('submit', function (event) {
+                if (form.checkValidity() === false) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+            }, false)
         }, false)
-    }, false)
-}());
+    }());
+});

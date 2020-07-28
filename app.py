@@ -11,6 +11,7 @@ from flask_mail import Mail
 from flask_jsglue import JSGlue
 from flask_babelex import Babel
 from flask_migrate import Migrate
+from flask_compress import Compress
 
 # API imports
 import backend.models as md
@@ -72,6 +73,10 @@ app.config['SESSION_MANAGER'] = Session(app)
 app.config['LANGUAGES'] = ['en', 'fr']
 app.config['BABEL_TRANSLATION_DIRECTORIES'] = 'translations'
 babel = Babel(app)
+
+# Allows compression of text assets
+# If the server has automatic compression, comment this line.
+compress = Compress(app)
 
 
 @babel.localeselector

@@ -126,12 +126,11 @@ Ensuite, installez les modules:
 ```
 cd <repo>
 npm install
-```
-
+```  
 Pour assembler tous les assets .js et .css, il suffit d'exécter la commande `npx webpack`.  
 Pour éviter de devoir exécuter cette commande à chaque changement dans le code, il est
 possible de dire à Webpack d'automatiquement s'exécuter à chaque changement avec
-la commande `npx webpack --mode development --watch`.
+la commande `npx webpack --watch`.
 
 Il est possible qu'une erreur apparaisse concernant le nombre maximum de 'watchers' autorisé. Une solution sur Linux est d'exécuter: `echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p`. (https://stackoverflow.com/questions/53930305/nodemon-error-system-limit-for-number-of-file-watchers-reached)
 
