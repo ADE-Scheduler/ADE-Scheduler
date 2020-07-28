@@ -105,7 +105,7 @@ class Course:
         summary = defaultdict(list)
         ids = self.activities.index.get_level_values('id').unique()
         for id in ids:
-            event_type, code = id.split(': ')
+            event_type, code = id.split(': ', 1)
             summary[event_type].append(code)
         return dict(summary)
 

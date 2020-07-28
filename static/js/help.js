@@ -1,9 +1,10 @@
 import Vue from 'vue';
-import { Collapse } from 'bootstrap';
+import { Collapse, ScrollSpy } from 'bootstrap';
 import './base.js';
 import '../css/help.css';
 
 var nav = {};
+var scrollSpy = {};
 var vm = new Vue({
     el: '#app',
     data: {
@@ -12,10 +13,11 @@ var vm = new Vue({
     delimiters: ['[[',']]'],
 
     methods: {
-        scroll: function(e, dest) {
-            window.location.hash = dest;
-            window.scrollBy(0, -70);
-
+        scroll: function(id) {
+            document.getElementById(id).scrollIntoView();
+            if (!((window.innerHeight + window.scrollY) >= document.body.offsetHeight)) {
+                window.scrollBy(0, -70);
+            }
             if (window.innerWidth < 767.98) {
                 this.toggleNav(false);
             }
@@ -30,6 +32,11 @@ var vm = new Vue({
 
 
 document.addEventListener('DOMContentLoaded', function() {
+    scrollSpy = new ScrollSpy(document.body, {
+        target: '#faq-navigator',
+        offset: 100
+    });
+
     nav = new Collapse(document.getElementById('faq-navigator'), {
         toggle: false,
     });

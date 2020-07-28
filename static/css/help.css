@@ -41,3 +41,28 @@ body {
         display: none;
     }
 }
+
+.main-link {
+    color: var(--bs-dark);
+}
+.main-link.active {
+    color: var(--bs-light) !important;
+    background-color: var(--bs-dark) !important;
+}
+.main-link + .nav {
+    display: none;
+}
+.main-link.active + .nav {
+    display: block;
+}
+
+.sub-nav > .nav-link {
+    color: var(--bs-gray);
+}
+.sub-nav > .nav-link:hover {
+    color: var(--bs-dark);
+}
+.sub-nav > .nav-link.active {
+    color: var(--bs-success);
+    background-color: transparent;
+}

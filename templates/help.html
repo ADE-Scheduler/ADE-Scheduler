@@ -9,76 +9,141 @@
 <div class="container-fluid">
     <div class="row">
         <nav class="col-md-3 col-lg-2 d-md-block bg-light navigator collapse" id="faq-navigator">
-            <div class="navigator-sticky pt-2">
-                <a class="nav-link" href="#" v-on:click.prevent="scroll($event, 'faq-1')">Q1</a>
-                <a class="nav-link" href="#" v-on:click.prevent="scroll($event, 'faq-2')">Q2</a>
-                <a class="nav-link" href="#" v-on:click.prevent="scroll($event, 'faq-3')">Q3</a>
-                <a class="nav-link" href="#" v-on:click.prevent="scroll($event, 'faq-4')">Q4</a>
-                <a class="nav-link" href="#" v-on:click.prevent="scroll($event, 'faq-5')">Q5</a>
-            </div>
+            <nav class="nav nav-pills flex-column navigator-sticky pt-2">
+
+                <a class="nav-link main-link m-2 mb-0" href="#faq-1" v-on:click.prevent="scroll('faq-1')">ADE Scheduler</a>
+                <nav class="nav sub-nav flex-column">
+                    <a class="nav-link ml-3" href="#faq-11" v-on:click.prevent="scroll('faq-11')">What is ADE Scheduler ?</a>
+                    <a class="nav-link ml-3" href="#faq-12" v-on:click.prevent="scroll('faq-12')">Getting started</a>
+                </nav>
+
+                <a class="nav-link main-link m-2 mb-0" href="#faq-2" v-on:click.prevent="scroll('faq-2')">Export & Load</a>
+                <nav class="nav sub-nav flex-column">
+                    <a class="nav-link ml-3" href="#faq-21" v-on:click.prevent="scroll('faq-21')">What are the possibilities ?</a>
+                    <a class="nav-link ml-3" href="#faq-22" v-on:click.prevent="scroll('faq-22')">Download an iCal file</a>
+                    <a class="nav-link ml-3" href="#faq-23" v-on:click.prevent="scroll('faq-23')">Subscription links</a>
+                </nav>
+
+                <a class="nav-link main-link m-2 mb-0" href="#faq-3" v-on:click.prevent="scroll('faq-3')">Account & Settings</a>
+                <nav class="nav sub-nav flex-column">
+                    <a class="nav-link ml-3" href="#faq-31" v-on:click.prevent="scroll('faq-31')">What are the possibilities ?</a>
+                    <a class="nav-link ml-3" href="#faq-32" v-on:click.prevent="scroll('faq-32')">Custom events</a>
+                    <a class="nav-link ml-3" href="#faq-33" v-on:click.prevent="scroll('faq-33')">Event selection</a>
+                    <a class="nav-link ml-3" href="#faq-34" v-on:click.prevent="scroll('faq-34')">Accounts</a>
+                </nav>
+
+                <a class="nav-link main-link m-2 mb-0" href="#faq-4" v-on:click.prevent="scroll('faq-4')">About us</a>
+                <nav class="nav sub-nav flex-column">
+                    <a class="nav-link ml-3" href="#faq-41" v-on:click.prevent="scroll('faq-41')">Who are we ?</a>
+                </nav>
+            </nav>
         </nav>
 
-        <div class="col-md-9 ml-sm-auto col-lg-10 px-md-4" id="faq-container">
-            <h4 class="mt-5" id="faq-1">Q1</h4>
-            <div>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sit amet ex nec nibh tincidunt ullamcorper at sed tellus. Pellentesque ut diam quis est eleifend accumsan. Cras molestie, dui ut sollicitudin eleifend, sem sem interdum justo, sed malesuada nisi elit aliquet dui. Nulla vitae ante ac mauris dignissim scelerisque a in velit. Donec a massa consectetur, vestibulum nisl a, luctus arcu. Donec ullamcorper ipsum ac risus aliquam faucibus. Donec finibus ut risus et cursus. Nam sollicitudin euismod libero vitae congue. Maecenas pellentesque est mi, at mollis sem pulvinar posuere. Etiam fringilla mauris leo, at pulvinar nisi venenatis nec. Nunc tempus dolor eleifend ex sagittis pharetra sit amet in arcu. Duis convallis, nunc vitae fringilla rutrum, orci nisi imperdiet risus, in mattis mi eros sed quam. Curabitur vehicula volutpat aliquet.
+        <div class="col-md-9 ml-sm-auto col-lg-10 p-3">
+            <h3 class="my-5" id="faq-1">ADE Scheduler</h3>
+                <h4 id="faq-11">What is ADE Scheduler ?</h4>
+                <hr class="mb-3">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vestibulum orci et lacus tincidunt congue. In sem augue, vehicula ac lectus non, fringilla commodo nunc. Curabitur varius lorem id bibendum dapibus. Suspendisse sagittis ligula ac vehicula blandit. Sed sollicitudin ipsum nunc, non pharetra ligula finibus ac. Morbi sit amet malesuada nibh. Integer ultrices non sem in commodo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nullam dapibus imperdiet lectus eu malesuada. Vestibulum in eros porttitor, sodales justo porta, molestie diam. Aenean porttitor lacus eu sem congue pulvinar. Praesent tristique diam pharetra metus venenatis, vel lacinia nisl commodo. Praesent vulputate pretium neque non commodo.
 
-                Vestibulum ut pretium nulla, ac aliquet tellus. Aenean vestibulum a ligula non dignissim. Vestibulum a odio libero. Mauris in lacus vitae magna fringilla luctus. In ultrices erat eget hendrerit vehicula. Aliquam urna nisl, molestie id metus pellentesque, hendrerit bibendum massa. Etiam sit amet tortor pretium, porta libero non, tincidunt leo.
+                    Cras sed consectetur lacus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam eget dapibus augue. Integer lacinia facilisis lorem sit amet posuere. Etiam sed magna lectus. Nulla malesuada ex id lectus tincidunt fermentum. Vivamus bibendum lobortis purus, nec consequat dui tincidunt sit amet. Nam luctus metus commodo iaculis tempus. In semper arcu vel commodo molestie. Ut aliquam convallis dictum.
 
-                Nam id arcu ex. Ut in pellentesque elit. Fusce vel risus vel tellus rhoncus maximus. Sed vel mi id felis fermentum lacinia sed sed elit. Quisque in cursus nulla. Morbi mollis dolor eget ultrices dapibus. In ullamcorper felis velit. Donec dictum id ex et eleifend. Pellentesque fermentum ex id quam porta, nec fringilla augue bibendum. Donec in enim nisl. Praesent ultrices consectetur sem nec ultrices. Nam ac auctor enim, eget cursus mi.
+                    Nulla at pharetra eros. Maecenas consectetur leo dolor, at varius nibh ornare eget. Phasellus at est vitae orci malesuada eleifend. Etiam congue ut urna sit amet condimentum. Etiam fermentum accumsan arcu, a fermentum dolor. Mauris quis purus magna. Mauris molestie turpis est, non finibus mi aliquet sit amet. Pellentesque sit amet orci turpis. Integer porttitor ante felis, sit amet convallis ipsum faucibus eu. Aliquam quis molestie lorem. In hac habitasse platea dictumst.
+                </p>
 
-                Proin venenatis euismod metus, quis condimentum sem. Maecenas vitae nulla volutpat, efficitur libero sed, commodo nunc. Donec cursus venenatis varius. Morbi orci justo, vehicula euismod mattis eget, porta tempus velit. Nullam iaculis quis orci id egestas. Nulla facilisi. Phasellus quis sem vitae ex porttitor euismod non a diam. Curabitur tempor purus eget nisl vehicula rhoncus. Ut rutrum, ante id molestie pulvinar, metus neque blandit magna, eu fermentum dui ante ac arcu. Nullam tincidunt diam et cursus maximus. Sed egestas, neque non suscipit dignissim, quam sapien ultricies urna, eu mollis libero felis quis nisi. Mauris lacinia lacus eget enim viverra, a vestibulum turpis malesuada. Etiam nec odio varius lectus ullamcorper vulputate in ut quam.
+                <h4 id="faq-12">Getting started</h4>
+                <hr class="mb-3">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vestibulum orci et lacus tincidunt congue. In sem augue, vehicula ac lectus non, fringilla commodo nunc. Curabitur varius lorem id bibendum dapibus. Suspendisse sagittis ligula ac vehicula blandit. Sed sollicitudin ipsum nunc, non pharetra ligula finibus ac. Morbi sit amet malesuada nibh. Integer ultrices non sem in commodo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nullam dapibus imperdiet lectus eu malesuada. Vestibulum in eros porttitor, sodales justo porta, molestie diam. Aenean porttitor lacus eu sem congue pulvinar. Praesent tristique diam pharetra metus venenatis, vel lacinia nisl commodo. Praesent vulputate pretium neque non commodo.
 
-                Phasellus lectus risus, bibendum ac blandit in, egestas in tortor. Nullam purus diam, semper id convallis ac, ullamcorper eu enim. Praesent tempor elit tincidunt, posuere sapien vitae, placerat lectus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas at odio a nisl condimentum finibus. Mauris sit amet malesuada sem. Proin vel lorem scelerisque, congue mi et, semper diam. Sed vel nisl non mi fringilla ullamcorper in eget sem. Integer aliquam consectetur nisi a aliquet. Praesent bibendum luctus pretium.
-            </div>
-            <h4 class="mt-5" id="faq-2">Q2</h4>
-            <div>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sit amet ex nec nibh tincidunt ullamcorper at sed tellus. Pellentesque ut diam quis est eleifend accumsan. Cras molestie, dui ut sollicitudin eleifend, sem sem interdum justo, sed malesuada nisi elit aliquet dui. Nulla vitae ante ac mauris dignissim scelerisque a in velit. Donec a massa consectetur, vestibulum nisl a, luctus arcu. Donec ullamcorper ipsum ac risus aliquam faucibus. Donec finibus ut risus et cursus. Nam sollicitudin euismod libero vitae congue. Maecenas pellentesque est mi, at mollis sem pulvinar posuere. Etiam fringilla mauris leo, at pulvinar nisi venenatis nec. Nunc tempus dolor eleifend ex sagittis pharetra sit amet in arcu. Duis convallis, nunc vitae fringilla rutrum, orci nisi imperdiet risus, in mattis mi eros sed quam. Curabitur vehicula volutpat aliquet.
+                    Cras sed consectetur lacus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam eget dapibus augue. Integer lacinia facilisis lorem sit amet posuere. Etiam sed magna lectus. Nulla malesuada ex id lectus tincidunt fermentum. Vivamus bibendum lobortis purus, nec consequat dui tincidunt sit amet. Nam luctus metus commodo iaculis tempus. In semper arcu vel commodo molestie. Ut aliquam convallis dictum.
 
-                Vestibulum ut pretium nulla, ac aliquet tellus. Aenean vestibulum a ligula non dignissim. Vestibulum a odio libero. Mauris in lacus vitae magna fringilla luctus. In ultrices erat eget hendrerit vehicula. Aliquam urna nisl, molestie id metus pellentesque, hendrerit bibendum massa. Etiam sit amet tortor pretium, porta libero non, tincidunt leo.
+                    Nulla at pharetra eros. Maecenas consectetur leo dolor, at varius nibh ornare eget. Phasellus at est vitae orci malesuada eleifend. Etiam congue ut urna sit amet condimentum. Etiam fermentum accumsan arcu, a fermentum dolor. Mauris quis purus magna. Mauris molestie turpis est, non finibus mi aliquet sit amet. Pellentesque sit amet orci turpis. Integer porttitor ante felis, sit amet convallis ipsum faucibus eu. Aliquam quis molestie lorem. In hac habitasse platea dictumst.
+                </p>
 
-                Nam id arcu ex. Ut in pellentesque elit. Fusce vel risus vel tellus rhoncus maximus. Sed vel mi id felis fermentum lacinia sed sed elit. Quisque in cursus nulla. Morbi mollis dolor eget ultrices dapibus. In ullamcorper felis velit. Donec dictum id ex et eleifend. Pellentesque fermentum ex id quam porta, nec fringilla augue bibendum. Donec in enim nisl. Praesent ultrices consectetur sem nec ultrices. Nam ac auctor enim, eget cursus mi.
+            <h3 class="my-5" id="faq-2">Export & Load</h3>
+                <h4 id="faq-21">What are the possibilities ?</h4>
+                <hr class="mb-3">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vestibulum orci et lacus tincidunt congue. In sem augue, vehicula ac lectus non, fringilla commodo nunc. Curabitur varius lorem id bibendum dapibus. Suspendisse sagittis ligula ac vehicula blandit. Sed sollicitudin ipsum nunc, non pharetra ligula finibus ac. Morbi sit amet malesuada nibh. Integer ultrices non sem in commodo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nullam dapibus imperdiet lectus eu malesuada. Vestibulum in eros porttitor, sodales justo porta, molestie diam. Aenean porttitor lacus eu sem congue pulvinar. Praesent tristique diam pharetra metus venenatis, vel lacinia nisl commodo. Praesent vulputate pretium neque non commodo.
 
-                Proin venenatis euismod metus, quis condimentum sem. Maecenas vitae nulla volutpat, efficitur libero sed, commodo nunc. Donec cursus venenatis varius. Morbi orci justo, vehicula euismod mattis eget, porta tempus velit. Nullam iaculis quis orci id egestas. Nulla facilisi. Phasellus quis sem vitae ex porttitor euismod non a diam. Curabitur tempor purus eget nisl vehicula rhoncus. Ut rutrum, ante id molestie pulvinar, metus neque blandit magna, eu fermentum dui ante ac arcu. Nullam tincidunt diam et cursus maximus. Sed egestas, neque non suscipit dignissim, quam sapien ultricies urna, eu mollis libero felis quis nisi. Mauris lacinia lacus eget enim viverra, a vestibulum turpis malesuada. Etiam nec odio varius lectus ullamcorper vulputate in ut quam.
+                    Cras sed consectetur lacus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam eget dapibus augue. Integer lacinia facilisis lorem sit amet posuere. Etiam sed magna lectus. Nulla malesuada ex id lectus tincidunt fermentum. Vivamus bibendum lobortis purus, nec consequat dui tincidunt sit amet. Nam luctus metus commodo iaculis tempus. In semper arcu vel commodo molestie. Ut aliquam convallis dictum.
 
-                Phasellus lectus risus, bibendum ac blandit in, egestas in tortor. Nullam purus diam, semper id convallis ac, ullamcorper eu enim. Praesent tempor elit tincidunt, posuere sapien vitae, placerat lectus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas at odio a nisl condimentum finibus. Mauris sit amet malesuada sem. Proin vel lorem scelerisque, congue mi et, semper diam. Sed vel nisl non mi fringilla ullamcorper in eget sem. Integer aliquam consectetur nisi a aliquet. Praesent bibendum luctus pretium.
-            </div>
-            <h4 class="mt-5" id="faq-3">Q3</h4>
-            <div>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sit amet ex nec nibh tincidunt ullamcorper at sed tellus. Pellentesque ut diam quis est eleifend accumsan. Cras molestie, dui ut sollicitudin eleifend, sem sem interdum justo, sed malesuada nisi elit aliquet dui. Nulla vitae ante ac mauris dignissim scelerisque a in velit. Donec a massa consectetur, vestibulum nisl a, luctus arcu. Donec ullamcorper ipsum ac risus aliquam faucibus. Donec finibus ut risus et cursus. Nam sollicitudin euismod libero vitae congue. Maecenas pellentesque est mi, at mollis sem pulvinar posuere. Etiam fringilla mauris leo, at pulvinar nisi venenatis nec. Nunc tempus dolor eleifend ex sagittis pharetra sit amet in arcu. Duis convallis, nunc vitae fringilla rutrum, orci nisi imperdiet risus, in mattis mi eros sed quam. Curabitur vehicula volutpat aliquet.
+                    Nulla at pharetra eros. Maecenas consectetur leo dolor, at varius nibh ornare eget. Phasellus at est vitae orci malesuada eleifend. Etiam congue ut urna sit amet condimentum. Etiam fermentum accumsan arcu, a fermentum dolor. Mauris quis purus magna. Mauris molestie turpis est, non finibus mi aliquet sit amet. Pellentesque sit amet orci turpis. Integer porttitor ante felis, sit amet convallis ipsum faucibus eu. Aliquam quis molestie lorem. In hac habitasse platea dictumst.
+                </p>
 
-                Vestibulum ut pretium nulla, ac aliquet tellus. Aenean vestibulum a ligula non dignissim. Vestibulum a odio libero. Mauris in lacus vitae magna fringilla luctus. In ultrices erat eget hendrerit vehicula. Aliquam urna nisl, molestie id metus pellentesque, hendrerit bibendum massa. Etiam sit amet tortor pretium, porta libero non, tincidunt leo.
+                <h4 id="faq-22">Download an iCal file</h4>
+                <hr class="mb-3">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vestibulum orci et lacus tincidunt congue. In sem augue, vehicula ac lectus non, fringilla commodo nunc. Curabitur varius lorem id bibendum dapibus. Suspendisse sagittis ligula ac vehicula blandit. Sed sollicitudin ipsum nunc, non pharetra ligula finibus ac. Morbi sit amet malesuada nibh. Integer ultrices non sem in commodo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nullam dapibus imperdiet lectus eu malesuada. Vestibulum in eros porttitor, sodales justo porta, molestie diam. Aenean porttitor lacus eu sem congue pulvinar. Praesent tristique diam pharetra metus venenatis, vel lacinia nisl commodo. Praesent vulputate pretium neque non commodo.
 
-                Nam id arcu ex. Ut in pellentesque elit. Fusce vel risus vel tellus rhoncus maximus. Sed vel mi id felis fermentum lacinia sed sed elit. Quisque in cursus nulla. Morbi mollis dolor eget ultrices dapibus. In ullamcorper felis velit. Donec dictum id ex et eleifend. Pellentesque fermentum ex id quam porta, nec fringilla augue bibendum. Donec in enim nisl. Praesent ultrices consectetur sem nec ultrices. Nam ac auctor enim, eget cursus mi.
+                    Cras sed consectetur lacus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam eget dapibus augue. Integer lacinia facilisis lorem sit amet posuere. Etiam sed magna lectus. Nulla malesuada ex id lectus tincidunt fermentum. Vivamus bibendum lobortis purus, nec consequat dui tincidunt sit amet. Nam luctus metus commodo iaculis tempus. In semper arcu vel commodo molestie. Ut aliquam convallis dictum.
 
-                Proin venenatis euismod metus, quis condimentum sem. Maecenas vitae nulla volutpat, efficitur libero sed, commodo nunc. Donec cursus venenatis varius. Morbi orci justo, vehicula euismod mattis eget, porta tempus velit. Nullam iaculis quis orci id egestas. Nulla facilisi. Phasellus quis sem vitae ex porttitor euismod non a diam. Curabitur tempor purus eget nisl vehicula rhoncus. Ut rutrum, ante id molestie pulvinar, metus neque blandit magna, eu fermentum dui ante ac arcu. Nullam tincidunt diam et cursus maximus. Sed egestas, neque non suscipit dignissim, quam sapien ultricies urna, eu mollis libero felis quis nisi. Mauris lacinia lacus eget enim viverra, a vestibulum turpis malesuada. Etiam nec odio varius lectus ullamcorper vulputate in ut quam.
+                    Nulla at pharetra eros. Maecenas consectetur leo dolor, at varius nibh ornare eget. Phasellus at est vitae orci malesuada eleifend. Etiam congue ut urna sit amet condimentum. Etiam fermentum accumsan arcu, a fermentum dolor. Mauris quis purus magna. Mauris molestie turpis est, non finibus mi aliquet sit amet. Pellentesque sit amet orci turpis. Integer porttitor ante felis, sit amet convallis ipsum faucibus eu. Aliquam quis molestie lorem. In hac habitasse platea dictumst.
+                </p>
 
-                Phasellus lectus risus, bibendum ac blandit in, egestas in tortor. Nullam purus diam, semper id convallis ac, ullamcorper eu enim. Praesent tempor elit tincidunt, posuere sapien vitae, placerat lectus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas at odio a nisl condimentum finibus. Mauris sit amet malesuada sem. Proin vel lorem scelerisque, congue mi et, semper diam. Sed vel nisl non mi fringilla ullamcorper in eget sem. Integer aliquam consectetur nisi a aliquet. Praesent bibendum luctus pretium.
-            </div>
-            <h4 class="mt-5" id="faq-4">Q4</h4>
-            <div>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sit amet ex nec nibh tincidunt ullamcorper at sed tellus. Pellentesque ut diam quis est eleifend accumsan. Cras molestie, dui ut sollicitudin eleifend, sem sem interdum justo, sed malesuada nisi elit aliquet dui. Nulla vitae ante ac mauris dignissim scelerisque a in velit. Donec a massa consectetur, vestibulum nisl a, luctus arcu. Donec ullamcorper ipsum ac risus aliquam faucibus. Donec finibus ut risus et cursus. Nam sollicitudin euismod libero vitae congue. Maecenas pellentesque est mi, at mollis sem pulvinar posuere. Etiam fringilla mauris leo, at pulvinar nisi venenatis nec. Nunc tempus dolor eleifend ex sagittis pharetra sit amet in arcu. Duis convallis, nunc vitae fringilla rutrum, orci nisi imperdiet risus, in mattis mi eros sed quam. Curabitur vehicula volutpat aliquet.
+                <h4 id="faq-23">Subscription links</h4>
+                <hr class="mb-3">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vestibulum orci et lacus tincidunt congue. In sem augue, vehicula ac lectus non, fringilla commodo nunc. Curabitur varius lorem id bibendum dapibus. Suspendisse sagittis ligula ac vehicula blandit. Sed sollicitudin ipsum nunc, non pharetra ligula finibus ac. Morbi sit amet malesuada nibh. Integer ultrices non sem in commodo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nullam dapibus imperdiet lectus eu malesuada. Vestibulum in eros porttitor, sodales justo porta, molestie diam. Aenean porttitor lacus eu sem congue pulvinar. Praesent tristique diam pharetra metus venenatis, vel lacinia nisl commodo. Praesent vulputate pretium neque non commodo.
 
-                Vestibulum ut pretium nulla, ac aliquet tellus. Aenean vestibulum a ligula non dignissim. Vestibulum a odio libero. Mauris in lacus vitae magna fringilla luctus. In ultrices erat eget hendrerit vehicula. Aliquam urna nisl, molestie id metus pellentesque, hendrerit bibendum massa. Etiam sit amet tortor pretium, porta libero non, tincidunt leo.
+                    Cras sed consectetur lacus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam eget dapibus augue. Integer lacinia facilisis lorem sit amet posuere. Etiam sed magna lectus. Nulla malesuada ex id lectus tincidunt fermentum. Vivamus bibendum lobortis purus, nec consequat dui tincidunt sit amet. Nam luctus metus commodo iaculis tempus. In semper arcu vel commodo molestie. Ut aliquam convallis dictum.
 
-                Nam id arcu ex. Ut in pellentesque elit. Fusce vel risus vel tellus rhoncus maximus. Sed vel mi id felis fermentum lacinia sed sed elit. Quisque in cursus nulla. Morbi mollis dolor eget ultrices dapibus. In ullamcorper felis velit. Donec dictum id ex et eleifend. Pellentesque fermentum ex id quam porta, nec fringilla augue bibendum. Donec in enim nisl. Praesent ultrices consectetur sem nec ultrices. Nam ac auctor enim, eget cursus mi.
+                    Nulla at pharetra eros. Maecenas consectetur leo dolor, at varius nibh ornare eget. Phasellus at est vitae orci malesuada eleifend. Etiam congue ut urna sit amet condimentum. Etiam fermentum accumsan arcu, a fermentum dolor. Mauris quis purus magna. Mauris molestie turpis est, non finibus mi aliquet sit amet. Pellentesque sit amet orci turpis. Integer porttitor ante felis, sit amet convallis ipsum faucibus eu. Aliquam quis molestie lorem. In hac habitasse platea dictumst.
+                </p>
 
-                Proin venenatis euismod metus, quis condimentum sem. Maecenas vitae nulla volutpat, efficitur libero sed, commodo nunc. Donec cursus venenatis varius. Morbi orci justo, vehicula euismod mattis eget, porta tempus velit. Nullam iaculis quis orci id egestas. Nulla facilisi. Phasellus quis sem vitae ex porttitor euismod non a diam. Curabitur tempor purus eget nisl vehicula rhoncus. Ut rutrum, ante id molestie pulvinar, metus neque blandit magna, eu fermentum dui ante ac arcu. Nullam tincidunt diam et cursus maximus. Sed egestas, neque non suscipit dignissim, quam sapien ultricies urna, eu mollis libero felis quis nisi. Mauris lacinia lacus eget enim viverra, a vestibulum turpis malesuada. Etiam nec odio varius lectus ullamcorper vulputate in ut quam.
+            <h3 class="my-5" id="faq-3">Accounts & Settings</h3>
+                <h4 id="faq-31">What are the possibilities ?</h4>
+                <hr class="mb-3">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vestibulum orci et lacus tincidunt congue. In sem augue, vehicula ac lectus non, fringilla commodo nunc. Curabitur varius lorem id bibendum dapibus. Suspendisse sagittis ligula ac vehicula blandit. Sed sollicitudin ipsum nunc, non pharetra ligula finibus ac. Morbi sit amet malesuada nibh. Integer ultrices non sem in commodo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nullam dapibus imperdiet lectus eu malesuada. Vestibulum in eros porttitor, sodales justo porta, molestie diam. Aenean porttitor lacus eu sem congue pulvinar. Praesent tristique diam pharetra metus venenatis, vel lacinia nisl commodo. Praesent vulputate pretium neque non commodo.
 
-                Phasellus lectus risus, bibendum ac blandit in, egestas in tortor. Nullam purus diam, semper id convallis ac, ullamcorper eu enim. Praesent tempor elit tincidunt, posuere sapien vitae, placerat lectus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas at odio a nisl condimentum finibus. Mauris sit amet malesuada sem. Proin vel lorem scelerisque, congue mi et, semper diam. Sed vel nisl non mi fringilla ullamcorper in eget sem. Integer aliquam consectetur nisi a aliquet. Praesent bibendum luctus pretium.
-            </div>
-            <h4 class="mt-5" id="faq-5">Q5</h4>
-            <div>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sit amet ex nec nibh tincidunt ullamcorper at sed tellus. Pellentesque ut diam quis est eleifend accumsan. Cras molestie, dui ut sollicitudin eleifend, sem sem interdum justo, sed malesuada nisi elit aliquet dui. Nulla vitae ante ac mauris dignissim scelerisque a in velit. Donec a massa consectetur, vestibulum nisl a, luctus arcu. Donec ullamcorper ipsum ac risus aliquam faucibus. Donec finibus ut risus et cursus. Nam sollicitudin euismod libero vitae congue. Maecenas pellentesque est mi, at mollis sem pulvinar posuere. Etiam fringilla mauris leo, at pulvinar nisi venenatis nec. Nunc tempus dolor eleifend ex sagittis pharetra sit amet in arcu. Duis convallis, nunc vitae fringilla rutrum, orci nisi imperdiet risus, in mattis mi eros sed quam. Curabitur vehicula volutpat aliquet.
+                    Cras sed consectetur lacus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam eget dapibus augue. Integer lacinia facilisis lorem sit amet posuere. Etiam sed magna lectus. Nulla malesuada ex id lectus tincidunt fermentum. Vivamus bibendum lobortis purus, nec consequat dui tincidunt sit amet. Nam luctus metus commodo iaculis tempus. In semper arcu vel commodo molestie. Ut aliquam convallis dictum.
 
-                Vestibulum ut pretium nulla, ac aliquet tellus. Aenean vestibulum a ligula non dignissim. Vestibulum a odio libero. Mauris in lacus vitae magna fringilla luctus. In ultrices erat eget hendrerit vehicula. Aliquam urna nisl, molestie id metus pellentesque, hendrerit bibendum massa. Etiam sit amet tortor pretium, porta libero non, tincidunt leo.
+                    Nulla at pharetra eros. Maecenas consectetur leo dolor, at varius nibh ornare eget. Phasellus at est vitae orci malesuada eleifend. Etiam congue ut urna sit amet condimentum. Etiam fermentum accumsan arcu, a fermentum dolor. Mauris quis purus magna. Mauris molestie turpis est, non finibus mi aliquet sit amet. Pellentesque sit amet orci turpis. Integer porttitor ante felis, sit amet convallis ipsum faucibus eu. Aliquam quis molestie lorem. In hac habitasse platea dictumst.
+                </p>
 
-                Nam id arcu ex. Ut in pellentesque elit. Fusce vel risus vel tellus rhoncus maximus. Sed vel mi id felis fermentum lacinia sed sed elit. Quisque in cursus nulla. Morbi mollis dolor eget ultrices dapibus. In ullamcorper felis velit. Donec dictum id ex et eleifend. Pellentesque fermentum ex id quam porta, nec fringilla augue bibendum. Donec in enim nisl. Praesent ultrices consectetur sem nec ultrices. Nam ac auctor enim, eget cursus mi.
+                <h4 id="faq-32">Custom events</h4>
+                <hr class="mb-3">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vestibulum orci et lacus tincidunt congue. In sem augue, vehicula ac lectus non, fringilla commodo nunc. Curabitur varius lorem id bibendum dapibus. Suspendisse sagittis ligula ac vehicula blandit. Sed sollicitudin ipsum nunc, non pharetra ligula finibus ac. Morbi sit amet malesuada nibh. Integer ultrices non sem in commodo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nullam dapibus imperdiet lectus eu malesuada. Vestibulum in eros porttitor, sodales justo porta, molestie diam. Aenean porttitor lacus eu sem congue pulvinar. Praesent tristique diam pharetra metus venenatis, vel lacinia nisl commodo. Praesent vulputate pretium neque non commodo.
 
-                Proin venenatis euismod metus, quis condimentum sem. Maecenas vitae nulla volutpat, efficitur libero sed, commodo nunc. Donec cursus venenatis varius. Morbi orci justo, vehicula euismod mattis eget, porta tempus velit. Nullam iaculis quis orci id egestas. Nulla facilisi. Phasellus quis sem vitae ex porttitor euismod non a diam. Curabitur tempor purus eget nisl vehicula rhoncus. Ut rutrum, ante id molestie pulvinar, metus neque blandit magna, eu fermentum dui ante ac arcu. Nullam tincidunt diam et cursus maximus. Sed egestas, neque non suscipit dignissim, quam sapien ultricies urna, eu mollis libero felis quis nisi. Mauris lacinia lacus eget enim viverra, a vestibulum turpis malesuada. Etiam nec odio varius lectus ullamcorper vulputate in ut quam.
+                    Cras sed consectetur lacus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam eget dapibus augue. Integer lacinia facilisis lorem sit amet posuere. Etiam sed magna lectus. Nulla malesuada ex id lectus tincidunt fermentum. Vivamus bibendum lobortis purus, nec consequat dui tincidunt sit amet. Nam luctus metus commodo iaculis tempus. In semper arcu vel commodo molestie. Ut aliquam convallis dictum.
 
-                Phasellus lectus risus, bibendum ac blandit in, egestas in tortor. Nullam purus diam, semper id convallis ac, ullamcorper eu enim. Praesent tempor elit tincidunt, posuere sapien vitae, placerat lectus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas at odio a nisl condimentum finibus. Mauris sit amet malesuada sem. Proin vel lorem scelerisque, congue mi et, semper diam. Sed vel nisl non mi fringilla ullamcorper in eget sem. Integer aliquam consectetur nisi a aliquet. Praesent bibendum luctus pretium.
-            </div>
+                    Nulla at pharetra eros. Maecenas consectetur leo dolor, at varius nibh ornare eget. Phasellus at est vitae orci malesuada eleifend. Etiam congue ut urna sit amet condimentum. Etiam fermentum accumsan arcu, a fermentum dolor. Mauris quis purus magna. Mauris molestie turpis est, non finibus mi aliquet sit amet. Pellentesque sit amet orci turpis. Integer porttitor ante felis, sit amet convallis ipsum faucibus eu. Aliquam quis molestie lorem. In hac habitasse platea dictumst.
+                </p>
+
+                <h4 id="faq-33">Event selection</h4>
+                <hr class="mb-3">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vestibulum orci et lacus tincidunt congue. In sem augue, vehicula ac lectus non, fringilla commodo nunc. Curabitur varius lorem id bibendum dapibus. Suspendisse sagittis ligula ac vehicula blandit. Sed sollicitudin ipsum nunc, non pharetra ligula finibus ac. Morbi sit amet malesuada nibh. Integer ultrices non sem in commodo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nullam dapibus imperdiet lectus eu malesuada. Vestibulum in eros porttitor, sodales justo porta, molestie diam. Aenean porttitor lacus eu sem congue pulvinar. Praesent tristique diam pharetra metus venenatis, vel lacinia nisl commodo. Praesent vulputate pretium neque non commodo.
+
+                    Cras sed consectetur lacus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam eget dapibus augue. Integer lacinia facilisis lorem sit amet posuere. Etiam sed magna lectus. Nulla malesuada ex id lectus tincidunt fermentum. Vivamus bibendum lobortis purus, nec consequat dui tincidunt sit amet. Nam luctus metus commodo iaculis tempus. In semper arcu vel commodo molestie. Ut aliquam convallis dictum.
+
+                    Nulla at pharetra eros. Maecenas consectetur leo dolor, at varius nibh ornare eget. Phasellus at est vitae orci malesuada eleifend. Etiam congue ut urna sit amet condimentum. Etiam fermentum accumsan arcu, a fermentum dolor. Mauris quis purus magna. Mauris molestie turpis est, non finibus mi aliquet sit amet. Pellentesque sit amet orci turpis. Integer porttitor ante felis, sit amet convallis ipsum faucibus eu. Aliquam quis molestie lorem. In hac habitasse platea dictumst.
+                </p>
+
+                <h4 id="faq-34">Accounts</h4>
+                <hr class="mb-3">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vestibulum orci et lacus tincidunt congue. In sem augue, vehicula ac lectus non, fringilla commodo nunc. Curabitur varius lorem id bibendum dapibus. Suspendisse sagittis ligula ac vehicula blandit. Sed sollicitudin ipsum nunc, non pharetra ligula finibus ac. Morbi sit amet malesuada nibh. Integer ultrices non sem in commodo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nullam dapibus imperdiet lectus eu malesuada. Vestibulum in eros porttitor, sodales justo porta, molestie diam. Aenean porttitor lacus eu sem congue pulvinar. Praesent tristique diam pharetra metus venenatis, vel lacinia nisl commodo. Praesent vulputate pretium neque non commodo.
+
+                    Cras sed consectetur lacus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam eget dapibus augue. Integer lacinia facilisis lorem sit amet posuere. Etiam sed magna lectus. Nulla malesuada ex id lectus tincidunt fermentum. Vivamus bibendum lobortis purus, nec consequat dui tincidunt sit amet. Nam luctus metus commodo iaculis tempus. In semper arcu vel commodo molestie. Ut aliquam convallis dictum.
+
+                    Nulla at pharetra eros. Maecenas consectetur leo dolor, at varius nibh ornare eget. Phasellus at est vitae orci malesuada eleifend. Etiam congue ut urna sit amet condimentum. Etiam fermentum accumsan arcu, a fermentum dolor. Mauris quis purus magna. Mauris molestie turpis est, non finibus mi aliquet sit amet. Pellentesque sit amet orci turpis. Integer porttitor ante felis, sit amet convallis ipsum faucibus eu. Aliquam quis molestie lorem. In hac habitasse platea dictumst.
+                </p>
+
+            <h3 class="my-5" id="faq-4">About us</h3>
+                <h4 id="faq-41">Who are we ?</h4>
+                <hr class="mb-3">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vestibulum orci et lacus tincidunt congue. In sem augue, vehicula ac lectus non, fringilla commodo nunc. Curabitur varius lorem id bibendum dapibus. Suspendisse sagittis ligula ac vehicula blandit. Sed sollicitudin ipsum nunc, non pharetra ligula finibus ac. Morbi sit amet malesuada nibh. Integer ultrices non sem in commodo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nullam dapibus imperdiet lectus eu malesuada. Vestibulum in eros porttitor, sodales justo porta, molestie diam. Aenean porttitor lacus eu sem congue pulvinar. Praesent tristique diam pharetra metus venenatis, vel lacinia nisl commodo. Praesent vulputate pretium neque non commodo.
+
+                    Cras sed consectetur lacus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam eget dapibus augue. Integer lacinia facilisis lorem sit amet posuere. Etiam sed magna lectus. Nulla malesuada ex id lectus tincidunt fermentum. Vivamus bibendum lobortis purus, nec consequat dui tincidunt sit amet. Nam luctus metus commodo iaculis tempus. In semper arcu vel commodo molestie. Ut aliquam convallis dictum.
+
+                    Nulla at pharetra eros. Maecenas consectetur leo dolor, at varius nibh ornare eget. Phasellus at est vitae orci malesuada eleifend. Etiam congue ut urna sit amet condimentum. Etiam fermentum accumsan arcu, a fermentum dolor. Mauris quis purus magna. Mauris molestie turpis est, non finibus mi aliquet sit amet. Pellentesque sit amet orci turpis. Integer porttitor ante felis, sit amet convallis ipsum faucibus eu. Aliquam quis molestie lorem. In hac habitasse platea dictumst.
+                </p>
+
         </div>
     </div>
 

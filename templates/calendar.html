@@ -51,17 +51,27 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Title: [[ eventInfo.title ]]</p>
-                    <p>Location: [[ eventInfo.location ]]</p>
-                    <p>Description: [[ eventInfo.description ]]</p>
-                    <p>Start: [[ eventInfo.start ]]</p>
-                    <p>End: [[ eventInfo.end ]]</p>
+                    <div class="row">
+                        <div class="col-6">
+                            <label>Location</label>
+                            <input class="form-control" type="text" readonly v-bind:value="eventInfo.location"/>
+                        </div>
+
+                        <div class="col-6 text-right">
+                            <label>Description</label>
+                            <textarea class="form-control" type="text" rows="4" readonly v-bind:value="eventInfo.description"></textarea>
+                        </div>
+                    </div>
 
                     <div v-if="eventInfo.rrule">
                         Recurring Event !
                         <p>Start: [[ eventInfo.rrule.start ]]</p>
                         <p>End: [[ eventInfo.rrule.end ]]</p>
                         <p>Days of week: [[ eventInfo.rrule.days ]]</p>
+                    </div>
+                    <div v-else>
+                        <p>Start: [[ eventInfo.start ]]</p>
+                        <p>End: [[ eventInfo.end ]]</p>
                     </div>
 
                 </div>
