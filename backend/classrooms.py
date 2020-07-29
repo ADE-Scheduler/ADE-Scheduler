@@ -46,6 +46,7 @@ class Address:
         return location
 
 
+# TODO: fix the fact that activities in Course class cannot be output in a shell (replace('\\', '\\\\') is not defined)
 class Classroom:
     """
     Classroom object containing the address (as string or Address object), the name of the classroom and its id.
