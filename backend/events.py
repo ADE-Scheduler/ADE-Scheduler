@@ -168,13 +168,16 @@ class AcademicalEvent(CustomEvent):
                  classrooms: Optional[Iterable[Classroom]] = None, id: Optional[str] = None, weight: float = 5,
                  code: Optional[str] = None, prefix: Optional[str] = None):
 
-        super().__init__(name=name, location=merge_classrooms(classrooms),
+        super().__init__(name=name, location=str(merge_classrooms(classrooms)),
                          description=str(professor), begin=begin, end=end)
                          # TODO: merge_classrooms fait du gros caca ici
         self.weight = weight
         self.id = f'{prefix}{id}'
         self.code = code
         self.classrooms = classrooms
+
+    def __hash__(self) -> int:
+        return super().__hash__()
 
     def __repr__(self) -> str:
         tmp = self.id + ':' if self.id is not None else 'FTS:'
