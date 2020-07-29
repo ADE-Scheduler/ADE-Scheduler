@@ -4,7 +4,7 @@ from datetime import timedelta
 from jsmin import jsmin
 
 # Flask imports
-from flask import Flask, session, request, redirect
+from flask import Flask, session, request, redirect, url_for
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from flask_security import Security, SQLAlchemyUserDatastore
@@ -29,7 +29,7 @@ from views.help import help
 
 # Setup app
 app = Flask(__name__)
-app.register_blueprint(calendar, url_prefix='')
+app.register_blueprint(calendar, url_prefix='/calendar')
 app.register_blueprint(account, url_prefix='/account')
 app.register_blueprint(classroom, url_prefix='/classroom')
 app.register_blueprint(help, url_prefix='/help')
@@ -70,15 +70,14 @@ app.config['SESSION_REDIS'] = manager.server
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=30)
 app.config['SESSION_MANAGER'] = Session(app)
 
-# Setup Flask-Babel
-app.config['LANGUAGES'] = ['en', 'fr']
-app.config['BABEL_TRANSLATION_DIRECTORIES'] = 'translations'
-babel = Babel(app)
-
 # Allows compression of text assets
 # If the server has automatic compression, comment this line.
 compress = Compress(app)
 
+# Setup Flask-Babel
+app.config['LANGUAGES'] = ['en', 'fr']
+app.config['BABEL_TRANSLATION_DIRECTORIES'] = 'translations'
+babel = Babel(app)
 
 @babel.localeselector
 def get_locale():
@@ -86,7 +85,6 @@ def get_locale():
         session['locale'] = request.accept_languages.best_match(app.config['LANGUAGES'])
     return session['locale']
 app.jinja_env.globals['get_locale'] = get_locale
-
 
 @app.route('/locale/<locale>')
 def set_locale(locale):
@@ -101,6 +99,11 @@ def before_first_request():
         os.makedirs('static/dist')
     with open('static/dist/jsglue.min.js', 'w') as f:
         f.write(jsmin(jsglue.generate_js()))
+
+
+@app.route('/')
+def welcome():
+    return redirect(url_for('calendar.index'))
 
 
 @app.shell_context_processor

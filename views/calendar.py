@@ -17,7 +17,7 @@ calendar = Blueprint('calendar', __name__, static_folder='../static')
 def before_calendar_request():
     if not session.get('current_schedule'):
         session['current_schedule'] = schd.Schedule(DEFAULT_PROJECT_ID)
-        session['current_schedule_modified'] = True
+        session['current_schedule_modified'] = False
 
 
 @calendar.route('/')
@@ -76,7 +76,7 @@ def remove_code(code):
 @calendar.route('/clear', methods=['DELETE'])
 def clear():
     session['current_schedule'] = schd.Schedule(DEFAULT_PROJECT_ID)
-    session['current_schedule_modified'] = True
+    session['current_schedule_modified'] = False
     return 'OK', 200
 
 
