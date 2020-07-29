@@ -32,7 +32,7 @@ class Course:
         self.name = name
         self.weight = weight
 
-        if activities:
+        if activities is not None:
             self.activities = activities
         else:
             index = ['code', 'type', 'id']
@@ -161,7 +161,8 @@ class Course:
 
 
 def merge_courses(courses: Iterable[Course], code: Optional[str] = None,
-                  name: Optional[str] = None, weight: float = 1, **kwargs: Any) -> Course:
+                  name: Optional[str] = None, weight: float = 1, views: Optional[Dict[str, View]] = None,
+                  **kwargs: Any) -> Course:
     """
     Merges multiple courses into one.
 
@@ -173,10 +174,15 @@ def merge_courses(courses: Iterable[Course], code: Optional[str] = None,
     :type name: Optional[str]
     :param weight: the new weight
     :type weight: float
-    :param kwargs: parameters that will be passed to :func:`Course.get_activities`
+    :param views: map of views that will be passed to :func:`Course.get_activities`
+    :type views: Optional[Dict[str, View]]
+    :param kwargs: additional parameters that will be passed to :func:`Course.get_activities`
     :type kwargs: Any
     :return: the new course
     :rtype: Course
     """
-    activities = pd.concat(course.get_activities(**kwargs) for course in courses)
+    if views:
+        activities = pd.concat(course.get_activities(view=views[course.code], **kwargs) for course in courses)
+    else:
+        activities = pd.concat(course.get_activities(**kwargs) for course in courses)
     return Course(code=code, name=name, weight=weight, activities=activities)

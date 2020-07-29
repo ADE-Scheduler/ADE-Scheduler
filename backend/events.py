@@ -91,7 +91,7 @@ class CustomEvent(Event):
             'title': self.name,
             'start': str(self.begin),
             'end': str(self.end),
-            'description': self.description + '\n' + self.location,
+            'description': f'{str(self.description)}\n{str(self.location)}',
             'editable': False,
             'backgroundColor': color,
             'borderColor': color,
@@ -179,7 +179,7 @@ class AcademicalEvent(CustomEvent):
                  classrooms: Optional[Iterable[Classroom]] = None, id: Optional[str] = None,
                  weight: Union[int, float] = 5,
                  code: Optional[str] = None, prefix: Optional[str] = None):
-        super().__init__(name=name, location=merge_classrooms(classrooms),
+        super().__init__(name=name, location=merge_classrooms(classrooms).location(),
                          description=str(professor), begin=begin, end=end, weight=weight)
         # TODO: merge_classrooms fait du gros caca ici
         self.id = f'{prefix}{id}'
