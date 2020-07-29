@@ -17,8 +17,8 @@
 
 {% macro render_login_field(usr, pwd, invalid_msg) %}
     {% if usr.errors or pwd.errors %}
-        {{ usr(class="form-control is-invalid", type="email", placeholder="Email address", required="")|safe }}
-        {{ pwd(class="form-control is-invalid", type="password", placeholder="Password", required="")|safe }}
+        {{ usr(class="form-control is-invalid", type="email", placeholder=_('Email address'), required="")|safe }}
+        {{ pwd(class="form-control is-invalid", type="password", placeholder=_('Password'), required="")|safe }}
         {% for error in usr.errors %}
             <div class="invalid-feedback">
                 {{ error }}
@@ -30,8 +30,8 @@
             </div>
         {% endfor %}
     {% else %}
-        {{ usr(class="form-control", type="email", placeholder="Email address", required="")|safe }}
-        {{ pwd(class="form-control", type="password", placeholder="Password", required="")|safe }}
+        {{ usr(class="form-control", type="email", placeholder=_('Email address'), required="")|safe }}
+        {{ pwd(class="form-control", type="password", placeholder=_('Password'), required="")|safe }}
         <div class="invalid-feedback">
             {{ invalid_msg }}
         </div>

@@ -9,20 +9,20 @@
     <form class="form-signin needs-validation" novalidate action={{ url_for('security.login') }} method="POST" name="login_user_form">
         {{ login_user_form.hidden_tag() }}
         <img class="d-block mx-auto my-4" src={{ url_for('static', filename='img/ade_scheduler_icon.png') }} width="30%">
-        {{ render_login_field(login_user_form.email, login_user_form.password, 'Specify an email address and a password') }}
+        {{ render_login_field(login_user_form.email, login_user_form.password, _('Specify an email address and a password')) }}
         <div class="form-check mt-3">
             {{ login_user_form.remember(class="form-check-input") }}
             <label class="form-check-label" for="remember">
-                Remember me
+                {{_('Remember me')}}
             </label>
         </div>
         <div class="mb-3">
-            <small><a href={{ url_for('security.forgot_password')}}>Forgot password ?</a></small>
+            <small><a href={{ url_for('security.forgot_password')}}>{{_('Forgot password ?')}}</a></small>
         </div>
         <hr class="mb-3">
         {{ login_user_form.submit(class="btn btn-lg btn-primary btn-block") }}
         <div class="mt-2">
-            <small>New to ADE Scheduler ? <a href={{ url_for('security.register') }}>Sign up now !</a></small>
+            <small>{{_('New to ADE Scheduler ?')}} <a href={{ url_for('security.register') }}>{{_('Sign up now !')}}</a></small>
         </div>
     </form>
 {% endblock %}

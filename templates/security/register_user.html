@@ -10,24 +10,24 @@
         {{ register_user_form.hidden_tag() }}
         <img class="d-block mx-auto my-4" src={{ url_for('static', filename='img/ade_scheduler_icon.png') }} width="30%">
         <div class="mb-3">
-            <label for="email">Email</label>
+            <label for="email">{{_('Email')}}</label>
             <div class="input-group">
                 <div class="input-group-text">@</div>
-                {{ render_input_field(register_user_form.email, 'Invalid email address', placeholder="you@example.com", required="") }}
+                {{ render_input_field(register_user_form.email, _('Invalid email address'), placeholder="you@example.com", required="") }}
             </div>
         </div>
 
         <div class="mb-3">
-            <label for="password">Password</label>
-            {{ render_input_field(register_user_form.password, 'No password specified', placeholder="Password", required="", minlength="8", autocomplete="new-password") }}
+            <label for="password">{{_('Password')}}</label>
+            {{ render_input_field(register_user_form.password, _('No password specified'), placeholder=_('Password'), required="", minlength="8", autocomplete="new-password") }}
             <small class="form-text text-muted">
-                Must be at least 8 characters long.
+                {{_('Must be at least 8 characters long.')}}
             </small>
         </div>
 
         <div class="mb-3">
-            <label for="password_confirm">Confirm password</label>
-            {{ render_input_field(register_user_form.password_confirm, 'Password do not match', placeholder="Password", required="", minlength="8", autocomplete="new-password") }}
+            <label for="password_confirm">{{_('Confirm password')}}</label>
+            {{ render_input_field(register_user_form.password_confirm, _('Password do not match'), placeholder=_('Password'), required="", minlength="8", autocomplete="new-password") }}
         </div>
         <hr class="mb-3">
         {{ register_user_form.submit(class="btn btn-lg btn-primary btn-block") }}

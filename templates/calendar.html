@@ -88,7 +88,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <form class="modal-content needs-validation" id="form-add-event" v-on:submit.prevent="addEvent">
                 <div class="modal-header">
-                    <h5 class="modal-title">Add an event</h5>
+                    <h5 class="modal-title">{{_('Add an event')}}</h5>
                     <button type="button" class="close" data-dismiss="modal">
                         <span>&times;</span>
                     </button>
@@ -96,15 +96,15 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-6">
-                            <label>Name</label>
+                            <label>{{_('Name')}}</label>
                             <input class="form-control" type="text" required v-model="eventForm.name"/>
 
-                            <label>Location</label>
+                            <label>{{_('Location')}}</label>
                             <input class="form-control" type="text" v-model="eventForm.location"/>
                         </div>
 
                         <div class="col-6 text-right">
-                            <label>Description</label>
+                            <label>{{_('Description')}}</label>
                             <textarea class="form-control" type="text" rows="4" v-model="eventForm.description"></textarea>
                         </div>
                     </div>
@@ -114,7 +114,7 @@
                         <div class="col-6">
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" v-model="eventForm.recurring" id="switch-repetition" data-toggle="collapse" data-target="#recurring-inputs">
-                                <label class="form-check-label" for="switch-repetition">Recurring event</label>
+                                <label class="form-check-label" for="switch-repetition">{{_('Recurring event')}}</label>
                             </div>
                         </div>
                     </div>
@@ -122,7 +122,7 @@
                     <!-- Start-end inputs -->
                     <div class="row mt-3">
                         <div class="col-6">
-                            <label>From</label>
+                            <label>{{_('From')}}</label>
                             <div class="input-group date mb-2" v-show:disabled="!eventForm.recurring">
                                 <div class="input-group-text">
                                     <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-calendar-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -142,7 +142,7 @@
                             </div>
                         </div>
                         <div class="col-6 text-right">
-                            <label>To</label>
+                            <label>{{_('To')}}</label>
                             <div class="input-group date mb-2" v-show:disabled="!eventForm.recurring">
                                 <input type="date" class="form-control text-truncate" v-model="eventForm.endDay" v-on:blur="checkMaxDay" v-bind:disabled="eventForm.recurring" required/>
                                 <div class="input-group-text">
@@ -166,21 +166,21 @@
                     <div class="collapse" id="recurring-inputs">
                         <div class="row d-flex flex-row-reverse mt-3">
                             <div class="col-6 text-right">
-                                <label for="start-repetition">Days of week</label>
+                                <label for="start-repetition">{{_('Days of week')}}</label>
                                 <select class="form-select" multiple v-model="eventForm.freq" v-bind:disabled="!eventForm.recurring" required>
-                                    <option value="1">Monday</option>
-                                    <option value="2">Tuesday</option>
-                                    <option value="3">Wednesday</option>
-                                    <option value="4">Thursday</option>
-                                    <option value="5">Friday</option>
-                                    <option value="6">Saturday</option>
-                                    <option value="0">Sunday</option>
+                                    <option value="1">{{_('Monday')}}</option>
+                                    <option value="2">{{_('Tuesday')}}</option>
+                                    <option value="3">{{_('Wednesday')}}</option>
+                                    <option value="4">{{_('Thursday')}}</option>
+                                    <option value="5">{{_('Friday')}}</option>
+                                    <option value="6">{{_('Saturday')}}</option>
+                                    <option value="0">{{_('Sunday')}}</option>
                                 </select>
                             </div>
                         </div>
                         <div class="row mt-3">
                             <div class="col-6">
-                                <label>Start of recurrence</label>
+                                <label>{{_('Start of recurrence')}}</label>
                                 <div class="input-group date mb-2">
                                     <div class="input-group-text">
                                         <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-calendar-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -192,7 +192,7 @@
                                 </div>
                             </div>
                             <div class="col-6 text-right">
-                                <label>End of recurrence</label>
+                                <label>{{_('End of recurrence')}}</label>
                                 <div class="input-group date mb-2">
                                     <input type="date" class="form-control text-truncate" v-model="eventForm.endRecurrDay" v-on:blur="checkMaxRecurrDay" v-bind:disabled="!eventForm.recurring" required>
                                     <div class="input-group-text">
@@ -207,8 +207,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-success">Add</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{_('Close')}}</button>
+                    <button type="submit" class="btn btn-success">{{_('Add')}}</button>
                 </div>
             </form>
         </div>
@@ -223,7 +223,7 @@
             <a class="nav-link" href="#">Schedule 3</a>
             <a class="nav-link" href="#">Export</a>
             <a class="nav-link" href="#">Download</a>
-            <a class="nav-link" href="#" v-on:click="save">Save</a>
+            <a class="nav-link" href="#" v-on:click="save">{{_('Save')}}</a>
         </nav>
     </div>
 
@@ -251,17 +251,17 @@
                     </li>
                     <li class="list-group-item p-0 list-code-input">
                         <form class="input-group my-1" id="form-add-code" v-on:submit.prevent="addCode">
-                            <input class="form-control code-input" type="text" placeholder="Enter code" v-model="code" v-focus>
+                            <input class="form-control code-input" type="text" placeholder="{{_('Enter code')}}" v-model="code" v-focus>
                             <button class="btn btn-success badge rounded-pill btn-code-validation" type="submit">+</button>
                         </form>
                     </li>
                 </div>
                 <div class="btn-group btn-compute-clear mt-3">
                     <button class="btn btn-outline-dark btn-sm w-50" type="button" v-on:click="compute($event); toggleNav(false)">
-                        Compute
+                        {{_('Compute')}}
                     </button>
                     <button class="btn btn-outline-dark btn-sm w-50" type="button" v-on:click="clear($event); toggleNav(false)">
-                        Clear
+                        {{_('Clear')}}
                     </button>
                 </div>
             </div>
@@ -271,13 +271,13 @@
         <div class="container-fluid">
             <div class="col-md-9 ml-sm-auto col-lg-10 p-3">
                 <div class="alert alert-success alert-dismissible" style="display: none;" v-show="saveSuccess">
-                    Schedule successfuly saved !
+                    {{_('Schedule successfuly saved !')}}
                     <button type="button" class="close"v-on:click="saveSuccess = false">
                         <span>&times;</span>
                     </button>
                 </div>
                 <div class="alert alert-danger alert-dismissible" style="display: none;" v-show="error">
-                    A problem has occurred. Please contact us if it happens again.
+                    {{_('A problem has occurred. Please contact us if it happens again.')}}
                     <button type="button" class="close" v-on:click="error = false">
                         <span>&times;</span>
                     </button>

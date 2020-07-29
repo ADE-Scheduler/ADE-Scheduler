@@ -13,7 +13,7 @@
 
         <!-- JSGlue -->
         <script type="text/javascript" src="{{ url_for('static', filename='dist/jsglue.min.js') }}"></script>
-        
+
         {%block head%}{%endblock%}
     </head>
 
@@ -31,16 +31,16 @@
                 <div class="navbar-collapse offcanvas-collapse">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link" v-bind:class="{'active-page': currentPath === '{{ url_for('calendar.index') }}'}" href={{ url_for('calendar.index') }}>{{ _('Calendar') }}</a>
+                            <a class="nav-link" v-bind:class="{'active-page': currentPath === '{{ url_for('calendar.index') }}'}" href={{ url_for('calendar.index') }}>{{_('Calendar')}}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" v-bind:class="{'active-page': currentPath === '{{ url_for('classroom.index') }}'}" href={{ url_for('classroom.index') }}>{{ _('Classrooms' )}}</a>
+                            <a class="nav-link" v-bind:class="{'active-page': currentPath === '{{ url_for('classroom.index') }}'}" href={{ url_for('classroom.index') }}>{{_('Classrooms')}}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" v-bind:class="{'active-page': currentPath === '{{ url_for('account.index') }}'}" href={{ url_for('account.index') }}>{{ _('Account') }}</a>
+                            <a class="nav-link" v-bind:class="{'active-page': currentPath === '{{ url_for('account.index') }}'}" href={{ url_for('account.index') }}>{{_('Account')}}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" v-bind:class="{'active-page': currentPath === '{{ url_for('help.index') }}'}" href={{ url_for('help.index') }}>{{ _('Help') }}</a>
+                            <a class="nav-link" v-bind:class="{'active-page': currentPath === '{{ url_for('help.index') }}'}" href={{ url_for('help.index') }}>{{_('Help')}}</a>
                         </li>
                     </ul>
 
@@ -62,12 +62,12 @@
 
                     {% if current_user.is_authenticated %}
                     <div class="btn-group align-items-end user-status-div">
-                        <button class="btn btn-outline-danger btn-sm" type="button" onclick="window.location.href='/logout'">{{ _('Logout') }}</button>
+                        <button class="btn btn-outline-danger btn-sm" type="button" onclick="window.location.href='/logout'">{{_('Logout')}}</button>
                     </div>
                     {% else %}
                     <div class="btn-group align-items-end user-status-div" style="min-width: 170px">
-                        <button class="btn btn-outline-light btn-sm w-50" type="button" onclick="window.location.href='/login'">{{ _('Login') }}</button>
-                        <button class="btn btn-outline-light btn-sm w-50" type="button" onclick="window.location.href='/register'">{{ _('Register') }}</button>
+                        <button class="btn btn-outline-light btn-sm w-50" type="button" onclick="window.location.href='/login'">{{_('Login')}}</button>
+                        <button class="btn btn-outline-light btn-sm w-50" type="button" onclick="window.location.href='/register'">{{_('Register')}}</button>
                     </div>
                     {% endif %}
                 </div>
