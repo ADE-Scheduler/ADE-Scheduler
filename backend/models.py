@@ -1,3 +1,5 @@
+import secrets
+
 from copy import copy, copy
 from flask_sqlalchemy import SQLAlchemy
 from flask_security.models import fsqla_v2 as fsqla
@@ -61,12 +63,16 @@ class Schedule(db.Model):
         """
         Creates a schedule, binds it to its creator.
         """
+        # Schedule creation, update id
         self.users = [user]
         db.session.add(self)
         db.session.flush()
-
         data.id = self.id
         self.data = data
+
+        # Automatic link creation
+        Link(self)
+
         db.session.commit()
 
     def update_data(self, data):
@@ -104,18 +110,19 @@ class Link(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     schedule_id = db.Column(db.Integer(), db.ForeignKey('schedule.id'))
     link = db.Column(db.String(100), unique=True, index=True)
+    choice = db.Column(db.Integer(), default=0)
 
     def __init__(self, schedule):
         """
         Creates a link, binds it to a schedule
         """
-        self.link = 'link-generator.ade-scheduler.me'   # TODO: a link generator
+        generated_link = secrets.token_urlsafe(32)
+        while Link.query.filter(Link.link == generated_link).first():
+            generated_link = secrets.token_urlsafe(32)
+        self.link = generated_link
         self.schedule = schedule
         db.session.add(self)
         db.session.commit()
-
-    def get_schedule():
-        return self.schedule
 
 
 class Property(db.Model):

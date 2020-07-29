@@ -163,3 +163,10 @@ class Manager:
             else:
                 schd_db.update_data(schedule)
                 return schd_db.data
+
+    def get_schedule(self, link):
+        query = md.Link.query.filter(md.Link.link == link).first()
+        if query:
+            return query.schedule.data, query.choice
+        else:
+            return None, None

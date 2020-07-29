@@ -2,8 +2,9 @@ import re
 from datetime import datetime
 
 from flask import current_app as app
-from flask import Blueprint, render_template, session, jsonify, redirect, url_for, request
+from flask import Blueprint, render_template, session, jsonify, redirect, url_for, request, make_response
 from flask_security import current_user, login_required
+from flask_babelex import _
 
 import backend.schedules as schd
 import backend.events as evt
@@ -135,3 +136,22 @@ def add_custom_event():
 def delete_custom_event(id):
     session['current_schedule'].remove_custom_event(id=id)
     return 'OK', 200
+
+
+@calendar.route('/download', methods=['GET'])
+def download():
+    link = request.args.get('link')
+    if link:
+        mng = app.config['MANAGER']
+        schedule, choice = mng.get_schedule(link)
+    else:
+        schedule = session['current_schedule']
+        choice = int(request.args.get('choice')) if request.args.get('choice') else 0
+
+    if schedule is None:
+        return _('The schedule you requested does not exist in our database !'), 400
+    else:
+        resp = make_response(schedule.get_ics_file(choice=choice))
+        resp.mimetype = 'text/calendar'
+        resp.headers['Content-Disposition'] = 'attachment; filename=' + schedule.label.replace(' ', '_') + '.ics'
+        return resp

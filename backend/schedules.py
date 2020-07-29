@@ -5,6 +5,7 @@ import operator
 from typing import Iterable, Union, List
 from backend.courses import Course, merge_courses, View
 from flask import current_app as app
+from ics import Calendar
 
 import backend.events as evt
 
@@ -151,6 +152,20 @@ class Schedule:
         for course in courses:
             summary[course.code] = course.get_summary()
         return summary
+
+    def get_ics_file(self, choice: int = 0):
+        """
+        Returns the .ics (iCalendar) representation of this Schedule.
+
+        :param choice: int matching the choice (0 = ADE, > 0 = n-th best)
+        :return: iCalendar-formatted schedule
+        :rtype: str
+        """
+        if choice is 0:
+            return str(Calendar(events=self.get_events()))
+        else:
+            return '#TODO: représentation .ics du n-th meilleur horaire !'
+
 
     def compute_best(self, n_best: int = 5, safe_compute: bool = True) -> List[Iterable[evt.CustomEvent]]:
         """
