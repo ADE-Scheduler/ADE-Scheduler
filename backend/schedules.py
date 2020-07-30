@@ -2,9 +2,10 @@ from itertools import product, chain, starmap, repeat
 from collections import deque, defaultdict
 from heapq import nsmallest
 import operator
-from typing import Iterable, Union, List, SupportsInt
-from backend.courses import Course, merge_courses, View
+from typing import Iterable, Union, List, SupportsInt, Dict, Set
+from backend.courses import Course, merge_courses
 from flask import current_app as app
+from copy import deepcopy
 
 import backend.events as evt
 
@@ -12,14 +13,15 @@ import backend.events as evt
 Schedule needed data:
 {
     code_list: [LMECA2660, LELEC2760, etc],                 // requested course codes
-    filtered_subcodes: {
-                            LELEC276: [LELEC2760_Q1],
-                            LMECA2660: [LMECA2660_Q2],
+    filtered_subcodes:  {
+                            LELEC2760: {CM: LELEC2760_Q1},
+                            LMECA2660: {CM: LMECA2660_Q2},
                         }                                   // unselected subcodes
-    best_schedules: [{
-                        week1: filtered_subcodes,
-                        week2: ...,
-                    }, ...]                                 // filtered subcodes, week by week
+    best_schedules:     [{
+                            LELEC2760:  {
+                                            week1: {CM: LELEC2760_Q1}
+                                        }
+                        }]                                  // filtered subcodes, week by week
     custom_events: [event1, event2],                        // custom user events
     priority_levels: {code1: 5, code2: 1, subcode1: 3},     // priority level of the various code & subcodes
     project_id: id,
@@ -41,8 +43,8 @@ class Schedule:
         self.project_id = project_id
         self.label = label
         self.codes = list()
-        self.filtered_subcodes = defaultdict(list)
-        self.best_schedules = list()
+        self.filtered_subcodes = defaultdict(set)
+        self.best_schedules = None
         self.custom_events = list()
         self.priorities = dict()
         self.color_palette = ['#374955', '#005376', '#00c0ff', '#1f789d', '#4493ba',
@@ -50,16 +52,15 @@ class Schedule:
 
     def add_filter(self, code: str, filter: Union[Iterable[str], str]):
         if isinstance(filter, str):
-            self.filtered_subcodes[code].append(filter)
+            self.filtered_subcodes[code].add(filter)
         else:
-            self.filtered_subcodes[code].extend(filter)
+            self.filtered_subcodes[code].update(filter)
 
     def remove_filter(self, code: str, filter: Union[Iterable[str], str]):
         if isinstance(filter, str):
             self.filtered_subcodes[code].remove(filter)
         else:
-            for filt in filter:
-                self.filtered_subcodes[code].remove(filt)
+            self.filtered_subcodes[code].difference_update(filter)
 
     def add_course(self, code: Union[Iterable[str], str]) -> List[str]:
         """
@@ -110,6 +111,16 @@ class Schedule:
         """
         self.custom_events.remove(event)
 
+    def get_courses(self) -> List[Course]:
+        """
+        Returns all the courses of this schedule as a list.
+
+        :return: the courses
+        :rtype: List[Course]
+        """
+        mng = app.config['MANAGER']
+        return mng.get_courses(*self.codes, project_id=self.project_id)
+
     def get_events(self, json: bool = False, schedule_number: int = 0) -> List[evt.Event]:
         """
         Extracts all the events matching ids in the filtered_subcodes list.
@@ -122,8 +133,7 @@ class Schedule:
         :rtype: List[events]
         """
         events = list()
-        mng = app.config['MANAGER']
-        courses = mng.get_courses(*self.codes, project_id=self.project_id)
+        courses = self.get_courses()
 
         if schedule_number == 0:
             views = self.filtered_subcodes
@@ -147,15 +157,14 @@ class Schedule:
 
         return events
 
-    def get_summary(self):
+    def get_summary(self) -> Dict[str, Dict[str, Set[str]]]:
         """
         Returns the summary of all activities within the schedule.
 
         :return: dict of course summaries
         :rtype: dict
         """
-        mng = app.config['MANAGER']
-        courses = mng.get_courses(*self.codes, project_id=self.project_id)
+        courses = self.get_courses()
         summary = dict()
         for course in courses:
             summary[course.code] = course.get_summary()
@@ -171,21 +180,22 @@ class Schedule:
         :return: the n_best schedules
         :rtype: List[Iterable[evt.CustomEvent]]
         """
-        mng = app.config['MANAGER']
-        courses = mng.get_courses(*self.codes, project_id=self.project_id)
+        courses = self.get_courses()
 
-        self.best_schedules = list()
+        # Reset the best schedules
+        # TODO: pas sûr que c'est la meilleure manière de faire...
+        self.best_schedules = [defaultdict(lambda: defaultdict(set)) for _ in range(n_best)]
+        best = [[] for _ in range(n_best)]  # We create an empty list which will contain best schedules
 
         # Forbidden time slots = events that we cannot move and that we want to minimize conflicts with them
         fts = self.custom_events
 
         # Merge courses applying reverse view on all of them, then get all the activities
-        df = merge_courses(courses, view=self.filtered_subcodes, reverse=True).get_activities()
+        df = merge_courses(courses, views=self.filtered_subcodes, reverse=True).get_activities()
 
         # We only take care of events which are not of type EvenOTHER
         valid = df.index.get_level_values('type') != evt.EventOTHER
         df_main, df_other = df[valid], df[~valid]
-        best = [[] for _ in range(n_best)]  # We create an empty list which will contain best schedules
 
         for week, week_data in df_main.groupby('week'):
             if safe_compute:  # We remove events from same course that happen at the same time
@@ -202,38 +212,53 @@ class Schedule:
                             # We append to left because last event is most likely to conflict (if sorted)
                             tmp.appendleft(e)
 
+            # First, each event is considered to be filtered out.
+            for event in week_data['event']:
+                for i in range(n_best):
+                    self.best_schedules[i][event.code][week].add(event.id)
+            # Events present in the best schedule will be later removed from the filter
+
             events = [[data_id.values for _, data_id in data.groupby(level='id')]
                       for _, data in week_data.groupby(level=['code', 'type'])['event']]
+
+            # Generate all possible schedules for a given week
             permutations = product(*events)
 
-            # TODO: add events code to self.best_schedules
+            best_weeks = nsmallest(n_best, permutations, key=lambda f: evaluate_week(f, fts))
 
-            if n_best == 1:
-                best.extend(chain.from_iterable(min(permutations, key=lambda f: evaluate_week(f, fts))))
-            else:
-                temp = nsmallest(n_best, permutations, key=lambda f: evaluate_week(f, fts))
-                n_temp = len(temp)
-                for i in range(n_temp):
-                    best[i].extend(chain.from_iterable(temp[i]))
-                # If we could only find n_temp < n_best best scores, we fill the rest in with same values
-                for j in range(n_temp, n_best):
-                    best[j].extend(chain.from_iterable(temp[-1]))
+            n = len(best_weeks)  # Sometimes n < n_best
+
+            for i in range(n):
+                events = list(chain.from_iterable(best_weeks[i]))
+                best[i].extend(events)
+
+                for event in events:
+                    # Remove the event from the filter
+                    self.best_schedules[i][event.code][week].remove(event.id)
+
+            # If we could only find n < n_best best scores, we fill the rest in with same last values
+            for i in range(n, n_best):
+                best[i].extend(events)
+                for event in events:
+                    self.best_schedules[i][event.code][week].remove(event.id)
 
         other = df_other['event'].values.flatten().tolist()
         if other:
             [schedule.extend(other) for schedule in best]
 
-        self.best_schedules = best
-
         return best
 
 
-def evaluate_week(week: Iterable[evt.AcademicalEvent], fts: Iterable[evt.AcademicalEvent] = None) -> float:
+def evaluate_week(week: Iterable[Iterable[evt.CustomEvent]], fts: Iterable[evt.CustomEvent] = None) -> float:
     """
-    Evaluates the how much a given week contains conflicts.
-    :param week: an iterable of evt.CustomEvent objects
-    :param fts: a list of evt.CustomEvent objects
+    Evaluates how much a given week contains conflicts.
+
+    :param week: events in a week as provided by :func:`Schedule.compute_best`
+    :type week: Iterable[Iterable[evt.CustomEvent]]
+    :param fts: additional events to take into account
+    :type fts: Iterable[evt.CustomEvent]
     :return: the sum of all the conflicts
+    :rtype: float
     """
     week = sorted(chain.from_iterable(week))  # We sort all the events
 
