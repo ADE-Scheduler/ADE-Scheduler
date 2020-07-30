@@ -59,12 +59,13 @@ class Schedule(db.Model):
     users = db.relationship('User', secondary='property')
     link = db.relationship('Link', uselist=False, backref='schedule')
 
-    def __init__(self, data, user):
+    def __init__(self, data, user=None):
         """
-        Creates a schedule, binds it to its creator.
+        Creates a schedule, binds it to its creator if any.
         """
         # Schedule creation, update id
-        self.users = [user]
+        if user is not None:
+            self.users = [user]
         db.session.add(self)
         db.session.flush()
         data.id = self.id
@@ -72,7 +73,6 @@ class Schedule(db.Model):
 
         # Automatic link creation
         Link(self)
-
         db.session.commit()
 
     def update_data(self, data):

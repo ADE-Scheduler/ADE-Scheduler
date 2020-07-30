@@ -170,3 +170,10 @@ class Manager:
             return query.schedule.data, query.choice
         else:
             return None, None
+
+    def get_link(self, schedule_id):
+        query = md.Schedule.query.filter(md.Schedule.id == schedule_id).first()
+        if query:
+            return query.link.link
+        else:
+            return None

@@ -221,7 +221,7 @@
             <a class="nav-link" href="#">Schedule 1</a>
             <a class="nav-link" href="#">Schedule 2</a>
             <a class="nav-link" href="#">Schedule 3</a>
-            <a class="nav-link" href="#">Export</a>
+            <a class="nav-link" href="#" v-on:click="getLink">Export</a>
             <a class="nav-link" href="{{ url_for('calendar.download') }}">{{_('Download')}}</a>
             <a class="nav-link" href="#" v-on:click="save">{{_('Save')}}</a>
         </nav>
@@ -243,7 +243,7 @@
                         <div class="code-tag" v-on:click="getDetails(code)">
                             [[ code ]]
                         </div>
-                        <button class="btn btn-danger badge rounded-pill" v-on:click="removeCode($event, code)">
+                        <button class="btn btn-danger badge rounded-pill" v-on:click="removeCode(code)">
                             <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
                             </svg>
@@ -257,10 +257,10 @@
                     </li>
                 </div>
                 <div class="btn-group btn-compute-clear mt-3">
-                    <button class="btn btn-outline-dark btn-sm w-50" type="button" v-on:click="compute($event); toggleNav(false)">
+                    <button class="btn btn-outline-dark btn-sm w-50" type="button" v-on:click="compute(); toggleNav(false)">
                         {{_('Compute')}}
                     </button>
-                    <button class="btn btn-outline-dark btn-sm w-50" type="button" v-on:click="clear($event); toggleNav(false)">
+                    <button class="btn btn-outline-dark btn-sm w-50" type="button" v-on:click="clear(); toggleNav(false)">
                         {{_('Clear')}}
                     </button>
                 </div>

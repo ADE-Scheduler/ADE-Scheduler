@@ -119,11 +119,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 }
             },
+            url: null,
         },
         delimiters: ['[[',']]'],
 
         methods: {
-            fetchData: function(e) {
+            fetchData: function() {
                 this.computing = true;
                 axios({
                     method: 'GET',
@@ -140,7 +141,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.computing = false;
                 });
             },
-            clear: function(e) {
+            clear: function() {
                 this.computing = true;
                 axios({
                     method: 'DELETE',
@@ -157,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.computing = false;
                 });
             },
-            compute: function(e) {
+            compute: function() {
                 this.computing = true;
                 axios({
                     method: 'GET',
@@ -173,7 +174,28 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.computing = false;
                 });
             },
-            save: function(e) {
+            getLink: function() {
+                if (!this.url) {
+                    this.computing = true;
+                    axios({
+                        method: 'GET',
+                        url: Flask.url_for('calendar.export'),
+                    })
+                    .then(resp => {
+                        this.url = Flask.url_for('calendar.download') + '?link=' + resp.data.link;
+                        console.log(this.url);
+                    })
+                    .catch(err => {
+                        this.error = true;
+                    })
+                    .then(() => {
+                        this.computing = false;
+                    });
+                } else {
+                    console.log(this.url);
+                }
+            },
+            save: function() {
                 this.computing = true;
                 axios({
                     method: 'POST',
@@ -193,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.computing = false;
                 });
             },
-            addCode: function(e) {
+            addCode: function() {
                 this.computing = true;
                 axios({
                     method: 'PATCH',
@@ -211,7 +233,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.computing = false;
                 });
             },
-            removeCode: function(e, code) {
+            removeCode: function(code) {
                 this.computing = true;
                 axios({
                     method: 'PATCH',
@@ -228,7 +250,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.computing = false;
                 });
             },
-            addEvent: function(e) {
+            addEvent: function() {
                 let evt = {
                     name: this.eventForm.name,
                     location: this.eventForm.location,
@@ -263,32 +285,32 @@ document.addEventListener('DOMContentLoaded', function() {
                     computing = false;
                 });
             },
-            checkMinDay: function(e) {
+            checkMinDay: function() {
                 if (this.eventForm.beginDay > this.eventForm.endDay || !this.eventForm.endDay) {
                     this.eventForm.endDay = this.eventForm.beginDay;
                 }
             },
-            checkMaxDay: function(e) {
+            checkMaxDay: function() {
                 if (this.eventForm.beginDay > this.eventForm.endDay || !this.eventForm.beginDay) {
                     this.eventForm.beginDay = this.eventForm.endDay;
                 }
             },
-            checkMinRecurrDay: function(e) {
+            checkMinRecurrDay: function() {
                 if (this.eventForm.beginRecurrDay > this.eventForm.endRecurrDay || !this.eventForm.endRecurrDay) {
                     this.eventForm.endRecurrDay = this.eventForm.beginRecurrDay;
                 }
             },
-            checkMaxRecurrDay: function(e) {
+            checkMaxRecurrDay: function() {
                 if (this.eventForm.beginRecurrDay > this.eventForm.endRecurrDay || !this.eventForm.beginRecurrDay) {
                     this.eventForm.beginRecurrDay = this.eventForm.endRecurrDay;
                 }
             },
-            checkMinHour: function(e) {
+            checkMinHour: function() {
                 if (this.eventForm.beginHour > this.eventForm.endHour || !this.eventForm.endHour) {
                     this.eventForm.endHour = this.eventForm.beginHour;
                 }
             },
-            checkMaxHour: function(e) {
+            checkMaxHour: function() {
                 if (this.eventForm.beginHour > this.eventForm.endHour || !this.eventForm.beginHour) {
                     this.eventForm.beginHour = this.eventForm.endHour;
                 }
@@ -327,7 +349,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     });
                 }
             },
-            applyFilter: function(e) {
+            applyFilter: function() {
                 this.computing = true;
                 axios({
                     method: 'PUT',

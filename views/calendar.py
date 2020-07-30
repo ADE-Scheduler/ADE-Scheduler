@@ -141,12 +141,12 @@ def delete_custom_event(id):
 @calendar.route('/download', methods=['GET'])
 def download():
     link = request.args.get('link')
+    choice = int(request.args.get('choice')) if request.args.get('choice') else 0
     if link:
         mng = app.config['MANAGER']
-        schedule, choice = mng.get_schedule(link)
+        schedule, _ = mng.get_schedule(link)
     else:
         schedule = session['current_schedule']
-        choice = int(request.args.get('choice')) if request.args.get('choice') else 0
 
     if schedule is None:
         return _('The schedule you requested does not exist in our database !'), 400
@@ -155,3 +155,18 @@ def download():
         resp.mimetype = 'text/calendar'
         resp.headers['Content-Disposition'] = 'attachment; filename=' + schedule.label.replace(' ', '_') + '.ics'
         return resp
+
+
+@calendar.route('/export', methods=['GET'])
+def export():
+    mng = app.config['MANAGER']
+    if session['current_schedule'].id is None:
+        session['current_schedule'] = mng.save_schedule(current_user if current_user.is_authenticated else None, session['current_schedule'])
+
+    link = mng.get_link(session['current_schedule'].id)
+    if link is None:
+        return 'KO', 401
+    else:
+        return jsonify({
+            'link': link,
+        })
