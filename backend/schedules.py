@@ -5,7 +5,6 @@ import operator
 from typing import Iterable, Union, List, SupportsInt, Dict, Set
 from backend.courses import Course, merge_courses
 from flask import current_app as app
-from copy import deepcopy
 
 import backend.events as evt
 
