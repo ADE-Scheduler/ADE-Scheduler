@@ -11,7 +11,7 @@ import backend.events as evt
 """
 Schedule needed data:
 {
-    code_list: [LMECA2660, LELEC2760, etc],                 // requested course codes
+    codes: {LMECA2660, LELEC2760, etc},                     // requested course codes
     filtered_subcodes:  {
                             LELEC2760: {CM: LELEC2760_Q1},
                             LMECA2660: {CM: LMECA2660_Q2},
@@ -41,7 +41,7 @@ class Schedule:
         self.id = schedule_id
         self.project_id = project_id
         self.label = label
-        self.codes = list()
+        self.codes = set()
         self.filtered_subcodes = defaultdict(set)
         self.best_schedules = None
         self.custom_events = list()
@@ -61,25 +61,17 @@ class Schedule:
         else:
             self.filtered_subcodes[code].difference_update(filter)
 
-    def add_course(self, code: Union[Iterable[str], str]) -> List[str]:
+    def add_course(self, code: Union[Iterable[str], str]):
         """
         Adds one or many courses to the schedule.
 
         :param code: the code of the course added
         :type code: Union[Iterable[str], str])
-        :return: the codes that were added to the schedule
         """
         if isinstance(code, str):
-            if code not in self.codes:
-                self.codes.append(code)
-                return [code]
+            self.codes.add(code)
         else:
-            added_codes = list()
-            for c in code:
-                if c not in self.codes:
-                    self.codes.append(c)
-                    added_codes.append(c)
-            return added_codes
+            self.codes.update(code)
 
     def remove_course(self, code: str):
         """
@@ -89,7 +81,7 @@ class Schedule:
         :type code: str
         """
         if code in self.codes:
-            self.codes.remove(code)
+            self.codes.discard(code)
 
     def add_custom_event(self, event: evt.CustomEvent):
         """
