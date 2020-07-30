@@ -1,14 +1,18 @@
 # Python imports
 import os
+import traceback
+import logging
+from logging.handlers import SMTPHandler
 from datetime import timedelta
 from jsmin import jsmin
 
 # Flask imports
+from werkzeug.exceptions import InternalServerError
 from flask import Flask, session, request, redirect, url_for
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from flask_security import Security, SQLAlchemyUserDatastore
-from flask_mail import Mail
+from flask_mail import Mail, Message
 from flask_jsglue import JSGlue
 from flask_babelex import Babel
 from flask_migrate import Migrate
@@ -44,11 +48,12 @@ app.config['MANAGER'] = manager
 # Setup Flask-Mail
 mail_credentials = cd.get_credentials(cd.GMAIL_CREDENTIALS)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 465
-app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USERNAME'] = mail_credentials['username']
 app.config['MAIL_PASSWORD'] = mail_credentials['password']
-app.config['MAIL_DEFAULT_SENDER'] = mail_credentials['username']
+app.config['MAIL_DEFAULT_SENDER'] = 'no-reply@' + app.config['MAIL_SERVER']
+app.config['ADMINS'] = ['gillesponcelet98@gmail.com']
 app.config['MAIL_MANAGER'] = Mail(app)
 
 # Setup Flask-SQLAlchemy
@@ -101,9 +106,29 @@ def before_first_request():
         f.write(jsmin(jsglue.generate_js()))
 
 
+# Main page
 @app.route('/')
 def welcome():
     return redirect(url_for('calendar.index'))
+
+
+# Error handlers
+@app.errorhandler(InternalServerError)
+def handle_exception(e):
+    if not app.debug:
+        error_details = str(traceback.format_exc())
+        req_info = f'Exception on {request.path} [{request.method}]:'
+        msg = Message(
+            subject='ADE Scheduler Failure: ' + str(e.original_exception),
+            body=req_info + '\n\n' + error_details,
+            recipients=app.config['ADMINS'])
+        app.config['MAIL_MANAGER'].send(msg)
+    return 'Oops', 500
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return 'This URL does NOT exist... C\'mon !', 404
 
 
 @app.shell_context_processor
