@@ -222,7 +222,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     url: Flask.url_for('calendar.add_code', {'code': this.code}),
                 })
                 .then(resp => {
-                    this.codes = this.codes.concat(resp.data.codes);
+                    this.codes = this.codes;
                     this.calendarOptions.events = resp.data.events;
                     this.code = '';
                 })
