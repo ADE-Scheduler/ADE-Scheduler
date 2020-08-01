@@ -1,11 +1,11 @@
 from itertools import repeat
 import pandas as pd
 from backend.events import AcademicalEvent
-from typing import List, Union, Dict, Iterable, Optional, Any
+from typing import List, Union, Dict, Iterable, Optional, Any, Set
 from collections import defaultdict
 
 
-View = Union[List[int], Dict[int, str]]
+View = Union[List[str], Set[str], Dict[int, str]]
 
 
 class Course:
@@ -32,7 +32,7 @@ class Course:
         self.name = name
         self.weight = weight
 
-        if activities:
+        if activities is not None:
             self.activities = activities
         else:
             index = ['code', 'type', 'id']
@@ -58,9 +58,9 @@ class Course:
     def __repr__(self) -> str:
         return str(self)
 
-    def add_activity(self, events: List[AcademicalEvent]) -> None:
+    def add_activity(self, events: List[AcademicalEvent]):
         """
-        Add an activity to the current course's activities. An activity is a set of events with the same id.
+        Adds an activity to the current course's activities. An activity is a set of events with the same id.
 
         :param events: list of academical events coming from the same activity
         :type events: List[AcademicalEvent]
@@ -75,7 +75,7 @@ class Course:
         df = pd.DataFrame(data=data, columns=self.activities.columns, index=index)
         self.activities = self.activities.append(df)
 
-    def set_weights(self, percentage: float = 50, event_type: Optional[AcademicalEvent] = None) -> None:
+    def set_weights(self, percentage: float = 50, event_type: Optional[AcademicalEvent] = None):
         """
         Modifies this course's events weight.
 
@@ -95,19 +95,19 @@ class Course:
             valid = self.activities.index.get_level_values(level) == event_type
             self.activities['event'][valid].apply(f)
 
-    def get_summary(self) -> pd.DataFrame:
+    def get_summary(self) -> Dict[str, Set[str]]:
         """
         Returns the summary of all activities in the course.
 
-        :return: dict of activity ids, ordered by activity type (CM, TP, etc.)
-        :rtype: dict
+        :return: dict of activity codes, ordered by activity type (CM, TP, etc.)
+        :rtype: Dict[str, Set[str]]
         """
-        summary = defaultdict(list)
+        summary = defaultdict(set)
         ids = self.activities.index.get_level_values('id').unique()
         for id in ids:
             event_type, code = id.split(': ')
-            summary[event_type].append(code)
-        return dict(summary)
+            summary[event_type].add(code)
+        return summary
 
     def get_activities(self, view: Optional[View] = None, reverse: bool = False) -> pd.DataFrame:
         """
@@ -122,7 +122,7 @@ class Course:
         """
         if view is None:
             return self.activities
-        elif isinstance(view, list):
+        elif isinstance(view, list) or isinstance(view, set):
             valid = self.activities.index.get_level_values('id').isin(view)
 
             if reverse:
@@ -147,6 +147,8 @@ class Course:
                 activities.append(week_data[valid])
 
             return pd.concat(activities)
+        else:
+            return None
 
     def get_events(self, **kwargs) -> Iterable[AcademicalEvent]:
         """
@@ -160,23 +162,29 @@ class Course:
         return self.get_activities(**kwargs)['event'].values
 
 
-def merge_courses(courses: Iterable[Course], code: Optional[str] = None,
-                  name: Optional[str] = None, weight: float = 1, **kwargs: Any) -> Course:
+def merge_courses(courses: Iterable[Course], code: str = '0000',
+                  name: str = 'merged', weight: float = 1, views: Optional[Dict[str, View]] = None,
+                  **kwargs: Any) -> Course:
     """
     Merges multiple courses into one.
 
     :param courses: multiple courses
     :type courses: Iterable[Courses]
     :param code: the new code
-    :type code: Optional[str]
+    :type code: str
     :param name: the new name
-    :type name: Optional[str]
+    :type name: str
     :param weight: the new weight
     :type weight: float
-    :param kwargs: parameters that will be passed to :func:`Course.get_activities`
+    :param views: map of views that will be passed to :func:`Course.get_activities`
+    :type views: Optional[Dict[str, View]]
+    :param kwargs: additional parameters that will be passed to :func:`Course.get_activities`
     :type kwargs: Any
     :return: the new course
     :rtype: Course
     """
-    activities = pd.concat(course.get_activities(**kwargs) for course in courses)
+    if views:
+        activities = pd.concat(course.get_activities(view=views[course.code], **kwargs) for course in courses)
+    else:
+        activities = pd.concat(course.get_activities(**kwargs) for course in courses)
     return Course(code=code, name=name, weight=weight, activities=activities)

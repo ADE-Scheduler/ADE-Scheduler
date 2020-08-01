@@ -3,12 +3,12 @@ from typing import Iterable, Optional
 
 class Professor:
     """
-    A professor is one or more people in charge of a given academical event.
+    A professor is one or many people in charge of a given academical event.
 
     :param name: the name(s)
     :type name: str
     :param email: the email(s)
-    :type email: str
+    :type email: Optional[str]
     """
     def __init__(self, name: str, email: Optional[str] = None):
         self.name = name

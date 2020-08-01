@@ -8,9 +8,10 @@ backend
    classrooms
    courses
    credentials
-   database
    events
+   manager
    models
    professors
+   resources
    schedules
    servers
