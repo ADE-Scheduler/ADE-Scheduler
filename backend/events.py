@@ -123,29 +123,24 @@ class RecurringCustomEvent(CustomEvent):
         r = super().json(color=color)
         del r['start']
         del r['end']
+        days = [_('Sunday'), _('Monday'), _('Tuesday'), _('Wednesday'), _('Thursday'), _('Friday'), _('Saturday')]
         r.update(
             {
-                'daysofweek': self.freq,
-                'starttime': self.begin.format('hh:mmz'),
-                'endtime': self.end.format('hh:mmz'),
-                'startrecur': str(self.begin),
-                'endrecur': str(self.end_recurrence),
+                'daysOfWeek': self.freq,
+                'startTime': self.begin.format('hh:mmz'),
+                'endTime': self.end.format('hh:mmz'),
+                'starRecur': str(self.begin),
+                'endRecur': str(self.end_recurrence),
+                'rrule': {
+                    'days': [days[i] for i in self.freq],
+                    'start': str(self.begin),
+                    'end': str(self.end_recurrence)
+                }
+
             }
         )
 
-        days = [_('Sunday'), _('Monday'), _('Tuesday'), _('Wednesday'), _('Thursday'), _('Friday'), _('Saturday')]
         return r
-            'id': self.uid,
-            'daysOfWeek': self.freq,
-            'startTime': self.begin.format('HH:mmZ'),
-            'endTime': self.end.format('HH:mmZ'),
-            'startRecur': str(self.begin),
-            'endRecur': str(self.end_recurr),
-            'rrule': {
-                'days': [days[i] for i in self.freq],
-                'start': str(self.begin),
-            }
-                'end': str(self.end_recurr),
 
     def __str__(self):
         # TODO: c'est moche d'écrire comme ça
