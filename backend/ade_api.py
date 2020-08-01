@@ -10,7 +10,7 @@ from backend.courses import Course
 from backend.resources import Resource
 from backend import professors
 import backend.events
-from typing import Dict, Union, List, Tuple, Iterator
+from typing import Dict, Union, List, Tuple, SupportsInt
 
 
 class ExpiredTokenError(Exception):
@@ -28,7 +28,8 @@ DEFAULT_PROJECT_ID = 9
 
 class DummyClient:
     """
-    A client is an entity which has granted access to ADE API, via its credentials.
+    A dummy client is an abstrat class providing just the specific requests, but not the access to the API.
+    Access to  the API is to be implemented.
 
     :param credentials: all information needed to make requests to API
     :param credentials: ClientCredentials
@@ -88,48 +89,48 @@ class DummyClient:
         """
         return self.request(function='getProjects', detail=2)
 
-    def get_resources(self, project_id: Union[str, int]) -> requests.Response:
+    def get_resources(self, project_id: SupportsInt) -> requests.Response:
         """
         Requests the ids of all the resource for a specific project.
 
         :param project_id: the id of the project
-        :type project_id: Union[str, int]
+        :type project_id: SupportsInt
         :return: the response
         :rtype: request.Response
         """
         return self.request(projectId=project_id, function='getResources', detail=13, tree='false')
 
-    def get_resource_ids(self, project_id: Union[str, int]) -> requests.Response:
+    def get_resource_ids(self, project_id: SupportsInt) -> requests.Response:
         """
         Requests the ids of all the resource for a specific project.
 
         :param project_id: the id of the project
-        :type project_id: Union[str, int]
+        :type project_id: SupportsInt
         :return: the response
         :rtype: request.Response
         """
         return self.request(projectId=project_id, function='getResources', detail=2)
 
-    def get_classrooms(self, project_id: Union[str, int]) -> requests.Response:
+    def get_classrooms(self, project_id: SupportsInt) -> requests.Response:
         """
         Requests all the classrooms for a specific project.
 
         :param project_id: the id of the project
-        :type project_id: Union[str, int]
+        :type project_id: SupportsInt
         :return: the response
         :rtype: request.Response
         """
         return self.request(projectId=project_id, function='getResources',
                             detail=13, tree='false', category='classroom')
 
-    def get_activities(self, resource_ids: List[Union[str, int]], project_id: Union[str, int]) -> requests.Response:
+    def get_activities(self, resource_ids: List[SupportsInt], project_id: SupportsInt) -> requests.Response:
         """
         Requests all activities (set of events)  for a specific project.
 
         :param resource_ids: the ids of all the resources the activities are requested
-        :type resource_ids: List[Union[str, int]
+        :type resource_ids: List[SupportsInt]
         :param project_id: the id of the project
-        :type project_id: Union[str, int]
+        :type project_id: SupportsInt
         :return: the response
         :rtype: request.Response
         """
@@ -138,7 +139,10 @@ class DummyClient:
 
 
 class Client(DummyClient):
-
+    """
+    A client subclasses the DummyClient abstract class and implements access to ADE API using correct credentials.
+    If you do not own such credentials, please use :func:`FakeClient`.
+    """
     def __init__(self, credentials: ClientCredentials):
         self.credentials = credentials
         self.token = None
@@ -175,16 +179,41 @@ class Client(DummyClient):
         return resp
 
 
-def load_responses():
+def load_responses() -> Dict[str, List[int]]:
+    """
+    Loads the responses stored in the json file
+    :return: the dictionary of all the responses
+    :rtype: Dict[str, List[int]]
+    """
     with open(FakeClient.FILENAME, 'r') as f:
         return json.load(f)
 
 
-def load_response(resquest_name):
-    return pickle.loads(bytes(load_responses()[resquest_name]))
+def load_response(request_name: str) -> requests.Response:
+    """
+    Loads the response of a given request.
+
+    :param request_name: the parameters used in the request, concatenated as in :func:`FakeClient.request`
+    :type request_name: str
+    :return: the response
+    :rtype: requests.Response
+    :raises HTTPError: if the response to the request could not be found in the file
+    """
+    try:
+        return pickle.loads(bytes(load_responses()[request_name]))
+    except KeyError:
+        raise requests.exceptions.HTTPError(f'key [{request_name}] for request was not found')
 
 
-def save_response(response, request_name):
+def save_response(response: requests.Response, request_name: str):
+    """
+    Saves the response to a request into the file specified by the FakeClient class.
+
+    :param response: the response to the request
+    :type response: requests.Response
+    :param request_name: the parameters used in the request, concatenated as in :func:`FakeClient.request`
+    :type request_name: str
+    """
     responses = load_responses()
     responses[request_name] = list(pickle.dumps(response))
 
@@ -193,6 +222,10 @@ def save_response(response, request_name):
 
 
 class FakeClient(DummyClient):
+    """
+    A fake client subclasses the DummyClient abstract class and implements a fake access to ADE API.
+    All the API responses you can cannot are stored in json file, which you can change if you want to.
+    """
     FILENAME = 'fake_api.json'
 
     def __init__(self, credentials: ClientCredentials):
@@ -216,10 +249,7 @@ class FakeClient(DummyClient):
 
         args = '&'.join('='.join(map(str, _)) for _ in kwargs.items())
 
-        try:
-            return load_response(args)
-        except FileNotFoundError:
-            raise requests.exceptions.HTTPError(f'filename {filename} for request was not found')
+        return load_response(args)
 
 
 def get_token(credentials: ClientCredentials) -> Tuple[str, int]:

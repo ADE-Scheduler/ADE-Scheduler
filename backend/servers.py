@@ -1,4 +1,5 @@
 from redis import Redis
+from redis.exceptions import ConnectionError
 from datetime import timedelta
 from typing import Optional, Dict, Any, Tuple, List
 from pickle import dumps, loads
@@ -30,24 +31,24 @@ class Server(Redis):
         try:
             self.ping()
             return True
-        except:
+        except ConnectionError:
             return False
 
-    def run(self) -> None:
+    def run(self):
         """
         Runs the server.
         Since redis is an externally run server, it cannot be started from the
         python code properly.
         """
-        pass
+        raise NotImplementedError
 
-    def shutdown(self) -> None:
+    def shutdown(self):
         """
         Shuts the server down.
         """
         super().shutdown(save=True)
 
-    def set_value(self, key: str, value: Any, expire_in: Optional[Dict[str, int]] = None, hmap: bool = False) -> None:
+    def set_value(self, key: str, value: Any, expire_in: Optional[Dict[str, int]] = None, hmap: bool = False):
         """
         Store a pair key / value in the server, with an optional expiration time.
 
@@ -79,7 +80,15 @@ class Server(Redis):
             else:
                 self.set(key, dumped_value)
 
-    def contains(self, keys: str) -> Any:
+    def contains(self, *keys: str) -> int:
+        """
+        Returns the number of keys that exist.
+
+        :param keys: key(s) to be checked
+        :type keys: str
+        :return: the number of keys that exist
+        :rtype: int
+        """
         return self.exists(*keys)
 
     def get_value(self, key: str, hmap: Optional[str] = None) -> Any:

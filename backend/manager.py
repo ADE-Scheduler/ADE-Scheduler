@@ -1,10 +1,13 @@
 from multiprocessing import Process
 from datetime import timedelta
 import time
+from typing import SupportsInt, List, Iterator, Optional, Union, Dict
 
 import backend.servers as srv
 import backend.ade_api as ade
 import backend.models  as md
+import backend.courses as crs
+import backend.schedules as schd
 
 
 class ScheduleNotOwnedError(Exception):
@@ -19,15 +22,15 @@ class Manager:
     """
     The manager ensures that data is accessible and provides access to it.
 
-    Data can either be found in the server, in the database or from the ADE API.
+    Data can either be found in the server, in the database or obtained from the ADE API.
     At initialization, each source is checked to ensure that they are working properly.
 
     :param client: the client providing access to ADE API
     :type client: ade_api.Client
     :param server: the server providing temporary memory
     :type server: server.Server
-    :param db: the database TODO
-    :type db: TODO
+    :param database: the database
+    :type database: md.SQLAlchemy
     """
     def __init__(self, client: ade.Client, server: srv.Server, database: md.SQLAlchemy):
 
@@ -58,9 +61,16 @@ class Manager:
             self.client = client
             self.database = database
 
-    def get_courses(self, *codes, project_id=ade.DEFAULT_PROJECT_ID):
+    def get_courses(self, *codes: str, project_id: SupportsInt = ade.DEFAULT_PROJECT_ID) -> List[crs.Course]:
         """
-        ...
+        Returns the courses with given codes as a list.
+
+        :param codes: the code(s) of the course(s)
+        :type codes: str
+        :param project_id: the project id
+        :type project_id: SupportsInt
+        :return: the list of courses
+        :rtype: List[crs.Course]
         """
         # Fetch from the server
         prefix = f'[project_id={project_id}]'
@@ -82,7 +92,7 @@ class Manager:
 
     def update_resources(self):
         """
-        ...
+        Updates the resources contained in the server for all project ids.
         """
         key = f'[PROJECT_IDs]'
         if not self.server.exists(key):
@@ -94,9 +104,16 @@ class Manager:
             resources = ade.response_to_resources(self.client.get_resources(value))
             self.server.set_value(key, resources, expire_in={'hours': 25}, hmap=True)
 
-    def get_resource_ids(self, *codes, project_id=ade.DEFAULT_PROJECT_ID):
+    def get_resource_ids(self, *codes: str, project_id: SupportsInt = ade.DEFAULT_PROJECT_ID) -> Iterator[str]:
         """
-        ...
+        Returns the resource ids of each code.
+
+        :param codes: the code(s) (name(s)) of the resources
+        :type codes: str
+        :param project_id: the project id
+        :type project_id: SupportsInt
+        :return: the resource ids
+        :rtype: Iterator[str]
         """
         key = f'[RESOURCE_IDs,project_id={project_id}]'
         if not self.server.exists(key):
@@ -105,7 +122,7 @@ class Manager:
 
     def update_resource_ids(self):
         """
-        ...
+        Updates the resource ids contained in the server for all project ids.
         """
         key = f'[PROJECT_IDs]'
         if not self.server.exists(key):
@@ -117,9 +134,14 @@ class Manager:
             resource_ids = ade.response_to_resource_ids(self.client.get_resource_ids(value))
             self.server.set_value(key, resource_ids, expire_in={'hours': 25}, hmap=True)
 
-    def get_project_id(self, year=None):
+    def get_project_ids(self, year: Optional[str] = None) -> Union[List[Dict[str, str]], str, None]:
         """
-        ...
+        Returns the project ids. If year is specified, only the project id of this year is returned.
+
+        :param year: the year, '2019-2020' format
+        :type year: str
+        :return: the list of ids and years or the id of one year or None if no id was found
+        :rtype: Union[List[Dict[str, str]], str, None]
         """
         hmap = f'[PROJECT_IDs]'
         if not self.server.exists(hmap):
@@ -139,16 +161,25 @@ class Manager:
 
     def update_project_ids(self):
         """
-        ...
+        Updates the project ids.
         """
         key = f'[PROJECT_IDs]'
         project_ids = ade.response_to_project_ids(self.client.get_project_ids())
         self.server.set_value(key, project_ids, expire_in={'hours': 25}, hmap=True)
 
-    def save_schedule(self, user, schedule):
+    def save_schedule(self, user: md.User, schedule: schd.Schedule):
         """
-        ...
+        Saves a schedule binding it to a user into the database.
+
+        :param user: the user
+        :type user: md.User
+        :param schedule: the schedule
+        :type schedule: schd.Schedule
+        :return: the scheduler, with its id updated...
+        ????
         """
+        # TODO: @Louis tu es sûr que c'est bien 'save_schedule' ? Pcq cela retourne le schedule et ne sauve même pas
+        # dans le cas où c'est déjà présent
         if schedule.id is None:     # this schedule is not yet saved
             schd_db = md.Schedule(data=schedule, user=user)
             schd_db.data.id = schd_db.id

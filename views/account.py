@@ -26,7 +26,7 @@ def index():
 def get_data():
     mng = app.config['MANAGER']
     return jsonify({
-        'project_id': mng.get_project_id(),
+        'project_id': mng.get_project_ids(),
         'unsaved': session['current_schedule_modified'],
         'schedules': list(map(lambda s: {
             'id': s.id,
