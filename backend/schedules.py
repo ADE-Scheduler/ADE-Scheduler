@@ -2,10 +2,11 @@ from itertools import product, chain, starmap, repeat
 from collections import deque, defaultdict
 from heapq import nsmallest
 import operator
-from typing import Iterable, Union, List, SupportsInt, Dict, Set
+from typing import Iterable, Union, List, SupportsInt, Dict, Set, Any
 from backend.courses import Course, merge_courses
 from flask import current_app as app
 from ics import Calendar
+import json
 
 import backend.events as evt
 
@@ -27,6 +28,27 @@ Schedule needed data:
     schedule_id: id,
 }
 """
+
+
+class ScheduleEncoder(json.JSONEncoder):
+    """
+    Subclass of json encoder aiming to convert bytes into list of integers.
+    """
+    def default(self, obj: Any) -> Any:
+        if isinstance(obj, set):
+            return list(obj)
+        else:
+            return json.JSONEncoder.default(self, obj)
+
+
+class ScheduleDecoder(json.JSONDecoder):
+    """
+    Subclass of json decoder aiming to convert back the list of integers into bytes.
+    """
+    def decode(self, obj: Any, w: Any = None) -> str:
+        decoded = json.JSONDecoder().decode(obj)
+
+        return decoded
 
 
 class Schedule:

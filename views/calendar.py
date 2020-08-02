@@ -30,7 +30,7 @@ def index():
 def get_data():
     return jsonify({
         'events': session['current_schedule'].get_events(json=True),
-        'codes': list(session['current_schedule'].codes),
+        'codes': session['current_schedule'].codes,
     }), 200
 
 
@@ -60,7 +60,7 @@ def add_code(code):
     codes = session['current_schedule'].add_course(codes)
     session['current_schedule_modified'] = True
     return jsonify({
-        'codes': list(codes),
+        'codes': codes,
         'events': session['current_schedule'].get_events(json=True),
     }), 200
 
@@ -98,6 +98,7 @@ def apply_filter():
         for type, filters in filters.items():
             for filter, value in filters.items():
                 if not value:
+                    # TODO: use dedicated function in backend.schedules
                     session['current_schedule'].filtered_subcodes[code].append(type + ': ' + filter)
     return jsonify({
         'events': session['current_schedule'].get_events(json=True),
