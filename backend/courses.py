@@ -108,7 +108,6 @@ class Course:
             event_type, code = id.split(': ', maxsplit=1)
             summary[event_type].add(code)
 
-        print(summary)
         return summary
 
     def get_activities(self, view: Optional[View] = None, reverse: bool = False) -> pd.DataFrame:
