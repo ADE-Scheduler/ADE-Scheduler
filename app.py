@@ -84,12 +84,16 @@ app.config['LANGUAGES'] = ['en', 'fr']
 app.config['BABEL_TRANSLATION_DIRECTORIES'] = 'translations'
 babel = Babel(app)
 
+
 @babel.localeselector
 def get_locale():
     if session.get('locale') is None:
         session['locale'] = request.accept_languages.best_match(app.config['LANGUAGES'])
     return session['locale']
+
+
 app.jinja_env.globals['get_locale'] = get_locale
+
 
 @app.route('/locale/<locale>')
 def set_locale(locale):
