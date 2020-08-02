@@ -50,7 +50,7 @@ class ScheduleDecoder(json.JSONDecoder):
         for key in decoded:
             obj = decoded[key]
             if isinstance(obj, list) and isinstance(obj[0], str):
-                if len(obj[0]) > 0 and obj[0] == '#':  # Then its color palette and we don't convert back
+                if len(obj[0]) > 0 and obj[0][0] == '#':  # Then its color palette and we don't convert back
                     continue
                 else:
                     decoded[key] = set(obj)
