@@ -60,7 +60,7 @@ def add_code(code):
     codes = list(session['current_schedule'].add_course(codes))
     session['current_schedule_modified'] = True
     return jsonify({
-        'codes': codes,
+        'codes': list(codes),
         'events': session['current_schedule'].get_events(json=True),
     }), 200
 

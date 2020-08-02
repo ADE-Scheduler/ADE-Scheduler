@@ -74,6 +74,7 @@ class Schedule:
             self.codes.add(code)
         else:
             self.codes.update(code)
+        return self.codes
 
         return self.codes - old
 
