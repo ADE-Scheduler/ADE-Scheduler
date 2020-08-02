@@ -13,6 +13,7 @@
 
                 <a class="nav-link main-link m-2 mb-0" href="#faq-1" v-on:click.prevent="scroll('faq-1', true)">ADE Scheduler</a>
                 <nav class="nav sub-nav flex-column">
+                    <img class="d-block mx-auto my-4" src={{ url_for('static', filename='img/ade_scheduler_icon.png') }} width="30%">
                     <a class="nav-link ml-4" href="#faq-11" v-on:click.prevent="scroll('faq-11')">{{ _('What is ADE Scheduler ?') }}</a>
                     <a class="nav-link ml-4" href="#faq-12" v-on:click.prevent="scroll('faq-12')">{{ _('Getting started') }}</a>
                 </nav>
@@ -43,7 +44,8 @@
         </nav>
 
         <div class="col-md-9 ml-sm-auto col-lg-10 p-3">
-            <h3 class="my-5" id="faq-1">ADE Scheduler</h3>
+            <h3 class="my-5" align="center" id="faq-1">ADE Scheduler<img class="d-block mx-auto my-4" src={{ url_for('static', filename='img/ade_scheduler_icon.png') }} width="10%">
+            </h3>
                 <h4 id="faq-11">{{ _('What is ADE Scheduler ?') }}</h4>
                 <hr class="mb-3">
                 <p>

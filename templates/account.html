@@ -16,7 +16,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                You have unsaved changes in your current schedule. Continue ?
+                {{  _('You have unsaved changes in your current schedule. Continue ?') }}
             </div>
             <div class="modal-footer d-flex justify-content-between">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
@@ -31,7 +31,7 @@
     <div class="row">
         <div class="col-md-8 col-lg-9 p-3">
             <div class="alert alert-danger alert-dismissible" v-show="error">
-                A problem has occurred. Please contact us if it happens again.
+                {{  _('A problem has occurred. Please contact us if it happens again.') }}
                 <button type="button" class="close" v-on:click="error = false">
                     <span>&times;</span>
                 </button>
@@ -74,7 +74,7 @@
 
         <div class="col-md-4 col-lg-3 p-3">
             <h4 class="d-flex justify-content-between align-items-center">
-                <span class="text-muted">Schedules</span>
+                <span class="text-muted">{{ _('Schedules') }}</span>
             </h4>
             <ul class="list-group list-schedules">
                 <li class="list-group-item d-flex justify-content-between align-items-center" v-for="s in schedules" v-bind:key="s.id" v-bind:class="s.id === current_schedule.id ? 'current-schedule' : ''">
