@@ -30,7 +30,7 @@ def index():
 def get_data():
     return jsonify({
         'events': session['current_schedule'].get_events(json=True),
-        'codes': session['current_schedule'].codes,
+        'codes': list(session['current_schedule'].codes),
     }), 200
 
 
@@ -57,7 +57,7 @@ def get_info(code):
 def add_code(code):
     pattern = re.compile('^\s+|\s*,\s*|\s+$')
     codes = [x.upper() for x in pattern.split(code) if x]
-    codes = session['current_schedule'].add_course(codes)
+    codes = list(session['current_schedule'].add_course(codes))
     session['current_schedule_modified'] = True
     return jsonify({
         'codes': codes,
@@ -151,7 +151,7 @@ def download():
     if schedule is None:
         return _('The schedule you requested does not exist in our database !'), 400
     else:
-        resp = make_response(schedule.get_ics_file(choice=choice))
+        resp = make_response(schedule.get_ics_file(schedule_number=choice))
         resp.mimetype = 'text/calendar'
         resp.headers['Content-Disposition'] = 'attachment; filename=' + schedule.label.replace(' ', '_') + '.ics'
         return resp
