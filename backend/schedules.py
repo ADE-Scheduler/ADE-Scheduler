@@ -23,12 +23,10 @@ Schedule needed data:
                                         }
                         }]                                  // filtered subcodes, week by week
     custom_events: [event1, event2],                        // custom user events
-    priority_levels: {code1: 5, code2: 1, subcode1: 3},     // priority level of the various code & subcodes
     project_id: id,
     schedule_id: id,
 }
 """
-# TODO: priority_levels -> utile ?
 
 
 class Schedule:
@@ -62,17 +60,22 @@ class Schedule:
         else:
             self.filtered_subcodes[code].difference_update(filter)
 
-    def add_course(self, code: Union[Iterable[str], str]):
+    def add_course(self, code: Union[Iterable[str], str]) -> Set[str]:
         """
         Adds one or many courses to the schedule.
 
         :param code: the code of the course added
         :type code: Union[Iterable[str], str])
+        :return: all the new codes added to the schedule
+        :rtype: Set[str]
         """
+        old = set(self.codes)
         if isinstance(code, str):
             self.codes.add(code)
         else:
             self.codes.update(code)
+
+        return self.codes - old
 
     def remove_course(self, code: str):
         """
@@ -158,7 +161,7 @@ class Schedule:
         Returns the summary of all activities within the schedule.
 
         :return: dict of course summaries
-        :rtype: dict
+        :rtype:  Dict[str, Dict[str, Set[str]]]
         """
         courses = self.get_courses()
         summary = dict()
@@ -166,19 +169,16 @@ class Schedule:
             summary[course.code] = course.get_summary()
         return summary
 
-    def get_ics_file(self, choice: int = 0):
+    def get_ics_file(self, schedule_number: int = 0):
         """
         Returns the .ics (iCalendar) representation of this Schedule.
 
-        :param choice: int matching the choice (0 = ADE, > 0 = n-th best)
+        :param schedule_number: the # of the schedule, 0 for main and 1 for best one, 2 for second best, etc.
+        :type schedule_number: int
         :return: iCalendar-formatted schedule
         :rtype: str
         """
-        if choice is 0:
-            return str(Calendar(events=self.get_events()))
-        else:
-            return '#TODO: représentation .ics du n-th meilleur horaire !'
-
+        return str(Calendar(events=self.get_events(schedule_number=schedule_number)))
 
     def compute_best(self, n_best: int = 5, safe_compute: bool = True) -> List[Iterable[evt.CustomEvent]]:
         """
