@@ -57,7 +57,7 @@ def get_info(code):
 def add_code(code):
     pattern = re.compile('^\s+|\s*,\s*|\s+$')
     codes = [x.upper() for x in pattern.split(code) if x]
-    codes = list(session['current_schedule'].add_course(codes))
+    codes = session['current_schedule'].add_course(codes)
     session['current_schedule_modified'] = True
     return jsonify({
         'codes': list(codes),
