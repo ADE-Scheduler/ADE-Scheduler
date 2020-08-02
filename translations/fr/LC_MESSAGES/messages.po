@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-07-29 12:16+0200\n"
+"POT-Creation-Date: 2020-08-02 19:48+0200\n"
 "PO-Revision-Date: 2020-07-24 16:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -18,31 +18,31 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: backend/events.py:105 templates/calendar.html:177
+#: backend/events.py:126 templates/calendar.html:177
 msgid "Sunday"
 msgstr "Dimanche"
 
-#: backend/events.py:105 templates/calendar.html:171
+#: backend/events.py:126 templates/calendar.html:171
 msgid "Monday"
 msgstr "Lundi"
 
-#: backend/events.py:105 templates/calendar.html:172
+#: backend/events.py:126 templates/calendar.html:172
 msgid "Tuesday"
 msgstr "Mardi"
 
-#: backend/events.py:105 templates/calendar.html:173
+#: backend/events.py:126 templates/calendar.html:173
 msgid "Wednesday"
 msgstr "Mercredi"
 
-#: backend/events.py:105 templates/calendar.html:174
+#: backend/events.py:126 templates/calendar.html:174
 msgid "Thursday"
 msgstr "Jeudi"
 
-#: backend/events.py:105 templates/calendar.html:175
+#: backend/events.py:126 templates/calendar.html:175
 msgid "Friday"
 msgstr "Vendredi"
 
-#: backend/events.py:105 templates/calendar.html:176
+#: backend/events.py:126 templates/calendar.html:176
 msgid "Saturday"
 msgstr "Samedi"
 
@@ -122,13 +122,17 @@ msgstr "Fermer"
 msgid "Add"
 msgstr "Ajouter"
 
+#: templates/calendar.html:225
+msgid "Download"
+msgstr "Télécharger"
+
 #: templates/calendar.html:226
 msgid "Save"
 msgstr "Sauvegarder"
 
 #: templates/calendar.html:254
 msgid "Enter code"
-msgstr "Tapez un code"
+msgstr "Entrez un code"
 
 #: templates/calendar.html:261
 msgid "Compute"
@@ -164,6 +168,55 @@ msgstr "Adresse mail"
 #: templates/security/reset_password.html:21
 msgid "Password"
 msgstr "Mot de passe"
+
+#: templates/help.html:16 templates/help.html:47
+msgid "What is ADE Scheduler ?"
+msgstr "Qu'est-ce qu'ADE Schedule ?"
+
+#: templates/help.html:17 templates/help.html:57
+msgid "Getting started"
+msgstr "Pour débuter"
+
+#: templates/help.html:20 templates/help.html:67
+msgid "Export and load"
+msgstr "Importer et exporter"
+
+#: templates/help.html:22 templates/help.html:29 templates/help.html:68
+#: templates/help.html:99
+msgid "What are the possibilities ?"
+msgstr "Quelles sont les possibilités ?"
+
+#: templates/help.html:23 templates/help.html:78
+msgid "Download an iCal file"
+msgstr "Télécharger un fichier iCal"
+
+#: templates/help.html:24 templates/help.html:88
+msgid "Subscription links"
+msgstr "Liens d'abonnement"
+
+#: templates/help.html:27 templates/help.html:98
+msgid "Account & Settings"
+msgstr "Compte & Paramètres"
+
+#: templates/help.html:30 templates/help.html:109
+msgid "Custom events"
+msgstr "Evènements personnels"
+
+#: templates/help.html:31 templates/help.html:119
+msgid "Event selection"
+msgstr "Sélection d'un évènement"
+
+#: templates/help.html:32 templates/help.html:129
+msgid "Accounts"
+msgstr "Comptes"
+
+#: templates/help.html:35 templates/help.html:139
+msgid "About us"
+msgstr "A propos de nous"
+
+#: templates/help.html:37 templates/help.html:140
+msgid "Who are we ?"
+msgstr "Qui sommes-nous ?"
 
 #: templates/security/change_password.html:18
 #: templates/security/reset_password.html:13
@@ -228,3 +281,4 @@ msgstr "Aucun mot de passe spécifié"
 #: templates/security/reset_password.html:20
 msgid "Confirm password"
 msgstr "Confirmez le mot de passe"
+
