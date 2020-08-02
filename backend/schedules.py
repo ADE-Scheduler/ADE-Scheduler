@@ -32,7 +32,7 @@ Schedule needed data:
 
 class ScheduleEncoder(json.JSONEncoder):
     """
-    Subclass of json encoder aiming to convert bytes into list of integers.
+    Subclass of json encoder aiming to convert sets of strings into lists of strings.
     """
     def default(self, obj: Any) -> Any:
         if isinstance(obj, set):
@@ -43,11 +43,14 @@ class ScheduleEncoder(json.JSONEncoder):
 
 class ScheduleDecoder(json.JSONDecoder):
     """
-    Subclass of json decoder aiming to convert back the list of integers into bytes.
+    Subclass of json decoder aiming to convert back the lists of strings into sets of strings.
     """
     def decode(self, obj: Any, w: Any = None) -> str:
         decoded = json.JSONDecoder().decode(obj)
-
+        for key in decoded:
+            obj = decoded[key]
+            if isinstance(obj, list) and isinstance(obj[0], str):
+                decoded[key] = set(obj)
         return decoded
 
 

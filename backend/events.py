@@ -234,6 +234,8 @@ class AcademicalEvent(CustomEvent):
             }
         )
 
+        return r
+
 
 class EventCM(AcademicalEvent):
     PREFIX = 'CM: '
