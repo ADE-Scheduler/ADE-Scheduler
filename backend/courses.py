@@ -105,8 +105,10 @@ class Course:
         summary = defaultdict(set)
         ids = self.activities.index.get_level_values('id').unique()
         for id in ids:
-            event_type, code = id.split(': ')
+            event_type, code = id.split(': ', maxsplit=1)
             summary[event_type].add(code)
+
+        print(summary)
         return summary
 
     def get_activities(self, view: Optional[View] = None, reverse: bool = False) -> pd.DataFrame:
