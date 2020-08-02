@@ -39,7 +39,6 @@ numpy==1.19.1
 packaging==20.4
 pandas==1.0.5
 passlib==1.7.2
-pkg-resources==0.0.0
 pycparser==2.20
 Pygments==2.6.1
 pyparsing==2.4.7
