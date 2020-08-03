@@ -1,7 +1,7 @@
-app module
-==========
+account module
+==============
 
-.. automodule:: app
+.. automodule:: account
    :members:
    :undoc-members:
    :show-inheritance:

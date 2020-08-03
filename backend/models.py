@@ -1,6 +1,6 @@
 import secrets
 
-from copy import copy, copy
+from copy import copy
 from flask_sqlalchemy import SQLAlchemy
 from flask_security.models import fsqla_v2 as fsqla
 

@@ -1,7 +1,7 @@
-database module
+calendar module
 ===============
 
-.. automodule:: database
+.. automodule:: calendar
    :members:
    :undoc-members:
    :show-inheritance:
