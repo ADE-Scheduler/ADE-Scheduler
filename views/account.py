@@ -1,3 +1,6 @@
+import json
+from typing import Any
+
 from flask import current_app as app
 from flask import Blueprint, render_template, session, request, jsonify
 from flask_security import login_required, current_user
@@ -5,9 +8,39 @@ from flask_security import login_required, current_user
 import backend.schedules as schd
 from backend.ade_api import DEFAULT_PROJECT_ID
 
+
+class AccountEncoder(json.JSONEncoder):
+    """
+    Subclass of json decoder made for the account-specific JSON encodings.
+    """
+
+    def default(self, obj: Any) -> Any:
+        if isinstance(obj, set):
+            return list(obj)
+        else:
+            return json.JSONEncoder.default(self, obj)
+
+
+class AccountDecoder(json.JSONDecoder):
+    """
+    Subclass of json decoder made for the account-specific JSON decodings.
+    """
+
+    def decode(self, obj: Any, w: Any = None) -> str:
+        decoded = json.JSONDecoder().decode(obj)
+        for key in decoded:
+            obj = decoded[key]
+            if isinstance(obj, list) and isinstance(obj[0], str):
+                if len(obj[0]) > 0 and obj[0][0] == '#':  # Then its color palette and we don't convert back
+                    continue
+                else:
+                    decoded[key] = set(obj)
+        return decoded
+
+
 account = Blueprint('account', __name__, static_folder='../static')
-account.json_decoder = schd.ScheduleDecoder
-account.json_encoder = schd.ScheduleEncoder
+account.json_decoder = AccountDecoder
+account.json_encoder = AccountEncoder
 
 
 @account.before_request

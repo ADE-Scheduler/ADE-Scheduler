@@ -2,11 +2,10 @@ from itertools import product, chain, starmap, repeat
 from collections import deque, defaultdict
 from heapq import nsmallest
 import operator
-from typing import Iterable, Union, List, SupportsInt, Dict, Set, Any
+from typing import Iterable, Union, List, SupportsInt, Dict, Set
 from backend.courses import Course, merge_courses
 from flask import current_app as app
 from ics import Calendar
-import json
 
 import backend.events as evt
 
@@ -30,33 +29,6 @@ Schedule needed data:
 """
 
 
-class ScheduleEncoder(json.JSONEncoder):
-    """
-    Subclass of json encoder aiming to convert sets of strings into lists of strings.
-    """
-    def default(self, obj: Any) -> Any:
-        if isinstance(obj, set):
-            return list(obj)
-        else:
-            return json.JSONEncoder.default(self, obj)
-
-
-class ScheduleDecoder(json.JSONDecoder):
-    """
-    Subclass of json decoder aiming to convert back the lists of strings into sets of strings.
-    """
-    def decode(self, obj: Any, w: Any = None) -> str:
-        decoded = json.JSONDecoder().decode(obj)
-        for key in decoded:
-            obj = decoded[key]
-            if isinstance(obj, list) and isinstance(obj[0], str):
-                if len(obj[0]) > 0 and obj[0][0] == '#':  # Then its color palette and we don't convert back
-                    continue
-                else:
-                    decoded[key] = set(obj)
-        return decoded
-
-
 class Schedule:
     """
     A schedule is essentially a combination of courses stored as a master course, from which some events can be removed.
@@ -64,6 +36,7 @@ class Schedule:
     :param project_id: the schedule id matching this of the Database it is currently saved in.
                This parameter is automatically set when the schedule is saved for the first time.
     """
+
     def __init__(self, project_id: SupportsInt, schedule_id: int = None, label: str = 'New schedule'):
         self.id = schedule_id
         self.project_id = project_id

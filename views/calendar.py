@@ -1,19 +1,46 @@
 import re
+import json
 from datetime import datetime
+from typing import Any
 
 from flask import current_app as app
-from flask import Blueprint, render_template, session, jsonify, redirect, url_for, request, make_response
-from flask_security import current_user, login_required
-from flask_babelex import _
+from flask import Blueprint, render_template, session, jsonify, request, make_response
+from flask_security import current_user
 
 import backend.schedules as schd
 import backend.events as evt
 from backend.ade_api import DEFAULT_PROJECT_ID
 
 
+class CalendarEncoder(json.JSONEncoder):
+    """
+    Subclass of json decoder made for the calendar-specific JSON encodings.
+    """
+
+    def default(self, obj: Any) -> Any:
+        if isinstance(obj, set):
+            return list(obj)
+        else:
+            return json.JSONEncoder.default(self, obj)
+
+
+class CalendarDecoder(json.JSONDecoder):
+    """
+    Subclass of json decoder made for the calendar-specific JSON decodings.
+    """
+
+    def decode(self, obj: Any, w: Any = None) -> str:
+        decoded = json.JSONDecoder().decode(obj)
+        for key in decoded:
+            obj = decoded[key]
+            if isinstance(obj, list) and isinstance(obj[0], str):
+                decoded[key] = set(obj)
+        return decoded
+
+
 calendar = Blueprint('calendar', __name__, static_folder='../static')
-calendar.json_decoder = schd.ScheduleDecoder
-calendar.json_encoder = schd.ScheduleEncoder
+calendar.json_decoder = CalendarDecoder
+calendar.json_encoder = CalendarEncoder
 
 
 @calendar.before_request
