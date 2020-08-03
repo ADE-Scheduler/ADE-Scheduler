@@ -266,7 +266,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     evt.end = this.eventForm.endDay + ' ' + this.eventForm.endHour;
                 }
 
-                computing = true;
+                this.computing = true;
                 axios({
                     method: 'POST',
                     url: Flask.url_for('calendar.add_custom_event'),
@@ -282,7 +282,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.error = true;
                 })
                 .then(() => {
-                    computing = false;
+                    this.computing = false;
                 });
             },
             checkMinDay: function() {

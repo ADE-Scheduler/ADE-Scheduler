@@ -1,8 +1,6 @@
 # Python imports
 import os
 import traceback
-import logging
-from logging.handlers import SMTPHandler
 from datetime import timedelta
 from jsmin import jsmin
 
@@ -24,7 +22,6 @@ import backend.credentials as cd
 import backend.servers as srv
 import backend.ade_api as ade
 import backend.manager as mng
-import backend.schedules as schd
 
 # Views imports
 from views.calendar import calendar
@@ -34,8 +31,6 @@ from views.help import help
 
 # Setup app
 app = Flask(__name__)
-app.json_decoder = schd.ScheduleDecoder
-app.json_encoder = schd.ScheduleEncoder
 app.register_blueprint(calendar, url_prefix='/calendar')
 app.register_blueprint(account, url_prefix='/account')
 app.register_blueprint(classroom, url_prefix='/classroom')
