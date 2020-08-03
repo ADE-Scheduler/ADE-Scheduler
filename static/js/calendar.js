@@ -274,7 +274,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     header: {'Content-Type': 'application/json'},
                 })
                 .then(resp => {
-                    vm.events.push(resp.data.event);
+                    this.calendarOptions.events.push(resp.data.event);
                     e.target.reset();
                     addEventModal.hide();
                 })
