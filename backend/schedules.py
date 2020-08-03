@@ -2,7 +2,7 @@ from itertools import product, chain, starmap, repeat
 from collections import deque, defaultdict
 from heapq import nsmallest
 import operator
-from typing import Iterable, Union, List, SupportsInt, Dict, Set
+from typing import Iterable, Union, List, SupportsInt, Dict, Set, Optional
 from backend.courses import Course, merge_courses
 from flask import current_app as app
 from ics import Calendar
@@ -97,13 +97,15 @@ class Schedule:
         """
         self.custom_events.append(event)
 
-    def remove_custom_event(self, event: evt.CustomEvent = None, id: str = None):
+    def remove_custom_event(self, event: Optional[evt.CustomEvent] = None, id: Optional[str] = None):
         """
         Removes a custom event from the schedule.
         If this event is present multiple times in the schedule, only delete the first occurrence.
 
         :param event: the event to remove
-        :type event: CustomEvent
+        :type event: Optional[CustomEvent]
+        :param id: the unique id of the event
+        :type id: Optional[str]
         """
         if event is not None:
             self.custom_events.remove(event)
