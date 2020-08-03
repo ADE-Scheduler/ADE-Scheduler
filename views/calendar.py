@@ -12,6 +12,8 @@ from backend.ade_api import DEFAULT_PROJECT_ID
 
 
 calendar = Blueprint('calendar', __name__, static_folder='../static')
+calendar.json_decoder = schd.ScheduleDecoder
+calendar.json_encoder = schd.ScheduleEncoder
 
 
 @calendar.before_request

@@ -6,6 +6,8 @@ import backend.schedules as schd
 from backend.ade_api import DEFAULT_PROJECT_ID
 
 account = Blueprint('account', __name__, static_folder='../static')
+account.json_decoder = schd.ScheduleDecoder
+account.json_encoder = schd.ScheduleEncoder
 
 
 @account.before_request
@@ -112,6 +114,8 @@ def save():
     s = session['current_schedule']
     s.project_id = request.json['project_id']
     s.color_palette = request.json['color_palette']
+    if isinstance(s.color_palette, set): print("Hello from set !")
+    if isinstance(s.color_palette, list): print("Hello from list !")
     mng = app.config['MANAGER']
     session['current_schedule'] = mng.save_schedule(current_user, s)
     session['current_schedule_modified'] = False
