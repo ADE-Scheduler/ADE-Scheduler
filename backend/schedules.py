@@ -186,6 +186,7 @@ class Schedule:
     def compute_best(self, n_best: int = 5, safe_compute: bool = True) -> List[Iterable[evt.CustomEvent]]:
         """
         Computes best schedules trying to minimize conflicts selecting, for each type of event, one event.
+
         :param n_best: number of best schedules to produce
         :type n_best: int
         :param safe_compute: if True, ignore all redundant events at same time period

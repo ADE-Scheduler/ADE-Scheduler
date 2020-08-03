@@ -33,8 +33,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-success" data-dismiss="modal" v-on:click="applyFilter">Apply</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ _('Close') }}</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal" v-on:click="applyFilter">{{ _('Apply') }}</button>
                 </div>
             </div>
         </div>
@@ -64,20 +64,20 @@
                     </div>
 
                     <div v-if="eventInfo.rrule">
-                        Recurring Event !
-                        <p>Start: [[ eventInfo.rrule.start ]]</p>
-                        <p>End: [[ eventInfo.rrule.end ]]</p>
-                        <p>Days of week: [[ eventInfo.rrule.days ]]</p>
+                        {{ _('Recurring Event !') }}
+                        <p>{{ _('Start:') }} [[ eventInfo.rrule.start ]]</p>
+                        <p>{{ _('End:') }} [[ eventInfo.rrule.end ]]</p>
+                        <p>{{ _('Days of week:') }} [[ eventInfo.rrule.days ]]</p>
                     </div>
                     <div v-else>
-                        <p>Start: [[ eventInfo.start ]]</p>
-                        <p>End: [[ eventInfo.end ]]</p>
+                        <p>{{ _('Start:') }} [[ eventInfo.start ]]</p>
+                        <p>{{ _('End:') }} [[ eventInfo.end ]]</p>
                     </div>
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal" v-on:click="removeEvent(eventInfo.event)">Delete Event</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ _('Close') }}</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" v-on:click="removeEvent(eventInfo.event)">{{ _('Delete Event') }}</button>
                 </div>
             </div>
         </div>
@@ -218,10 +218,10 @@
     <div class="nav-scroller bg-white shadow-sm">
         <nav class="nav nav-underline">
             <a class="nav-link active" href="#">ADE</a>
-            <a class="nav-link" href="#">Schedule 1</a>
-            <a class="nav-link" href="#">Schedule 2</a>
-            <a class="nav-link" href="#">Schedule 3</a>
-            <a class="nav-link" href="#" v-on:click="getLink">Export</a>
+            <a class="nav-link" href="#">{{ _('Schedule') }} 1</a>
+            <a class="nav-link" href="#">{{ _('Schedule') }}</a>
+            <a class="nav-link" href="#">{{ _('Schedule') }}</a>
+            <a class="nav-link" href="#" v-on:click="getLink">{{ _('Export') }}</a>
             <a class="nav-link" href="{{ url_for('calendar.download') }}">{{_('Download')}}</a>
             <a class="nav-link" href="#" v-on:click="save">{{_('Save')}}</a>
         </nav>
