@@ -1,8 +1,6 @@
 # Python imports
 import os
 import traceback
-import logging
-from logging.handlers import SMTPHandler
 from datetime import timedelta
 from jsmin import jsmin
 
