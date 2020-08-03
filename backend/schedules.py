@@ -32,7 +32,7 @@ Schedule needed data:
 
 class ScheduleEncoder(json.JSONEncoder):
     """
-    Subclass of json encoder aiming to convert sets of strings into lists of strings.
+    Subclass of json encoder aiming to convert sets into lists.
     """
     def default(self, obj: Any) -> Any:
         if isinstance(obj, set):
@@ -42,18 +42,11 @@ class ScheduleEncoder(json.JSONEncoder):
 
 
 class ScheduleDecoder(json.JSONDecoder):
-    """
-    Subclass of json decoder aiming to convert back the lists of strings into sets of strings.
-    """
-    def decode(self, obj: Any, w: Any = None) -> str:
+    def decode(self, obj: Any, w: Any = None) -> Any:
         decoded = json.JSONDecoder().decode(obj)
-        for key in decoded:
-            obj = decoded[key]
-            if isinstance(obj, list) and isinstance(obj[0], str):
-                if len(obj[0]) > 0 and obj[0][0] == '#':  # Then its color palette and we don't convert back
-                    continue
-                else:
-                    decoded[key] = set(obj)
+        print('HEREEEEE')
+        print(decoded)
+        print('Done decoding')
         return decoded
 
 
@@ -84,7 +77,7 @@ class Schedule:
 
     def remove_filter(self, code: str, filter: Union[Iterable[str], str]):
         if isinstance(filter, str):
-            self.filtered_subcodes[code].remove(filter)
+            self.filtered_subcodes[code].discard(filter)
         else:
             self.filtered_subcodes[code].difference_update(filter)
 

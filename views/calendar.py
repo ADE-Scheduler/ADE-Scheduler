@@ -94,12 +94,13 @@ def compute():
 def apply_filter():
     schedule = session['current_schedule']
     for code, filters in request.json.items():
-        session['current_schedule'].filtered_subcodes[code] = list()
+
         for type, filters in filters.items():
             for filter, value in filters.items():
                 if not value:
-                    # TODO: use dedicated function in backend.schedules
-                    session['current_schedule'].filtered_subcodes[code].append(type + ': ' + filter)
+                    schedule.add_filter(code, type + ': ' + filter)
+                else:
+                    schedule.remove_filter(code, type + ': ' + filter)
     return jsonify({
         'events': session['current_schedule'].get_events(json=True),
     }), 200
