@@ -153,9 +153,9 @@ def add_custom_event():
     event['end'] = datetime.strptime(event['end'], '%Y-%m-%d %H:%M').astimezone(evt.TZ)
     if event.get('end_recurr'):
         event['end_recurr'] = datetime.strptime(event['end_recurr'], '%Y-%m-%d %H:%M').astimezone(evt.TZ)
-        event = evt.RecurringCustomEvent(*event.values())
+        event = evt.RecurringCustomEvent(**event)
     else:
-        event = evt.CustomEvent(*event.values())
+        event = evt.CustomEvent(**event)
     session['current_schedule'].add_custom_event(event)
     session['current_schedule_modified'] = True
     return jsonify({
