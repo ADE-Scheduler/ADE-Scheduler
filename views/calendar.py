@@ -135,18 +135,7 @@ def apply_filter():
     }), 200
 
 
-@calendar.route('/save', methods=['POST'])
-def save():
-    if not current_user.is_authenticated:
-        return 'Login is required', 401
-
-    mng = app.config['MANAGER']
-    session['current_schedule'] = mng.save_schedule(current_user, session['current_schedule'])
-    session['current_schedule_modified'] = False
-    return 'OK', 200
-
-
-@calendar.route('/add/custom_event', methods=['POST'])
+@calendar.route('/custom_event', methods=['POST'])
 def add_custom_event():
     event = request.json
     event['begin'] = datetime.strptime(event['begin'], '%Y-%m-%d %H:%M').astimezone(evt.TZ)
@@ -163,13 +152,25 @@ def add_custom_event():
     }), 200
 
 
-@calendar.route('/delete/custom_event/<id>', methods=['DELETE'])
+@calendar.route('/custom_event/<id>', methods=['DELETE'])
 def delete_custom_event(id):
     session['current_schedule'].remove_custom_event(id=id)
+    session['current_schedule_modified'] = True
     return 'OK', 200
 
 
-@calendar.route('/download', methods=['GET'])
+@calendar.route('/schedule', methods=['POST'])
+def save():
+    if not current_user.is_authenticated:
+        return 'Login is required', 401
+
+        mng = app.config['MANAGER']
+        session['current_schedule'] = mng.save_schedule(current_user, session['current_schedule'])
+        session['current_schedule_modified'] = False
+        return 'OK', 200
+
+
+@calendar.route('/schedule', methods=['GET'])
 def download():
     link = request.args.get('link')
     choice = int(request.args.get('choice')) if request.args.get('choice') else 0
@@ -188,7 +189,7 @@ def download():
         return resp
 
 
-@calendar.route('/export', methods=['GET'])
+@calendar.route('/schedule/link', methods=['GET'])
 def export():
     mng = app.config['MANAGER']
     if session['current_schedule'].id is None:

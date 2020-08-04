@@ -151,7 +151,7 @@ class RecurringCustomEvent(CustomEvent):
         s += 'dtend:' + arrow_to_iso(self.end) + '\n'
         s += 'RRULE:FREQ=WEEKLY;INTERVAL=1;';
         s += 'BYDAY=' + ','.join([days[i] for i in self.freq]) + ';'
-        s += 'UNTIL=' + arrow_to_iso(self.end_recurr) + '\n'
+        s += 'UNTIL=' + arrow_to_iso(self.end_recurrence) + '\n'
         if self.description:    s += 'DESCRIPTION:' + self.description + '\n'
         if self.location:       s += 'LOCATION:' + self.location + '\n'
         if self.name:           s += 'SUMMARY:' + self.name + '\n'
