@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-08-04 21:09+0200\n"
+"POT-Creation-Date: 2020-08-04 21:49+0200\n"
 "PO-Revision-Date: 2020-07-24 16:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -46,7 +46,7 @@ msgstr "Vendredi"
 msgid "Saturday"
 msgstr "Samedi"
 
-#: backend/schedules.py:40
+#: backend/schedules.py:41
 msgid "New schedule"
 msgstr "Nouvel horaire"
 
@@ -135,6 +135,10 @@ msgstr "Fermer"
 msgid "Apply"
 msgstr "Appliquer"
 
+#: templates/calendar.html:56 templates/calendar.html:102
+msgid "Location"
+msgstr "Localisation"
+
 #: templates/calendar.html:67
 msgid "Recurring Event !"
 msgstr "Evènement récurrent !"
@@ -162,10 +166,6 @@ msgstr "Ajouter un événement"
 #: templates/calendar.html:99
 msgid "Name"
 msgstr "Nom"
-
-#: templates/calendar.html:102
-msgid "Location"
-msgstr "Localisation"
 
 #: templates/calendar.html:107
 msgid "Description"
