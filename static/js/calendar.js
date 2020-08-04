@@ -379,7 +379,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     url: Flask.url_for('calendar.delete_custom_event', {'id': event.id}),
                 })
                 .then(resp => {
-                    event.remove();
+                    event.remove();     // TODO: il faut aussi le retirer de this.calendarOptions.events !
                 })
                 .catch(err => {
                     this.error = true;
