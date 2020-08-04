@@ -114,7 +114,7 @@
                         <div class="col-6">
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" v-model="eventForm.recurring" id="switch-repetition">
-                                <label class="form-check-label" for="switch-repetition">{{_('Recurring event')}}?A</label>
+                                <label class="form-check-label" for="switch-repetition">{{_('Recurring event')}}?</label>
                             </div>
                         </div>
                     </div>
@@ -123,14 +123,14 @@
                     <div class="row mt-3">
                         <div class="col-6">
                             <label>{{_('From')}}</label>
-                            <div class="input-group date mb-2" v-show:disabled="!eventForm.recurring">
+                            <div class="input-group date mb-2" v-if="!eventForm.recurring">
                                 <div class="input-group-text">
                                     <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-calendar-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                         <path fill-rule="evenodd" d="M3.5 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5zm9 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5z"/>
                                         <path d="M2 1a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2H2zm14 4H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V5z"/>
                                     </svg>
                                 </div>
-                                <input type="date" class="form-control text-truncate" v-model="eventForm.beginDay" v-on:blur="checkMinDay" v-bind:required="!eventForm.recurring"/>
+                                <input type="date" class="form-control text-truncate" v-model="eventForm.beginDay" v-on:blur="checkMinDay" required/>
                             </div>
                             <div class="input-group time">
                                 <div class="input-group-text">
@@ -143,8 +143,8 @@
                         </div>
                         <div class="col-6 text-right">
                             <label>{{_('To')}}</label>
-                            <div class="input-group date mb-2" v-show:disabled="!eventForm.recurring">
-                                <input type="date" class="form-control text-truncate" v-model="eventForm.endDay" v-on:blur="checkMaxDay" v-bind:disabled="eventForm.recurring" v-bind:required="!eventForm.recurring"/>
+                            <div class="input-group date mb-2" v-if="!eventForm.recurring">
+                                <input type="date" class="form-control text-truncate" v-model="eventForm.endDay" v-on:blur="checkMaxDay" required/>
                                 <div class="input-group-text">
                                     <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-calendar-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                         <path fill-rule="evenodd" d="M3.5 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5zm9 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5z"/>
@@ -163,7 +163,8 @@
                         </div>
                     </div>
 
-                    <div id="recurring-inputs" v-if='eventForm.recurring'>
+                    <!-- Recurring inputs -->
+                    <div v-if="eventForm.recurring">
                         <div class="row d-flex flex-row-reverse mt-3">
                             <div class="col-6 text-right">
                                 <label for="start-repetition">{{_('Days of week')}}</label>
@@ -188,13 +189,13 @@
                                             <path d="M2 1a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2H2zm14 4H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V5z"/>
                                         </svg>
                                     </div>
-                                    <input type="date" class="form-control text-truncate" v-model="eventForm.beginRecurrDay" v-on:blur="checkMinRecurrDay" v-bind:disabled="!eventForm.recurring" required>
+                                    <input type="date" class="form-control text-truncate" v-model="eventForm.beginRecurrDay" v-on:blur="checkMinRecurrDay" required>
                                 </div>
                             </div>
                             <div class="col-6 text-right">
                                 <label>{{_('End of recurrence')}}</label>
                                 <div class="input-group date mb-2">
-                                    <input type="date" class="form-control text-truncate" v-model="eventForm.endRecurrDay" v-on:blur="checkMaxRecurrDay" v-bind:disabled="!eventForm.recurring" required>
+                                    <input type="date" class="form-control text-truncate" v-model="eventForm.endRecurrDay" v-on:blur="checkMaxRecurrDay" required>
                                     <div class="input-group-text">
                                         <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-calendar-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                             <path fill-rule="evenodd" d="M3.5 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5zm9 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5z"/>
