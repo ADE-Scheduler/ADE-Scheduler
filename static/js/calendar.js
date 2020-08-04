@@ -95,9 +95,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 eventDisplay: 'block',
                 eventDidMount: function (arg) {
                     if (!isTouchDevice) {
+                        let description, location;
+                        if (!arg.event.extendedProps.description)   description = 'No description';
+                        else                                        description = arg.event.extendedProps.description;
+                        if (!arg.event.extendedProps.location)      location = 'No location';
+                        else                                        location = arg.event.extendedProps.location;
                         new Tooltip(arg.el, {
                             container: 'body',
-                            title: arg.event.extendedProps.description,
+                            title: description + '\n' + location,
                             sanitize: false,
                             template: `
                                 <div class="tooltip" role="tooltip">
@@ -379,7 +384,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     url: Flask.url_for('calendar.delete_custom_event', {'id': event.id}),
                 })
                 .then(resp => {
-                    event.remove();     // TODO: il faut aussi le retirer de this.calendarOptions.events !
+                    event.remove();
                 })
                 .catch(err => {
                     this.error = true;
