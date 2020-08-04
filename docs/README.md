@@ -12,3 +12,4 @@ Nous utilisons également le package built-in `typing` qui permet de définir le
 Pour savoir comment documenter votre code de la même manière que nous :
 - https://sphinx-rtd-tutorial.readthedocs.io/en/latest/docstrings.html
 - https://thomas-cokelaer.info/tutorials/sphinx/docstring_python.html
+- https://thomas-cokelaer.info/tutorials/sphinx/rest_syntax.html

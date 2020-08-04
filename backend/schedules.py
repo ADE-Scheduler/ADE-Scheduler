@@ -6,6 +6,7 @@ from typing import Iterable, Union, List, SupportsInt, Dict, Set, Optional
 from backend.courses import Course, merge_courses
 from flask import current_app as app
 from ics import Calendar
+from flask_babel import _
 
 import backend.events as evt
 
@@ -37,7 +38,7 @@ class Schedule:
                This parameter is automatically set when the schedule is saved for the first time.
     """
 
-    def __init__(self, project_id: SupportsInt, schedule_id: int = None, label: str = 'New schedule'):
+    def __init__(self, project_id: SupportsInt, schedule_id: int = None, label: str = _('New schedule')):
         self.id = schedule_id
         self.project_id = project_id
         self.label = label

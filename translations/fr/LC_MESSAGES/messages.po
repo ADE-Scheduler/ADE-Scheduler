@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-08-02 19:48+0200\n"
+"POT-Creation-Date: 2020-08-04 21:09+0200\n"
 "PO-Revision-Date: 2020-07-24 16:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -46,6 +46,58 @@ msgstr "Vendredi"
 msgid "Saturday"
 msgstr "Samedi"
 
+#: backend/schedules.py:40
+msgid "New schedule"
+msgstr "Nouvel horaire"
+
+#: templates/account.html:13
+msgid "Warning"
+msgstr "Attention"
+
+#: templates/account.html:19
+msgid "You have unsaved changes in your current schedule. Continue ?"
+msgstr ""
+"Vous avez des changements qui n'ont pas été sauvegardés: voulez-vous "
+"quand même continue ?"
+
+#: templates/account.html:22
+msgid "Cancel"
+msgstr "Annuler"
+
+#: templates/account.html:23
+msgid "Continue"
+msgstr "Continue"
+
+#: templates/account.html:34 templates/calendar.html:280
+msgid "A problem has occurred. Please contact us if it happens again."
+msgstr ""
+"Oops, il y a eu un problème ! Veuillez nous contacter si ça se reproduit "
+"encore."
+
+#: templates/account.html:54
+msgid "Color palette"
+msgstr "Palette de couleur"
+
+#: templates/account.html:59
+msgid "Academic year"
+msgstr "Année académique"
+
+#: templates/account.html:67 templates/calendar.html:226
+msgid "Save"
+msgstr "Sauvegarder"
+
+#: templates/account.html:68
+msgid "View"
+msgstr "Afficher"
+
+#: templates/account.html:69
+msgid "Delete"
+msgstr "Supprimer"
+
+#: templates/account.html:77
+msgid "Schedules"
+msgstr "Horaires"
+
 #: templates/base.html:34
 msgid "Calendar"
 msgstr "Calendrier"
@@ -73,6 +125,35 @@ msgstr "Connexion"
 #: templates/base.html:70
 msgid "Register"
 msgstr "S'inscrire"
+
+#: templates/calendar.html:36 templates/calendar.html:79
+#: templates/calendar.html:210
+msgid "Close"
+msgstr "Fermer"
+
+#: templates/calendar.html:37
+msgid "Apply"
+msgstr "Appliquer"
+
+#: templates/calendar.html:67
+msgid "Recurring Event !"
+msgstr "Evènement récurrent !"
+
+#: templates/calendar.html:68 templates/calendar.html:73
+msgid "Start:"
+msgstr "Début :"
+
+#: templates/calendar.html:69 templates/calendar.html:74
+msgid "End:"
+msgstr "Fin :"
+
+#: templates/calendar.html:70
+msgid "Days of week:"
+msgstr "Jours de la semaine :"
+
+#: templates/calendar.html:80
+msgid "Delete Event"
+msgstr "Supprimer l'évènement"
 
 #: templates/calendar.html:91
 msgid "Add an event"
@@ -114,21 +195,22 @@ msgstr "Début de récurrence"
 msgid "End of recurrence"
 msgstr "Fin de récurrence"
 
-#: templates/calendar.html:210
-msgid "Close"
-msgstr "Fermer"
-
 #: templates/calendar.html:211
 msgid "Add"
 msgstr "Ajouter"
 
+#: templates/calendar.html:221 templates/calendar.html:222
+#: templates/calendar.html:223
+msgid "Schedule"
+msgstr "Horaire"
+
+#: templates/calendar.html:224
+msgid "Export"
+msgstr "Exporter"
+
 #: templates/calendar.html:225
 msgid "Download"
 msgstr "Télécharger"
-
-#: templates/calendar.html:226
-msgid "Save"
-msgstr "Sauvegarder"
 
 #: templates/calendar.html:254
 msgid "Enter code"
@@ -145,12 +227,6 @@ msgstr "Effacer"
 #: templates/calendar.html:274
 msgid "Schedule successfuly saved !"
 msgstr "Horaire sauvegardé avec succès !"
-
-#: templates/calendar.html:280
-msgid "A problem has occurred. Please contact us if it happens again."
-msgstr ""
-"Oops, il y a eu un problème ! Veuillez nous contacter si ça se reproduit "
-"encore."
 
 #: templates/custom_macros.html:20 templates/custom_macros.html:33
 msgid "Email address"
@@ -169,54 +245,140 @@ msgstr "Adresse mail"
 msgid "Password"
 msgstr "Mot de passe"
 
-#: templates/help.html:16 templates/help.html:47
+#: templates/help.html:17 templates/help.html:50
 msgid "What is ADE Scheduler ?"
 msgstr "Qu'est-ce qu'ADE Scheduler ?"
 
-#: templates/help.html:17 templates/help.html:57
+#: templates/help.html:18 templates/help.html:58
 msgid "Getting started"
 msgstr "Pour débuter"
 
-#: templates/help.html:20 templates/help.html:67
+#: templates/help.html:19 templates/help.html:67
+msgid "Computing your optimal schedule"
+msgstr "Calculer votre horaire optimal"
+
+#: templates/help.html:22 templates/help.html:74
 msgid "Export and load"
 msgstr "Importer et exporter"
 
-#: templates/help.html:22 templates/help.html:29 templates/help.html:68
-#: templates/help.html:99
+#: templates/help.html:24 templates/help.html:31 templates/help.html:75
+#: templates/help.html:95
 msgid "What are the possibilities ?"
 msgstr "Quelles sont les possibilités ?"
 
-#: templates/help.html:23 templates/help.html:78
+#: templates/help.html:25 templates/help.html:82
 msgid "Download an iCal file"
 msgstr "Télécharger un fichier iCal"
 
-#: templates/help.html:24 templates/help.html:88
+#: templates/help.html:26 templates/help.html:88
 msgid "Subscription links"
 msgstr "Liens d'abonnement"
 
-#: templates/help.html:27 templates/help.html:98
+#: templates/help.html:29 templates/help.html:94
 msgid "Account & Settings"
 msgstr "Compte & Paramètres"
 
-#: templates/help.html:30 templates/help.html:109
+#: templates/help.html:32 templates/help.html:103
 msgid "Custom events"
 msgstr "Evènements personnels"
 
-#: templates/help.html:31 templates/help.html:119
+#: templates/help.html:33 templates/help.html:109
 msgid "Event selection"
 msgstr "Sélection d'un évènement"
 
-#: templates/help.html:32 templates/help.html:129
+#: templates/help.html:34 templates/help.html:115
 msgid "Accounts"
 msgstr "Comptes"
 
-#: templates/help.html:35 templates/help.html:139
+#: templates/help.html:37 templates/help.html:125
 msgid "About us"
 msgstr "A propos de nous"
 
-#: templates/help.html:37 templates/help.html:140
+#: templates/help.html:39 templates/help.html:126
 msgid "Who are we ?"
 msgstr "Qui sommes-nous ?"
+
+#: templates/help.html:53
+msgid ""
+"ADE Scheduler is a tool aiming to provide the same informations as the\n"
+"                    <a "
+"href=\"http://horaire.uclouvain.be/direct\">UCLouvain's official schedule"
+" website</a>\n"
+"                    but with in a more intuitive way, while also "
+"providing many more tools such as subscription links, schedule "
+"organization, filtering unwanted events, classroom localization and so "
+"on."
+msgstr ""
+
+#: templates/help.html:61
+msgid ""
+"The main purpose of this website is the calendar page. If you're new to "
+"this site, make sure to go to\n"
+"                    <a href=\"/calendar\">this page</a>\n"
+"                    and try out some of the functionalities.\n"
+"You are also encouraged to watch our quick guide hereunder."
+msgstr ""
+
+#: templates/help.html:70
+msgid ""
+"Sometimes, you may choose between multiple events such as CMs or TPs but "
+"only need to attend to one. The tool named compute tries all the possible"
+" combinations of picking one event of each type, every week, in order to "
+"find the 3 bests schedules which minimize the conflicts. If you want to "
+"be free during a given period, make sure to create a custom event to "
+"block this period of time. You can also remove some events before calling"
+" the compute functiona, to not take them into account. Because the "
+"compute function optimizes week per week, not all weeks must be the same."
+" If you need to need to attend the same event every week, we encourage "
+"you to pick the week that suits your need from the results given by the "
+"compute tool and then manually select the events in your main schedule."
+msgstr ""
+
+#: templates/help.html:78
+msgid ""
+"Once your schedule is complete, you don't need to go back to ADE-"
+"Scheduler each time you want to check your schedule: you can export it! "
+"Most calendar apps, such as Gmail, support importing external calendar. A"
+" short video shows you how to export your calendar to your favorite app."
+msgstr ""
+
+#: templates/help.html:85
+msgid ""
+"One solution to export your schedule is to download it as an iCalendar "
+"file. Then, this file can easily be imported into your main calendar. The"
+" downside of this approach is that any further change in your schedule, "
+"from you or from ADE, won't be seen in your calendar. If you prefer to "
+"have calendar up-to-date, then choose the next option."
+msgstr ""
+
+#: templates/help.html:98
+msgid ""
+"On this website, no account is required to use most of the tools. Your "
+"session is stored during 30 days so you can easily leave this webpage, "
+"come back later and see that everything stays unchanged. Nonetheless, if "
+"30 days is not enough or if you want to watch and modify your schedule "
+"one more than one device, we suggest to\n"
+"                    <a href=\"/account\">create an account.</a>\n"
+"                    With this, you will also be able to save multiple "
+"schedules, rename them, choose their color palette and so on."
+msgstr ""
+
+#: templates/help.html:106
+msgid ""
+"Academical life is important but your private life is important too! This"
+" is why you can also add custom events to your schedule. They will appear"
+" in your schedule but will also be taken into account when using the "
+"compute tools. This tool will try to minimize the conflicts with your "
+"custom events."
+msgstr ""
+
+#: templates/help.html:112
+msgid ""
+"If you click on a course's code, on the left of the calendar page, you "
+"will see appearing all the events that are contained in this course, per "
+"type. You can select or unselect specific events in order to build you "
+"schedule the way you want."
+msgstr ""
 
 #: templates/security/change_password.html:18
 #: templates/security/reset_password.html:13
