@@ -164,10 +164,10 @@ def save():
     if not current_user.is_authenticated:
         return 'Login is required', 401
 
-        mng = app.config['MANAGER']
-        session['current_schedule'] = mng.save_schedule(current_user, session['current_schedule'])
-        session['current_schedule_modified'] = False
-        return 'OK', 200
+    mng = app.config['MANAGER']
+    session['current_schedule'] = mng.save_schedule(current_user, session['current_schedule'])
+    session['current_schedule_modified'] = False
+    return 'OK', 200
 
 
 @calendar.route('/schedule', methods=['GET'])
