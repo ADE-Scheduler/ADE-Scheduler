@@ -151,8 +151,8 @@ def add_custom_event():
     event = request.json
     event['begin'] = datetime.strptime(event['begin'], '%Y-%m-%d %H:%M').astimezone(evt.TZ)
     event['end'] = datetime.strptime(event['end'], '%Y-%m-%d %H:%M').astimezone(evt.TZ)
-    if event.get('end_recurr'):
-        event['end_recurr'] = datetime.strptime(event['end_recurr'], '%Y-%m-%d %H:%M').astimezone(evt.TZ)
+    if event.get('end_recurrence'):
+        event['end_recurrence'] = datetime.strptime(event['end_recurrence'], '%Y-%m-%d %H:%M').astimezone(evt.TZ)
         event = evt.RecurringCustomEvent(**event)
     else:
         event = evt.CustomEvent(**event)

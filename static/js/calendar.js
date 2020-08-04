@@ -250,7 +250,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.computing = false;
                 });
             },
-            addEvent: function() {
+            addEvent: function(e) {
                 let evt = {
                     name: this.eventForm.name,
                     location: this.eventForm.location,
