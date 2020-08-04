@@ -83,7 +83,7 @@ class Classroom:
         :return: the location
         :rtype: str
         """
-        return str(self)
+        return '\n'.join(filter(None, str(self).split('\n')))  # Removes blank lines
 
 
 def merge_classrooms(classrooms: Iterable[Classroom]) -> Classroom:

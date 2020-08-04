@@ -227,7 +227,7 @@ class AcademicalEvent(CustomEvent):
             {
                 'title': self.id,
                 'description': f'{self.name}\n'
-                               f'{str(self.location)}'
+                               f'{str(self.location)}\n'
                                f'{str(self.duration)}\n'
                                f'{str(self.description)}',
                 'code': self.code
