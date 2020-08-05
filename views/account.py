@@ -147,8 +147,6 @@ def save():
     s = session['current_schedule']
     s.project_id = request.json['project_id']
     s.color_palette = request.json['color_palette']
-    if isinstance(s.color_palette, set): print("Hello from set !")
-    if isinstance(s.color_palette, list): print("Hello from list !")
     mng = app.config['MANAGER']
     session['current_schedule'] = mng.save_schedule(current_user, s)
     session['current_schedule_modified'] = False
