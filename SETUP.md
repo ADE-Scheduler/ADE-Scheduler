@@ -62,14 +62,21 @@ from backend.credentials import Credentials; Credentials.set_credentials("identi
 
 Un message vous attirera l'attention sur le fait que ce lien est ephémère : il faudra refaire cette commande pour chaque processus Python. Des solutions permanentes sont proposées par ce message.
 
-#### 22 Accéder sans identifiants
+#### 2.2 Accéder sans identifiants
 
 Il n'est pas possible d'accéder à l'API sans identifiants valides et nous ne vous en fournirons pas. Cependant, une réplique de l'API peut être interfacée via la classe **DummyClient** dans /backend/ade_api.py.
 
 ## Contribution au code et débuggage
 
+### 1. Initialisation du serveur
 
+Pour initialiser le server, utilisez la commande `redis-server` dans un terminal.
+Si besoin, vous pouvez accéder à un client dans un autre terminal en entrant `redis-cli`. Référez-vous à la documentation de Redis à ce sujet.
 
-#### 3 Documentation
+### 2. Démarrez le site-web
+
+Entrez dans un terminal `python3 app.py`. Une url devrait vous indiquer où le site est accessible.
+
+### 3. Documentation
 
 Pour savoir comment documenter votre code, suivez nos indications [ici](/docs/README.md)
