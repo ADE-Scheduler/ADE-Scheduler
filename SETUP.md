@@ -19,12 +19,25 @@ virtualenv venv
 source venv/bin/activate
 ```
 
-
-### 4. Installez packages nécessaires
+### 4. Installez les packages Python requis
 
 `pip3 install -r requirements.txt`
 
-### 5. Initialisez la base de données
+### 5. Installez les packages NodeJS requis
+Installez d'abord Node.js et npm si ce n'est pas déjà fait : https://nodejs.org/en/
+Ensuite, installez les modules:
+```
+cd <repo>
+npm install
+```  
+Pour assembler tous les assets .js et .css, il suffit d'exécter la commande `npx webpack`  
+Pour éviter de devoir exécuter cette commande à chaque changement dans le code, il existe la commande `npx webpack --watch .` qui dit à webpack d'automatiquement s'exécuter à chaque changement dans le code.
+
+Il est possible qu'une erreur apparaisse concernant le nombre maximum de 'watchers' autorisé. Une solution sur Linux est d'exécuter: `echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p`. (https://stackoverflow.com/questions/53930305/nodemon-error-system-limit-for-number-of-file-watchers-reached)
+
+## Configuration
+
+### 1. Initialisez la base de données
 
 Spécifiez une variable d'environnement `ADE_DB_PATH` contenant l'URI vers une base de données SQL.
 Par exemple, vous pouvez simplement spécifier `ADE_DB_PATH = "sqlite:///path_to_db"` ce qui conduira à la création d'une base de données SQLite au path spécifié. Ensuite, exécutez ces commandes pour l'initialiser et créer les tables proprement:
@@ -34,9 +47,9 @@ flask shell
 db.create_all()
 ```
 
-### 6. Accès à l'API de ADE (optionnel)
+### 2. Accès à l'API de ADE (optionnel)
 
-#### 6.1 Accéder grâce à des identifiants
+#### 2.1 Accéder grâce à des identifiants
 
 Si vous possédez des identifiants d'accès à l'API de ADE, enregistrez les quelque part sur votre ordinateur dans un fichier JSON. Le contenu attendu est spéficié dans la classe **Credential** dans /backend/credentials.py.
 
@@ -49,10 +62,14 @@ from backend.credentials import Credentials; Credentials.set_credentials("identi
 
 Un message vous attirera l'attention sur le fait que ce lien est ephémère : il faudra refaire cette commande pour chaque processus Python. Des solutions permanentes sont proposées par ce message.
 
-#### 6.2 Accéder sans identifiants
+#### 22 Accéder sans identifiants
 
 Il n'est pas possible d'accéder à l'API sans identifiants valides et nous ne vous en fournirons pas. Cependant, une réplique de l'API peut être interfacée via la classe **DummyClient** dans /backend/ade_api.py.
 
-#### 6.3 Documentation
+## Contribution au code et débuggage
+
+
+
+#### 3 Documentation
 
 Pour savoir comment documenter votre code, suivez nos indications [ici](/docs/README.md)
