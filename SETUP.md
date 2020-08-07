@@ -11,10 +11,11 @@ Pour installer un serveur Redis, référez-vous au site https://redis.io/topics/
 
 ### 3. Créez un environnement virtuel Python (optionnel)
 
-Placez-vous dans le dossier du projet
+Placez-vous dans le dossier du projet et installer virtualenv (la procédure peut varier en fonction de votre OS)
 ```
 cd <repo>
-pip3 install venv
+sudo apt install python3-virtualenv
+virtualenv venv
 source venv/bin/activate
 ```
 
