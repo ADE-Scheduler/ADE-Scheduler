@@ -98,19 +98,6 @@ Ici, sont listées, par ordre de priorité, les améliorations que nous jugeons 
 - finir videos de la section aide
 - corriger texte (mise en page + orthographe) de l'aide
 
-### 4. Installez les packages Node requis
-Installez d'abord Node.js et npm si ce n'est pas déjà fait: https://nodejs.org/en/
-Ensuite, installez les modules:
-```
-npm install
-cd <repo>
-```  
-Pour assembler tous les assets .js et .css, il suffit d'exécter la commande `npx webpack`.  
-Pour éviter de devoir exécuter cette commande à chaque changement dans le code, il est
-la commande `npx webpack --watch`.
-possible de dire à Webpack d'automatiquement s'exécuter à chaque changement avec
-
-Il est possible qu'une erreur apparaisse concernant le nombre maximum de 'watchers' autorisé. Une solution sur Linux est d'exécuter: `echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p`. (https://stackoverflow.com/questions/53930305/nodemon-error-system-limit-for-number-of-file-watchers-reached)
 ## Contribuer
 
 Cette application étant open-source, vous êtes invités à contribuer à cette dernière de quelque manière !
