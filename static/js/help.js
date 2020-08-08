@@ -2,6 +2,7 @@ import Vue from 'vue';
 import { Collapse, ScrollSpy } from 'bootstrap';
 import './base.js';
 import '../css/help.css';
+import postscribe from 'postscribe';
 
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -27,7 +28,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (show)   { nav.show(); }
                 else        { nav.hide(); }
             },
+            mounted() {
+                postscribe('#linkedin', '<script src="https://platform.linkedin.com/badges/js/profile.js"><\/script>')
+            }
         },
+
+
     });
 
     var scrollSpy = new ScrollSpy(document.body, {

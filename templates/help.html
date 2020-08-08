@@ -4,7 +4,11 @@
 <script type="text/javascript" src="{{ url_for('static', filename='dist/help.bundle.js') }}"></script>
 {% endblock %}
 
+
+
+
 {% block body %}
+
 <!-- Course details Modal -->
 <div class="container-fluid">
     <div class="row">
@@ -50,9 +54,9 @@
                 <h4 id="faq-11">{{ _('What is ADE Scheduler ?') }}</h4>
                 <hr class="mb-3">
                 <p>
-                    {{ _('ADE Scheduler is a tool aiming to provide the same informations as the
+                    {{ _('ADE Scheduler is a tool aiming to provide the same information as the
                     <a href="http://horaire.uclouvain.be/direct">UCLouvain\'s official schedule website</a>
-                    but with in a more intuitive way, while also providing many more tools such as subscription links, schedule organization, filtering unwanted events, classroom localization and so on.') }}
+                    but with in a more intuitive way, while also offering many more tools such as subscription links, schedule organization, filtering unwanted events, classroom localization and so on.') }}
                 </p>
 
                 <h4 id="faq-12">{{ _('Getting started') }}</h4>
@@ -67,7 +71,7 @@
                 <h4 id="faq-13">{{ _('Computing your optimal schedule') }}</h4>
                 <hr class="mb-3">
                 <p>
-                    {{ _('Sometimes, you may choose between multiple events such as CMs or TPs but only need to attend to one. The tool named compute tries all the possible combinations of picking one event of each type, every week, in order to find the 3 bests schedules which minimize the conflicts. If you want to be free during a given period, make sure to create a custom event to block this period of time. You can also remove some events before calling the compute functiona, to not take them into account. Because the compute function optimizes week per week, not all weeks must be the same. If you need to need to attend the same event every week, we encourage you to pick the week that suits your need from the results given by the compute tool and then manually select the events in your main schedule.') }}
+                    {{ _('Sometimes, you may choose between multiple events such as CMs or TPs but only need to attend to one. The tool named compute tries all the possible combinations of picking one event of each type, every week, in order to find the 3 bests schedules which minimize the conflicts. If you want to be free during a given period, make sure to create a custom event to block this period of time. You can also remove some events before calling the compute function, to not take them into account. Because the compute function optimizes week per week, not all weeks must be the same. If you need to need to attend the same events every week, we encourage you to pick the week that suits your need from the results given by the compute tool and then manually select the events in your main schedule.') }}
                     TODO: insert video
                 </p>
 
@@ -75,7 +79,7 @@
                 <h4 id="faq-21">{{ _('What are the possibilities ?') }}</h4>
                 <hr class="mb-3">
                 <p>
-                    {{ _('Once your schedule is complete, you don\'t need to go back to ADE-Scheduler each time you want to check your schedule: you can export it! Most calendar apps, such as Gmail, support importing external calendar. A short video shows you how to export your calendar to your favorite app.') }}
+                    {{ _('Once your schedule is complete, you don\'t need to go back to ADE-Scheduler each time you want to check your schedule: you can export it ! Most calendar apps, such as Gmail, support importing external calendar. A short video shows you how to export your calendar to your favorite app.') }}
                     TODO: insert video
                 </p>
 
@@ -88,14 +92,14 @@
                 <h4 id="faq-23">{{ _('Subscription links') }}</h4>
                 <hr class="mb-3">
                 <p>
-                    {{ ('Maybe the best solution ADE Scheduler can offer is a subscription link. With this link, your calendar app will frequently download the latest events and you will never miss any change in your schedule! Also, any manual change from your side, such as adding or removing a course, will be taken into account at the very next download of your schedule from you or from your app.') }}
+                    {{ _('Maybe the best solution ADE Scheduler can offer is a subscription link. With this link, your calendar app will frequently download the latest events and you will never miss any change in your schedule ! Also, any manual change from your side, such as adding or removing a course, will be taken into account at the very next download of your schedule from you or from your app.') }}
                 </p>
 
             <h3 class="my-5" id="faq-3">{{ _('Account & Settings') }}</h3>
                 <h4 id="faq-31">{{  _('What are the possibilities ?') }}</h4>
                 <hr class="mb-3">
                 <p>
-                    {{ _('On this website, no account is required to use most of the tools. Your session is stored during 30 days so you can easily leave this webpage, come back later and see that everything stays unchanged. Nonetheless, if 30 days is not enough or if you want to watch and modify your schedule one more than one device, we suggest to
+                    {{ _('On this website, no account is required to use most of the tools. Your session is stored during 30 days so you can easily leave this webpage, come back later and see that everything stays unchanged. Nonetheless, if 30 days is not enough or if you want to watch and modify your schedule one more than one device, we suggest you to
                     <a href="/account">create an account.</a>
                     With this, you will also be able to save multiple schedules, rename them, choose their color palette and so on.') }}
                 </p>
@@ -103,7 +107,7 @@
                 <h4 id="faq-32">{{ _('Custom events') }}</h4>
                 <hr class="mb-3">
                 <p>
-                    {{ _('Academical life is important but your private life is important too! This is why you can also add custom events to your schedule. They will appear in your schedule but will also be taken into account when using the compute tools. This tool will try to minimize the conflicts with your custom events.') }}
+                    {{ _('Academical life is important but your private life is important too ! This is why you can also add custom events to your schedule. They will appear in your schedule but will also be taken into account when using the compute tools. This tool will try to minimize the conflicts with your custom events.') }}
                 </p>
 
                 <h4 id="faq-33">{{ _('Event selection') }}</h4>
@@ -115,24 +119,61 @@
                 <h4 id="faq-34">{{ _('Accounts') }}</h4>
                 <hr class="mb-3">
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vestibulum orci et lacus tincidunt congue. In sem augue, vehicula ac lectus non, fringilla commodo nunc. Curabitur varius lorem id bibendum dapibus. Suspendisse sagittis ligula ac vehicula blandit. Sed sollicitudin ipsum nunc, non pharetra ligula finibus ac. Morbi sit amet malesuada nibh. Integer ultrices non sem in commodo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nullam dapibus imperdiet lectus eu malesuada. Vestibulum in eros porttitor, sodales justo porta, molestie diam. Aenean porttitor lacus eu sem congue pulvinar. Praesent tristique diam pharetra metus venenatis, vel lacinia nisl commodo. Praesent vulputate pretium neque non commodo.
-
-                    Cras sed consectetur lacus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam eget dapibus augue. Integer lacinia facilisis lorem sit amet posuere. Etiam sed magna lectus. Nulla malesuada ex id lectus tincidunt fermentum. Vivamus bibendum lobortis purus, nec consequat dui tincidunt sit amet. Nam luctus metus commodo iaculis tempus. In semper arcu vel commodo molestie. Ut aliquam convallis dictum.
-
-                    Nulla at pharetra eros. Maecenas consectetur leo dolor, at varius nibh ornare eget. Phasellus at est vitae orci malesuada eleifend. Etiam congue ut urna sit amet condimentum. Etiam fermentum accumsan arcu, a fermentum dolor. Mauris quis purus magna. Mauris molestie turpis est, non finibus mi aliquet sit amet. Pellentesque sit amet orci turpis. Integer porttitor ante felis, sit amet convallis ipsum faucibus eu. Aliquam quis molestie lorem. In hac habitasse platea dictumst.
+                    {{ _('Creating an account requires two things: an email address and a password. Your email address will only be used for password resetting and any important information we need to share with our users. On the account page, you can choose between your different schedules and also change their information. The academic year parameter will tell our service which year you want the information from (most of the time, only one possibility).') }}
                 </p>
 
             <h3 class="my-5" id="faq-4">{{ _('About us') }}</h3>
                 <h4 id="faq-41">{{ _('Who are we ?') }}</h4>
                 <hr class="mb-3">
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vestibulum orci et lacus tincidunt congue. In sem augue, vehicula ac lectus non, fringilla commodo nunc. Curabitur varius lorem id bibendum dapibus. Suspendisse sagittis ligula ac vehicula blandit. Sed sollicitudin ipsum nunc, non pharetra ligula finibus ac. Morbi sit amet malesuada nibh. Integer ultrices non sem in commodo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nullam dapibus imperdiet lectus eu malesuada. Vestibulum in eros porttitor, sodales justo porta, molestie diam. Aenean porttitor lacus eu sem congue pulvinar. Praesent tristique diam pharetra metus venenatis, vel lacinia nisl commodo. Praesent vulputate pretium neque non commodo.
-
-                    Cras sed consectetur lacus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam eget dapibus augue. Integer lacinia facilisis lorem sit amet posuere. Etiam sed magna lectus. Nulla malesuada ex id lectus tincidunt fermentum. Vivamus bibendum lobortis purus, nec consequat dui tincidunt sit amet. Nam luctus metus commodo iaculis tempus. In semper arcu vel commodo molestie. Ut aliquam convallis dictum.
-
-                    Nulla at pharetra eros. Maecenas consectetur leo dolor, at varius nibh ornare eget. Phasellus at est vitae orci malesuada eleifend. Etiam congue ut urna sit amet condimentum. Etiam fermentum accumsan arcu, a fermentum dolor. Mauris quis purus magna. Mauris molestie turpis est, non finibus mi aliquet sit amet. Pellentesque sit amet orci turpis. Integer porttitor ante felis, sit amet convallis ipsum faucibus eu. Aliquam quis molestie lorem. In hac habitasse platea dictumst.
+                    {{ _('We are three students from UCLouvain. By the time we started this project, we were finishing our bachelor\'s degree in engineering (Electricity and Mechanics for Jerome and Gilles; Computer Science and Applied Mathematics for Louis).') }}
                 </p>
 
+                <h4 id="faq-42">Jérome</h4>
+                <hr class="mb-3">
+                <p>
+                    {{ _('Jérome is a student in the Ecole Polytechnique de Louvain, in civil engineering. He completed his bachelor degree in Electricity and Mechanics. He is now pursuing a master degree in Mechatronics.') }}
+                    <br>
+
+                    <a class="btn btn-primary" role="button" href="mailto:jerome.eertmans@student.uclouvain.be">
+                        <svg style="font-size:20px; vertical-align: middle;" width="2em" height="1.4em" viewBox="0 0 16 16" class="bi bi-envelope" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path style="vertical-align: middle" fill-rule="evenodd" d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383l-4.758 2.855L15 11.114v-5.73zm-.034 6.878L9.271 8.82 8 9.583 6.728 8.82l-5.694 3.44A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.739zM1 11.114l4.758-2.876L1 5.383v5.73z"/>
+                        </svg>
+                        Mail
+                    </a>
+
+                    <div class="LI-profile-badge"  data-version="v1" data-size="medium" data-locale="en_US" data-type="horizontal" data-theme="light" data-vanity="jérome-eertmans-130ab1130"><a class="LI-simple-link" href='https://be.linkedin.com/in/j%C3%A9rome-eertmans-130ab1130?trk=profile-badge'>Jérome Eertmans</a></div>
+                </p>
+
+                <h4 id="faq-43">Louis</h4>
+                <hr class="mb-3">
+                <p>
+                    {{ _('Louis is a student at the Ecole Polytechnique de Louvain, in civil engineering. He completed his bachelor degree in Applied Mathematics and Computing Science. He is now pursuing a master degree in Computing Sciences.') }}
+                    <br>
+
+                    <a class="btn btn-primary" role="button" href="mailto:navarre.louis@student.uclouvain.be">
+                        <svg style="font-size:20px; vertical-align: middle;" width="2em" height="1.4em" viewBox="0 0 16 16" class="bi bi-envelope" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path style="vertical-align: middle" fill-rule="evenodd" d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383l-4.758 2.855L15 11.114v-5.73zm-.034 6.878L9.271 8.82 8 9.583 6.728 8.82l-5.694 3.44A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.739zM1 11.114l4.758-2.876L1 5.383v5.73z"/>
+                        </svg>
+                        Mail
+                    </a>
+                    <div class="LI-profile-badge"  data-version="v1" data-size="medium" data-locale="en_US" data-type="horizontal" data-theme="light" data-vanity="louis-navarre-36b78b143"><a class="LI-simple-link" href='https://be.linkedin.com/in/louis-navarre-36b78b143?trk=profile-badge'>Louis Navarre</a></div>
+                </p>
+
+                <h4 id="faq-44">Gilles</h4>
+                <hr class="mb-3">
+                <p>
+                    {{ _('Gilles is a student in the Ecole Polytechnique de Louvain, in civil engineering. He completed his bachelor degree in Electricity and Mechanics. He is now pursuing a master degree in Mechatronics.') }}
+                    <br>
+
+                    <a class="btn btn-primary" role="button" href="mailto:gilles.poncelet@student.uclouvain.be">
+                        <svg style="font-size:20px; vertical-align: middle;" width="2em" height="1.4em" viewBox="0 0 16 16" class="bi bi-envelope" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path style="vertical-align: middle" fill-rule="evenodd" d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383l-4.758 2.855L15 11.114v-5.73zm-.034 6.878L9.271 8.82 8 9.583 6.728 8.82l-5.694 3.44A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.739zM1 11.114l4.758-2.876L1 5.383v5.73z"/>
+                        </svg>
+                        Mail
+                    </a>
+                    <div class="LI-profile-badge"  data-version="v1" data-size="medium" data-locale="en_US" data-type="horizontal" data-theme="light" data-vanity="gilles-poncelet-020442195"><a class="LI-simple-link" href='https://be.linkedin.com/in/gilles-poncelet-020442195?trk=profile-badge'>Gilles Poncelet</a></div>
+                </p>
         </div>
     </div>
 

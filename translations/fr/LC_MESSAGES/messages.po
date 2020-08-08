@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-08-04 21:49+0200\n"
+"POT-Creation-Date: 2020-08-08 16:13+0200\n"
 "PO-Revision-Date: 2020-07-24 16:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -18,35 +18,35 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: backend/events.py:126 templates/calendar.html:177
+#: backend/events.py:126 templates/calendar.html:178
 msgid "Sunday"
 msgstr "Dimanche"
 
-#: backend/events.py:126 templates/calendar.html:171
+#: backend/events.py:126 templates/calendar.html:172
 msgid "Monday"
 msgstr "Lundi"
 
-#: backend/events.py:126 templates/calendar.html:172
+#: backend/events.py:126 templates/calendar.html:173
 msgid "Tuesday"
 msgstr "Mardi"
 
-#: backend/events.py:126 templates/calendar.html:173
+#: backend/events.py:126 templates/calendar.html:174
 msgid "Wednesday"
 msgstr "Mercredi"
 
-#: backend/events.py:126 templates/calendar.html:174
+#: backend/events.py:126 templates/calendar.html:175
 msgid "Thursday"
 msgstr "Jeudi"
 
-#: backend/events.py:126 templates/calendar.html:175
+#: backend/events.py:126 templates/calendar.html:176
 msgid "Friday"
 msgstr "Vendredi"
 
-#: backend/events.py:126 templates/calendar.html:176
+#: backend/events.py:126 templates/calendar.html:177
 msgid "Saturday"
 msgstr "Samedi"
 
-#: backend/schedules.py:41
+#: backend/schedules.py:32
 msgid "New schedule"
 msgstr "Nouvel horaire"
 
@@ -68,7 +68,7 @@ msgstr "Annuler"
 msgid "Continue"
 msgstr "Continue"
 
-#: templates/account.html:34 templates/calendar.html:280
+#: templates/account.html:34 templates/calendar.html:282
 msgid "A problem has occurred. Please contact us if it happens again."
 msgstr ""
 "Oops, il y a eu un problème ! Veuillez nous contacter si ça se reproduit "
@@ -82,7 +82,7 @@ msgstr "Palette de couleur"
 msgid "Academic year"
 msgstr "Année académique"
 
-#: templates/account.html:67 templates/calendar.html:226
+#: templates/account.html:67 templates/calendar.html:228
 msgid "Save"
 msgstr "Sauvegarder"
 
@@ -127,7 +127,7 @@ msgid "Register"
 msgstr "S'inscrire"
 
 #: templates/calendar.html:36 templates/calendar.html:79
-#: templates/calendar.html:210
+#: templates/calendar.html:211
 msgid "Close"
 msgstr "Fermer"
 
@@ -183,48 +183,52 @@ msgstr "De"
 msgid "To"
 msgstr "À"
 
-#: templates/calendar.html:169
+#: templates/calendar.html:170
 msgid "Days of week"
 msgstr "Jours de la semaine"
 
-#: templates/calendar.html:183
+#: templates/calendar.html:184
 msgid "Start of recurrence"
 msgstr "Début de récurrence"
 
-#: templates/calendar.html:195
+#: templates/calendar.html:196
 msgid "End of recurrence"
 msgstr "Fin de récurrence"
 
-#: templates/calendar.html:211
+#: templates/calendar.html:212
 msgid "Add"
 msgstr "Ajouter"
 
-#: templates/calendar.html:221 templates/calendar.html:222
-#: templates/calendar.html:223
+#: templates/calendar.html:222
+msgid "Main schedule"
+msgstr "Horaire principal"
+
+#: templates/calendar.html:223 templates/calendar.html:224
+#: templates/calendar.html:225
 msgid "Schedule"
 msgstr "Horaire"
 
-#: templates/calendar.html:224
+#: templates/calendar.html:226
 msgid "Export"
 msgstr "Exporter"
 
-#: templates/calendar.html:225
+#: templates/calendar.html:227
 msgid "Download"
 msgstr "Télécharger"
 
-#: templates/calendar.html:254
+#: templates/calendar.html:256
 msgid "Enter code"
 msgstr "Entrez un code"
 
-#: templates/calendar.html:261
+#: templates/calendar.html:263
 msgid "Compute"
 msgstr "Calculer"
 
-#: templates/calendar.html:264
+#: templates/calendar.html:266
 msgid "Clear"
 msgstr "Effacer"
 
-#: templates/calendar.html:274
+#: templates/calendar.html:276
 msgid "Schedule successfuly saved !"
 msgstr "Horaire sauvegardé avec succès !"
 
@@ -245,72 +249,79 @@ msgstr "Adresse mail"
 msgid "Password"
 msgstr "Mot de passe"
 
-#: templates/help.html:17 templates/help.html:50
+#: templates/help.html:21 templates/help.html:54
 msgid "What is ADE Scheduler ?"
 msgstr "Qu'est-ce qu'ADE Scheduler ?"
 
-#: templates/help.html:18 templates/help.html:58
+#: templates/help.html:22 templates/help.html:62
 msgid "Getting started"
 msgstr "Pour débuter"
 
-#: templates/help.html:19 templates/help.html:67
+#: templates/help.html:23 templates/help.html:71
 msgid "Computing your optimal schedule"
 msgstr "Calculer votre horaire optimal"
 
-#: templates/help.html:22 templates/help.html:74
+#: templates/help.html:26 templates/help.html:78
 msgid "Export and load"
 msgstr "Importer et exporter"
 
-#: templates/help.html:24 templates/help.html:31 templates/help.html:75
-#: templates/help.html:95
+#: templates/help.html:28 templates/help.html:35 templates/help.html:79
+#: templates/help.html:99
 msgid "What are the possibilities ?"
 msgstr "Quelles sont les possibilités ?"
 
-#: templates/help.html:25 templates/help.html:82
+#: templates/help.html:29 templates/help.html:86
 msgid "Download an iCal file"
 msgstr "Télécharger un fichier iCal"
 
-#: templates/help.html:26 templates/help.html:88
+#: templates/help.html:30 templates/help.html:92
 msgid "Subscription links"
 msgstr "Liens d'abonnement"
 
-#: templates/help.html:29 templates/help.html:94
+#: templates/help.html:33 templates/help.html:98
 msgid "Account & Settings"
 msgstr "Compte & Paramètres"
 
-#: templates/help.html:32 templates/help.html:103
+#: templates/help.html:36 templates/help.html:107
 msgid "Custom events"
 msgstr "Evènements personnels"
 
-#: templates/help.html:33 templates/help.html:109
+#: templates/help.html:37 templates/help.html:113
 msgid "Event selection"
 msgstr "Sélection d'un évènement"
 
-#: templates/help.html:34 templates/help.html:115
+#: templates/help.html:38 templates/help.html:119
 msgid "Accounts"
 msgstr "Comptes"
 
-#: templates/help.html:37 templates/help.html:125
+#: templates/help.html:41 templates/help.html:125
 msgid "About us"
 msgstr "A propos de nous"
 
-#: templates/help.html:39 templates/help.html:126
+#: templates/help.html:43 templates/help.html:126
 msgid "Who are we ?"
 msgstr "Qui sommes-nous ?"
 
-#: templates/help.html:53
+#: templates/help.html:57
 msgid ""
-"ADE Scheduler is a tool aiming to provide the same informations as the\n"
+"ADE Scheduler is a tool aiming to provide the same information as the\n"
 "                    <a "
 "href=\"http://horaire.uclouvain.be/direct\">UCLouvain's official schedule"
 " website</a>\n"
-"                    but with in a more intuitive way, while also "
-"providing many more tools such as subscription links, schedule "
-"organization, filtering unwanted events, classroom localization and so "
-"on."
+"                    but with in a more intuitive way, while also offering"
+" many more tools such as subscription links, schedule organization, "
+"filtering unwanted events, classroom localization and so on."
 msgstr ""
+"ADE Scheduler est un outil visant à fournir les mêmes informatios que\n"
+"                    <a "
+"href=\"http://horaire.uclouvain.be/direct\">l'outil horaire officiel de "
+"l'UCLouvain website</a>\n"
+"mais d'une manière plus intuitive, tout en offrant de nombreux outils "
+"tels que des liens d'abonnement, une personnalisation de votre horaire, "
+"un filtrage des évènements auxquels vous ne souhaitez pas assister, la "
+"localisation des locaux, etc."
 
-#: templates/help.html:61
+#: templates/help.html:65
 msgid ""
 "The main purpose of this website is the calendar page. If you're new to "
 "this site, make sure to go to\n"
@@ -318,8 +329,13 @@ msgid ""
 "                    and try out some of the functionalities.\n"
 "You are also encouraged to watch our quick guide hereunder."
 msgstr ""
+"Le rôle principal de ce site est rempli pas sa page calendrier. Si vous "
+"êtes nouveau sur ce site, assurez-vous d'aller sur                    <a "
+"href=\"/calendar\">cette page</a>\n"
+"et essayez quelques-unes des fonctionnalités.Vous êtes aussi encouragés à"
+" aller regarder le petit guide ci-dessous."
 
-#: templates/help.html:70
+#: templates/help.html:74
 msgid ""
 "Sometimes, you may choose between multiple events such as CMs or TPs but "
 "only need to attend to one. The tool named compute tries all the possible"
@@ -327,22 +343,40 @@ msgid ""
 "find the 3 bests schedules which minimize the conflicts. If you want to "
 "be free during a given period, make sure to create a custom event to "
 "block this period of time. You can also remove some events before calling"
-" the compute functiona, to not take them into account. Because the "
-"compute function optimizes week per week, not all weeks must be the same."
-" If you need to need to attend the same event every week, we encourage "
-"you to pick the week that suits your need from the results given by the "
-"compute tool and then manually select the events in your main schedule."
+" the compute function, to not take them into account. Because the compute"
+" function optimizes week per week, not all weeks must be the same. If you"
+" need to need to attend the same events every week, we encourage you to "
+"pick the week that suits your need from the results given by the compute "
+"tool and then manually select the events in your main schedule."
 msgstr ""
+"Parfois, vous avez le choix parmi plusieurs évènements comme des CMs ou "
+"des TPs mais vous ne devez assister qu'à un seul de chaque. L'outil nommé"
+" calculer essaye toutes les combinaisons d'horaire possible en "
+"choisissant un évènement de chaque type, chaque semaine, et retourne les "
+"3 meilleurs horaires qui minimisent les conflits. Si vous voulez être "
+"libre durant une tranche horaire, assurez-vous de créer un évent "
+"personnel durant cette tranche horaire. Vous pouvez également retirer des"
+" évènements avant d'utiliser l'outil de calcul, afin de ne pas les "
+"prendre en compte. Comme l'outil optimise semaine par semaine, il n'est "
+"pas certain que toutes les semaines soient les mêmes. Si vous avez besoin"
+" d'assister toujours aux mêmes évènements, nous vous encourageons à "
+"choisir, après calcul, la semaine qui vous plait le plus et de "
+"manuellement sélectionner les évènements dans votre horaire principal."
 
-#: templates/help.html:78
+#: templates/help.html:82
 msgid ""
 "Once your schedule is complete, you don't need to go back to ADE-"
-"Scheduler each time you want to check your schedule: you can export it! "
+"Scheduler each time you want to check your schedule: you can export it ! "
 "Most calendar apps, such as Gmail, support importing external calendar. A"
 " short video shows you how to export your calendar to your favorite app."
 msgstr ""
+"Une fois votre horaire fait, vous n'avez pas besoin de retourner à chaque"
+" fois sur ADE-Scheduler pour voir votre horaire : vous pouvez l'exporter "
+"! La plupart des applications de calendriers, tel que Gmail, permettent "
+"d'importer un calendrier externe. Une courte vidéo vous montre comme "
+"exporter votre horaire vers votre application favorite."
 
-#: templates/help.html:85
+#: templates/help.html:89
 msgid ""
 "One solution to export your schedule is to download it as an iCalendar "
 "file. Then, this file can easily be imported into your main calendar. The"
@@ -350,35 +384,139 @@ msgid ""
 "from you or from ADE, won't be seen in your calendar. If you prefer to "
 "have calendar up-to-date, then choose the next option."
 msgstr ""
+"Une solution pour exporter votre horaire est de le télécharger au format "
+"iCalendar. Ensuite, ce fichier peut être facilement importer dans votre "
+"calendrier principal. Le problème avec cette approche est qu'aucun "
+"changement dans votre horaire, de votre part ou de ADE, ne pourra être "
+"pris en compte dans votre calendrier. Si vous préférez avoir un "
+"calendrier à jour, choisissez alors la prochaine solution."
 
-#: templates/help.html:98
+#: templates/help.html:95
+msgid ""
+"Maybe the best solution ADE Scheduler can offer is a subscription link. "
+"With this link, your calendar app will frequently download the latest "
+"events and you will never miss any change in your schedule ! Also, any "
+"manual change from your side, such as adding or removing a course, will "
+"be taken into account at the very next download of your schedule from you"
+" or from your app."
+msgstr ""
+"La meilleure solution que peut vous proposer ADE Scheduler est "
+"certainement celle du lien d'abonnement. Avec ce lien, votre application "
+"de calendrier mettra à jour de manière régulière les évènements et vous "
+"ne manquerez aucun changement dans votre horaire ! Egalement, tout "
+"changement de votre part, tel qu'ajouter ou retirer un cours, sera pris "
+"en compte lors de la prochaine mise-à-jour de votre calendrier de la part"
+" de votre application."
+
+#: templates/help.html:102
 msgid ""
 "On this website, no account is required to use most of the tools. Your "
 "session is stored during 30 days so you can easily leave this webpage, "
 "come back later and see that everything stays unchanged. Nonetheless, if "
 "30 days is not enough or if you want to watch and modify your schedule "
-"one more than one device, we suggest to\n"
+"one more than one device, we suggest you to\n"
 "                    <a href=\"/account\">create an account.</a>\n"
 "                    With this, you will also be able to save multiple "
 "schedules, rename them, choose their color palette and so on."
 msgstr ""
+"Sur ce site, aucun compte n'est requis pour la plupart des "
+"fonctionnalités. Votre session est stockée durant 30 jours donc vous "
+"pouvez facilement quitter cette page, revenir plus tard et voir que tout "
+"est resté intact. Cependant, si 30 jours ne sont pas assez ou que vous "
+"souhaitez regarder ou modifier votre horaire sur plusieurs appareils, "
+"nous vous suggèrons de                     <a href=\"/account\">créer un "
+"compte.</a>\n"
+"Grâce à cela, vous serez capable de sauvegarder plusieurs horaires, les "
+"renommer, choisir des palettes de couleurs, etc."
 
-#: templates/help.html:106
+#: templates/help.html:110
 msgid ""
-"Academical life is important but your private life is important too! This"
-" is why you can also add custom events to your schedule. They will appear"
-" in your schedule but will also be taken into account when using the "
-"compute tools. This tool will try to minimize the conflicts with your "
-"custom events."
+"Academical life is important but your private life is important too ! "
+"This is why you can also add custom events to your schedule. They will "
+"appear in your schedule but will also be taken into account when using "
+"the compute tools. This tool will try to minimize the conflicts with your"
+" custom events."
 msgstr ""
 
-#: templates/help.html:112
+#: templates/help.html:116
 msgid ""
 "If you click on a course's code, on the left of the calendar page, you "
 "will see appearing all the events that are contained in this course, per "
 "type. You can select or unselect specific events in order to build you "
 "schedule the way you want."
 msgstr ""
+"Si vous cliquez sur un code cours, sur la gauche de la page calendrier, "
+"vous verrez appraître tous les évènements contenus dans ce cours, par "
+"type. Vous pouvez (dé-)sélectionner des évènements spécifiques afin de "
+"construire l'horaire qui vous plaît."
+
+#: templates/help.html:122
+msgid ""
+"Creating an account requires two things: an email address and a password."
+" Your email address will only be used for password resetting and any "
+"important information we need to share with our users. On the account "
+"page, you can choose between your different schedules and also change "
+"their information. The academic year parameter will tell our service "
+"which year you want the information from (most of the time, only one "
+"possibility)."
+msgstr ""
+"Créer un compte requiert deux choses : une adresse email et un mot de "
+"passe. Votre adresse email sera uniquement utilisée pour changer votre "
+"mot de passe ou vous transmettre des informations importantes. Sur la "
+"page compte, vous pouvez choisir parmi vos différents horaires et aussi "
+"changer leurs informations. Le paramètre année académique indiquera à "
+"notre service l'année depuis laquelle vous souhaitez obtenir les "
+"évènements (la plupart du temps, seule une année est disponible)."
+
+#: templates/help.html:129
+msgid ""
+"We are three students from UCLouvain. By the time we started this "
+"project, we were finishing our bachelor's degree in engineering "
+"(Electricity and Mechanics for Jerome and Gilles; Computer Science and "
+"Applied Mathematics for Louis)."
+msgstr ""
+"Nous sommes trois étudiants de l'UCLouvain. A l'époque où nous avions "
+"initié ce projet, nous finissions notre bachelier en ingénieurie civile "
+"(électricité et mécanique pour Jérome et Gilles; sciences informatiques "
+"et mathématiques appliquées pour Louis)."
+
+#: templates/help.html:135
+msgid ""
+"Jérome is a student in the Ecole Polytechnique de Louvain, in civil "
+"engineering. He completed his bachelor degree in Electricity and "
+"Mechanics. He is now pursuing a master degree in Mechatronics."
+msgstr ""
+"Jérome est un étudiant à l'Ecole "
+"Polytechnique de Louvain, en ingénieur "
+"civil. Il a un bachelier en "
+"électricité et mécanique. Actuellement, il "
+"suit un master en mécatronique."
+
+#: templates/help.html:151
+msgid ""
+"Louis is a student at the Ecole Polytechnique de Louvain, in civil "
+"engineering. He completed his bachelor degree in Applied Mathematics and "
+"Computing Science. He is now pursuing a master degree in Computing "
+"Sciences."
+msgstr ""
+"Louis est un étudiant à l'Ecole "
+"Polytechnique de Louvain, en ingénieur "
+"civil. Il a un bachelier en "
+"sciences informatiques et mathématiques "
+"appliquées. Actuellement, il suit un "
+"master en sciences informatiques."
+
+#: templates/help.html:166
+msgid ""
+"Gilles is a student in the Ecole Polytechnique de Louvain, in civil "
+"engineering. He completed his bachelor degree in Electricity and "
+"Mechanics. He is now pursuing a master degree in Mechatronics."
+msgstr ""
+"Gilles est un étudiant à l'Ecole "
+"Polytechnique de Louvain, en ingénieur "
+"civil. Il a un bachelier en "
+"électricité et mécanique. Actuellement, il "
+"suit un master en mécatronique."
 
 #: templates/security/change_password.html:18
 #: templates/security/reset_password.html:13
@@ -443,4 +581,236 @@ msgstr "Aucun mot de passe spécifié"
 #: templates/security/reset_password.html:20
 msgid "Confirm password"
 msgstr "Confirmez le mot de passe"
+
+#~ msgid ""
+#~ "ADE Scheduler is a tool aiming to"
+#~ " provide the same informations as the"
+#~ "\n"
+#~ "                    <a "
+#~ "href=\"http://horaire.uclouvain.be/direct\">UCLouvain's official"
+#~ " schedule website</a>\n"
+#~ "                    but with in a more"
+#~ " intuitive way, while also providing "
+#~ "many more tools such as subscription "
+#~ "links, schedule organization, filtering "
+#~ "unwanted events, classroom localization and"
+#~ " so on."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Sometimes, you may choose between "
+#~ "multiple events such as CMs or TPs"
+#~ " but only need to attend to "
+#~ "one. The tool named compute tries "
+#~ "all the possible combinations of picking"
+#~ " one event of each type, every "
+#~ "week, in order to find the 3 "
+#~ "bests schedules which minimize the "
+#~ "conflicts. If you want to be free"
+#~ " during a given period, make sure "
+#~ "to create a custom event to block"
+#~ " this period of time. You can "
+#~ "also remove some events before calling"
+#~ " the compute functiona, to not take"
+#~ " them into account. Because the "
+#~ "compute function optimizes week per "
+#~ "week, not all weeks must be the"
+#~ " same. If you need to need to"
+#~ " attend the same event every week,"
+#~ " we encourage you to pick the "
+#~ "week that suits your need from the"
+#~ " results given by the compute tool"
+#~ " and then manually select the events"
+#~ " in your main schedule."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Once your schedule is complete, you "
+#~ "don't need to go back to ADE-"
+#~ "Scheduler each time you want to "
+#~ "check your schedule: you can export "
+#~ "it! Most calendar apps, such as "
+#~ "Gmail, support importing external calendar."
+#~ " A short video shows you how to"
+#~ " export your calendar to your "
+#~ "favorite app."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "On this website, no account is "
+#~ "required to use most of the tools."
+#~ " Your session is stored during 30 "
+#~ "days so you can easily leave this"
+#~ " webpage, come back later and see "
+#~ "that everything stays unchanged. Nonetheless,"
+#~ " if 30 days is not enough or"
+#~ " if you want to watch and "
+#~ "modify your schedule one more than "
+#~ "one device, we suggest to\n"
+#~ "                    <a href=\"/account\">create an account.</a>\n"
+#~ "                    With this, you will "
+#~ "also be able to save multiple "
+#~ "schedules, rename them, choose their "
+#~ "color palette and so on."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Academical life is important but your"
+#~ " private life is important too! This"
+#~ " is why you can also add custom"
+#~ " events to your schedule. They will"
+#~ " appear in your schedule but will "
+#~ "also be taken into account when "
+#~ "using the compute tools. This tool "
+#~ "will try to minimize the conflicts "
+#~ "with your custom events."
+#~ msgstr ""
+#~ "La vie académique est importante mais"
+#~ " votre vie privée l'est aussi ! "
+#~ "C'est pourquoi vous pouvez aussi ajouter"
+#~ " des évènements privés à votre "
+#~ "horaire. Ils y apparaîtront mais seront"
+#~ " aussi pris en compte quand vous "
+#~ "utiliserez l'outil calculer. Cet outil "
+#~ "essayera de minimiser les conflits avec"
+#~ " vos évènements privés."
+
+#~ msgid ""
+#~ "We are three students from UCLouvain."
+#~ " By the time we started this "
+#~ "project, we were finishing our "
+#~ "bachelor's degree in engineering (electricity"
+#~ " and mechanics for Jerome and Gilles;"
+#~ " informatics and applied mathematics for"
+#~ " Louis)."
+#~ msgstr ""
+#~ "Nous sommes trois étudiants de "
+#~ "l'UCLouvain. A l'époque où nous avions"
+#~ " initié ce projet, nous finissions "
+#~ "notre bachelier in ingénieurie civile "
+#~ "(électricity et mécanique pour Jérome et"
+#~ " Gilles; informatique et mathématiques "
+#~ "appliquées pour Louis)."
+
+#~ msgid ""
+#~ "Jérome is a student in the Ecole"
+#~ " Polytechnique de Louvain, in civil "
+#~ "engineering. He completed his bachelor "
+#~ "degree in Electricity and Mechanics. He"
+#~ " is now pursuing a master deree "
+#~ "in Mechatronics.\n"
+#~ "                    <br><a "
+#~ "href=\"mailto:jerome.eertmans@student.uclouvain.be\">Mail</a>\n"
+#~ "                    / <a "
+#~ "href=\"https://www.linkedin.com/in/jérome-eertmans-"
+#~ "130ab1130/\">LinkedIn</a>"
+#~ msgstr ""
+#~ "Jérome est un étudiant à l'Ecole "
+#~ "Polytechnique de Louvain, en ingénieur "
+#~ "civil. Il a un bachelier en "
+#~ "électricité et mécanique. Actuellement, il "
+#~ "suit"
+
+#~ msgid ""
+#~ "Louis is a student at the Ecole"
+#~ " Polytechnique de Louvain, in civil "
+#~ "engineering. He completed his bachelor "
+#~ "degree in Applied Mathematics and "
+#~ "Computing Science. He is now pusruing"
+#~ " a master degree in Computing "
+#~ "Sciences.\n"
+#~ "                    <br><a "
+#~ "href=\"mailto:navarre.louis@student.uclouvain.be\">Mail</a>\n"
+#~ "                    / <a "
+#~ "href=\"https://www.linkedin.com/in/louis-navarre-"
+#~ "36b78b143/\">LinkedIn</a>"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Gilles is a student in the Ecole"
+#~ " Polytechnique de Louvain, in civil "
+#~ "engineering. He completed his bachelor "
+#~ "degree in Electricity and Mechanics. He"
+#~ " is now pursuing a master deree "
+#~ "in Mechatronics.\n"
+#~ "                    <br><a "
+#~ "href=\"mailto:gilles.poncelet@student.uclouvain.be\">Mail</a>\n"
+#~ "                    / <a "
+#~ "href=\"https://www.linkedin.com/in/gilles-"
+#~ "poncelet-020442195/\">LinkedIn</a>"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Jérome is a student in the Ecole"
+#~ " Polytechnique de Louvain, in civil "
+#~ "engineering. He completed his bachelor "
+#~ "degree in Electricity and Mechanics. He"
+#~ " is now pursuing a master degree "
+#~ "in Mechatronics.\n"
+#~ "                    <br><a "
+#~ "href=\"mailto:jerome.eertmans@student.uclouvain.be\">Mail</a>\n"
+#~ "                    / <a "
+#~ "href=\"https://www.linkedin.com/in/jérome-eertmans-"
+#~ "130ab1130/\">LinkedIn</a>"
+#~ msgstr ""
+#~ "Jérome est un étudiant à l'Ecole "
+#~ "Polytechnique de Louvain, en ingénieur "
+#~ "civil. Il a un bachelier en "
+#~ "électricité et mécanique. Actuellement, il "
+#~ "suit un master en mécatronique."
+#~ "                    <br><a "
+#~ "href=\"mailto:jerome.eertmans@student.uclouvain.be\">Mail</a>\n"
+#~ "                    / <a "
+#~ "href=\"https://www.linkedin.com/in/jérome-eertmans-"
+#~ "130ab1130/\">LinkedIn</a>"
+
+#~ msgid ""
+#~ "Louis is a student at the Ecole"
+#~ " Polytechnique de Louvain, in civil "
+#~ "engineering. He completed his bachelor "
+#~ "degree in Applied Mathematics and "
+#~ "Computing Science. He is now pursuing"
+#~ " a master degree in Computing "
+#~ "Sciences.\n"
+#~ "                    <br><a "
+#~ "href=\"mailto:navarre.louis@student.uclouvain.be\">Mail</a>\n"
+#~ "                    / <a "
+#~ "href=\"https://www.linkedin.com/in/louis-navarre-"
+#~ "36b78b143/\">LinkedIn</a>"
+#~ msgstr ""
+#~ "Louis est un étudiant à l'Ecole "
+#~ "Polytechnique de Louvain, en ingénieur "
+#~ "civil. Il a un bachelier en "
+#~ "sciences informatiques et mathématiques "
+#~ "appliquées. Actuellement, il suit un "
+#~ "master en sciences informatiques."
+#~ "                    <br><a "
+#~ "href=\"mailto:navarre.louis@student.uclouvain.be\">Mail</a>\n"
+#~ "                    / <a "
+#~ "href=\"https://www.linkedin.com/in/louis-navarre-"
+#~ "36b78b143/\">LinkedIn</a>"
+
+#~ msgid ""
+#~ "Gilles is a student in the Ecole"
+#~ " Polytechnique de Louvain, in civil "
+#~ "engineering. He completed his bachelor "
+#~ "degree in Electricity and Mechanics. He"
+#~ " is now pursuing a master degree "
+#~ "in Mechatronics.\n"
+#~ "                    <br><a "
+#~ "href=\"mailto:gilles.poncelet@student.uclouvain.be\">Mail</a>\n"
+#~ "                    / <a "
+#~ "href=\"https://www.linkedin.com/in/gilles-"
+#~ "poncelet-020442195/\">LinkedIn</a>"
+#~ msgstr ""
+#~ "Gilles est un étudiant à l'Ecole "
+#~ "Polytechnique de Louvain, en ingénieur "
+#~ "civil. Il a un bachelier en "
+#~ "électricité et mécanique. Actuellement, il "
+#~ "suit un master en mécatronique."
+#~ "                    <br><a "
+#~ "href=\"mailto:gilles.poncelet@student.uclouvain.be\">Mail</a>\n"
+#~ "                    / <a "
+#~ "href=\"https://www.linkedin.com/in/gilles-"
+#~ "poncelet-020442195/\">LinkedIn</a>"
 

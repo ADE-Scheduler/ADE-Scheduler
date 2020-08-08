@@ -12,7 +12,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_security import Security, SQLAlchemyUserDatastore
 from flask_mail import Mail, Message
 from flask_jsglue import JSGlue
-from flask_babelex import Babel
+from flask_babelex import Babel, _
 from flask_migrate import Migrate
 from flask_compress import Compress
 
@@ -130,7 +130,7 @@ def handle_exception(e):
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return 'This URL does NOT exist... C\'mon !', 404
+    return _('This URL does NOT exist... C\'mon !'), 404  # TODO: translation not detected ?
 
 
 @app.shell_context_processor

@@ -65,6 +65,7 @@ def get_data():
 
     if label == schd.DEFAULT_SCHEDULE_NAME:  # Translates the default schedule name
         session['current_schedule'].label = _(label)
+        # Might exist a better way ...
 
     return jsonify({
         'project_id': mng.get_project_ids(),
