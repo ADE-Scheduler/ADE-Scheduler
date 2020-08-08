@@ -4,6 +4,7 @@ from typing import Any
 from flask import current_app as app
 from flask import Blueprint, render_template, session, request, jsonify
 from flask_security import login_required, current_user
+from flask_babelex import _
 
 import backend.schedules as schd
 from backend.ade_api import DEFAULT_PROJECT_ID
@@ -60,6 +61,11 @@ def index():
 @login_required
 def get_data():
     mng = app.config['MANAGER']
+    label = session['current_schedule'].label
+
+    if label == schd.DEFAULT_SCHEDULE_NAME:  # Translates the default schedule name
+        session['current_schedule'].label = _(label)
+
     return jsonify({
         'project_id': mng.get_project_ids(),
         'unsaved': session['current_schedule_modified'],

@@ -29,6 +29,8 @@ Schedule needed data:
 }
 """
 
+DEFAULT_SCHEDULE_NAME = _('New schedule')
+
 
 class Schedule:
     """
@@ -38,7 +40,7 @@ class Schedule:
                This parameter is automatically set when the schedule is saved for the first time.
     """
 
-    def __init__(self, project_id: SupportsInt, schedule_id: int = None, label: str = _('New schedule')):
+    def __init__(self, project_id: SupportsInt, schedule_id: int = None, label: str = DEFAULT_SCHEDULE_NAME):
         self.id = schedule_id
         self.project_id = project_id
         self.label = label
