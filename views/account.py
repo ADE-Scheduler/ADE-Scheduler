@@ -57,7 +57,7 @@ def index():
     return render_template('account.html')
 
 
-@account.route('/get/data', methods=['GET'])
+@account.route('/data', methods=['GET'])
 @login_required
 def get_data():
     mng = app.config['MANAGER']
@@ -83,7 +83,7 @@ def get_data():
     }), 200
 
 
-@account.route('/load/schedule/<id>', methods=['GET'])
+@account.route('/schedule/<id>', methods=['GET'])
 @login_required
 def load_schedule(id):
     if int(id) == -1:
@@ -105,7 +105,7 @@ def load_schedule(id):
     return '', 403      # Requested id is not in this user's schedule list.
 
 
-@account.route('/delete/schedule/<id>', methods=['DELETE'])
+@account.route('/schedule/<id>', methods=['DELETE'])
 @login_required
 def delete_schedule(id):
     id = int(id)
@@ -131,7 +131,7 @@ def delete_schedule(id):
     }), 200
 
 
-@account.route('/update/label/<id>', methods=['PATCH'])
+@account.route('/label/<id>', methods=['PATCH'])
 @login_required
 def update_label(id):
     label = request.json.get('label')
@@ -148,7 +148,7 @@ def update_label(id):
     return '', 403      # Requested id is not in this user's schedule list.
 
 
-@account.route('/save', methods=['POST'])
+@account.route('/schedule', methods=['POST'])
 @login_required
 def save():
     s = session['current_schedule']
