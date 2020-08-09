@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 eventClick: function(info) {
                     let evt = info.event.toPlainObject({collapseExtendedProps: true});
-                    if (evt.id) {
+                    if (!evt.code) {
                         vm.eventInfo = evt;
                         vm.eventInfo.event = info.event;
                         eventModal.show();
