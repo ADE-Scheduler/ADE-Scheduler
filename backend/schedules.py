@@ -265,13 +265,13 @@ class Schedule:
 
                 for event in events:
                     # Remove the event from the filter
-                    self.best_schedules[i][event.code][week].remove(event.id)
+                    self.best_schedules[i][event.code][week].discard(event.id)
 
             # If we could only find n < n_best best scores, we fill the rest in with same last values
             for i in range(n, n_best):
                 best[i].extend(events)
                 for event in events:
-                    self.best_schedules[i][event.code][week].remove(event.id)
+                    self.best_schedules[i][event.code][week].discard(event.id)
 
         # Will delete all redundant schedules
         del best[max_bests_found:]
