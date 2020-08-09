@@ -4,10 +4,15 @@ from copy import copy
 from flask_sqlalchemy import SQLAlchemy
 from flask_security.models import fsqla_v2 as fsqla
 
+OWNER_LEVEL = 0
+EDITOR_LEVEL = 1
+VIEWER_LEVEL = 2
+
 db = SQLAlchemy()
 fsqla.FsModels.set_db_info(db)
 
 # TODO: @Louis faut vérifier que tout marche bien et puis bien commenter la docstring :)
+
 
 class ScheduleDoNotMatchError(Exception):
     """
@@ -24,7 +29,7 @@ class Role(db.Model, fsqla.FsRoleMixin):
 class User(db.Model, fsqla.FsUserMixin):
     schedules = db.relationship('Schedule', secondary='property')
 
-    def add_schedule(self, schedule, level=0):
+    def add_schedule(self, schedule, level=OWNER_LEVEL):
         if schedule not in self.schedules:
             property = Property(user_id=self.id, schedule_id=schedule.id, level=level)
             self.property.append(property)
@@ -36,7 +41,17 @@ class User(db.Model, fsqla.FsUserMixin):
             self.schedules.remove(schedule)
             db.session.commit()
 
+    def share_schedule_with_emails(self, schedule, *emails: str, level=EDITOR_LEVEL):
+        emails = [email for email in emails if email != self.email]  # You should not add yourself as editor or viewer
+        users = User.query.filter(User.email.in_(emails)).all()
+
+        for user in users:
+            user.add_schedule(schedule, level=level)
+
     def get_schedule(self, id=None, level=None):
+
+        print(User.query.filter(User.email.in_(['jeertmans@icloud.com', 'xhexylus@gmail.com'])).all())
+
         if id is not None:          # Return the schedule matching the requested ID (if any)
             for schedule in self.schedules:
                 if schedule.id == id:
@@ -131,7 +146,7 @@ class Property(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     user_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
     schedule_id = db.Column(db.Integer(), db.ForeignKey('schedule.id'))
-    level = db.Column(db.Integer(), default=0)
+    level = db.Column(db.Integer(), default=OWNER_LEVEL)
 
     user = db.relationship('User', backref=db.backref('property', cascade="all, delete-orphan"))
     schedule = db.relationship('Schedule', backref=db.backref('property', cascade="all, delete-orphan"))
