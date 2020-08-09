@@ -151,7 +151,7 @@ def save():
 
 
 @calendar.route('/schedule', methods=['GET'])
-def download():
+def download():     # TODO: gérer les share link ici
     link = request.args.get('link')
     choice = int(request.args.get('choice')) if request.args.get('choice') else 0
     if link:
@@ -165,7 +165,9 @@ def download():
     else:
         resp = make_response(schedule.get_ics_file(schedule_number=choice))
         resp.mimetype = 'text/calendar'
-        resp.headers['Content-Disposition'] = 'attachment; filename=' + schedule.label.replace(' ', '_') + '.ics'
+        resp.headers['Content-Disposition'] = 'attachment; filename=' + \
+            ''.join(c for c in schedule.label if c.isalnum() or c in ('_')) \
+            .rstrip() + '.ics'
         return resp
 
 
