@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
         components: { FullCalendar },
         data: {
             codes: [],
+            n_schedules: 0,
             computing: true,
             error: false,
             saveSuccess: false,
@@ -137,6 +138,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(resp => {
                     this.codes = resp.data.codes;
+                    this.n_schedules = resp.data.n_schedules;
                     this.calendarOptions.events = resp.data.events;
                 })
                 .catch(err => {
@@ -170,7 +172,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     url: Flask.url_for('calendar.compute'),
                 })
                 .then(resp => {
-                    console.log('Schedule computed successfuly !');
+                    this.n_schedules = resp.data.n_schedules;
+                    this.calendarOptions.events = resp.data.events;
                 })
                 .catch(err => {
                     this.error = true;
@@ -385,6 +388,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(resp => {
                     event.remove();
+                })
+                .catch(err => {
+                    this.error = true;
+                })
+                .then(() => {
+                    this.computing = false;
+                });
+            },
+            getEvents: function(schedule_number) {
+                this.computing = true;
+                axios({
+                    method: 'GET',
+                    url: Flask.url_for('calendar.get_events'),
+                    params: { schedule_number: schedule_number },
+                })
+                .then(resp => {
+                    this.calendarOptions.events = resp.data.events;
                 })
                 .catch(err => {
                     this.error = true;
