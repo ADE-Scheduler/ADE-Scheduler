@@ -64,7 +64,10 @@ def clear():
 
 @calendar.route('/data', methods=['GET'])
 def get_data():
+    mng = app.config['MANAGER']
     return jsonify({
+        'project_id': mng.get_project_ids(),
+        'current_project_id': session['current_schedule'].project_id,
         'n_schedules': len(session['current_schedule'].best_schedules),
         'events': session['current_schedule'].get_events(json=True),
         'codes': session['current_schedule'].codes,
@@ -176,6 +179,15 @@ def apply_filter():
                     schedule.add_filter(code, type + ': ' + filter)
                 else:
                     schedule.remove_filter(code, type + ': ' + filter)
+    return jsonify({
+        'events': session['current_schedule'].get_events(json=True),
+    }), 200
+
+
+@calendar.route('/schedule/year/<id>', methods=['PUT'])
+def update_poject_id(id):
+    session['current_schedule'].project_id = id
+    session['current_schedule_modified'] = True
     return jsonify({
         'events': session['current_schedule'].get_events(json=True),
     }), 200

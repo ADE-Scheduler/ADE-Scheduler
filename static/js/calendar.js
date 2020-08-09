@@ -15,6 +15,8 @@ document.addEventListener('DOMContentLoaded', function() {
         el: '#app',
         components: { FullCalendar },
         data: {
+            projectId: [],
+            currentProjectId: 0,
             codes: [],
             n_schedules: 0,
             computing: true,
@@ -138,6 +140,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(resp => {
                     this.codes = resp.data.codes;
+                    this.projectId = resp.data.project_id;
+                    this.currentProjectId = resp.data.current_project_id;
                     this.n_schedules = resp.data.n_schedules;
                     this.calendarOptions.events = resp.data.events;
                 })
@@ -156,6 +160,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(resp => {
                     this.calendarOptions.events = [];
+                    this.n_schedules = 0;
                     this.codes = [];
                 })
                 .catch(err => {
@@ -413,6 +418,22 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.computing = false;
                 });
             },
+            updateYear: function() {
+                this.computing = true;
+                axios({
+                    method: 'PUT',
+                    url: Flask.url_for('calendar.update_poject_id', {id: this.currentProjectId}),
+                })
+                .then(resp => {
+                    this.calendarOptions.events = resp.data.events;
+                })
+                .catch(err => {
+                    this.error = true;
+                })
+                .then(() => {
+                    this.computing = false;
+                });
+            }
         },
         computed: {
             calendarOpacity: function() {
