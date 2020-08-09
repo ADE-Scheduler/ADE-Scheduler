@@ -8,8 +8,8 @@ from jsmin import jsmin
 from werkzeug.exceptions import InternalServerError
 from flask import Flask, session, request, redirect, url_for
 from flask_session import Session
-from flask_sqlalchemy import SQLAlchemy
 from flask_security import Security, SQLAlchemyUserDatastore
+from flask_login import user_logged_out
 from flask_mail import Mail, Message
 from flask_jsglue import JSGlue
 from flask_babelex import Babel, _
@@ -22,6 +22,7 @@ import backend.credentials as cd
 import backend.servers as srv
 import backend.ade_api as ade
 import backend.manager as mng
+import backend.schedules as schd
 
 # Views imports
 from views.calendar import calendar
@@ -106,6 +107,13 @@ def before_first_request():
         os.makedirs('static/dist')
     with open('static/dist/jsglue.min.js', 'w') as f:
         f.write(jsmin(jsglue.generate_js()))
+
+
+# Reset current schedule on user logout
+@user_logged_out.connect_via(app)
+def when_user_logged_out(sender, user):
+    session['current_schedule'] = schd.Schedule(manager.get_default_project_id())
+    session['current_schedule_modified'] = False
 
 
 # Main page

@@ -9,7 +9,6 @@ from flask_security import current_user
 
 import backend.schedules as schd
 import backend.events as evt
-from backend.ade_api import DEFAULT_PROJECT_ID
 
 
 class CalendarEncoder(json.JSONEncoder):
@@ -46,7 +45,8 @@ calendar.json_encoder = CalendarEncoder
 @calendar.before_request
 def before_calendar_request():
     if not session.get('current_schedule'):
-        session['current_schedule'] = schd.Schedule(DEFAULT_PROJECT_ID)
+        mng = app.config['MANAGER']
+        session['current_schedule'] = schd.Schedule(mng.get_default_project_id())
         session['current_schedule_modified'] = False
 
 
@@ -57,14 +57,18 @@ def index():
 
 @calendar.route('/', methods=['DELETE'])
 def clear():
-    session['current_schedule'] = schd.Schedule(DEFAULT_PROJECT_ID)
+    mng = app.config['MANAGER']
+    session['current_schedule'] = schd.Schedule(mng.get_default_project_id())
     session['current_schedule_modified'] = False
     return 'OK', 200
 
 
 @calendar.route('/data', methods=['GET'])
 def get_data():
+    mng = app.config['MANAGER']
     return jsonify({
+        'project_id': mng.get_project_ids(),
+        'current_project_id': session['current_schedule'].project_id,
         'n_schedules': len(session['current_schedule'].best_schedules),
         'events': session['current_schedule'].get_events(json=True),
         'codes': session['current_schedule'].codes,
@@ -176,6 +180,15 @@ def apply_filter():
                     schedule.add_filter(code, type + ': ' + filter)
                 else:
                     schedule.remove_filter(code, type + ': ' + filter)
+    return jsonify({
+        'events': session['current_schedule'].get_events(json=True),
+    }), 200
+
+
+@calendar.route('/schedule/year/<id>', methods=['PUT'])
+def update_poject_id(id):
+    session['current_schedule'].project_id = id
+    session['current_schedule_modified'] = True
     return jsonify({
         'events': session['current_schedule'].get_events(json=True),
     }), 200

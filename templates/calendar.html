@@ -256,6 +256,14 @@
                         </form>
                     </li>
                 </div>
+                <div class="mt-3">
+                    <label class="form-label" for="select-project-id">{{ _('Academic year') }}</label>
+                    <select class="form-select" v-model="currentProjectId" v-on:change="updateYear">
+                        <option v-for="pid in projectId" v-bind:value="pid.id">
+                            [[ pid.year ]]
+                        </option>
+                    </select>
+                </div>
                 <div class="btn-group btn-compute-clear mt-3">
                     <button class="btn btn-outline-dark btn-sm w-50" type="button" v-on:click="compute(); toggleNav(false)">
                         {{_('Compute')}}
