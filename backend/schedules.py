@@ -2,7 +2,7 @@ from itertools import product, chain, starmap, repeat
 from collections import deque, defaultdict
 from heapq import nsmallest
 import operator
-from typing import Iterable, Union, List, SupportsInt, Dict, Set, Optional
+from typing import Iterable, Union, List, SupportsInt, Dict, Set, Optional, Any
 from backend.courses import Course, merge_courses
 from flask import current_app as app
 from ics import Calendar
@@ -32,6 +32,16 @@ Schedule needed data:
 DEFAULT_SCHEDULE_NAME = _('New schedule')
 
 
+def default_dict_any_to_set() -> defaultdict:
+    """
+    Create a collections.defaultdict object mapping each key to a set.
+
+    :return: the dictionary
+    :rtype: collections.defaultdict
+    """
+    return defaultdict(set)
+
+
 class Schedule:
     """
     A schedule is essentially a combination of courses stored as a master course, from which some events can be removed.
@@ -45,7 +55,7 @@ class Schedule:
         self.project_id = project_id
         self.label = label
         self.codes = set()
-        self.filtered_subcodes = defaultdict(set)
+        self.filtered_subcodes = default_dict_any_to_set()
         self.best_schedules = None
         self.custom_events = list()
         self.priorities = dict()
@@ -201,7 +211,7 @@ class Schedule:
 
         # Reset the best schedules
         # TODO: pas sûr que c'est la meilleure manière de faire...
-        self.best_schedules = [defaultdict(lambda: defaultdict(set)) for _ in range(n_best)]
+        self.best_schedules = [defaultdict(default_dict_any_to_set) for _ in range(n_best)]
         best = [[] for _ in range(n_best)]  # We create an empty list which will contain best schedules
 
         # Forbidden time slots = events that we cannot move and that we want to minimize conflicts with them
