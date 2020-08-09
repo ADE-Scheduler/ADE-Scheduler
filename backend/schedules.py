@@ -2,7 +2,7 @@ from itertools import product, chain, starmap, repeat
 from collections import deque, defaultdict
 from heapq import nsmallest
 import operator
-from typing import Iterable, Union, List, SupportsInt, Dict, Set, Optional, Any
+from typing import Iterable, Union, List, SupportsInt, Dict, Set, Optional
 from backend.courses import Course, merge_courses
 from flask import current_app as app
 from ics import Calendar
@@ -204,7 +204,7 @@ class Schedule:
         :type n_best: int
         :param safe_compute: if True, ignore all redundant events at same time period
         :type safe_compute: bool
-        :return: the n_best schedules
+        :return: the n_best schedules, but maybe less if cannot find n_best different schedules
         :rtype: List[Iterable[evt.CustomEvent]]
         """
         courses = self.get_courses()
@@ -223,6 +223,8 @@ class Schedule:
         # We only take care of events which are not of type EvenOTHER
         valid = df.index.get_level_values('type') != evt.EventOTHER
         df_main, df_other = df[valid], df[~valid]
+
+        max_bests_found = 1  # Number of best schedules found (will take the maximum value out of all weeks)
 
         for week, week_data in df_main.groupby('week'):
             if safe_compute:  # We remove events from same course that happen at the same time
@@ -255,6 +257,8 @@ class Schedule:
 
             n = len(best_weeks)  # Sometimes n < n_best
 
+            max_bests_found = max(n, max_bests_found)
+
             for i in range(n):
                 events = list(chain.from_iterable(best_weeks[i]))
                 best[i].extend(events)
@@ -268,6 +272,8 @@ class Schedule:
                 best[i].extend(events)
                 for event in events:
                     self.best_schedules[i][event.code][week].remove(event.id)
+
+        del best[max_bests_found:]  # Will delete all redundant schedules
 
         other = df_other['event'].values.flatten().tolist()
         if other:
