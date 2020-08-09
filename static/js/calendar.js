@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', function() {
             compute: function() {
                 this.computing = true;
                 axios({
-                    method: 'GET',
+                    method: 'PUT',
                     url: Flask.url_for('calendar.compute'),
                 })
                 .then(resp => {
@@ -241,7 +241,7 @@ document.addEventListener('DOMContentLoaded', function() {
             removeCode: function(code) {
                 this.computing = true;
                 axios({
-                    method: 'PATCH',
+                    method: 'DELETE',
                     url: Flask.url_for('calendar.remove_code', {'code': code}),
                 })
                 .then(resp => {

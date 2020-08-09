@@ -55,7 +55,14 @@ def index():
     return render_template('calendar.html')
 
 
-@calendar.route('/get/data', methods=['GET'])
+@calendar.route('/', methods=['DELETE'])
+def clear():
+    session['current_schedule'] = schd.Schedule(DEFAULT_PROJECT_ID)
+    session['current_schedule_modified'] = False
+    return 'OK', 200
+
+
+@calendar.route('/data', methods=['GET'])
 def get_data():
     return jsonify({
         'events': session['current_schedule'].get_events(json=True),
@@ -63,7 +70,28 @@ def get_data():
     }), 200
 
 
-@calendar.route('/get/<code>/info', methods=['GET'])
+@calendar.route('/<code>', methods=['PATCH'])
+def add_code(code):
+    pattern = re.compile('^\s+|\s*,\s*|\s+$')
+    codes = [x.upper() for x in pattern.split(code) if x]
+    codes = session['current_schedule'].add_course(codes)
+    session['current_schedule_modified'] = True
+    return jsonify({
+        'codes': codes,
+        'events': session['current_schedule'].get_events(json=True),
+    }), 200
+
+
+@calendar.route('/<code>', methods=['DELETE'])
+def remove_code(code):
+    session['current_schedule'].remove_course(code)
+    session['current_schedule_modified'] = True
+    return jsonify({
+        'events': session['current_schedule'].get_events(json=True),
+    }), 200
+
+
+@calendar.route('/<code>/info', methods=['GET'])
 def get_info(code):
     mng = app.config['MANAGER']
     courses = mng.get_courses(code, project_id=session['current_schedule'].project_id)
@@ -79,59 +107,6 @@ def get_info(code):
         'title': title,
         'summary': summary,
         'filtered': session['current_schedule'].filtered_subcodes,
-    }), 200
-
-
-@calendar.route('/add/<code>', methods=['PATCH'])
-def add_code(code):
-    pattern = re.compile('^\s+|\s*,\s*|\s+$')
-    codes = [x.upper() for x in pattern.split(code) if x]
-    codes = session['current_schedule'].add_course(codes)
-    session['current_schedule_modified'] = True
-    return jsonify({
-        'codes': codes,
-        'events': session['current_schedule'].get_events(json=True),
-    }), 200
-
-
-@calendar.route('/remove/<code>', methods=['PATCH'])
-def remove_code(code):
-    session['current_schedule'].remove_course(code)
-    session['current_schedule_modified'] = True
-    return jsonify({
-        'events': session['current_schedule'].get_events(json=True),
-    }), 200
-
-
-@calendar.route('/clear', methods=['DELETE'])
-def clear():
-    session['current_schedule'] = schd.Schedule(DEFAULT_PROJECT_ID)
-    session['current_schedule_modified'] = False
-    return 'OK', 200
-
-
-@calendar.route('/compute', methods=['GET'])
-def compute():
-    # TODO: plug in the current_schedule.compute() function and return relevant data
-    import time
-    time.sleep(2)
-    session['current_schedule_modified'] = True
-    return jsonify({}), 200
-
-
-@calendar.route('/filter', methods=["PUT"])
-def apply_filter():
-    schedule = session['current_schedule']
-    for code, filters in request.json.items():
-
-        for type, filters in filters.items():
-            for filter, value in filters.items():
-                if not value:
-                    schedule.add_filter(code, type + ': ' + filter)
-                else:
-                    schedule.remove_filter(code, type + ': ' + filter)
-    return jsonify({
-        'events': session['current_schedule'].get_events(json=True),
     }), 200
 
 
@@ -189,6 +164,22 @@ def download():
         return resp
 
 
+@calendar.route('/schedule', methods=['PUT'])
+def apply_filter():
+    schedule = session['current_schedule']
+    for code, filters in request.json.items():
+
+        for type, filters in filters.items():
+            for filter, value in filters.items():
+                if not value:
+                    schedule.add_filter(code, type + ': ' + filter)
+                else:
+                    schedule.remove_filter(code, type + ': ' + filter)
+    return jsonify({
+        'events': session['current_schedule'].get_events(json=True),
+    }), 200
+
+
 @calendar.route('/schedule/link', methods=['GET'])
 def export():
     mng = app.config['MANAGER']
@@ -202,3 +193,15 @@ def export():
         return jsonify({
             'link': link,
         })
+
+
+@calendar.route('/schedule/best', methods=['GET'])
+def get_best():
+    pass
+
+
+@calendar.route('/schedule/best', methods=['PUT'])
+def compute():
+    session['current_schedule'].compute_best()
+    session['current_schedule_modified'] = True
+    return jsonify({}), 200
