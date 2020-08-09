@@ -273,7 +273,9 @@ class Schedule:
                 for event in events:
                     self.best_schedules[i][event.code][week].remove(event.id)
 
-        del best[max_bests_found:]  # Will delete all redundant schedules
+        # Will delete all redundant schedules
+        del best[max_bests_found:]
+        del self.best_schedules[max_bests_found:]
 
         other = df_other['event'].values.flatten().tolist()
         if other:
