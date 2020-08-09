@@ -34,9 +34,21 @@ main {
         visibility: visible;
         transform: translateX(-100%);
     }
-    .user-status-div {
+    .user-logged-out {
+        position: absolute;
+        bottom: 0;
+        margin-bottom: 1em;
         width: calc(100vw - 32px);
-        margin-top: 1em;
+    }
+    .user-logged-in {
+        position: absolute;
+        bottom: 0;
+        margin-bottom: 1em;
+        width: calc(100vw - 32px);
+        display: flex;
+        flex-direction: column;
+    }
+    .user-logged-in > label {
         margin-bottom: 1em;
     }
 }
