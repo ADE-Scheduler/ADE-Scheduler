@@ -2,6 +2,7 @@
 
 {% block head %}
 <script type="text/javascript" src="{{ url_for('static', filename='dist/help.bundle.js') }}"></script>
+<script type="text/javascript" src="https://platform.linkedin.com/badges/js/profile.js" async defer></script>
 {% endblock %}
 
 
@@ -17,7 +18,6 @@
 
                 <a class="nav-link main-link m-2 mb-0" href="#faq-1" v-on:click.prevent="scroll('faq-1', true)">ADE Scheduler</a>
                 <nav class="nav sub-nav flex-column">
-                    <img class="d-block mx-auto my-4" src={{ url_for('static', filename='img/ade_scheduler_icon.png') }} width="30%">
                     <a class="nav-link ml-4" href="#faq-11" v-on:click.prevent="scroll('faq-11')">{{ _('What is ADE Scheduler ?') }}</a>
                     <a class="nav-link ml-4" href="#faq-12" v-on:click.prevent="scroll('faq-12')">{{ _('Getting started') }}</a>
                     <a class="nav-link ml-4" href="#faq-13" v-on:click.prevent="scroll('faq-13')">{{ _('Computing your optimal schedule') }}</a>
