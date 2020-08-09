@@ -65,6 +65,7 @@ def clear():
 @calendar.route('/data', methods=['GET'])
 def get_data():
     return jsonify({
+        'n_schedules': len(session['current_schedule'].best_schedules),
         'events': session['current_schedule'].get_events(json=True),
         'codes': session['current_schedule'].codes,
     }), 200
@@ -195,13 +196,19 @@ def export():
         })
 
 
-@calendar.route('/schedule/best', methods=['GET'])
-def get_best():
-    pass
+@calendar.route('/schedule/events', methods=['GET'])
+def get_events():
+    schedule_number = int(request.args.get('schedule_number'))
+    return jsonify({
+        'events': session['current_schedule'].get_events(json=True, schedule_number=schedule_number),
+    }), 200
 
 
 @calendar.route('/schedule/best', methods=['PUT'])
 def compute():
     session['current_schedule'].compute_best()
     session['current_schedule_modified'] = True
-    return jsonify({}), 200
+    return jsonify({
+        'n_schedules': len(session['current_schedule'].best_schedules),
+        'events': session['current_schedule'].get_events(json=True, schedule_number=1),
+    }), 200
