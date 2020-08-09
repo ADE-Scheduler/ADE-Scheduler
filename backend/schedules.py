@@ -56,7 +56,7 @@ class Schedule:
         self.label = label
         self.codes = set()
         self.filtered_subcodes = default_dict_any_to_set()
-        self.best_schedules = None
+        self.best_schedules = list()
         self.custom_events = list()
         self.priorities = dict()
         self.color_palette = ['#374955', '#005376', '#00c0ff', '#1f789d', '#4493ba',

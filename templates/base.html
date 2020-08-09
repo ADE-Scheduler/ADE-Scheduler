@@ -61,14 +61,17 @@
                     </ul>
 
                     {% if current_user.is_authenticated %}
-                    <div class="btn-group align-items-end user-status-div">
-                        <button class="btn btn-outline-danger btn-sm" type="button" onclick="window.location.href='/logout'">{{_('Logout')}}</button>
-                    </div>
+                        <div class="align-middle text-white" style="margin-right: 10px">
+                            {{ current_user.email }}
+                        </div>
+                        <div class="btn-group align-items-end user-status-div">
+                            <button class="btn btn-outline-danger btn-sm" type="button" onclick="window.location.href='/logout'">{{_('Logout')}}</button>
+                        </div>
                     {% else %}
-                    <div class="btn-group align-items-end user-status-div" style="min-width: 170px">
-                        <button class="btn btn-outline-light btn-sm w-50" type="button" onclick="window.location.href='/login'">{{_('Login')}}</button>
-                        <button class="btn btn-outline-light btn-sm w-50" type="button" onclick="window.location.href='/register'">{{_('Register')}}</button>
-                    </div>
+                        <div class="btn-group align-items-end user-status-div" style="min-width: 170px">
+                            <button class="btn btn-outline-light btn-sm w-50" type="button" onclick="window.location.href='/login'">{{_('Login')}}</button>
+                            <button class="btn btn-outline-light btn-sm w-50" type="button" onclick="window.location.href='/register'">{{_('Register')}}</button>
+                        </div>
                     {% endif %}
                 </div>
             </nav>

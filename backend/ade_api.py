@@ -438,11 +438,6 @@ def response_to_courses(activities_response: requests.Response) -> List[Course]:
             rooms = event.xpath('.//eventParticipant[@category="classroom"]')
             classrooms = [room_to_classroom(room) for room in rooms]
 
-            event_classroom = classrooms
-            event_address = 'JEROM FIX UR SHIT' #backend.classrooms.merge_classrooms(classrooms)
-                # TODO: This sucks @Jerome
-
-            xy = event.xpath('.//eventParticipant[@category="instructor"]')
             instructor_names = event.xpath('.//eventParticipant[@category="instructor"]/@name')
             instructor_emails = event.xpath('.//eventParticipant[@category="instructor"]/@id')  # TODO: email ?
             event_instructor = professors.merge_professors(professors.Professor(name, email)

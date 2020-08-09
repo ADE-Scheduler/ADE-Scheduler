@@ -14,6 +14,12 @@ fsqla.FsModels.set_db_info(db)
 # TODO: @Louis faut vérifier que tout marche bien et puis bien commenter la docstring :)
 
 
+class LevelAccessDenied(Exception):
+
+    def __str__(self):
+        return 'The level access you used is not permitted for this function.'
+
+
 class ScheduleDoNotMatchError(Exception):
     """
     Exception that will occur if a user tries to update a schedule's data with a non-matching ID.
@@ -29,19 +35,55 @@ class Role(db.Model, fsqla.FsRoleMixin):
 class User(db.Model, fsqla.FsUserMixin):
     schedules = db.relationship('Schedule', secondary='property')
 
+    def __eq__(self, other):
+        return self.id == other.id
+
     def add_schedule(self, schedule, level=OWNER_LEVEL):
         if schedule not in self.schedules:
+            print('User', self, 'added', schedule, 'with level', level)
             property = Property(user_id=self.id, schedule_id=schedule.id, level=level)
             self.property.append(property)
             self.schedules.append(schedule)
             db.session.commit()
 
-    def remove_schedule(self, schedule):
+    def remove_schedule(self, schedule: 'Schedule'):
+        """
+        Removes a schedule from the schedules list.
+        If user owns this schedule, deletes the schedule for all users.
+
+        :param schedule: the schedule
+        :type schedule: Schedule
+        """
         if schedule in self.schedules:
+
+            property = Property.query.filter(Property.schedule_id == schedule.id, Property.user_id == self.id).first()
+
+            level = property.level
+
+            print('Deleting', schedule, 'for', self)
+
+            print('level', level)
+
+            if level == OWNER_LEVEL and False:
+                for user in schedule.users:
+                    print(user, self)
+                    print(user.id, self.id)
+                    if user != self:
+                        print('Also deleting for', user)
+                        user.remove_schedule(schedule)
+
+            print(self.schedules)
+            print(User.schedules)
+
             self.schedules.remove(schedule)
+            #self.property.remove(property)
             db.session.commit()
 
     def share_schedule_with_emails(self, schedule, *emails: str, level=EDITOR_LEVEL):
+
+        if level == OWNER_LEVEL:
+            raise LevelAccessDenied
+
         emails = [email for email in emails if email != self.email]  # You should not add yourself as editor or viewer
         users = User.query.filter(User.email.in_(emails)).all()
 
@@ -50,7 +92,10 @@ class User(db.Model, fsqla.FsUserMixin):
 
     def get_schedule(self, id=None, level=None):
 
-        print(User.query.filter(User.email.in_(['jeertmans@icloud.com', 'xhexylus@gmail.com'])).all())
+        for schedule in self.schedules:
+            print('Shared schedule', schedule, 'with level', EDITOR_LEVEL)
+
+            self.share_schedule_with_emails(schedule, 'jeertmans@icloud.com', level=EDITOR_LEVEL)
 
         if id is not None:          # Return the schedule matching the requested ID (if any)
             for schedule in self.schedules:
