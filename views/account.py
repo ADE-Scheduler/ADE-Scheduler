@@ -7,7 +7,6 @@ from flask_security import login_required, current_user
 from flask_babelex import _
 
 import backend.schedules as schd
-from backend.ade_api import DEFAULT_PROJECT_ID
 
 
 class AccountEncoder(json.JSONEncoder):
@@ -47,7 +46,8 @@ account.json_encoder = AccountEncoder
 @account.before_request
 def before_account_request():
     if not session.get('current_schedule'):
-        session['current_schedule'] = schd.Schedule(DEFAULT_PROJECT_ID)
+        mng = app.config['MANAGER']
+        session['current_schedule'] = schd.Schedule(mng.get_default_project_id())
         session['current_schedule_modified'] = False
 
 
@@ -117,7 +117,8 @@ def delete_schedule(id):
         current_user.remove_schedule(schedule)
 
     if id is session['current_schedule'].id or id is -1:
-        session['current_schedule'] = schd.Schedule(DEFAULT_PROJECT_ID)
+        mng = app.config['MANAGER']
+        session['current_schedule'] = schd.Schedule(mng.get_default_project_id())
         session['current_schedule_modified'] = True
 
     return jsonify({

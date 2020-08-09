@@ -32,6 +32,7 @@ class Manager:
     :param database: the database
     :type database: md.SQLAlchemy
     """
+
     def __init__(self, client: ade.Client, server: srv.Server, database: md.SQLAlchemy):
 
         def run_server():
@@ -61,7 +62,7 @@ class Manager:
             self.client = client
             self.database = database
 
-    def get_courses(self, *codes: str, project_id: SupportsInt = ade.DEFAULT_PROJECT_ID) -> List[crs.Course]:
+    def get_courses(self, *codes: str, project_id: SupportsInt = None) -> List[crs.Course]:
         """
         Returns the courses with given codes as a list.
 
@@ -72,6 +73,9 @@ class Manager:
         :return: the list of courses
         :rtype: List[crs.Course]
         """
+        if project_id is None:
+            project_id = self.get_default_project_id()
+
         # Fetch from the server
         prefix = f'[project_id={project_id}]'
         courses, codes_not_found = self.server.get_multiple_values(*codes, prefix=prefix)
@@ -104,7 +108,7 @@ class Manager:
             resources = ade.response_to_resources(self.client.get_resources(value))
             self.server.set_value(key, resources, expire_in={'hours': 25}, hmap=True)
 
-    def get_resource_ids(self, *codes: str, project_id: SupportsInt = ade.DEFAULT_PROJECT_ID) -> Iterator[str]:
+    def get_resource_ids(self, *codes: str, project_id: SupportsInt = None) -> Iterator[str]:
         """
         Returns the resource ids of each code.
 
@@ -115,6 +119,9 @@ class Manager:
         :return: the resource ids
         :rtype: Iterator[str]
         """
+        if project_id is None:
+            project_id = self.get_default_project_id()
+
         key = f'[RESOURCE_IDs,project_id={project_id}]'
         if not self.server.exists(key):
             self.update_resource_ids()
@@ -166,6 +173,15 @@ class Manager:
         key = f'[PROJECT_IDs]'
         project_ids = ade.response_to_project_ids(self.client.get_project_ids())
         self.server.set_value(key, project_ids, expire_in={'hours': 25}, hmap=True)
+
+    def get_default_project_id(self):
+        """
+        Returns the default project id.
+
+        :return: the default project id
+        :rtype: str
+        """
+        return self.get_project_ids()[-1]['id']
 
     def save_schedule(self, user: md.User, schedule: schd.Schedule):
         """

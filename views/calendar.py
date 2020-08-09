@@ -9,7 +9,6 @@ from flask_security import current_user
 
 import backend.schedules as schd
 import backend.events as evt
-from backend.ade_api import DEFAULT_PROJECT_ID
 
 
 class CalendarEncoder(json.JSONEncoder):
@@ -46,7 +45,8 @@ calendar.json_encoder = CalendarEncoder
 @calendar.before_request
 def before_calendar_request():
     if not session.get('current_schedule'):
-        session['current_schedule'] = schd.Schedule(DEFAULT_PROJECT_ID)
+        mng = app.config['MANAGER']
+        session['current_schedule'] = schd.Schedule(mng.get_default_project_id())
         session['current_schedule_modified'] = False
 
 
@@ -57,7 +57,8 @@ def index():
 
 @calendar.route('/', methods=['DELETE'])
 def clear():
-    session['current_schedule'] = schd.Schedule(DEFAULT_PROJECT_ID)
+    mng = app.config['MANAGER']
+    session['current_schedule'] = schd.Schedule(mng.get_default_project_id())
     session['current_schedule_modified'] = False
     return 'OK', 200
 

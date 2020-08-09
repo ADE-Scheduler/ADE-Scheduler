@@ -17,13 +17,13 @@ class ExpiredTokenError(Exception):
     """
     Exception that will occur if a token is expired.
     """
+
     def __str__(self):
         return 'The token you were using is now expired! Renew the token to proceed normally.'
 
 
 ClientCredentials = Dict[str, Union[str, List[int]]]
 Request = Union[str, int]
-DEFAULT_PROJECT_ID = 9
 
 
 class DummyClient:
@@ -40,6 +40,7 @@ class DummyClient:
     >>> credentials = credentials.get_credentials(credentials.ADE_API_CREDENTIALS)
     >>> client = Client(credentials)
     """
+
     def __init__(self, credentials: ClientCredentials):
         raise NotImplementedError
 
@@ -143,6 +144,7 @@ class Client(DummyClient):
     A client subclasses the DummyClient abstract class and implements access to ADE API using correct credentials.
     If you do not own such credentials, please use :func:`FakeClient`.
     """
+
     def __init__(self, credentials: ClientCredentials):
         self.credentials = credentials
         self.token = None
