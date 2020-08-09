@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
             currentProjectId: 0,
             codes: [],
             n_schedules: 0,
+            selected_schedule: 0,
             computing: true,
             error: false,
             saveSuccess: false,
@@ -127,7 +128,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 }
             },
-            url: null,
+            exportInfo: {
+                url: null,
+                subscriptionType: 0,
+            },
         },
         delimiters: ['[[',']]'],
 
@@ -161,6 +165,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(resp => {
                     this.calendarOptions.events = [];
                     this.n_schedules = 0;
+                    this.selected_schedule = 0;
                     this.codes = [];
                 })
                 .catch(err => {
@@ -188,25 +193,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             },
             getLink: function() {
-                if (!this.url) {
-                    this.computing = true;
-                    axios({
-                        method: 'GET',
-                        url: Flask.url_for('calendar.export'),
-                    })
-                    .then(resp => {
-                        this.url = Flask.url_for('calendar.download') + '?link=' + resp.data.link;
-                        console.log(this.url);
-                    })
-                    .catch(err => {
-                        this.error = true;
-                    })
-                    .then(() => {
-                        this.computing = false;
-                    });
-                } else {
-                    console.log(this.url);
-                }
+                this.computing = true;
+                axios({
+                    method: 'GET',
+                    url: Flask.url_for('calendar.export'),
+                })
+                .then(resp => {
+                    this.exportInfo.url = Flask.url_for('calendar.download') + '?link=' + resp.data.link;
+                    exportModal.show();
+                })
+                .catch(err => {
+                    this.error = true;
+                })
+                .then(() => {
+                    this.computing = false;
+                });
             },
             save: function() {
                 this.computing = true;
@@ -410,6 +411,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(resp => {
                     this.calendarOptions.events = resp.data.events;
+                    this.selected_schedule = schedule_number;
                 })
                 .catch(err => {
                     this.error = true;
@@ -433,11 +435,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(() => {
                     this.computing = false;
                 });
+            },
+            copyToClipboard: function(id) {
+                let copyText = document.getElementById(id);
+                copyText.select();
+                copyText.setSelectionRange(0, 99999);   // for mobile
+                copyText.classList.add('is-valid');
+                document.execCommand('copy');
             }
         },
         computed: {
             calendarOpacity: function() {
                 return {'opacity': this.computing ? '0.2':'1'}
+            },
+            subscriptionLink: function () {
+                return this.exportInfo.url + '&choice=' + this.exportInfo.subscriptionType;
+            },
+            shareLink: function () {
+                return this.exportInfo.url + '&a_random_parameter=yay!';
             },
         },
         created:  function () {
@@ -453,6 +468,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     var addEventModal = new Modal(document.getElementById('addEventModal'));
     var eventModal = new Modal(document.getElementById('eventModal'));
+    var exportModal = new Modal(document.getElementById('exportModal'));
     var courseModal = new Modal(document.getElementById('courseModal'));
     var codeMenu = new Collapse(document.getElementById('sidebarMenu'), {
         toggle: false,

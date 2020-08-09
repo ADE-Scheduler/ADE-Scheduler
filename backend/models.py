@@ -24,6 +24,7 @@ class ScheduleDoNotMatchError(Exception):
     """
     Exception that will occur if a user tries to update a schedule's data with a non-matching ID.
     """
+
     def __str__(self):
         return 'The schedule ID does not match the given data\'s ID'
 
@@ -55,28 +56,7 @@ class User(db.Model, fsqla.FsUserMixin):
         :type schedule: Schedule
         """
         if schedule in self.schedules:
-
-            property = Property.query.filter(Property.schedule_id == schedule.id, Property.user_id == self.id).first()
-
-            level = property.level
-
-            print('Deleting', schedule, 'for', self)
-
-            print('level', level)
-
-            if level == OWNER_LEVEL and False:
-                for user in schedule.users:
-                    print(user, self)
-                    print(user.id, self.id)
-                    if user != self:
-                        print('Also deleting for', user)
-                        user.remove_schedule(schedule)
-
-            print(self.schedules)
-            print(User.schedules)
-
             self.schedules.remove(schedule)
-            #self.property.remove(property)
             db.session.commit()
 
     def share_schedule_with_emails(self, schedule, *emails: str, level=EDITOR_LEVEL):
@@ -91,12 +71,6 @@ class User(db.Model, fsqla.FsUserMixin):
             user.add_schedule(schedule, level=level)
 
     def get_schedule(self, id=None, level=None):
-
-        for schedule in self.schedules:
-            print('Shared schedule', schedule, 'with level', EDITOR_LEVEL)
-
-            self.share_schedule_with_emails(schedule, 'jeertmans@icloud.com', level=EDITOR_LEVEL)
-
         if id is not None:          # Return the schedule matching the requested ID (if any)
             for schedule in self.schedules:
                 if schedule.id == id:

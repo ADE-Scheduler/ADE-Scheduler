@@ -80,10 +80,6 @@
     -webkit-overflow-scrolling: touch;
 }
 
-.nav-scroller > nav > .active {
-    display: none;
-}
-
 .container-fluid {
     padding-top: 45px;
 }
