@@ -12,13 +12,19 @@
         <script type="text/javascript" src="{{ url_for('static', filename='dist/welcome.bundle.js') }}"></script>
     </head>
 
-    <body>
-        <h1>Bienvenue sur notre superbe site ADE-Scheduler 2.0 ! </h1>
-        <h2>Cette magnifique page a été l'une des uniques contributions de Louis. Appréciez sa qualité à sa juste valeur.</h2>
-        <p>Sinon, pour voir du beau boulot, cliquez sur ce (magnifique) lien:</p>
-        <a href="/calendar">MyLink</a>
+    <body class="bg-dark">
+        <div class="container-fluid text-light">
+            <img class="d-block mx-auto my-4" src={{ url_for('static', filename='img/ade_scheduler_icon.png') }} width="10%">
 
-        <button class="btn btn-outline-success">Bootstrap is here !</button>
+            <h1>Bienvenue sur notre superbe site ADE-Scheduler 2.0 ! </h1>
+            <h2>Cette magnifique page a été l'une des uniques contributions de Louis. Appréciez sa qualité à sa juste valeur.</h2>
+            <p>Sinon, pour voir du beau boulot, cliquez sur ce (magnifique) lien:</p>
+            <a href="/calendar">MyLink</a>
+
+            <button class="btn btn-outline-success">Bootstrap is here !</button>
+        </div>
+
+
     </body>
 
 </html>
