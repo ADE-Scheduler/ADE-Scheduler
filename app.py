@@ -3,10 +3,11 @@ import os
 import traceback
 from datetime import timedelta
 from jsmin import jsmin
+from ics import Calendar
 
 # Flask imports
 from werkzeug.exceptions import InternalServerError
-from flask import Flask, session, request, redirect, url_for, render_template
+from flask import Flask, session, request, redirect, url_for, render_template, make_response
 from flask_session import Session
 from flask_security import Security, SQLAlchemyUserDatastore
 from flask_login import user_logged_out
@@ -23,6 +24,7 @@ import backend.servers as srv
 import backend.ade_api as ade
 import backend.manager as mng
 import backend.schedules as schd
+import backend.events as evt
 
 # Views imports
 from views.calendar import calendar
@@ -124,6 +126,25 @@ def welcome():
     else:
         session['previous_user'] = True
         return render_template('welcome.html')
+
+
+# Alert v1 users they need to update their schedule
+@app.route('/getcalendar/<link>', methods=['GET'])
+def update_notification(link):
+    event = evt.RecurringCustomEvent(**{
+        'name': 'There is a new ADE Scheduler version -- go check it now !',
+        'location': 'https://ade-scheduler.info.ucl.ac.be',
+        'description': 'The new version is GREAT !',
+        'begin': '2020-01-01 08:00',
+        'end': '2020-01-01 18:00',
+        'freq': [0, 1, 2, 3, 4, 5, 6],
+        'end_recurrence': '2021-12-31 18:00',
+    })
+    calendar = Calendar(events=[event])
+    resp = make_response(str(calendar))
+    resp.mimetype = 'text/calendar'
+    resp.headers['Content-Disposition'] = 'attachment; filename=calendar.ics'
+    return resp
 
 
 # Error handlers
