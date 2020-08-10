@@ -344,16 +344,16 @@
                     </button>
                 </div>
                 <div class="spinner-border text-primary spinner-compute" v-show="computing"></div>
-                <full-calendar v-bind:options="calendarOptions" v-bind:style="calendarOpacity"/>
+                <full-calendar ref="calendar" v-bind:options="calendarOptions" v-bind:style="calendarOpacity"/>
             </div>
         </div>
     </div>
 
-    <button class="btn btn-dark btn-nav">
-        <svg v-if="navBtn" v-on:click="toggleNav(false)" width="25px" height="25px" viewBox="0 0 16 16" class="bi bi-chevron-bar-contract" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+    <button class="btn btn-dark rounded-pill btn-nav" v-on:click="toggleNav">
+        <svg v-if="navBtn" width="25px" height="25px" viewBox="0 0 16 16" class="bi bi-chevron-bar-contract" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
         </svg>
-        <svg v-else        v-on:click="toggleNav(true)" width="25px" height="25px" viewBox="0 0 16 16" class="bi bi-chevron-bar-expand" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <svg v-else width="25px" height="25px" viewBox="0 0 16 16" class="bi bi-chevron-bar-expand" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
         </svg>
     </button>

@@ -167,7 +167,7 @@ def download():     # TODO: gérer les share link ici
     if schedule is None:
         return _('The schedule you requested does not exist in our database !'), 400
     elif share:
-        md.Schedule(schedule, user=current_user)
+        session['current_schedule'] = md.Schedule(schedule, user=current_user).data
         return redirect(url_for('calendar.index'))
     else:
         resp = make_response(schedule.get_ics_file(schedule_number=choice))

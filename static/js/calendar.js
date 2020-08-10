@@ -81,8 +81,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 headerToolbar: {
                     left: 'prev,next today addEvent',
-                    center: 'title',
-                    right: 'dayGridMonth,timeGridWeek'
+                    center: document.body.clientWidth > 550 ? 'title':'',
+                    right: document.body.clientWidth > 550 ? 'dayGridMonth,timeGridWeek':'dayGridMonth,timeGridDay'
                 },
 
                 // Remember where the user left the calendar
@@ -91,6 +91,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 datesSet: function (arg) {
                     localStorage.setItem("fcInitialView", arg.view.type);
                     localStorage.setItem("fcInitialDate", arg.view.currentStart.getTime());
+                },
+                windowResize: function (arg) {
+                    if (document.body.clientWidth > 550) {
+                        vm.calendarOptions.headerToolbar.right = 'dayGridMonth,timeGridWeek';
+                        vm.calendarOptions.headerToolbar.center = 'title';
+                        if (arg.view.type === 'timeGridDay') { this.changeView('timeGridWeek') }
+                    } else {
+                        vm.calendarOptions.headerToolbar.right = 'dayGridMonth,timeGridDay';
+                        vm.calendarOptions.headerToolbar.center = '';
+                        if (arg.view.type === 'timeGridWeek') { this.changeView('timeGridDay') }
+                    }
                 },
 
                 // Events
@@ -382,10 +393,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.computing = false;
                 });
             },
-            toggleNav: function(show) {
-                this.navBtn = show;
-                if (show)   { codeMenu.show(); }
-                else        { codeMenu.hide(); }
+            toggleNav: function() {
+                this.navBtn = !this.navBtn;
+                if (this.navBtn)    { codeMenu.show(); }
+                else                { codeMenu.hide(); }
             },
             removeEvent: function(event) {
                 this.computing = true;
