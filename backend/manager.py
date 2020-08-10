@@ -194,8 +194,6 @@ class Manager:
         :return: the scheduler, with its id updated...
 
         """
-        # TODO: @Louis tu es sûr que c'est bien 'save_schedule' ? Pcq cela retourne le schedule et ne sauve même pas
-        # dans le cas où c'est déjà présent
         if schedule.id is None:     # this schedule is not yet saved
             schd_db = md.Schedule(data=schedule, user=user)
             schd_db.data.id = schd_db.id

@@ -41,7 +41,6 @@ class User(db.Model, fsqla.FsUserMixin):
 
     def add_schedule(self, schedule, level=OWNER_LEVEL):
         if schedule not in self.schedules:
-            print('User', self, 'added', schedule, 'with level', level)
             property = Property(user_id=self.id, schedule_id=schedule.id, level=level)
             self.property.append(property)
             self.schedules.append(schedule)

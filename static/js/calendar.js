@@ -183,6 +183,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(resp => {
                     this.n_schedules = resp.data.n_schedules;
+                    this.selected_schedule = 1;
                     this.calendarOptions.events = resp.data.events;
                 })
                 .catch(err => {
@@ -452,7 +453,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return this.exportInfo.url + '&choice=' + this.exportInfo.subscriptionType;
             },
             shareLink: function () {
-                return this.exportInfo.url + '&a_random_parameter=yay!';
+                return this.exportInfo.url + '&share=true';
             },
         },
         created:  function () {

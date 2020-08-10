@@ -4,11 +4,12 @@ from datetime import datetime
 from typing import Any
 
 from flask import current_app as app
-from flask import Blueprint, render_template, session, jsonify, request, make_response
+from flask import Blueprint, render_template, session, jsonify, request, make_response, redirect, url_for
 from flask_security import current_user
 
 import backend.schedules as schd
 import backend.events as evt
+import backend.models as md
 
 
 class CalendarEncoder(json.JSONEncoder):
@@ -153,15 +154,21 @@ def save():
 @calendar.route('/schedule', methods=['GET'])
 def download():     # TODO: gérer les share link ici
     link = request.args.get('link')
+    share = bool(request.args.get('share'))
     choice = int(request.args.get('choice')) if request.args.get('choice') else 0
     if link:
         mng = app.config['MANAGER']
         schedule, _ = mng.get_schedule(link)
-    else:
+    elif not share:
         schedule = session['current_schedule']
+    else:
+        schedule = None
 
     if schedule is None:
         return _('The schedule you requested does not exist in our database !'), 400
+    elif share:
+        md.Schedule(schedule, user=current_user)
+        return redirect(url_for('calendar.index'))
     else:
         resp = make_response(schedule.get_ics_file(schedule_number=choice))
         resp.mimetype = 'text/calendar'
