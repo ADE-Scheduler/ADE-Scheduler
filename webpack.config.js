@@ -1,3 +1,5 @@
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
+
 module.exports = {
     mode: 'development',
     entry: {
@@ -21,9 +23,16 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: ['style-loader', 'css-loader']
+            },
+            {
+                test: /\.vue$/,
+                loader: 'vue-loader'
             }
         ]
     },
+    plugins: [
+        new VueLoaderPlugin()
+    ],
     output: {
         path: __dirname + "/static/dist",
         filename: "[name].bundle.js"
