@@ -119,11 +119,10 @@ def when_user_logged_out(sender, user):
 # Main page
 @app.route('/')
 def welcome():
-    # Here check if cookie set
-    cookie_set = False
-    if cookie_set:
+    if session.get('previous_user'):
         return redirect(url_for('calendar.index'))
     else:
+        session['previous_user'] = True
         return render_template('welcome.html')
 
 
