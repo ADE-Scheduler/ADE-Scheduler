@@ -6,7 +6,7 @@ from jsmin import jsmin
 
 # Flask imports
 from werkzeug.exceptions import InternalServerError
-from flask import Flask, session, request, redirect, url_for
+from flask import Flask, session, request, redirect, url_for, render_template
 from flask_session import Session
 from flask_security import Security, SQLAlchemyUserDatastore
 from flask_login import user_logged_out
@@ -119,7 +119,12 @@ def when_user_logged_out(sender, user):
 # Main page
 @app.route('/')
 def welcome():
-    return redirect(url_for('calendar.index'))
+    # Here check if cookie set
+    cookie_set = False
+    if cookie_set:
+        return redirect(url_for('calendar.index'))
+    else:
+        return render_template('welcome.html')
 
 
 # Error handlers
