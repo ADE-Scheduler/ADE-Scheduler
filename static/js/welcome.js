@@ -1,3 +1,2 @@
-function go_to_calendar() {
-    window.location.pathname = '/calendar'
-}
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../css/base.css'
