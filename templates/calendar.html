@@ -344,7 +344,10 @@
                     </button>
                 </div>
                 <div class="spinner-border text-primary spinner-compute" v-show="computing"></div>
-                <full-calendar ref="calendar" v-bind:options="calendarOptions" v-bind:style="calendarOpacity"/>
+                <full-calendar ref="calendar" v-bind:options="calendarOptions" v-bind:style="calendarOpacity"></full-calendar>
+                <small class="text-danger font-weight-light">
+                    {{_('Disclaimer: this software is not an official UCLouvain tool. It has been designed with the purpose to help the EPL students with scheduling. This tool is based on ADE but does not replace standard scheduling rules, nor the instructions given by university officials and teachers as those may vary from one course to another.')}}
+                </small>
             </div>
         </div>
     </div>
