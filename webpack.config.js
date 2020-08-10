@@ -3,6 +3,7 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin')
 module.exports = {
     mode: 'development',
     entry: {
+        welcome: "./static/js/welcome.js",
         calendar: "./static/js/calendar.js",
         account: "./static/js/account.js",
         classroom: "./static/js/classroom.js",

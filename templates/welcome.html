@@ -1,4 +1,24 @@
-<h1>Bienvenue sur notre superbe site ADE-Scheduler 2.0 ! </h1>
-<h2>Cette magnifique page a été l'une des uniques contributions de Louis. Appréciez sa qualité à sa juste valeur.</h2>
-<p>Sinon, pour voir du beau boulot, cliquez sur ce (magnifique) lien:</p>
-<a href="/calendar">MyLink</a>
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="description" content="ADE Scheduler for UCLouvain students">
+
+        <title>ADE Scheduler v2.0</title>
+        <link href="{{ url_for('static', filename='img/favicon.ico') }}" rel="shortcut icon">
+        <script type="text/javascript" src="{{ url_for('static', filename='dist/welcome.bundle.js') }}"></script>
+    </head>
+
+    <body>
+        <h1>Bienvenue sur notre superbe site ADE-Scheduler 2.0 ! </h1>
+        <h2>Cette magnifique page a été l'une des uniques contributions de Louis. Appréciez sa qualité à sa juste valeur.</h2>
+        <p>Sinon, pour voir du beau boulot, cliquez sur ce (magnifique) lien:</p>
+        <a href="/calendar">MyLink</a>
+
+        <button class="btn btn-outline-success">Bootstrap is here !</button>
+    </body>
+
+</html>
