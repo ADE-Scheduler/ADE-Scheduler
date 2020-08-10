@@ -54,7 +54,7 @@ app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USERNAME'] = mail_credentials['username']
 app.config['MAIL_PASSWORD'] = mail_credentials['password']
 app.config['MAIL_DEFAULT_SENDER'] = 'no-reply@' + app.config['MAIL_SERVER']
-app.config['ADMINS'] = ['gillesponcelet98@gmail.com']
+app.config['ADMINS'] = ['gillesponcelet98@gmail.com']   # TODO: mettez vos mails les boys
 app.config['MAIL_MANAGER'] = Mail(app)
 
 # Setup Flask-SQLAlchemy
