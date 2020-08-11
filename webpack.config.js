@@ -50,11 +50,13 @@ const conf = {
         new VueLoaderPlugin(),
         new HtmlWebpackPlugin({
             inject: false,
+            minify: false,
             template: './templates/base.html',
             filename: './html/base.html'
         }),
         new HtmlWebpackPlugin({
             inject: false,
+            minify: false,
             template: './templates/custom_macros.html',
             filename: './html/custom_macros.html'
         }),
@@ -76,6 +78,7 @@ pages.forEach(page => {
     conf.plugins.push(new HtmlWebpackPlugin({
         hash: true,
         inject: false,
+        minify: false,
         template: `./templates/${page}.html`,
         filename: `./html/${page}.html`,
         chunks: [entryName],
