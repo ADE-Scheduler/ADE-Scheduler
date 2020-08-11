@@ -5,15 +5,13 @@
 {% endblock %}
 
 {% block body %}
-<!-- Course details Modal -->
-<div class="container-fluid">
-    <input calss="form-control" type="search" placeholder="Search"/>
+<div class="container-lg d-flex flex-column justify-content-center">
+    <input class="form-control mt-3" type="search" placeholder="Search"/>
 
-    <gmap-map
-        :center="{lat:10, lng:10}"
-        :zoom="7"
-        map-type-id="terrain"
-        style="width: 500px; height: 300px">
-    </gmap-map>
+
+    <l-map style="height: 350px" :zoom="zoom" :center="center">
+        <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+        <l-marker v-for="marker in markers" :lat-lng="marker" ></l-marker>
+    </l-map>
 </div>
 {% endblock %}

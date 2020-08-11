@@ -22,6 +22,7 @@
   "homepage": "https://github.com/SnaKyEyeS/ADE-Scheduler#readme",
   "devDependencies": {
     "css-loader": "^4.2.1",
+    "file-loader": "^6.0.0",
     "style-loader": "^1.2.1",
     "vue-loader": "^15.9.3",
     "vue-template-compiler": "^2.6.11",
@@ -34,9 +35,10 @@
     "@fullcalendar/vue": "^5.1.0",
     "axios": "^0.19.2",
     "bootstrap": "^5.0.0-alpha1",
+    "leaflet": "^1.6.0",
     "popper.js": "^1.16.1",
     "vue": "^2.6.11",
     "vue-swatches": "^2.1.0",
-    "vue2-google-maps": "^0.10.7"
+    "vue2-leaflet": "^2.5.2"
   }
 }
