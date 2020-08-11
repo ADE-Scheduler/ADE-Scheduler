@@ -143,21 +143,16 @@ class RecurringCustomEvent(CustomEvent):
         return r
 
     def __str__(self):
-        # TODO: c'est moche d'écrire comme ça
         days = ['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa']
-
-        s = 'begin:vevent\n'
-        s += 'dtstart:' + arrow_to_iso(self.begin) + '\n'
-        s += 'dtend:' + arrow_to_iso(self.end) + '\n'
-        s += 'RRULE:FREQ=WEEKLY;INTERVAL=1;';
-        s += 'BYDAY=' + ','.join([days[i] for i in self.freq]) + ';'
-        s += 'UNTIL=' + arrow_to_iso(self.end_recurrence) + '\n'
-        if self.description:    s += 'DESCRIPTION:' + self.description + '\n'
-        if self.location:       s += 'LOCATION:' + self.location + '\n'
-        if self.name:           s += 'SUMMARY:' + self.name + '\n'
-        if self.uid:            s += 'UID:' + self.uid + '\n'
-        s += 'END:VEVENT'
-        return s
+        return 'BEGIN:VEVENT\n'\
+               f'DTSTART:{arrow_to_iso(self.begin)}\n'\
+               f'DTEND:{arrow_to_iso(self.end)}\n'\
+               f'RRULE:FREQ=WEEKLY;INTERVAL=1;BYDAY={",".join([days[i] for i in self.freq])};UNTIL={arrow_to_iso(self.end_recurrence)}\n'\
+               f'DESCRIPTION:{self.description if self.description else ""}\n'\
+               f'LOCATION:{self.location if self.location else ""}\n'\
+               f'SUMMARY:{self.name if self.name else ""}\n'\
+               f'UID:{self.uid if self.uid else ""}\n'\
+               'END:VEVENT'
 
 
 class AcademicalEvent(CustomEvent):
