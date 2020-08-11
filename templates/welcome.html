@@ -9,7 +9,10 @@
 
         <title>ADE Scheduler v2.0</title>
         <link href="{{ url_for('static', filename='img/favicon.ico') }}" rel="shortcut icon">
-        <script type="text/javascript" src="{{ url_for('static', filename='dist/welcome.bundle.js') }}"></script>
+
+        <% _.forEach(htmlWebpackPlugin.files.js, function(file) { %>
+        <script type="text/javascript" src="<%= file%>"></script>
+        <%}); %>
     </head>
 
     <body class="bg-dark">

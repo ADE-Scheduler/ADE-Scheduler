@@ -1,12 +1,9 @@
 {% extends "base.html" %}
-
 {% block head %}
-<script type="text/javascript" src="{{ url_for('static', filename='dist/help.bundle.js') }}"></script>
-<script type="text/javascript" src="https://platform.linkedin.com/badges/js/profile.js" async defer></script>
+<% _.forEach(htmlWebpackPlugin.files.js, function(file) { %>
+<script type="text/javascript" src="<%= file%>"></script>
+<%}); %>
 {% endblock %}
-
-
-
 
 {% block body %}
 <div class="container-fluid">

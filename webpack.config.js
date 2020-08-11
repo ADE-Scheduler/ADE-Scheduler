@@ -1,20 +1,23 @@
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
-module.exports = {
+const pages = [
+    'security/change_password',
+    'security/forgot_password',
+    'security/login_user',
+    'security/register_user',
+    'security/reset_password',
+    'account',
+    'calendar',
+    'classroom',
+    'help',
+    'welcome',
+];
+
+const conf = {
     mode: 'development',
-    entry: {
-        welcome: './static/js/welcome.js',
-        calendar: './static/js/calendar.js',
-        account: './static/js/account.js',
-        classroom: './static/js/classroom.js',
-        help: './static/js/help.js',
-        change_password: './static/js/security/change_password.js',
-        forgot_password: './static/js/security/forgot_password.js',
-        login_user: './static/js/security/login_user.js',
-        register_user: './static/js/security/register_user.js',
-        reset_password: './static/js/security/reset_password.js',
-    },
+    entry: {},
     resolve: {
         alias: {
             'vue$': 'vue/dist/vue.esm.js'
@@ -45,13 +48,38 @@ module.exports = {
     },
     plugins: [
         new VueLoaderPlugin(),
+        new HtmlWebpackPlugin({
+            inject: false,
+            template: './templates/base.html',
+            filename: '../../templates/dist/base.html'
+        }),
+        new HtmlWebpackPlugin({
+            inject: false,
+            template: './templates/custom_macros.html',
+            filename: '../../templates/dist/custom_macros.html'
+        }),
         new CleanWebpackPlugin({
             cleanOnceBeforeBuildPatterns: ['**/*', '!jsglue.min.js'],
         }),
     ],
     output: {
-        path: __dirname + '/static/dist',
+        path: __dirname + '/static/dist/',
         filename: '[name].bundle.js',
         publicPath: '/static/dist/'
     },
 }
+
+pages.forEach(page => {
+    let entryPath = `./static/js/${page}.js`
+    let entryName = page.split('/').pop();
+    conf.entry[entryName] = entryPath;
+    conf.plugins.push(new HtmlWebpackPlugin({
+        hash: true,
+        inject: false,
+        template: `./templates/${page}.html`,
+        filename: `../../templates/dist/${page}.html`,
+        chunks: [entryName],
+    }));
+});
+
+module.exports = conf;
