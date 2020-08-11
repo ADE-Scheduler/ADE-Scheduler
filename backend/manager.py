@@ -1,5 +1,5 @@
 from multiprocessing import Process
-from datetime import timedelta
+import pandas as pd
 import time
 from typing import SupportsInt, List, Iterator, Optional, Union, Dict
 
@@ -8,6 +8,7 @@ import backend.ade_api as ade
 import backend.models  as md
 import backend.courses as crs
 import backend.schedules as schd
+import backend.resources as rsrc
 
 
 class ScheduleNotOwnedError(Exception):
@@ -94,6 +95,46 @@ class Manager:
 
         return courses
 
+    def get_resources(self, project_id: SupportsInt = None) -> pd.DataFrame:
+        """
+        Returns the resources.
+
+        :param project_id: the project id
+        :type project_id: SupportsInt
+        :return: the resources
+        :rtype: pd.DataFrame
+        """
+        if project_id is None:
+            project_id = self.get_default_project_id()
+
+        key = f'[RESOURCES,project_id={project_id}]'
+
+        if not self.server.exists(key):
+            self.update_resources()
+
+        return self.server.get_value(key)
+
+    def get_classrooms(self, project_id: SupportsInt = None,
+                       drop_empty: List[str] = [rsrc.INDEX.ADDRESS_1],
+                       search_dict: Dict[str, str] = dict()):
+        resources = self.get_resources(project_id=project_id)
+
+        classrooms_index = resources[rsrc.INDEX.TYPE] == rsrc.TYPES.CLASSROOM
+        classrooms = resources[classrooms_index]
+        classrooms = classrooms.dropna(subset=drop_empty)
+
+        for drop_index in drop_empty:
+            not_empty = classrooms[drop_index] != ''
+            classrooms = classrooms[not_empty]
+
+        for index, search in search_dict.items():
+            contains = classrooms[index].str.contains(search)
+            classrooms = classrooms[contains]
+
+        return classrooms
+
+
+
     def update_resources(self):
         """
         Updates the resources contained in the server for all project ids.
@@ -105,8 +146,11 @@ class Manager:
         for value in self.server.hgetall(key).values():
             value = value.decode()
             key = f'[RESOURCES,project_id={value}]'
+
+            print('Storing resources with', key)
+
             resources = ade.response_to_resources(self.client.get_resources(value))
-            self.server.set_value(key, resources, expire_in={'hours': 25}, hmap=True)
+            self.server.set_value(key, resources, expire_in={'hours': 25})
 
     def get_resource_ids(self, *codes: str, project_id: SupportsInt = None) -> Iterator[str]:
         """

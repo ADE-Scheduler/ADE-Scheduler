@@ -1,12 +1,54 @@
-from enum import Enum, auto
+class INDEX:
+    ID = 'id'
+    TYPE = 'category'
+    NAME = 'name'
+    PATH = 'path'
+    IS_GROUP = 'isGroup'
+    FACILITY_TYPE = 'type'
+    EMAIL = 'email'
+    URL = 'url'
+    CONSUMER = 'consumer'
+    SIZE = 'size'
+    LAST_UPDATE = 'lastUpdate'
+    CREATION = 'creation'
+    LAST_SLOT = 'lastSlot'
+    LAST_DAY = 'lastDay'
+    LAST_WEEK = 'lastWeek'
+    FIRST_SLOT = 'firstSlot'
+    FIST_DAY = 'firstDay'
+    FIRST_WEEK = 'firstWeek'
+    DURATION_IN_MINUTES = 'durationInMinutes'
+    NB_EVENTS_PLACES = 'nbEventsPlaced'
+    AVAILABLE_QUANTITY = 'availableQuantity'
+    NUMBER = 'number'
+    FATHER_NAME = 'fatherName'
+    FATHER_ID = 'fatherId'
+    INFO = 'info'
+    CODE_Z = 'codeZ'
+    CODE_Y = 'codeY'
+    CODE_X = 'codeX'
+    MANAGER = 'manager'
+    JOB_CATEGORY = 'jobCategory'
+    TIMEZONE = 'timezone'
+    FAX = 'fax'
+    PHONE = 'telephone'
+    COUNTRY = 'country'
+    CITY = 'city'
+    STATE = 'state'
+    ZIP_CODE = 'zipCode'
+    ADDRESS_2 = 'address2'
+    ADDRESS_1 = 'address1'
+    CODE = 'code'
+    COLOR = 'color'
+    LEVEL_ACCESS = 'levelAccess'
+    OWNER = 'owner'
 
 
-class Category(Enum):
-    TEACHER = auto()
-    CLASSROOM = auto()
-    COURSE = auto()
-    COURSE_COMBO = auto()
-    UNDEFINED = auto()
+class TYPES:
+    TEACHER = 'instructor'
+    CLASSROOM = 'classroom'
+    COURSE = 'category5'
+    COURSE_COMBO = 'trainee'
 
 
 class Resource:
@@ -32,21 +74,3 @@ class Resource:
     def __eq__(self, other):
         return self.kwargs['name'] == other.kwargs['name']
 
-    def get_category(self) -> Category:
-        """
-        Returns the category of this resource.
-
-        :return: the category
-        :rtype: Category
-        """
-        category = self.kwargs['category']
-        if category == 'category5':
-            return Category.COURSE
-        elif category == 'trainee':
-            return Category.COURSE_COMBO
-        elif category == 'classroom':
-            return Category.CLASSROOM
-        elif category == 'instructor':
-            return Category.TEACHER
-        else:
-            return Category.UNDEFINED
