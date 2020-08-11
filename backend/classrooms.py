@@ -1,4 +1,6 @@
 from typing import Iterable, Union
+import pandas as pd
+import backend.resources as rsrc
 
 
 class Address:
@@ -26,8 +28,9 @@ class Address:
 
     def __str__(self) -> str:
         location = ''
-        if self.address['address2']:
-            location += self.address['address2']
+        # TODO: replace with index...
+        if self.address[rsrc.INDEX.ADDRESS_2]:
+            location += self.address[rsrc.INDEX.ADDRESS_2]
         if self.address['address1']:
             if location and ['address2']:
                 location += ' ' + self.address['address1']
@@ -44,6 +47,17 @@ class Address:
             location += '\n' + self.address['country']
 
         return location
+
+
+def prettify_classrooms(classrooms: pd.DataFrame) -> pd.DataFrame:
+    def __func__(classroom: pd.Series):
+        address = Address(**classroom.to_dict())
+        location = str(address).replace('\n', ', ')
+        name = classroom[rsrc.INDEX.NAME]
+        code = classroom[rsrc.INDEX.CODE]
+        return pd.Series([name, code, location], index=['name', 'code', 'address'])
+
+    return classrooms.apply(__func__, axis=1, result_type='expand')
 
 
 # TODO: fix the fact that activities in Course class cannot be output in a shell (replace('\\', '\\\\') is not defined)

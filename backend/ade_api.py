@@ -304,14 +304,14 @@ def response_to_project_ids(project_ids_response: requests.Response) -> Dict[str
     return {year: int(id) for id, year in zip(ids, years)}
 
 
-def response_to_resources(resources_response) -> Dict[str, Resource]:
+def response_to_resources(resources_response) -> pd.DataFrame:
     """
-    Extracts an API response into an dictionary mapping a resource name to its ids.
+    Extracts an API response into an dataframe mapping a resource name to its ids.
 
     :param resources_response: a response from the API to the resources request
     :type resources_response: requests.Response
     :return: all the resources
-    :rtype: Dict[str, Resources]
+    :rtype: pd.Dataframe
 
     :Example:
 
@@ -320,7 +320,17 @@ def response_to_resources(resources_response) -> Dict[str, Resource]:
     """
     root = response_to_root(resources_response)
 
-    return {resource.attrib['id']: Resource(**resource.attrib) for resource in root.xpath('//resource')}
+    resources = root.xpath('//resource/.')
+
+    index = resources[0].attrib.keys()
+
+    values = [resource.attrib.values() for resource in resources]
+
+    df = pd.DataFrame(data=values, columns=index, dtype=str)
+
+    df.set_index('id', inplace=True)
+
+    return df
 
 
 def response_to_resource_ids(resource_ids_response) -> Dict[str, str]:
