@@ -279,7 +279,7 @@
     <div class="row">
         <!-- Sidebar -->
         <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-            <div class="sidebar-sticky p-3">
+            <div class="sidebar-sticky d-flex flex-column p-3">
                 <a tabindex="0" class="badge rounded-pill bg-info badge-info-custom text-white" data-toggle="popover" data-trigger="focus"
                     data-content="To view more info or adapt your schedule, click on a course code." data-title="Note">
                     <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-info" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -325,6 +325,10 @@
                         {{_('Clear')}}
                     </button>
                 </div>
+
+                <small class="text-center font-weight-light mt-auto">
+                    <a class="text-dark" href="https://github.com/SnaKyEyeS/ADE-Scheduler">{{_('OpenSource software')}}</a> {{_('designed by Gilles Poncelet, Louis Navarre and Jérome Eertmans, students at the Ecole Polytechnique de Louvain.')}}
+                </small>
             </div>
         </nav>
 
@@ -345,9 +349,11 @@
                 </div>
                 <div class="spinner-border text-primary spinner-compute" v-show="computing"></div>
                 <full-calendar ref="calendar" v-bind:options="calendarOptions" v-bind:style="calendarOpacity"></full-calendar>
-                <small class="text-danger font-weight-light">
-                    {{_('Disclaimer: this software is not an official UCLouvain tool. It has been designed with the purpose to help the EPL students with scheduling. This tool is based on ADE but does not replace standard scheduling rules, nor the instructions given by university officials and teachers as those may vary from one course to another.')}}
-                </small>
+                <div class="mt-4">
+                    <small class="text-danger font-weight-light">
+                        {{_('Disclaimer: this software is not an official UCLouvain tool. It has been designed with the purpose to help the EPL students with scheduling. This tool is based on ADE but does not replace standard scheduling rules, nor the instructions given by university officials and teachers as those may vary from one course to another.')}}
+                    </small>
+                </div>
             </div>
         </div>
     </div>
