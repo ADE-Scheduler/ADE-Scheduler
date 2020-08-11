@@ -7,12 +7,40 @@
 
 {% block body %}
 <div class="container-lg d-flex flex-column justify-content-center">
-    <input class="form-control mt-3" type="search" placeholder="Search"/>
-
-
-    <l-map style="height: 350px" :zoom="zoom" :center="center">
+    <l-map class="border border-dark rounded-lg mt-3" style="height: 350px" :zoom="zoom" :center="center">
         <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-        <l-marker v-for="marker in markers" :lat-lng="marker" ></l-marker>
+        <l-marker v-for="classroom in classrooms" :lat-lng="classroom.coords" >
+            <l-tooltip>[[classroom.code]]</l-tooltip>
+        </l-marker>
     </l-map>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Code</th>
+                <th scope="col">Address</th>
+            </tr>
+        </thead>
+        <thead>
+            <tr>
+                <th scope="col">
+                    <input class="form-control" type="search" placeholder="Search name" v-model="nameSearch"/>
+                </th>
+                <th scope="col">
+                    <input class="form-control" type="search" placeholder="Search code" v-model="codeSearch"/>
+                </th>
+                <th scope="col">
+                    <input class="form-control" type="search" placeholder="Search address" v-model="addressSearch"/>
+                </th>
+            </tr>
+        <tbody>
+            <tr v-for="classroom in classrooms">
+                <td>[[classroom.name]]</td>
+                <td>[[classroom.code]]</td>
+                <td>[[classroom.address]]</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 {% endblock %}
