@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     var scrollSpy = new ScrollSpy(document.body, {
         target: '#faq-navigator',
-        offset: 30
+        offset: 70
     });
     var nav = new Collapse(document.getElementById('faq-navigator'), {
         toggle: false,

@@ -9,8 +9,6 @@
 
 
 {% block body %}
-
-<!-- Course details Modal -->
 <div class="container-fluid">
     <div class="row">
         <nav class="col-md-3 col-lg-2 d-md-block bg-light navigator collapse" id="faq-navigator">
@@ -53,133 +51,135 @@
         </nav>
 
         <div class="col-md-9 ml-sm-auto col-lg-10 p-3">
-            <h3 class="my-5" align="center" id="faq-1">ADE Scheduler<img class="d-block mx-auto my-4" src={{ url_for('static', filename='img/ade_scheduler_icon.png') }} width="10%">
-            </h3>
-                <h4 id="faq-11">{{ _('What is ADE Scheduler ?') }}</h4>
-                <hr class="mb-3">
-                <p>
-                    {{ _('ADE Scheduler is a tool aiming to provide the same information as the
-                    <a href="http://horaire.uclouvain.be/direct">UCLouvain\'s official schedule website</a>
-                    but with in a more intuitive way, while also offering many more tools such as subscription links, schedule organization, filtering unwanted events, classroom localization and so on.') }}
-                </p>
+            <div class="container-lg">
+                <h3 class="my-5" align="center" id="faq-1">ADE Scheduler<img class="d-block mx-auto my-4" src={{ url_for('static', filename='img/ade_scheduler_icon.png') }} width="10%">
+                </h3>
+                    <h4 id="faq-11">{{ _('What is ADE Scheduler ?') }}</h4>
+                    <hr class="mb-3">
+                    <p>
+                        {{ _('ADE Scheduler is a tool aiming to provide the same information as the
+                        <a href="http://horaire.uclouvain.be/direct">UCLouvain\'s official schedule website</a>
+                        but with in a more intuitive way, while also offering many more tools such as subscription links, schedule organization, filtering unwanted events, classroom localization and so on.') }}
+                    </p>
 
-                <h4 id="faq-12">{{ _('Getting started') }}</h4>
-                <hr class="mb-3">
-                <p>
-                    {{ _('The main purpose of this website is the calendar page. If you\'re new to this site, make sure to go to
-                    <a href="/calendar">this page</a>
-                    and try out some of the functionalities.\nYou are also encouraged to watch our quick guide hereunder.') }}
-                    TODO: insert video
-                </p>
+                    <h4 id="faq-12">{{ _('Getting started') }}</h4>
+                    <hr class="mb-3">
+                    <p>
+                        {{ _('The main purpose of this website is the calendar page. If you\'re new to this site, make sure to go to
+                        <a href="/calendar">this page</a>
+                        and try out some of the functionalities.\nYou are also encouraged to watch our quick guide hereunder.') }}
+                        TODO: insert video
+                    </p>
 
-                <h4 id="faq-13">{{ _('Computing your optimal schedule') }}</h4>
-                <hr class="mb-3">
-                <p>
-                    {{ _('Sometimes, you may choose between multiple events such as CMs or TPs but only need to attend to one. The tool named compute tries all the possible combinations of picking one event of each type, every week, in order to find the 3 bests schedules which minimize the conflicts. If you want to be free during a given period, make sure to create a custom event to block this period of time. You can also remove some events before calling the compute function, to not take them into account. Because the compute function optimizes week per week, not all weeks must be the same. If you need to need to attend the same events every week, we encourage you to pick the week that suits your need from the results given by the compute tool and then manually select the events in your main schedule.') }}
-                    TODO: insert video
-                </p>
+                    <h4 id="faq-13">{{ _('Computing your optimal schedule') }}</h4>
+                    <hr class="mb-3">
+                    <p>
+                        {{ _('Sometimes, you may choose between multiple events such as CMs or TPs but only need to attend to one. The tool named compute tries all the possible combinations of picking one event of each type, every week, in order to find the 3 bests schedules which minimize the conflicts. If you want to be free during a given period, make sure to create a custom event to block this period of time. You can also remove some events before calling the compute function, to not take them into account. Because the compute function optimizes week per week, not all weeks must be the same. If you need to need to attend the same events every week, we encourage you to pick the week that suits your need from the results given by the compute tool and then manually select the events in your main schedule.') }}
+                        TODO: insert video
+                    </p>
 
-            <h3 class="my-5" id="faq-2">{{ _('Export and load') }}</h3>
-                <h4 id="faq-21">{{ _('What are the possibilities ?') }}</h4>
-                <hr class="mb-3">
-                <p>
-                    {{ _('Once your schedule is complete, you don\'t need to go back to ADE-Scheduler each time you want to check your schedule: you can export it ! Most calendar apps, such as Gmail, support importing external calendar. A short video shows you how to export your calendar to your favorite app.') }}
-                    TODO: insert video
-                </p>
+                <h3 class="my-5" id="faq-2">{{ _('Export and load') }}</h3>
+                    <h4 id="faq-21">{{ _('What are the possibilities ?') }}</h4>
+                    <hr class="mb-3">
+                    <p>
+                        {{ _('Once your schedule is complete, you don\'t need to go back to ADE-Scheduler each time you want to check your schedule: you can export it ! Most calendar apps, such as Gmail, support importing external calendar. A short video shows you how to export your calendar to your favorite app.') }}
+                        TODO: insert video
+                    </p>
 
-                <h4 id="faq-22">{{ _('Download an iCal file') }}</h4>
-                <hr class="mb-3">
-                <p>
-                    {{ _('One solution to export your schedule is to download it as an iCalendar file. Then, this file can easily be imported into your main calendar. The downside of this approach is that any further change in your schedule, from you or from ADE, won\'t be seen in your calendar. If you prefer to have calendar up-to-date, then choose the next option.') }}
-                </p>
+                    <h4 id="faq-22">{{ _('Download an iCal file') }}</h4>
+                    <hr class="mb-3">
+                    <p>
+                        {{ _('One solution to export your schedule is to download it as an iCalendar file. Then, this file can easily be imported into your main calendar. The downside of this approach is that any further change in your schedule, from you or from ADE, won\'t be seen in your calendar. If you prefer to have calendar up-to-date, then choose the next option.') }}
+                    </p>
 
-                <h4 id="faq-23">{{ _('Subscription links') }}</h4>
-                <hr class="mb-3">
-                <p>
-                    {{ _('Maybe the best solution ADE Scheduler can offer is a subscription link. With this link, your calendar app will frequently download the latest events and you will never miss any change in your schedule ! Also, any manual change from your side, such as adding or removing a course, will be taken into account at the very next download of your schedule from you or from your app.') }}
-                </p>
+                    <h4 id="faq-23">{{ _('Subscription links') }}</h4>
+                    <hr class="mb-3">
+                    <p>
+                        {{ _('Maybe the best solution ADE Scheduler can offer is a subscription link. With this link, your calendar app will frequently download the latest events and you will never miss any change in your schedule ! Also, any manual change from your side, such as adding or removing a course, will be taken into account at the very next download of your schedule from you or from your app.') }}
+                    </p>
 
-            <h3 class="my-5" id="faq-3">{{ _('Account & Settings') }}</h3>
-                <h4 id="faq-31">{{  _('What are the possibilities ?') }}</h4>
-                <hr class="mb-3">
-                <p>
-                    {{ _('On this website, no account is required to use most of the tools. Your session is stored during 30 days so you can easily leave this webpage, come back later and see that everything stays unchanged. Nonetheless, if 30 days is not enough or if you want to watch and modify your schedule one more than one device, we suggest you to
-                    <a href="/account">create an account.</a>
-                    With this, you will also be able to save multiple schedules, rename them, choose their color palette and so on.') }}
-                </p>
+                <h3 class="my-5" id="faq-3">{{ _('Account & Settings') }}</h3>
+                    <h4 id="faq-31">{{  _('What are the possibilities ?') }}</h4>
+                    <hr class="mb-3">
+                    <p>
+                        {{ _('On this website, no account is required to use most of the tools. Your session is stored during 30 days so you can easily leave this webpage, come back later and see that everything stays unchanged. Nonetheless, if 30 days is not enough or if you want to watch and modify your schedule one more than one device, we suggest you to
+                        <a href="/account">create an account.</a>
+                        With this, you will also be able to save multiple schedules, rename them, choose their color palette and so on.') }}
+                    </p>
 
-                <h4 id="faq-32">{{ _('Custom events') }}</h4>
-                <hr class="mb-3">
-                <p>
-                    {{ _('Academical life is important but your private life is important too ! This is why you can also add custom events to your schedule. They will appear in your schedule but will also be taken into account when using the compute tools. This tool will try to minimize the conflicts with your custom events.') }}
-                </p>
+                    <h4 id="faq-32">{{ _('Custom events') }}</h4>
+                    <hr class="mb-3">
+                    <p>
+                        {{ _('Academical life is important but your private life is important too ! This is why you can also add custom events to your schedule. They will appear in your schedule but will also be taken into account when using the compute tools. This tool will try to minimize the conflicts with your custom events.') }}
+                    </p>
 
-                <h4 id="faq-33">{{ _('Event selection') }}</h4>
-                <hr class="mb-3">
-                <p>
-                    {{ _('If you click on a course\'s code, on the left of the calendar page, you will see appearing all the events that are contained in this course, per type. You can select or unselect specific events in order to build you schedule the way you want.') }}
-                </p>
+                    <h4 id="faq-33">{{ _('Event selection') }}</h4>
+                    <hr class="mb-3">
+                    <p>
+                        {{ _('If you click on a course\'s code, on the left of the calendar page, you will see appearing all the events that are contained in this course, per type. You can select or unselect specific events in order to build you schedule the way you want.') }}
+                    </p>
 
-                <h4 id="faq-34">{{ _('Accounts') }}</h4>
-                <hr class="mb-3">
-                <p>
-                    {{ _('Creating an account requires two things: an email address and a password. Your email address will only be used for password resetting and any important information we need to share with our users. On the account page, you can choose between your different schedules and also change their information. The academic year parameter will tell our service which year you want the information from (most of the time, only one possibility).') }}
-                </p>
+                    <h4 id="faq-34">{{ _('Accounts') }}</h4>
+                    <hr class="mb-3">
+                    <p>
+                        {{ _('Creating an account requires two things: an email address and a password. Your email address will only be used for password resetting and any important information we need to share with our users. On the account page, you can choose between your different schedules and also change their information. The academic year parameter will tell our service which year you want the information from (most of the time, only one possibility).') }}
+                    </p>
 
-            <h3 class="my-5" id="faq-4">{{ _('About us') }}</h3>
-                <h4 id="faq-41">{{ _('Who are we ?') }}</h4>
-                <hr class="mb-3">
-                <p>
-                    {{ _('We are three students from UCLouvain. By the time we started this project, we were finishing our bachelor\'s degree in engineering (Electricity and Mechanics for Jerome and Gilles; Computer Science and Applied Mathematics for Louis).') }}
-                </p>
+                <h3 class="my-5" id="faq-4">{{ _('About us') }}</h3>
+                    <h4 id="faq-41">{{ _('Who are we ?') }}</h4>
+                    <hr class="mb-3">
+                    <p>
+                        {{ _('We are three students from UCLouvain. By the time we started this project, we were finishing our bachelor\'s degree in engineering (Electricity and Mechanics for Jerome and Gilles; Computer Science and Applied Mathematics for Louis).') }}
+                    </p>
 
-                <h4 class="d-flex align-items-center" id="faq-42">
-                    <a class="link-dark" href="mailto:jerome.eertmans@student.uclouvain.be">
-                        <svg style="font-size:20px; vertical-align: middle;" width="2em" height="1.4em" viewBox="0 0 16 16" class="bi bi-envelope" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path style="vertical-align: middle" fill-rule="evenodd" d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383l-4.758 2.855L15 11.114v-5.73zm-.034 6.878L9.271 8.82 8 9.583 6.728 8.82l-5.694 3.44A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.739zM1 11.114l4.758-2.876L1 5.383v5.73z"/>
-                        </svg>
-                    </a>
-                    Jérome
-                </h4>
-                <hr class="mb-3">
-                <p>
-                    {{ _('Jérome is a student in the Ecole Polytechnique de Louvain, in civil engineering. He completed his bachelor degree in Electricity and Mechanics. He is now pursuing a master degree in Mechatronics.') }}
-                </p>
-                <div class="LI-profile-badge d-flex justify-content-center mb-3"  data-version="v1" data-size="medium" data-locale="en_US" data-type="horizontal" data-theme="light" data-vanity="jérome-eertmans-130ab1130">
-                    <a class="LI-simple-link" href='https://be.linkedin.com/in/j%C3%A9rome-eertmans-130ab1130?trk=profile-badge'>Jérome Eertmans</a>
-                </div>
+                    <h4 class="d-flex align-items-center" id="faq-42">
+                        <a class="link-dark" href="mailto:jerome.eertmans@student.uclouvain.be">
+                            <svg style="font-size:20px; vertical-align: middle;" width="2em" height="1.4em" viewBox="0 0 16 16" class="bi bi-envelope" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path style="vertical-align: middle" fill-rule="evenodd" d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383l-4.758 2.855L15 11.114v-5.73zm-.034 6.878L9.271 8.82 8 9.583 6.728 8.82l-5.694 3.44A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.739zM1 11.114l4.758-2.876L1 5.383v5.73z"/>
+                            </svg>
+                        </a>
+                        Jérome
+                    </h4>
+                    <hr class="mb-3">
+                    <p>
+                        {{ _('Jérome is a student in the Ecole Polytechnique de Louvain, in civil engineering. He completed his bachelor degree in Electricity and Mechanics. He is now pursuing a master degree in Mechatronics.') }}
+                    </p>
+                    <div class="LI-profile-badge d-flex justify-content-center mb-3"  data-version="v1" data-size="medium" data-locale="en_US" data-type="horizontal" data-theme="light" data-vanity="jérome-eertmans-130ab1130">
+                        <a class="LI-simple-link" href='https://be.linkedin.com/in/j%C3%A9rome-eertmans-130ab1130?trk=profile-badge'>Jérome Eertmans</a>
+                    </div>
 
-                <h4 id="faq-43">
-                    <a class="link-dark" href="mailto:louis.navarre@student.uclouvain.be">
-                        <svg style="font-size:20px; vertical-align: middle;" width="2em" height="1.4em" viewBox="0 0 16 16" class="bi bi-envelope" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path style="vertical-align: middle" fill-rule="evenodd" d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383l-4.758 2.855L15 11.114v-5.73zm-.034 6.878L9.271 8.82 8 9.583 6.728 8.82l-5.694 3.44A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.739zM1 11.114l4.758-2.876L1 5.383v5.73z"/>
-                        </svg>
-                    </a>
-                    Louis
-                </h4>
-                <hr class="mb-3">
-                <p>
-                    {{ _('Louis is a student at the Ecole Polytechnique de Louvain, in civil engineering. He completed his bachelor degree in Applied Mathematics and Computing Science. He is now pursuing a master degree in Computing Sciences.') }}
-                </p>
-                <div class="LI-profile-badge d-flex justify-content-center mb-3"  data-version="v1" data-size="medium" data-locale="en_US" data-type="horizontal" data-theme="light" data-vanity="louis-navarre-36b78b143">
-                    <a class="LI-simple-link" href='https://be.linkedin.com/in/louis-navarre-36b78b143?trk=profile-badge'>Louis Navarre</a>
-                </div>
+                    <h4 id="faq-43">
+                        <a class="link-dark" href="mailto:louis.navarre@student.uclouvain.be">
+                            <svg style="font-size:20px; vertical-align: middle;" width="2em" height="1.4em" viewBox="0 0 16 16" class="bi bi-envelope" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path style="vertical-align: middle" fill-rule="evenodd" d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383l-4.758 2.855L15 11.114v-5.73zm-.034 6.878L9.271 8.82 8 9.583 6.728 8.82l-5.694 3.44A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.739zM1 11.114l4.758-2.876L1 5.383v5.73z"/>
+                            </svg>
+                        </a>
+                        Louis
+                    </h4>
+                    <hr class="mb-3">
+                    <p>
+                        {{ _('Louis is a student at the Ecole Polytechnique de Louvain, in civil engineering. He completed his bachelor degree in Applied Mathematics and Computing Science. He is now pursuing a master degree in Computing Sciences.') }}
+                    </p>
+                    <div class="LI-profile-badge d-flex justify-content-center mb-3"  data-version="v1" data-size="medium" data-locale="en_US" data-type="horizontal" data-theme="light" data-vanity="louis-navarre-36b78b143">
+                        <a class="LI-simple-link" href='https://be.linkedin.com/in/louis-navarre-36b78b143?trk=profile-badge'>Louis Navarre</a>
+                    </div>
 
-                <h4 id="faq-44">
-                    <a class="link-dark" href="mailto:gilles.poncelets@student.uclouvain.be">
-                        <svg style="font-size:20px; vertical-align: middle;" width="2em" height="1.4em" viewBox="0 0 16 16" class="bi bi-envelope" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path style="vertical-align: middle" fill-rule="evenodd" d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383l-4.758 2.855L15 11.114v-5.73zm-.034 6.878L9.271 8.82 8 9.583 6.728 8.82l-5.694 3.44A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.739zM1 11.114l4.758-2.876L1 5.383v5.73z"/>
-                        </svg>
-                    </a>
-                    Gilles
-                </h4>
-                <hr class="mb-3">
-                <p>
-                    {{ _('Gilles is a student in the Ecole Polytechnique de Louvain, in civil engineering. He completed his bachelor degree in Electricity and Mechanics. He is now pursuing a master degree in Mechatronics.') }}
-                </p>
-                <div class="LI-profile-badge d-flex justify-content-center mb-3"  data-version="v1" data-size="medium" data-locale="en_US" data-type="horizontal" data-theme="light" data-vanity="gilles-poncelet-020442195">
-                    <a class="LI-simple-link" href='https://be.linkedin.com/in/gilles-poncelet-020442195?trk=profile-badge'>Gilles Poncelet</a>
-                </div>
+                    <h4 id="faq-44">
+                        <a class="link-dark" href="mailto:gilles.poncelets@student.uclouvain.be">
+                            <svg style="font-size:20px; vertical-align: middle;" width="2em" height="1.4em" viewBox="0 0 16 16" class="bi bi-envelope" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path style="vertical-align: middle" fill-rule="evenodd" d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383l-4.758 2.855L15 11.114v-5.73zm-.034 6.878L9.271 8.82 8 9.583 6.728 8.82l-5.694 3.44A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.739zM1 11.114l4.758-2.876L1 5.383v5.73z"/>
+                            </svg>
+                        </a>
+                        Gilles
+                    </h4>
+                    <hr class="mb-3">
+                    <p>
+                        {{ _('Gilles is a student in the Ecole Polytechnique de Louvain, in civil engineering. He completed his bachelor degree in Electricity and Mechanics. He is now pursuing a master degree in Mechatronics.') }}
+                    </p>
+                    <div class="LI-profile-badge d-flex justify-content-center mb-3"  data-version="v1" data-size="medium" data-locale="en_US" data-type="horizontal" data-theme="light" data-vanity="gilles-poncelet-020442195">
+                        <a class="LI-simple-link" href='https://be.linkedin.com/in/gilles-poncelet-020442195?trk=profile-badge'>Gilles Poncelet</a>
+                    </div>
+            </div>
         </div>
     </div>
 
