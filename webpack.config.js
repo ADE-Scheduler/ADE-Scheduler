@@ -51,12 +51,12 @@ const conf = {
         new HtmlWebpackPlugin({
             inject: false,
             template: './templates/base.html',
-            filename: '../../templates/dist/base.html'
+            filename: './html/base.html'
         }),
         new HtmlWebpackPlugin({
             inject: false,
             template: './templates/custom_macros.html',
-            filename: '../../templates/dist/custom_macros.html'
+            filename: './html/custom_macros.html'
         }),
         new CleanWebpackPlugin({
             cleanOnceBeforeBuildPatterns: ['**/*', '!jsglue.min.js'],
@@ -77,7 +77,7 @@ pages.forEach(page => {
         hash: true,
         inject: false,
         template: `./templates/${page}.html`,
-        filename: `../../templates/dist/${page}.html`,
+        filename: `./html/${page}.html`,
         chunks: [entryName],
     }));
 });

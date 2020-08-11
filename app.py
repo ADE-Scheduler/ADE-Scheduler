@@ -33,7 +33,7 @@ from views.classroom import classroom
 from views.help import help
 
 # Setup app
-app = Flask(__name__, template_folder=os.path.abspath('templates/dist'))
+app = Flask(__name__, template_folder=os.path.abspath('static/dist/html'))
 app.register_blueprint(calendar, url_prefix='/calendar')
 app.register_blueprint(account, url_prefix='/account')
 app.register_blueprint(classroom, url_prefix='/classroom')
