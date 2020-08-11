@@ -9,9 +9,9 @@
 <div class="container-lg d-flex flex-column justify-content-center">
     <l-map class="border border-dark rounded-lg mt-3" style="height: 350px" :zoom="zoom" :center="center">
         <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-        <l-marker v-for="classroom in classrooms" :lat-lng="classroom.coords" >
+        <!-- <l-marker v-for="classroom in classrooms" :lat-lng="classroom.coords" >
             <l-tooltip>[[classroom.code]]</l-tooltip>
-        </l-marker>
+        </l-marker> -->
     </l-map>
 
     <table class="table table-striped">

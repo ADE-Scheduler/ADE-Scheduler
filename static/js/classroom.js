@@ -4,6 +4,7 @@ import { LMap, LTileLayer, LMarker, LTooltip } from 'vue2-leaflet';
 import './base.js';
 import '../css/classroom.css';
 import 'leaflet/dist/leaflet.css';
+const axios = require('axios');
 
 
 delete Icon.Default.prototype._getIconUrl;
@@ -41,6 +42,28 @@ document.addEventListener('DOMContentLoaded', function() {
             nameSearch: '',
             codeSearch: '',
             addressSearch: '',
+        },
+
+        methods: {
+            fetchData: function() {
+                // this.computing = true;
+                axios({
+                    method: 'GET',
+                    url: Flask.url_for('classroom.get_data'),
+                })
+                .then(resp => {
+                    this.classrooms = resp.data.classrooms;
+                })
+                .catch(err => {
+                    this.error = true;
+                })
+                .then(() => {
+                    // this.computing = false;
+                });
+            },
+        },
+        created:  function () {
+            this.fetchData();
         },
     });
 });

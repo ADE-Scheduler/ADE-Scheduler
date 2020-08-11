@@ -20,6 +20,7 @@ class Address:
     >>> informations = dict(address1='Rue Rose 42', address2=None, zipCode='1300', city='Wavre', country='Belgique')
     >>> address = Address(**informations)
     """
+
     def __init__(self, **kwargs: str):
         self.address = kwargs
 

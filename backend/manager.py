@@ -133,8 +133,6 @@ class Manager:
 
         return classrooms
 
-
-
     def update_resources(self):
         """
         Updates the resources contained in the server for all project ids.
