@@ -28,24 +28,13 @@ class Address:
         return str(self)
 
     def __str__(self) -> str:
-        location = ''
-        # TODO: replace with index...
-        if self.address[rsrc.INDEX.ADDRESS_2]:
-            location += self.address[rsrc.INDEX.ADDRESS_2]
-        if self.address['address1']:
-            if location and ['address2']:
-                location += ' ' + self.address['address1']
-            else:
-                location += '\n' + self.address['address1']
-        if self.address['zipCode']:
-            location += '\n' + self.address['zipCode']
-        if self.address['city']:
-            if location and self.address['zipCode']:
-                location += ' ' + self.address['city']
-            else:
-                location += '\n' + self.address['city']
-        if self.address['country']:
-            location += '\n' + self.address['country']
+        location = '\n'.join(filter(None,
+                                    [
+                                        self.address[rsrc.INDEX.ADDRESS],
+                                        self.address[rsrc.INDEX.ZIP_CODE],
+                                        self.address[rsrc.INDEX.CITY],
+                                        self.address[rsrc.INDEX.COUNTRY]
+                                    ]))
 
         return location
 

@@ -115,7 +115,7 @@ class Manager:
         return self.server.get_value(key)
 
     def get_classrooms(self, project_id: SupportsInt = None,
-                       drop_empty: List[str] = [rsrc.INDEX.ADDRESS_1],
+                       drop_empty: List[str] = [rsrc.INDEX.ADDRESS],
                        search_dict: Dict[str, str] = dict()):
         resources = self.get_resources(project_id=project_id)
 
