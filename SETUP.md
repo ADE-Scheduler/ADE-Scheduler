@@ -47,6 +47,8 @@ flask shell
 db.create_all()
 ```
 
+Note: si la DB utilisée est une DB MySQL, exécuter la soltuion au lien suivant pour éviter tout souci: https://stackoverflow.com/questions/18897420/data-too-long-for-column-why
+
 ### 2. Accès à l'API de ADE (optionnel)
 
 #### 2.1 Accéder grâce à des identifiants

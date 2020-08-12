@@ -352,7 +352,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     })
                     .then(resp => {
                         this.courseInfo.code = code;
-                        this.courseInfo.title = code + ': ' + resp.data.title;
+                        this.courseInfo.title = resp.data.title;
                         this.courseInfo.summary = resp.data.summary;
 
                         Object.entries(this.courseInfo.summary).forEach(([key, val]) => {

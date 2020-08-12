@@ -103,13 +103,10 @@ def get_info(code):
     courses = mng.get_courses(code, project_id=session['current_schedule'].project_id)
 
     summary = dict()
+    title = dict()
     for course in courses:
         summary[course.code] = course.get_summary()
-
-    if len(courses) == 1:
-        title = courses[-1].name.upper()
-    else:
-        title = 'Course program'
+        title[course.code] = course.name
 
     return jsonify({
         'title': title,

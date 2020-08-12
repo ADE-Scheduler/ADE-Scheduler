@@ -11,13 +11,16 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">[[ courseInfo.title ]]</h5>
+                    <h5 class="modal-title">{{_('Course program')}}</h5>
                     <button type="button" class="close" data-dismiss="modal">
                         <span>&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="row" v-for="(value, name) in courseInfo.summary" v-bind:key="name">
+                        <h6>
+                            [[ `${name}: ${courseInfo.title[name]}` ]]
+                        </h6>
                         <div class="col-md" v-for="(v, n) in value">
                             <div class="card mb-3">
                                 <div class="card-header form-switch">
