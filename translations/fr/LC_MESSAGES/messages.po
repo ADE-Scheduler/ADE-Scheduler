@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-08-08 16:13+0200\n"
+"POT-Creation-Date: 2020-08-12 13:52+0200\n"
 "PO-Revision-Date: 2020-07-24 16:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -18,31 +18,47 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: backend/events.py:126 templates/calendar.html:178
+#: app.py:168
+msgid ""
+"The requested URL was not found on the server. If you entered the URL "
+"manually please check your spelling and try again."
+msgstr ""
+"L'URL demandée n'a pas été trouvée sur le serveur. Si vous avez entré "
+"l'URL manuellement, vérifiez l'orthographe et réessayez."
+
+#: app.py:170
+msgid "The method is not allowed for the requested URL."
+msgstr "La méthode utilisée n'est pas autorisée pour cette URL."
+
+#: app.py:172
+msgid "Unknown error."
+msgstr "Erreur inconnue"
+
+#: backend/events.py:126 templates/calendar.html:229
 msgid "Sunday"
 msgstr "Dimanche"
 
-#: backend/events.py:126 templates/calendar.html:172
+#: backend/events.py:126 templates/calendar.html:223
 msgid "Monday"
 msgstr "Lundi"
 
-#: backend/events.py:126 templates/calendar.html:173
+#: backend/events.py:126 templates/calendar.html:224
 msgid "Tuesday"
 msgstr "Mardi"
 
-#: backend/events.py:126 templates/calendar.html:174
+#: backend/events.py:126 templates/calendar.html:225
 msgid "Wednesday"
 msgstr "Mercredi"
 
-#: backend/events.py:126 templates/calendar.html:175
+#: backend/events.py:126 templates/calendar.html:226
 msgid "Thursday"
 msgstr "Jeudi"
 
-#: backend/events.py:126 templates/calendar.html:176
+#: backend/events.py:126 templates/calendar.html:227
 msgid "Friday"
 msgstr "Vendredi"
 
-#: backend/events.py:126 templates/calendar.html:177
+#: backend/events.py:126 templates/calendar.html:228
 msgid "Saturday"
 msgstr "Samedi"
 
@@ -50,53 +66,66 @@ msgstr "Samedi"
 msgid "New schedule"
 msgstr "Nouvel horaire"
 
-#: templates/account.html:13
+#: templates/account.html:14
 msgid "Warning"
 msgstr "Attention"
 
-#: templates/account.html:19
+#: templates/account.html:20
 msgid "You have unsaved changes in your current schedule. Continue ?"
 msgstr ""
 "Vous avez des changements qui n'ont pas été sauvegardés: voulez-vous "
 "quand même continue ?"
 
-#: templates/account.html:22
+#: templates/account.html:23
 msgid "Cancel"
 msgstr "Annuler"
 
-#: templates/account.html:23
+#: templates/account.html:24
 msgid "Continue"
 msgstr "Continue"
 
-#: templates/account.html:34 templates/calendar.html:282
+#: templates/account.html:35 templates/calendar.html:346
+#: templates/classroom.html:12
 msgid "A problem has occurred. Please contact us if it happens again."
 msgstr ""
 "Oops, il y a eu un problème ! Veuillez nous contacter si ça se reproduit "
 "encore."
 
-#: templates/account.html:54
+#: templates/account.html:55
 msgid "Color palette"
 msgstr "Palette de couleur"
 
-#: templates/account.html:59
+#: templates/account.html:60 templates/calendar.html:314
 msgid "Academic year"
 msgstr "Année académique"
 
-#: templates/account.html:67 templates/calendar.html:228
+#: templates/account.html:68 templates/calendar.html:276
 msgid "Save"
 msgstr "Sauvegarder"
 
-#: templates/account.html:68
+#: templates/account.html:69
 msgid "View"
 msgstr "Afficher"
 
-#: templates/account.html:69
+#: templates/account.html:70
 msgid "Delete"
 msgstr "Supprimer"
 
-#: templates/account.html:77
+#: templates/account.html:78
 msgid "Schedules"
 msgstr "Horaires"
+
+#: templates/account.html:104 templates/calendar.html:331
+#: templates/help.html:45
+msgid "OpenSource software"
+msgstr ""
+
+#: templates/account.html:104 templates/calendar.html:331
+#: templates/help.html:45
+msgid ""
+"designed by Gilles Poncelet, Louis Navarre and Jérome Eertmans, students "
+"at the Ecole Polytechnique de Louvain."
+msgstr ""
 
 #: templates/base.html:34
 msgid "Calendar"
@@ -114,226 +143,234 @@ msgstr "Compte"
 msgid "Help"
 msgstr "Aide"
 
-#: templates/base.html:65
+#: templates/base.html:67
 msgid "Logout"
 msgstr "Déconnexion"
 
-#: templates/base.html:69
+#: templates/base.html:71
 msgid "Login"
 msgstr "Connexion"
 
-#: templates/base.html:70
+#: templates/base.html:72
 msgid "Register"
 msgstr "S'inscrire"
 
-#: templates/calendar.html:36 templates/calendar.html:79
-#: templates/calendar.html:211
+#: templates/calendar.html:37 templates/calendar.html:80
+#: templates/calendar.html:131 templates/calendar.html:262
 msgid "Close"
 msgstr "Fermer"
 
-#: templates/calendar.html:37
+#: templates/calendar.html:38
 msgid "Apply"
 msgstr "Appliquer"
 
-#: templates/calendar.html:56 templates/calendar.html:102
+#: templates/calendar.html:57 templates/calendar.html:153
 msgid "Location"
 msgstr "Localisation"
 
-#: templates/calendar.html:67
+#: templates/calendar.html:68
 msgid "Recurring Event !"
 msgstr "Evènement récurrent !"
 
-#: templates/calendar.html:68 templates/calendar.html:73
+#: templates/calendar.html:69 templates/calendar.html:74
 msgid "Start:"
 msgstr "Début :"
 
-#: templates/calendar.html:69 templates/calendar.html:74
+#: templates/calendar.html:70 templates/calendar.html:75
 msgid "End:"
 msgstr "Fin :"
 
-#: templates/calendar.html:70
+#: templates/calendar.html:71
 msgid "Days of week:"
 msgstr "Jours de la semaine :"
 
-#: templates/calendar.html:80
+#: templates/calendar.html:81
 msgid "Delete Event"
 msgstr "Supprimer l'évènement"
 
-#: templates/calendar.html:91
-msgid "Add an event"
-msgstr "Ajouter un événement"
-
-#: templates/calendar.html:99
-msgid "Name"
-msgstr "Nom"
-
-#: templates/calendar.html:107
-msgid "Description"
-msgstr "Description"
-
-#: templates/calendar.html:117
-msgid "Recurring event"
-msgstr "Événement récurrent"
-
-#: templates/calendar.html:125
-msgid "From"
-msgstr "De"
-
-#: templates/calendar.html:145
-msgid "To"
-msgstr "À"
-
-#: templates/calendar.html:170
-msgid "Days of week"
-msgstr "Jours de la semaine"
-
-#: templates/calendar.html:184
-msgid "Start of recurrence"
-msgstr "Début de récurrence"
-
-#: templates/calendar.html:196
-msgid "End of recurrence"
-msgstr "Fin de récurrence"
-
-#: templates/calendar.html:212
-msgid "Add"
-msgstr "Ajouter"
-
-#: templates/calendar.html:222
-msgid "Main schedule"
-msgstr "Horaire principal"
-
-#: templates/calendar.html:223 templates/calendar.html:224
-#: templates/calendar.html:225
-msgid "Schedule"
-msgstr "Horaire"
-
-#: templates/calendar.html:226
+#: templates/calendar.html:92 templates/calendar.html:274
 msgid "Export"
 msgstr "Exporter"
 
-#: templates/calendar.html:227
+#: templates/calendar.html:98
+msgid "Subscription Link"
+msgstr ""
+
+#: templates/calendar.html:101
+msgid "Main schedule"
+msgstr "Horaire principal"
+
+#: templates/calendar.html:102 templates/calendar.html:273
+msgid "Schedule"
+msgstr "Horaire"
+
+#: templates/calendar.html:108 templates/calendar.html:122
+msgid "Copy to clipboard"
+msgstr ""
+
+#: templates/calendar.html:116
+msgid "Share Link"
+msgstr ""
+
+#: templates/calendar.html:142
+msgid "Add an event"
+msgstr "Ajouter un événement"
+
+#: templates/calendar.html:150
+msgid "Name"
+msgstr "Nom"
+
+#: templates/calendar.html:158
+msgid "Description"
+msgstr "Description"
+
+#: templates/calendar.html:168
+msgid "Recurring event"
+msgstr "Événement récurrent"
+
+#: templates/calendar.html:176
+msgid "From"
+msgstr "De"
+
+#: templates/calendar.html:196
+msgid "To"
+msgstr "À"
+
+#: templates/calendar.html:221
+msgid "Days of week"
+msgstr "Jours de la semaine"
+
+#: templates/calendar.html:235
+msgid "Start of recurrence"
+msgstr "Début de récurrence"
+
+#: templates/calendar.html:247
+msgid "End of recurrence"
+msgstr "Fin de récurrence"
+
+#: templates/calendar.html:263
+msgid "Add"
+msgstr "Ajouter"
+
+#: templates/calendar.html:275
 msgid "Download"
 msgstr "Télécharger"
 
-#: templates/calendar.html:256
+#: templates/calendar.html:307
 msgid "Enter code"
 msgstr "Entrez un code"
 
-#: templates/calendar.html:263
+#: templates/calendar.html:323
 msgid "Compute"
 msgstr "Calculer"
 
-#: templates/calendar.html:266
+#: templates/calendar.html:326
 msgid "Clear"
 msgstr "Effacer"
 
-#: templates/calendar.html:276
+#: templates/calendar.html:340
 msgid "Schedule successfuly saved !"
 msgstr "Horaire sauvegardé avec succès !"
+
+#: templates/calendar.html:355
+msgid ""
+"Disclaimer: this software is not an official UCLouvain tool. It has been "
+"designed with the purpose to help the EPL students with scheduling. This "
+"tool is based on ADE but does not replace standard scheduling rules, nor "
+"the instructions given by university officials and teachers as those may "
+"vary from one course to another."
+msgstr ""
 
 #: templates/custom_macros.html:20 templates/custom_macros.html:33
 msgid "Email address"
 msgstr "Adresse mail"
 
 #: templates/custom_macros.html:21 templates/custom_macros.html:34
-#: templates/security/change_password.html:13
 #: templates/security/change_password.html:14
-#: templates/security/change_password.html:19
-#: templates/security/change_password.html:26
-#: templates/security/register_user.html:21
+#: templates/security/change_password.html:15
+#: templates/security/change_password.html:20
+#: templates/security/change_password.html:27
 #: templates/security/register_user.html:22
-#: templates/security/register_user.html:30
-#: templates/security/reset_password.html:14
-#: templates/security/reset_password.html:21
+#: templates/security/register_user.html:23
+#: templates/security/register_user.html:31
+#: templates/security/reset_password.html:15
+#: templates/security/reset_password.html:22
 msgid "Password"
 msgstr "Mot de passe"
 
-#: templates/help.html:21 templates/help.html:54
+#: templates/help.html:16 templates/help.html:54
 msgid "What is ADE Scheduler ?"
 msgstr "Qu'est-ce qu'ADE Scheduler ?"
 
-#: templates/help.html:22 templates/help.html:62
+#: templates/help.html:17 templates/help.html:62
 msgid "Getting started"
 msgstr "Pour débuter"
 
-#: templates/help.html:23 templates/help.html:71
+#: templates/help.html:18 templates/help.html:71
 msgid "Computing your optimal schedule"
 msgstr "Calculer votre horaire optimal"
 
-#: templates/help.html:26 templates/help.html:78
+#: templates/help.html:21 templates/help.html:78
 msgid "Export and load"
 msgstr "Importer et exporter"
 
-#: templates/help.html:28 templates/help.html:35 templates/help.html:79
+#: templates/help.html:23 templates/help.html:30 templates/help.html:79
 #: templates/help.html:99
 msgid "What are the possibilities ?"
 msgstr "Quelles sont les possibilités ?"
 
-#: templates/help.html:29 templates/help.html:86
+#: templates/help.html:24 templates/help.html:86
 msgid "Download an iCal file"
 msgstr "Télécharger un fichier iCal"
 
-#: templates/help.html:30 templates/help.html:92
+#: templates/help.html:25 templates/help.html:92
 msgid "Subscription links"
 msgstr "Liens d'abonnement"
 
-#: templates/help.html:33 templates/help.html:98
+#: templates/help.html:28 templates/help.html:98
 msgid "Account & Settings"
 msgstr "Compte & Paramètres"
 
-#: templates/help.html:36 templates/help.html:107
+#: templates/help.html:31 templates/help.html:107
 msgid "Custom events"
 msgstr "Evènements personnels"
 
-#: templates/help.html:37 templates/help.html:113
+#: templates/help.html:32 templates/help.html:113
 msgid "Event selection"
 msgstr "Sélection d'un évènement"
 
-#: templates/help.html:38 templates/help.html:119
+#: templates/help.html:33 templates/help.html:119
 msgid "Accounts"
 msgstr "Comptes"
 
-#: templates/help.html:41 templates/help.html:125
+#: templates/help.html:36 templates/help.html:125
 msgid "About us"
 msgstr "A propos de nous"
 
-#: templates/help.html:43 templates/help.html:126
+#: templates/help.html:38 templates/help.html:126
 msgid "Who are we ?"
 msgstr "Qui sommes-nous ?"
 
 #: templates/help.html:57
 msgid ""
 "ADE Scheduler is a tool aiming to provide the same information as the\n"
-"                    <a "
+"                        <a "
 "href=\"http://horaire.uclouvain.be/direct\">UCLouvain's official schedule"
 " website</a>\n"
-"                    but with in a more intuitive way, while also offering"
-" many more tools such as subscription links, schedule organization, "
-"filtering unwanted events, classroom localization and so on."
+"                        but with in a more intuitive way, while also "
+"offering many more tools such as subscription links, schedule "
+"organization, filtering unwanted events, classroom localization and so "
+"on."
 msgstr ""
-"ADE Scheduler est un outil visant à fournir les mêmes informatios que\n"
-"                    <a "
-"href=\"http://horaire.uclouvain.be/direct\">l'outil horaire officiel de "
-"l'UCLouvain website</a>\n"
-"mais d'une manière plus intuitive, tout en offrant de nombreux outils "
-"tels que des liens d'abonnement, une personnalisation de votre horaire, "
-"un filtrage des évènements auxquels vous ne souhaitez pas assister, la "
-"localisation des locaux, etc."
 
 #: templates/help.html:65
 msgid ""
 "The main purpose of this website is the calendar page. If you're new to "
 "this site, make sure to go to\n"
-"                    <a href=\"/calendar\">this page</a>\n"
-"                    and try out some of the functionalities.\n"
+"                        <a href=\"/calendar\">this page</a>\n"
+"                        and try out some of the functionalities.\n"
 "You are also encouraged to watch our quick guide hereunder."
 msgstr ""
-"Le rôle principal de ce site est rempli pas sa page calendrier. Si vous "
-"êtes nouveau sur ce site, assurez-vous d'aller sur                    <a "
-"href=\"/calendar\">cette page</a>\n"
-"et essayez quelques-unes des fonctionnalités.Vous êtes aussi encouragés à"
-" aller regarder le petit guide ci-dessous."
 
 #: templates/help.html:74
 msgid ""
@@ -415,19 +452,10 @@ msgid ""
 "come back later and see that everything stays unchanged. Nonetheless, if "
 "30 days is not enough or if you want to watch and modify your schedule "
 "one more than one device, we suggest you to\n"
-"                    <a href=\"/account\">create an account.</a>\n"
-"                    With this, you will also be able to save multiple "
-"schedules, rename them, choose their color palette and so on."
+"                        <a href=\"/account\">create an account.</a>\n"
+"                        With this, you will also be able to save multiple"
+" schedules, rename them, choose their color palette and so on."
 msgstr ""
-"Sur ce site, aucun compte n'est requis pour la plupart des "
-"fonctionnalités. Votre session est stockée durant 30 jours donc vous "
-"pouvez facilement quitter cette page, revenir plus tard et voir que tout "
-"est resté intact. Cependant, si 30 jours ne sont pas assez ou que vous "
-"souhaitez regarder ou modifier votre horaire sur plusieurs appareils, "
-"nous vous suggèrons de                     <a href=\"/account\">créer un "
-"compte.</a>\n"
-"Grâce à cela, vous serez capable de sauvegarder plusieurs horaires, les "
-"renommer, choisir des palettes de couleurs, etc."
 
 #: templates/help.html:110
 msgid ""
@@ -480,107 +508,104 @@ msgstr ""
 "(électricité et mécanique pour Jérome et Gilles; sciences informatiques "
 "et mathématiques appliquées pour Louis)."
 
-#: templates/help.html:135
+#: templates/help.html:142
 msgid ""
 "Jérome is a student in the Ecole Polytechnique de Louvain, in civil "
 "engineering. He completed his bachelor degree in Electricity and "
 "Mechanics. He is now pursuing a master degree in Mechatronics."
 msgstr ""
-"Jérome est un étudiant à l'Ecole "
-"Polytechnique de Louvain, en ingénieur "
-"civil. Il a un bachelier en "
-"électricité et mécanique. Actuellement, il "
+"Jérome est un étudiant à l'Ecole Polytechnique de Louvain, en ingénieur "
+"civil. Il a un bachelier en électricité et mécanique. Actuellement, il "
 "suit un master en mécatronique."
 
-#: templates/help.html:151
+#: templates/help.html:158
 msgid ""
 "Louis is a student at the Ecole Polytechnique de Louvain, in civil "
 "engineering. He completed his bachelor degree in Applied Mathematics and "
 "Computing Science. He is now pursuing a master degree in Computing "
 "Sciences."
 msgstr ""
-"Louis est un étudiant à l'Ecole "
-"Polytechnique de Louvain, en ingénieur "
-"civil. Il a un bachelier en "
-"sciences informatiques et mathématiques "
-"appliquées. Actuellement, il suit un "
-"master en sciences informatiques."
+"Louis est un étudiant à l'Ecole Polytechnique de Louvain, en ingénieur "
+"civil. Il a un bachelier en sciences informatiques et mathématiques "
+"appliquées. Actuellement, il suit un master en sciences informatiques."
 
-#: templates/help.html:166
+#: templates/help.html:174
 msgid ""
 "Gilles is a student in the Ecole Polytechnique de Louvain, in civil "
 "engineering. He completed his bachelor degree in Electricity and "
 "Mechanics. He is now pursuing a master degree in Mechatronics."
 msgstr ""
-"Gilles est un étudiant à l'Ecole "
-"Polytechnique de Louvain, en ingénieur "
-"civil. Il a un bachelier en "
-"électricité et mécanique. Actuellement, il "
+"Gilles est un étudiant à l'Ecole Polytechnique de Louvain, en ingénieur "
+"civil. Il a un bachelier en électricité et mécanique. Actuellement, il "
 "suit un master en mécatronique."
 
-#: templates/security/change_password.html:18
-#: templates/security/reset_password.html:13
+#: templates/security/change_password.html:19
+#: templates/security/reset_password.html:14
 msgid "New password"
 msgstr "Nouveau mot de passe"
 
-#: templates/security/change_password.html:21
-#: templates/security/register_user.html:24
-#: templates/security/reset_password.html:16
+#: templates/security/change_password.html:22
+#: templates/security/register_user.html:25
+#: templates/security/reset_password.html:17
 msgid "Must be at least 8 characters long."
 msgstr "Il doit y avoir au moins 8 caractères."
 
-#: templates/security/change_password.html:25
+#: templates/security/change_password.html:26
 msgid "Confirm new password"
 msgstr "Confirmez le nouveau mot de passe"
 
-#: templates/security/change_password.html:26
-#: templates/security/register_user.html:30
-#: templates/security/reset_password.html:21
+#: templates/security/change_password.html:27
+#: templates/security/register_user.html:31
+#: templates/security/reset_password.html:22
 msgid "Password do not match"
 msgstr "Les mots de passes ne sont pas les mêmes"
 
-#: templates/security/forgot_password.html:12
+#: templates/security/forgot_password.html:13
 msgid "Enter your email address"
 msgstr "Entrez votre adresse mail"
 
-#: templates/security/forgot_password.html:15
-#: templates/security/register_user.html:16
+#: templates/security/forgot_password.html:16
+#: templates/security/register_user.html:17
 msgid "Invalid email address"
 msgstr "Adresse mail invalide"
 
-#: templates/security/login_user.html:12
+#: templates/security/login_user.html:13
 msgid "Specify an email address and a password"
 msgstr "Specifiez une adresse mail et un mot de passe"
 
-#: templates/security/login_user.html:16
+#: templates/security/login_user.html:17
 msgid "Remember me"
 msgstr "Se souvenir de moi"
 
-#: templates/security/login_user.html:20
+#: templates/security/login_user.html:21
 msgid "Forgot password ?"
 msgstr "Mot de passe oublié ?"
 
-#: templates/security/login_user.html:25
+#: templates/security/login_user.html:26
 msgid "New to ADE Scheduler ?"
 msgstr "Nouveau chez ADE Scheduler ?"
 
-#: templates/security/login_user.html:25
+#: templates/security/login_user.html:26
 msgid "Sign up now !"
 msgstr "S'inscrire maintenant !"
 
-#: templates/security/register_user.html:13
+#: templates/security/register_user.html:14
 msgid "Email"
 msgstr "Email"
 
-#: templates/security/register_user.html:22
-#: templates/security/reset_password.html:14
+#: templates/security/register_user.html:23
+#: templates/security/reset_password.html:15
 msgid "No password specified"
 msgstr "Aucun mot de passe spécifié"
 
-#: templates/security/register_user.html:29
-#: templates/security/reset_password.html:20
+#: templates/security/register_user.html:30
+#: templates/security/reset_password.html:21
 msgid "Confirm password"
 msgstr "Confirmez le mot de passe"
+
+#: views/calendar.py:168
+msgid "The schedule you requested does not exist in our database !"
+msgstr ""
 
 #~ msgid ""
 #~ "ADE Scheduler is a tool aiming to"
@@ -813,4 +838,81 @@ msgstr "Confirmez le mot de passe"
 #~ "                    / <a "
 #~ "href=\"https://www.linkedin.com/in/gilles-"
 #~ "poncelet-020442195/\">LinkedIn</a>"
+
+#~ msgid ""
+#~ "ADE Scheduler is a tool aiming to provide the same information as the\n"
+#~ "                    <a "
+#~ "href=\"http://horaire.uclouvain.be/direct\">UCLouvain's official"
+#~ " schedule website</a>\n"
+#~ "                    but with in a more"
+#~ " intuitive way, while also offering "
+#~ "many more tools such as subscription "
+#~ "links, schedule organization, filtering "
+#~ "unwanted events, classroom localization and"
+#~ " so on."
+#~ msgstr ""
+#~ "ADE Scheduler est un outil visant à fournir les mêmes informatios que\n"
+#~ "                    <a "
+#~ "href=\"http://horaire.uclouvain.be/direct\">l'outil horaire "
+#~ "officiel de l'UCLouvain website</a>\n"
+#~ "mais d'une manière plus intuitive, tout"
+#~ " en offrant de nombreux outils tels"
+#~ " que des liens d'abonnement, une "
+#~ "personnalisation de votre horaire, un "
+#~ "filtrage des évènements auxquels vous ne"
+#~ " souhaitez pas assister, la localisation"
+#~ " des locaux, etc."
+
+#~ msgid ""
+#~ "The main purpose of this website "
+#~ "is the calendar page. If you're "
+#~ "new to this site, make sure to "
+#~ "go to\n"
+#~ "                    <a href=\"/calendar\">this page</a>\n"
+#~ "                    and try out some of the functionalities.\n"
+#~ "You are also encouraged to watch our quick guide hereunder."
+#~ msgstr ""
+#~ "Le rôle principal de ce site est"
+#~ " rempli pas sa page calendrier. Si"
+#~ " vous êtes nouveau sur ce site, "
+#~ "assurez-vous d'aller sur                    <a"
+#~ " href=\"/calendar\">cette page</a>\n"
+#~ "et essayez quelques-unes des "
+#~ "fonctionnalités.Vous êtes aussi encouragés à"
+#~ " aller regarder le petit guide ci-"
+#~ "dessous."
+
+#~ msgid ""
+#~ "On this website, no account is "
+#~ "required to use most of the tools."
+#~ " Your session is stored during 30 "
+#~ "days so you can easily leave this"
+#~ " webpage, come back later and see "
+#~ "that everything stays unchanged. Nonetheless,"
+#~ " if 30 days is not enough or"
+#~ " if you want to watch and "
+#~ "modify your schedule one more than "
+#~ "one device, we suggest you to\n"
+#~ "                    <a href=\"/account\">create an account.</a>\n"
+#~ "                    With this, you will "
+#~ "also be able to save multiple "
+#~ "schedules, rename them, choose their "
+#~ "color palette and so on."
+#~ msgstr ""
+#~ "Sur ce site, aucun compte n'est "
+#~ "requis pour la plupart des "
+#~ "fonctionnalités. Votre session est stockée "
+#~ "durant 30 jours donc vous pouvez "
+#~ "facilement quitter cette page, revenir "
+#~ "plus tard et voir que tout est "
+#~ "resté intact. Cependant, si 30 jours "
+#~ "ne sont pas assez ou que vous "
+#~ "souhaitez regarder ou modifier votre "
+#~ "horaire sur plusieurs appareils, nous "
+#~ "vous suggèrons de                     <a "
+#~ "href=\"/account\">créer un compte.</a>\n"
+#~ "Grâce à cela, vous serez capable "
+#~ "de sauvegarder plusieurs horaires, les "
+#~ "renommer, choisir des palettes de "
+#~ "couleurs, etc."
 

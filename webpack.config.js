@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 // const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const pages = [
+    'errorhandler/404',
     'security/change_password',
     'security/forgot_password',
     'security/login_user',
@@ -30,7 +31,7 @@ const conf = {
                 use: [{
                     loader: 'file-loader',
                     options: {
-                        name: '[name].[contenthash].[ext]',
+                        name: '[contenthash].[ext]',
                         outputPath: 'img',
                         esModule: false
                     }

@@ -158,12 +158,19 @@ def handle_exception(e):
             body=req_info + '\n\n' + error_details,
             recipients=app.config['ADMINS'])
         app.config['MAIL_MANAGER'].send(msg)
-    return 'Oops', 500
+    return _('An error has occurred. Please contact the admins if it keeps happening.'), 500
 
 
-@app.errorhandler(404)
+@app.errorhandler(404)  # URL NOT FOUND
+@app.errorhandler(405)  # METHOD NOT ALLOWED
 def page_not_found(e):
-    return _('This URL does NOT exist... C\'mon !'), 404  # TODO: translation not detected ?
+    if e.code == 404:
+        message = str(e.code) + ' ' + e.name + ': ' + _('The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.')
+    elif e.code == 405:
+        message = str(e.code) + ' ' + e.name + ': ' + _('The method is not allowed for the requested URL.')
+    else:
+        message = _('Unknown error.')
+    return render_template('errorhandler/404.html', message=message)
 
 
 @app.shell_context_processor
