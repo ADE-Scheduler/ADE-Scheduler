@@ -14,7 +14,9 @@ def index():
 @classroom.route('/data', methods=['GET'])
 def get_data():
     mng = app.config['MANAGER']
-    classrooms = mng.get_classrooms()
+    classrooms = mng.get_classrooms(return_json=True)
+    print(classrooms)
+    # TODO: wtf ça marche pas sur la page, pourtant le format est le même non ?
     return jsonify({
-        'classrooms': list(prettify_classrooms(classrooms).to_dict(orient='index').values())
+        'classrooms': classrooms
     }), 200

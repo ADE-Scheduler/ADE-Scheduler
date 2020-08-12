@@ -128,3 +128,5 @@ static/gen/
 node_modules/
 
 dump.rdb
+
+cache/

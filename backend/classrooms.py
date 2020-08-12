@@ -1,6 +1,8 @@
 from typing import Iterable, Union
 import pandas as pd
 import backend.resources as rsrc
+from geopy.geocoders import Nominatim
+import time
 
 
 class Address:
@@ -39,15 +41,62 @@ class Address:
         return location
 
 
-def prettify_classrooms(classrooms: pd.DataFrame) -> pd.DataFrame:
-    def __func__(classroom: pd.Series):
+def prettify_classrooms(classrooms: pd.DataFrame, sleep: float = 0) -> pd.DataFrame:
+    """
+    Returns the classrooms dataframe in a pretty format, useful when need to display.
+
+    The function will request, for every different address, a geo-localisation, so it can take some times.
+    If too many requests are done, Nominatim will not like so prefer to put a time.sleep between each request.
+
+    :param classrooms: the classrooms with fields defined in backend.resources.py
+    """
+
+    geolocator = Nominatim(user_agent='ADE_SCHEDULER')
+    geo_locations = dict()
+
+    def __pretty__(classroom: pd.Series):
         address = Address(**classroom.to_dict())
         location = str(address).replace('\n', ', ')
         name = classroom[rsrc.INDEX.NAME]
         code = classroom[rsrc.INDEX.CODE]
-        return pd.Series([name, code, location], index=['name', 'code', 'address'])
 
-    return classrooms.apply(__func__, axis=1, result_type='expand')
+        response = geolocator.geocode(location, exactly_one=True)
+        if response is not None:
+            latitude = response.latitude
+            longitude = response.longitude
+        else:
+            latitude = None
+            longitude = None
+
+        return pd.Series([name, code, location, latitude, longitude],
+                         index=['name', 'code', 'address', 'latitude', 'longitude'])
+
+    def __geoloc__(classroom: pd.Series):
+        name = classroom['name']
+        code = classroom['code']
+        address = classroom['address']
+
+        latitude, longitude = geo_locations[address]
+
+        return pd.Series([name, code, address, latitude, longitude],
+                         index=['name', 'code', 'address', 'latitude', 'longitude'])
+
+    classrooms = classrooms.apply(__pretty__, axis=1, result_type='expand')
+
+    for address in classrooms['address'].unique():
+        response = geolocator.geocode(address, exactly_one=True)
+
+        if response is not None:
+            latitude = response.latitude
+            longitude = response.longitude
+        else:
+            latitude = None
+            longitude = None
+
+        time.sleep(sleep)
+        geo_locations[address] = (latitude, longitude)
+
+    return classrooms.apply(__geoloc__, axis=1, result_type='expand')
 
 
 # TODO: fix the fact that activities in Course class cannot be output in a shell (replace('\\', '\\\\') is not defined)

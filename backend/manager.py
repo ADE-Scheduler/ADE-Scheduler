@@ -1,6 +1,7 @@
 from multiprocessing import Process
 import pandas as pd
 import time
+import json
 from typing import SupportsInt, List, Iterator, Optional, Union, Dict
 
 import backend.servers as srv
@@ -9,6 +10,7 @@ import backend.models  as md
 import backend.courses as crs
 import backend.schedules as schd
 import backend.resources as rsrc
+import backend.classrooms as clrm
 
 
 class ScheduleNotOwnedError(Exception):
@@ -114,25 +116,6 @@ class Manager:
 
         return self.server.get_value(key)
 
-    def get_classrooms(self, project_id: SupportsInt = None,
-                       drop_empty: List[str] = [rsrc.INDEX.ADDRESS],
-                       search_dict: Dict[str, str] = dict()):
-        resources = self.get_resources(project_id=project_id)
-
-        classrooms_index = resources[rsrc.INDEX.TYPE] == rsrc.TYPES.CLASSROOM
-        classrooms = resources[classrooms_index]
-        classrooms = classrooms.dropna(subset=drop_empty)
-
-        for drop_index in drop_empty:
-            not_empty = classrooms[drop_index] != ''
-            classrooms = classrooms[not_empty]
-
-        for index, search in search_dict.items():
-            contains = classrooms[index].str.contains(search)
-            classrooms = classrooms[contains]
-
-        return classrooms
-
     def update_resources(self):
         """
         Updates the resources contained in the server for all project ids.
@@ -145,10 +128,55 @@ class Manager:
             value = value.decode()
             key = f'[RESOURCES,project_id={value}]'
 
-            print('Storing resources with', key)
-
             resources = ade.response_to_resources(self.client.get_resources(value))
             self.server.set_value(key, resources, expire_in={'hours': 25})
+
+    def get_classrooms(self, project_id: SupportsInt = None,
+                       search_dict: Dict[str, str] = None, return_json: bool = False):
+        if project_id is None:
+            project_id = self.get_default_project_id()
+
+        key = f'[CLASSROOMS,project_id={project_id}]'
+
+        if not self.server.exists(key):
+            self.update_classrooms()
+
+        classrooms = self.server.get_value(key)
+
+        if search_dict is not None:
+            for index, search in search_dict.items():
+                contains = classrooms[index].str.contains(search)
+                classrooms = classrooms[contains]
+
+        if return_json:
+            return list(classrooms.to_dict(orient='index').values())
+        else:
+            return classrooms
+
+    def update_classrooms(self, drop_empty: List[str] = [rsrc.INDEX.ADDRESS]):
+        """
+        Updates the classrooms contained in the server for all project ids.
+        """
+        key = f'[PROJECT_IDs]'
+        if not self.server.exists(key):
+            self.update_project_ids()
+
+        for value in self.server.hgetall(key).values():
+            value = value.decode()
+            key = f'[CLASSROOMS,project_id={value}]'
+
+            resources = self.get_resources(project_id=value)
+
+            classrooms_index = resources[rsrc.INDEX.TYPE] == rsrc.TYPES.CLASSROOM
+            classrooms = resources[classrooms_index]
+
+            for drop_index in drop_empty:
+                not_empty = classrooms[drop_index] != ''
+                classrooms = classrooms[not_empty]
+
+            classrooms = clrm.prettify_classrooms(classrooms)
+
+            self.server.set_value(key, classrooms, expire_in={'days': 30})
 
     def get_resource_ids(self, *codes: str, project_id: SupportsInt = None) -> Iterator[str]:
         """
