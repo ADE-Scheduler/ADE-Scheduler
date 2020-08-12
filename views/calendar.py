@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import Any
 
 from flask import current_app as app
-from flask import Blueprint, render_template, session, jsonify, request, make_response, redirect, url_for
+from flask import Blueprint, render_template, session, jsonify, request, make_response, redirect, url_for, g
 from flask_security import current_user
 
 import backend.schedules as schd
@@ -106,8 +106,10 @@ def get_info(code):
     for course in courses:
         summary[course.code] = course.get_summary()
 
-    if len(courses) is 1:   title = courses[-1].name.upper()
-    else:                   title = 'Course program'
+    if len(courses) == 1:
+        title = courses[-1].name.upper()
+    else:
+        title = 'Course program'
 
     return jsonify({
         'title': title,
@@ -168,6 +170,7 @@ def download():     # TODO: gérer les share link ici
         return _('The schedule you requested does not exist in our database !'), 400
     elif share:
         session['current_schedule'] = md.Schedule(schedule, user=current_user).data
+        g.track_var['schedule share'] = schedule.id
         return redirect(url_for('calendar.index'))
     else:
         resp = make_response(schedule.get_ics_file(schedule_number=choice))
@@ -175,6 +178,7 @@ def download():     # TODO: gérer les share link ici
         resp.headers['Content-Disposition'] = 'attachment; filename=' + \
             ''.join(c for c in schedule.label if c.isalnum() or c in ('_')) \
             .rstrip() + '.ics'
+        g.track_var['schedule download'] = schedule.id
         return resp
 
 

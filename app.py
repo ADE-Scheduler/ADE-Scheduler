@@ -7,7 +7,7 @@ from ics import Calendar
 
 # Flask imports
 from werkzeug.exceptions import InternalServerError
-from flask import Flask, session, request, redirect, url_for, render_template, make_response
+from flask import Flask, session, request, redirect, url_for, render_template, make_response, g
 from flask_session import Session
 from flask_security import Security, SQLAlchemyUserDatastore
 from flask_login import user_logged_out
@@ -16,6 +16,8 @@ from flask_jsglue import JSGlue
 from flask_babelex import Babel, _
 from flask_migrate import Migrate
 from flask_compress import Compress
+from flask_track_usage import TrackUsage
+from flask_track_usage.storage.sql import SQLStorage
 
 # API imports
 import backend.models as md
@@ -73,8 +75,16 @@ app.config['SECURITY_MANAGER'] = Security(app, SQLAlchemyUserDatastore(manager.d
 # Setup Flask-Session
 app.config['SESSION_TYPE'] = 'redis'
 app.config['SESSION_REDIS'] = manager.server
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=30)
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=100)
 app.config['SESSION_MANAGER'] = Session(app)
+
+# Setup Flask-TrackUsage
+app.config['TRACK_USAGE_COOKIE'] = True
+app.config['TRACK_USAGE_USE_FREEGEOIP'] = False
+app.config['TRACK_USAGE_INCLUDE_OR_EXCLUDE_VIEWS'] = 'exclude'
+with app.app_context():
+    storage = SQLStorage(db=manager.database)
+t = TrackUsage(app, storage)
 
 # Allows compression of text assets
 # If the server has automatic compression, comment this line.
@@ -124,6 +134,7 @@ def welcome():
     if session.get('previous_user'):
         return redirect(url_for('calendar.index'))
     else:
+        g.track_var['new user'] = '+1'
         session['previous_user'] = True
         return render_template('welcome.html')
 
@@ -144,6 +155,7 @@ def update_notification(link):
     resp = make_response(str(calendar))
     resp.mimetype = 'text/calendar'
     resp.headers['Content-Disposition'] = 'attachment; filename=calendar.ics'
+    g.track_var['old user link'] = link
     return resp
 
 
@@ -164,12 +176,7 @@ def handle_exception(e):
 @app.errorhandler(404)  # URL NOT FOUND
 @app.errorhandler(405)  # METHOD NOT ALLOWED
 def page_not_found(e):
-    if e.code == 404:
-        message = str(e.code) + ' ' + e.name + ': ' + _('The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.')
-    elif e.code == 405:
-        message = str(e.code) + ' ' + e.name + ': ' + _('The method is not allowed for the requested URL.')
-    else:
-        message = _('Unknown error.')
+    message = _('404 Page not found :(')
     return render_template('errorhandler/404.html', message=message)
 
 
@@ -182,6 +189,7 @@ def make_shell_context():
         'Link': md.Link,
         'User': md.User,
         'mng': app.config['MANAGER'],
+        't': storage,
     }
 
 
