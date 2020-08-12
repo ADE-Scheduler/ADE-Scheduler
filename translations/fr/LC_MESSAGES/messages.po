@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-08-12 13:52+0200\n"
+"POT-Creation-Date: 2020-08-12 22:59+0200\n"
 "PO-Revision-Date: 2020-07-24 16:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -18,47 +18,39 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: app.py:168
-msgid ""
-"The requested URL was not found on the server. If you entered the URL "
-"manually please check your spelling and try again."
+#: app.py:173
+msgid "An error has occurred. Please contact the admins if it keeps happening."
 msgstr ""
-"L'URL demandée n'a pas été trouvée sur le serveur. Si vous avez entré "
-"l'URL manuellement, vérifiez l'orthographe et réessayez."
 
-#: app.py:170
-msgid "The method is not allowed for the requested URL."
-msgstr "La méthode utilisée n'est pas autorisée pour cette URL."
+#: app.py:179
+msgid "404 Page not found :("
+msgstr ""
 
-#: app.py:172
-msgid "Unknown error."
-msgstr "Erreur inconnue"
-
-#: backend/events.py:126 templates/calendar.html:229
+#: backend/events.py:126 templates/calendar.html:232
 msgid "Sunday"
 msgstr "Dimanche"
 
-#: backend/events.py:126 templates/calendar.html:223
+#: backend/events.py:126 templates/calendar.html:226
 msgid "Monday"
 msgstr "Lundi"
 
-#: backend/events.py:126 templates/calendar.html:224
+#: backend/events.py:126 templates/calendar.html:227
 msgid "Tuesday"
 msgstr "Mardi"
 
-#: backend/events.py:126 templates/calendar.html:225
+#: backend/events.py:126 templates/calendar.html:228
 msgid "Wednesday"
 msgstr "Mercredi"
 
-#: backend/events.py:126 templates/calendar.html:226
+#: backend/events.py:126 templates/calendar.html:229
 msgid "Thursday"
 msgstr "Jeudi"
 
-#: backend/events.py:126 templates/calendar.html:227
+#: backend/events.py:126 templates/calendar.html:230
 msgid "Friday"
 msgstr "Vendredi"
 
-#: backend/events.py:126 templates/calendar.html:228
+#: backend/events.py:126 templates/calendar.html:231
 msgid "Saturday"
 msgstr "Samedi"
 
@@ -84,7 +76,7 @@ msgstr "Annuler"
 msgid "Continue"
 msgstr "Continue"
 
-#: templates/account.html:35 templates/calendar.html:346
+#: templates/account.html:35 templates/calendar.html:349
 #: templates/classroom.html:12
 msgid "A problem has occurred. Please contact us if it happens again."
 msgstr ""
@@ -95,11 +87,11 @@ msgstr ""
 msgid "Color palette"
 msgstr "Palette de couleur"
 
-#: templates/account.html:60 templates/calendar.html:314
+#: templates/account.html:60 templates/calendar.html:317
 msgid "Academic year"
 msgstr "Année académique"
 
-#: templates/account.html:68 templates/calendar.html:276
+#: templates/account.html:68 templates/calendar.html:279
 msgid "Save"
 msgstr "Sauvegarder"
 
@@ -115,13 +107,13 @@ msgstr "Supprimer"
 msgid "Schedules"
 msgstr "Horaires"
 
-#: templates/account.html:104 templates/calendar.html:331
-#: templates/help.html:45
+#: templates/account.html:104 templates/calendar.html:334
+#: templates/help.html:46
 msgid "OpenSource software"
 msgstr ""
 
-#: templates/account.html:104 templates/calendar.html:331
-#: templates/help.html:45
+#: templates/account.html:104 templates/calendar.html:334
+#: templates/help.html:46
 msgid ""
 "designed by Gilles Poncelet, Louis Navarre and Jérome Eertmans, students "
 "at the Ecole Polytechnique de Louvain."
@@ -155,124 +147,128 @@ msgstr "Connexion"
 msgid "Register"
 msgstr "S'inscrire"
 
-#: templates/calendar.html:37 templates/calendar.html:80
-#: templates/calendar.html:131 templates/calendar.html:262
+#: templates/calendar.html:14
+msgid "Course program"
+msgstr ""
+
+#: templates/calendar.html:40 templates/calendar.html:83
+#: templates/calendar.html:134 templates/calendar.html:265
 msgid "Close"
 msgstr "Fermer"
 
-#: templates/calendar.html:38
+#: templates/calendar.html:41
 msgid "Apply"
 msgstr "Appliquer"
 
-#: templates/calendar.html:57 templates/calendar.html:153
+#: templates/calendar.html:60 templates/calendar.html:156
 msgid "Location"
 msgstr "Localisation"
 
-#: templates/calendar.html:68
+#: templates/calendar.html:71
 msgid "Recurring Event !"
 msgstr "Evènement récurrent !"
 
-#: templates/calendar.html:69 templates/calendar.html:74
+#: templates/calendar.html:72 templates/calendar.html:77
 msgid "Start:"
 msgstr "Début :"
 
-#: templates/calendar.html:70 templates/calendar.html:75
+#: templates/calendar.html:73 templates/calendar.html:78
 msgid "End:"
 msgstr "Fin :"
 
-#: templates/calendar.html:71
+#: templates/calendar.html:74
 msgid "Days of week:"
 msgstr "Jours de la semaine :"
 
-#: templates/calendar.html:81
+#: templates/calendar.html:84
 msgid "Delete Event"
 msgstr "Supprimer l'évènement"
 
-#: templates/calendar.html:92 templates/calendar.html:274
+#: templates/calendar.html:95 templates/calendar.html:277
 msgid "Export"
 msgstr "Exporter"
 
-#: templates/calendar.html:98
+#: templates/calendar.html:101
 msgid "Subscription Link"
 msgstr ""
 
-#: templates/calendar.html:101
+#: templates/calendar.html:104
 msgid "Main schedule"
 msgstr "Horaire principal"
 
-#: templates/calendar.html:102 templates/calendar.html:273
+#: templates/calendar.html:105 templates/calendar.html:276
 msgid "Schedule"
 msgstr "Horaire"
 
-#: templates/calendar.html:108 templates/calendar.html:122
+#: templates/calendar.html:111 templates/calendar.html:125
 msgid "Copy to clipboard"
 msgstr ""
 
-#: templates/calendar.html:116
+#: templates/calendar.html:119
 msgid "Share Link"
 msgstr ""
 
-#: templates/calendar.html:142
+#: templates/calendar.html:145
 msgid "Add an event"
 msgstr "Ajouter un événement"
 
-#: templates/calendar.html:150
+#: templates/calendar.html:153
 msgid "Name"
 msgstr "Nom"
 
-#: templates/calendar.html:158
+#: templates/calendar.html:161
 msgid "Description"
 msgstr "Description"
 
-#: templates/calendar.html:168
+#: templates/calendar.html:171
 msgid "Recurring event"
 msgstr "Événement récurrent"
 
-#: templates/calendar.html:176
+#: templates/calendar.html:179
 msgid "From"
 msgstr "De"
 
-#: templates/calendar.html:196
+#: templates/calendar.html:199
 msgid "To"
 msgstr "À"
 
-#: templates/calendar.html:221
+#: templates/calendar.html:224
 msgid "Days of week"
 msgstr "Jours de la semaine"
 
-#: templates/calendar.html:235
+#: templates/calendar.html:238
 msgid "Start of recurrence"
 msgstr "Début de récurrence"
 
-#: templates/calendar.html:247
+#: templates/calendar.html:250
 msgid "End of recurrence"
 msgstr "Fin de récurrence"
 
-#: templates/calendar.html:263
+#: templates/calendar.html:266
 msgid "Add"
 msgstr "Ajouter"
 
-#: templates/calendar.html:275
+#: templates/calendar.html:278
 msgid "Download"
 msgstr "Télécharger"
 
-#: templates/calendar.html:307
+#: templates/calendar.html:310
 msgid "Enter code"
 msgstr "Entrez un code"
 
-#: templates/calendar.html:323
+#: templates/calendar.html:326
 msgid "Compute"
 msgstr "Calculer"
 
-#: templates/calendar.html:326
+#: templates/calendar.html:329
 msgid "Clear"
 msgstr "Effacer"
 
-#: templates/calendar.html:340
+#: templates/calendar.html:343
 msgid "Schedule successfuly saved !"
 msgstr "Horaire sauvegardé avec succès !"
 
-#: templates/calendar.html:355
+#: templates/calendar.html:358
 msgid ""
 "Disclaimer: this software is not an official UCLouvain tool. It has been "
 "designed with the purpose to help the EPL students with scheduling. This "
@@ -298,60 +294,60 @@ msgstr "Adresse mail"
 msgid "Password"
 msgstr "Mot de passe"
 
-#: templates/help.html:16 templates/help.html:54
+#: templates/help.html:17 templates/help.html:55
 msgid "What is ADE Scheduler ?"
 msgstr "Qu'est-ce qu'ADE Scheduler ?"
 
-#: templates/help.html:17 templates/help.html:62
+#: templates/help.html:18 templates/help.html:63
 msgid "Getting started"
 msgstr "Pour débuter"
 
-#: templates/help.html:18 templates/help.html:71
+#: templates/help.html:19 templates/help.html:72
 msgid "Computing your optimal schedule"
 msgstr "Calculer votre horaire optimal"
 
-#: templates/help.html:21 templates/help.html:78
+#: templates/help.html:22 templates/help.html:79
 msgid "Export and load"
 msgstr "Importer et exporter"
 
-#: templates/help.html:23 templates/help.html:30 templates/help.html:79
-#: templates/help.html:99
+#: templates/help.html:24 templates/help.html:31 templates/help.html:80
+#: templates/help.html:100
 msgid "What are the possibilities ?"
 msgstr "Quelles sont les possibilités ?"
 
-#: templates/help.html:24 templates/help.html:86
+#: templates/help.html:25 templates/help.html:87
 msgid "Download an iCal file"
 msgstr "Télécharger un fichier iCal"
 
-#: templates/help.html:25 templates/help.html:92
+#: templates/help.html:26 templates/help.html:93
 msgid "Subscription links"
 msgstr "Liens d'abonnement"
 
-#: templates/help.html:28 templates/help.html:98
+#: templates/help.html:29 templates/help.html:99
 msgid "Account & Settings"
 msgstr "Compte & Paramètres"
 
-#: templates/help.html:31 templates/help.html:107
+#: templates/help.html:32 templates/help.html:108
 msgid "Custom events"
 msgstr "Evènements personnels"
 
-#: templates/help.html:32 templates/help.html:113
+#: templates/help.html:33 templates/help.html:114
 msgid "Event selection"
 msgstr "Sélection d'un évènement"
 
-#: templates/help.html:33 templates/help.html:119
+#: templates/help.html:34 templates/help.html:120
 msgid "Accounts"
 msgstr "Comptes"
 
-#: templates/help.html:36 templates/help.html:125
+#: templates/help.html:37 templates/help.html:126
 msgid "About us"
 msgstr "A propos de nous"
 
-#: templates/help.html:38 templates/help.html:126
+#: templates/help.html:39 templates/help.html:127
 msgid "Who are we ?"
 msgstr "Qui sommes-nous ?"
 
-#: templates/help.html:57
+#: templates/help.html:58
 msgid ""
 "ADE Scheduler is a tool aiming to provide the same information as the\n"
 "                        <a "
@@ -363,7 +359,7 @@ msgid ""
 "on."
 msgstr ""
 
-#: templates/help.html:65
+#: templates/help.html:66
 msgid ""
 "The main purpose of this website is the calendar page. If you're new to "
 "this site, make sure to go to\n"
@@ -372,7 +368,7 @@ msgid ""
 "You are also encouraged to watch our quick guide hereunder."
 msgstr ""
 
-#: templates/help.html:74
+#: templates/help.html:75
 msgid ""
 "Sometimes, you may choose between multiple events such as CMs or TPs but "
 "only need to attend to one. The tool named compute tries all the possible"
@@ -400,7 +396,7 @@ msgstr ""
 "choisir, après calcul, la semaine qui vous plait le plus et de "
 "manuellement sélectionner les évènements dans votre horaire principal."
 
-#: templates/help.html:82
+#: templates/help.html:83
 msgid ""
 "Once your schedule is complete, you don't need to go back to ADE-"
 "Scheduler each time you want to check your schedule: you can export it ! "
@@ -413,7 +409,7 @@ msgstr ""
 "d'importer un calendrier externe. Une courte vidéo vous montre comme "
 "exporter votre horaire vers votre application favorite."
 
-#: templates/help.html:89
+#: templates/help.html:90
 msgid ""
 "One solution to export your schedule is to download it as an iCalendar "
 "file. Then, this file can easily be imported into your main calendar. The"
@@ -428,7 +424,7 @@ msgstr ""
 "pris en compte dans votre calendrier. Si vous préférez avoir un "
 "calendrier à jour, choisissez alors la prochaine solution."
 
-#: templates/help.html:95
+#: templates/help.html:96
 msgid ""
 "Maybe the best solution ADE Scheduler can offer is a subscription link. "
 "With this link, your calendar app will frequently download the latest "
@@ -445,7 +441,7 @@ msgstr ""
 "en compte lors de la prochaine mise-à-jour de votre calendrier de la part"
 " de votre application."
 
-#: templates/help.html:102
+#: templates/help.html:103
 msgid ""
 "On this website, no account is required to use most of the tools. Your "
 "session is stored during 30 days so you can easily leave this webpage, "
@@ -457,7 +453,7 @@ msgid ""
 " schedules, rename them, choose their color palette and so on."
 msgstr ""
 
-#: templates/help.html:110
+#: templates/help.html:111
 msgid ""
 "Academical life is important but your private life is important too ! "
 "This is why you can also add custom events to your schedule. They will "
@@ -466,7 +462,7 @@ msgid ""
 " custom events."
 msgstr ""
 
-#: templates/help.html:116
+#: templates/help.html:117
 msgid ""
 "If you click on a course's code, on the left of the calendar page, you "
 "will see appearing all the events that are contained in this course, per "
@@ -478,7 +474,7 @@ msgstr ""
 "type. Vous pouvez (dé-)sélectionner des évènements spécifiques afin de "
 "construire l'horaire qui vous plaît."
 
-#: templates/help.html:122
+#: templates/help.html:123
 msgid ""
 "Creating an account requires two things: an email address and a password."
 " Your email address will only be used for password resetting and any "
@@ -496,7 +492,7 @@ msgstr ""
 "notre service l'année depuis laquelle vous souhaitez obtenir les "
 "évènements (la plupart du temps, seule une année est disponible)."
 
-#: templates/help.html:129
+#: templates/help.html:130
 msgid ""
 "We are three students from UCLouvain. By the time we started this "
 "project, we were finishing our bachelor's degree in engineering "
@@ -508,36 +504,45 @@ msgstr ""
 "(électricité et mécanique pour Jérome et Gilles; sciences informatiques "
 "et mathématiques appliquées pour Louis)."
 
-#: templates/help.html:142
+#: templates/help.html:143
 msgid ""
-"Jérome is a student in the Ecole Polytechnique de Louvain, in civil "
+"Jérome is a student in the Ecole Polytechnique de Louvain, in "
 "engineering. He completed his bachelor degree in Electricity and "
-"Mechanics. He is now pursuing a master degree in Mechatronics."
+"Mechanics. He is now pursuing a master degree in Electromechanical "
+"Engineering."
 msgstr ""
-"Jérome est un étudiant à l'Ecole Polytechnique de Louvain, en ingénieur "
-"civil. Il a un bachelier en électricité et mécanique. Actuellement, il "
-"suit un master en mécatronique."
+"Jérome est un étudiant à l'Ecole "
+"Polytechnique de Louvain, en ingénieur "
+"civil. Il a un bachelier en "
+"électricité et mécanique. Actuellement, il "
+"suit un master en ingénieur civil mécatronique."
 
-#: templates/help.html:158
+#: templates/help.html:159
 msgid ""
-"Louis is a student at the Ecole Polytechnique de Louvain, in civil "
-"engineering. He completed his bachelor degree in Applied Mathematics and "
-"Computing Science. He is now pursuing a master degree in Computing "
-"Sciences."
+"Louis is a student at the Ecole Polytechnique de Louvain, in engineering."
+" He completed his bachelor degree in Applied Mathematics and Computing "
+"Science. He is now pursuing a master degree in Computer Sciences "
+"Engineering."
 msgstr ""
-"Louis est un étudiant à l'Ecole Polytechnique de Louvain, en ingénieur "
-"civil. Il a un bachelier en sciences informatiques et mathématiques "
-"appliquées. Actuellement, il suit un master en sciences informatiques."
+"Louis est un étudiant à l'Ecole "
+"Polytechnique de Louvain, en ingénieur "
+"civil. Il a un bachelier en "
+"sciences informatiques et mathématiques "
+"appliquées. Actuellement, il suit un "
+"master en ingénieur civil informatique."
 
-#: templates/help.html:174
+#: templates/help.html:175
 msgid ""
-"Gilles is a student in the Ecole Polytechnique de Louvain, in civil "
+"Gilles is a student in the Ecole Polytechnique de Louvain, in "
 "engineering. He completed his bachelor degree in Electricity and "
-"Mechanics. He is now pursuing a master degree in Mechatronics."
+"Mechanics. He is now pursuing a master degree in Electromechanical "
+"Engineering."
 msgstr ""
-"Gilles est un étudiant à l'Ecole Polytechnique de Louvain, en ingénieur "
-"civil. Il a un bachelier en électricité et mécanique. Actuellement, il "
-"suit un master en mécatronique."
+"Gilles est un étudiant à l'Ecole "
+"Polytechnique de Louvain, en ingénieur "
+"civil. Il a un bachelier en "
+"électricité et mécanique. Actuellement, il "
+"suit un master en ingénieur civil mécatronique."
 
 #: templates/security/change_password.html:19
 #: templates/security/reset_password.html:14
@@ -603,7 +608,7 @@ msgstr "Aucun mot de passe spécifié"
 msgid "Confirm password"
 msgstr "Confirmez le mot de passe"
 
-#: views/calendar.py:168
+#: views/calendar.py:167
 msgid "The schedule you requested does not exist in our database !"
 msgstr ""
 
@@ -915,4 +920,65 @@ msgstr ""
 #~ "de sauvegarder plusieurs horaires, les "
 #~ "renommer, choisir des palettes de "
 #~ "couleurs, etc."
+
+#~ msgid ""
+#~ "The requested URL was not found on"
+#~ " the server. If you entered the "
+#~ "URL manually please check your spelling"
+#~ " and try again."
+#~ msgstr ""
+#~ "L'URL demandée n'a pas été trouvée "
+#~ "sur le serveur. Si vous avez entré"
+#~ " l'URL manuellement, vérifiez l'orthographe "
+#~ "et réessayez."
+
+#~ msgid "The method is not allowed for the requested URL."
+#~ msgstr "La méthode utilisée n'est pas autorisée pour cette URL."
+
+#~ msgid "Unknown error."
+#~ msgstr "Erreur inconnue"
+
+#~ msgid ""
+#~ "Jérome is a student in the Ecole"
+#~ " Polytechnique de Louvain, in civil "
+#~ "engineering. He completed his bachelor "
+#~ "degree in Electricity and Mechanics. He"
+#~ " is now pursuing a master degree "
+#~ "in Mechatronics."
+#~ msgstr ""
+#~ "Jérome est un étudiant à l'Ecole "
+#~ "Polytechnique de Louvain, en ingénieur "
+#~ "civil. Il a un bachelier en "
+#~ "électricité et mécanique. Actuellement, il "
+#~ "suit un master en mécatronique."
+
+#~ msgid ""
+#~ "Louis is a student at the Ecole"
+#~ " Polytechnique de Louvain, in civil "
+#~ "engineering. He completed his bachelor "
+#~ "degree in Applied Mathematics and "
+#~ "Computing Science. He is now pursuing"
+#~ " a master degree in Computing "
+#~ "Sciences."
+#~ msgstr ""
+#~ "Louis est un étudiant à l'Ecole "
+#~ "Polytechnique de Louvain, en ingénieur "
+#~ "civil. Il a un bachelier en "
+#~ "sciences informatiques et mathématiques "
+#~ "appliquées. Actuellement, il suit un "
+#~ "master en sciences informatiques."
+
+#~ msgid ""
+#~ "Gilles is a student in the Ecole"
+#~ " Polytechnique de Louvain, in civil "
+#~ "engineering. He completed his bachelor "
+#~ "degree in Electricity and Mechanics. He"
+#~ " is now pursuing a master degree "
+#~ "in Mechatronics."
+#~ msgstr ""
+#~ "Gilles est un étudiant à l'Ecole "
+#~ "Polytechnique de Louvain, en ingénieur "
+#~ "civil. Il a un bachelier en "
+#~ "électricité et mécanique. Actuellement, il "
+#~ "suit un master en mécatronique."
 
