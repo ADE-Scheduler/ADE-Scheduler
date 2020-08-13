@@ -56,12 +56,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 return {'opacity': this.computing ? '0.2':'1'}
             },
             classroomsFiltered: function () {
-                let res = this.classrooms
+                return this.classrooms
                     .filter(c => !(c.name.toLowerCase().replace(/[^a-z0-9]/gi, '').indexOf(this.nameSearch.toLowerCase().replace(/[^a-z0-9]/gi, '')) === -1))
                     .filter(c => !(c.code.toLowerCase().replace(/[^a-z0-9]/gi, '').indexOf(this.codeSearch.toLowerCase().replace(/[^a-z0-9]/gi, '')) === -1))
                     .filter(c => !(c.address.toLowerCase().replace(/[^a-z0-9]/gi, '').indexOf(this.addressSearch.toLowerCase().replace(/[^a-z0-9]/gi, '')) === -1));
-                return res;
-            }
+            },
+            markers: function () {
+                return this.classroomsFiltered.filter(item => item.latitude !== null && item.longitude !== null);
+            },
         },
         created:  function () {
             this.fetchData();

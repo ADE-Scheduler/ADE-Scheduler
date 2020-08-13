@@ -20,8 +20,8 @@ def get_data():
     # TODO: Temporary fix !!
     for classroom in classrooms:
         if math.isnan(classroom['latitude']):
-            classroom['latitude'] = 0
-            classroom['longitude'] = 0
+            classroom['latitude'] = None
+            classroom['longitude'] = None
 
     return jsonify({
         'classrooms': classrooms

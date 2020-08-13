@@ -17,8 +17,8 @@
 
     <l-map class="border border-dark rounded-lg mt-3" style="height: 350px" :zoom="zoom" :center="center">
         <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-        <l-marker v-for="classroom in classroomsFiltered" :lat-lng="[classroom.latitude, classroom.longitude]" >
-            <l-tooltip>[[classroom.code]]</l-tooltip>
+        <l-marker v-for="marker in markers" :lat-lng="[marker.latitude, marker.longitude]">
+            <l-tooltip>[[marker.code]]</l-tooltip>
         </l-marker>
     </l-map>
 
