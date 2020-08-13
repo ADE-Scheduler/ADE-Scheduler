@@ -211,7 +211,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     url: Flask.url_for('calendar.export'),
                 })
                 .then(resp => {
-                    this.exportInfo.url = Flask.url_for('calendar.download') + '?link=' + resp.data.link;
+                    this.exportInfo.url = `${window.location.origin}${Flask.url_for('calendar.download')}?link=${resp.data.link}`;
                     exportModal.show();
                 })
                 .catch(err => {
