@@ -454,7 +454,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 copyText.setSelectionRange(0, 99999);   // for mobile
                 copyText.classList.add('is-valid');
                 document.execCommand('copy');
-            }
+            },
         },
         computed: {
             calendarOpacity: function() {

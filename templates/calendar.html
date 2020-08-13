@@ -23,11 +23,11 @@
                         </h6>
                         <div class="col-md" v-for="(v, n) in value">
                             <div class="card mb-3">
-                                <div class="card-header form-switch">
+                                <div class="card-header">
                                     [[ n ]]
                                 </div>
                                 <div class="card-body">
-                                    <div class="d-flex justify-content-between" v-for="id in v" v-bind:key="id">
+                                    <div class="d-flex justify-content-between" v-for="id in v" v-bind:key="id" v-on:click="courseInfo.filtered[name][n][id] = !courseInfo.filtered[name][n][id]" style="cursor: pointer;">
                                         [[ id ]]
                                         <input class="form-check-input" type="checkbox" v-model="courseInfo.filtered[name][n][id]"/>
                                     </div>
