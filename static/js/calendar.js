@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             template: `
                                 <div class="tooltip" role="tooltip">
                                     <div class="tooltip-arrow"></div>
-                                    <div class="tooltip-inner" style="background-color:` + arg.event.backgroundColor + `"></div>
+                                    <div class="tooltip-inner" style="background-color:${arg.event.backgroundColor}"></div>
                                 </div>`,
                             placement: 'auto',
                         });
