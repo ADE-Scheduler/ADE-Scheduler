@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import { Icon, latLng } from 'leaflet';
 import { LMap, LTileLayer, LMarker, LTooltip } from 'vue2-leaflet';
-import { Modal } from 'bootstrap';
+import { Modal, Tooltip } from 'bootstrap';
 import FullCalendar from '@fullcalendar/vue'
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -123,12 +123,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             },
             getOccupation: function(name) {
-                this.modalTitle = name;
-                calendarModal.show();
-                document.getElementById('calendarModal').addEventListener('shown.bs.modal', () => {
-                    let api = this.$refs.calendar.getApi();
-                    api.next();
-                    api.prev();
+                this.computing = true;
+                axios({
+                    method: 'GET',
+                    url: Flask.url_for('classroom.get_occupation', {code: name}),
+                })
+                .then(resp => {
+                    this.calendarOptions.events = resp.data.events
+                    this.modalTitle = name;
+                    calendarModal.show();
+                    document.getElementById('calendarModal').addEventListener('shown.bs.modal', () => {
+                        let api = this.$refs.calendar.getApi();
+                        api.next();
+                        api.prev();
+                    });
+                })
+                .catch(err => {
+                    this.error = true;
+                })
+                .then(() => {
+                    this.computing = false;
                 });
             }
         },
