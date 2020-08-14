@@ -294,7 +294,7 @@ msgstr ""
 "Il a été développé dans le but d'aider les étudiants de l'EPL pour "
 "la composition de leur horaire. Cet outil est basé sur ADE mais ne "
 "remplace ni les règles déjà existantes, les instructions données par "
-l'université et les professeurs, car ces informations peuvent changer "
+"l'université et les professeurs, car ces informations peuvent changer "
 "d'un cours à un autre"
 
 #: templates/custom_macros.html:20 templates/custom_macros.html:33
