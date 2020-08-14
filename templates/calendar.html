@@ -101,7 +101,7 @@
                     <label class="form-label">{{_('Subscription Link')}}</label>
                     <div class="input-group mb-3">
                         <select class="form-select" style="max-width: 160px;" v-model="exportInfo.subscriptionType">
-                            <option v-bind:value="0">{{_('Main schedule')}}</option>
+                            <option v-bind:value="0">ADE</option>
                             <option v-for="i in n_schedules" v-bind:value="i">{{ _('Schedule') }} #[[ i ]]</option>
                         </select>
                         <input type="text" class="form-control" id="input-subscription-link" v-model="subscriptionLink" readonly>
