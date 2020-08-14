@@ -621,18 +621,13 @@
         "type": "residential"
     },
     "Tour V\u00e9sale": {
-        "boundingbox": [
-            "43.1801039",
-            "43.2001039",
-            "5.5962132",
-            "5.6162132"
-        ],
+        "boundingbox": null,
         "class": "place",
-        "display_name": "La Tour, La Ciotat, Marseille, Bouches-du-Rh\u00f4ne, Provence-Alpes-C\u00f4te d'Azur, France m\u00e9tropolitaine, 13600, France",
+        "display_name": "FATH, Tour V\u00e9sale +5, Avenue Emmanuel Mounier, Woluwe-Saint-Lambert, 1200, Belgi\u00eb - Belgique - Belgien",
         "importance": 0.35,
-        "lat": "43.1901039",
+        "lat": "50.851368",
         "licence": "Data \u00a9 OpenStreetMap contributors, ODbL 1.0. https://osm.org/copyright",
-        "lon": "5.6062132",
+        "lon": "4.454008",
         "osm_id": 4353244148,
         "osm_type": "node",
         "place_id": 293724984,
