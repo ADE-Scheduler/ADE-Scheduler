@@ -37,9 +37,6 @@
 
         <l-map class="border border-dark rounded-lg mt-3" style="height: 350px" :zoom="zoom" :center="center" ref="map">
             <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-            <!-- <l-marker v-for="marker in markers" :lat-lng="[marker.latitude, marker.longitude]">
-                <l-tooltip>[[marker.name]]</l-tooltip>
-            </l-marker> -->
         </l-map>
 
         <div class="overflow-auto">
