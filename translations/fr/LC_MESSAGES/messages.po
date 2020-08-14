@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-08-12 22:59+0200\n"
+"POT-Creation-Date: 2020-08-14 23:33+0200\n"
 "PO-Revision-Date: 2020-07-24 16:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -84,7 +84,8 @@ msgid "Continue"
 msgstr "Continuer"
 
 #: templates/account.html:35 templates/calendar.html:349
-#: templates/classroom.html:12
+#: templates/classroom.html:32 templates/dist/account.html:35
+#: templates/dist/calendar.html:346
 msgid "A problem has occurred. Please contact us if it happens again."
 msgstr ""
 "Oops, il y a eu un problème ! Veuillez nous contacter si ça se reproduit "
@@ -128,34 +129,35 @@ msgstr "Logiciel OpenSource"
 msgid ""
 "designed by Gilles Poncelet, Louis Navarre and Jérome Eertmans, students "
 "at the Ecole Polytechnique de Louvain."
-msgstr "créé par Gilles Poncelet, Louis Navarre et Jérome Eertmans, étudiants "
-"à l'Ecole Polytechnique de Louvain"
+msgstr ""
+"créé par Gilles Poncelet, Louis Navarre et Jérome Eertmans, étudiants à "
+"l'Ecole Polytechnique de Louvain"
 
-#: templates/base.html:34
+#: templates/base.html:42 templates/dist/base.html:34
 msgid "Calendar"
 msgstr "Calendrier"
 
-#: templates/base.html:37
+#: templates/base.html:45 templates/dist/base.html:37
 msgid "Classrooms"
 msgstr "Locaux"
 
-#: templates/base.html:40
+#: templates/base.html:48 templates/dist/base.html:40
 msgid "Account"
 msgstr "Compte"
 
-#: templates/base.html:43
+#: templates/base.html:51 templates/dist/base.html:43
 msgid "Help"
 msgstr "Aide"
 
-#: templates/base.html:67
+#: templates/base.html:75 templates/dist/base.html:67
 msgid "Logout"
 msgstr "Déconnexion"
 
-#: templates/base.html:71
+#: templates/base.html:79 templates/dist/base.html:71
 msgid "Login"
 msgstr "Connexion"
 
-#: templates/base.html:72
+#: templates/base.html:80 templates/dist/base.html:72
 msgid "Register"
 msgstr "S'inscrire"
 
@@ -165,6 +167,9 @@ msgstr "Programme de cours"
 
 #: templates/calendar.html:40 templates/calendar.html:83
 #: templates/calendar.html:134 templates/calendar.html:265
+#: templates/classroom.html:23 templates/dist/calendar.html:37
+#: templates/dist/calendar.html:80 templates/dist/calendar.html:131
+#: templates/dist/calendar.html:262
 msgid "Close"
 msgstr "Fermer"
 
@@ -226,7 +231,8 @@ msgstr "Lien de partage"
 msgid "Add an event"
 msgstr "Ajouter un événement"
 
-#: templates/calendar.html:153
+#: templates/calendar.html:153 templates/classroom.html:49
+#: templates/dist/calendar.html:150
 msgid "Name"
 msgstr "Nom"
 
@@ -290,12 +296,32 @@ msgid ""
 "the instructions given by university officials and teachers as those may "
 "vary from one course to another."
 msgstr ""
-"Attention: ce software n'est pas un outil officiel de l'UCLouvain. "
-"Il a été développé dans le but d'aider les étudiants de l'EPL pour "
-"la composition de leur horaire. Cet outil est basé sur ADE mais ne "
-"remplace ni les règles déjà existantes, les instructions données par "
-"l'université et les professeurs, car ces informations peuvent changer "
-"d'un cours à un autre"
+"Attention: ce software n'est pas un outil officiel de l'UCLouvain. Il a "
+"été développé dans le but d'aider les étudiants de l'EPL pour la "
+"composition de leur horaire. Cet outil est basé sur ADE mais ne remplace "
+"ni les règles déjà existantes, les instructions données par l'université "
+"et les professeurs, car ces informations peuvent changer d'un cours à un "
+"autre"
+
+#: templates/classroom.html:50
+msgid "Code"
+msgstr "Code"
+
+#: templates/classroom.html:51
+msgid "Address"
+msgstr "Adresse"
+
+#: templates/classroom.html:57
+msgid "Search name"
+msgstr "Rechercher un nom"
+
+#: templates/classroom.html:60
+msgid "Search code"
+msgstr "Rechercher un code"
+
+#: templates/classroom.html:63
+msgid "Search address"
+msgstr "Rechercher une adresse"
 
 #: templates/custom_macros.html:20 templates/custom_macros.html:33
 #: templates/dist/custom_macros.html:20 templates/dist/custom_macros.html:33
@@ -615,6 +641,65 @@ msgstr ""
 "civil. Il a un bachelier en électricité et mécanique. Actuellement, il "
 "suit un master en ingénieur civil mécatronique."
 
+#: templates/welcome.html:31
+msgid "ADE Scheduler under new skin ! Welcome to the version 2.0 !"
+msgstr ""
+
+#: templates/welcome.html:32
+msgid "You heard it, 2.0 ! The same as before... but in better !"
+msgstr ""
+
+#: templates/welcome.html:33
+msgid ""
+"Little information for old members from version 1.0: you now register "
+"using an email address. It means that your old accounts must be created "
+"again."
+msgstr ""
+
+#: templates/welcome.html:34
+msgid "Get started"
+msgstr ""
+
+#: templates/dist/calendar.html:101
+msgid "Main schedule"
+msgstr ""
+
+#: templates/dist/help.html:102
+msgid ""
+"On this website, no account is required to use most of the tools. Your "
+"session is stored during 30 days so you can easily leave this webpage, "
+"come back later and see that everything stays unchanged. Nonetheless, if "
+"30 days is not enough or if you want to watch and modify your schedule "
+"one more than one device, we suggest you to\n"
+"                        <a href=\"/account\">create an account.</a>\n"
+"                        With this, you will also be able to save multiple"
+" schedules, rename them, choose their color palette and so on."
+msgstr ""
+
+#: templates/dist/help.html:142
+msgid ""
+"Jérome is a student in the Ecole Polytechnique de Louvain, in civil "
+"engineering. He completed his bachelor degree in Electricity and "
+"Mechanics. He is now pursuing a master degree in Mechatronics."
+msgstr ""
+
+#: templates/dist/help.html:158
+msgid ""
+"Louis is a student at the Ecole Polytechnique de Louvain, in civil "
+"engineering. He completed his bachelor degree in Applied Mathematics and "
+"Computing Science. He is now pursuing a master degree in Computing "
+"Sciences."
+msgstr ""
+
+#: templates/dist/help.html:174
+msgid ""
+"Gilles is a student in the Ecole Polytechnique de Louvain, in civil "
+"engineering. He completed his bachelor degree in Electricity and "
+"Mechanics. He is now pursuing a master degree in Mechatronics."
+msgstr ""
+
+#: templates/dist/security/change_password.html:19
+#: templates/dist/security/reset_password.html:14
 #: templates/security/change_password.html:19
 #: templates/security/reset_password.html:14
 msgid "New password"
