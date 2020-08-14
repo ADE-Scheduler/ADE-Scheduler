@@ -109,33 +109,33 @@ document.addEventListener('DOMContentLoaded', function() {
                 eventTextColor: 'white',
                 eventDisplay: 'block',
                 eventDidMount: function (arg) {
-                    if (!isTouchDevice) {
-                        let description, location;
-                        if (!arg.event.extendedProps.description)   description = 'No description';
-                        else                                        description = arg.event.extendedProps.description;
-                        if (!arg.event.extendedProps.location)      location = 'No location';
-                        else                                        location = arg.event.extendedProps.location;
-                        new Tooltip(arg.el, {
-                            container: 'body',
-                            title: description + '\n' + location,
-                            sanitize: false,
-                            template: `
-                                <div class="tooltip" role="tooltip">
-                                    <div class="tooltip-arrow"></div>
-                                    <div class="tooltip-inner" style="background-color:${arg.event.backgroundColor}"></div>
-                                </div>`,
-                            placement: 'auto',
-                        });
-                    }
+                    let description, location;
+                    if (!arg.event.extendedProps.description)   description = 'No description';
+                    else                                        description = arg.event.extendedProps.description;
+                    if (!arg.event.extendedProps.location)      location = 'No location';
+                    else                                        location = arg.event.extendedProps.location;
+                    new Tooltip(arg.el, {
+                        container: 'body',
+                        title: description + '\n' + location,
+                        sanitize: false,
+                        template: `
+                            <div class="tooltip" role="tooltip">
+                                <div class="tooltip-arrow"></div>
+                                <div class="tooltip-inner" style="background-color:${arg.event.backgroundColor}"></div>
+                            </div>`,
+                        placement: 'auto',
+                    });
                 },
                 eventClick: function(info) {
-                    let evt = info.event.toPlainObject({collapseExtendedProps: true});
-                    if (!evt.code) {
-                        vm.eventInfo = evt;
-                        vm.eventInfo.event = info.event;
-                        eventModal.show();
-                    } else {
-                        vm.getDetails(evt.code);
+                    if (!isTouchDevice) {
+                        let evt = info.event.toPlainObject({collapseExtendedProps: true});
+                        if (!evt.code) {
+                            vm.eventInfo = evt;
+                            vm.eventInfo.event = info.event;
+                            eventModal.show();
+                        } else {
+                            vm.getDetails(evt.code);
+                        }
                     }
                 }
             },
