@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-08-12 22:59+0200\n"
+"POT-Creation-Date: 2020-08-14 22:56+0200\n"
 "PO-Revision-Date: 2020-07-24 16:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -77,7 +77,7 @@ msgid "Continue"
 msgstr "Continue"
 
 #: templates/account.html:35 templates/calendar.html:349
-#: templates/classroom.html:12
+#: templates/classroom.html:32
 msgid "A problem has occurred. Please contact us if it happens again."
 msgstr ""
 "Oops, il y a eu un problème ! Veuillez nous contacter si ça se reproduit "
@@ -119,31 +119,31 @@ msgid ""
 "at the Ecole Polytechnique de Louvain."
 msgstr ""
 
-#: templates/base.html:34
+#: templates/base.html:42
 msgid "Calendar"
 msgstr "Calendrier"
 
-#: templates/base.html:37
+#: templates/base.html:45
 msgid "Classrooms"
 msgstr "Locaux"
 
-#: templates/base.html:40
+#: templates/base.html:48
 msgid "Account"
 msgstr "Compte"
 
-#: templates/base.html:43
+#: templates/base.html:51
 msgid "Help"
 msgstr "Aide"
 
-#: templates/base.html:67
+#: templates/base.html:75
 msgid "Logout"
 msgstr "Déconnexion"
 
-#: templates/base.html:71
+#: templates/base.html:79
 msgid "Login"
 msgstr "Connexion"
 
-#: templates/base.html:72
+#: templates/base.html:80
 msgid "Register"
 msgstr "S'inscrire"
 
@@ -153,6 +153,7 @@ msgstr ""
 
 #: templates/calendar.html:40 templates/calendar.html:83
 #: templates/calendar.html:134 templates/calendar.html:265
+#: templates/classroom.html:23
 msgid "Close"
 msgstr "Fermer"
 
@@ -212,7 +213,7 @@ msgstr ""
 msgid "Add an event"
 msgstr "Ajouter un événement"
 
-#: templates/calendar.html:153
+#: templates/calendar.html:153 templates/classroom.html:49
 msgid "Name"
 msgstr "Nom"
 
@@ -275,6 +276,14 @@ msgid ""
 "tool is based on ADE but does not replace standard scheduling rules, nor "
 "the instructions given by university officials and teachers as those may "
 "vary from one course to another."
+msgstr ""
+
+#: templates/classroom.html:50
+msgid "Code"
+msgstr ""
+
+#: templates/classroom.html:51
+msgid "Address"
 msgstr ""
 
 #: templates/custom_macros.html:20 templates/custom_macros.html:33
@@ -358,11 +367,16 @@ msgid ""
 "organization, filtering unwanted events, classroom localization and so "
 "on."
 msgstr ""
-"ADE Scheduler est un outil visant à fournir les mêmes informations que le\n"
+"ADE Scheduler est un outil visant à fournir les mêmes informations que le"
+"\n"
 "                        <a "
-"href=\"http://horaire.uclouvain.be/direct\">site officiel d'horaires de "
-" l'UCLouvain</a>\n"
-"mais de manière plus intuitive. Ce site offre en plus plusieurs outils comme des liens d'abonnement à des calendriers, l'organisation de vos différents horaires, le filtrage de certains évènements (par exemple CMs ou TPs), la visualisation des locaux et de leur emplacement, et bien d'autres choses encore !"
+"href=\"http://horaire.uclouvain.be/direct\">site officiel d'horaires de  "
+"l'UCLouvain</a>\n"
+"mais de manière plus intuitive. Ce site offre en plus plusieurs outils "
+"comme des liens d'abonnement à des calendriers, l'organisation de vos "
+"différents horaires, le filtrage de certains évènements (par exemple CMs "
+"ou TPs), la visualisation des locaux et de leur emplacement, et bien "
+"d'autres choses encore !"
 
 #: templates/help.html:66
 msgid ""
@@ -372,8 +386,10 @@ msgid ""
 "                        and try out some of the functionalities.\n"
 "You are also encouraged to watch our quick guide hereunder."
 msgstr ""
-"L'objectif premier de ce site est son calendrier. Si vous êtes nouveaux ici, faites un tour sur <a href=\"/calendar\">cette page</a>\n"
-"et testez toutes les fonctionnalités. Vous êtes aussi encouragés à regarder notre guide de prise en main rapide."
+"L'objectif premier de ce site est son calendrier. Si vous êtes nouveaux "
+"ici, faites un tour sur <a href=\"/calendar\">cette page</a>\n"
+"et testez toutes les fonctionnalités. Vous êtes aussi encouragés à "
+"regarder notre guide de prise en main rapide."
 
 #: templates/help.html:75
 msgid ""
@@ -453,14 +469,23 @@ msgid ""
 "On this website, no account is required to use most of the tools. Your "
 "session is stored during 30 days so you can easily leave this webpage, "
 "come back later and see that everything stays unchanged. Nonetheless, if "
-"30 days is not enough or if you want to watch and modify your schedule "
-"on more than one device, we suggest you to\n"
+"30 days is not enough or if you want to watch and modify your schedule on"
+" more than one device, we suggest you to\n"
 "                        <a href=\"/account\">create an account.</a>\n"
 "                        With this, you will also be able to save multiple"
 " schedules, rename them, choose their color palette and so on."
 msgstr ""
-"Sur ADE-Scheduler, il n'est pas requis d'avoir un compte pour utiliser la plupart des outils proposés. Votre session utilisateur est stockée via votre navigateur pour une durée de 30 jours. Il vous est donc possible d'automatiquement récupérer et modifier votre calendrier sur votre navigateur dans un délais de 30 jours après votre dernière connexion. Néanmoins, si vous désirez garder de manière persistante votre calendrier, ou si vous voulez pouvoir le consulter sur notre site depuis d'autres appareils, il est requis de vous <a href=\"/account\">créer un compte.</a>\n"
-"Avec cela, vous pouvez créer et sauvegarder plusieurs calendrier, les renommer, choisir la palette de couleur, et bien d'autres choses encore."
+"Sur ADE-Scheduler, il n'est pas requis d'avoir un compte pour utiliser la"
+" plupart des outils proposés. Votre session utilisateur est stockée via "
+"votre navigateur pour une durée de 30 jours. Il vous est donc possible "
+"d'automatiquement récupérer et modifier votre calendrier sur votre "
+"navigateur dans un délais de 30 jours après votre dernière connexion. "
+"Néanmoins, si vous désirez garder de manière persistante votre "
+"calendrier, ou si vous voulez pouvoir le consulter sur notre site depuis "
+"d'autres appareils, il est requis de vous <a href=\"/account\">créer un "
+"compte.</a>\n"
+"Avec cela, vous pouvez créer et sauvegarder plusieurs calendrier, les "
+"renommer, choisir la palette de couleur, et bien d'autres choses encore."
 
 #: templates/help.html:111
 msgid ""
@@ -470,8 +495,13 @@ msgid ""
 "the compute tools. This tool will try to minimize the conflicts with your"
 " custom events."
 msgstr ""
-"La vie étudiante est importante, mais votre vie personnelle l'est encore plus !"
-"C'est pourquoi, il vous est possible d'ajouter vos propres évènements personnalisés à votre calendrier. Ils apparaitront dans le calendrier, mais ils seront aussi pris en compte lors du calcul du meilleur horaire de cours pour vous ! Notre outil de calcul tentera de minimiser les conflits entre les horaires de cours, et vos évènements personnels."
+"La vie étudiante est importante, mais votre vie personnelle l'est encore "
+"plus !C'est pourquoi, il vous est possible d'ajouter vos propres "
+"évènements personnalisés à votre calendrier. Ils apparaitront dans le "
+"calendrier, mais ils seront aussi pris en compte lors du calcul du "
+"meilleur horaire de cours pour vous ! Notre outil de calcul tentera de "
+"minimiser les conflits entre les horaires de cours, et vos évènements "
+"personnels."
 
 #: templates/help.html:117
 msgid ""
@@ -522,10 +552,8 @@ msgid ""
 "Mechanics. He is now pursuing a master degree in Electromechanical "
 "Engineering."
 msgstr ""
-"Jérome est un étudiant à l'Ecole "
-"Polytechnique de Louvain, en ingénieur "
-"civil. Il a un bachelier en "
-"électricité et mécanique. Actuellement, il "
+"Jérome est un étudiant à l'Ecole Polytechnique de Louvain, en ingénieur "
+"civil. Il a un bachelier en électricité et mécanique. Actuellement, il "
 "suit un master en ingénieur civil mécatronique."
 
 #: templates/help.html:159
@@ -535,12 +563,10 @@ msgid ""
 "Science. He is now pursuing a master degree in Computer Sciences "
 "Engineering."
 msgstr ""
-"Louis est un étudiant à l'Ecole "
-"Polytechnique de Louvain, en ingénieur "
-"civil. Il a un bachelier en "
-"sciences informatiques et mathématiques "
-"appliquées. Actuellement, il suit un "
-"master en ingénieur civil informatique."
+"Louis est un étudiant à l'Ecole Polytechnique de Louvain, en ingénieur "
+"civil. Il a un bachelier en sciences informatiques et mathématiques "
+"appliquées. Actuellement, il suit un master en ingénieur civil "
+"informatique."
 
 #: templates/help.html:175
 msgid ""
@@ -549,11 +575,32 @@ msgid ""
 "Mechanics. He is now pursuing a master degree in Electromechanical "
 "Engineering."
 msgstr ""
-"Gilles est un étudiant à l'Ecole "
-"Polytechnique de Louvain, en ingénieur "
-"civil. Il a un bachelier en "
-"électricité et mécanique. Actuellement, il "
+"Gilles est un étudiant à l'Ecole Polytechnique de Louvain, en ingénieur "
+"civil. Il a un bachelier en électricité et mécanique. Actuellement, il "
 "suit un master en ingénieur civil mécatronique."
+
+#: templates/welcome.html:31
+msgid "ADE Scheduler under new skin ! Welcome to the version 2.0 !"
+msgstr ""
+"ADE-Scheduler fait peau neuve ! Bienvenue sur la version 2.0 !"
+
+#: templates/welcome.html:32
+msgid "You heard it, 2.0 ! The same as before... but in better !"
+msgstr ""
+"Oui, 2.0 ! C'est la même chose qu'avant... Mais en mieux !"
+
+#: templates/welcome.html:33
+msgid ""
+"Little information for old members from version 1.0: you now register "
+"using an email address. It means that your old accounts must be created "
+"again."
+msgstr ""
+"Petite information pour les anciens membres enregistrés sur la version 1.0: vos comptes sont maintenant gérés par une adresse mail. Cela signifie que vos précédents comptes doivent être re-créés."
+
+#: templates/welcome.html:34
+msgid "Get started"
+msgstr ""
+"Aller vers le site"
 
 #: templates/security/change_password.html:19
 #: templates/security/reset_password.html:14

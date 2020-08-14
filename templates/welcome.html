@@ -26,15 +26,12 @@
     </head>
 
     <body class="bg-dark">
-        <div class="container-fluid text-light">
+        <div class="container-lg text-light">
             <img class="d-block mx-auto my-4" src={{ url_for('static', filename='img/ade_scheduler_icon.png') }} width="10%">
-
-            <h1>Bienvenue sur notre superbe site ADE-Scheduler 2.0 ! </h1>
-            <h2>Cette magnifique page a été l'une des uniques contributions de Louis. Appréciez sa qualité à sa juste valeur.</h2>
-            <p>Sinon, pour voir du beau boulot, cliquez sur ce (magnifique) lien:</p>
-            <a href="/calendar">MyLink</a>
-
-            <button class="btn btn-outline-success">Bootstrap is here !</button>
+            <h1>{{ _('ADE Scheduler under new skin ! Welcome to the version 2.0 !')}}</h1>
+            <h2>{{ _('You heard it, 2.0 ! The same as before... but in better !')}}</h2>
+            <p>{{ _('Little information for old members from version 1.0: you now register using an email address. It means that your old accounts must be created again.')}}</p>
+            <button class="btn btn-outline-light text-center" href="/calendar">{{ _('Get started')}}</button>
         </div>
 
 
