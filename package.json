@@ -38,6 +38,7 @@
     "axios": "^0.19.2",
     "bootstrap": "^5.0.0-alpha1",
     "leaflet": "^1.6.0",
+    "overlapping-marker-spiderfier-leaflet": "^0.2.7",
     "popper.js": "^1.16.1",
     "vue": "^2.6.11",
     "vue-swatches": "^2.1.0",

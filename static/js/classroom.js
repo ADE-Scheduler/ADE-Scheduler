@@ -1,6 +1,7 @@
 import Vue from 'vue';
-import { Icon, latLng } from 'leaflet';
+import L from 'leaflet';
 import { LMap, LTileLayer, LMarker, LTooltip } from 'vue2-leaflet';
+import 'overlapping-marker-spiderfier-leaflet/dist/oms';
 import { Modal, Tooltip } from 'bootstrap';
 import FullCalendar from '@fullcalendar/vue'
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -12,8 +13,8 @@ import 'leaflet/dist/leaflet.css';
 const axios = require('axios');
 
 
-delete Icon.Default.prototype._getIconUrl;
-Icon.Default.mergeOptions({
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
     iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
     iconUrl: require('leaflet/dist/images/marker-icon.png'),
     shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
@@ -21,6 +22,7 @@ Icon.Default.mergeOptions({
 
 
 document.addEventListener('DOMContentLoaded', function() {
+    var oms;
     var isTouchDevice = !!('ontouchstart' in window || navigator.maxTouchPoints);
     var vm = new Vue({
         el: '#app',
@@ -30,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
             computing: false,
             error: false,
             url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-            center: latLng(50.6681, 4.6118),
+            center: L.latLng(50.6681, 4.6118),
             zoom: 15,
             attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
             classrooms: [],
@@ -103,6 +105,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
             },
             modalTitle: '',
+            markers: [],
         },
 
         methods: {
@@ -144,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(() => {
                     this.computing = false;
                 });
-            }
+            },
         },
         computed: {
             opacity: function() {
@@ -156,13 +159,36 @@ document.addEventListener('DOMContentLoaded', function() {
                     .filter(c => !(c.code.toLowerCase().replace(/[^a-z0-9]/gi, '').indexOf(this.codeSearch.toLowerCase().replace(/[^a-z0-9]/gi, '')) === -1))
                     .filter(c => !(c.address.toLowerCase().replace(/[^a-z0-9]/gi, '').indexOf(this.addressSearch.toLowerCase().replace(/[^a-z0-9]/gi, '')) === -1));
             },
-            markers: function () {
-                return this.classroomsFiltered.filter(item => item.latitude !== null && item.longitude !== null);
-            },
+        },
+        watch: {
+            classroomsFiltered: function () {
+                let map = this.$refs.map.mapObject;
+
+                // Remove current markers
+                this.markers.forEach(marker => {
+                    map.removeLayer(marker);
+                    oms.removeMarker(marker);
+                });
+
+                // Add new markers
+                this.classroomsFiltered
+                .filter(item => item.latitude !== null && item.longitude !== null)
+                .forEach(item => {
+                    let marker = L.marker(L.latLng(item.latitude, item.longitude)).addTo(map);
+                    marker.bindTooltip(item.name);
+                    oms.addMarker(marker);
+                    this.markers.push(marker);
+                });
+            }
         },
         created:  function () {
             this.fetchData();
         },
+        mounted: function() {
+            this.$nextTick(() => {
+                oms = new window.OverlappingMarkerSpiderfier(this.$refs.map.mapObject);
+            });
+        }
     });
 
     var calendarModal = new Modal(document.getElementById('calendarModal'));
