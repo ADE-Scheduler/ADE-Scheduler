@@ -34,7 +34,6 @@ def get_occupation(code):
     mng = app.config['MANAGER']
     project_ids = mng.get_project_ids()
     for project_id in project_ids:
-        print(project_id['id'])
         classrooms = mng.get_courses(code, project_id=project_id['id'])
         for classroom in classrooms:
             events.extend([e.json('#2C3E50') for e in classroom.get_events()])

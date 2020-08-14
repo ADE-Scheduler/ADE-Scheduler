@@ -6,10 +6,18 @@
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="description" content="ADE Scheduler for UCLouvain students">
+        <title>ADE Scheduler</title>
 
-        <title>ADE Scheduler v2.0</title>
         <!-- Favicon -->
-        <link href="{{ url_for('static', filename='img/favicon.ico') }}" rel="shortcut icon">
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='favicon/apple-touch-icon.png') }}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon/favicon-32x32.png') }}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon/favicon-16x16.png') }}">
+        <link rel="manifest" href="{{ url_for('static', filename='favicon/site.webmanifest') }}">
+        <link rel="mask-icon" href="{{ url_for('static', filename='favicon/safari-pinned-tab.svg') }}" color="#5bbad5">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon/favicon.ico') }}">
+        <meta name="msapplication-TileColor" content="#da532c">
+        <meta name="msapplication-config" content="{{ url_for('static', filename='favicon/browserconfig.xml') }}">
+        <meta name="theme-color" content="#ffffff">
 
         <!-- JSGlue -->
         <script type="text/javascript" src="{{ url_for('static', filename='dist/jsglue.min.js') }}"></script>
