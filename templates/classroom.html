@@ -1,57 +1,57 @@
 {% extends "base.html" %}
 {% block head %}
-<% _.forEach(htmlWebpackPlugin.files.js, function(file) { %>
-<script type="text/javascript" src="<%= file%>"></script>
-<%}); %>
+    <% _.forEach(htmlWebpackPlugin.files.js, function(file) { %>
+    <script type="text/javascript" src="<%= file%>"></script>
+    <%}); %>
 {% endblock %}
 
 {% block body %}
-<div class="modal fade" tabindex="-1" id="calendarModal">
-    <div class="modal-dialog modal-dialog-centered modal-xl modal-fullscreen-md-down">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title">[[ modalTitle ]]</h5>
-                <button type="button" class="close" data-dismiss="modal">
-                    <span>&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <full-calendar ref="calendar" v-bind:options="calendarOptions">
-                </full-calendar>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{_('Close')}}</button>
+    <div class="modal fade" tabindex="-1" id="calendarModal">
+        <div class="modal-dialog modal-dialog-centered modal-xl modal-fullscreen-md-down">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">[[ modalTitle ]]</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <full-calendar ref="calendar" v-bind:options="calendarOptions">
+                    </full-calendar>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{_('Close')}}</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="spinner-border text-primary spinner-compute" v-show="computing"></div>
-<div class="container-lg d-flex flex-column justify-content-center" v-bind:style="opacity">
-    <div class="alert alert-danger alert-dismissible mt-3 mb-0" v-show="error">
-        {{  _('A problem has occurred. Please contact us if it happens again.') }}
-        <button type="button" class="close" v-on:click="error = false">
-            <span>&times;</span>
-        </button>
-    </div>
+    <div class="spinner-border text-primary spinner-compute" v-show="computing"></div>
+    <div class="container-lg d-flex flex-column justify-content-center" v-bind:style="opacity">
+        <div class="alert alert-danger alert-dismissible mt-3 mb-0" v-show="error">
+            {{  _('A problem has occurred. Please contact us if it happens again.') }}
+            <button type="button" class="close" v-on:click="error = false">
+                <span>&times;</span>
+            </button>
+        </div>
 
-    <l-map class="border border-dark rounded-lg mt-3" style="height: 350px" :zoom="zoom" :center="center">
-        <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-        <l-marker v-for="marker in markers" :lat-lng="[marker.latitude, marker.longitude]">
-            <l-tooltip>[[marker.code]]</l-tooltip>
-        </l-marker>
-    </l-map>
+        <l-map class="border border-dark rounded-lg mt-3" style="height: 350px" :zoom="zoom" :center="center">
+            <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+            <l-marker v-for="marker in markers" :lat-lng="[marker.latitude, marker.longitude]">
+                <l-tooltip>[[marker.name]]</l-tooltip>
+            </l-marker>
+        </l-map>
 
-    <div class="overflow-auto">
-        <table class="table table-striped">
-            <thead>
+        <div class="overflow-auto">
+            <table class="table table-striped">
+                <thead>
                 <tr>
                     <th scope="col">{{_('Name')}}</th>
                     <th scope="col">{{_('Code')}}</th>
                     <th scope="col">{{_('Address')}}</th>
                 </tr>
-            </thead>
-            <thead>
+                </thead>
+                <thead>
                 <tr>
                     <th scope="col">
                         <input class="form-control" type="search" placeholder="Search name" v-model="nameSearch"/>
@@ -63,17 +63,24 @@
                         <input class="form-control" type="search" placeholder="Search address" v-model="addressSearch"/>
                     </th>
                 </tr>
-            <tbody>
+                <tbody>
                 <tr v-for="classroom in classroomsFiltered" v-on:click="getOccupation(classroom.name)" style="cursor: pointer;">
-                    <td>[[classroom.name]]</td>
+                    <td>
+                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-calendar-event" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1zm1-3a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2z"/>
+                            <path fill-rule="evenodd" d="M3.5 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5zm9 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5z"/>
+                            <rect width="2" height="2" x="11" y="6" rx=".5"/>
+                        </svg>
+                        [[classroom.name]]
+                    </td>
                     <td>[[classroom.code]]</td>
                     <td>[[classroom.address]]</td>
                 </tr>
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
+        <div class="text-center" v-show="!classroomsFiltered.length">
+            Empty :(
+        </div>
     </div>
-    <div class="text-center" v-show="!classroomsFiltered.length">
-        Empty :(
-    </div>
-</div>
 {% endblock %}

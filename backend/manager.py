@@ -176,7 +176,7 @@ class Manager:
 
             classrooms = clrm.prettify_classrooms(classrooms)
 
-            self.server.set_value(key, classrooms, expire_in={'days': 30})
+            self.server.set_value(key, classrooms, expire_in={'hours': 25})
 
     def get_resource_ids(self, *codes: str, project_id: SupportsInt = None) -> Iterator[str]:
         """

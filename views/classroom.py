@@ -17,12 +17,6 @@ def get_data():
     mng = app.config['MANAGER']
     classrooms = mng.get_classrooms(return_json=True)
 
-    # TODO: Temporary fix !!
-    for classroom in classrooms:
-        if math.isnan(classroom['latitude']):
-            classroom['latitude'] = None
-            classroom['longitude'] = None
-
     return jsonify({
         'classrooms': classrooms
     }), 200
