@@ -3,6 +3,9 @@ import pandas as pd
 import backend.resources as rsrc
 from geopy.geocoders import Nominatim
 import time
+import json
+
+ADDRESSES_FILENAME = 'static/json/geo_locations.json'
 
 
 class Address:
@@ -41,6 +44,16 @@ class Address:
         return location
 
 
+def get_geo_locations():
+    with open(ADDRESSES_FILENAME, 'r') as f:
+        return json.load(f)
+
+
+def save_geo_locations(geo_locations: dict):
+    with open(ADDRESSES_FILENAME, 'w') as f:
+        json.dump(geo_locations, f, sort_keys=True, indent=4)
+
+
 def prettify_classrooms(classrooms: pd.DataFrame, sleep: float = 0) -> pd.DataFrame:
     """
     Returns the classrooms dataframe in a pretty format, useful when need to display.
@@ -52,7 +65,7 @@ def prettify_classrooms(classrooms: pd.DataFrame, sleep: float = 0) -> pd.DataFr
     """
 
     geolocator = Nominatim(user_agent='ADE_SCHEDULER')
-    geo_locations = dict()
+    geo_locations = get_geo_locations()
 
     def __pretty__(classroom: pd.Series):
         address = Address(**classroom.to_dict())
@@ -60,41 +73,40 @@ def prettify_classrooms(classrooms: pd.DataFrame, sleep: float = 0) -> pd.DataFr
         name = classroom[rsrc.INDEX.NAME]
         code = classroom[rsrc.INDEX.CODE]
 
-        response = geolocator.geocode(location, exactly_one=True)
-        if response is not None:
-            latitude = response.latitude
-            longitude = response.longitude
-        else:
-            latitude = None
-            longitude = None
-
-        return pd.Series([name, code, location, latitude, longitude],
-                         index=['name', 'code', 'address', 'latitude', 'longitude'])
+        return pd.Series([name, code, location],
+                         index=['name', 'code', 'address'])
 
     def __geoloc__(classroom: pd.Series):
         name = classroom['name']
         code = classroom['code']
         address = classroom['address']
 
-        latitude, longitude = geo_locations[address]
+        geo_location = geo_locations[address]
+
+        if geo_location is None:
+            latitude = None
+            longitude = None
+        else:
+            latitude = geo_location['lat']
+            longitude = geo_location['lon']
 
         return pd.Series([name, code, address, latitude, longitude],
-                         index=['name', 'code', 'address', 'latitude', 'longitude'])
+                         index=['name', 'code', 'address', 'latitude', 'longitude'], dtype=object)
 
     classrooms = classrooms.apply(__pretty__, axis=1, result_type='expand')
 
     for address in classrooms['address'].unique():
-        response = geolocator.geocode(address, exactly_one=True)
 
-        if response is not None:
-            latitude = response.latitude
-            longitude = response.longitude
-        else:
-            latitude = None
-            longitude = None
+        if address not in geo_locations:
 
-        time.sleep(sleep)
-        geo_locations[address] = (latitude, longitude)
+            response = geolocator.geocode(address, exactly_one=True)
+            time.sleep(sleep)
+            if response is not None:
+                geo_locations[address] = response.raw
+            else:
+                geo_locations[address] = None
+
+    save_geo_locations(geo_locations)
 
     return classrooms.apply(__geoloc__, axis=1, result_type='expand')
 
