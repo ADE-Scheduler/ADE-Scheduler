@@ -186,7 +186,9 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         mounted: function() {
             this.$nextTick(() => {
-                oms = new window.OverlappingMarkerSpiderfier(this.$refs.map.mapObject);
+                oms = new window.OverlappingMarkerSpiderfier(this.$refs.map.mapObject, {
+                    keepSpiderfied: isTouchDevice,
+                });
             });
         }
     });
