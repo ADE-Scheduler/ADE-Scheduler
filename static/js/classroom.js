@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import L from 'leaflet';
-import { LMap, LTileLayer, LMarker, LTooltip } from 'vue2-leaflet';
+import { LMap, LTileLayer } from 'vue2-leaflet';
 import 'overlapping-marker-spiderfier-leaflet/dist/oms';
 import { Modal, Tooltip } from 'bootstrap';
 import FullCalendar from '@fullcalendar/vue'
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var vm = new Vue({
         el: '#app',
         delimiters: ['[[',']]'],
-        components: { LMap, LTileLayer, LMarker, LTooltip, FullCalendar },
+        components: { LMap, LTileLayer, FullCalendar },
         data: {
             computing: false,
             error: false,
