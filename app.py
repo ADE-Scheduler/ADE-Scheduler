@@ -40,7 +40,7 @@ app.register_blueprint(calendar, url_prefix='/calendar')
 app.register_blueprint(account, url_prefix='/account')
 app.register_blueprint(classroom, url_prefix='/classroom')
 app.register_blueprint(help, url_prefix='/help')
-app.config['SECRET_KEY'] = 'super-secret'   # TODO: change !
+app.config['SECRET_KEY'] = os.environ['FLASK_SECRET_KEY']
 jsglue = JSGlue(app)
 
 # Setup the API Manager
@@ -69,7 +69,7 @@ migrate = Migrate(app, manager.database)
 app.config['SECURITY_REGISTERABLE'] = True
 app.config['SECURITY_CHANGEABLE'] = True
 app.config['SECURITY_RECOVERABLE'] = True
-app.config['SECURITY_PASSWORD_SALT'] = 'a_very_complex_and_indeciphrable_salt'  # TODO: change !
+app.config['SECURITY_PASSWORD_SALT'] = os.environ['FLASK_SALT']
 app.config['SECURITY_MANAGER'] = Security(app, SQLAlchemyUserDatastore(manager.database, md.User, md.Role))
 
 # Setup Flask-Session
