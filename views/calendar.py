@@ -140,7 +140,6 @@ def delete_custom_event(id):
 
 
 @calendar.route('/schedule', methods=['POST'])
-@login_required
 def save():
     if not current_user.is_authenticated:
         return 'Login is required', 401
@@ -173,9 +172,9 @@ def download():
         return resp
 
 
-@calendar.route('/shared_schedule', methods=['GET'])
+@calendar.route('/share', methods=['GET'])
 @login_required
-def get_shared_schedule():
+def share():
     link = request.args.get('link')
     if link:
         mng = app.config['MANAGER']

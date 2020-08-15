@@ -143,6 +143,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 url: null,
                 subscriptionType: 0,
             },
+            shareLink: '',
         },
         delimiters: ['[[',']]'],
 
@@ -212,6 +213,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(resp => {
                     this.exportInfo.url = `${window.location.origin}${Flask.url_for('calendar.download')}?link=${resp.data.link}`;
+                    this.shareLink = `${window.location.origin}${Flask.url_for('calendar.share')}?link=${resp.data.link}`;
                     exportModal.show();
                 })
                 .catch(err => {
@@ -462,9 +464,6 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             subscriptionLink: function () {
                 return this.exportInfo.url + '&choice=' + this.exportInfo.subscriptionType;
-            },
-            shareLink: function () {
-                return this.exportInfo.url + '&share=true';
             },
         },
         created:  function () {
