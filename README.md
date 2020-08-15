@@ -1,3 +1,8 @@
+
+<p align="center">
+  <img src="https://github.com/SnaKyEyeS/ADE-Scheduler/blob/AS-2.0/static/img/ade_scheduler_icon.png" width="200" height="200"> </img>
+</p>
+
 # ADE-Scheduler : un outil horaire destiné aux étudiants
 
 [ADE-Scheduler](https://ade-scheduler.info.ucl.ac.be/) est un outil créé par des étudiants et à destination des membres de l'UCLouvain, et plus particulièrement les étudiants de l'EPL.
@@ -21,6 +26,7 @@ Avant cela, nous utilisions le très bon outil [ADE2ICS](https://github.com/cdam
 - **Début août 2019** : début du projet
 - **Début septembre 2019** : obtiention d'un accès à l'api de ADE
 - **Mi-septembre 2019** : mise en ligne du site au monde entier
+- **Eté 2020**: refonte complète du site afin de le rendre plus attractif, intuitif ainsi que compatible avec les mobiles
 
 ## Comment cela fonctionne
 
@@ -95,5 +101,6 @@ Ici, sont listées, par ordre de priorité, les améliorations que nous jugeons 
 ## Contribuer
 
 Cette application étant open-source, vous êtes invités à contribuer à cette dernière de quelque manière !
-
-Cette section est encore en cours de développement mais n'hésitez pas à nous contacter par [mail](mailto:adescheduler@gmail.com) ou sur ce repo !
+Voici plusieurs manières de contribuer :
+* contribuez au code, pour cela suivez le guide d'installation [ici](/SETUP.md)
+* faites nous part de vos idées, retours ou bugs en nous contactant par [mail](mailto:adescheduler@gmail.com) ou sur ce repo !

@@ -1,0 +1,171 @@
+from typing import Iterable, Union
+import pandas as pd
+import backend.resources as rsrc
+from geopy.geocoders import Nominatim
+import time
+import json
+
+ADDRESSES_FILENAME = 'static/json/geo_locations.json'
+
+
+class Address:
+    """
+    Address object made from informations retrieved via ADE API.
+
+    :param kwargs: dict with minimal entries (can be None):
+        - address1
+        - zipCode
+        - city
+        - country
+    :type kwargs: str
+
+    :Example:
+
+    >>> informations = dict(address1='Rue Rose 42', zipCode='1300', city='Wavre', country='Belgique')
+    >>> address = Address(**informations)
+    """
+
+    def __init__(self, **kwargs: str):
+        self.address = kwargs
+
+    def __repr__(self) -> str:
+        return str(self)
+
+    def __str__(self) -> str:
+        location = '\n'.join(filter(None,
+                                    [
+                                        self.address[rsrc.INDEX.ADDRESS],
+                                        self.address[rsrc.INDEX.ZIP_CODE],
+                                        self.address[rsrc.INDEX.CITY],
+                                        self.address[rsrc.INDEX.COUNTRY]
+                                    ]))
+
+        return location
+
+
+def get_geo_locations():
+    with open(ADDRESSES_FILENAME, 'r') as f:
+        return json.load(f)
+
+
+def save_geo_locations(geo_locations: dict):
+    with open(ADDRESSES_FILENAME, 'w') as f:
+        json.dump(geo_locations, f, sort_keys=True, indent=4)
+
+
+def prettify_classrooms(classrooms: pd.DataFrame, sleep: float = 0) -> pd.DataFrame:
+    """
+    Returns the classrooms dataframe in a pretty format, useful when need to display.
+
+    The function will request, for every different address, a geo-localisation, so it can take some times.
+    If too many requests are done, Nominatim will not like so prefer to put a time.sleep between each request.
+
+    :param classrooms: the classrooms with fields defined in backend.resources.py
+    """
+
+    geolocator = Nominatim(user_agent='ADE_SCHEDULER')
+    geo_locations = get_geo_locations()
+
+    def __pretty__(classroom: pd.Series):
+        address = Address(**classroom.to_dict())
+        location = str(address).replace('\n', ', ')
+        name = classroom[rsrc.INDEX.NAME]
+        code = classroom[rsrc.INDEX.CODE]
+
+        return pd.Series([name, code, location],
+                         index=['name', 'code', 'address'])
+
+    def __geoloc__(classroom: pd.Series):
+        name = classroom['name']
+        code = classroom['code']
+        address = classroom['address']
+
+        geo_location = geo_locations[address]
+
+        if geo_location is None:
+            latitude = None
+            longitude = None
+        else:
+            latitude = geo_location['lat']
+            longitude = geo_location['lon']
+
+        return pd.Series([name, code, address, latitude, longitude],
+                         index=['name', 'code', 'address', 'latitude', 'longitude'], dtype=object)
+
+    classrooms = classrooms.apply(__pretty__, axis=1, result_type='expand')
+
+    for address in classrooms['address'].unique():
+
+        if address not in geo_locations:
+
+            response = geolocator.geocode(address, exactly_one=True)
+            time.sleep(sleep)
+            if response is not None:
+                geo_locations[address] = response.raw
+            else:
+                geo_locations[address] = None
+
+    save_geo_locations(geo_locations)
+
+    return classrooms.apply(__geoloc__, axis=1, result_type='expand')
+
+
+# TODO: fix the fact that activities in Course class cannot be output in a shell (replace('\\', '\\\\') is not defined)
+class Classroom:
+    """
+    Classroom object containing the address (as string or Address object), the name of the classroom and its id.
+
+    :param kwargs: dict with minimal entries:
+        - address
+        - name
+        - id
+    :type kwargs: Union[str, Address]
+
+    Its main purpose is be used with :func:`location`.
+    """
+    def __init__(self, **kwargs: Union[str, Address]):
+        self.infos = kwargs
+
+    def __str__(self) -> str:
+        return str(self.infos['name']) + '\n' + str(self.infos['address'])
+
+    def __hash__(self):
+        return hash(self.infos)
+
+    def __eq__(self, other):
+        return self.infos == other.infos
+
+    def __repr__(self) -> str:
+        id = self.infos['id']
+        name = self.infos['name']
+        return f'{id}: {name}'
+
+    def location(self) -> str:
+        """
+        Returns the location (address) of this classroom.
+
+        :return: the location
+        :rtype: str
+        """
+        return '\n'.join(filter(None, str(self).split('\n')))  # Removes blank lines
+
+
+def merge_classrooms(classrooms: Iterable[Classroom]) -> Classroom:
+    """
+    Merges multiple classrooms into one.
+
+    :param classrooms: multiple classrooms
+    :type classrooms: Iterable[Classroom]
+    :return: the new classroom
+    :rtype: Classroom
+
+    :Example:
+
+    >>> c1 = Classroom(address1, 'classA', 1)
+    >>> c2 = Classroom(address2, 'classB', 2)
+    >>> c3 = merge_classrooms((c1, c2))
+    """
+    names = ' | '.join(classroom.infos['name'] for classroom in classrooms)
+    addresses = '\n'.join(str(classroom.infos['address']) for classroom in classrooms)
+    id = '|'.join(classroom.infos['id'] for classroom in classrooms)
+    return Classroom(name=names, address=addresses, id=id)
