@@ -304,6 +304,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(resp => {
                     this.calendarOptions.events.push(resp.data.event);
                     e.target.reset();
+                    this.eventForm = {
+                        name: '',
+                        location: '',
+                        description: '',
+                        beginDay: '',
+                        endDay: '',
+                        beginHour: '',
+                        endHour: '',
+                        freq: [],
+                        beginRecurrDay: '',
+                        endRecurrDay: '',
+                        recurring: false,
+                    };
                     addEventModal.hide();
                 })
                 .catch(err => {
@@ -407,7 +420,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     url: Flask.url_for('calendar.delete_custom_event', {'id': event.id}),
                 })
                 .then(resp => {
-                    event.remove();
+                    this.calendarOptions.events = this.calendarOptions.events.filter(item => item.id !== event.id);
                 })
                 .catch(err => {
                     this.error = true;
