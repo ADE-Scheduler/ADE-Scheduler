@@ -152,26 +152,17 @@ def save():
 
 
 @calendar.route('/schedule', methods=['GET'])
-@login_required
-def download():     # TODO: gérer les share link ici
-    # GILLES = FDP
+def download():
     link = request.args.get('link')
-    share = bool(request.args.get('share'))
     choice = int(request.args.get('choice')) if request.args.get('choice') else 0
     if link:
         mng = app.config['MANAGER']
         schedule, _ = mng.get_schedule(link)
-    elif not share:
-        schedule = session['current_schedule']
     else:
-        schedule = None
+        schedule = session['current_schedule']
 
     if schedule is None:
         return _('The schedule you requested does not exist in our database !'), 400
-    elif share:
-        session['current_schedule'] = md.Schedule(schedule, user=current_user).data
-        g.track_var['schedule share'] = schedule.id
-        return redirect(url_for('calendar.index'))
     else:
         resp = make_response(schedule.get_ics_file(schedule_number=choice))
         resp.mimetype = 'text/calendar'
@@ -180,6 +171,24 @@ def download():     # TODO: gérer les share link ici
             .rstrip() + '.ics'
         g.track_var['schedule download'] = schedule.id
         return resp
+
+
+@calendar.route('/shared_schedule', methods=['GET'])
+@login_required
+def get_shared_schedule():
+    link = request.args.get('link')
+    if link:
+        mng = app.config['MANAGER']
+        schedule, _ = mng.get_schedule(link)
+    else:
+        schedule = None
+
+    if schedule is None:
+        return _('The schedule you requested does not exist in our database !'), 400
+    else:
+        session['current_schedule'] = md.Schedule(schedule, user=current_user).data
+        g.track_var['schedule share'] = schedule.id
+        return redirect(url_for('calendar.index'))
 
 
 @calendar.route('/schedule', methods=['PUT'])
