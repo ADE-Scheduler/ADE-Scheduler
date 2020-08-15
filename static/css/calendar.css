@@ -1,0 +1,198 @@
+/*
+ *  Calendar
+ */
+#calendar {
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+}
+
+.tooltip-inner {
+    white-space: pre-wrap;
+}
+
+.spinner-compute {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 100;
+}
+
+.fc-toolbar-chunk > button, .fc-toolbar-chunk > .fc-button-group > button {
+    font-size: min(3vw, 1em)!important;
+    padding: 3px 6px !important;
+}
+.fc-toolbar-title {
+    font-size: min(3.5vw, 2em) !important;
+}
+.fc-col-header-cell-cushion {
+    text-decoration: none;
+    color: black;
+}
+.fc-col-header-cell-cushion:hover {
+    color: black;
+}
+.fc-daygrid-day-number {
+    text-decoration: none;
+    color: black;
+}
+.fc-daygrid-day-number:hover {
+    text-decoration: none;
+    color: black;
+}
+.fc-timegrid-axis-cushion {
+    text-decoration: none;
+    color: black;
+}
+.fc-timegrid-axis-cushion:hover {
+    text-decoration: none;
+    color: black;
+}
+.fc-daygrid-week-number {
+    text-decoration: none;
+}
+.fc-event {
+    cursor: pointer;
+}
+
+/*
+ * Nav scroller
+ */
+.nav-scroller {
+    position: fixed;
+    width: 100%;
+    z-index: 5;
+    height: 2.75rem;
+    overflow-y: hidden;
+}
+
+.nav-scroller .nav {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    padding-bottom: 1rem;
+    margin-top: -1px;
+    overflow-x: auto;
+    color: rgba(255, 255, 255, .75);
+    text-align: center;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+}
+
+.container-fluid {
+    padding-top: 45px;
+}
+
+.nav-underline .nav-link {
+    padding-top: .75rem;
+    padding-bottom: .75rem;
+    font-size: .875rem;
+    color: #6c757d;
+}
+
+.nav-underline .nav-link:hover {
+  color: #007bff;
+}
+
+.nav-underline .active {
+    font-weight: 500;
+    color: #343a40;
+}
+
+
+/*
+ * Sidebar
+ */
+.btn-info-custom {
+    width: 30px;
+    height: 30px;
+}
+
+.list-code > .code-item {
+    padding: 0;
+}
+.list-code > .code-item:hover {
+    background-color: #f8f9fa;
+}
+.code-item > .badge {
+    margin-right: 20px;
+}
+.code-tag {
+    cursor: pointer;
+    width: 100%;
+    padding: 12px 8px 12px 12px;
+}
+
+.btn-compute-clear {
+    width: 100%;
+}
+
+.code-input {
+    padding-left: 12px;
+    padding-right: 8px;
+    border-color: transparent;
+}
+
+.code-input:focus {
+    border-color: transparent;
+    box-shadow: none;
+}
+
+/* .list-code-input:focus-within {
+    z-index: 3;
+    border-color: #80bdff;
+    box-shadow: 0 0 0 .2rem rgba(0, 123, 255, .25);
+} */
+
+.btn-code-validation {
+    margin: 10px 20px 10px;
+    margin-left: 0;
+    z-index: 2;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 3; /* Behind the navbar */
+    padding: 101px 0 0; /* Height of navbar */
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+}
+
+@media (max-width: 767.98px) {
+    .nav-scroller > nav > .active {
+        display: block;
+    }
+}
+
+.sidebar-sticky {
+    position: relative;
+    top: 0;
+    height: calc(100vh - 101px);
+    overflow-x: hidden;
+    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+}
+
+@supports ((position: -webkit-sticky) or (position: sticky)) {
+    .sidebar-sticky {
+        position: -webkit-sticky;
+        position: sticky;
+    }
+}
+
+.btn-nav {
+    position: fixed;
+    z-index: 4;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+}
+@media (min-width: 767.98px) {
+    .btn-nav {
+        display: none;
+    }
+}
