@@ -69,13 +69,13 @@
 
                     <div v-if="eventInfo.rrule">
                         {{ _('Recurring Event !') }}
-                        <p>{{ _('Start:') }} [[ eventInfo.rrule.start ]]</p>
-                        <p>{{ _('End:') }} [[ eventInfo.rrule.end ]]</p>
+                        <p>{{ _('Start:') }} [[ eventInfo.rrule.pretty_start ]]</p>
+                        <p>{{ _('End:') }} [[ eventInfo.rrule.pretty_end ]]</p>
                         <p>{{ _('Days of week:') }} [[ eventInfo.rrule.days ]]</p>
                     </div>
                     <div v-else>
-                        <p>{{ _('Start:') }} [[ eventInfo.start ]]</p>
-                        <p>{{ _('End:') }} [[ eventInfo.end ]]</p>
+                        <p>{{ _('Start:') }} [[ eventInfo.pretty_start ]]</p>
+                        <p>{{ _('End:') }} [[ eventInfo.pretty_end ]]</p>
                     </div>
 
                 </div>
@@ -168,7 +168,7 @@
                         <div class="col-6">
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" v-model="eventForm.recurring" id="switch-repetition">
-                                <label class="form-check-label" for="switch-repetition">{{_('Recurring event')}}?</label>
+                                <label class="form-check-label" for="switch-repetition">{{_('Recurring event')}} ?</label>
                             </div>
                         </div>
                     </div>
