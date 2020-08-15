@@ -186,7 +186,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             }).length;
 
                             if (count > 1) {
-                                let toolTip = `${count} classrooms to show (click to expand)`;
+                                let toolTip = document.getElementById('current-locale').innerText.trim() === 'EN' ? `${count} classrooms to show (click to expand)`:`${count} locaux à montrer (cliquer pour étendre)`;
                                 marker.bindTooltip(toolTip).openTooltip();
                             } else {
                                 marker.bindTooltip(item.name).openTooltip();
