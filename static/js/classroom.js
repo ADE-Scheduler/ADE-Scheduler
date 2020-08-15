@@ -186,7 +186,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             }).length;
 
                             if (count > 1) {
-                                let toolTip = count + _(' classrooms to show (click to expand)');
+                                let toolTip = `${count} classrooms to show (click to expand)`;
                                 marker.bindTooltip(toolTip).openTooltip();
                             } else {
                                 marker.bindTooltip(item.name).openTooltip();
