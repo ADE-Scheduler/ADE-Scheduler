@@ -139,12 +139,6 @@
     box-shadow: none;
 }
 
-/* .list-code-input:focus-within {
-    z-index: 3;
-    border-color: #80bdff;
-    box-shadow: 0 0 0 .2rem rgba(0, 123, 255, .25);
-} */
-
 .btn-code-validation {
     margin: 10px 20px 10px;
     margin-left: 0;
@@ -172,7 +166,7 @@
     top: 0;
     height: calc(100vh - 101px);
     overflow-x: hidden;
-    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+    overflow-y: auto;
 }
 
 @supports ((position: -webkit-sticky) or (position: sticky)) {
