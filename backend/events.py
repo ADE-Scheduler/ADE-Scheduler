@@ -12,6 +12,7 @@ from flask_babelex import _
 # We need to set the timezone
 TZ = timezone('Europe/Brussels')
 COURSE_REGEX = '([A-Z]+[0-9]+)'
+PRETTY_FORMAT = 'hh:mm - DD/MM/YY'
 
 
 class CustomEvent(Event):
@@ -99,6 +100,8 @@ class CustomEvent(Event):
             'editable': False,
             'backgroundColor': color,
             'borderColor': color,
+            'pretty_start': self.begin.format(PRETTY_FORMAT),
+            'pretty_end': self.begin.format(PRETTY_FORMAT)
         }
 
 
@@ -121,8 +124,8 @@ class RecurringCustomEvent(CustomEvent):
 
     def json(self, color='#8a7451'):
         r = super().json(color=color)
-        del r['start']
-        del r['end']
+        #del r['start']
+        #del r['end']
         days = [_('Sunday'), _('Monday'), _('Tuesday'), _('Wednesday'), _('Thursday'), _('Friday'), _('Saturday')]
         r.update(
             {
@@ -134,12 +137,14 @@ class RecurringCustomEvent(CustomEvent):
                 'rrule': {
                     'days': [days[i] for i in self.freq],
                     'start': str(self.begin),
-                    'end': str(self.end_recurrence)
+                    'end': str(self.end_recurrence),
+                    'pretty_start': self.begin.format(PRETTY_FORMAT),
+                    'pretty_end': self.end_recurrence.format(PRETTY_FORMAT)
                 }
 
             }
         )
-
+        
         return r
 
     def __str__(self):

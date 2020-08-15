@@ -140,7 +140,6 @@ def delete_custom_event(id):
 
 
 @calendar.route('/schedule', methods=['POST'])
-@login_required
 def save():
     if not current_user.is_authenticated:
         return 'Login is required', 401
