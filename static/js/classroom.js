@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
             computing: false,
             error: false,
             url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            // url: 'https://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.png',
             center: L.latLng(50.6681, 4.6118),
             zoom: 15,
             attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
@@ -175,7 +176,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 .filter(item => item.latitude !== null && item.longitude !== null)
                 .forEach(item => {
                     let marker = L.marker(L.latLng(item.latitude, item.longitude)).addTo(map);
-                    marker.bindTooltip(item.name);
+                    if (isTouchDevice) {
+                        marker.bindTooltip(item.name);
+                    } else {
+                        marker.on('mouseover', function(e) {
+                            let count = oms.getMarkers().filter(item => {
+                                let latlng = item.getLatLng();
+                                return latlng.lat === e.latlng.lat && latlng.lng === e.latlng.lng;
+                            }).length;
+
+                            if (count > 1) {
+                                marker.bindTooltip('Click to see all the markers !').openTooltip();
+                            } else {
+                                marker.bindTooltip(item.name).openTooltip();
+                            }
+                        });
+                    }
                     oms.addMarker(marker);
                     this.markers.push(marker);
                 });
