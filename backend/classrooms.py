@@ -1,11 +1,10 @@
+from flask import current_app, url_for
 from typing import Iterable, Union
 import pandas as pd
 import backend.resources as rsrc
 from geopy.geocoders import Nominatim
 import time
 import json
-
-ADDRESSES_FILENAME = 'static/json/geo_locations.json'
 
 
 class Address:
@@ -44,13 +43,15 @@ class Address:
 
 
 def get_geo_locations():
-    with open(ADDRESSES_FILENAME, 'r') as f:
-        return json.load(f)
+    with current_app.app_context():
+        with open(url_for('static', 'json/geo_locations.json'), 'r') as f:
+            return json.load(f)
 
 
 def save_geo_locations(geo_locations: dict):
-    with open(ADDRESSES_FILENAME, 'w') as f:
-        json.dump(geo_locations, f, sort_keys=True, indent=4)
+    with current_app.app_context():
+        with open(url_for('static', 'json/geo_locations.json'), 'r') as f:
+            json.dump(geo_locations, f, sort_keys=True, indent=4)
 
 
 def prettify_classrooms(classrooms: pd.DataFrame, sleep: float = 0) -> pd.DataFrame:
