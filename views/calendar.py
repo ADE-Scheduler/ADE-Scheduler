@@ -66,7 +66,9 @@ def clear():
     mng = app.config['MANAGER']
     session['current_schedule'] = schd.Schedule(mng.get_default_project_id())
     session['current_schedule_modified'] = False
-    return 'OK', 200
+    return jsonify({
+        'label': session['current_schedule'].label,
+    }), 200
 
 
 @calendar.route('/data', methods=['GET'])
@@ -75,6 +77,7 @@ def get_data():
     return jsonify({
         'project_id': mng.get_project_ids(),
         'current_project_id': session['current_schedule'].project_id,
+        'label': session['current_schedule'].label,
         'n_schedules': len(session['current_schedule'].best_schedules),
         'events': session['current_schedule'].get_events(json=True),
         'codes': session['current_schedule'].codes,

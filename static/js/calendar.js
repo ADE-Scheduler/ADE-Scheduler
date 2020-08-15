@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
         el: '#app',
         components: { FullCalendar },
         data: {
+            label: '',
             projectId: [],
             currentProjectId: 0,
             codes: [],
@@ -157,6 +158,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(resp => {
                     this.codes = resp.data.codes;
                     this.projectId = resp.data.project_id;
+                    this.label = resp.data.label;
                     this.currentProjectId = resp.data.current_project_id;
                     this.n_schedules = resp.data.n_schedules;
                     this.calendarOptions.events = resp.data.events;
@@ -179,6 +181,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.n_schedules = 0;
                     this.selected_schedule = 0;
                     this.codes = [];
+                    this.label = resp.data.label;
                 })
                 .catch(err => {
                     this.error = true;

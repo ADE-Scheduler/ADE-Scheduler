@@ -285,13 +285,14 @@
         <!-- Sidebar -->
         <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
             <div class="sidebar-sticky d-flex flex-column p-3">
-                <a tabindex="0" class="badge rounded-pill bg-info badge-info-custom text-white" data-toggle="popover" data-trigger="focus"
-                    data-content="To view more info or adapt your schedule, click on a course code." data-title="Note">
-                    <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-info" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588z"/>
-                        <circle cx="8" cy="4.5" r="1"/>
-                    </svg>
-                </a>
+                <div class="d-flex flex-row flex-nowrap justify-content-between">
+                    <div class="text-truncate "><h5> [[ label ]] </h5></div>
+                    <button tabindex="0" href="#" class="btn btn-outline-info btn-sm ml-2 mb-2 btn-info-custom font-weight-bold rounded-circle"
+                        data-toggle="popover" data-trigger="focus"
+                        data-content="To view more info or adapt your schedule, click on a course code." data-title="Note">
+                        i
+                    </button>
+                </div>
                 <div class="list-group list-code">
                     <li class="list-group-item code-item d-flex justify-content-between align-items-center"  v-for='code in codes'>
                         <div class="code-tag" v-on:click="getDetails(code)">
