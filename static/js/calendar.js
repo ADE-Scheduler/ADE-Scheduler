@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
             selected_schedule: 0,
             computing: true,
             error: false,
-            saveSuccess: false,
+            saveSuccess: !!document.getElementById('scheduleSaved'),
             code: '',
             eventForm: {
                 name: '',
@@ -234,7 +234,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .catch(err => {
                     if (err.response.status === 401) {
-                        window.location.href = Flask.url_for('security.login');
+                        window.location.href = `${Flask.url_for('security.login')}?next=${Flask.url_for('calendar.index')}%3Fsave%3DTrue`;
                     } else {
                         this.error = true;
                     }

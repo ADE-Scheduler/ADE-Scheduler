@@ -339,13 +339,14 @@
         <!-- Main content -->
         <div class="container-fluid">
             <div class="col-md-9 ml-sm-auto col-lg-10 p-3">
-                <div class="alert alert-success alert-dismissible" style="display: none;" v-show="saveSuccess">
+                {% if saved %}<div style="display:none" id="scheduleSaved"></div>{% endif %}
+                <div class="alert alert-success alert-dismissible" v-show="saveSuccess">
                     {{_('Schedule successfuly saved !')}}
                     <button type="button" class="close"v-on:click="saveSuccess = false">
                         <span>&times;</span>
                     </button>
                 </div>
-                <div class="alert alert-danger alert-dismissible" style="display: none;" v-show="error">
+                <div class="alert alert-danger alert-dismissible" v-show="error">
                     {{_('A problem has occurred. Please contact us if it happens again.')}}
                     <button type="button" class="close" v-on:click="error = false">
                         <span>&times;</span>

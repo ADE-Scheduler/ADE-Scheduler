@@ -53,6 +53,11 @@ def before_calendar_request():
 
 @calendar.route('/')
 def index():
+    if bool(request.args.get('save')) and current_user.is_authenticated:
+        mng = app.config['MANAGER']
+        session['current_schedule'] = mng.save_schedule(current_user, session['current_schedule'])
+        session['current_schedule_modified'] = False
+        return render_template('calendar.html', saved=True)
     return render_template('calendar.html')
 
 
