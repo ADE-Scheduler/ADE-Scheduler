@@ -7,10 +7,9 @@ import pandas as pd
 from collections import defaultdict, Counter
 from backend.classrooms import Classroom, Address
 from backend.courses import Course
-from backend.resources import Resource
 from backend import professors
 import backend.events
-from typing import Dict, Union, List, Tuple, SupportsInt
+from typing import Dict, Union, List, Tuple, SupportsInt, Callable, Type
 
 
 class ExpiredTokenError(Exception):
@@ -407,6 +406,75 @@ def response_to_classrooms(classrooms_response: requests.Response) -> List[Class
     return classrooms
 
 
+def parse_event(event: etree.ElementTree, event_type: Type[backend.events.AcademicalEvent],
+                activity_name: str, activity_id: str, activity_code: str) -> backend.events.AcademicalEvent:
+    """
+    Parses an element from a request into an academical event.
+    An event is from an activity so information about this activity must be provided.
+
+    :param event: the event element
+    :type event: etree.ElementTree
+    :param event_type: the constructor used to initiate to event object
+    :type event_type: Type[backend.events.AcademicalEvent]
+    :param activity_name: the name of the activity
+    :type activity_name: str
+    :param activity_id: the id of the activity
+    :type activity_id: str
+    :param activity_code: the code of the activity
+    :type activity_code: str
+    :return: the academical event
+    :rtype: backend.events.AcademicalEvent
+    """
+    event_date = event.attrib['date']
+    event_start = event.attrib['startHour']
+    event_end = event.attrib['endHour']
+    rooms = event.xpath('.//eventParticipant[@category="classroom"]')
+    classrooms = [room_to_classroom(room) for room in rooms]
+
+    instructor_names = event.xpath('.//eventParticipant[@category="instructor"]/@name')
+    instructor_emails = event.xpath('.//eventParticipant[@category="instructor"]/@mail')  # TODO: email ?
+    event_instructor = professors.merge_professors(professors.Professor(name, email)
+                                                   for name, email in zip(instructor_names, instructor_emails))
+
+    # We create the event
+    t0, t1 = backend.events.extract_datetime(event_date, event_start, event_end)
+    return event_type(name=activity_name, begin=t0, end=t1, professor=event_instructor,
+                      classrooms=classrooms, id=activity_id, code=activity_code)
+
+
+def parse_activity(activity: etree.ElementTree) -> Tuple[List[backend.events.AcademicalEvent], str, str, str]:
+    """
+    Parses an element from a request into a list of events and some activity information.
+
+    :param activity: the activity element
+    :type activity: etree.ElementTree
+    :return: the events, the name, the id and the code of this activity
+    :rtype: Tuple[List[backend.events.AcademicalEvent], str, str, str]
+    """
+    activity_id = activity.attrib['name']
+    activity_type = activity.attrib['type']
+    activity_name = activity.attrib['code']
+
+    event_type = backend.events.extract_type(activity_type, activity_id)
+    event_codes = activity.xpath('.//eventParticipant[@category="category5"]/@name')
+    events = activity.xpath('.//event')
+    events_list = list()
+
+    if len(event_codes) == 0:
+        activity_code = backend.events.extract_code(activity_id)
+    else:
+        activity_code = Counter(event_codes).most_common()[0][0]
+    if activity_code is '':
+        activity_code = 'Other'
+
+    for event in events:
+        events_list.append(
+            parse_event(event, event_type, activity_name, activity_id, activity_code)
+        )
+
+    return events_list, activity_name, activity_id, activity_code
+
+
 def response_to_courses(activities_response: requests.Response) -> List[Course]:
     """
     Extracts an API response into list of courses.
@@ -418,7 +486,7 @@ def response_to_courses(activities_response: requests.Response) -> List[Course]:
 
     :Example:
 
-    >>> response = client.get_activities(9)  # project id for 2019-2020
+    >>> response = client.get_activities(['1234'], 9)  # project id for 2019-2020
     >>> courses = response_to_courses(response)
     """
     root = response_to_root(activities_response)
@@ -427,39 +495,8 @@ def response_to_courses(activities_response: requests.Response) -> List[Course]:
 
     # Each activity has its unique event type
     for activity in root.xpath('//activity'):
-        activity_id = activity.attrib['name']
-        activity_type = activity.attrib['type']
-        activity_name = activity.attrib['code']
 
-        event_type = backend.events.extract_type(activity_type, activity_id)
-        event_codes = activity.xpath('.//eventParticipant[@category="category5"]/@name')
-        events = activity.xpath('.//event')
-        events_list = list()
-
-        if len(event_codes) == 0:
-            activity_code = backend.events.extract_code(activity_id)
-        else:
-            activity_code = Counter(event_codes).most_common()[0][0]
-        if activity_code is '':
-            activity_code = 'Other'
-
-        for event in events:
-            event_date = event.attrib['date']
-            event_start = event.attrib['startHour']
-            event_end = event.attrib['endHour']
-            rooms = event.xpath('.//eventParticipant[@category="classroom"]')
-            classrooms = [room_to_classroom(room) for room in rooms]
-
-            instructor_names = event.xpath('.//eventParticipant[@category="instructor"]/@name')
-            instructor_emails = event.xpath('.//eventParticipant[@category="instructor"]/@id')  # TODO: email ?
-            event_instructor = professors.merge_professors(professors.Professor(name, email)
-                                                           for name, email in zip(instructor_names, instructor_emails))
-
-            # We create the event
-            t0, t1 = backend.events.extract_datetime(event_date, event_start, event_end)
-            event = event_type(name=activity_name, begin=t0, end=t1, professor=event_instructor,
-                                classrooms=classrooms, id=activity_id, code=activity_code)
-            events_list.append(event)
+        events_list, activity_name, activity_id, activity_code = parse_activity(activity)
 
         if activity_code not in courses and events_list:
             courses[activity_code] = Course(activity_code, activity_name)
@@ -467,6 +504,41 @@ def response_to_courses(activities_response: requests.Response) -> List[Course]:
             courses[activity_code].add_activity(events_list)
 
     return list(courses.values())
+
+
+def response_to_events(activities_response: requests.Response,
+                       filter_func: Callable[[backend.events.AcademicalEvent], bool])\
+        -> List[backend.events.AcademicalEvent]:
+    """
+    Extracts an API response into list of events.
+
+    :param activities_response: a response from the API to the activities request
+    :type activities_response: requests.Response
+    :param filter_func: a function to filter out events
+    :type filter_func: Callable[[backend.events.AcademicalEvent], bool]
+    :return: all events present in the response, optionnally filtered
+    :rtype: List[backend.events.AcademicalEvents]
+
+    :Example:
+
+    >>> response = client.get_activities(['1234'], 9)  # project id for 2019-2020
+    >>> events = response_to_events(response)
+    """
+    root = response_to_root(activities_response)
+
+    events = list()
+
+    # Each activity has its unique event type
+    for activity in root.xpath('//activity'):
+
+        events_list, activity_name, activity_id, activity_code = parse_activity(activity)
+
+        events.extend(
+            filter(filter_func,
+                   events_list)
+        )
+
+    return events
 
 
 if __name__ == "__main__":

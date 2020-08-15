@@ -22,18 +22,20 @@ def get_data():
     }), 200
 
 
-@classroom.route('/<code>/occupation', methods=['GET'])
-def get_occupation(code):
+@classroom.route('/<id>/occupation', methods=['GET'])
+def get_occupation(id):
     events = list()
     mng = app.config['MANAGER']
+
     project_ids = mng.get_project_ids()
     for project_id in project_ids:
-        classrooms = mng.get_courses(code, project_id=project_id['id'])
-        for classroom in classrooms:
-            events.extend([e.json('#2C3E50') for e in classroom.get_events()])
+        events_in_classroom = mng.get_events_in_classroom(id, project_id=project_id['id'])
+        events.extend(
+            map(lambda e: e.json('#2C3E50'),
+                events_in_classroom
+                )
+        )
 
-    # TODO faire un truc propre comme pour ade v1 @Jérome
-    # ce truc marche mais il prend certains event qui sont pas au local per se
     return jsonify({
         'events': events,
     }), 200

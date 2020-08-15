@@ -125,11 +125,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.computing = false;
                 });
             },
-            getOccupation: function(name) {
+            getOccupation: function(classroom_id) {
                 this.computing = true;
                 axios({
                     method: 'GET',
-                    url: Flask.url_for('classroom.get_occupation', {code: name}),
+                    url: Flask.url_for('classroom.get_occupation', {id: classroom_id}),
                 })
                 .then(resp => {
                     this.calendarOptions.events = resp.data.events

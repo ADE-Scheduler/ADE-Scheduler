@@ -1,7 +1,6 @@
 from multiprocessing import Process
 import pandas as pd
 import time
-import json
 from typing import SupportsInt, List, Iterator, Optional, Union, Dict
 
 import backend.servers as srv
@@ -11,7 +10,7 @@ import backend.courses as crs
 import backend.schedules as schd
 import backend.resources as rsrc
 import backend.classrooms as clrm
-
+import backend.events as evt
 
 class ScheduleNotOwnedError(Exception):
     """
@@ -97,6 +96,35 @@ class Manager:
 
         return courses
 
+    def get_events_in_classroom(self, classroom_id: str, project_id: SupportsInt = None) -> List[evt.AcademicalEvent]:
+
+        if project_id is None:
+            project_id = self.get_default_project_id()
+
+        # Fetch from the server
+        key = f'[EVENTS_CLASSROOM_ID={classroom_id}, project_id={project_id}]'
+        events = self.server.get_value(key)
+
+        if events is not None:
+            return events
+
+        def filter_func(event: evt.AcademicalEvent):
+            for classroom in event.classrooms:
+                if classroom_id == classroom.infos['id']:
+                    return True
+            return False
+
+        if self.client.is_expired():
+            self.client.renew_token()
+
+        events = ade.response_to_events(self.client.get_activities([classroom_id], project_id), filter_func)
+
+        self.server.set_value(key, events, expire_in={'hours': 24})
+
+        return events
+
+
+
     def get_resources(self, project_id: SupportsInt = None) -> pd.DataFrame:
         """
         Returns the resources.
@@ -149,7 +177,7 @@ class Manager:
                 classrooms = classrooms[contains]
 
         if return_json:
-            return list(classrooms.to_dict(orient='index').values())
+            return list(classrooms.reset_index(level=0).to_dict(orient='index').values())
         else:
             return classrooms
 

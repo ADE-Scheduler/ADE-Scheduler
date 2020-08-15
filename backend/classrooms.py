@@ -14,7 +14,6 @@ class Address:
 
     :param kwargs: dict with minimal entries (can be None):
         - address1
-        - address2
         - zipCode
         - city
         - country
@@ -22,7 +21,7 @@ class Address:
 
     :Example:
 
-    >>> informations = dict(address1='Rue Rose 42', address2=None, zipCode='1300', city='Wavre', country='Belgique')
+    >>> informations = dict(address1='Rue Rose 42', zipCode='1300', city='Wavre', country='Belgique')
     >>> address = Address(**informations)
     """
 
@@ -168,4 +167,5 @@ def merge_classrooms(classrooms: Iterable[Classroom]) -> Classroom:
     """
     names = ' | '.join(classroom.infos['name'] for classroom in classrooms)
     addresses = '\n'.join(str(classroom.infos['address']) for classroom in classrooms)
-    return Classroom(name=names, address=addresses, id=-1)
+    id = '|'.join(classroom.infos['id'] for classroom in classrooms)
+    return Classroom(name=names, address=addresses, id=id)
