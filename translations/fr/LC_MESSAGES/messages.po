@@ -662,7 +662,7 @@ msgstr "ADE Scheduler fait peau neuve ! Bienvenue sur la version 2.0 !"
 
 #: templates/welcome.html:32
 msgid "You heard it, 2.0 ! The same as before... but in better !"
-msgstr "You l'avez bien lu, 2.0 ! Le même qu'avant... mais en mieux !"
+msgstr "Vous l'avez bien lu, 2.0 ! Le même qu'avant... mais en mieux !"
 
 #: templates/welcome.html:34
 msgid ""
