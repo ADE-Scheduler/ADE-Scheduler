@@ -5,7 +5,7 @@ from typing import Any
 
 from flask import current_app as app
 from flask import Blueprint, render_template, session, jsonify, request, make_response, redirect, url_for, g
-from flask_security import current_user
+from flask_security import current_user, login_required
 
 import backend.schedules as schd
 import backend.events as evt
@@ -140,6 +140,7 @@ def delete_custom_event(id):
 
 
 @calendar.route('/schedule', methods=['POST'])
+@login_required
 def save():
     if not current_user.is_authenticated:
         return 'Login is required', 401
@@ -151,7 +152,9 @@ def save():
 
 
 @calendar.route('/schedule', methods=['GET'])
+@login_required
 def download():     # TODO: gérer les share link ici
+    # GILLES = FDP
     link = request.args.get('link')
     share = bool(request.args.get('share'))
     choice = int(request.args.get('choice')) if request.args.get('choice') else 0
