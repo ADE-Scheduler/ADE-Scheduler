@@ -99,7 +99,7 @@ babel = Babel(app)
 @babel.localeselector
 def get_locale():
     if session.get('locale') is None:
-        session['locale'] = request.accept_languages.best_match(app.config['LANGUAGES'])
+        session['locale'] = 'fr'
     return session['locale']
 
 
@@ -116,6 +116,8 @@ def set_locale(locale):
 @app.before_first_request
 def before_first_request():
     # TODO: HTTPD il aime pas (a pas la permission de write I guess)
+    # Fix temporaire: copier/coller le fichier sur le serv à chaque fois qu'on change un des pathname/view !
+    # Autre soucis: il se cache dans les webnav, faut changer la version pour éviter que ça ne se re-fetch jamais
     try:
         if not os.path.exists('static/dist'):
             os.makedirs('static/dist')
