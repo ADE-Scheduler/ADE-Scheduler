@@ -6,6 +6,7 @@ from typing import Any
 from flask import current_app as app
 from flask import Blueprint, render_template, session, jsonify, request, make_response, redirect, url_for, g
 from flask_security import current_user, login_required
+from flask_babelex import _
 
 import backend.schedules as schd
 import backend.events as evt
@@ -67,7 +68,7 @@ def clear():
     session['current_schedule'] = schd.Schedule(mng.get_default_project_id())
     session['current_schedule_modified'] = False
     return jsonify({
-        'label': session['current_schedule'].label,
+        'label': _(session['current_schedule'].label),
     }), 200
 
 
@@ -77,7 +78,7 @@ def get_data():
     return jsonify({
         'project_id': mng.get_project_ids(),
         'current_project_id': session['current_schedule'].project_id,
-        'label': session['current_schedule'].label,
+        'label': _(session['current_schedule'].label),
         'n_schedules': len(session['current_schedule'].best_schedules),
         'events': session['current_schedule'].get_events(json=True),
         'codes': session['current_schedule'].codes,
