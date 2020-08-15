@@ -12,7 +12,21 @@ from flask_babelex import _
 # We need to set the timezone
 TZ = timezone('Europe/Brussels')
 COURSE_REGEX = '([A-Z]+[0-9]+)'
-PRETTY_FORMAT = 'hh:mm - DD/MM/YY'
+PRETTY_HOUR_FORMAT = 'HH:mm'
+PRETTY_DATE_FORMAT = 'DD/MM/YY'
+PRETTY_FORMAT = 'HH:mm - DD/MM/YY'
+
+
+def pretty_hour_formatter(arrow) -> str:
+    return arrow.format(PRETTY_HOUR_FORMAT).replace(':', 'h')
+
+
+def pretty_date_formatter(arrow) -> str:
+    return arrow.format(PRETTY_DATE_FORMAT)
+
+
+def pretty_formatter(arrow) -> str:
+    return f'{pretty_hour_formatter(arrow)} - {pretty_date_formatter(arrow)}'
 
 
 class CustomEvent(Event):
@@ -100,8 +114,8 @@ class CustomEvent(Event):
             'editable': False,
             'backgroundColor': color,
             'borderColor': color,
-            'pretty_start': self.begin.format(PRETTY_FORMAT),
-            'pretty_end': self.begin.format(PRETTY_FORMAT)
+            'pretty_start': pretty_formatter(self.begin),
+            'pretty_end': pretty_formatter(self.end)
         }
 
 
@@ -124,27 +138,33 @@ class RecurringCustomEvent(CustomEvent):
 
     def json(self, color='#8a7451'):
         r = super().json(color=color)
-        #del r['start']
-        #del r['end']
-        days = [_('Sunday'), _('Monday'), _('Tuesday'), _('Wednesday'), _('Thursday'), _('Friday'), _('Saturday')]
+        del r['start']
+        del r['end']
+        DAYS = [_('Sunday'), _('Monday'), _('Tuesday'), _('Wednesday'), _('Thursday'), _('Friday'), _('Saturday')]
+
+        self.freq.sort()
+
         r.update(
             {
                 'daysOfWeek': self.freq,
                 'startTime': self.begin.format('hh:mmz'),
                 'endTime': self.end.format('hh:mmz'),
+                'pretty_startTime': pretty_hour_formatter(self.begin),
+                'pretty_endTime': pretty_hour_formatter(self.end),
                 'starRecur': str(self.begin),
                 'endRecur': str(self.end_recurrence),
                 'rrule': {
-                    'days': [days[i] for i in self.freq],
+                    'days': [DAYS[i] for i in self.freq],
                     'start': str(self.begin),
                     'end': str(self.end_recurrence),
-                    'pretty_start': self.begin.format(PRETTY_FORMAT),
-                    'pretty_end': self.end_recurrence.format(PRETTY_FORMAT)
+                    'pretty_days': ', '.join(DAYS[i] for i in self.freq),
+                    'pretty_start': f'{DAYS[(self.begin.weekday() + 1) % 7]} {self.begin.format(PRETTY_DATE_FORMAT)}',
+                    'pretty_end': f'{DAYS[(self.end_recurrence.weekday() + 1) % 7]} {self.end_recurrence.format(PRETTY_DATE_FORMAT)}'
                 }
 
             }
         )
-        
+
         return r
 
     def __str__(self):
