@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-08-15 16:35+0200\n"
+"POT-Creation-Date: 2020-08-15 16:50+0200\n"
 "PO-Revision-Date: 2020-07-24 16:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -83,7 +83,7 @@ msgstr "Annuler"
 msgid "Continue"
 msgstr "Continuer"
 
-#: templates/account.html:35 templates/calendar.html:351
+#: templates/account.html:35 templates/calendar.html:352
 #: templates/classroom.html:32 templates/dist/account.html:35
 #: templates/dist/calendar.html:346
 msgid "A problem has occurred. Please contact us if it happens again."
@@ -95,7 +95,7 @@ msgstr ""
 msgid "Color palette"
 msgstr "Palette de couleur"
 
-#: templates/account.html:60 templates/calendar.html:318
+#: templates/account.html:60 templates/calendar.html:319
 #: templates/dist/account.html:60 templates/dist/calendar.html:314
 msgid "Academic year"
 msgstr "Année académique"
@@ -117,13 +117,13 @@ msgstr "Supprimer"
 msgid "Schedules"
 msgstr "Horaires"
 
-#: templates/account.html:104 templates/calendar.html:335
+#: templates/account.html:104 templates/calendar.html:336
 #: templates/dist/account.html:104 templates/dist/calendar.html:331
 #: templates/dist/help.html:45 templates/help.html:46
 msgid "OpenSource software"
 msgstr "Logiciel OpenSource"
 
-#: templates/account.html:104 templates/calendar.html:335
+#: templates/account.html:104 templates/calendar.html:336
 #: templates/dist/account.html:104 templates/dist/calendar.html:331
 #: templates/dist/help.html:45 templates/help.html:46
 msgid ""
@@ -277,33 +277,31 @@ msgstr "Ajouter"
 msgid "Download"
 msgstr "Télécharger"
 
-#: templates/calendar.html:289
-msgid ""
-"To view more information or to modify your schedule, click on a course "
-"code."
-msgstr "Pour voir plus d'informations ou pour modifier votre horaire, cliquez sur le code d'un cours."
+#: templates/calendar.html:292
+msgid "To view more info or adapt your schedule, click on a course code."
+msgstr "Afin de voir plus d'informations ou de modifier votre horaire, cliquez sur le code d'un cours."
 
-#: templates/calendar.html:289
+#: templates/calendar.html:292
 msgid "Note"
 msgstr "Note"
 
-#: templates/calendar.html:311 templates/dist/calendar.html:307
+#: templates/calendar.html:312 templates/dist/calendar.html:307
 msgid "Enter code"
 msgstr "Entrez un code"
 
-#: templates/calendar.html:327 templates/dist/calendar.html:323
+#: templates/calendar.html:328 templates/dist/calendar.html:323
 msgid "Compute"
 msgstr "Calculer"
 
-#: templates/calendar.html:330 templates/dist/calendar.html:326
+#: templates/calendar.html:331 templates/dist/calendar.html:326
 msgid "Clear"
 msgstr "Effacer"
 
-#: templates/calendar.html:345 templates/dist/calendar.html:340
+#: templates/calendar.html:346 templates/dist/calendar.html:340
 msgid "Schedule successfuly saved !"
 msgstr "Horaire sauvegardé avec succès !"
 
-#: templates/calendar.html:360 templates/dist/calendar.html:355
+#: templates/calendar.html:361 templates/dist/calendar.html:355
 msgid ""
 "Disclaimer: this software is not an official UCLouvain tool. It has been "
 "designed with the purpose to help the EPL students with scheduling. This "
@@ -802,7 +800,7 @@ msgstr "Aucun mot de passe spécifié"
 msgid "Confirm password"
 msgstr "Confirmez le mot de passe"
 
-#: views/calendar.py:169 views/calendar.py:191
+#: views/calendar.py:172 views/calendar.py:194
 msgid "The schedule you requested does not exist in our database !"
 msgstr "L'horaire que vous avez demandé n'existe pas dans notre base de données !"
 
@@ -1178,4 +1176,13 @@ msgstr "L'horaire que vous avez demandé n'existe pas dans notre base de donnée
 
 #~ msgid " classrooms to show (click to expand)"
 #~ msgstr ""
+
+#~ msgid ""
+#~ "To view more information or to "
+#~ "modify your schedule, click on a "
+#~ "course code."
+#~ msgstr ""
+#~ "Pour voir plus d'informations ou pour"
+#~ " modifier votre horaire, cliquez sur "
+#~ "le code d'un cours."
 
