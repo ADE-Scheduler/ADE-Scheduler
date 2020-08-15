@@ -35,7 +35,7 @@ from views.classroom import classroom
 from views.help import help
 
 # Setup app
-app = Flask(__name__, template_folder=os.path.abspath('static/dist/html'))
+app = Flask(__name__, template_folder='static/dist/html')
 app.register_blueprint(calendar, url_prefix='/calendar')
 app.register_blueprint(account, url_prefix='/account')
 app.register_blueprint(classroom, url_prefix='/classroom')
@@ -115,6 +115,7 @@ def set_locale(locale):
 
 @app.before_first_request
 def before_first_request():
+    # TODO: HTTPD il aime pas (a pas la permission de write I guess)
     if not os.path.exists('static/dist'):
         os.makedirs('static/dist')
     with open('static/dist/jsglue.min.js', 'w') as f:
