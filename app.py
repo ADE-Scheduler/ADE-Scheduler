@@ -96,6 +96,17 @@ app.config['BABEL_TRANSLATION_DIRECTORIES'] = 'translations'
 babel = Babel(app)
 
 
+@app.template_filter('autoversion')
+def autoversion_filter(filename):
+    fullpath = os.path.join('', filename[1:])
+    try:
+        timestamp = str(os.path.getmtime(fullpath))
+    except OSError:
+        return filename
+    newfilename = "{0}?{1}".format(filename, timestamp)
+    return newfilename
+
+
 @babel.localeselector
 def get_locale():
     if session.get('locale') is None:
@@ -103,7 +114,7 @@ def get_locale():
     return session['locale']
 
 
-app.jinja_env.globals['get_locale'] = get_locale
+app.jinja_env.globals.update(get_locale=get_locale)
 
 
 @app.route('/locale/<locale>')
@@ -115,7 +126,7 @@ def set_locale(locale):
 
 @app.before_first_request
 def before_first_request():
-    # TODO: HTTPD il aime pas (a pas la permission de write I guess)
+    # TODO: Apache il aime pas (a pas la permission de write I guess)
     # Fix temporaire: copier/coller le fichier sur le serv à chaque fois qu'on change un des pathname/view !
     # Autre soucis: il se cache dans les webnav, faut changer la version pour éviter que ça ne se re-fetch jamais
     try:
