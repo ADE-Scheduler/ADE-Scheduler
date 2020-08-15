@@ -69,9 +69,10 @@
 
                     <div v-if="eventInfo.rrule">
                         {{ _('Recurring Event !') }}
+                        <p>{{ _('From') }} [[ eventInfo.pretty_startTime ]] {{ _('to') }} [[ eventInfo.pretty_endTime ]]</p>
                         <p>{{ _('Start:') }} [[ eventInfo.rrule.pretty_start ]]</p>
                         <p>{{ _('End:') }} [[ eventInfo.rrule.pretty_end ]]</p>
-                        <p>{{ _('Days of week:') }} [[ eventInfo.rrule.days ]]</p>
+                        <p>{{ _('Days of week:') }} [[ eventInfo.rrule.pretty_days ]]</p>
                     </div>
                     <div v-else>
                         <p>{{ _('Start:') }} [[ eventInfo.pretty_start ]]</p>
