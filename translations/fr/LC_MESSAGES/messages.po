@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-08-15 16:02+0200\n"
+"POT-Creation-Date: 2020-08-15 16:35+0200\n"
 "PO-Revision-Date: 2020-07-24 16:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -26,37 +26,37 @@ msgstr "Une erreur est apparue. Si cela arrive à nouveau, veuillez nous contact
 msgid "404 Page not found :("
 msgstr "404 Page non trouvée :("
 
-#: backend/events.py:18 templates/calendar.html:233
+#: backend/events.py:143 templates/calendar.html:233
 #: templates/dist/calendar.html:229
 msgid "Sunday"
 msgstr "Dimanche"
 
-#: backend/events.py:18 templates/calendar.html:227
+#: backend/events.py:143 templates/calendar.html:227
 #: templates/dist/calendar.html:223
 msgid "Monday"
 msgstr "Lundi"
 
-#: backend/events.py:18 templates/calendar.html:228
+#: backend/events.py:143 templates/calendar.html:228
 #: templates/dist/calendar.html:224
 msgid "Tuesday"
 msgstr "Mardi"
 
-#: backend/events.py:18 templates/calendar.html:229
+#: backend/events.py:143 templates/calendar.html:229
 #: templates/dist/calendar.html:225
 msgid "Wednesday"
 msgstr "Mercredi"
 
-#: backend/events.py:18 templates/calendar.html:230
+#: backend/events.py:143 templates/calendar.html:230
 #: templates/dist/calendar.html:226
 msgid "Thursday"
 msgstr "Jeudi"
 
-#: backend/events.py:18 templates/calendar.html:231
+#: backend/events.py:143 templates/calendar.html:231
 #: templates/dist/calendar.html:227
 msgid "Friday"
 msgstr "Vendredi"
 
-#: backend/events.py:18 templates/calendar.html:232
+#: backend/events.py:143 templates/calendar.html:232
 #: templates/dist/calendar.html:228
 msgid "Saturday"
 msgstr "Samedi"
@@ -83,7 +83,7 @@ msgstr "Annuler"
 msgid "Continue"
 msgstr "Continuer"
 
-#: templates/account.html:35 templates/calendar.html:350
+#: templates/account.html:35 templates/calendar.html:351
 #: templates/classroom.html:32 templates/dist/account.html:35
 #: templates/dist/calendar.html:346
 msgid "A problem has occurred. Please contact us if it happens again."
@@ -277,6 +277,16 @@ msgstr "Ajouter"
 msgid "Download"
 msgstr "Télécharger"
 
+#: templates/calendar.html:289
+msgid ""
+"To view more information or to modify your schedule, click on a course "
+"code."
+msgstr "Pour voir plus d'informations ou pour modifier votre horaire, cliquez sur le code d'un cours."
+
+#: templates/calendar.html:289
+msgid "Note"
+msgstr "Note"
+
 #: templates/calendar.html:311 templates/dist/calendar.html:307
 msgid "Enter code"
 msgstr "Entrez un code"
@@ -289,11 +299,11 @@ msgstr "Calculer"
 msgid "Clear"
 msgstr "Effacer"
 
-#: templates/calendar.html:344 templates/dist/calendar.html:340
+#: templates/calendar.html:345 templates/dist/calendar.html:340
 msgid "Schedule successfuly saved !"
 msgstr "Horaire sauvegardé avec succès !"
 
-#: templates/calendar.html:359 templates/dist/calendar.html:355
+#: templates/calendar.html:360 templates/dist/calendar.html:355
 msgid ""
 "Disclaimer: this software is not an official UCLouvain tool. It has been "
 "designed with the purpose to help the EPL students with scheduling. This "
@@ -648,11 +658,11 @@ msgstr ""
 
 #: templates/welcome.html:31
 msgid "ADE Scheduler under new skin ! Welcome to the version 2.0 !"
-msgstr ""
+msgstr "ADE Scheduler fait peau neuve ! Bienvenue sur la version 2.0 !"
 
 #: templates/welcome.html:32
 msgid "You heard it, 2.0 ! The same as before... but in better !"
-msgstr ""
+msgstr "You l'avez bien lu, 2.0 ! Le même qu'avant... mais en mieux !"
 
 #: templates/welcome.html:34
 msgid ""
@@ -660,14 +670,17 @@ msgid ""
 "using an email address. It means that your old accounts must be created "
 "again."
 msgstr ""
+"Information pour les anciens utilisateurs : vous devez maintenant vous "
+"enregistrer avec une adresse email. Cela veut dire que vos anciens "
+"comptes ne fonctionneront plus."
 
 #: templates/welcome.html:37
 msgid "Get started"
-msgstr ""
+msgstr "C'est parti !"
 
 #: templates/dist/calendar.html:101
 msgid "Main schedule"
-msgstr ""
+msgstr "Horaire principal"
 
 #: templates/dist/help.html:102
 msgid ""
@@ -789,7 +802,7 @@ msgstr "Aucun mot de passe spécifié"
 msgid "Confirm password"
 msgstr "Confirmez le mot de passe"
 
-#: views/calendar.py:164 views/calendar.py:186
+#: views/calendar.py:169 views/calendar.py:191
 msgid "The schedule you requested does not exist in our database !"
 msgstr "L'horaire que vous avez demandé n'existe pas dans notre base de données !"
 
