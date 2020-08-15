@@ -186,7 +186,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             }).length;
 
                             if (count > 1) {
-                                marker.bindTooltip('Click to see all the markers !').openTooltip();
+                                let toolTip = count + _(' classrooms to show (click to expand)');
+                                marker.bindTooltip(toolTip).openTooltip();
                             } else {
                                 marker.bindTooltip(item.name).openTooltip();
                             }

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-08-14 23:33+0200\n"
+"POT-Creation-Date: 2020-08-15 13:45+0200\n"
 "PO-Revision-Date: 2020-07-24 16:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -64,6 +64,10 @@ msgstr "Samedi"
 #: backend/schedules.py:32
 msgid "New schedule"
 msgstr "Nouvel horaire"
+
+#: static/js/classroom.js:189
+msgid " classrooms to show (click to expand)"
+msgstr ""
 
 #: templates/account.html:14 templates/dist/account.html:14
 msgid "Warning"
@@ -231,7 +235,7 @@ msgstr "Lien de partage"
 msgid "Add an event"
 msgstr "Ajouter un événement"
 
-#: templates/calendar.html:153 templates/classroom.html:49
+#: templates/calendar.html:153 templates/classroom.html:46
 #: templates/dist/calendar.html:150
 msgid "Name"
 msgstr "Nom"
@@ -303,23 +307,23 @@ msgstr ""
 "et les professeurs, car ces informations peuvent changer d'un cours à un "
 "autre"
 
-#: templates/classroom.html:50
+#: templates/classroom.html:47
 msgid "Code"
 msgstr "Code"
 
-#: templates/classroom.html:51
+#: templates/classroom.html:48
 msgid "Address"
 msgstr "Adresse"
 
-#: templates/classroom.html:57
+#: templates/classroom.html:54
 msgid "Search name"
 msgstr "Rechercher un nom"
 
-#: templates/classroom.html:60
+#: templates/classroom.html:57
 msgid "Search code"
 msgstr "Rechercher un code"
 
-#: templates/classroom.html:63
+#: templates/classroom.html:60
 msgid "Search address"
 msgstr "Rechercher une adresse"
 
@@ -649,14 +653,14 @@ msgstr ""
 msgid "You heard it, 2.0 ! The same as before... but in better !"
 msgstr ""
 
-#: templates/welcome.html:33
+#: templates/welcome.html:34
 msgid ""
 "Little information for old members from version 1.0: you now register "
 "using an email address. It means that your old accounts must be created "
 "again."
 msgstr ""
 
-#: templates/welcome.html:34
+#: templates/welcome.html:37
 msgid "Get started"
 msgstr ""
 
