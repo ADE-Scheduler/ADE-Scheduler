@@ -116,10 +116,13 @@ def set_locale(locale):
 @app.before_first_request
 def before_first_request():
     # TODO: HTTPD il aime pas (a pas la permission de write I guess)
-    if not os.path.exists('static/dist'):
-        os.makedirs('static/dist')
-    with open('static/dist/jsglue.min.js', 'w') as f:
-        f.write(jsmin(jsglue.generate_js()))
+    try:
+        if not os.path.exists('static/dist'):
+            os.makedirs('static/dist')
+        with open('static/dist/jsglue.min.js', 'w') as f:
+            f.write(jsmin(jsglue.generate_js()))
+    except:
+        pass
 
 
 # Reset current schedule on user logout
