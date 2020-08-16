@@ -44,13 +44,13 @@ class Address:
 
 def get_geo_locations():
     with current_app.app_context():
-        with open(url_for('static', 'json/geo_locations.json'), 'r') as f:
+        with open(url_for('static', filename='json/geo_locations.json')[1:], 'r') as f:
             return json.load(f)
 
 
 def save_geo_locations(geo_locations: dict):
     with current_app.app_context():
-        with open(url_for('static', 'json/geo_locations.json'), 'r') as f:
+        with open(url_for('static', filename='json/geo_locations.json')[1:], 'w') as f:
             json.dump(geo_locations, f, sort_keys=True, indent=4)
 
 
