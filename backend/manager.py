@@ -12,12 +12,14 @@ import backend.resources as rsrc
 import backend.classrooms as clrm
 import backend.events as evt
 
-class ScheduleNotOwnedError(Exception):
+
+class ScheduleNotFountError(Exception):
     """
-    Exception that will occur if a user tries to manipulate a schedule he does not own.
+    Exception that will occur if a schedule is marked as saved but is not in the database.
     """
+
     def __str__(self):
-        return 'The schedule you manipulated is not yours.'
+        return 'The given schedule is somehow not saved in our database...'
 
 
 class Manager:
@@ -293,20 +295,27 @@ class Manager:
 
         """
         if schedule.id is None:     # this schedule is not yet saved
-            schd_db = md.Schedule(data=schedule, user=user)
-            schd_db.data.id = schd_db.id
+            schd = md.Schedule(data=schedule, user=user)
+            schd.data.id = schd.id
             self.database.session.commit()
-            return schd_db.data
+            return schd.data
 
         else:                       # this schedule has already been saved
-                                    # TODO: control access levels
-            schd_db = user.get_schedule(id=schedule.id)
-            if schd_db is None:
-                # TODO: do something because if this happens, wololololo
-                raise ScheduleNotOwnedError
+            schd = md.Schedule.query.filter(md.Schedule.id == schedule.id).first()
+            if schd is None:
+                raise ScheduleNotFountError
             else:
-                schd_db.update_data(schedule)
-                return schd_db.data
+                schd.update_data(schedule)
+
+            if user is not None:
+                user_has_schedule = (user.get_schedule(id=schedule.id) is not None)
+            else:
+                user_has_schedule = False
+
+            if not user_has_schedule and user is not None:
+                user.add_schedule(schd)
+
+            return schd.data
 
     def get_schedule(self, link):
         query = md.Link.query.filter(md.Link.link == link).first()
