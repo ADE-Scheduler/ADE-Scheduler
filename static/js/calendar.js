@@ -127,9 +127,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         placement: 'auto',
                     });
                 },
-                eventWillUnmount: function (arg) {
-                    try {arg.el.tooltip.dispose();}
-                    catch(e) {}
+                eventMouseLeave: function (arg) {
+                    try     { arg.el.tooltip.hide(); }
+                    catch   {}
                 },
                 eventClick: function(info) {
                     if (!isTouchDevice) {
