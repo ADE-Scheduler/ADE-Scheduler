@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     else                                        description = arg.event.extendedProps.description;
                     if (!arg.event.extendedProps.location)      location = 'No location';
                     else                                        location = arg.event.extendedProps.location;
-                    new Tooltip(arg.el, {
+                    arg.el.tooltip = new Tooltip(arg.el, {
                         container: 'body',
                         title: description + '\n' + location,
                         sanitize: false,
@@ -126,6 +126,10 @@ document.addEventListener('DOMContentLoaded', function() {
                             </div>`,
                         placement: 'auto',
                     });
+                },
+                eventWillUnmount: function (arg) {
+                    try {arg.el.tooltip.dispose();}
+                    catch(e) {}
                 },
                 eventClick: function(info) {
                     if (!isTouchDevice) {
