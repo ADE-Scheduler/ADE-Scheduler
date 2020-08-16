@@ -302,6 +302,7 @@ class Manager:
                                     # TODO: control access levels
             schd_db = user.get_schedule(id=schedule.id)
             if schd_db is None:
+                # TODO: do something because if this happens, wololololo
                 raise ScheduleNotOwnedError
             else:
                 schd_db.update_data(schedule)
