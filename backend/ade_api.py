@@ -11,6 +11,8 @@ from backend import professors
 import backend.events
 from typing import Dict, Union, List, Tuple, SupportsInt, Callable, Type
 
+AUTO_RENEW_TOKEN = True
+
 
 class ExpiredTokenError(Exception):
     """
@@ -163,7 +165,10 @@ class Client(DummyClient):
     def request(self, **kwargs: Request) -> requests.Response:
 
         if self.is_expired():
-            raise ExpiredTokenError
+            if AUTO_RENEW_TOKEN:
+                self.renew_token()
+            else:
+                raise ExpiredTokenError
 
         headers = {'Authorization': 'Bearer ' + self.token}
         user = self.credentials['user']
