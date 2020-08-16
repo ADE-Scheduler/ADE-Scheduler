@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     else                                        description = arg.event.extendedProps.description;
                     if (!arg.event.extendedProps.location)      location = 'No location';
                     else                                        location = arg.event.extendedProps.location;
-                    new Tooltip(arg.el, {
+                    arg.el.tooltip = new Tooltip(arg.el, {
                         container: 'body',
                         title: description + '\n' + location,
                         sanitize: false,
@@ -126,6 +126,10 @@ document.addEventListener('DOMContentLoaded', function() {
                             </div>`,
                         placement: 'auto',
                     });
+                },
+                eventWillUnmount: function (arg) {
+                    try {arg.el.tooltip.dispose();}
+                    catch(e) {}
                 },
                 eventClick: function(info) {
                     if (!isTouchDevice) {
@@ -182,6 +186,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.selected_schedule = 0;
                     this.codes = [];
                     this.label = resp.data.label;
+                    this.currentProjectId = resp.data.current_project_id;
                 })
                 .catch(err => {
                     this.error = true;
@@ -198,7 +203,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(resp => {
                     this.n_schedules = resp.data.n_schedules;
-                    this.selected_schedule = 1;
+                    this.selected_schedule = resp.data.selected_schedule;
                     this.calendarOptions.events = resp.data.events;
                 })
                 .catch(err => {

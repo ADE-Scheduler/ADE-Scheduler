@@ -69,6 +69,7 @@ def clear():
     session['current_schedule_modified'] = False
     return jsonify({
         'label': _(session['current_schedule'].label),
+        'current_project_id': session['current_schedule'].project_id,
     }), 200
 
 
@@ -249,9 +250,10 @@ def get_events():
 
 @calendar.route('/schedule/best', methods=['PUT'])
 def compute():
-    session['current_schedule'].compute_best()
+    bests = session['current_schedule'].compute_best()
     session['current_schedule_modified'] = True
     return jsonify({
-        'n_schedules': len(session['current_schedule'].best_schedules),
-        'events': session['current_schedule'].get_events(json=True, schedule_number=1),
+        'n_schedules': len(session['current_schedule'].best_schedules) if bests is not None else 0,
+        'events': session['current_schedule'].get_events(json=True, schedule_number=1) if bests is not None else list(),
+        'selected_schedule': 1 if bests is not None else 0
     }), 200
