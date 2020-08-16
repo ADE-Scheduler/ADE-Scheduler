@@ -254,6 +254,6 @@ def compute():
     session['current_schedule_modified'] = True
     return jsonify({
         'n_schedules': len(session['current_schedule'].best_schedules) if bests is not None else 0,
-        'events': session['current_schedule'].get_events(json=True, schedule_number=1),
+        'events': session['current_schedule'].get_events(json=True, schedule_number=1) if bests is not None else list(),
         'selected_schedule': 1
     }), 200
