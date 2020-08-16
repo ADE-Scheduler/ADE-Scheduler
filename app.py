@@ -141,6 +141,7 @@ def before_first_request():
     """
     pass
 
+
 # Reset current schedule on user logout
 @user_logged_out.connect_via(app)
 def when_user_logged_out(sender, user):
