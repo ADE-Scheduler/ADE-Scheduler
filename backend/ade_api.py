@@ -431,10 +431,14 @@ def parse_event(event: etree.ElementTree, event_type: Type[backend.events.Academ
     rooms = event.xpath('.//eventParticipant[@category="classroom"]')
     classrooms = [room_to_classroom(room) for room in rooms]
 
-    instructor_names = event.xpath('.//eventParticipant[@category="instructor"]/@name')
-    instructor_emails = event.xpath('.//eventParticipant[@category="instructor"]/@mail')  # TODO: email ?
-    event_instructor = professors.merge_professors(professors.Professor(name, email)
-                                                   for name, email in zip(instructor_names, instructor_emails))
+    instructors = list()
+    for instructor in event.xpath('.//eventParticipant[@category="instructor"]'):
+        instructors.append(
+            professors.Professor(instructor.attrib['name'], None)
+        )
+
+
+    event_instructor = professors.merge_professors(instructors)
 
     # We create the event
     t0, t1 = backend.events.extract_datetime(event_date, event_start, event_end)
