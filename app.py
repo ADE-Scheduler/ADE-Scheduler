@@ -34,6 +34,10 @@ from views.account import account
 from views.classroom import classroom
 from views.help import help
 
+# Change current working directory to main directory
+
+os.chdir(os.path.dirname(os.path.realpath(__file__)))
+
 # Setup app
 app = Flask(__name__, template_folder='static/dist/html')
 app.register_blueprint(calendar, url_prefix='/calendar')
