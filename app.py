@@ -129,13 +129,10 @@ def before_first_request():
     # TODO: Apache il aime pas (a pas la permission de write I guess)
     # Fix temporaire: copier/coller le fichier sur le serv à chaque fois qu'on change un des pathname/view !
     # Autre soucis: il se cache dans les webnav, faut changer la version pour éviter que ça ne se re-fetch jamais
-    try:
-        if not os.path.exists('static/dist'):
-            os.makedirs('static/dist')
-        with open('static/dist/jsglue.min.js', 'w') as f:
-            f.write(jsmin(jsglue.generate_js()))
-    except:
-        pass
+    if not os.path.exists('static/dist'):
+        os.makedirs('static/dist')
+    with open('static/dist/jsglue.min.js', 'w') as f:
+        f.write(jsmin(jsglue.generate_js()))
 
 
 # Reset current schedule on user logout
