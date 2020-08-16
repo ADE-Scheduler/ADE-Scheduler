@@ -39,16 +39,19 @@
                 <div class="navbar-collapse offcanvas-collapse">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link" v-bind:class="{'active-page': currentPath === '{{ url_for('calendar.index') }}'}" href={{ url_for('calendar.index') }}>{{_('Calendar')}}</a>
+                            <a class="nav-link" v-bind:class="{'active-page': currentPath === '{{ url_for('calendar.index') }}'}" href="{{ url_for('calendar.index') }}">{{_('Calendar')}}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" v-bind:class="{'active-page': currentPath === '{{ url_for('classroom.index') }}'}" href={{ url_for('classroom.index') }}>{{_('Classrooms')}}</a>
+                            <a class="nav-link" v-bind:class="{'active-page': currentPath === '{{ url_for('classroom.index') }}'}" href="{{ url_for('classroom.index') }}">{{_('Classrooms')}}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" v-bind:class="{'active-page': currentPath === '{{ url_for('account.index') }}'}" href={{ url_for('account.index') }}>{{_('Account')}}</a>
+                            <a class="nav-link" v-bind:class="{'active-page': currentPath === '{{ url_for('account.index') }}'}" href="{{ url_for('account.index') }}">{{_('Account')}}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" v-bind:class="{'active-page': currentPath === '{{ url_for('help.index') }}'}" href={{ url_for('help.index') }}>{{_('Help')}}</a>
+                            <a class="nav-link" v-bind:class="{'active-page': currentPath === '{{ url_for('help.index') }}'}" href="{{ url_for('help.index') }}">{{_('Help')}}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="mailto:adescheduler@gmail.com">{{_('Contact us')}}</a>
                         </li>
                     </ul>
 

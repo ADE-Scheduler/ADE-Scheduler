@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-08-15 21:52+0200\n"
+"POT-Creation-Date: 2020-08-16 21:37+0200\n"
 "PO-Revision-Date: 2020-07-24 16:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: app.py:179
+#: app.py:187
 msgid "An error has occurred. Please contact the admins if it keeps happening."
 msgstr "Une erreur est apparue. Si cela arrive à nouveau, veuillez nous contacter."
 
-#: app.py:185
+#: app.py:193
 msgid "404 Page not found :("
 msgstr "404 Page non trouvée :("
 
@@ -76,7 +76,7 @@ msgstr "Annuler"
 msgid "Continue"
 msgstr "Continuer"
 
-#: templates/account.html:35 templates/calendar.html:352
+#: templates/account.html:35 templates/calendar.html:354
 #: templates/classroom.html:32
 msgid "A problem has occurred. Please contact us if it happens again."
 msgstr ""
@@ -87,7 +87,7 @@ msgstr ""
 msgid "Color palette"
 msgstr "Palette de couleur"
 
-#: templates/account.html:60 templates/calendar.html:319
+#: templates/account.html:60 templates/calendar.html:320
 msgid "Academic year"
 msgstr "Année académique"
 
@@ -107,19 +107,17 @@ msgstr "Supprimer"
 msgid "Schedules"
 msgstr "Horaires"
 
-#: templates/account.html:104 templates/calendar.html:336
-#: templates/help.html:46
-msgid "OpenSource software"
-msgstr "Logiciel OpenSource"
+#: templates/account.html:104 templates/calendar.html:337
+msgid "Open source software"
+msgstr "Logiciel libre"
 
-#: templates/account.html:104 templates/calendar.html:336
-#: templates/help.html:46
+#: templates/account.html:104 templates/calendar.html:337
 msgid ""
 "designed by Gilles Poncelet, Louis Navarre and Jérome Eertmans, students "
-"at the Ecole Polytechnique de Louvain."
+"at the Ecole polytechnique de Louvain."
 msgstr ""
 "créé par Gilles Poncelet, Louis Navarre et Jérome Eertmans, étudiants à "
-"l'Ecole Polytechnique de Louvain"
+"l'École polytechnique de Louvain"
 
 #: templates/base.html:42
 msgid "Calendar"
@@ -137,17 +135,21 @@ msgstr "Compte"
 msgid "Help"
 msgstr "Aide"
 
-#: templates/base.html:75
+#: templates/base.html:54
+msgid "Contact us"
+msgstr "Contact"
+
+#: templates/base.html:78
 msgid "Logout"
 msgstr "Déconnexion"
 
-#: templates/base.html:79
+#: templates/base.html:82
 msgid "Login"
 msgstr "Connexion"
 
-#: templates/base.html:80
+#: templates/base.html:83
 msgid "Register"
-msgstr "S'inscrire"
+msgstr "Inscription"
 
 #: templates/calendar.html:14
 msgid "Course program"
@@ -255,33 +257,33 @@ msgstr "Ajouter"
 msgid "Download"
 msgstr "Télécharger"
 
-#: templates/calendar.html:292
+#: templates/calendar.html:293
 msgid "To view more info or adapt your schedule, click on a course code."
 msgstr ""
 "Afin de voir plus d'informations ou de modifier votre horaire, cliquez "
 "sur le code d'un cours."
 
-#: templates/calendar.html:292
+#: templates/calendar.html:293
 msgid "Note"
 msgstr "Note"
 
-#: templates/calendar.html:312
+#: templates/calendar.html:313
 msgid "Enter code"
 msgstr "Entrez un code"
 
-#: templates/calendar.html:328
+#: templates/calendar.html:329
 msgid "Compute"
 msgstr "Calculer"
 
-#: templates/calendar.html:331
+#: templates/calendar.html:332
 msgid "Clear"
 msgstr "Effacer"
 
-#: templates/calendar.html:346
+#: templates/calendar.html:348
 msgid "Schedule successfuly saved !"
 msgstr "Horaire sauvegardé avec succès !"
 
-#: templates/calendar.html:361
+#: templates/calendar.html:363
 msgid ""
 "Disclaimer: this software is not an official UCLouvain tool. It has been "
 "designed with the purpose to help the EPL students with scheduling. This "
@@ -333,60 +335,60 @@ msgstr "Adresse mail"
 msgid "Password"
 msgstr "Mot de passe"
 
-#: templates/help.html:17 templates/help.html:55
+#: templates/help.html:17 templates/help.html:51
 msgid "What is ADE Scheduler ?"
 msgstr "Qu'est-ce qu'ADE Scheduler ?"
 
-#: templates/help.html:18 templates/help.html:63
+#: templates/help.html:18 templates/help.html:59
 msgid "Getting started"
 msgstr "Pour débuter"
 
-#: templates/help.html:19 templates/help.html:72
+#: templates/help.html:19 templates/help.html:68
 msgid "Computing your optimal schedule"
 msgstr "Calculer votre horaire optimal"
 
-#: templates/help.html:22 templates/help.html:79
+#: templates/help.html:22 templates/help.html:75
 msgid "Export and load"
 msgstr "Importer et exporter"
 
-#: templates/help.html:24 templates/help.html:31 templates/help.html:80
-#: templates/help.html:100
+#: templates/help.html:24 templates/help.html:31 templates/help.html:76
+#: templates/help.html:96
 msgid "What are the possibilities ?"
 msgstr "Quelles sont les possibilités ?"
 
-#: templates/help.html:25 templates/help.html:87
+#: templates/help.html:25 templates/help.html:83
 msgid "Download an iCal file"
 msgstr "Télécharger un fichier iCal"
 
-#: templates/help.html:26 templates/help.html:93
+#: templates/help.html:26 templates/help.html:89
 msgid "Subscription links"
 msgstr "Liens d'abonnement"
 
-#: templates/help.html:29 templates/help.html:99
+#: templates/help.html:29 templates/help.html:95
 msgid "Account & Settings"
 msgstr "Compte & Paramètres"
 
-#: templates/help.html:32 templates/help.html:108
+#: templates/help.html:32 templates/help.html:104
 msgid "Custom events"
 msgstr "Evènements personnels"
 
-#: templates/help.html:33 templates/help.html:114
+#: templates/help.html:33 templates/help.html:110
 msgid "Event selection"
 msgstr "Sélection d'un évènement"
 
-#: templates/help.html:34 templates/help.html:120
+#: templates/help.html:34 templates/help.html:116
 msgid "Accounts"
 msgstr "Comptes"
 
-#: templates/help.html:37 templates/help.html:126
+#: templates/help.html:37 templates/help.html:122
 msgid "About us"
 msgstr "A propos de nous"
 
-#: templates/help.html:39 templates/help.html:127
+#: templates/help.html:39 templates/help.html:123
 msgid "Who are we ?"
 msgstr "Qui sommes-nous ?"
 
-#: templates/help.html:58
+#: templates/help.html:54
 msgid ""
 "ADE Scheduler is a tool aiming to provide the same information as the\n"
 "                        <a "
@@ -408,7 +410,7 @@ msgstr ""
 "ou TPs), la visualisation des locaux et de leur emplacement, et bien "
 "d'autres choses encore !"
 
-#: templates/help.html:66
+#: templates/help.html:62
 msgid ""
 "The main purpose of this website is the calendar page. If you're new to "
 "this site, make sure to go to\n"
@@ -421,7 +423,7 @@ msgstr ""
 "et testez toutes les fonctionnalités. Vous êtes aussi encouragés à "
 "regarder notre guide de prise en main rapide."
 
-#: templates/help.html:75
+#: templates/help.html:71
 msgid ""
 "Sometimes, you may choose between multiple events such as CMs or TPs but "
 "only need to attend to one. The tool named compute tries all the possible"
@@ -449,7 +451,7 @@ msgstr ""
 "choisir, après calcul, la semaine qui vous plait le plus et de "
 "manuellement sélectionner les évènements dans votre horaire principal."
 
-#: templates/help.html:83
+#: templates/help.html:79
 msgid ""
 "Once your schedule is complete, you don't need to go back to ADE-"
 "Scheduler each time you want to check your schedule: you can export it ! "
@@ -462,7 +464,7 @@ msgstr ""
 "d'importer un calendrier externe. Une courte vidéo vous montre comme "
 "exporter votre horaire vers votre application favorite."
 
-#: templates/help.html:90
+#: templates/help.html:86
 msgid ""
 "One solution to export your schedule is to download it as an iCalendar "
 "file. Then, this file can easily be imported into your main calendar. The"
@@ -477,7 +479,7 @@ msgstr ""
 "pris en compte dans votre calendrier. Si vous préférez avoir un "
 "calendrier à jour, choisissez alors la prochaine solution."
 
-#: templates/help.html:96
+#: templates/help.html:92
 msgid ""
 "Maybe the best solution ADE Scheduler can offer is a subscription link. "
 "With this link, your calendar app will frequently download the latest "
@@ -494,7 +496,7 @@ msgstr ""
 "en compte lors de la prochaine mise-à-jour de votre calendrier de la part"
 " de votre application."
 
-#: templates/help.html:103
+#: templates/help.html:99
 msgid ""
 "On this website, no account is required to use most of the tools. Your "
 "session is stored during 30 days so you can easily leave this webpage, "
@@ -517,7 +519,7 @@ msgstr ""
 "Avec cela, vous pouvez créer et sauvegarder plusieurs calendrier, les "
 "renommer, choisir la palette de couleur, et bien d'autres choses encore."
 
-#: templates/help.html:111
+#: templates/help.html:107
 msgid ""
 "Academical life is important but your private life is important too ! "
 "This is why you can also add custom events to your schedule. They will "
@@ -533,7 +535,7 @@ msgstr ""
 "minimiser les conflits entre les horaires de cours, et vos évènements "
 "personnels."
 
-#: templates/help.html:117
+#: templates/help.html:113
 msgid ""
 "If you click on a course's code, on the left of the calendar page, you "
 "will see appearing all the events that are contained in this course, per "
@@ -545,7 +547,7 @@ msgstr ""
 "type. Vous pouvez (dé-)sélectionner des évènements spécifiques afin de "
 "construire l'horaire qui vous plaît."
 
-#: templates/help.html:123
+#: templates/help.html:119
 msgid ""
 "Creating an account requires two things: an email address and a password."
 " Your email address will only be used for password resetting and any "
@@ -563,11 +565,11 @@ msgstr ""
 "notre service l'année depuis laquelle vous souhaitez obtenir les "
 "évènements (la plupart du temps, seule une année est disponible)."
 
-#: templates/help.html:130
+#: templates/help.html:126
 msgid ""
 "We are three students from UCLouvain. By the time we started this "
 "project, we were finishing our bachelor's degree in engineering "
-"(Electricity and Mechanics for Jerome and Gilles; Computer Science and "
+"(Electricity and Mechanics for Jérome and Gilles; Computer Science and "
 "Applied Mathematics for Louis)."
 msgstr ""
 "Nous sommes trois étudiants de l'UCLouvain. A l'époque où nous avions "
@@ -575,7 +577,7 @@ msgstr ""
 "(électricité et mécanique pour Jérome et Gilles; sciences informatiques "
 "et mathématiques appliquées pour Louis)."
 
-#: templates/help.html:143
+#: templates/help.html:139
 msgid ""
 "Jérome is a student in the Ecole Polytechnique de Louvain, in "
 "engineering. He completed his bachelor degree in Electricity and "
@@ -586,7 +588,7 @@ msgstr ""
 "civil. Il a un bachelier en électricité et mécanique. Actuellement, il "
 "suit un master en ingénieur civil mécatronique."
 
-#: templates/help.html:159
+#: templates/help.html:155
 msgid ""
 "Louis is a student at the Ecole Polytechnique de Louvain, in engineering."
 " He completed his bachelor degree in Applied Mathematics and Computing "
@@ -598,7 +600,7 @@ msgstr ""
 "appliquées. Actuellement, il suit un master en ingénieur civil "
 "informatique."
 
-#: templates/help.html:175
+#: templates/help.html:171
 msgid ""
 "Gilles is a student in the Ecole Polytechnique de Louvain, in "
 "engineering. He completed his bachelor degree in Electricity and "
@@ -610,16 +612,12 @@ msgstr ""
 "suit un master en ingénieur civil mécatronique."
 
 #: templates/welcome.html:31
-msgid "" 
-"ADE Scheduler under new skin, welcome to the version 2.0 !"
-msgstr ""
-"ADE Scheduler fait peau neuve, bienvenue sur la version 2.0 !"
+msgid "ADE Scheduler under new skin, welcome to the version 2.0 !"
+msgstr "ADE Scheduler fait peau neuve, bienvenue sur la version 2.0 !"
 
 #: templates/welcome.html:32
-msgid ""
-"The same as before. But in better. And in mobile version."
-msgstr ""
-"Le même site qu'avant. Mais en mieux. Et disponible en version mobile."
+msgid "The same as before. But in better. And in mobile version."
+msgstr "Le même site qu'avant. Mais en mieux. Et disponible en version mobile."
 
 #: templates/welcome.html:34
 msgid ""
@@ -699,11 +697,11 @@ msgstr "Aucun mot de passe spécifié"
 msgid "Confirm password"
 msgstr "Confirmez le mot de passe"
 
-#: views/calendar.py:71 views/calendar.py:81
+#: views/calendar.py:71 views/calendar.py:82
 msgid "current_schedule"
 msgstr ""
 
-#: views/calendar.py:173 views/calendar.py:195
+#: views/calendar.py:174 views/calendar.py:196
 msgid "The schedule you requested does not exist in our database !"
 msgstr "L'horaire que vous avez demandé n'existe pas dans notre base de données !"
 
