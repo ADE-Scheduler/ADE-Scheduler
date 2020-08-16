@@ -209,6 +209,9 @@ class Schedule:
         """
         courses = self.get_courses()
 
+        if len(courses) == 0:
+            return None
+
         # Reset the best schedules
         # TODO: pas sûr que c'est la meilleure manière de faire...
         self.best_schedules = [defaultdict(default_dict_any_to_set) for _ in range(n_best)]
