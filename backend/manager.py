@@ -313,7 +313,7 @@ class Manager:
                 user_has_schedule = False
 
             if not user_has_schedule and user is not None:
-                user.add_schedule(schd.data)
+                user.add_schedule(schd)
 
             return schd.data
 
