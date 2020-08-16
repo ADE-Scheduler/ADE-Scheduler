@@ -199,7 +199,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(resp => {
                     this.n_schedules = resp.data.n_schedules;
-                    this.selected_schedule = 1;
+                    this.selected_schedule = resp.data.selected_schedule;
                     this.calendarOptions.events = resp.data.events;
                 })
                 .catch(err => {
