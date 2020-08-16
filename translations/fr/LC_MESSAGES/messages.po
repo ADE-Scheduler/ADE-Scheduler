@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-08-16 21:23+0200\n"
+"POT-Creation-Date: 2020-08-16 21:34+0200\n"
 "PO-Revision-Date: 2020-07-24 16:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -114,10 +114,10 @@ msgstr "Logiciel libre"
 #: templates/account.html:104 templates/calendar.html:337
 msgid ""
 "designed by Gilles Poncelet, Louis Navarre and Jérome Eertmans, students "
-"at the Ecole Polytechnique de Louvain."
+"at the Ecole polytechnique de Louvain."
 msgstr ""
 "créé par Gilles Poncelet, Louis Navarre et Jérome Eertmans, étudiants à "
-"l'Ecole Polytechnique de Louvain"
+"l'École polytechnique de Louvain"
 
 #: templates/base.html:42
 msgid "Calendar"
@@ -1091,3 +1091,4 @@ msgstr "L'horaire que vous avez demandé n'existe pas dans notre base de donnée
 #~ "schedules, rename them, choose their "
 #~ "color palette and so on."
 #~ msgstr ""
+
