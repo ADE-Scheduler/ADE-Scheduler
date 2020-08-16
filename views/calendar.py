@@ -69,6 +69,7 @@ def clear():
     session['current_schedule_modified'] = False
     return jsonify({
         'label': _(session['current_schedule'].label),
+        'current_project_id': session['current_schedule'].project_id,
     }), 200
 
 

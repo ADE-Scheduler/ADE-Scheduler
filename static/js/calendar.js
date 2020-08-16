@@ -182,6 +182,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.selected_schedule = 0;
                     this.codes = [];
                     this.label = resp.data.label;
+                    this.currentProjectId = resp.data.current_project_id;
                 })
                 .catch(err => {
                     this.error = true;
