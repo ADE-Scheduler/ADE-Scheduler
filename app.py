@@ -35,7 +35,6 @@ from views.classroom import classroom
 from views.help import help
 
 # Change current working directory to main directory
-
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
 # Setup app
@@ -130,7 +129,6 @@ def set_locale(locale):
 
 @app.before_first_request
 def before_first_request():
-    # TODO: Apache il aime pas (a pas la permission de write I guess)
     if not os.path.exists('static/dist'):
         os.makedirs('static/dist')
     with open('static/dist/jsglue.min.js', 'w') as f:
