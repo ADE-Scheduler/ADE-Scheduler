@@ -17,8 +17,12 @@
                 {{_('Remember me')}}
             </label>
         </div>
-        <div class="mb-3">
+        <div class="d-flex flex-column mb-3">
             <small><a href={{ url_for('security.forgot_password')}}>{{_('Forgot password ?')}}</a></small>
+            {% for error in login_user_form.email.errors %}
+                {% if error == _('Email requires confirmation.') %}
+            <small><a href="{{ url_for('security.send_confirmation') }}">{{_('Resend confirmation instructions')}}</a></small>
+            {% endif %}{% endfor %}
         </div>
         <hr class="mb-3">
         {{ login_user_form.submit(class="btn btn-lg btn-primary btn-block") }}
