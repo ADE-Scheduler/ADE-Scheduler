@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block body %}
-    <form class="form-send-confirmation needs-validation" novalidate action="{{ url_for('security.forgot_password') }}" method="POST" name="send_confirmation_form">
+    <form class="form-send-confirmation needs-validation" novalidate action="{{ url_for('security.send_confirmation') }}" method="POST" name="send_confirmation_form">
         {{ send_confirmation_form.hidden_tag() }}
         <img class="d-block mx-auto my-4" src="{{ url_for('static', filename='img/ade_scheduler_icon.png') }}" width="30%">
         <label for="email">{{_('Enter your email address')}}</label>
