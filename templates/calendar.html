@@ -290,7 +290,7 @@
                         <div class="text-truncate "><h5> [[ label ]] </h5></div>
                         <a tabindex="0" href="#" class="btn btn-outline-info btn-sm ml-2 mb-2 btn-info-custom font-weight-bold rounded-circle"
                             data-toggle="popover" data-trigger="focus"
-                            data-content="{{ _('To view more info or adapt your schedule, click on a course code.') }}" data-title="{{ _('Note') }}">
+                            data-content="{{ _('To view more info or adapt your schedule, click on a course code. To change the color palette, go to the account page.') }}" data-title="{{ _('Note') }}">
                             i
                         </a>
                     </div>
@@ -329,12 +329,12 @@
                             {{_('Compute')}}
                         </button>
                         <button class="btn btn-outline-dark btn-sm w-50" type="button" v-on:click="clear(); toggleNav(false)">
-                            {{_('Clear')}}
+                            {{_('New') }}
                         </button>
                     </div>
 
                     <small class="text-center font-weight-light mt-5">
-                        <a class="text-dark" href="https://github.com/SnaKyEyeS/ADE-Scheduler">{{_('Open source software')}}</a> {{_('designed by Gilles Poncelet, Louis Navarre and Jérome Eertmans, students at the Ecole polytechnique de Louvain.')}}
+                        <a target="_blank" rel="noopener noreferrer" class="text-dark" href="https://github.com/SnaKyEyeS/ADE-Scheduler">{{_('Open source software')}}</a> {{_('designed by Gilles Poncelet, Louis Navarre and Jérome Eertmans, students at the Ecole polytechnique de Louvain.')}}
                     </small>
                 </div>
             </div>

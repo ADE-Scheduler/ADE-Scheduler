@@ -121,7 +121,7 @@ class Manager:
 
         events = ade.response_to_events(self.client.get_activities([classroom_id], project_id), filter_func)
 
-        self.server.set_value(key, events, expire_in={'hours': 24})
+        self.server.set_value(key, events, expire_in={'hours': 3})
 
         return events
 
