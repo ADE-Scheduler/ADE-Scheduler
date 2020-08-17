@@ -8,6 +8,8 @@ import './base.js';
 import '../css/calendar.css';
 const axios = require('axios');
 
+const uclWeeksNo = [0, 0, 0, -2, 1, 2, 3, 4, 5, 6, 7, 8, 9, -1, -1, 10, 11, 12, 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 0, 0, 0];
+
 
 document.addEventListener('DOMContentLoaded', function() {
     var isTouchDevice = !!('ontouchstart' in window || navigator.maxTouchPoints);
@@ -65,12 +67,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // Week display
                 firstDay: 1,
-                weekText: 'S',
                 weekNumbers: true,
                 weekNumberCalculation: (d) => {
                     d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
                     let yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
-                    return Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
+                    let weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
+                    return uclWeeksNo[weekNo-1];
+                },
+                weekNumberContent: function (arg) {
+                    let span = document.createElement('span');
+                    if (arg.num > 0) {
+                        span.innerText = `S${arg.num}`;
+                    } else {
+                        switch (arg.num) {
+                            case -1:
+                                span.innerText = document.getElementById('current-locale').innerText.trim() === 'EN' ? 'Easter':'Pâques';
+                                break;
+                            case -2:
+                                span.innerText = document.getElementById('current-locale').innerText.trim() === 'EN' ? 'Break':'Congé';
+                                break;
+                            default:
+                                span.innerText = '-'
+                        }
+                    }
+                    return {domNodes: [span]}
                 },
 
                 // Header bar
