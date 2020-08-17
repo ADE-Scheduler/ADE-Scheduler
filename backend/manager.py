@@ -93,7 +93,7 @@ class Manager:
             resource_ids = self.get_resource_ids(*codes_not_found, project_id=project_id)
             courses_not_found = ade.response_to_courses(self.client.get_activities(resource_ids, project_id))
             for course in courses_not_found:
-                self.server.set_value(prefix+course.code, course, expire_in={'hours': 3})
+                self.server.set_value(prefix+course.code, course, expire_in={'hours': 25})
             courses += courses_not_found
 
         return courses
@@ -124,8 +124,6 @@ class Manager:
         self.server.set_value(key, events, expire_in={'hours': 24})
 
         return events
-
-
 
     def get_resources(self, project_id: SupportsInt = None) -> pd.DataFrame:
         """
