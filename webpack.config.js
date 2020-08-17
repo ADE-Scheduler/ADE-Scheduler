@@ -9,6 +9,7 @@ const pages = [
     'security/login_user',
     'security/register_user',
     'security/reset_password',
+    'security/send_confirmation',
     'account',
     'calendar',
     'classroom',

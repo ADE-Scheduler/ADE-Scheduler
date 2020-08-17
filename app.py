@@ -69,10 +69,13 @@ manager.database.init_app(app)
 migrate = Migrate(app, manager.database)
 
 # Setup Flask-Security
+app.config['SECURITY_CONFIRMABLE'] = True
 app.config['SECURITY_REGISTERABLE'] = True
 app.config['SECURITY_CHANGEABLE'] = True
 app.config['SECURITY_RECOVERABLE'] = True
 app.config['SECURITY_PASSWORD_SALT'] = os.environ['FLASK_SALT']
+app.config['SECURITY_CONFIRM_URL'] = '/confirm'
+app.config['SECURITY_POST_REGISTER_VIEW'] = app.config['SECURITY_CONFIRM_URL']
 app.config['SECURITY_MANAGER'] = Security(app, SQLAlchemyUserDatastore(manager.database, md.User, md.Role))
 
 # Setup Flask-Session

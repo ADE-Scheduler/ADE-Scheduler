@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% from "custom_macros.html" import render_input_with_message %}
+{% block head %}
+<% _.forEach(htmlWebpackPlugin.files.js, function(file) { %>
+<script type="text/javascript" src="<%= file%>"></script>
+<%}); %>
+{% endblock %}
+
+{% block body %}
+    <form class="form-send-confirmation needs-validation" novalidate action="{{ url_for('security.send_confirmation') }}" method="POST" name="send_confirmation_form">
+        {{ send_confirmation_form.hidden_tag() }}
+        <img class="d-block mx-auto my-4" src="{{ url_for('static', filename='img/ade_scheduler_icon.png') }}" width="30%">
+        <label for="email">{{_('Enter your email address')}}</label>
+        <div class="input-group">
+            <span class="input-group-text">@</span>
+            {{ render_input_with_message(send_confirmation_form.email, _('Invalid email address'), placeholder="you@example.com", required="") }}
+        </div>
+        <hr class="mb-3">
+        {{ send_confirmation_form.submit(class="btn btn-lg btn-primary btn-block text-wrap") }}
+    </form>
+{% endblock %}

@@ -36,9 +36,6 @@ class Role(db.Model, fsqla.FsRoleMixin):
 class User(db.Model, fsqla.FsUserMixin):
     schedules = db.relationship('Schedule', secondary='property')
 
-    def __eq__(self, other):
-        return self.id == other.id
-
     def add_schedule(self, schedule, level=OWNER_LEVEL):
         if schedule not in self.schedules:
             self.schedules.append(schedule)
