@@ -25,11 +25,12 @@
                 {{_('Must be at least 8 characters long.')}}
             </small>
         </div>
-
+        {% if register_user_form.password_confirm %}
         <div class="mb-3">
             <label for="password_confirm">{{_('Confirm password')}}</label>
             {{ render_input_field(register_user_form.password_confirm, _('Password do not match'), placeholder=_('Password'), required="", minlength="8", autocomplete="new-password") }}
         </div>
+        {% endif %}
         <hr class="mb-3">
         {{ register_user_form.submit(class="btn btn-lg btn-primary btn-block") }}
     </form>
