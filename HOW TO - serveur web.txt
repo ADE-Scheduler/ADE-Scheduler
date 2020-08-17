@@ -1,7 +1,0 @@
-Avec python, host local : https://www.electromaker.io/tutorial/blog/how-to-make-a-raspberry-pi-python-web-server
-
-Puis partager le local host gratuitement avec : https://dashboard.ngrok.com/get-started
-
-SSL certificate:
-https://blog.miguelgrinberg.com/post/running-your-flask-application-over-https
-https://letsencrypt.org/
