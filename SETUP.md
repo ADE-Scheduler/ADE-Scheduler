@@ -79,6 +79,9 @@ Le client peut également être utilisé directement dans le terminal. Exemple :
 
 Pour appliquer une expiration aléatoire, par exemple en 200 et 400 secondes, entrez `redis-cli keys *session* | xargs -n 1 -I{} python3 -c "import os;import random;os.system('redis-cli expire \"{}\" ' + str(random.randint(200, 400)))"`.
 
+Pour vérifier que cela a bien fonctionné :
+`redis-cli keys *project* | xargs -n 1 -I{} redis-cli ttl {}`
+
 ### 2. Démarrez le site-web
 
 Entrez dans un terminal `python3 app.py`. Une url devrait vous indiquer où le site est accessible.
