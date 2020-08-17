@@ -65,6 +65,7 @@ class Server(Redis):
 
         >>> s.set_value('apple', {'weight': 400, 'unit': 'g'}, expire_in={'hours': 10})
         """
+        expire_in = None  # Force no expiration for offline working
 
         if hmap:
             self.hmset(key, value)

@@ -5,7 +5,7 @@ from typing import SupportsInt, List, Iterator, Optional, Union, Dict
 
 import backend.servers as srv
 import backend.ade_api as ade
-import backend.models  as md
+import backend.models as md
 import backend.courses as crs
 import backend.schedules as schd
 import backend.resources as rsrc
@@ -148,7 +148,7 @@ class Manager:
         """
         Updates the resources contained in the server for all project ids.
         """
-        key = f'[PROJECT_IDs]'
+        key = '[PROJECT_IDs]'
         if not self.server.exists(key):
             self.update_project_ids()
 
@@ -185,7 +185,7 @@ class Manager:
         """
         Updates the classrooms contained in the server for all project ids.
         """
-        key = f'[PROJECT_IDs]'
+        key = '[PROJECT_IDs]'
         if not self.server.exists(key):
             self.update_project_ids()
 
@@ -229,7 +229,7 @@ class Manager:
         """
         Updates the resource ids contained in the server for all project ids.
         """
-        key = f'[PROJECT_IDs]'
+        key = '[PROJECT_IDs]'
         if not self.server.exists(key):
             self.update_project_ids()
 
@@ -248,7 +248,7 @@ class Manager:
         :return: the list of ids and years or the id of one year or None if no id was found
         :rtype: Union[List[Dict[str, str]], str, None]
         """
-        hmap = f'[PROJECT_IDs]'
+        hmap = '[PROJECT_IDs]'
         if not self.server.exists(hmap):
             self.update_project_ids()
         if year is None:
@@ -268,7 +268,7 @@ class Manager:
         """
         Updates the project ids.
         """
-        key = f'[PROJECT_IDs]'
+        key = '[PROJECT_IDs]'
         project_ids = ade.response_to_project_ids(self.client.get_project_ids())
         self.server.set_value(key, project_ids, expire_in={'hours': 25}, hmap=True)
 
