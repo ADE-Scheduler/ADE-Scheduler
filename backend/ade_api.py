@@ -573,9 +573,6 @@ if __name__ == "__main__":
 
     resources_ids = response_to_resource_ids(request)
 
-    print('All resources:')
-    print(len(resources_ids), resources_ids)
-
     id = resources_ids['LMECA2732']
 
     # 'LBRAI2206': '12438'

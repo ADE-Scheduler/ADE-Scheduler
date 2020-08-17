@@ -253,22 +253,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             },
             addCode: function() {
-                this.computing = true;
-                axios({
-                    method: 'PATCH',
-                    url: Flask.url_for('calendar.add_code', {'code': this.code}),
-                })
-                .then(resp => {
-                    this.codes = this.codes.concat(resp.data.codes);
-                    this.calendarOptions.events = resp.data.events;
-                    this.code = '';
-                })
-                .catch(err => {
-                    this.error = true;
-                })
-                .then(() => {
-                    this.computing = false;
-                });
+                if (this.code !== '') {
+                    this.computing = true;
+                    axios({
+                        method: 'PATCH',
+                        url: Flask.url_for('calendar.add_code', {'code': this.code}),
+                    })
+                    .then(resp => {
+                        this.codes = this.codes.concat(resp.data.codes);
+                        this.calendarOptions.events = resp.data.events;
+                        this.code = '';
+                    })
+                    .catch(err => {
+                        this.error = true;
+                    })
+                    .then(() => {
+                        this.computing = false;
+                    });
+                }
             },
             removeCode: function(code) {
                 this.computing = true;
