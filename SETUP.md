@@ -75,6 +75,8 @@ Il n'est pas possible d'accéder à l'API sans identifiants valides et nous ne v
 Pour initialiser le server, utilisez la commande `redis-server` dans un terminal.
 Si besoin, vous pouvez accéder à un client dans un autre terminal en entrant `redis-cli`. Référez-vous à la documentation de Redis à ce sujet.
 
+Le client peut également être utilisé directement dans le terminal. Exemple : afin de supprimer toutes les clés contenant le mot "project" (sensible à la casse), entrez-ci `redis-cli keys "*project*" | xargs -I{lin} echo \"{lin}\" | xargs redis-cli unlink`.
+
 ### 2. Démarrez le site-web
 
 Entrez dans un terminal `python3 app.py`. Une url devrait vous indiquer où le site est accessible.
