@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-08-17 18:36+0200\n"
+"POT-Creation-Date: 2020-08-17 18:57+0200\n"
 "PO-Revision-Date: 2020-07-24 16:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -61,7 +61,7 @@ msgstr "Vendredi"
 msgid "Saturday"
 msgstr "Samedi"
 
-#: backend/schedules.py:32 templates/calendar.html:332
+#: backend/schedules.py:32
 msgid "New schedule"
 msgstr "Nouvel horaire"
 
@@ -282,11 +282,9 @@ msgid ""
 "To view more info or adapt your schedule, click on a course code. To "
 "change the color palette, go to the account page."
 msgstr ""
-"Afin de voir plus d'informations ou "
-"de modifier votre horaire, cliquez sur"
-" le code d'un cours. "
-"Pour changer la palette de couleur, "
-"allez sur la page compte."
+"Afin de voir plus d'informations ou de modifier votre horaire, cliquez "
+"sur le code d'un cours. Pour changer la palette de couleur, allez sur la "
+"page compte."
 
 #: templates/calendar.html:293
 msgid "Note"
@@ -299,6 +297,10 @@ msgstr "Entrez un code"
 #: templates/calendar.html:329 templates/dist/calendar.html:323
 msgid "Compute"
 msgstr "Calculer"
+
+#: templates/calendar.html:332
+msgid "New"
+msgstr "Nouveau"
 
 #: templates/calendar.html:348 templates/dist/calendar.html:340
 msgid "Schedule successfuly saved !"
@@ -699,6 +701,63 @@ msgstr "Horaire principal"
 msgid "Clear"
 msgstr "Effacer"
 
+#: templates/dist/help.html:74
+msgid ""
+"Sometimes, you may choose between multiple events such as CMs or TPs but "
+"only need to attend to one. The tool named compute tries all the possible"
+" combinations of picking one event of each type, every week, in order to "
+"find the 3 bests schedules which minimize the conflicts. If you want to "
+"be free during a given period, make sure to create a custom event to "
+"block this period of time. You can also remove some events before calling"
+" the compute function, to not take them into account. Because the compute"
+" function optimizes week per week, not all weeks must be the same. If you"
+" need to need to attend the same events every week, we encourage you to "
+"pick the week that suits your need from the results given by the compute "
+"tool and then manually select the events in your main schedule."
+msgstr ""
+
+#: templates/dist/help.html:102
+msgid ""
+"On this website, no account is required to use most of the tools. Your "
+"session is stored during 30 days so you can easily leave this webpage, "
+"come back later and see that everything stays unchanged. Nonetheless, if "
+"30 days is not enough or if you want to watch and modify your schedule "
+"one more than one device, we suggest you to\n"
+"                        <a href=\"/account\">create an account.</a>\n"
+"                        With this, you will also be able to save multiple"
+" schedules, rename them, choose their color palette and so on."
+msgstr ""
+
+#: templates/dist/help.html:129
+msgid ""
+"We are three students from UCLouvain. By the time we started this "
+"project, we were finishing our bachelor's degree in engineering "
+"(Electricity and Mechanics for Jerome and Gilles; Computer Science and "
+"Applied Mathematics for Louis)."
+msgstr ""
+
+#: templates/dist/help.html:142
+msgid ""
+"Jérome is a student in the Ecole Polytechnique de Louvain, in civil "
+"engineering. He completed his bachelor degree in Electricity and "
+"Mechanics. He is now pursuing a master degree in Mechatronics."
+msgstr ""
+
+#: templates/dist/help.html:158
+msgid ""
+"Louis is a student at the Ecole Polytechnique de Louvain, in civil "
+"engineering. He completed his bachelor degree in Applied Mathematics and "
+"Computing Science. He is now pursuing a master degree in Computing "
+"Sciences."
+msgstr ""
+
+#: templates/dist/help.html:174
+msgid ""
+"Gilles is a student in the Ecole Polytechnique de Louvain, in civil "
+"engineering. He completed his bachelor degree in Electricity and "
+"Mechanics. He is now pursuing a master degree in Mechatronics."
+msgstr ""
+
 #: templates/dist/security/change_password.html:19
 #: templates/dist/security/reset_password.html:14
 #: templates/security/change_password.html:19
@@ -792,3 +851,4 @@ msgstr "horaire actuel"
 #: views/calendar.py:174 views/calendar.py:196
 msgid "The schedule you requested does not exist in our database !"
 msgstr "L'horaire que vous avez demandé n'existe pas dans notre base de données !"
+
