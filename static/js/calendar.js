@@ -297,7 +297,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 if (this.eventForm.recurring) {
                     evt.begin = this.eventForm.beginRecurrDay + ' ' + this.eventForm.beginHour;
-                    evt.end = this.eventForm.beginRecurrDay + ' ' + this.eventForm.endHour;
+                    evt.end = this.eventForm.endRecurrDay + ' ' + this.eventForm.endHour;
                     evt.end_recurrence = this.eventForm.endRecurrDay + ' ' + this.eventForm.endHour;
                     evt.freq = this.eventForm.freq;
                 } else {
