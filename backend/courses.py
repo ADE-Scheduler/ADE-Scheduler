@@ -8,6 +8,16 @@ from collections import defaultdict
 View = Union[List[str], Set[str], Dict[int, str]]
 
 
+def generate_empty_dataframe():
+    index = ['code', 'type', 'id']
+    columns = ['week', 'event']
+
+    activities = pd.DataFrame(columns=index + columns)
+    activities.set_index(keys=index, inplace=True)
+
+    return activities
+
+
 class Course:
     """
     A course aims to represent one or more courses.
@@ -35,11 +45,7 @@ class Course:
         if activities is not None:
             self.activities = activities
         else:
-            index = ['code', 'type', 'id']
-            columns = ['week', 'event']
-
-            self.activities = pd.DataFrame(columns=index+columns)
-            self.activities.set_index(keys=index, inplace=True)
+            self.activities = generate_empty_dataframe()
 
     def __eq__(self, other: Union['Course', str]) -> bool:
         if isinstance(other, Course):
@@ -131,7 +137,7 @@ class Course:
 
             return self.activities[valid]
         elif isinstance(view, dict):
-            activities = []
+            activities = [generate_empty_dataframe()]
 
             grp_weeks = self.activities.groupby('week')
 
