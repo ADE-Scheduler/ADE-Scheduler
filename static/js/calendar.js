@@ -127,7 +127,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         placement: 'auto',
                     });
                 },
-                eventMouseLeave: function (arg) {
+                eventMouseLeave: function (arg) {   // TODO: bug du tooltip quand on quitte un modal en appuyant sur un bouton par-dessus un event (et qu'on reste ~1s sur l'event) :-(
+                                                    // ce code ne le fixe pas... mais le bug apprait qu'en prod (impossible à répliquer localement)
                     try     { arg.el.tooltip.hide(); }
                     catch   {}
                 },
