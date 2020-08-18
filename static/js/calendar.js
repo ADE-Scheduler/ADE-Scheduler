@@ -8,7 +8,7 @@ import './base.js';
 import '../css/calendar.css';
 const axios = require('axios');
 
-const uclWeeksNo = [0, 0, 0, -2, 1, 2, 3, 4, 5, 6, 7, 8, 9, -1, -1, 10, 11, 12, 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 0, 0, 0];
+const uclWeeksNo = [0, 0, 0, -2, 1, 2, 3, 4, 5, 6, 7, 8, 9, -1, -1, 10, 11, 12, 13, -3, -3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, -3, -3, 0, 0];
 
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -86,11 +86,14 @@ document.addEventListener('DOMContentLoaded', function() {
                             case -2:
                                 span.innerText = document.getElementById('current-locale').innerText.trim() === 'EN' ? 'Break':'Congé';
                                 break;
+                            case -3:
+                                span.innerText = 'Blocus';
+                                break;
                             default:
-                                span.innerText = '-'
+                                span.innerText = '-';
                         }
                     }
-                    return {domNodes: [span]}
+                    return {domNodes: [span]};
                 },
 
                 // Header bar
