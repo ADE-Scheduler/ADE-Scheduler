@@ -89,7 +89,7 @@ def get_data():
 def search_code(search_key):
     mng = app.config['MANAGER']
 
-    codes = mng.get_codes_matching(search_key)
+    codes = mng.get_codes_matching(search_key, session['current_schedule'].project_id)
 
     return jsonify({
         'codes': codes
@@ -217,14 +217,12 @@ def share():
 @calendar.route('/schedule', methods=['PUT'])
 def apply_filter():
     schedule = session['current_schedule']
+    #schedule.reset_filters()
     for code, filters in request.json.items():
-
         for type, filters in filters.items():
             for filter, value in filters.items():
                 if not value:
                     schedule.add_filter(code, type + ': ' + filter)
-                else:
-                    schedule.remove_filter(code, type + ': ' + filter)
     return jsonify({
         'events': session['current_schedule'].get_events(json=True),
     }), 200

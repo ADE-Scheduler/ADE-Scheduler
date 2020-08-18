@@ -134,7 +134,10 @@ class Server(Redis):
         for key in keys:
             value = self.get_value(prefix + key, **kwargs)
             if value:
-                values.append(value)
+                if isinstance(value, list):  # For course combo (list of courses)
+                    values.extend(value)
+                else:
+                    values.append(value)
             else:
                 keys_not_found.append(key)
 
