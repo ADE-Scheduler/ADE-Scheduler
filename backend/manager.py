@@ -291,6 +291,9 @@ class Manager:
             project_id = self.get_default_project_id()
 
         hmap = f'[RESOURCE_IDs,project_id={project_id}]'
+        if not self.server.contains(hmap):
+            self.update_resource_ids()
+
         return self.server.hexists(hmap, code)
 
     def get_project_ids(self, year: Optional[str] = None) -> Union[List[Dict[str, str]], str, None]:
