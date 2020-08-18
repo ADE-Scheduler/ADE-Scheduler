@@ -174,11 +174,11 @@ class Manager:
         key = f'[COURSE_RESOURCES,project_id={project_id}]'
 
         if not self.server.exists(key):
-            self.update_resources()
+            self.update_course_resources()
 
         return self.server.get_value(key)
 
-    def update_resources(self):
+    def update_course_resources(self):
         """
         Updates the course resources contained in the server for all project ids.
         """
@@ -194,6 +194,7 @@ class Manager:
             resource_types = resources[rsrc.INDEX.TYPE]
             index = (resource_types == rsrc.TYPES.COURSE) + (resource_types == rsrc.TYPES.COURSE_COMBO)
             course_resources = resources[index]
+            course_resources[rsrc.INDEX.CODE] = course_resources[rsrc.INDEX.CODE].apply(str.upper)
             self.server.set_value(key, course_resources, expire_in={'hours': 25})
 
     def get_codes_matching(self, pattern: str, project_id: SupportsInt = None) -> List[str]:
