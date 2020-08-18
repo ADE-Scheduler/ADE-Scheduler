@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-08-18 20:43+0200\n"
+"POT-Creation-Date: 2020-08-18 22:06+0200\n"
 "PO-Revision-Date: 2020-07-24 16:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: app.py:192
+#: app.py:194
 msgid "An error has occurred. Please contact the admins if it keeps happening."
 msgstr "Une erreur est apparue. Si cela arrive à nouveau, veuillez nous contacter."
 
-#: app.py:198
+#: app.py:200
 msgid "404 Page not found :("
 msgstr "404 Page non trouvée :("
 
@@ -253,7 +253,7 @@ msgstr "Fin de récurrence"
 msgid "Add"
 msgstr "Ajouter"
 
-#: templates/calendar.html:284 views/calendar.py:104
+#: templates/calendar.html:284 views/calendar.py:102
 msgid "The code you added does not exist in our database."
 msgstr "Le code que vous avez entré n'existe pas dans notre base de données."
 
@@ -332,6 +332,10 @@ msgstr "Rechercher un code"
 #: templates/classroom.html:60
 msgid "Search address"
 msgstr "Rechercher une adresse"
+
+#: templates/contact.html:12
+msgid "Do not hesitate to contact us in case of problem !"
+msgstr "N'hésitez pas à nous contacter en cas de problème !"
 
 #: templates/custom_macros.html:20 templates/custom_macros.html:33
 msgid "Email address"
@@ -728,7 +732,7 @@ msgstr "Confirmez le mot de passe"
 msgid "current_schedule"
 msgstr "horaire actuel"
 
-#: views/calendar.py:188 views/calendar.py:210
+#: views/calendar.py:186 views/calendar.py:208
 msgid "The schedule you requested does not exist in our database !"
 msgstr "L'horaire que vous avez demandé n'existe pas dans notre base de données !"
 
@@ -829,3 +833,4 @@ msgstr "L'horaire que vous avez demandé n'existe pas dans notre base de donnée
 #~ " is now pursuing a master degree "
 #~ "in Mechatronics."
 #~ msgstr ""
+
