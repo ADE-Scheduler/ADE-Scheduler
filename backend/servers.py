@@ -18,6 +18,7 @@ class Server(Redis):
 
     >>> s = Server(host='localhost', port=6379)
     """
+
     def __init__(self, *arg, **kwargs):
         super().__init__(*arg, **kwargs)
 

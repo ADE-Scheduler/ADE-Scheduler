@@ -255,14 +255,10 @@ class Manager:
             return [{'id': value.decode(), 'year': key.decode()}
                     for key, value in self.server.hgetall(hmap).items()]
         value = self.server.get_value(year, hmap=hmap)
-        if value:
-            return value.decode()
+        if value[-1] is not None:
+            return value[-1].decode()
         else:
-            value = self.server.hmget(hmap, year)
-            if value:
-                return value.decode()
-            else:
-                return None
+            return None
 
     def update_project_ids(self):
         """

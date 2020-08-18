@@ -83,9 +83,6 @@ class Schedule:
         :return: all the new codes added to the schedule
         :rtype: Set[str]
         """
-
-        print('codes in sched', self.codes)
-
         old = set(self.codes)
         if isinstance(code, str):
             self.codes.add(code)
