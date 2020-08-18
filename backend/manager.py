@@ -91,10 +91,10 @@ class Manager:
                 self.client.renew_token()
 
             resource_ids = self.get_resource_ids(*codes_not_found, project_id=project_id)
-            courses_not_found = ade.response_to_courses(self.client.get_activities(resource_ids, project_id))
-            for course in courses_not_found:
-                self.server.set_value(prefix+course.code, course, expire_in={'hours': 3})
-            courses += courses_not_found
+            for code_not_found in codes_not_found:
+                course_not_found = ade.response_to_courses(self.client.get_activities(resource_ids, project_id))
+                self.server.set_value(prefix+code_not_found, course_not_found, expire_in={'hours': 3})
+                courses += course_not_found
 
         return courses
 
@@ -158,6 +158,50 @@ class Manager:
 
             resources = ade.response_to_resources(self.client.get_resources(value))
             self.server.set_value(key, resources, expire_in={'hours': 25})
+
+    def get_course_resources(self, project_id: SupportsInt = None) -> pd.DataFrame:
+        """
+        Returns the course resources.
+
+        :param project_id: the project id
+        :type project_id: SupportsInt
+        :return: the courses resources
+        :rtype: pd.DataFrame
+        """
+        if project_id is None:
+            project_id = self.get_default_project_id()
+
+        key = f'[COURSE_RESOURCES,project_id={project_id}]'
+
+        if not self.server.exists(key):
+            self.update_course_resources()
+
+        return self.server.get_value(key)
+
+    def update_course_resources(self):
+        """
+        Updates the course resources contained in the server for all project ids.
+        """
+        key = '[PROJECT_IDs]'
+        if not self.server.exists(key):
+            self.update_project_ids()
+
+        for value in self.server.hgetall(key).values():
+            value = value.decode()
+            key = f'[COURSE_RESOURCES,project_id={value}]'
+
+            resources = self.get_resources(project_id=value)
+            resource_types = resources[rsrc.INDEX.TYPE]
+            index = (resource_types == rsrc.TYPES.COURSE) + (resource_types == rsrc.TYPES.COURSE_COMBO)
+            course_resources = resources[index]
+            course_resources[rsrc.INDEX.CODE] = course_resources[rsrc.INDEX.CODE].apply(str.upper)
+            self.server.set_value(key, course_resources, expire_in={'hours': 25})
+
+    def get_codes_matching(self, pattern: str, project_id: SupportsInt = None) -> List[str]:
+        course_resources = self.get_course_resources(project_id)
+        matching_code = course_resources[rsrc.INDEX.CODE].str.contains(pattern, case=False)
+
+        return course_resources[matching_code][rsrc.INDEX.CODE].to_list()
 
     def get_classrooms(self, project_id: SupportsInt = None,
                        search_dict: Dict[str, str] = None, return_json: bool = False):
@@ -239,6 +283,19 @@ class Manager:
             resource_ids = ade.response_to_resource_ids(self.client.get_resource_ids(value))
             self.server.set_value(key, resource_ids, expire_in={'hours': 25}, hmap=True)
 
+    def code_exists(self, code, project_id: SupportsInt = None) -> bool:
+        """
+        Checks if a given code exists in the database for a given project id
+        """
+        if project_id is None:
+            project_id = self.get_default_project_id()
+
+        hmap = f'[RESOURCE_IDs,project_id={project_id}]'
+        if not self.server.contains(hmap):
+            self.update_resource_ids()
+
+        return self.server.hexists(hmap, code)
+
     def get_project_ids(self, year: Optional[str] = None) -> Union[List[Dict[str, str]], str, None]:
         """
         Returns the project ids. If year is specified, only the project id of this year is returned.
@@ -255,14 +312,10 @@ class Manager:
             return [{'id': value.decode(), 'year': key.decode()}
                     for key, value in self.server.hgetall(hmap).items()]
         value = self.server.get_value(year, hmap=hmap)
-        if value:
-            return value.decode()
+        if value[-1] is not None:
+            return value[-1].decode()
         else:
-            value = self.server.hmget(hmap, year)
-            if value:
-                return value.decode()
-            else:
-                return None
+            return None
 
     def update_project_ids(self):
         """

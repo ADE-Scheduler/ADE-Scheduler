@@ -51,7 +51,7 @@
                             <a class="nav-link" v-bind:class="{'active-page': currentPath === '{{ url_for('help.index') }}'}" href="{{ url_for('help.index') }}">{{_('Help')}}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="mailto:adescheduler@gmail.com">{{_('Contact us')}}</a>
+                            <a class="nav-link" v-bind:class="{'active-page': currentPath === '{{ url_for('contact.index') }}'}" href="{{ url_for('contact.index') }}">{{_('Contact us')}}</a>
                         </li>
                     </ul>
 
