@@ -87,16 +87,9 @@ def get_data():
 
 @calendar.route('/<search_key>', methods=['GET'])
 def search_code(search_key):
+    mng = app.config['MANAGER']
 
-    codes = [
-        'LELEC2885',
-        'LMECA2660',
-        'LMECA2170',
-        'LEPL1104',
-        'A VERY VERY VERY LONG CODE !'
-    ]
-
-    codes = [code for code in codes if search_key.upper() in code.upper()]
+    codes = mng.get_codes_matching(search_key)
 
     return jsonify({
         'codes': codes
