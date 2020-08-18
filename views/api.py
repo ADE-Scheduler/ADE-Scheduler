@@ -1,10 +1,42 @@
+import json
+from typing import Any
+from distutils.util import strtobool
+
 from flask import current_app as app
 from flask import Blueprint, jsonify, request, session, redirect, url_for
 
 import backend.schedules as schd
 
 
+class ApiEncoder(json.JSONEncoder):
+    """
+    Subclass of json decoder made for the calendar-specific JSON encodings.
+    """
+
+    def default(self, obj: Any) -> Any:
+        if isinstance(obj, set):
+            return list(obj)
+        else:
+            return json.JSONEncoder.default(self, obj)
+
+
+class ApiDecoder(json.JSONDecoder):
+    """
+    Subclass of json decoder made for the calendar-specific JSON decodings.
+    """
+
+    def decode(self, obj: Any, w: Any = None) -> str:
+        decoded = json.JSONDecoder().decode(obj)
+        for key in decoded:
+            obj = decoded[key]
+            if isinstance(obj, list) and isinstance(obj[0], str):
+                decoded[key] = set(obj)
+        return decoded
+
+
 api = Blueprint('api', __name__, static_folder='../static')
+api.json_decoder = ApiDecoder
+api.json_encoder = ApiEncoder
 
 
 @api.route('/schedule', methods=['GET'])
@@ -29,7 +61,7 @@ def get_schedule():
 
     year = request.args.get('year')
     codes = request.args.getlist('code')
-    view = bool(request.args.get('view'))
+    view = bool(strtobool(request.args.get('view')))
 
     project_id = mng.get_project_ids(year=year)
     if project_id is None:
@@ -43,5 +75,7 @@ def get_schedule():
         return redirect(url_for('calendar.index'))
 
     return jsonify({
-        'events': ['hey :D'],
+        **schedule.__dict__,
+        'events': schedule.get_events(json=True),
+        'year': year,
     }), 200
