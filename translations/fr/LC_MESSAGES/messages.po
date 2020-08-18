@@ -255,7 +255,7 @@ msgstr "Ajouter"
 
 #: templates/calendar.html:284 views/calendar.py:104
 msgid "The code you added does not exist in our database."
-msgstr ""
+msgstr "Le code que vous avez entré n'existe pas dans notre base de données."
 
 #: templates/calendar.html:299
 msgid "Download"
