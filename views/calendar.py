@@ -85,6 +85,24 @@ def get_data():
     }), 200
 
 
+@calendar.route('/<search_key>', methods=['GET'])
+def search_code(search_key):
+
+    codes = [
+        'LELEC2885',
+        'LMECA2660',
+        'LMECA2170',
+        'LEPL1104',
+        'A VERY VERY VERY LONG CODE !'
+    ]
+
+    codes = [code for code in codes if search_key.upper() in code.upper()]
+
+    return jsonify({
+        'codes': codes
+    }), 200
+
+
 @calendar.route('/<code>', methods=['PATCH'])
 def add_code(code):
     mng = app.config['MANAGER']

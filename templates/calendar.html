@@ -329,16 +329,17 @@
                             <form class="input-group my-1 dropdown" id="form-add-code" v-on:submit.prevent="addCode">
                                 <input  class="form-control code-input"
                                         id="input-enter-code"
+                                        autocomplete="off"
                                         type="text"
                                         placeholder="{{_('Enter code')}}"
                                         v-on:focus="codeSearchDisplay=true"
                                         v-on:blur="codeSearchDisplay=false"
                                         v-model="code" v-focus>
                                 <button class="btn btn-success badge rounded-pill btn-code-validation" type="submit">+</button>
-                                <ul class="dropdown-menu scrollable-menu" v-on:mousedown.prevent>
+                                <ul class="dropdown-menu scrollable-menu" v-on:mousedown.prevent v-show="!(codeSearch.length==0 && code=='')">
                                     <li><h6 class="dropdown-header">{{ _('Search results') }}</h6></li>
-                                    <li><a class="dropdown-item disabled text-center"
-                                            v-if="codeSearch.length==0">{{ _('No results') }}</a>
+                                    <li v-if="codeSearch.length===0">
+                                        <a class="dropdown-item disabled text-center">{{ _('No results') }}</a>
                                     </li>
                                     <li><a class="dropdown-item text-truncate"
                                             v-for="result in codeSearch"

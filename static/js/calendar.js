@@ -28,12 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
             error: false,
             saveSuccess: !!document.getElementById('scheduleSaved'),
             code: '',
-            codeSearch: [
-                'LMECA2660',
-                'LMECA2170',
-                'LEPL1104',
-                'A VERY VERY VERY LONG CODE !'
-            ],
+            codeSearch: [],
             codeSearchDisplay: false,
             eventForm: {
                 name: '',
@@ -520,7 +515,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.execCommand('copy');
             },
             getCodeSearchResults: function() {
-                console.log(this.code);
+                if (this.code !== '') {
+                    axios({
+                        method: 'GET',
+                        url: Flask.url_for('calendar.search_code', {'search_key': this.code}),
+                    })
+                    .then(resp => {
+                        this.codeSearch = resp.data.codes;
+                    })
+                    .catch(err => {
+                        this.error = true;
+                    })
+                    .then(() => {});
+                }
             }
         },
         computed: {
@@ -539,7 +546,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     codeDropdown.hide();
                 }
             },
-            code: function() {
+            code: function(newCode) {
+                if (newCode === '') {
+                    this.codeSearch = [];
+                }
                 this.debouncedCodeSearchResults();
             },
         },
