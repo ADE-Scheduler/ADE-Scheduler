@@ -74,7 +74,7 @@ class Schedule:
         else:
             self.filtered_subcodes[code].difference_update(filter)
 
-    def reset_filter(self):
+    def reset_filters(self):
         self.filtered_subcodes = default_dict_any_to_set()
 
     def add_course(self, code: Union[Iterable[str], str]) -> Set[str]:
