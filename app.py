@@ -33,6 +33,8 @@ from views.calendar import calendar
 from views.account import account
 from views.classroom import classroom
 from views.help import help
+from views.contact import contact
+from views.api import api
 
 # Change current working directory to main directory
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
@@ -43,6 +45,8 @@ app.register_blueprint(calendar, url_prefix='/calendar')
 app.register_blueprint(account, url_prefix='/account')
 app.register_blueprint(classroom, url_prefix='/classroom')
 app.register_blueprint(help, url_prefix='/help')
+app.register_blueprint(contact, url_prefix='/contact')
+app.register_blueprint(api, url_prefix='/api')
 app.config['SECRET_KEY'] = os.environ['FLASK_SECRET_KEY']
 jsglue = JSGlue(app)
 
