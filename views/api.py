@@ -53,9 +53,18 @@ def get_events():
              e.g.: LELEC2885, LMECA2170, LEPL1104,...
              To specify a list of codes, use the following format:
              /schedule?code=CODE_1&code=CODE_2&code=CODE_3 and so on.
+     - filtered events: the IDs of the events you want to filter.
+            Say the course which code is "CODE" has two TPs with IDs "TP: CODE-Q1A" and "TP: CODE-Q1B"
+            and you want to filter out the events of "TP: CODE-Q1A", you can specify such a filter by specifying:
+            /schedule?code=CODE&CODE=TP: CODE-Q1A&...
+
+    /!\\ To make sure to avoid any problems, respect the case-sensitiveness of the codes and event IDs.
+    Generally, those are uppercase. /!\\
 
     Example:
         https://ade-scheduler.info.ucl.ac.be/api/events?year=2020-2021&code=LMECA2170&code=LEPL1104&view=true
+    or, with filtered events:
+        https://ade-scheduler.info.ucl.ac.be/api/events?year=2020-2021&code=LEPL1104&LEPL1104=TP: LEPL1104_Q2B-APE&view=true
     """
     mng = app.config['MANAGER']
 
@@ -69,6 +78,8 @@ def get_events():
 
     schedule = schd.Schedule(project_id=project_id)
     schedule.add_course([code.upper() for code in codes])
+    for code in codes:
+        schedule.add_filter(code.upper(), request.args.getlist(code))
 
     if view:
         session['current_schedule'] = schedule

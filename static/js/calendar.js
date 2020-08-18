@@ -555,7 +555,7 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         created:  function () {
             this.fetchData();
-            this.debouncedCodeSearchResults = debounce(this.getCodeSearchResults, 500);
+            this.debouncedCodeSearchResults = debounce(this.getCodeSearchResults, 200);
         },
     });
 
