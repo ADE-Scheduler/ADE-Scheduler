@@ -306,13 +306,21 @@
                             </button>
                         </li>
                         <li class="list-group-item p-0 list-code-input">
-                            <form class="input-group my-1" id="form-add-code" v-on:submit.prevent="addCode">
+                            <form class="input-group my-1 dropdown" id="form-add-code" v-on:submit.prevent="addCode">
                                 <input  class="form-control code-input"
                                         id="input-enter-code"
                                         type="text"
                                         placeholder="{{_('Enter code')}}"
+                                        v-on:focus="codeSearchDisplay=true"
+                                        v-on:blur="codeSearchDisplay=false"
                                         v-model="code" v-focus>
                                 <button class="btn btn-success badge rounded-pill btn-code-validation" type="submit">+</button>
+                                <ul class="dropdown-menu scrollable-menu">
+                                    <li><a class="dropdown-item"
+                                            v-for="result in codeSearch"
+                                            href="#">[[ result ]]</a>
+                                    </li>
+                                </ul>
                             </form>
                         </li>
                     </div>

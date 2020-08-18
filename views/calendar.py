@@ -88,9 +88,7 @@ def get_data():
 
 @calendar.route('/<code>', methods=['PATCH'])
 def add_code(code):
-    pattern = re.compile('^\s+|\s*,\s*|\s+$')
-    codes = [x.upper() for x in pattern.split(code) if x]
-    codes = session['current_schedule'].add_course(codes)
+    codes = session['current_schedule'].add_course(code.upper())
     session['current_schedule_modified'] = True
     return jsonify({
         'codes': codes,

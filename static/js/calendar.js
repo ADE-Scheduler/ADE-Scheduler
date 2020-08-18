@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { Modal, Popover, Tooltip, Collapse } from 'bootstrap';
+import { Modal, Popover, Tooltip, Collapse, Dropdown } from 'bootstrap';
 import FullCalendar from '@fullcalendar/vue'
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -27,6 +27,36 @@ document.addEventListener('DOMContentLoaded', function() {
             error: false,
             saveSuccess: !!document.getElementById('scheduleSaved'),
             code: '',
+            codeSearch: [
+                'LMECA2660',
+                'LMECA2170',
+                'LEPL1104',
+                'LMECA2660',
+                'LMECA2170',
+                'LEPL1104',
+                'LMECA2660',
+                'LMECA2170',
+                'LEPL1104',
+                'LMECA2660',
+                'LMECA2170',
+                'LEPL1104',
+                'LMECA2660',
+                'LMECA2170',
+                'LEPL1104',
+                'LMECA2660',
+                'LMECA2170',
+                'LEPL1104',
+                'LMECA2660',
+                'LMECA2170',
+                'LEPL1104',
+                'LMECA2660',
+                'LMECA2170',
+                'LEPL1104',
+                'LMECA2660',
+                'LMECA2170',
+                'LEPL1104',
+            ],
+            codeSearchDisplay: false,
             eventForm: {
                 name: '',
                 location: '',
@@ -513,6 +543,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 return this.exportInfo.url + '&choice=' + this.exportInfo.subscriptionType;
             },
         },
+        watch: {
+            codeSearchDisplay: function () {
+                if (this.codeSearchDisplay) {
+                    codeDropdown.show();
+                } else {
+                    codeDropdown.hide();
+                }
+            },
+        },
         created:  function () {
             this.fetchData();
         },
@@ -523,6 +562,9 @@ document.addEventListener('DOMContentLoaded', function() {
             container: 'body',
             trigger: 'focus',
         })
+    });
+    var codeDropdown = new Dropdown(document.getElementById('input-enter-code'), {
+        // boundary: 'viewport',
     });
     var addEventModal = new Modal(document.getElementById('addEventModal'));
     var eventModal = new Modal(document.getElementById('eventModal'));
