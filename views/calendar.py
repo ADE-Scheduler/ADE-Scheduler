@@ -1,4 +1,3 @@
-import re
 import json
 from datetime import datetime
 from typing import Any
@@ -86,12 +85,25 @@ def get_data():
     }), 200
 
 
+@calendar.route('/<search_key>', methods=['GET'])
+def search_code(search_key):
+    mng = app.config['MANAGER']
+    codes = mng.get_codes_matching(search_key, session['current_schedule'].project_id)
+    return jsonify({
+        'codes': codes
+    }), 200
+
+
 @calendar.route('/<code>', methods=['PATCH'])
 def add_code(code):
-    pattern = re.compile('^\s+|\s*,\s*|\s+$')
-    codes = [x.upper() for x in pattern.split(code) if x]
-    codes = session['current_schedule'].add_course(codes)
-    session['current_schedule_modified'] = True
+    mng = app.config['MANAGER']
+    code = code.upper()
+    if not mng.code_exists(code, project_id=session['current_schedule'].project_id):
+        return _('The code you added does not exist in our database.'), 404
+
+    codes = session['current_schedule'].add_course(code)
+    if codes:
+        session['current_schedule_modified'] = True
     return jsonify({
         'codes': codes,
         'events': session['current_schedule'].get_events(json=True),
@@ -203,14 +215,12 @@ def share():
 @calendar.route('/schedule', methods=['PUT'])
 def apply_filter():
     schedule = session['current_schedule']
+    schedule.reset_filters()
     for code, filters in request.json.items():
-
         for type, filters in filters.items():
             for filter, value in filters.items():
                 if not value:
                     schedule.add_filter(code, type + ': ' + filter)
-                else:
-                    schedule.remove_filter(code, type + ': ' + filter)
     return jsonify({
         'events': session['current_schedule'].get_events(json=True),
     }), 200

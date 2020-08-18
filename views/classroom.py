@@ -1,5 +1,3 @@
-import math
-
 from flask import current_app as app
 from flask import Blueprint, render_template, jsonify
 
@@ -30,11 +28,7 @@ def get_occupation(id):
     project_ids = mng.get_project_ids()
     for project_id in project_ids:
         events_in_classroom = mng.get_events_in_classroom(id, project_id=project_id['id'])
-        events.extend(
-            map(lambda e: e.json('#2C3E50'),
-                events_in_classroom
-                )
-        )
+        events.extend(map(lambda e: e.json('#2C3E50'), events_in_classroom))
 
     return jsonify({
         'events': events,

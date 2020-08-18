@@ -145,6 +145,13 @@
     z-index: 2;
 }
 
+.scrollable-menu {
+    width: 95%;
+    height: auto;
+    max-height: 200px;
+    overflow-x: hidden;
+}
+
 .sidebar {
     position: fixed;
     top: 0;

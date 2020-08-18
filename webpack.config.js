@@ -15,6 +15,7 @@ const pages = [
     'classroom',
     'help',
     'welcome',
+    'contact'
 ];
 
 const conf = {

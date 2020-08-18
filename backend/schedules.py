@@ -74,6 +74,9 @@ class Schedule:
         else:
             self.filtered_subcodes[code].difference_update(filter)
 
+    def reset_filters(self):
+        self.filtered_subcodes = default_dict_any_to_set()
+
     def add_course(self, code: Union[Iterable[str], str]) -> Set[str]:
         """
         Adds one or many courses to the schedule.
@@ -83,9 +86,6 @@ class Schedule:
         :return: all the new codes added to the schedule
         :rtype: Set[str]
         """
-
-        print('codes in sched', self.codes)
-
         old = set(self.codes)
         if isinstance(code, str):
             self.codes.add(code)

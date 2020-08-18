@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { Modal, Popover, Tooltip, Collapse } from 'bootstrap';
+import { Modal, Popover, Tooltip, Collapse, Dropdown } from 'bootstrap';
 import FullCalendar from '@fullcalendar/vue'
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -7,6 +7,7 @@ import frLocale from '@fullcalendar/core/locales/fr';
 import './base.js';
 import '../css/calendar.css';
 const axios = require('axios');
+const debounce = require('lodash/debounce');
 
 const uclWeeksNo = [0, 0, 0, -2, 1, 2, 3, 4, 5, 6, 7, 8, 9, -1, -1, 10, 11, 12, 13, -3, -3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, -3, -3, 0, 0];
 
@@ -27,6 +28,8 @@ document.addEventListener('DOMContentLoaded', function() {
             error: false,
             saveSuccess: !!document.getElementById('scheduleSaved'),
             code: '',
+            codeSearch: [],
+            codeSearchDisplay: false,
             eventForm: {
                 name: '',
                 location: '',
@@ -275,7 +278,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.computing = false;
                 });
             },
-            addCode: function() {
+            addCode: function(e, code) {
+                if (code !== undefined) {
+                    this.code = code;
+                }
                 if (this.code !== '') {
                     this.computing = true;
                     axios({
@@ -288,7 +294,11 @@ document.addEventListener('DOMContentLoaded', function() {
                         this.code = '';
                     })
                     .catch(err => {
-                        this.error = true;
+                        if (err.response.status === 404) {
+                            warningModal.show();
+                        } else {
+                            this.error = true;
+                        }
                     })
                     .then(() => {
                         this.computing = false;
@@ -504,17 +514,48 @@ document.addEventListener('DOMContentLoaded', function() {
                 copyText.classList.add('is-valid');
                 document.execCommand('copy');
             },
+            getCodeSearchResults: function() {
+                if (this.code !== '') {
+                    axios({
+                        method: 'GET',
+                        url: Flask.url_for('calendar.search_code', {'search_key': this.code}),
+                    })
+                    .then(resp => {
+                        this.codeSearch = resp.data.codes;
+                    })
+                    .catch(err => {
+                        this.error = true;
+                    })
+                    .then(() => {});
+                }
+            }
         },
         computed: {
             calendarOpacity: function() {
                 return {'opacity': this.computing ? '0.2':'1'}
             },
-            subscriptionLink: function () {
+            subscriptionLink: function() {
                 return this.exportInfo.url + '&choice=' + this.exportInfo.subscriptionType;
+            },
+        },
+        watch: {
+            codeSearchDisplay: function () {
+                if (this.codeSearchDisplay) {
+                    codeDropdown.show();
+                } else {
+                    codeDropdown.hide();
+                }
+            },
+            code: function(newCode) {
+                if (newCode === '') {
+                    this.codeSearch = [];
+                }
+                this.debouncedCodeSearchResults();
             },
         },
         created:  function () {
             this.fetchData();
+            this.debouncedCodeSearchResults = debounce(this.getCodeSearchResults, 200);
         },
     });
 
@@ -524,10 +565,12 @@ document.addEventListener('DOMContentLoaded', function() {
             trigger: 'focus',
         })
     });
+    var codeDropdown = new Dropdown(document.getElementById('input-enter-code'));
     var addEventModal = new Modal(document.getElementById('addEventModal'));
     var eventModal = new Modal(document.getElementById('eventModal'));
     var exportModal = new Modal(document.getElementById('exportModal'));
     var courseModal = new Modal(document.getElementById('courseModal'));
+    var warningModal = new Modal(document.getElementById('warningModal'));
     var codeMenu = new Collapse(document.getElementById('sidebarMenu'), {
         toggle: false,
     });
