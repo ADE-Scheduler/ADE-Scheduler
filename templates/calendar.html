@@ -315,9 +315,14 @@
                                         v-on:blur="codeSearchDisplay=false"
                                         v-model="code" v-focus>
                                 <button class="btn btn-success badge rounded-pill btn-code-validation" type="submit">+</button>
-                                <ul class="dropdown-menu scrollable-menu">
-                                    <li><a class="dropdown-item"
+                                <ul class="dropdown-menu scrollable-menu" v-on:mousedown.prevent>
+                                    <li><h6 class="dropdown-header">{{ _('Search results') }}</h6></li>
+                                    <li><a class="dropdown-item disabled text-center"
+                                            v-if="codeSearch.length==0">{{ _('No results') }}</a>
+                                    </li>
+                                    <li><a class="dropdown-item text-truncate"
                                             v-for="result in codeSearch"
+                                            v-on:click="addCode($event, result)"
                                             href="#">[[ result ]]</a>
                                     </li>
                                 </ul>

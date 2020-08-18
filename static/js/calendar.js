@@ -7,6 +7,7 @@ import frLocale from '@fullcalendar/core/locales/fr';
 import './base.js';
 import '../css/calendar.css';
 const axios = require('axios');
+const debounce = require('lodash/debounce');
 
 const uclWeeksNo = [0, 0, 0, -2, 1, 2, 3, 4, 5, 6, 7, 8, 9, -1, -1, 10, 11, 12, 13, -3, -3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, -3, -3, 0, 0];
 
@@ -31,30 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 'LMECA2660',
                 'LMECA2170',
                 'LEPL1104',
-                'LMECA2660',
-                'LMECA2170',
-                'LEPL1104',
-                'LMECA2660',
-                'LMECA2170',
-                'LEPL1104',
-                'LMECA2660',
-                'LMECA2170',
-                'LEPL1104',
-                'LMECA2660',
-                'LMECA2170',
-                'LEPL1104',
-                'LMECA2660',
-                'LMECA2170',
-                'LEPL1104',
-                'LMECA2660',
-                'LMECA2170',
-                'LEPL1104',
-                'LMECA2660',
-                'LMECA2170',
-                'LEPL1104',
-                'LMECA2660',
-                'LMECA2170',
-                'LEPL1104',
+                'A VERY VERY VERY LONG CODE !'
             ],
             codeSearchDisplay: false,
             eventForm: {
@@ -305,7 +283,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.computing = false;
                 });
             },
-            addCode: function() {
+            addCode: function(e, code) {
+                if (code !== undefined) {
+                    this.code = code;
+                }
                 if (this.code !== '') {
                     this.computing = true;
                     axios({
@@ -534,12 +515,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 copyText.classList.add('is-valid');
                 document.execCommand('copy');
             },
+            getCodeSearchResults: function() {
+                console.log(this.code);
+            }
         },
         computed: {
             calendarOpacity: function() {
                 return {'opacity': this.computing ? '0.2':'1'}
             },
-            subscriptionLink: function () {
+            subscriptionLink: function() {
                 return this.exportInfo.url + '&choice=' + this.exportInfo.subscriptionType;
             },
         },
@@ -551,9 +535,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     codeDropdown.hide();
                 }
             },
+            code: function() {
+                this.debouncedCodeSearchResults();
+            },
         },
         created:  function () {
             this.fetchData();
+            this.debouncedCodeSearchResults = debounce(this.getCodeSearchResults, 500);
         },
     });
 
@@ -563,9 +551,7 @@ document.addEventListener('DOMContentLoaded', function() {
             trigger: 'focus',
         })
     });
-    var codeDropdown = new Dropdown(document.getElementById('input-enter-code'), {
-        // boundary: 'viewport',
-    });
+    var codeDropdown = new Dropdown(document.getElementById('input-enter-code'));
     var addEventModal = new Modal(document.getElementById('addEventModal'));
     var eventModal = new Modal(document.getElementById('eventModal'));
     var exportModal = new Modal(document.getElementById('exportModal'));
