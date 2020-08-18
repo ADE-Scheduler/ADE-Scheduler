@@ -70,7 +70,11 @@ def get_events():
 
     year = request.args.get('year')
     codes = request.args.getlist('code')
-    view = bool(strtobool(request.args.get('view')))
+    view = request.args.get('view')
+    if view is None:
+        view = False
+    else:
+        view = bool(strtobool(request.args.get('view')))
 
     project_id = mng.get_project_ids(year=year)
     if project_id is None:
