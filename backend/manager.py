@@ -239,6 +239,16 @@ class Manager:
             resource_ids = ade.response_to_resource_ids(self.client.get_resource_ids(value))
             self.server.set_value(key, resource_ids, expire_in={'hours': 25}, hmap=True)
 
+    def code_exists(self, code, project_id: SupportsInt = None) -> bool:
+        """
+        Checks if a given code exists in the database for a given project id
+        """
+        if project_id is None:
+            project_id = self.get_default_project_id()
+
+        hmap = f'[RESOURCE_IDs,project_id={project_id}]'
+        return self.server.hexists(hmap, code)
+
     def get_project_ids(self, year: Optional[str] = None) -> Union[List[Dict[str, str]], str, None]:
         """
         Returns the project ids. If year is specified, only the project id of this year is returned.

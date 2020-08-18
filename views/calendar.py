@@ -87,8 +87,14 @@ def get_data():
 
 @calendar.route('/<code>', methods=['PATCH'])
 def add_code(code):
-    codes = session['current_schedule'].add_course(code.upper())
-    session['current_schedule_modified'] = True
+    mng = app.config['MANAGER']
+    code = code.upper()
+    if not mng.code_exists(code, project_id=session['current_schedule'].project_id):
+        return _('The code you added does not exist in our database.'), 404
+
+    codes = session['current_schedule'].add_course(code)
+    if codes:
+        session['current_schedule_modified'] = True
     return jsonify({
         'codes': codes,
         'events': session['current_schedule'].get_events(json=True),

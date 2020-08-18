@@ -299,7 +299,11 @@ document.addEventListener('DOMContentLoaded', function() {
                         this.code = '';
                     })
                     .catch(err => {
-                        this.error = true;
+                        if (err.response.status === 404) {
+                            warningModal.show();
+                        } else {
+                            this.error = true;
+                        }
                     })
                     .then(() => {
                         this.computing = false;
@@ -556,6 +560,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var eventModal = new Modal(document.getElementById('eventModal'));
     var exportModal = new Modal(document.getElementById('exportModal'));
     var courseModal = new Modal(document.getElementById('courseModal'));
+    var warningModal = new Modal(document.getElementById('warningModal'));
     var codeMenu = new Collapse(document.getElementById('sidebarMenu'), {
         toggle: false,
     });
