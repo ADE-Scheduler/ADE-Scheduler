@@ -39,8 +39,8 @@ api.json_decoder = ApiDecoder
 api.json_encoder = ApiEncoder
 
 
-@api.route('/schedule', methods=['GET'])
-def get_schedule():
+@api.route('/events', methods=['GET'])
+def get_events():
     """
     API endpoint to fetch the schedule matching the various arguments.
 
@@ -55,7 +55,7 @@ def get_schedule():
              /schedule?code=CODE_1&code=CODE_2&code=CODE_3 and so on.
 
     Example:
-        https://ade-scheduler.info.ucl.ac.be/schedule?year=2020-2021&code=LMECA2170&code=LEPL1104&view=true
+        https://ade-scheduler.info.ucl.ac.be/api/events?year=2020-2021&code=LMECA2170&code=LEPL1104&view=true
     """
     mng = app.config['MANAGER']
 
@@ -75,7 +75,5 @@ def get_schedule():
         return redirect(url_for('calendar.index'))
 
     return jsonify({
-        **schedule.__dict__,
         'events': schedule.get_events(json=True),
-        'year': year,
     }), 200
