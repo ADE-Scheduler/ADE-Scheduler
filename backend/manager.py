@@ -90,8 +90,8 @@ class Manager:
             if self.client.is_expired():
                 self.client.renew_token()
 
-            resource_ids = self.get_resource_ids(*codes_not_found, project_id=project_id)
             for code_not_found in codes_not_found:
+                resource_ids = self.get_resource_ids(code_not_found, project_id=project_id)
                 course_not_found = ade.response_to_courses(self.client.get_activities(resource_ids, project_id))
                 self.server.set_value(prefix+code_not_found, course_not_found, expire_in={'hours': 3})
                 courses += course_not_found
@@ -198,10 +198,10 @@ class Manager:
             self.server.set_value(key, course_resources, expire_in={'hours': 25})
 
     def get_codes_matching(self, pattern: str, project_id: SupportsInt = None) -> List[str]:
+        # Actually returns names matchings :)
         course_resources = self.get_course_resources(project_id)
-        matching_code = course_resources[rsrc.INDEX.CODE].str.contains(pattern, case=False)
-
-        return course_resources[matching_code][rsrc.INDEX.CODE].to_list()
+        matching_code = course_resources[rsrc.INDEX.NAME].str.contains(pattern)
+        return course_resources[matching_code][rsrc.INDEX.NAME].to_list()
 
     def get_classrooms(self, project_id: SupportsInt = None,
                        search_dict: Dict[str, str] = None, return_json: bool = False):
@@ -325,7 +325,7 @@ class Manager:
         project_ids = ade.response_to_project_ids(self.client.get_project_ids())
         self.server.set_value(key, project_ids, expire_in={'hours': 25}, hmap=True)
 
-    def get_default_project_id(self):
+    def get_default_project_id(self) -> str:
         """
         Returns the default project id.
 
