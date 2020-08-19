@@ -352,10 +352,14 @@ def response_to_resource_ids(resource_ids_response) -> Dict[str, str]:
     >>> resources_ids = response_to_resource_ids(response)
     """
     root = response_to_root(resource_ids_response)
+
     df = pd.DataFrame(data=root.xpath('//resource/@id'), index=map(lambda x: x.upper(),
                                                                    root.xpath('//resource/@name'))
                       , columns=['id'])
-    return df.groupby(level=0).apply(lambda x: '|'.join(x.to_dict(orient='list')['id'])).to_dict()
+
+    d = df.groupby(level=0).apply(lambda x: '|'.join(x.to_dict(orient='list')['id'])).to_dict()
+
+    return d
 
 
 def room_to_classroom(room: etree.ElementTree) -> Classroom:
