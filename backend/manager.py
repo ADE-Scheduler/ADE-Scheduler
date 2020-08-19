@@ -200,7 +200,7 @@ class Manager:
     def get_codes_matching(self, pattern: str, project_id: SupportsInt = None) -> List[str]:
         # Actually returns names matchings :)
         course_resources = self.get_course_resources(project_id)
-        matching_code = course_resources[rsrc.INDEX.NAME].str.contains(pattern)
+        matching_code = course_resources[rsrc.INDEX.NAME].str.contains(pattern, case=False)
         return course_resources[matching_code][rsrc.INDEX.NAME].to_list()
 
     def get_classrooms(self, project_id: SupportsInt = None,
