@@ -12,8 +12,11 @@ import '../css/classroom.css';
 import 'leaflet/dist/leaflet.css';
 const axios = require('axios');
 
-const uclWeeksNo = [0, 0, 0, -2, 1, 2, 3, 4, 5, 6, 7, 8, 9, -1, -1, 10, 11, 12, 13, -3, -3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, -3, -3, 0, 0];
-
+const uclWeeksNo = {
+    '2019': [0, 0, 0, 0, -2, 1, 2, 3, 4, 5, 6, 7, 8, 9, -1, -1, 10, 11, 12, 13, -3, -3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, -3, -3],
+    '2020': [-3, 0, 0, 0, -2, 1, 2, 3, 4, 5, 6, 7, 8, 9, -1, -1, 10, 11, 12, 13, -3, -3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, -3, -3],
+    '2021': [0, 0, 0, -2, 1, 2, 3, 4, 5, 6, 7, 8, 9, -1, -1, 10, 11, 12, 13, -3, -3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, -3, -3, 0],
+};
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -70,18 +73,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Week display
                 firstDay: 1,
                 weekNumbers: true,
-                weekNumberCalculation: (d) => {
+                weekNumberContent: function (arg) {
+                    // Get week number & year
+                    // From: https://stackoverflow.com/a/6117889
+                    let d = new Date(Date.UTC(arg.date.getFullYear(), arg.date.getMonth(), arg.date.getDate()));
                     d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
                     let yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
                     let weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
-                    return uclWeeksNo[weekNo-1];
-                },
-                weekNumberContent: function (arg) {
+                    let year = d.getUTCFullYear();
+                    let num;
+                    try {
+                        num = uclWeeksNo[year][weekNo-1];
+                    } catch(e) {
+                        num = 0;
+                    }
+
                     let span = document.createElement('span');
-                    if (arg.num > 0) {
-                        span.innerText = `S${arg.num}`;
+                    if (num > 0) {
+                        span.innerText = `S${num}`;
                     } else {
-                        switch (arg.num) {
+                        switch (num) {
                             case -1:
                                 span.innerText = document.getElementById('current-locale').innerText.trim() === 'EN' ? 'Easter':'Pâques';
                                 break;
