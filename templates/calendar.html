@@ -100,7 +100,7 @@
                 </div>
                 <div class="modal-body">
                     <label class="form-label">{{_('Subscription Link')}}</label>
-                    <div class="input-group mb-3">
+                    <div class="input-group">
                         <select class="form-select" style="max-width: 140px;" v-model="exportInfo.subscriptionType">
                             <option v-bind:value="0">ADE</option>
                             <option v-for="i in n_schedules" v-bind:value="i">{{ _('Schedule') }} #[[ i ]]</option>
@@ -116,6 +116,11 @@
                             </svg>
                         </button>
                     </div>
+                    <div class="mb-3">
+                        <small class="text-muted">
+                            {{ _('You can use this link to export the schedule to your personnal calendar app (Google, iOS, etc.). This will ensure the data always stays up-to-date even through schedule changes from teachers.') }}
+                        </small>
+                    </div>
 
                     <label class="form-label">{{_('Share Link')}}</label>
                     <div class="input-group">
@@ -129,6 +134,11 @@
                                 <path fill-rule="evenodd" d="M9.5 1h-3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3zM8 7a.5.5 0 0 1 .5.5V9H10a.5.5 0 0 1 0 1H8.5v1.5a.5.5 0 0 1-1 0V10H6a.5.5 0 0 1 0-1h1.5V7.5A.5.5 0 0 1 8 7z"/>
                             </svg>
                         </button>
+                    </div>
+                    <div>
+                        <small class="text-muted">
+                            {{ _('You can use this link to share your schedule with your friends.') }}
+                        </small>
                     </div>
                 </div>
                 <div class="modal-footer">
