@@ -90,8 +90,8 @@ class Manager:
             if self.client.is_expired():
                 self.client.renew_token()
 
-            resource_ids = self.get_resource_ids(*codes_not_found, project_id=project_id)
             for code_not_found in codes_not_found:
+                resource_ids = self.get_resource_ids(code_not_found, project_id=project_id)
                 course_not_found = ade.response_to_courses(self.client.get_activities(resource_ids, project_id))
                 self.server.set_value(prefix+code_not_found, course_not_found, expire_in={'hours': 3})
                 courses += course_not_found
