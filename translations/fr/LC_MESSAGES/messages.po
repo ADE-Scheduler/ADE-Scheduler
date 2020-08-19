@@ -252,8 +252,8 @@ msgid ""
 "date even through schedule changes from teachers."
 msgstr ""
 "Vous pouvez utiliser ce lien pour exporter l'horaire vers votre "
-"application de calendrier (Google, iOS, etc.)Cela garantira que les "
-"données restent toujours à jour, même en cas de modification d'horairepar"
+"application de calendrier (Google, iOS, etc.). Cela garantira que les "
+"données restent toujours à jour, même en cas de modification d'horaire par"
 " les professeurs."
 
 #: templates/calendar.html:159
