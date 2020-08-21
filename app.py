@@ -228,7 +228,3 @@ def update():
     manager.update_resources()
     manager.update_course_resources()
     manager.update_classrooms()
-
-
-if __name__ == '__main__':
-    app.run(host=os.environ['ADE_FLASK_HOSTNAME'], debug=True)
