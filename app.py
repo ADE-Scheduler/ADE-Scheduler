@@ -106,6 +106,7 @@ app.config['BABEL_TRANSLATION_DIRECTORIES'] = 'translations'
 babel = Babel(app)
 
 
+# Jinja filter for autoversionning
 @app.template_filter('autoversion')
 def autoversion_filter(filename):
     fullpath = os.path.join('', filename[1:])
@@ -117,6 +118,7 @@ def autoversion_filter(filename):
     return newfilename
 
 
+# Babel's locale "getter/setter"
 @babel.localeselector
 def get_locale():
     if session.get('locale') is None:
@@ -134,6 +136,7 @@ def set_locale(locale):
     return redirect(request.args.get('next'))
 
 
+# Write jsglue.min.js
 @app.before_first_request
 def before_first_request():
     if not os.path.exists('static/dist'):
@@ -201,6 +204,7 @@ def page_not_found(e):
     return render_template('errorhandler/404.html', message=message)
 
 
+# Flask CLI stuff
 @app.shell_context_processor
 def make_shell_context():
     return {
@@ -212,6 +216,18 @@ def make_shell_context():
         'mng': app.config['MANAGER'],
         't': storage,
     }
+
+
+@app.cli.command()
+def update():
+    """
+    Updates Redis' tables.
+    """
+    manager.update_project_ids()
+    manager.update_resource_ids()
+    manager.update_resources()
+    manager.update_course_resources()
+    manager.update_classrooms()
 
 
 if __name__ == '__main__':
