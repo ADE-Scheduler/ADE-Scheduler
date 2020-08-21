@@ -1,4 +1,3 @@
-from flask import current_app, url_for
 from typing import Iterable, Union
 import pandas as pd
 import backend.resources as rsrc
@@ -43,15 +42,13 @@ class Address:
 
 
 def get_geo_locations():
-    with current_app.app_context():
-        with open(url_for('static', filename='json/geo_locations.json')[1:], 'r') as f:
-            return json.load(f)
+    with open('static/json/geo_locations.json', 'r') as f:
+        return json.load(f)
 
 
 def save_geo_locations(geo_locations: dict):
-    with current_app.app_context():
-        with open(url_for('static', filename='json/geo_locations.json')[1:], 'w') as f:
-            json.dump(geo_locations, f, sort_keys=True, indent=4)
+    with open('static/json/geo_locations.json', 'w') as f:
+        json.dump(geo_locations, f, sort_keys=True, indent=4)
 
 
 def prettify_classrooms(classrooms: pd.DataFrame, sleep: float = 0) -> pd.DataFrame:
