@@ -36,6 +36,9 @@ from views.help import help
 from views.contact import contact
 from views.api import api
 
+# CLI commands
+import cli
+
 # Change current working directory to main directory
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
@@ -49,6 +52,10 @@ app.register_blueprint(contact, url_prefix='/contact')
 app.register_blueprint(api, url_prefix='/api')
 app.config['SECRET_KEY'] = os.environ['FLASK_SECRET_KEY']
 jsglue = JSGlue(app)
+
+# Register new commands
+app.cli.add_command(cli.redis)
+app.cli.add_command(cli.client)
 
 # Setup the API Manager
 ade_api_credentials = cd.get_credentials(cd.ADE_API_CREDENTIALS)
@@ -204,7 +211,7 @@ def page_not_found(e):
     return render_template('errorhandler/404.html', message=message)
 
 
-# Flask CLI stuff
+# Shell context default exports
 @app.shell_context_processor
 def make_shell_context():
     return {
@@ -216,15 +223,3 @@ def make_shell_context():
         'mng': app.config['MANAGER'],
         't': storage,
     }
-
-
-@app.cli.command()
-def update():
-    """
-    Updates Redis' tables.
-    """
-    manager.update_project_ids()
-    manager.update_resource_ids()
-    manager.update_resources()
-    manager.update_course_resources()
-    manager.update_classrooms()

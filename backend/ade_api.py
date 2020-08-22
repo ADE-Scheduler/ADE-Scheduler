@@ -11,8 +11,6 @@ from backend import professors
 import backend.events
 from typing import Dict, Union, List, Tuple, SupportsInt, Callable, Type
 
-AUTO_RENEW_TOKEN = True
-
 
 class ExpiredTokenError(Exception):
     """
@@ -72,12 +70,12 @@ class DummyClient:
     def request(self, **kwargs: Request) -> requests.Response:
         """
         Performs a request to the API with given parameters.
+        The client should automatically renew its token if it has expired.
 
         :param kwargs: set of key / value parameters that will be merged
         :type kwargs: Request
         :return: the response
         :rtype: request.Response
-        :raises ExpiredTokenError: if the token is expired an exception occurs
         :raises HTTPError: if the request is unsuccessful (oustide the 2XX-3XX range)
         """
         raise NotImplementedError
@@ -160,15 +158,13 @@ class Client(DummyClient):
 
     def renew_token(self) -> None:
         self.token, self.expiration = get_token(self.credentials)
+        self.expiration *= 0.5  # Will require a token earlier
         self.expiration += time.time()
 
     def request(self, **kwargs: Request) -> requests.Response:
 
         if self.is_expired():
-            if AUTO_RENEW_TOKEN:
-                self.renew_token()
-            else:
-                raise ExpiredTokenError
+            self.renew_token()
 
         headers = {'Authorization': 'Bearer ' + self.token}
         user = self.credentials['user']
@@ -251,7 +247,7 @@ class FakeClient(DummyClient):
 
     def request(self, **kwargs: Request) -> requests.Response:
         if self.is_expired():
-            raise ExpiredTokenError
+            self.renew_token()
 
         args = '&'.join('='.join(map(str, _)) for _ in kwargs.items())
 
@@ -355,7 +351,7 @@ def response_to_resource_ids(resource_ids_response) -> Dict[str, str]:
 
     df = pd.DataFrame(data=root.xpath('//resource/@id'), index=map(lambda x: x.upper(),
                                                                    root.xpath('//resource/@name'))
-                      , columns=['id'])
+                      , columns=['id'], dtype=str)
 
     d = df.groupby(level=0).apply(lambda x: '|'.join(x.to_dict(orient='list')['id'])).to_dict()
 
