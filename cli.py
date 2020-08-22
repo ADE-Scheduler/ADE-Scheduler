@@ -4,6 +4,8 @@ from datetime import datetime
 from flask import current_app as app
 from flask.cli import with_appcontext
 
+import backend.models as md
+
 
 @click.group()
 def client():
@@ -100,3 +102,15 @@ def count(pattern, session, code):
     if ((code or session) and not pattern == '*') or not (code or session):
         count = sum(1 for _ in rd.scan_iter(match=f'{pattern}'))
         click.echo(f'There are {count} keys matching {pattern}.')
+
+
+@click.group()
+def user():
+    """User-related commands."""
+    pass
+
+
+@user.command()
+@with_appcontext
+def count():
+    click.echo(f'There are currently {len(md.User.query.all())} users on ADE-Scheduler.')
