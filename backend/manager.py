@@ -194,7 +194,8 @@ class Manager:
             resource_types = resources[rsrc.INDEX.TYPE]
             index = (resource_types == rsrc.TYPES.COURSE) + (resource_types == rsrc.TYPES.COURSE_COMBO)
             course_resources = resources[index]
-            course_resources[rsrc.INDEX.CODE] = course_resources[rsrc.INDEX.CODE].apply(str.upper)
+            code = rsrc.INDEX.CODE
+            course_resources[code] = course_resources.code.apply(str.upper)
             self.server.set_value(key, course_resources, expire_in={'hours': 25})
 
     def get_codes_matching(self, pattern: str, project_id: SupportsInt = None) -> List[str]:
