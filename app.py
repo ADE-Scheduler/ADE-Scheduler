@@ -55,6 +55,7 @@ jsglue = JSGlue(app)
 
 # Register new commands
 app.cli.add_command(cli.redis)
+app.cli.add_command(cli.client)
 
 # Setup the API Manager
 ade_api_credentials = cd.get_credentials(cd.ADE_API_CREDENTIALS)
