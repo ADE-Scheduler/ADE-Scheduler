@@ -97,5 +97,6 @@ def count(pattern, session, code):
         count = sum(1 for _ in rd.scan_iter(match='*\[project_id=*\]*'))
         click.echo(f'There are {count} unique codes.')
 
-    count = sum(1 for _ in rd.scan_iter(match=f'{pattern}'))
-    click.echo(f'There are {count} keys matching {pattern}.')
+    if ((code or session) and not pattern == '*') or not (code or session):
+        count = sum(1 for _ in rd.scan_iter(match=f'{pattern}'))
+        click.echo(f'There are {count} keys matching {pattern}.')
