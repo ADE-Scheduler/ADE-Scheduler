@@ -15,7 +15,15 @@ def renew_token():
     """Renews client's token."""
     cli = app.config['MANAGER'].client
     cli.renew_token()
-    click.echo(f'Token successfully renewed. It will expiry in {cli.expire_in()} seconds.')
+    click.echo(f'Token successfully renewed. It will expiry in {cli.expire_in():.1f} seconds.')
+
+
+@client.command()
+@with_appcontext
+def token_expire_in():
+    """Returns current token expiration time."""
+    cli = app.config['MANAGER'].client
+    click.echo(f'Token will expiry in {cli.expire_in():.1f} seconds.')
 
 
 @click.group()
