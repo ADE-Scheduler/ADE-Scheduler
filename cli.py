@@ -43,7 +43,7 @@ def expire(pattern, time, random):
         if random:
             rd.expire(key, rnd.randint(200, 400))
         elif time > 0:
-            rd.expire(key, expire)
+            rd.expire(key, time)
         else:
             rd.delete(key)
 
