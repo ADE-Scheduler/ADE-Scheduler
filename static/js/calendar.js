@@ -535,10 +535,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     .then(resp => {
                         this.codeSearch = resp.data.codes;
                     })
-                    .catch(err => {
-                        this.error = true;
-                    })
-                    .then(() => {});
+                    .catch(err => {})
+                    .then(  () => {});
                 }
             }
         },
