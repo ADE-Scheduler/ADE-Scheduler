@@ -351,7 +351,7 @@ def response_to_resource_ids(resource_ids_response) -> Dict[str, str]:
 
     df = pd.DataFrame(data=root.xpath('//resource/@id'), index=map(lambda x: x.upper(),
                                                                    root.xpath('//resource/@name'))
-                      , columns=['id'])
+                      , columns=['id'], dtype=str)
 
     d = df.groupby(level=0).apply(lambda x: '|'.join(x.to_dict(orient='list')['id'])).to_dict()
 
