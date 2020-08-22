@@ -83,10 +83,19 @@ def expire(pattern, time, random):
 
 @redis.command()
 @click.option('-p', '--pattern', default='*', help='Pattern of the keys. By default, selects all the keys.')
+@click.option('--session/--no-session', default=False, help='Display the amount of user sessions.')
+@click.option('--code/--no-code', default=False, help='Display the amount of unique codes.')
 @with_appcontext
-def count(pattern):
+def count(pattern, session, code):
     """Counts the number of keys matching a given pattern present in Redis"""
     rd = app.config['MANAGER'].server
+
+    if session:
+        count = sum(1 for _ in rd.scan_iter(match='*session*'))
+        click.echo(f'There are {count} user sessions.')
+    if code:
+        count = sum(1 for _ in rd.scan_iter(match='*\[project_id=*\]*'))
+        click.echo(f'There are {count} unique codes.')
 
     count = sum(1 for _ in rd.scan_iter(match=f'{pattern}'))
     click.echo(f'There are {count} keys matching {pattern}.')
