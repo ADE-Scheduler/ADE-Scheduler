@@ -3,6 +3,7 @@ import click
 from datetime import datetime
 from flask import current_app as app
 from flask.cli import with_appcontext
+from flask_security.cli import users
 
 import backend.models as md
 
@@ -104,13 +105,8 @@ def count(pattern, session, code):
         click.echo(f'There are {count} keys matching {pattern}.')
 
 
-@click.group()
-def user():
-    """User-related commands."""
-    pass
-
-
-@user.command()
+@users.command()
 @with_appcontext
 def count():
+    """Count the number of current users."""
     click.echo(f'There are currently {len(md.User.query.all())} users on ADE-Scheduler.')
