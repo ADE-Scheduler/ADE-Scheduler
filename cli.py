@@ -5,6 +5,20 @@ from flask.cli import with_appcontext
 
 
 @click.group()
+def client():
+    """Performs operation on client."""
+
+
+@client.command()
+@with_appcontext
+def renew_token():
+    """Renews client's token."""
+    cli = app.config['MANAGER'].client
+    cli.renew_token()
+    click.echo(f'Token successfully renewed. It will expiry in {cli.expire_in()} seconds.')
+
+
+@click.group()
 def redis():
     """Performs operations on Redis."""
 
