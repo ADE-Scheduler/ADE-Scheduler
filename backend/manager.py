@@ -86,10 +86,6 @@ class Manager:
 
         # Fetch from the api
         if codes_not_found:
-
-            if self.client.is_expired():
-                self.client.renew_token()
-
             for code_not_found in codes_not_found:
                 resource_ids = self.get_resource_ids(code_not_found, project_id=project_id)
                 course_not_found = ade.response_to_courses(self.client.get_activities(resource_ids, project_id))
@@ -116,13 +112,8 @@ class Manager:
                     return True
             return False
 
-        if self.client.is_expired():
-            self.client.renew_token()
-
         events = ade.response_to_events(self.client.get_activities([classroom_id], project_id), filter_func)
-
         self.server.set_value(key, events, expire_in={'hours': 3})
-
         return events
 
     def get_resources(self, project_id: SupportsInt = None) -> pd.DataFrame:
