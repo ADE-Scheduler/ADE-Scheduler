@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 events: [],
                 eventTextColor: 'white',
                 eventDisplay: 'block',
-                eventDidMount: function (arg) {
+                eventDidMount: function(arg) {
                     let description, location;
                     if (!arg.event.extendedProps.description)   description = 'No description';
                     else                                        description = arg.event.extendedProps.description;
@@ -155,6 +155,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     else                                        location = arg.event.extendedProps.location;
                     arg.el.tooltip = new Tooltip(arg.el, {
                         container: 'body',
+                        trigger: 'manual',
                         title: description + '\n' + location,
                         sanitize: false,
                         template: `
@@ -165,10 +166,13 @@ document.addEventListener('DOMContentLoaded', function() {
                         placement: 'auto',
                     });
                 },
-                eventMouseLeave: function (arg) {   // TODO: bug du tooltip quand on quitte un modal en appuyant sur un bouton par-dessus un event (et qu'on reste ~1s sur l'event) :-(
-                                                    // ce code ne le fixe pas... mais le bug apprait qu'en prod (impossible à répliquer localement)
-                    try     { arg.el.tooltip.hide(); }
-                    catch   {}
+                eventMouseEnter: function(arg) {
+                    if (!vm.computing) {
+                        arg.el.tooltip.show();
+                    }
+                },
+                eventMouseLeave: function(arg) {
+                    arg.el.tooltip.hide();
                 },
                 eventClick: function(info) {
                     if (!isTouchDevice) {

@@ -3,6 +3,7 @@ import click
 from datetime import datetime
 from flask import current_app as app
 from flask.cli import with_appcontext
+from flask_security.cli import users
 
 import backend.models as md
 
@@ -18,7 +19,7 @@ def renew():
     """Renews client's token."""
     cli = app.config['MANAGER'].client
     cli.renew_token()
-    click.echo(f'Token successfully renewed. It will expiry in {cli.expire_in():.1f} seconds.')
+    click.secho(f'Token successfully renewed. It will expiry in {cli.expire_in():.1f} seconds.', fg='green')
 
 
 @client.command()
@@ -45,7 +46,7 @@ def update(with_appcontext=False):
     mng.update_resources()
     mng.update_course_resources()
     mng.update_classrooms()
-    click.echo(f'Successfully updated the tables on {datetime.now().strftime("%d/%m/%Y at %H:%M:%S")}.')
+    click.secho(f'Successfully updated the tables on {datetime.now().strftime("%d/%m/%Y at %H:%M:%S")}.', fg='green')
 
 
 @redis.command()
@@ -54,7 +55,7 @@ def flush():
     """Resets Redis, deleting all keys."""
     mng = app.config['MANAGER']
     mng.server.flushdb()
-    click.echo('Sucessfully flushed Redis.')
+    click.secho('Sucessfully flushed Redis.', fg='green')
 
 
 @redis.command()
@@ -80,7 +81,7 @@ def expire(pattern, time, random):
     for key in rd.scan_iter(match=f'{pattern}'):
         f(key)
         i += 1
-    click.echo(f'Successfully applied expire to {i} keys.')
+    click.secho(f'Successfully applied expire to {i} keys.', fg='green')
 
 
 @redis.command()
@@ -104,13 +105,8 @@ def count(pattern, session, code):
         click.echo(f'There are {count} keys matching {pattern}.')
 
 
-@click.group()
-def user():
-    """User-related commands."""
-    pass
-
-
-@user.command()
+@users.command()
 @with_appcontext
 def count():
+    """Count the number of current users."""
     click.echo(f'There are currently {len(md.User.query.all())} users on ADE-Scheduler.')
