@@ -446,8 +446,6 @@ def parse_event(event: etree.ElementTree, event_type: Type[backend.events.Academ
         instructors.append(
             professors.Professor(instructor.attrib['name'], None)
         )
-
-
     event_instructor = professors.merge_professors(instructors)
 
     # We create the event
@@ -478,7 +476,7 @@ def parse_activity(activity: etree.ElementTree) -> Tuple[List[backend.events.Aca
         activity_code = backend.events.extract_code(activity_id)
     else:
         activity_code = Counter(event_codes).most_common()[0][0]
-    if activity_code is '':
+    if activity_code == '':
         activity_code = 'Other'
 
     for event in events:
