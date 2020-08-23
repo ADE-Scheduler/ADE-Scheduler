@@ -21,7 +21,6 @@ from flask_track_usage.storage.sql import SQLStorage
 
 # API imports
 import backend.models as md
-import backend.credentials as cd
 import backend.servers as srv
 import backend.ade_api as ade
 import backend.manager as mng
@@ -58,19 +57,25 @@ app.cli.add_command(cli.redis)
 app.cli.add_command(cli.client)
 
 # Setup the API Manager
-ade_api_credentials = cd.get_credentials(cd.ADE_API_CREDENTIALS)
-manager = mng.Manager(ade.Client(ade_api_credentials), srv.Server(host='localhost', port=6379), md.db)
+app.config['ADE_API_CREDENTIALS'] = {
+    'user': os.environ['ADE_USER'],
+    'password': os.environ['ADE_PASSWORD'],
+    'secret_key': os.environ['ADE_SECRET_KEY'],
+    'url': os.environ['ADE_URL'],
+    'data': os.environ['ADE_DATA'],
+    'Authorization': os.environ['ADE_AUTHORIZATION'],
+}
+manager = mng.Manager(ade.Client(app.config['ADE_API_CREDENTIALS']), srv.Server(host='localhost', port=6379), md.db)
 app.config['MANAGER'] = manager
 
 # Setup Flask-Mail
-mail_credentials = cd.get_credentials(cd.GMAIL_CREDENTIALS)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = mail_credentials['username']
-app.config['MAIL_PASSWORD'] = mail_credentials['password']
+app.config['MAIL_USERNAME'] = os.environ['MAIL_USERNAME']
+app.config['MAIL_PASSWORD'] = os.environ['MAIL_PASSWORD']
 app.config['MAIL_DEFAULT_SENDER'] = 'no-reply@' + app.config['MAIL_SERVER']
-app.config['ADMINS'] = [mail_credentials['username']]
+app.config['ADMINS'] = [os.environ['MAIL_USERNAME']]
 app.config['MAIL_MANAGER'] = Mail(app)
 
 # Setup Flask-SQLAlchemy

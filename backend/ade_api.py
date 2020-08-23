@@ -156,9 +156,9 @@ class Client(DummyClient):
     def expire_in(self) -> float:
         return max(self.expiration - time.time(), 0)
 
-    def renew_token(self) -> None:
+    def renew_token(self):
         self.token, self.expiration = get_token(self.credentials)
-        self.expiration *= 0.5  # Will require a token earlier
+        self.expiration -= 1  # Will require a token 1 s. earlier
         self.expiration += time.time()
 
     def request(self, **kwargs: Request) -> requests.Response:
@@ -173,8 +173,13 @@ class Client(DummyClient):
 
         url = 'https://api.sgsi.ucl.ac.be:8243/ade/v0/api?login=' + user + '&password=' + password + '&' + args
 
-        resp = requests.get(url=url, headers=headers)
-        resp.raise_for_status()
+        try:
+            resp = requests.get(url=url, headers=headers)
+            resp.raise_for_status()
+        except requests.HTTPError:  # Because we can't really renew token, we catch the first error
+            self.renew_token()  # Hopefully, will fix error
+            resp = requests.get(url=url, headers=headers)
+            resp.raise_for_status()
 
         # save_response(resp, args)
 
@@ -441,8 +446,6 @@ def parse_event(event: etree.ElementTree, event_type: Type[backend.events.Academ
         instructors.append(
             professors.Professor(instructor.attrib['name'], None)
         )
-
-
     event_instructor = professors.merge_professors(instructors)
 
     # We create the event
@@ -473,7 +476,7 @@ def parse_activity(activity: etree.ElementTree) -> Tuple[List[backend.events.Aca
         activity_code = backend.events.extract_code(activity_id)
     else:
         activity_code = Counter(event_codes).most_common()[0][0]
-    if activity_code is '':
+    if activity_code == '':
         activity_code = 'Other'
 
     for event in events:
