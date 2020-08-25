@@ -148,42 +148,45 @@ document.addEventListener('DOMContentLoaded', function() {
                 eventTextColor: 'white',
                 eventDisplay: 'block',
                 eventDidMount: function(arg) {
-                    let description, location;
-                    if (!arg.event.extendedProps.description)   description = 'No description';
-                    else                                        description = arg.event.extendedProps.description;
-                    if (!arg.event.extendedProps.location)      location = 'No location';
-                    else                                        location = arg.event.extendedProps.location;
-                    arg.el.tooltip = new Tooltip(arg.el, {
-                        container: 'body',
-                        trigger: 'manual',
-                        title: description + '\n' + location,
-                        sanitize: false,
-                        template: `
-                            <div class="tooltip" role="tooltip">
-                                <div class="tooltip-arrow"></div>
-                                <div class="tooltip-inner" style="background-color:${arg.event.backgroundColor}"></div>
-                            </div>`,
-                        placement: 'auto',
-                    });
+                    let evt = arg.event.toPlainObject({collapseExtendedProps: true});
+                    if (!!evt.code || !isTouchDevice) {
+                        let description, location;
+                        if (!evt.description)   description = 'No description';
+                        else                    description = evt.description;
+                        if (!evt.location)      location = 'No location';
+                        else                    location = evt.location;
+                        arg.el.tooltip = new Tooltip(arg.el, {
+                            container: 'body',
+                            trigger: 'manual',
+                            title: description + '\n' + location,
+                            sanitize: false,
+                            template: `
+                                <div class="tooltip" role="tooltip">
+                                    <div class="tooltip-arrow"></div>
+                                    <div class="tooltip-inner" style="background-color:${evt.backgroundColor}"></div>
+                                </div>`,
+                            placement: 'auto',
+                        });
+                    }
                 },
                 eventMouseEnter: function(arg) {
-                    if (!vm.computing) {
+                    if (!vm.computing && !!arg.el.tooltip) {
                         arg.el.tooltip.show();
                     }
                 },
                 eventMouseLeave: function(arg) {
-                    arg.el.tooltip.hide();
+                    if (!!arg.el.tooltip) {
+                        arg.el.tooltip.hide();
+                    }
                 },
-                eventClick: function(info) {
-                    if (!isTouchDevice) {
-                        let evt = info.event.toPlainObject({collapseExtendedProps: true});
-                        if (!evt.code) {
-                            vm.eventInfo = evt;
-                            vm.eventInfo.event = info.event;
-                            eventModal.show();
-                        } else {
-                            vm.getDetails(evt.code);
-                        }
+                eventClick: function(arg) {
+                    let evt = arg.event.toPlainObject({collapseExtendedProps: true});
+                    if (!evt.code) {
+                        vm.eventInfo = evt;
+                        vm.eventInfo.event = arg.event;
+                        eventModal.show();
+                    } else if (!isTouchDevice) {
+                        vm.getDetails(evt.code);
                     }
                 }
             },
