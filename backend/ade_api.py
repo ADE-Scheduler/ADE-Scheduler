@@ -158,7 +158,6 @@ class Client(DummyClient):
 
     def renew_token(self):
         self.token, self.expiration = get_token(self.credentials)
-        self.expiration -= 1  # Will require a token 1 s. earlier
         self.expiration += time.time()
 
     def request(self, **kwargs: Request) -> requests.Response:
