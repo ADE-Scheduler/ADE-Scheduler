@@ -109,8 +109,9 @@ with app.app_context():
 t = TrackUsage(app, storage)
 
 # Allows compression of text assets
-# If the server has automatic compression, comment this line.
-compress = Compress(app)
+# If the production server has automatic compression, comment this line,
+# which is the case for the server on which ADE-Scheduler runs.
+# compress = Compress(app)
 
 # Setup Flask-Babel
 app.config['LANGUAGES'] = ['en', 'fr']
