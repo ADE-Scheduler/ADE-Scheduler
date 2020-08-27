@@ -203,8 +203,8 @@ def handle_exception(e):
         error_details = str(traceback.format_exc())
         req_info = f'Exception on {request.path} [{request.method}]:'
         msg = Message(
-            subject='ADE Scheduler Failure: ' + str(e.original_exception),
-            body=req_info + '\n\n' + error_details,
+            subject=f'ADE Scheduler Failure: {type(e).__name__}',
+            body=f'{req_info}\n\n{str(e.original_exception)}\n\n{error_details}',
             recipients=app.config['ADMINS'])
         app.config['MAIL_MANAGER'].send(msg)
     return _('An error has occurred. Please contact the admins if it keeps happening.'), 500
@@ -226,6 +226,7 @@ def make_shell_context():
         'Schedule': md.Schedule,
         'Link': md.Link,
         'User': md.User,
+        'Usage': md.Usage,
         'mng': app.config['MANAGER'],
         't': storage,
     }

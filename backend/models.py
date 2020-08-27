@@ -165,7 +165,7 @@ class Property(db.Model):
     schedule = db.relationship('Schedule', backref=db.backref('property', cascade="all, delete-orphan"))
 
 
-class FlaskUsage(db.Model):
+class Usage(db.Model):
     __tablename__ = 'flask_usage'
     __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)
