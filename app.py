@@ -200,11 +200,17 @@ def update_notification(link):
 @app.errorhandler(InternalServerError)
 def handle_exception(e):
     if not app.debug:
+        error = e.original_exception
+        error_request = f'{request.path} [{request.method}]'
+        error_module = error.__class__.__module__
+        if error_module is None:
+            error_name = error.__class__.__name__
+        else:
+            error_name = f'{error_module}.{error.__class__.__name__}'
         error_details = str(traceback.format_exc())
-        req_info = f'Exception on {request.path} [{request.method}]:'
         msg = Message(
-            subject=f'ADE Scheduler Failure: {type(e).__name__}',
-            body=f'{req_info}\n\n{str(e.original_exception)}\n\n{error_details}',
+            subject=f'ADE Scheduler Failure: {error_name}',
+            body=f'Exception on {error_request}: {str(error)}\n\n{error_details}',
             recipients=app.config['ADMINS'])
         app.config['MAIL_MANAGER'].send(msg)
     return _('An error has occurred. Please contact the admins if it keeps happening.'), 500
