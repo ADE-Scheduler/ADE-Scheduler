@@ -155,7 +155,7 @@ msgstr "Fermer"
 
 #: templates/base.html:73
 msgid "Create an account"
-msgstr ""
+msgstr "Créer un compte"
 
 #: templates/base.html:93
 msgid "Calendar"

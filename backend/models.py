@@ -11,8 +11,6 @@ VIEWER_LEVEL = 2
 db = SQLAlchemy()
 fsqla.FsModels.set_db_info(db)
 
-# TODO: @Louis faut vérifier que tout marche bien et puis bien commenter la docstring :)
-
 
 class LevelAccessDenied(Exception):
 
@@ -165,3 +163,26 @@ class Property(db.Model):
 
     user = db.relationship('User', backref=db.backref('property', cascade="all, delete-orphan"))
     schedule = db.relationship('Schedule', backref=db.backref('property', cascade="all, delete-orphan"))
+
+
+class FlaskUsage(db.Model):
+    __tablename__ = 'flask_usage'
+    __table_args__ = {'extend_existing': True}
+    id = db.Column(db.Integer, primary_key=True)
+    url = db.Column(db.String(256))
+    ua_browser = db.Column(db.String(16))
+    ua_language = db.Column(db.String(16))
+    ua_platform = db.Column(db.String(16))
+    ua_version = db.Column(db.String(16))
+    blueprint = db.Column(db.String(16))
+    view_args = db.Column(db.String(64))
+    status = db.Column(db.Integer)
+    remote_addr = db.Column(db.String(24))
+    xforwardedfor = db.Column(db.String(24))
+    authorization = db.Column(db.Boolean)
+    ip_info = db.Column(db.String(1024))
+    path = db.Column(db.String(256))
+    speed = db.Column(db.Float)
+    datetime = db.Column(db.DateTime)
+    username = db.Column(db.String(128))
+    track_var = db.Column(db.String(128))
