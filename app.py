@@ -53,6 +53,7 @@ app.config['SECRET_KEY'] = os.environ['FLASK_SECRET_KEY']
 jsglue = JSGlue(app)
 
 # Register new commands
+app.cli.add_command(cli.sql)
 app.cli.add_command(cli.redis)
 app.cli.add_command(cli.client)
 
