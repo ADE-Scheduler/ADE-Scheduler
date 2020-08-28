@@ -147,7 +147,10 @@ def dump(output):
 @click.option('-i', '--input', default='database.dump', help='Input file.')
 @with_appcontext
 def load(input):
-    """Loads the database from a dumpfile."""
+    """
+    Loads the database from a dumpfile.
+    Tested with PostgreSQL, MySQL & SQLite.
+    """
     db = app.config['MANAGER'].database
     tables = [md.Role, md.User, md.Schedule, md.Link, md.Property, md.Usage]
 
@@ -160,6 +163,7 @@ def load(input):
                 break
 
     if db.session.bind.dialect.name == 'postgresql':
+        # https://stackoverflow.com/questions/37970743/postgresql-unique-violation-7-error-duplicate-key-value-violates-unique-const/37972960#37972960
         for table in tables:
             val = db.session.query(func.max(table.id)).scalar()
             name = table.__tablename__
