@@ -155,12 +155,13 @@ def load(input):
     tables = [md.Role, md.User, md.Schedule, md.Link, md.Property, md.Usage]
 
     with open(input, 'rb') as f:
-        while True:
-            try:
-                row = pkl.load(f)
-                db.session.merge(row)
-            except EOFError:
-                break
+        with db.session.no_autoflush:
+            while True:
+                try:
+                    row = pkl.load(f)
+                    db.session.merge(row)
+                except EOFError:
+                    break
 
     if db.session.bind.dialect.name == 'postgresql':
         # https://stackoverflow.com/questions/37970743/postgresql-unique-violation-7-error-duplicate-key-value-violates-unique-const/37972960#37972960
