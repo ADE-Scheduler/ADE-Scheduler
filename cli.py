@@ -125,7 +125,7 @@ def init():
     """Initialization of the SQL database."""
     db = app.config['MANAGER'].database
     db.create_all()
-    click.echo('Successfully initiliazed the databse.')
+    click.echo('Successfully initiliazed the database.')
 
 
 @sql.command()
@@ -173,3 +173,14 @@ def load(input):
 
     db.session.commit()
     click.echo(f'Successfully loaded data from file "{input}".')
+
+
+@sql.command()
+@with_appcontext
+def fix():
+    db = app.config['MANAGER'].database
+    for row in md.Property.query.all():
+        if row.user is None:
+            db.session.delete(row)
+    db.session.commit()
+    click.secho('Database cleaned !', fg='green')
