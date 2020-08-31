@@ -1,91 +1,88 @@
-# SETUP - Tout ce qu'il faut savoir afin de contribuer à ce projet
+# SETUP - Everything you need to run this project
 
-## Installation
+Clone the repository: `git clone https://github.com/SnaKyEyeS/ADE-Scheduler`
 
-### 1. Installez Redis
-Pour installer un serveur Redis, référez-vous au site https://redis.io/topics/quickstart.
+## Storage
 
-### 2. Clonez ce repo
+##### Redis
+Redis is used as a cache memory and acts as a buffer between the ADE API and ADE-Scheduler, to enhance the performance and try to reduce lag.  \
+To install a Redis server, please refer to [the official website](https://redis.io/topics/quickstart).  
 
-`git clone https://github.com/SnaKyEyeS/ADE-Scheduler`
+Various utilities about Redis are integrated in the Flask CLI. To know more, type `flask redis --help`.
 
-### 3. Créez un environnement virtuel Python (optionnel)
+##### SQL Database
+ADE Scheduler uses a SQL database to store any relevant data and uses SQLAlchemy as an ORM, so you can basically plug in any SQL database you may want.  \
+However, every SQL database has its own specific functionnalities, so minor modifications may be required to accomodate another type. Up until now, any of those three databases has been tested and should therefore work: SQLite (recommended for development), MySQL and PostgreSQL (recommended for production).
 
-Placez-vous dans le dossier du projet et installer virtualenv (la procédure peut varier en fonction de votre OS)
+Various utilitites about database migrations & data transfers can be found in the Flask CLI. To know more about it, type: `flask db --help` or `flask sql --help`.
+
+## Python
+We recommend to use a virtual environment to manage the various required python packages:
 ```
 cd <repo>
 sudo apt install python3-virtualenv
-virtualenv venv
-source venv/bin/activate
+virtualenv env_name
+source env_name/bin/activate
+pip3 install -r requirements.txt
 ```
+and you are all set !
 
-### 4. Installez les packages Python requis
-
-`pip3 install -r requirements.txt`
-
-### 5. Installez les packages NodeJS requis
-Installez d'abord Node.js et npm si ce n'est pas déjà fait : https://nodejs.org/en/
-Ensuite, installez les modules:
+## NodeJS
+First, make sure you have installed node.js and npm. If that's not the case, please refer to the [official website](https://nodejs.org/en/).  \
+Then, install the required packages by running:
 ```
 cd <repo>
 npm install
-```  
-Pour assembler tous les assets .js et .css, il suffit d'exécter la commande `npx webpack`  
-Pour éviter de devoir exécuter cette commande à chaque changement dans le code, il existe la commande `npx webpack --watch .` qui dit à webpack d'automatiquement s'exécuter à chaque changement dans le code.
+```
+Any javascript or HTML asset needs to be bundled by webpack before being used. To do so, run the `npx webpack` command.  \
+Moreover, you can activate the file watcher for hot-reloading and map source files for easy debugging by running the complete `npx webpack --watch --devtool inline-source-map`.
 
-Il est possible qu'une erreur apparaisse concernant le nombre maximum de 'watchers' autorisé. Une solution sur Linux est d'exécuter: `echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p`. (https://stackoverflow.com/questions/53930305/nodemon-error-system-limit-for-number-of-file-watchers-reached)
+If an error appears about the maximum amount of allowed watchers, you can fix this by running `echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p`, as  described [here](https://stackoverflow.com/questions/53930305/nodemon-error-system-limit-for-number-of-file-watchers-reached).
 
 ## Configuration
 
-### 1. Initialisez la base de données
+In order to be able to run the website, you first need to specify several configuration variables. Create a `<repo>/.flaskenv` file and specify the following environment variables:
 
-Spécifiez une variable d'environnement `ADE_DB_PATH` contenant l'URI vers une base de données SQL.
-Par exemple, vous pouvez simplement spécifier `ADE_DB_PATH = "sqlite:///path_to_db"` ce qui conduira à la création d'une base de données SQLite au path spécifié. Ensuite, exécutez ces commandes pour l'initialiser et créer les tables proprement:
+##### For development:
 ```
-cd <repo>
-flask shell
-db.create_all()
-```
+FLASK_APP = path/to/<repo>/app.py
+FLASK_ENV = development
+FLASK_RUN_HOST = localhost
+FLASK_RUN_PORT = 5000
+TEMPLATES_AUTO_RELOAD = True
 
-Note: si la DB utilisée est une DB MySQL, exécuter la soltuion au lien suivant pour éviter tout souci: https://stackoverflow.com/questions/18897420/data-too-long-for-column-why
+ADE_DB_PATH = <database URI>
+FLASK_SECRET_KEY = super_secret_key
+FLASK_SALT = super_complex_salt
 
-### 2. Accès à l'API de ADE (optionnel)
-
-#### 2.1 Accéder grâce à des identifiants
-
-Si vous possédez des identifiants d'accès à l'API de ADE, enregistrez les quelque part sur votre ordinateur dans un fichier JSON. Le contenu attendu est spéficié dans la classe **Credential** dans /backend/credentials.py.
-
-Pour lier vos identifiants au projet :
-
-```
-python3
-from backend.credentials import Credentials; Credentials.set_credentials("identifiants.json")
+MAIL_USERNAME = an-email@address
+MAIL_PASSWORD = password
 ```
 
-Un message vous attirera l'attention sur le fait que ce lien est ephémère : il faudra refaire cette commande pour chaque processus Python. Des solutions permanentes sont proposées par ce message.
+##### For production
+```
+FLASK_APP = path/to/<repo>/app.py
+FLASK_ENV = production
 
-#### 2.2 Accéder sans identifiants
+ADE_DB_PATH = <database URI>
+FLASK_SECRET_KEY = super_secret_key
+FLASK_SALT = super_complex_salt
 
-Il n'est pas possible d'accéder à l'API sans identifiants valides et nous ne vous en fournirons pas. Cependant, une réplique de l'API peut être interfacée via la classe **DummyClient** dans /backend/ade_api.py.
+MAIL_USERNAME = an-email@address
+MAIL_PASSWORD = password
+```
 
-## Contribution au code et débuggage
+##### Access to the ADE API (optionnal)
+--TODO: explain the procedure to follow to have access to the Dummy Client !
 
-### 1. Initialisation du serveur
 
-Pour initialiser le server, utilisez la commande `redis-server` dans un terminal.
-Si besoin, vous pouvez accéder à un client dans un autre terminal en entrant `redis-cli`. Référez-vous à la documentation de Redis à ce sujet.
+## Flask CLI
+The website can be started simply by running `flask run`. Moreover, there are various useful commands such as `flask shell`. To discover them all, type `flask --help`.
 
-Le client peut également être utilisé directement dans le terminal. Exemple : afin de supprimer toutes les clés contenant le mot "project" (sensible à la casse), entrez-ci `redis-cli keys "*project*" | xargs -I{lin} echo \"{lin}\" | xargs redis-cli unlink`.
+## Production
 
-Pour appliquer une expiration aléatoire, par exemple en 200 et 400 secondes, entrez `redis-cli keys *session* | xargs -n 1 -I{} python3 -c "import os;import random;os.system('redis-cli expire \"{}\" ' + str(random.randint(200, 400)))"`.
+-- TODO: document production deployment procedure here
 
-Pour vérifier que cela a bien fonctionné :
-`redis-cli keys *project* | xargs -n 1 -I{} redis-cli ttl {}`
+## Documentation
 
-### 2. Démarrez le site-web
-
-Entrez dans un terminal `python3 app.py`. Une url devrait vous indiquer où le site est accessible.
-
-### 3. Documentation
-
-Pour savoir comment documenter votre code, suivez nos indications [ici](/docs/README.md)
+To know how to document your code, follow the instructions [here](/docs/README.md)

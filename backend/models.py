@@ -167,7 +167,6 @@ class Property(db.Model):
 
 class Usage(db.Model):
     __tablename__ = 'flask_usage'
-    __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)
     url = db.Column(db.String(256))
     ua_browser = db.Column(db.String(16))
