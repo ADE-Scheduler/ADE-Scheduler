@@ -168,7 +168,7 @@ class Property(db.Model):
 class Usage(db.Model):
     __tablename__ = 'flask_usage'
     id = db.Column(db.Integer, primary_key=True)
-    url = db.Column(db.String(256))
+    url = db.Column(db.String(512))
     ua_browser = db.Column(db.String(16))
     ua_language = db.Column(db.String(16))
     ua_platform = db.Column(db.String(16))
@@ -177,11 +177,11 @@ class Usage(db.Model):
     view_args = db.Column(db.String(64))
     status = db.Column(db.Integer)
     remote_addr = db.Column(db.String(24))
-    xforwardedfor = db.Column(db.String(24))
+    xforwardedfor = db.Column(db.String(64))
     authorization = db.Column(db.Boolean)
     ip_info = db.Column(db.String(1024))
     path = db.Column(db.String(256))
     speed = db.Column(db.Float)
     datetime = db.Column(db.DateTime)
     username = db.Column(db.String(128))
-    track_var = db.Column(db.String(128))
+    track_var = db.Column(db.String(256))
