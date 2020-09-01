@@ -23,8 +23,12 @@ class ScheduleDoNotMatchError(Exception):
     Exception that will occur if a user tries to update a schedule's data with a non-matching ID.
     """
 
+    def __init__(self, database_id, data_id):
+        self.database_id = database_id
+        self.data_id = data_id
+
     def __str__(self):
-        return 'The schedule ID does not match the given data\'s ID'
+        return f'The schedule ID\'s do not match: database ID is {self.database_id} and given data ID is {self.data_id}.'
 
 
 class Role(db.Model, fsqla.FsRoleMixin):
@@ -118,7 +122,7 @@ class Schedule(db.Model):
         For more information, see: https://docs.sqlalchemy.org/en/13/orm/extensions/mutable.html
         """
         if data.id is not self.id:
-            raise ScheduleDoNotMatchError
+            raise ScheduleDoNotMatchError(self.id, data.id)
         self.data = data
         db.session.commit()
 
