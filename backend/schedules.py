@@ -13,7 +13,7 @@ import backend.events as evt
 """
 Schedule needed data:
 {
-    codes: {LMECA2660, LELEC2760, etc},                     // requested course codes
+    codes: [LMECA2660, LELEC2760, etc],                     // requested course codes
     filtered_subcodes:  {
                             LELEC2760: {CM: LELEC2760_Q1},
                             LMECA2660: {CM: LMECA2660_Q2},
@@ -54,7 +54,7 @@ class Schedule:
         self.id = schedule_id
         self.project_id = project_id
         self.label = label
-        self.codes = set()
+        self.codes = list()
         self.filtered_subcodes = default_dict_any_to_set()
         self.best_schedules = list()
         self.custom_events = list()
@@ -77,22 +77,26 @@ class Schedule:
     def reset_filters(self):
         self.filtered_subcodes = default_dict_any_to_set()
 
-    def add_course(self, code: Union[Iterable[str], str]) -> Set[str]:
+    def add_course(self, codes: Union[Iterable[str], str]) -> List[str]:
         """
         Adds one or many courses to the schedule.
 
-        :param code: the code of the course added
-        :type code: Union[Iterable[str], str])
+        :param codes: the codes of the course added
+        :type codes: Union[Iterable[str], str])
         :return: all the new codes added to the schedule
-        :rtype: Set[str]
+        :rtype: List[str]
         """
-        old = set(self.codes)
-        if isinstance(code, str):
-            self.codes.add(code)
-        else:
-            self.codes.update(code)
+        self.codes = list(self.codes)
+        added = list()
+        if isinstance(codes, str):
+            codes = [codes]
 
-        return self.codes - old
+        for code in codes:
+            if code not in self.codes:
+                added.append(code)
+                self.codes.append(code)
+
+        return added
 
     def remove_course(self, code: str):
         """
@@ -101,8 +105,9 @@ class Schedule:
         :param code: the code of the course to remove
         :type code: str
         """
+        self.codes = list(self.codes)
         if code in self.codes:
-            self.codes.discard(code)
+            self.codes.remove(code)
 
     def add_custom_event(self, event: evt.CustomEvent):
         """
@@ -251,6 +256,11 @@ class Schedule:
             for event in week_data['event']:
                 for i in range(n_best):
                     self.best_schedules[i][event.code][week].add(event.id)
+
+            # We add actual filter to current week
+            for event_code, filtered_ids in self.filtered_subcodes.items():
+                for i in range(n_best):
+                    self.best_schedules[i][event_code][week].update(filtered_ids)
             # Events present in the best schedule will be later removed from the filter
 
             events = [[data_id.values for _, data_id in data.groupby(level='id')]

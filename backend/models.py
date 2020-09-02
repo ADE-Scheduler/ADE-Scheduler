@@ -121,7 +121,7 @@ class Schedule(db.Model):
         >>> schedule.update(data)
         For more information, see: https://docs.sqlalchemy.org/en/13/orm/extensions/mutable.html
         """
-        if data.id is not self.id:
+        if int(data.id) != int(self.id):
             raise ScheduleDoNotMatchError(self.id, data.id)
         self.data = data
         db.session.commit()
