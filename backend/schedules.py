@@ -251,6 +251,11 @@ class Schedule:
             for event in week_data['event']:
                 for i in range(n_best):
                     self.best_schedules[i][event.code][week].add(event.id)
+
+            # We add actual filter to current week
+            for event_code, filtered_ids in self.filtered_subcodes.items():
+                for i in range(n_best):
+                    self.best_schedules[i][event_code][week].update(filtered_ids)
             # Events present in the best schedule will be later removed from the filter
 
             events = [[data_id.values for _, data_id in data.groupby(level='id')]
