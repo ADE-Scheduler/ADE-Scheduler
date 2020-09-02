@@ -324,7 +324,7 @@ class Manager:
         :return: the default project id
         :rtype: str
         """
-        return self.get_project_ids()[-1]['id']
+        return self.get_project_ids()[0]['id']
 
     def save_schedule(self, user: md.User, schedule: schd.Schedule):
         """
