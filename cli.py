@@ -111,7 +111,8 @@ def count(pattern, session, code):
 @with_appcontext
 def count():
     """Count the number of current users."""
-    click.echo(f'There are currently {md.User.query.count()} users on ADE-Scheduler.')
+    click.echo(f'There are currently {md.User.query.filter(None != md.User.confirmed_at).count()} '
+               f'(confirmed) users on ADE-Scheduler.')
 
 
 @click.group()

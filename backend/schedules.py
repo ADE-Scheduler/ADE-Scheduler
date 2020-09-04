@@ -10,25 +10,6 @@ from flask_babelex import _
 
 import backend.events as evt
 
-"""
-Schedule needed data:
-{
-    codes: [LMECA2660, LELEC2760, etc],                     // requested course codes
-    filtered_subcodes:  {
-                            LELEC2760: {CM: LELEC2760_Q1},
-                            LMECA2660: {CM: LMECA2660_Q2},
-                        }                                   // unselected subcodes
-    best_schedules:     [{
-                            LELEC2760:  {
-                                            week1: {CM: LELEC2760_Q1}
-                                        }
-                        }]                                  // filtered subcodes, week by week
-    custom_events: [event1, event2],                        // custom user events
-    project_id: id,
-    schedule_id: id,
-}
-"""
-
 DEFAULT_SCHEDULE_NAME = _('New schedule')
 
 
@@ -158,7 +139,7 @@ class Schedule:
         events = list()
         courses = self.get_courses()
 
-        if schedule_number == 0:
+        if schedule_number == 0 or schedule_number > len(self.best_schedules):
             views = self.filtered_subcodes
         else:
             views = self.best_schedules[schedule_number - 1]
