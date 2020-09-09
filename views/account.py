@@ -45,10 +45,15 @@ account.json_encoder = AccountEncoder
 
 @account.before_request
 def before_account_request():
+    mng = app.config['MANAGER']
+
     if not session.get('current_schedule'):
-        mng = app.config['MANAGER']
         session['current_schedule'] = schd.Schedule(mng.get_default_project_id())
         session['current_schedule_modified'] = False
+
+    project_ids = [int(year['id']) for year in mng.get_project_ids()]
+    if int(session['current_schedule'].project_id) not in project_ids:
+        session['current_schedule'] = mng.get_default_project_id()
 
 
 @account.route('/')
