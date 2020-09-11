@@ -70,7 +70,7 @@ manager = mng.Manager(ade.Client(app.config['ADE_API_CREDENTIALS']), srv.Server(
 app.config['MANAGER'] = manager
 
 # Setup Flask-Mail
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_SERVER'] = os.environ['MAIL_SERVER']
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USERNAME'] = os.environ['MAIL_USERNAME']
