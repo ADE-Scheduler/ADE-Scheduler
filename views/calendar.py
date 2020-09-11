@@ -53,7 +53,7 @@ def before_calendar_request():
 
     project_ids = [int(year['id']) for year in mng.get_project_ids()]
     if int(session['current_schedule'].project_id) not in project_ids:
-        session['current_schedule'] = mng.get_default_project_id()
+        session['current_schedule'] = schd.Schedule(mng.get_default_project_id())
 
 
 @calendar.route('/')
