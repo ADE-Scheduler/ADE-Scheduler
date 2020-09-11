@@ -15,6 +15,11 @@
             <span class="input-group-text">@</span>
             {{ render_input_with_message(send_confirmation_form.email, _('Invalid email address'), placeholder="you@example.com", required="") }}
         </div>
+        <div class="my-3">
+            <small class="form-text text-primary">
+                {{_('If you did not receive a mail, please check your spam folder. Sometimes, our mails get lost there... :-(')}}
+            </small>
+        </div>
         <hr class="mb-3">
         {{ send_confirmation_form.submit(class="btn btn-lg btn-primary btn-block text-wrap") }}
     </form>

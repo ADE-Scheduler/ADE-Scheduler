@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-08-19 23:14+0200\n"
+"POT-Creation-Date: 2020-09-11 10:36+0200\n"
 "PO-Revision-Date: 2020-07-24 16:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: app.py:194
+#: app.py:217
 msgid "An error has occurred. Please contact the admins if it keeps happening."
 msgstr "Une erreur est apparue. Si cela arrive à nouveau, veuillez nous contacter."
 
-#: app.py:200
+#: app.py:223
 msgid "404 Page not found :("
 msgstr "404 Page non trouvée :("
 
@@ -54,7 +54,7 @@ msgstr "Vendredi"
 msgid "Saturday"
 msgstr "Samedi"
 
-#: backend/schedules.py:32
+#: backend/schedules.py:13
 msgid "New schedule"
 msgstr "Nouvel horaire"
 
@@ -253,8 +253,8 @@ msgid ""
 msgstr ""
 "Vous pouvez utiliser ce lien pour exporter l'horaire vers votre "
 "application de calendrier (Google, iOS, etc.). Cela garantira que les "
-"données restent toujours à jour, même en cas de modification d'horaire par"
-" les professeurs."
+"données restent toujours à jour, même en cas de modification d'horaire "
+"par les professeurs."
 
 #: templates/calendar.html:159
 msgid "Share Link"
@@ -300,7 +300,7 @@ msgstr "Fin de récurrence"
 msgid "Add"
 msgstr "Ajouter"
 
-#: templates/calendar.html:328 views/calendar.py:102
+#: templates/calendar.html:328 views/calendar.py:107
 msgid "The code you added does not exist in our database."
 msgstr "Le code que vous avez entré n'existe pas dans notre base de données."
 
@@ -775,11 +775,17 @@ msgstr "Aucun mot de passe spécifié"
 msgid "Confirm password"
 msgstr "Confirmez le mot de passe"
 
-#: views/calendar.py:70 views/calendar.py:81
+#: templates/security/send_confirmation.html:20
+msgid ""
+"If you did not receive a mail, please check your spam folder. Sometimes, "
+"our mails get lost there... :-("
+msgstr "Si vous ne recevez pas de mail, vérifiez votre dossier de spam. Parfois, nos mails se perdent là-dedans... :-("
+
+#: views/calendar.py:75 views/calendar.py:86
 msgid "current_schedule"
 msgstr "horaire actuel"
 
-#: views/calendar.py:186 views/calendar.py:208
+#: views/calendar.py:191 views/calendar.py:213
 msgid "The schedule you requested does not exist in our database !"
 msgstr "L'horaire que vous avez demandé n'existe pas dans notre base de données !"
 
