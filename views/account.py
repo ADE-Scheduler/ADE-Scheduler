@@ -115,13 +115,13 @@ def load_schedule(id):
 def delete_schedule(id):
     id = int(id)
     schedule = current_user.get_schedule(id=id)
-    if schedule is None and id is not -1:
+    if schedule is None and id != -1:
         return '', 403      # Requested id is not in this user's schedule list.
 
     if schedule is not None:
         current_user.remove_schedule(schedule)
 
-    if id is session['current_schedule'].id or id is -1:
+    if id == session['current_schedule'].id or id == -1:
         mng = app.config['MANAGER']
         session['current_schedule'] = schd.Schedule(mng.get_default_project_id())
         session['current_schedule_modified'] = True
