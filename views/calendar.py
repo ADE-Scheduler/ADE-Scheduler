@@ -187,6 +187,10 @@ def download():
     else:
         schedule = session['current_schedule']
 
+    project_ids = [int(year['id']) for year in mng.get_project_ids()]
+    if int(schedule.project_id) not in project_ids:
+        schedule.project_id = mng.get_default_project_id()
+
     if schedule is None:
         return _('The schedule you requested does not exist in our database !'), 400
     else:
