@@ -179,10 +179,10 @@ def save():
 
 @calendar.route('/schedule', methods=['GET'])
 def download():
+    mng = app.config['MANAGER']
     link = request.args.get('link')
     choice = int(request.args.get('choice')) if request.args.get('choice') else 0
     if link:
-        mng = app.config['MANAGER']
         schedule, _ = mng.get_schedule(link)
     else:
         schedule = session['current_schedule']
