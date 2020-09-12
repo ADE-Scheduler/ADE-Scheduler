@@ -6,6 +6,7 @@ from flask import current_app as app
 from flask.cli import with_appcontext
 from flask_security.cli import users
 from sqlalchemy import func
+import pandas as pd
 
 import backend.models as md
 
@@ -113,6 +114,26 @@ def count():
     """Count the number of current users."""
     click.echo(f'There are currently {md.User.query.filter(None != md.User.confirmed_at).count()} '
                f'(confirmed) users on ADE-Scheduler.')
+
+
+@users.command()
+@with_appcontext
+def stats():
+    """Returns some statistics about users."""
+    confirmed_users = md.User.query.filter(None != md.User.confirmed_at).all()
+    df = pd.DataFrame([[user.confirmed_at.strftime('%Y/%m/%d'), len(user.schedules)]
+                      for user in confirmed_users], columns=['date', 'n_schedules'])
+
+    click.echo('Accounts created per day:')
+    for date, count in df.groupby('date').size().iteritems():
+        click.echo(f'\t{date}: {count}')
+
+    click.echo(f'\tTotal: {len(confirmed_users)}')
+    click.echo('Schedules count stats:')
+    description = df['n_schedules'].describe()
+    description['count'] = df['n_schedules'].sum()
+    for x, value in description.iteritems():
+        click.echo(f'\t{x}: {value}')
 
 
 @click.group()
