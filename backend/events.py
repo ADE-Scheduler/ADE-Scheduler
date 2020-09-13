@@ -223,7 +223,6 @@ class AcademicalEvent(CustomEvent):
 
         if name is None or len(name) == 0:  # Fix for special events with no name
             self.name = id
-            self.id = id
         else:
             self.name = f'{prefix}{self.name}'
 

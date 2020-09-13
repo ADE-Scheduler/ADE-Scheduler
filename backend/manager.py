@@ -168,7 +168,7 @@ class Manager:
     def get_codes_matching(self, pattern: str, project_id: SupportsInt = None) -> List[str]:
         # Actually returns names matchings :)
         course_resources = self.get_course_resources(project_id)
-        matching_code = course_resources[rsrc.INDEX.NAME].str.contains(pattern, case=False)
+        matching_code = course_resources[rsrc.INDEX.NAME].str.contains(pattern, case=False, regex=False)
         return course_resources[matching_code][rsrc.INDEX.NAME].to_list()
 
     def get_classrooms(self, project_id: SupportsInt = None,
@@ -185,7 +185,7 @@ class Manager:
 
         if search_dict is not None:
             for index, search in search_dict.items():
-                contains = classrooms[index].str.contains(search)
+                contains = classrooms[index].str.contains(search, regex=False)
                 classrooms = classrooms[contains]
 
         if return_json:
