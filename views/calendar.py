@@ -92,6 +92,8 @@ def get_data():
 
 @calendar.route('/<path:search_key>', methods=['GET'])
 def search_code(search_key):
+    search_key = search_key.replace('*', '')  # * does not work in Python
+    # see: https://stackoverflow.com/questions/3675144/regex-error-nothing-to-repeat/44657703
     mng = app.config['MANAGER']
     codes = mng.get_codes_matching(search_key, session['current_schedule'].project_id)
     return jsonify({
