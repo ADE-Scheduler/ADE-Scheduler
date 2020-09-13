@@ -90,7 +90,7 @@ def get_data():
     }), 200
 
 
-@calendar.route('/<search_key>', methods=['GET'])
+@calendar.route('/<path:search_key>', methods=['GET'])
 def search_code(search_key):
     mng = app.config['MANAGER']
     codes = mng.get_codes_matching(search_key, session['current_schedule'].project_id)
