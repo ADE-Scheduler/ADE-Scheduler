@@ -204,7 +204,6 @@ def download():
 
 
 @calendar.route('/share', methods=['GET'])
-@login_required
 def share():
     link = request.args.get('link')
     if link:
@@ -216,8 +215,9 @@ def share():
     if schedule is None:
         return _('The schedule you requested does not exist in our database !'), 400
     else:
-        session['current_schedule'] = md.Schedule(schedule, user=current_user).data
         g.track_var['schedule share'] = schedule.id
+        session['current_schedule'] = schedule
+        session['current_schedule'].id = None   # "unsave" this schedule
         return redirect(url_for('calendar.index'))
 
 
