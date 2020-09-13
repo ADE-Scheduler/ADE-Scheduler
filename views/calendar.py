@@ -90,8 +90,10 @@ def get_data():
     }), 200
 
 
-@calendar.route('/<search_key>', methods=['GET'])
+@calendar.route('/<path:search_key>', methods=['GET'])
 def search_code(search_key):
+    search_key = search_key.replace('*', '')  # * does not work in Python
+    # see: https://stackoverflow.com/questions/3675144/regex-error-nothing-to-repeat/44657703
     mng = app.config['MANAGER']
     codes = mng.get_codes_matching(search_key, session['current_schedule'].project_id)
     return jsonify({
@@ -99,7 +101,7 @@ def search_code(search_key):
     }), 200
 
 
-@calendar.route('/<code>', methods=['PATCH'])
+@calendar.route('/<path:code>', methods=['PATCH'])
 def add_code(code):
     mng = app.config['MANAGER']
     code = code.upper()
@@ -115,7 +117,7 @@ def add_code(code):
     }), 200
 
 
-@calendar.route('/<code>', methods=['DELETE'])
+@calendar.route('/<path:code>', methods=['DELETE'])
 def remove_code(code):
     session['current_schedule'].remove_course(code)
     session['current_schedule_modified'] = True
@@ -124,7 +126,7 @@ def remove_code(code):
     }), 200
 
 
-@calendar.route('/<code>/info', methods=['GET'])
+@calendar.route('/<path:code>/info', methods=['GET'])
 def get_info(code):
     mng = app.config['MANAGER']
     courses = mng.get_courses(code, project_id=session['current_schedule'].project_id)

@@ -216,6 +216,15 @@ class AcademicalEvent(CustomEvent):
         self.id = f'{prefix}{id}'
         self.code = code
         self.classrooms = classrooms
+        self.description = f'{self.id}\n'\
+                           f'{self.name}\n'\
+                           f'{str(self.duration)}\n'\
+                           f'{self.description}'
+
+        if name is None or len(name) == 0:  # Fix for special events with no name
+            self.name = id
+        else:
+            self.name = f'{prefix}{self.name}'
 
     def __hash__(self) -> int:
         return super().__hash__()
@@ -246,12 +255,13 @@ class AcademicalEvent(CustomEvent):
         r.update(
             {
                 'title': self.id,
-                'description': f'{self.name}\n'
-                               f'{str(self.duration)}\n'
-                               f'{str(self.description)}',
+                'description': self.description,
                 'code': self.code
             }
         )
+
+        # Remove empty lines
+        r['description'] = '\n'.join(line for line in r['description'].splitlines() if line)
 
         return r
 
@@ -335,7 +345,7 @@ def extract_type(course_type: str, course_id: str) -> Type[AcademicalEvent]:
         return EventCM
     elif course_type == 'TP' or 'TD':
         return EventTP
-    elif course_type == 'Examen écrit' or type == 'Test / Interrogation / Partiel':
+    elif course_type == 'Examen écrit' or course_type == 'Test / Interrogation / Partiel':
         return EventEXAM
     elif course_type == 'Examen oral':
         return EventORAL
