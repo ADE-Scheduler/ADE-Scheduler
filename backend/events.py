@@ -339,7 +339,7 @@ def extract_type(course_type: str, course_id: str) -> Type[AcademicalEvent]:
         return EventCM
     elif course_type == 'TP' or 'TD':
         return EventTP
-    elif course_type == 'Examen écrit' or type == 'Test / Interrogation / Partiel':
+    elif course_type == 'Examen écrit' or course_type == 'Test / Interrogation / Partiel':
         return EventEXAM
     elif course_type == 'Examen oral':
         return EventORAL
