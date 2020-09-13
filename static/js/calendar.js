@@ -305,7 +305,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.computing = true;
                     axios({
                         method: 'PATCH',
-                        url: Flask.url_for('calendar.add_code', {'code': this.code}),
+                        url: Flask.url_for('calendar.add_code', {'code': encodeURIComponent(this.code)}),
                     })
                     .then(resp => {
                         this.codes = this.codes.concat(resp.data.codes);
@@ -328,7 +328,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.computing = true;
                 axios({
                     method: 'DELETE',
-                    url: Flask.url_for('calendar.remove_code', {'code': code}),
+                    url: Flask.url_for('calendar.remove_code', {'code': encodeURIComponent(code)}),
                 })
                 .then(resp => {
                     this.codes.splice(this.codes.indexOf(code), 1);
@@ -426,7 +426,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.computing = true;
                     axios({
                         method: 'GET',
-                        url: Flask.url_for('calendar.get_info', {'code': code}),
+                        url: Flask.url_for('calendar.get_info', {'code': encodeURIComponent(code)}),
                     })
                     .then(resp => {
                         this.courseInfo.code = code;
@@ -537,7 +537,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (this.code !== '') {
                     axios({
                         method: 'GET',
-                        url: Flask.url_for('calendar.search_code', {'search_key': this.code}),
+                        url: Flask.url_for('calendar.search_code', {'search_key': encodeURIComponent(this.code)}),
                     })
                     .then(resp => {
                         this.codeSearch = resp.data.codes;
