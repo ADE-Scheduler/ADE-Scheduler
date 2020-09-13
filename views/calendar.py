@@ -99,7 +99,7 @@ def search_code(search_key):
     }), 200
 
 
-@calendar.route('/<code>', methods=['PATCH'])
+@calendar.route('/<path:code>', methods=['PATCH'])
 def add_code(code):
     mng = app.config['MANAGER']
     code = code.upper()
@@ -115,7 +115,7 @@ def add_code(code):
     }), 200
 
 
-@calendar.route('/<code>', methods=['DELETE'])
+@calendar.route('/<path:code>', methods=['DELETE'])
 def remove_code(code):
     session['current_schedule'].remove_course(code)
     session['current_schedule_modified'] = True
@@ -124,7 +124,7 @@ def remove_code(code):
     }), 200
 
 
-@calendar.route('/<code>/info', methods=['GET'])
+@calendar.route('/<path:code>/info', methods=['GET'])
 def get_info(code):
     mng = app.config['MANAGER']
     courses = mng.get_courses(code, project_id=session['current_schedule'].project_id)
