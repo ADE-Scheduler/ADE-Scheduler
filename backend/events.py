@@ -216,6 +216,16 @@ class AcademicalEvent(CustomEvent):
         self.id = f'{prefix}{id}'
         self.code = code
         self.classrooms = classrooms
+        self.description = f'{self.id}\n'\
+                           f'{self.name}\n'\
+                           f'{str(self.duration)}\n'\
+                           f'{self.description}'
+
+        if name is None or len(name) == 0:  # Fix for special events with no name
+            self.name = id
+            self.id = id
+        else:
+            self.name = f'{prefix}{self.name}'
 
     def __hash__(self) -> int:
         return super().__hash__()
@@ -246,10 +256,7 @@ class AcademicalEvent(CustomEvent):
         r.update(
             {
                 'title': self.id,
-                'description': f'{self.id}\n'
-                               f'{self.name}\n'
-                               f'{str(self.duration)}\n'
-                               f'{str(self.description)}',
+                'description': self.description,
                 'code': self.code
             }
         )

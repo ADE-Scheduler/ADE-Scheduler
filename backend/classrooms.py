@@ -163,7 +163,7 @@ def merge_classrooms(classrooms: Iterable[Classroom]) -> Classroom:
     >>> c2 = Classroom(address2, 'classB', 2)
     >>> c3 = merge_classrooms((c1, c2))
     """
-    names = ' | '.join(classroom.infos['name'] for classroom in classrooms)
+    names = ' | '.join(classroom.infos['name'] for classroom in classrooms if classroom.infos['name'])
     addresses = '\n'.join(str(classroom.infos['address']) for classroom in classrooms)
-    id = '|'.join(classroom.infos['id'] for classroom in classrooms)
+    id = '|'.join(classroom.infos['id'] for classroom in classrooms if classroom.infos['id'])
     return Classroom(name=names, address=addresses, id=id)
