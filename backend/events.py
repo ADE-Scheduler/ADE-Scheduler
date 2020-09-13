@@ -246,12 +246,16 @@ class AcademicalEvent(CustomEvent):
         r.update(
             {
                 'title': self.id,
-                'description': f'{self.name}\n'
+                'description': f'{self.id}\n'
+                               f'{self.name}\n'
                                f'{str(self.duration)}\n'
                                f'{str(self.description)}',
                 'code': self.code
             }
         )
+
+        # Remove empty lines
+        r['description'] = '\n'.join(line for line in r['description'].splitlines() if line)
 
         return r
 
