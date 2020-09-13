@@ -129,7 +129,7 @@ def stats():
         click.echo(f'\t{date}: {count}')
     click.echo(f'\tTotal: {len(confirmed_users)}')
 
-    click.echo('Email address domains:')
+    click.echo('Email domains:')
 
     df['email'] = df['email'].apply(lambda s: s.split('@')[1])
 
