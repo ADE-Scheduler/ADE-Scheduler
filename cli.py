@@ -70,9 +70,11 @@ def expire(pattern, time, random):
     """Apply an expiry time to keys in Redis."""
     rd = app.config['MANAGER'].server
 
+    low, high = random
+
     if random:
         def f(key):
-            key: rd.expire(key, rnd.randint(200, 400))
+            rd.expire(key, rnd.randint(low, high))
     elif time > 0:
         def f(key):
             rd.expire(key, time)
