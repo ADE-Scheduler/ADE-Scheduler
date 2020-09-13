@@ -121,14 +121,21 @@ def count():
 def stats():
     """Returns some statistics about users."""
     confirmed_users = md.User.query.filter(None != md.User.confirmed_at).all()
-    df = pd.DataFrame([[user.confirmed_at.strftime('%Y/%m/%d'), len(user.schedules)]
-                      for user in confirmed_users], columns=['date', 'n_schedules'])
+    df = pd.DataFrame([[user.confirmed_at.strftime('%Y/%m/%d'), user.email, len(user.schedules)]
+                      for user in confirmed_users], columns=['date', 'email', 'n_schedules'])
 
     click.echo('Accounts created per day:')
     for date, count in df.groupby('date').size().iteritems():
         click.echo(f'\t{date}: {count}')
-
     click.echo(f'\tTotal: {len(confirmed_users)}')
+
+    click.echo('Email address domains:')
+
+    df['email'] = df['email'].apply(lambda s: s.split('@')[1])
+
+    for domain, count in df.groupby('email').size().iteritems():
+        click.echo(f'\t{domain}: {count}')
+
     click.echo('Schedules count stats:')
     description = df['n_schedules'].describe()
     description['count'] = df['n_schedules'].sum()
