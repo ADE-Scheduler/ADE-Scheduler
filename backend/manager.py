@@ -38,33 +38,9 @@ class Manager:
     """
 
     def __init__(self, client: ade.Client, server: srv.Server, database: md.SQLAlchemy):
-
-        def run_server():
-            while not server.is_running():
-                server.run()
-                time.sleep(1)
-
-        def get_api_token():
-            while client.is_expired():
-                client.renew_token()
-                time.sleep(1)
-
-        # TODO: provide a way to check that the database (db) is operational
-
-        p1 = Process(target=run_server)
-        p1.start()
-        p1.join(5)  # Timeout after trying to connect during 5s
-
-        p2 = Process(target=get_api_token())
-        p2.start()
-        p2.join(5)  # Timeout after trying to connect during 5s
-
-        if p1.is_alive() or p2.is_alive():
-            raise Exception('Could not initialize the API client and/or the server connection.')
-        else:
-            self.server = server
-            self.client = client
-            self.database = database
+        self.server = server
+        self.client = client
+        self.database = database
 
     def get_courses(self, *codes: str, project_id: SupportsInt = None) -> List[crs.Course]:
         """
