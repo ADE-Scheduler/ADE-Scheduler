@@ -372,7 +372,13 @@
             <div class="sidebar-sticky p-3">
                 <div class="d-flex flex-column overflow-auto">
                     <div class="d-flex flex-row flex-nowrap justify-content-between">
-                        <div class="text-truncate "><h5> [[ label ]] </h5></div>
+                        <div class="text-truncate ">
+                            <select class="form-select" ><!--v-model="currentProjectId" v-on:change="updateYear">-->
+                                <option v-for="s in schedules" ><!--v-bind:value="">-->
+                                    [[ s.label ]]
+                                </option>
+                            </select>
+                        </div>
                         <a tabindex="0" href="#" class="btn btn-outline-info btn-sm ml-2 mb-2 btn-info-custom font-weight-bold rounded-circle"
                             data-toggle="popover" data-trigger="focus"
                             data-content="{{ _('To view more info or adapt your schedule, click on a course code. To change the color palette, go to the account page.') }}" data-title="{{ _('Note') }}">

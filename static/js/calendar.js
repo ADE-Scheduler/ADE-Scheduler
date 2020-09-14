@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
         data: {
             label: '',
             projectId: [],
+            schedules: [],
             currentProjectId: 0,
             codes: [],
             n_schedules: 0,
@@ -212,6 +213,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.label = resp.data.label;
                     this.currentProjectId = resp.data.current_project_id;
                     this.n_schedules = resp.data.n_schedules;
+                    this.schedules = resp.data.schedules;
                     this.calendarOptions.events = resp.data.events;
                 })
                 .catch(err => {

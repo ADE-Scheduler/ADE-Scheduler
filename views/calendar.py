@@ -87,6 +87,10 @@ def get_data():
         'n_schedules': len(session['current_schedule'].best_schedules),
         'events': session['current_schedule'].get_events(json=True),
         'codes': session['current_schedule'].codes,
+        'schedules': list(map(lambda s: {
+            'id': s.id,
+            'label': s.data.label,
+        }, current_user.get_schedule())),
     }), 200
 
 
