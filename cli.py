@@ -7,6 +7,7 @@ from flask.cli import with_appcontext
 from flask_security.cli import users
 from sqlalchemy import func
 import pandas as pd
+import numpy as np
 
 import backend.models as md
 
@@ -143,6 +144,34 @@ def stats():
     description['count'] = df['n_schedules'].sum()
     for x, value in description.iteritems():
         click.echo(f'\t{x}: {value}')
+
+
+@click.group()
+def schedules():
+    """Performs operations with the schedules"""
+
+
+@schedules.command()
+@click.option('-n', default=None, type=int, help='Number of most common codes, all by default.')
+@with_appcontext
+def stats(n):
+    """Returns some statistics about schedules."""
+    schedules = md.Schedule.query.all()
+    from collections import Counter
+    c = Counter()
+    counts = []
+
+    for schedule in schedules:
+        counts.append(len(schedule.data.codes))
+        c.update(schedule.data.codes)
+
+    click.echo('Most commom codes:')
+    for code, count in c.most_common(n):
+        click.echo(f'\t{code}: {count}')
+
+    counts = np.array(counts)
+
+    click.echo(f'Average # of courses per schedule: {np.mean(counts):.1f} (std: {np.std(counts):.2f})')
 
 
 @click.group()
