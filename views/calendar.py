@@ -185,7 +185,7 @@ def download():
     link = request.args.get('link')
     choice = int(request.args.get('choice')) if request.args.get('choice') else 0
     if link:
-        schedule, _ = mng.get_schedule(link)
+        schedule = mng.get_schedule(link)[0]
     else:
         schedule = session['current_schedule']
 
@@ -210,7 +210,7 @@ def share():
     link = request.args.get('link')
     if link:
         mng = app.config['MANAGER']
-        schedule, _ = mng.get_schedule(link)
+        schedule = mng.get_schedule(link)[0]
     else:
         schedule = None
 
