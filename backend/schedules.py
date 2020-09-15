@@ -116,7 +116,7 @@ class Schedule:
                 event = next(e for e in self.custom_events if e.uid == id)
             except StopIteration:
                 raise KeyError('Cannot delete non existing custom event')
-            
+
             self.custom_events.remove(event)
 
     def get_courses(self) -> List[Course]:
