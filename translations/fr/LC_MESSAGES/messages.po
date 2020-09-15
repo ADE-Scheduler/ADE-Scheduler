@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-09-11 10:36+0200\n"
+"POT-Creation-Date: 2020-09-13 22:15+0200\n"
 "PO-Revision-Date: 2020-07-24 16:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -66,7 +66,7 @@ msgstr "Attention"
 msgid "You have unsaved changes in your current schedule. Continue ?"
 msgstr ""
 "Vous avez des changements qui n'ont pas été sauvegardés: voulez-vous "
-"quand même continue ?"
+"quand même continuer ?"
 
 #: templates/account.html:23
 msgid "Cancel"
@@ -107,11 +107,15 @@ msgstr "Supprimer"
 msgid "Schedules"
 msgstr "Horaires"
 
-#: templates/account.html:104 templates/calendar.html:415
+#: templates/account.html:80
+msgid "You do not have any saved schedule at the moment"
+msgstr "Vous n'avez aucun horaire sauvegardé pour le moment"
+
+#: templates/account.html:105 templates/calendar.html:415
 msgid "Open source software"
 msgstr "Logiciel libre"
 
-#: templates/account.html:104 templates/calendar.html:415
+#: templates/account.html:105 templates/calendar.html:415
 msgid ""
 "designed by Gilles Poncelet, Louis Navarre and Jérome Eertmans, students "
 "at the Ecole polytechnique de Louvain."
@@ -300,7 +304,7 @@ msgstr "Fin de récurrence"
 msgid "Add"
 msgstr "Ajouter"
 
-#: templates/calendar.html:328 views/calendar.py:107
+#: templates/calendar.html:328 views/calendar.py:109
 msgid "The code you added does not exist in our database."
 msgstr "Le code que vous avez entré n'existe pas dans notre base de données."
 
@@ -779,13 +783,15 @@ msgstr "Confirmez le mot de passe"
 msgid ""
 "If you did not receive a mail, please check your spam folder. Sometimes, "
 "our mails get lost there... :-("
-msgstr "Si vous ne recevez pas de mail, vérifiez votre dossier de spam. Parfois, nos mails se perdent là-dedans... :-("
+msgstr ""
+"Si vous ne recevez pas de mail, vérifiez votre dossier de spam. Parfois, "
+"nos mails se perdent là-dedans... :-("
 
 #: views/calendar.py:75 views/calendar.py:86
 msgid "current_schedule"
 msgstr "horaire actuel"
 
-#: views/calendar.py:191 views/calendar.py:213
+#: views/calendar.py:197 views/calendar.py:218
 msgid "The schedule you requested does not exist in our database !"
 msgstr "L'horaire que vous avez demandé n'existe pas dans notre base de données !"
 
@@ -886,3 +892,10 @@ msgstr "L'horaire que vous avez demandé n'existe pas dans notre base de donnée
 #~ " is now pursuing a master degree "
 #~ "in Mechatronics."
 #~ msgstr ""
+
+#~ msgid "You have unsaved changes in your current schedule. Continue ?"
+#~ msgstr ""
+#~ "Vous avez des changements qui n'ont "
+#~ "pas été sauvegardés: voulez-vous quand"
+#~ " même continue ?"
+

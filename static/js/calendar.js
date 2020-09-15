@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
             saveSuccess: !!document.getElementById('scheduleSaved'),
             code: '',
             codeSearch: [],
+            unsaved: false,
             codeSearchDisplay: false,
             eventForm: {
                 name: '',
@@ -221,6 +222,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             },
             clear: function() {
+                if (this.unsaved) {
+                    warningModal.show();
+                } else {
+                    this.clearConfirmed();
+                }
+            },
+            clearConfirmed: function() {
                 this.computing = true;
                 axios({
                     method: 'DELETE',
@@ -233,6 +241,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.codes = [];
                     this.label = resp.data.label;
                     this.currentProjectId = resp.data.current_project_id;
+                    this.unsaved = false;
                 })
                 .catch(err => {
                     this.error = true;
@@ -285,6 +294,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(resp => {
                     this.saveSuccess = true;
+                    this.unsaved = false;
                 })
                 .catch(err => {
                     if (err.response.status === 401) {
@@ -311,6 +321,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         this.codes = this.codes.concat(resp.data.codes);
                         this.calendarOptions.events = resp.data.events;
                         this.code = '';
+                        this.unsaved = true;
                     })
                     .catch(err => {
                         if (err.response.status === 404) {
@@ -333,6 +344,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(resp => {
                     this.codes.splice(this.codes.indexOf(code), 1);
                     this.calendarOptions.events = resp.data.events;
+                    this.unsaved = true;
                 })
                 .catch(err => {
                     this.error = true;
@@ -352,6 +364,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     evt.end = this.eventForm.beginRecurrDay + ' ' + this.eventForm.endHour;
                     evt.end_recurrence = this.eventForm.endRecurrDay + ' ' + this.eventForm.endHour;
                     evt.freq = this.eventForm.freq;
+                    this.unsaved = true;
                 } else {
                     evt.begin = this.eventForm.beginDay + ' ' + this.eventForm.beginHour;
                     evt.end = this.eventForm.endDay + ' ' + this.eventForm.endHour;
@@ -484,6 +497,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(resp => {
                     this.calendarOptions.events = this.calendarOptions.events.filter(item => item.id !== event.id);
+                    this.unsaved = true;
                 })
                 .catch(err => {
                     this.error = true;
@@ -591,4 +605,5 @@ document.addEventListener('DOMContentLoaded', function() {
     var codeMenu = new Collapse(document.getElementById('sidebarMenu'), {
         toggle: false,
     });
+    var warningModal = new Modal(document.getElementById('warningModal'));
 });
