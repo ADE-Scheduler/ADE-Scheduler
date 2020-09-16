@@ -329,6 +329,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(resp => {
                     this.saveSuccess = true;
                     this.unsaved = false;
+                    this.schedules = resp.data.schedules;
                 })
                 .catch(err => {
                     if (err.response.status === 401) {

@@ -89,14 +89,14 @@ def get_data():
         'unsaved': session['current_schedule_modified'],
         'current_schedule': {
             'id': session['current_schedule'].id,
-            'label': session['current_schedule'].label,
+            'label': _(session['current_schedule'].label),
         },
         'n_schedules': len(session['current_schedule'].best_schedules),
         'events': session['current_schedule'].get_events(json=True),
         'codes': session['current_schedule'].codes,
         'schedules': list(map(lambda s: {
             'id': s.id,
-            'label': s.data.label,
+            'label': _(s.data.label),
         }, current_user.get_schedule())),
     }), 200
 
@@ -112,7 +112,7 @@ def load_schedule(id):
         return jsonify({
             'current_schedule': {
                 'id': schedule.data.id,
-                'label': schedule.data.label,
+                'label': _(schedule.data.label),
                 'project_id': schedule.data.project_id,
             },
             'project_id': mng.get_project_ids(),
@@ -123,7 +123,7 @@ def load_schedule(id):
             'codes': session['current_schedule'].codes,
             'schedules': list(map(lambda s: {
                 'id': s.id,
-                'label': s.data.label,
+                'label': _(s.data.label),
             }, current_user.get_schedule())),
         }), 200
     return '', 403      # Requested id is not in this user's schedule list.
@@ -220,7 +220,12 @@ def save():
     mng = app.config['MANAGER']
     session['current_schedule'] = mng.save_schedule(current_user, session['current_schedule'])
     session['current_schedule_modified'] = False
-    return 'OK', 200
+    return jsonify({
+        'schedules': list(map(lambda s: {
+            'id': s.id,
+            'label': _(s.data.label),
+        }, current_user.get_schedule())),
+    }), 200
 
 
 @calendar.route('/schedule', methods=['GET'])
