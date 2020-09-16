@@ -22,7 +22,6 @@ document.addEventListener('DOMContentLoaded', function() {
         el: '#app',
         components: { FullCalendar },
         data: {
-            label: '',
             projectId: [],
             schedules: [],
             currentProjectId: 0,
@@ -35,6 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
             code: '',
             codeSearch: [],
             unsaved: false,
+            currentSchedule: {},
             codeSearchDisplay: false,
             eventForm: {
                 name: '',
@@ -210,11 +210,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(resp => {
                     this.codes = resp.data.codes;
                     this.projectId = resp.data.project_id;
-                    this.label = resp.data.label;
                     this.currentProjectId = resp.data.current_project_id;
                     this.n_schedules = resp.data.n_schedules;
                     this.schedules = resp.data.schedules;
                     this.calendarOptions.events = resp.data.events;
+                    this.unsaved = resp.data.unsaved;
+                    this.currentSchedule = resp.data.current_schedule;
                 })
                 .catch(err => {
                     this.error = true;
@@ -241,9 +242,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.n_schedules = 0;
                     this.selected_schedule = 0;
                     this.codes = [];
-                    this.label = resp.data.label;
                     this.currentProjectId = resp.data.current_project_id;
-                    this.unsaved = false;
+                    this.unsaved = resp.data.unsaved;
+                    this.currentSchedule = resp.data.current_schedule;
                 })
                 .catch(err => {
                     this.error = true;

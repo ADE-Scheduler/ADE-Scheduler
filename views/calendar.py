@@ -83,7 +83,13 @@ def get_data():
     return jsonify({
         'project_id': mng.get_project_ids(),
         'current_project_id': session['current_schedule'].project_id,
-        'label': _(session['current_schedule'].label),
+        'unsaved': session['current_schedule_modified'],
+        'current_schedule': {
+            'id': session['current_schedule'].id,
+            'project_id': session['current_schedule'].project_id,
+            'label': session['current_schedule'].label,
+            'color_palette': session['current_schedule'].color_palette,
+        },
         'n_schedules': len(session['current_schedule'].best_schedules),
         'events': session['current_schedule'].get_events(json=True),
         'codes': session['current_schedule'].codes,

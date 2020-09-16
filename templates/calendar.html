@@ -376,7 +376,7 @@
                            style="text-decoration: none"
                            data-toggle="dropdown" href="#">
                             <div class="text-truncate mr-2">
-                                <h5>[[ label ]]</h5>
+                                <h5>[[ currentSchedule.label ]]</h5>
                             </div>
                             <svg width="23px" height="23px" viewBox="0 0 16 16" class="bi bi-chevron-down" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
                                  style="min-width: 25px;">
@@ -386,13 +386,13 @@
                         <div class="dropdown-menu dropdown-schedules">
                             <a class="dropdown-item text-dark text-truncate" href="#"
                                 v-for="s in schedules"
-                                v-bind:class="{active: s.label == label}">
+                                v-bind:class="{active: s.id == currentSchedule.id}">
                                 [[ s.label ]]
                             </a>
                         </div>
                     </div>
                     <div class="text-truncate mr-2" v-else>
-                        <h5>[[ label ]]</h5>
+                        <h5>[[ currentSchedule.label ]]</h5>
                     </div>
                     <a tabindex="0" href="#" class="btn-info-custom"
                        data-toggle="popover" data-trigger="focus"
