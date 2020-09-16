@@ -430,6 +430,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         endRecurrDay: '',
                         recurring: false,
                     };
+                    this.unsaved = true;
                     addEventModal.hide();
                 })
                 .catch(err => {
