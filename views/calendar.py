@@ -74,7 +74,7 @@ def clear():
     return jsonify({
         'current_schedule': {
             'id': session['current_schedule'].id,
-            'label': session['current_schedule'].label,
+            'label': _(session['current_schedule'].label),
         },
         'current_project_id': session['current_schedule'].project_id,
     }), 200
