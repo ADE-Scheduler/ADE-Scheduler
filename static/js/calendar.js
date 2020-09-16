@@ -281,7 +281,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (this.unsaved) {
                     warningModal.show();
                 } else {
-                    this.clearConfirmed();
+                    this.request();
                 }
             },
             compute: function() {
