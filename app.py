@@ -56,6 +56,7 @@ jsglue = JSGlue(app)
 app.cli.add_command(cli.sql)
 app.cli.add_command(cli.redis)
 app.cli.add_command(cli.client)
+app.cli.add_command(cli.schedules)
 
 # Setup the API Manager
 app.config['ADE_API_CREDENTIALS'] = {
