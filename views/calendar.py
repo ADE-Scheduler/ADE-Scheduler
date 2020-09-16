@@ -221,6 +221,7 @@ def save():
     session['current_schedule'] = mng.save_schedule(current_user, session['current_schedule'])
     session['current_schedule_modified'] = False
     return jsonify({
+        'unsaved': session['current_schedule_modified'],
         'schedules': list(map(lambda s: {
             'id': s.id,
             'label': _(s.data.label),
@@ -283,6 +284,7 @@ def apply_filter():
                     schedule.add_filter(code, type + ': ' + filter)
     session['current_schedule_modified'] = True
     return jsonify({
+        'unsaved': session['current_schedule_modified'],
         'events': session['current_schedule'].get_events(json=True),
     }), 200
 
@@ -324,6 +326,7 @@ def compute():
     bests = session['current_schedule'].compute_best()
     session['current_schedule_modified'] = True
     return jsonify({
+        'unsaved': session['current_schedule_modified'],
         'n_schedules': len(session['current_schedule'].best_schedules) if bests is not None else 0,
         'events': session['current_schedule'].get_events(json=True, schedule_number=1) if bests is not None else list(),
         'selected_schedule': 1 if bests is not None else 0
