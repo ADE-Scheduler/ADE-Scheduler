@@ -229,9 +229,15 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.computing = true;
                     axios({
                         method: 'GET',
-                        url: Flask.url_for('account.load_schedule', {'id': id}),
+                        url: Flask.url_for('calendar.load_schedule', {'id': id}),
                     })
                     .then(resp => {
+                        this.codes = resp.data.codes;
+                        this.projectId = resp.data.project_id;
+                        this.currentProjectId = resp.data.current_project_id;
+                        this.n_schedules = resp.data.n_schedules;
+                        this.schedules = resp.data.schedules;
+                        this.calendarOptions.events = resp.data.events;
                         this.unsaved = resp.data.unsaved;
                         this.currentSchedule = resp.data.current_schedule;
                     })
@@ -269,7 +275,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.codes = [];
                     this.currentProjectId = resp.data.current_project_id;
                     this.unsaved = resp.data.unsaved;
-                    this.currentSchedule = resp.data.current_schedule;
+                    this.label = resp.data.label;
                 })
                 .catch(err => {
                     this.error = true;

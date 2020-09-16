@@ -86,9 +86,7 @@ def get_data():
         'unsaved': session['current_schedule_modified'],
         'current_schedule': {
             'id': session['current_schedule'].id,
-            'project_id': session['current_schedule'].project_id,
             'label': session['current_schedule'].label,
-            'color_palette': session['current_schedule'].color_palette,
         },
         'n_schedules': len(session['current_schedule'].best_schedules),
         'events': session['current_schedule'].get_events(json=True),
@@ -98,6 +96,34 @@ def get_data():
             'label': s.data.label,
         }, current_user.get_schedule())),
     }), 200
+
+
+@calendar.route('/schedule/<id>', methods=['GET'])
+@login_required
+def load_schedule(id):
+    mng = app.config['MANAGER']
+    schedule = current_user.get_schedule(id=int(id))
+    if schedule:
+        session['current_schedule'] = schedule.data
+        session['current_schedule_modified'] = False
+        return jsonify({
+            'current_schedule': {
+                'id': schedule.data.id,
+                'label': schedule.data.label,
+                'project_id': schedule.data.project_id,
+            },
+            'project_id': mng.get_project_ids(),
+            'current_project_id': session['current_schedule'].project_id,
+            'unsaved': session['current_schedule_modified'],
+            'n_schedules': len(session['current_schedule'].best_schedules),
+            'events': session['current_schedule'].get_events(json=True),
+            'codes': session['current_schedule'].codes,
+            'schedules': list(map(lambda s: {
+                'id': s.id,
+                'label': s.data.label,
+            }, current_user.get_schedule())),
+        }), 200
+    return '', 403      # Requested id is not in this user's schedule list.
 
 
 @calendar.route('/<path:search_key>', methods=['GET'])
