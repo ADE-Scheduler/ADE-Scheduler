@@ -291,6 +291,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     url: Flask.url_for('calendar.compute'),
                 })
                 .then(resp => {
+                    this.unsaved = resp.data.unsaved;
                     this.n_schedules = resp.data.n_schedules;
                     this.selected_schedule = resp.data.selected_schedule;
                     this.calendarOptions.events = resp.data.events;
@@ -328,7 +329,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(resp => {
                     this.saveSuccess = true;
-                    this.unsaved = false;
+                    this.unsaved = resp.data.unsaved;
                     this.schedules = resp.data.schedules;
                 })
                 .catch(err => {
@@ -510,6 +511,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     header: {'Content-Type': 'application/json'},
                 })
                 .then(resp => {
+                    this.unsaved = resp.data.unsaved;
                     this.calendarOptions.events = resp.data.events;
                 })
                 .catch(err => {
