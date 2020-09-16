@@ -22,8 +22,8 @@ document.addEventListener('DOMContentLoaded', function() {
         el: '#app',
         components: { FullCalendar },
         data: {
-            label: '',
             projectId: [],
+            schedules: [],
             currentProjectId: 0,
             codes: [],
             n_schedules: 0,
@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
             code: '',
             codeSearch: [],
             unsaved: false,
+            currentSchedule: {},
             codeSearchDisplay: false,
             eventForm: {
                 name: '',
@@ -209,10 +210,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(resp => {
                     this.codes = resp.data.codes;
                     this.projectId = resp.data.project_id;
-                    this.label = resp.data.label;
                     this.currentProjectId = resp.data.current_project_id;
                     this.n_schedules = resp.data.n_schedules;
+                    this.schedules = resp.data.schedules;
                     this.calendarOptions.events = resp.data.events;
+                    this.unsaved = resp.data.unsaved;
+                    this.currentSchedule = resp.data.current_schedule;
                 })
                 .catch(err => {
                     this.error = true;
@@ -221,34 +224,65 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.computing = false;
                 });
             },
+            loadSchedule: function(e, id) {
+                this.request = function() {
+                    this.computing = true;
+                    axios({
+                        method: 'GET',
+                        url: Flask.url_for('calendar.load_schedule', {'id': id}),
+                    })
+                    .then(resp => {
+                        this.codes = resp.data.codes;
+                        this.projectId = resp.data.project_id;
+                        this.currentProjectId = resp.data.current_project_id;
+                        this.n_schedules = resp.data.n_schedules;
+                        this.schedules = resp.data.schedules;
+                        this.calendarOptions.events = resp.data.events;
+                        this.unsaved = resp.data.unsaved;
+                        this.currentSchedule = resp.data.current_schedule;
+                    })
+                    .catch(err => {
+                        this.error = true;
+                    })
+                    .then(() => {
+                        this.computing = false;
+                    });
+                }
+
+                if (this.unsaved && this.currentSchedule.id != id) {
+                    warningModal.show();
+                } else {
+                    this.request();
+                }
+            },
             clear: function() {
+                this.request = function() {
+                    this.computing = true;
+                    axios({
+                        method: 'DELETE',
+                        url: Flask.url_for('calendar.clear'),
+                    })
+                    .then(resp => {
+                        this.calendarOptions.events = [];
+                        this.n_schedules = 0;
+                        this.selected_schedule = 0;
+                        this.codes = [];
+                        this.currentProjectId = resp.data.current_project_id;
+                        this.unsaved = resp.data.unsaved;
+                        this.currentSchedule = resp.data.current_schedule
+                    })
+                    .catch(err => {
+                        this.error = true;
+                    })
+                    .then(() => {
+                        this.computing = false;
+                    });
+                }
                 if (this.unsaved) {
                     warningModal.show();
                 } else {
                     this.clearConfirmed();
                 }
-            },
-            clearConfirmed: function() {
-                this.computing = true;
-                axios({
-                    method: 'DELETE',
-                    url: Flask.url_for('calendar.clear'),
-                })
-                .then(resp => {
-                    this.calendarOptions.events = [];
-                    this.n_schedules = 0;
-                    this.selected_schedule = 0;
-                    this.codes = [];
-                    this.label = resp.data.label;
-                    this.currentProjectId = resp.data.current_project_id;
-                    this.unsaved = false;
-                })
-                .catch(err => {
-                    this.error = true;
-                })
-                .then(() => {
-                    this.computing = false;
-                });
             },
             compute: function() {
                 this.computing = true;
@@ -257,6 +291,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     url: Flask.url_for('calendar.compute'),
                 })
                 .then(resp => {
+                    this.unsaved = resp.data.unsaved;
                     this.n_schedules = resp.data.n_schedules;
                     this.selected_schedule = resp.data.selected_schedule;
                     this.calendarOptions.events = resp.data.events;
@@ -294,7 +329,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(resp => {
                     this.saveSuccess = true;
-                    this.unsaved = false;
+                    this.unsaved = resp.data.unsaved;
+                    this.schedules = resp.data.schedules;
                 })
                 .catch(err => {
                     if (err.response.status === 401) {
@@ -321,7 +357,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         this.codes = this.codes.concat(resp.data.codes);
                         this.calendarOptions.events = resp.data.events;
                         this.code = '';
-                        this.unsaved = true;
+                        this.unsaved = resp.data.unsaved;
                     })
                     .catch(err => {
                         if (err.response.status === 404) {
@@ -344,7 +380,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(resp => {
                     this.codes.splice(this.codes.indexOf(code), 1);
                     this.calendarOptions.events = resp.data.events;
-                    this.unsaved = true;
+                    this.unsaved = resp.data.unsaved;
                 })
                 .catch(err => {
                     this.error = true;
@@ -364,7 +400,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     evt.end = this.eventForm.beginRecurrDay + ' ' + this.eventForm.endHour;
                     evt.end_recurrence = this.eventForm.endRecurrDay + ' ' + this.eventForm.endHour;
                     evt.freq = this.eventForm.freq;
-                    this.unsaved = true;
                 } else {
                     evt.begin = this.eventForm.beginDay + ' ' + this.eventForm.beginHour;
                     evt.end = this.eventForm.endDay + ' ' + this.eventForm.endHour;
@@ -379,6 +414,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(resp => {
                     this.calendarOptions.events.push(resp.data.event);
+                    this.unsaved = resp.data.unsaved;
                     e.target.reset();
                     this.eventForm = {
                         name: '',
@@ -393,6 +429,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         endRecurrDay: '',
                         recurring: false,
                     };
+                    this.unsaved = true;
                     addEventModal.hide();
                 })
                 .catch(err => {
@@ -475,6 +512,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     header: {'Content-Type': 'application/json'},
                 })
                 .then(resp => {
+                    this.unsaved = resp.data.unsaved;
                     this.calendarOptions.events = resp.data.events;
                 })
                 .catch(err => {
@@ -497,7 +535,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(resp => {
                     this.calendarOptions.events = this.calendarOptions.events.filter(item => item.id !== event.id);
-                    this.unsaved = true;
+                    this.unsaved = resp.data.unsaved;
                 })
                 .catch(err => {
                     this.error = true;
@@ -559,7 +597,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     .catch(err => {})
                     .then(  () => {});
                 }
-            }
+            },
+            warningConfirmed: function() {
+                this.request();
+            },
+            request: function() {},
         },
         computed: {
             calendarOpacity: function() {
