@@ -275,7 +275,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.codes = [];
                     this.currentProjectId = resp.data.current_project_id;
                     this.unsaved = resp.data.unsaved;
-                    this.label = resp.data.label;
+                    this.currentSchedule = resp.data.current_schedule
                 })
                 .catch(err => {
                     this.error = true;
