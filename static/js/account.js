@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
         data: {
             projectId: [],
             schedules: [],
-            current_schedule: {},
+            currentSchedule: {},
             computing: true,
             unsaved: true,
             error: false,
@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.projectId = resp.data.project_id;
                     this.unsaved = resp.data.unsaved;
                     this.schedules = resp.data.schedules;
-                    this.current_schedule = resp.data.current_schedule;
+                    this.currentSchedule = resp.data.current_schedule;
                 })
                 .catch(err => {
                     this.error = true;
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     })
                     .then(resp => {
                         this.unsaved = resp.data.unsaved;
-                        this.current_schedule = resp.data.current_schedule;
+                        this.currentSchedule = resp.data.current_schedule;
                     })
                     .catch(err => {
                         this.error = true;
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     });
                 }
 
-                if (this.unsaved && this.current_schedule.id != id) {
+                if (this.unsaved && this.currentSchedule.id != id) {
                     warningModal.show();
                 } else {
                     this.request();
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     });
                 }
 
-                if (this.unsaved && this.current_schedule.id != id) {
+                if (this.unsaved && this.currentSchedule.id != id) {
                     warningModal.show();
                 } else {
                     this.request();
@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (index > -1) {
                         this.schedules.splice(index, 1);
                     }
-                    this.current_schedule = resp.data.current_schedule
+                    this.currentSchedule = resp.data.current_schedule
                 })
                 .catch(err => {
                     this.error = true;
@@ -122,13 +122,13 @@ document.addEventListener('DOMContentLoaded', function() {
                         method: 'PATCH',
                         url: Flask.url_for('account.update_label', {'id': id}),
                         header: {'Content-Type': 'applacation/json'},
-                        data: {'label': this.current_schedule.label},
+                        data: {'label': this.currentSchedule.label},
                     })
                     .then(resp => {
                         this.isEditing = false;
                         let schedule = this.schedules.find(s => s.id === id);
                         if (schedule) {
-                            schedule.label = this.current_schedule.label;
+                            schedule.label = this.currentSchedule.label;
                         }
                     })
                     .catch(err => {
@@ -148,12 +148,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     method: 'POST',
                     url: Flask.url_for('account.save'),
                     header: {'Content-Type': 'applacation/json'},
-                    data: this.current_schedule,
+                    data: this.currentSchedule,
                 })
                 .then(resp => {
                     if (this.schedules.findIndex(s => s.id === resp.data.saved_schedule.id) < 0) {
                         this.schedules.push(resp.data.saved_schedule);
-                        this.current_schedule.id = resp.data.saved_schedule.id;
+                        this.currentSchedule.id = resp.data.saved_schedule.id;
                     }
                     this.unsaved = resp.data.unsaved;
                 })

@@ -72,7 +72,10 @@ def clear():
     session['current_schedule'] = schd.Schedule(mng.get_default_project_id())
     session['current_schedule_modified'] = False
     return jsonify({
-        'label': _(session['current_schedule'].label),
+        'current_schedule': {
+            'id': session['current_schedule'].id,
+            'label': _(session['current_schedule'].label),
+        },
         'current_project_id': session['current_schedule'].project_id,
     }), 200
 
@@ -83,11 +86,47 @@ def get_data():
     return jsonify({
         'project_id': mng.get_project_ids(),
         'current_project_id': session['current_schedule'].project_id,
-        'label': _(session['current_schedule'].label),
+        'unsaved': session['current_schedule_modified'],
+        'current_schedule': {
+            'id': session['current_schedule'].id,
+            'label': _(session['current_schedule'].label),
+        },
         'n_schedules': len(session['current_schedule'].best_schedules),
         'events': session['current_schedule'].get_events(json=True),
         'codes': session['current_schedule'].codes,
+        'schedules': list() if not current_user.is_authenticated else list(map(lambda s: {
+            'id': s.id,
+            'label': _(s.data.label),
+        }, current_user.get_schedule())),
     }), 200
+
+
+@calendar.route('/schedule/<id>', methods=['GET'])
+@login_required
+def load_schedule(id):
+    mng = app.config['MANAGER']
+    schedule = current_user.get_schedule(id=int(id))
+    if schedule:
+        session['current_schedule'] = schedule.data
+        session['current_schedule_modified'] = False
+        return jsonify({
+            'current_schedule': {
+                'id': schedule.data.id,
+                'label': _(schedule.data.label),
+                'project_id': schedule.data.project_id,
+            },
+            'project_id': mng.get_project_ids(),
+            'current_project_id': session['current_schedule'].project_id,
+            'unsaved': session['current_schedule_modified'],
+            'n_schedules': len(session['current_schedule'].best_schedules),
+            'events': session['current_schedule'].get_events(json=True),
+            'codes': session['current_schedule'].codes,
+            'schedules': list(map(lambda s: {
+                'id': s.id,
+                'label': _(s.data.label),
+            }, current_user.get_schedule())),
+        }), 200
+    return '', 403      # Requested id is not in this user's schedule list.
 
 
 @calendar.route('/<path:search_key>', methods=['GET'])
@@ -114,6 +153,7 @@ def add_code(code):
     return jsonify({
         'codes': codes,
         'events': session['current_schedule'].get_events(json=True),
+        'unsaved': session['current_schedule_modified'],
     }), 200
 
 
@@ -123,6 +163,7 @@ def remove_code(code):
     session['current_schedule_modified'] = True
     return jsonify({
         'events': session['current_schedule'].get_events(json=True),
+        'remove': session['current_schedule_modified']
     }), 200
 
 
@@ -158,6 +199,7 @@ def add_custom_event():
     session['current_schedule_modified'] = True
     return jsonify({
         'event': event.json(),
+        'unsaved': session['current_schedule_modified']
     }), 200
 
 
@@ -165,7 +207,9 @@ def add_custom_event():
 def delete_custom_event(id):
     session['current_schedule'].remove_custom_event(id=id)
     session['current_schedule_modified'] = True
-    return 'OK', 200
+    return jsonify({
+        'unsaved': session['current_schedule_modified']
+    }), 200
 
 
 @calendar.route('/schedule', methods=['POST'])
@@ -176,7 +220,13 @@ def save():
     mng = app.config['MANAGER']
     session['current_schedule'] = mng.save_schedule(current_user, session['current_schedule'])
     session['current_schedule_modified'] = False
-    return 'OK', 200
+    return jsonify({
+        'unsaved': session['current_schedule_modified'],
+        'schedules': list(map(lambda s: {
+            'id': s.id,
+            'label': _(s.data.label),
+        }, current_user.get_schedule())),
+    }), 200
 
 
 @calendar.route('/schedule', methods=['GET'])
@@ -185,7 +235,7 @@ def download():
     link = request.args.get('link')
     choice = int(request.args.get('choice')) if request.args.get('choice') else 0
     if link:
-        schedule, _ = mng.get_schedule(link)
+        schedule = mng.get_schedule(link)[0]
     else:
         schedule = session['current_schedule']
 
@@ -210,7 +260,7 @@ def share():
     link = request.args.get('link')
     if link:
         mng = app.config['MANAGER']
-        schedule, _ = mng.get_schedule(link)
+        schedule = mng.get_schedule(link)[0]
     else:
         schedule = None
 
@@ -232,7 +282,9 @@ def apply_filter():
             for filter, value in filters.items():
                 if not value:
                     schedule.add_filter(code, type + ': ' + filter)
+    session['current_schedule_modified'] = True
     return jsonify({
+        'unsaved': session['current_schedule_modified'],
         'events': session['current_schedule'].get_events(json=True),
     }), 200
 
@@ -274,6 +326,7 @@ def compute():
     bests = session['current_schedule'].compute_best()
     session['current_schedule_modified'] = True
     return jsonify({
+        'unsaved': session['current_schedule_modified'],
         'n_schedules': len(session['current_schedule'].best_schedules) if bests is not None else 0,
         'events': session['current_schedule'].get_events(json=True, schedule_number=1) if bests is not None else list(),
         'selected_schedule': 1 if bests is not None else 0
