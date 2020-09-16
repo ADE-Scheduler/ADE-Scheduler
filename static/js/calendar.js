@@ -364,7 +364,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     evt.end = this.eventForm.beginRecurrDay + ' ' + this.eventForm.endHour;
                     evt.end_recurrence = this.eventForm.endRecurrDay + ' ' + this.eventForm.endHour;
                     evt.freq = this.eventForm.freq;
-                    this.unsaved = true;
                 } else {
                     evt.begin = this.eventForm.beginDay + ' ' + this.eventForm.beginHour;
                     evt.end = this.eventForm.endDay + ' ' + this.eventForm.endHour;
@@ -393,6 +392,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         endRecurrDay: '',
                         recurring: false,
                     };
+                    this.unsaved = true;
                     addEventModal.hide();
                 })
                 .catch(err => {
