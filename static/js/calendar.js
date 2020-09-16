@@ -224,6 +224,31 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.computing = false;
                 });
             },
+            loadSchedule: function(e, id) {
+                this.request = function() {
+                    this.computing = true;
+                    axios({
+                        method: 'GET',
+                        url: Flask.url_for('account.load_schedule', {'id': id}),
+                    })
+                    .then(resp => {
+                        this.unsaved = resp.data.unsaved;
+                        this.currentSchedule = resp.data.current_schedule;
+                    })
+                    .catch(err => {
+                        this.error = true;
+                    })
+                    .then(() => {
+                        this.computing = false;
+                    });
+                }
+
+                if (this.unsaved && this.currentSchedule.id != id) {
+                    warningModal.show();
+                } else {
+                    this.request();
+                }
+            },
             clear: function() {
                 if (this.unsaved) {
                     warningModal.show();

@@ -386,7 +386,8 @@
                         <div class="dropdown-menu dropdown-schedules">
                             <a class="dropdown-item text-dark text-truncate" href="#"
                                 v-for="s in schedules"
-                                v-bind:class="{active: s.id == currentSchedule.id}">
+                                v-bind:class="{active: s.id == currentSchedule.id}"
+                                v-on:click="loadSchedule($event, s.id)">
                                 [[ s.label ]]
                             </a>
                         </div>
