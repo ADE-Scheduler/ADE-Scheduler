@@ -355,7 +355,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         this.codes = this.codes.concat(resp.data.codes);
                         this.calendarOptions.events = resp.data.events;
                         this.code = '';
-                        this.unsaved = true;
+                        this.unsaved = resp.data.unsaved;
                     })
                     .catch(err => {
                         if (err.response.status === 404) {
@@ -378,7 +378,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(resp => {
                     this.codes.splice(this.codes.indexOf(code), 1);
                     this.calendarOptions.events = resp.data.events;
-                    this.unsaved = true;
+                    this.unsaved = resp.data.unsaved;
                 })
                 .catch(err => {
                     this.error = true;
@@ -398,7 +398,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     evt.end = this.eventForm.beginRecurrDay + ' ' + this.eventForm.endHour;
                     evt.end_recurrence = this.eventForm.endRecurrDay + ' ' + this.eventForm.endHour;
                     evt.freq = this.eventForm.freq;
-                    this.unsaved = true;
                 } else {
                     evt.begin = this.eventForm.beginDay + ' ' + this.eventForm.beginHour;
                     evt.end = this.eventForm.endDay + ' ' + this.eventForm.endHour;
@@ -413,6 +412,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(resp => {
                     this.calendarOptions.events.push(resp.data.event);
+                    this.unsaved = resp.data.unsaved;
                     e.target.reset();
                     this.eventForm = {
                         name: '',
@@ -531,7 +531,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(resp => {
                     this.calendarOptions.events = this.calendarOptions.events.filter(item => item.id !== event.id);
-                    this.unsaved = true;
+                    this.unsaved = resp.data.unsaved;
                 })
                 .catch(err => {
                     this.error = true;

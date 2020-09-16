@@ -150,6 +150,7 @@ def add_code(code):
     return jsonify({
         'codes': codes,
         'events': session['current_schedule'].get_events(json=True),
+        'unsaved': session['current_schedule_modified'],
     }), 200
 
 
@@ -159,6 +160,7 @@ def remove_code(code):
     session['current_schedule_modified'] = True
     return jsonify({
         'events': session['current_schedule'].get_events(json=True),
+        'remove': session['current_schedule_modified']
     }), 200
 
 
@@ -194,6 +196,7 @@ def add_custom_event():
     session['current_schedule_modified'] = True
     return jsonify({
         'event': event.json(),
+        'unsaved': session['current_schedule_modified']
     }), 200
 
 
@@ -201,7 +204,9 @@ def add_custom_event():
 def delete_custom_event(id):
     session['current_schedule'].remove_custom_event(id=id)
     session['current_schedule_modified'] = True
-    return 'OK', 200
+    return jsonify({
+        'unsaved': session['current_schedule_modified']
+    }), 200
 
 
 @calendar.route('/schedule', methods=['POST'])
