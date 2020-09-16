@@ -278,6 +278,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         this.computing = false;
                     });
                 }
+
                 if (this.unsaved) {
                     warningModal.show();
                 } else {
