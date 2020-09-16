@@ -40,11 +40,11 @@
             <div class="card">
                 <div class="spinner-border text-primary spinner-compute" v-show="computing"></div>
                 <div class="card-header d-flex justify-content-between align-items-center" id="form-update-label" v-bind:style="opacity">
-                    <input class="form-control mr-4" type="text" v-focus v-model="current_schedule.label" v-if="isEditing" v-on:keyup.enter="updateLabel($event, current_schedule.id)" v-on:blur="isEditing = false" v-on:keyup.esc="isEditing = false"/>
+                    <input class="form-control mr-4" type="text" v-focus v-model="currentSchedule.label" v-if="isEditing" v-on:keyup.enter="updateLabel($event, currentSchedule.id)" v-on:blur="isEditing = false" v-on:keyup.esc="isEditing = false"/>
                     <div id="schedule-label" v-else v-on:click="isEditing = true">
-                        [[ current_schedule.label ]]
+                        [[ currentSchedule.label ]]
                     </div>
-                    <a class="text-dark" href="#" v-on:click="updateLabel($event, current_schedule.id)">
+                    <a class="text-dark" href="#" v-on:click="updateLabel($event, currentSchedule.id)">
                         <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" d="M11.293 1.293a1 1 0 0 1 1.414 0l2 2a1 1 0 0 1 0 1.414l-9 9a1 1 0 0 1-.39.242l-3 1a1 1 0 0 1-1.266-1.265l1-3a1 1 0 0 1 .242-.391l9-9zM12 2l2 2-9 9-3 1 1-3 9-9z"/>
                             <path fill-rule="evenodd" d="M12.146 6.354l-2.5-2.5.708-.708 2.5 2.5-.707.708zM3 10v.5a.5.5 0 0 0 .5.5H4v.5a.5.5 0 0 0 .5.5H5v.5a.5.5 0 0 0 .5.5H6v-1.5a.5.5 0 0 0-.5-.5H5v-.5a.5.5 0 0 0-.5-.5H3z"/>
@@ -54,11 +54,11 @@
                 <div class="card-body" v-bind:style="opacity">
                     <label class="form-label" for="color-palette">{{ _('Color palette') }}</label>
                     <div class="d-flex flex-row flex-wrap justify-content-around mb-3" id="color-palette">
-                        <v-swatches class="mx-1" show-fallback fallback-input-type="color" v-for="(color, i) in current_schedule.color_palette" v-model="current_schedule.color_palette[i]"></v-swatches>
+                        <v-swatches class="mx-1" show-fallback fallback-input-type="color" v-for="(color, i) in currentSchedule.color_palette" v-model="currentSchedule.color_palette[i]"></v-swatches>
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="select-project-id">{{ _('Academic year') }}</label>
-                        <select class="form-select" style="max-width: 180px;" v-model="current_schedule.project_id" id="select-project-id">
+                        <select class="form-select" style="max-width: 180px;" v-model="currentSchedule.project_id" id="select-project-id">
                             <option v-for="pid in projectId" v-bind:value="pid.id">
                                 [[ pid.year ]]
                             </option>
@@ -66,8 +66,8 @@
                     </div>
                     <div class="btn-group d-flex">
                         <button class="btn btn-dark" v-on:click="save">{{ _('Save') }}</button>
-                        <button class="btn btn-warning" v-on:click="viewSchedule($event, current_schedule.id)">{{ _('View') }}</button>
-                        <button class="btn btn-danger" v-on:click="deleteSchedule($event, current_schedule.id)">{{  _('Delete') }}</button>
+                        <button class="btn btn-warning" v-on:click="viewSchedule($event, currentSchedule.id)">{{ _('View') }}</button>
+                        <button class="btn btn-danger" v-on:click="deleteSchedule($event, currentSchedule.id)">{{  _('Delete') }}</button>
                     </div>
                 </div>
             </div>
@@ -79,7 +79,7 @@
             </h4>
             <h6 v-if="schedules.length == 0">{{ _('You do not have any saved schedule at the moment') }}</h6>
             <ul class="list-group list-schedules">
-                <li class="list-group-item d-flex justify-content-between align-items-center" v-for="s in schedules" v-bind:key="s.id" v-bind:class="s.id === current_schedule.id ? 'current-schedule' : ''">
+                <li class="list-group-item d-flex justify-content-between align-items-center" v-for="s in schedules" v-bind:key="s.id" v-bind:class="s.id === currentSchedule.id ? 'current-schedule' : ''">
                     <h6 class="text-truncate my-0" v-on:click="loadSchedule($event, s.id)">
                         [[ s.label ]]
                     </h6>
