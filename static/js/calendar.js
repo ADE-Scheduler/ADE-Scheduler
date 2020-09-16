@@ -256,33 +256,33 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             },
             clear: function() {
+                this.request = function() {
+                    this.computing = true;
+                    axios({
+                        method: 'DELETE',
+                        url: Flask.url_for('calendar.clear'),
+                    })
+                    .then(resp => {
+                        this.calendarOptions.events = [];
+                        this.n_schedules = 0;
+                        this.selected_schedule = 0;
+                        this.codes = [];
+                        this.currentProjectId = resp.data.current_project_id;
+                        this.unsaved = resp.data.unsaved;
+                        this.currentSchedule = resp.data.current_schedule
+                    })
+                    .catch(err => {
+                        this.error = true;
+                    })
+                    .then(() => {
+                        this.computing = false;
+                    });
+                }
                 if (this.unsaved) {
                     warningModal.show();
                 } else {
                     this.clearConfirmed();
                 }
-            },
-            clearConfirmed: function() {
-                this.computing = true;
-                axios({
-                    method: 'DELETE',
-                    url: Flask.url_for('calendar.clear'),
-                })
-                .then(resp => {
-                    this.calendarOptions.events = [];
-                    this.n_schedules = 0;
-                    this.selected_schedule = 0;
-                    this.codes = [];
-                    this.currentProjectId = resp.data.current_project_id;
-                    this.unsaved = resp.data.unsaved;
-                    this.currentSchedule = resp.data.current_schedule
-                })
-                .catch(err => {
-                    this.error = true;
-                })
-                .then(() => {
-                    this.computing = false;
-                });
             },
             compute: function() {
                 this.computing = true;
@@ -594,7 +594,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     .catch(err => {})
                     .then(  () => {});
                 }
-            }
+            },
+            warningConfirmed: function() {
+                this.request();
+            },
+            request: function() {},
         },
         computed: {
             calendarOpacity: function() {
