@@ -273,6 +273,7 @@ def apply_filter():
             for filter, value in filters.items():
                 if not value:
                     schedule.add_filter(code, type + ': ' + filter)
+    session['current_schedule_modified'] = True
     return jsonify({
         'events': session['current_schedule'].get_events(json=True),
     }), 200
