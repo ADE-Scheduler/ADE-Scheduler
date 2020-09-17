@@ -1,12 +1,13 @@
+@import "nord/src/sass/nord.scss";
 $theme-colors: (
-  "primary":    #5e81ac,
-  "secondary":  #d8dee9,
-  "success":    #a3be8c,
-  "info":       #88c0d0,
-  "warning":    #ebcb8b,
-  "danger":     #bf616a,
-  "light":      #eceff4,
-  "dark":       #2e3440,
+  "primary":    $nord10,
+  "secondary":  $nord4,
+  "success":    $nord14,
+  "info":       $nord7,
+  "warning":    $nord13,
+  "danger":     $nord11,
+  "light":      $nord6,
+  "dark":       $nord0,
 );
 
 @import "bootstrap/scss/bootstrap";
