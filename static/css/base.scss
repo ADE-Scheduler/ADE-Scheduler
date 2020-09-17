@@ -1,3 +1,16 @@
+$theme-colors: (
+  "primary":    #5e81ac,
+  "secondary":  #d8dee9,
+  "success":    #a3be8c,
+  "info":       #88c0d0,
+  "warning":    #ebcb8b,
+  "danger":     #bf616a,
+  "light":      #eceff4,
+  "dark":       #2e3440,
+);
+
+@import "bootstrap/scss/bootstrap";
+
 html,
 body {
     overflow-x: hidden; /* Prevent scroll on narrow devices */
