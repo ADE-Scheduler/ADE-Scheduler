@@ -27,26 +27,26 @@
 }
 .fc-col-header-cell-cushion {
     text-decoration: none;
-    color: black;
+    color: var(--bs-dark);
 }
 .fc-col-header-cell-cushion:hover {
-    color: black;
+    color: var(--bs-dark);
 }
 .fc-daygrid-day-number {
     text-decoration: none;
-    color: black;
+    color: var(--bs-dark);
 }
 .fc-daygrid-day-number:hover {
     text-decoration: none;
-    color: black;
+    color: var(--bs-dark);
 }
 .fc-timegrid-axis-cushion {
     text-decoration: none;
-    color: black;
+    color: var(--bs-dark);
 }
 .fc-timegrid-axis-cushion:hover {
     text-decoration: none;
-    color: black;
+    color: var(--bs-dark);
 }
 .fc-daygrid-week-number {
     text-decoration: none;
