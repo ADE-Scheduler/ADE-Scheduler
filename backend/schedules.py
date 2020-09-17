@@ -11,6 +11,18 @@ from flask_babelex import _
 import backend.events as evt
 
 DEFAULT_SCHEDULE_NAME = _('New schedule')
+COLOR_PALETTE = [
+    '#bf616a',
+    '#2e3440',
+    '#a3be8c',
+    '#5e81ac',
+    '#ebcb8b',
+    '#88c0d0',
+    '#d08770',
+    '#b48ead',
+    '#4c566a',
+    '#81a1c1',
+]
 
 
 def default_dict_any_to_set() -> defaultdict:
@@ -40,8 +52,7 @@ class Schedule:
         self.best_schedules = list()
         self.custom_events = list()
         self.priorities = dict()
-        self.color_palette = ['#374955', '#005376', '#00c0ff', '#1f789d', '#4493ba',
-                              '#64afd7', '#83ccf5', '#3635ff', '#006c5a', '#3d978a']
+        self.color_palette = COLOR_PALETTE
 
     def add_filter(self, code: str, filter: Union[Iterable[str], str]):
         if isinstance(filter, str):
