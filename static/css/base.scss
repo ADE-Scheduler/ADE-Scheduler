@@ -2,7 +2,7 @@
 $theme-colors: (
   "primary":    $nord10,
   "secondary":  $nord3,
-  "success":    $nord14,
+  "success":    darken($nord14, 16%),
   "info":       $nord7,
   "warning":    $nord13,
   "danger":     $nord11,
