@@ -385,6 +385,7 @@
                                 </svg>
                             </a>
                             <div class="dropdown-menu dropdown-schedules" v-if="schedules.length > 0">
+                                <h6 class="dropdown-header">{{ _('Schedules') }}</h6>
                                 <a class="dropdown-item text-dark text-truncate" href="#"
                                     v-for="s in schedules"
                                     v-bind:class="{active: s.id == currentSchedule.id}"
@@ -393,6 +394,7 @@
                                 </a>
                             </div>
                             <div class="dropdown-menu dropdown-schedules" v-else>
+                                <h6 class="dropdown-header">{{ _('Schedules') }}</h6>
                                 <a class="dropdown-item disabled text-wrap text-center">
                                     {{ _('You do not have any saved schedule at the moment') }}
                                 </a>
