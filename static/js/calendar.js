@@ -150,6 +150,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 eventTextColor: 'white',
                 eventDisplay: 'block',
                 eventDidMount: function(arg) {
+                    // Change text color based on background
+                    let rgb = arg.el.style.backgroundColor.match(/\d+/g);
+                    let brightness = Math.round(((parseInt(rgb[0]) * 299) +
+                                                 (parseInt(rgb[1]) * 587) +
+                                                 (parseInt(rgb[2]) * 114)) / 1000);
+                    arg.el.childNodes[0].style.color = brightness > 170 ? '#4c566a' : '#e5e9f0';
+
+                    // Activate tooltip
                     let evt = arg.event.toPlainObject({collapseExtendedProps: true});
                     if (!!evt.code || !isTouchDevice) {
                         let description, location;
