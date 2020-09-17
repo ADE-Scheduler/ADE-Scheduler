@@ -530,6 +530,42 @@
     },
     "Place du Cardinal Mercier, 10-12, 1348, Louvain-la-Neuve": null,
     "Place du Compas, 1348, Louvain-la-Neuve": null,
+    "Rue Louvrex, 14, 4000, Li??ge": {
+        "boundingbox": [
+            "50.6370229",
+            "50.6378675",
+            "5.5627379",
+            "5.5630739"
+        ],
+        "class": "highway",
+        "display_name": "Rue Louvrex, Centre, Li\u00e8ge, Wallonie, 4000, Belgi\u00eb - Belgique - Belgien",
+        "importance": 0.61,
+        "lat": "50.6374711",
+        "licence": "Data \u00a9 OpenStreetMap contributors, ODbL 1.0. https://osm.org/copyright",
+        "lon": "5.5629128",
+        "osm_id": 150791081,
+        "osm_type": "way",
+        "place_id": 120723541,
+        "type": "tertiary"
+    },
+    "Rue Louvrex, 14, 4000, Li??ge, Belgique": {
+        "boundingbox": [
+            "50.6370229",
+            "50.6378675",
+            "5.5627379",
+            "5.5630739"
+        ],
+        "class": "highway",
+        "display_name": "Rue Louvrex, Centre, Li\u00e8ge, Wallonie, 4000, Belgi\u00eb - Belgique - Belgien",
+        "importance": 0.71,
+        "lat": "50.6374711",
+        "licence": "Data \u00a9 OpenStreetMap contributors, ODbL 1.0. https://osm.org/copyright",
+        "lon": "5.5629128",
+        "osm_id": 150791081,
+        "osm_type": "way",
+        "place_id": 120723541,
+        "type": "tertiary"
+    },
     "Rue Louvrex, 14, 4000, Li\u00e8ge": {
         "boundingbox": [
             "50.6316167",
@@ -620,6 +656,7 @@
         "place_id": 106953194,
         "type": "residential"
     },
+    "Tour V??sale": null,
     "Tour V\u00e9sale": {
         "boundingbox": null,
         "class": "place",
