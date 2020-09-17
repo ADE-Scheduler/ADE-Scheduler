@@ -1,6 +1,5 @@
 import Vue from 'vue';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import '../css/base.css'
+import '../css/base.scss'
 
 Vue.directive('focus', {
     inserted: function (el) {
