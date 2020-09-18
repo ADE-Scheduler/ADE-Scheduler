@@ -75,6 +75,7 @@ def clear():
         'current_schedule': {
             'id': session['current_schedule'].id,
             'label': _(session['current_schedule'].label),
+            'color_palette': session['current_schedule'].color_palette,
         },
         'current_project_id': session['current_schedule'].project_id,
     }), 200
@@ -90,6 +91,7 @@ def get_data():
         'current_schedule': {
             'id': session['current_schedule'].id,
             'label': _(session['current_schedule'].label),
+            'color_palette': session['current_schedule'].color_palette,
         },
         'n_schedules': len(session['current_schedule'].best_schedules),
         'events': session['current_schedule'].get_events(json=True),
@@ -113,7 +115,7 @@ def load_schedule(id):
             'current_schedule': {
                 'id': schedule.data.id,
                 'label': _(schedule.data.label),
-                'project_id': schedule.data.project_id,
+                'color_palette': schedule.data.color_palette,
             },
             'project_id': mng.get_project_ids(),
             'current_project_id': session['current_schedule'].project_id,

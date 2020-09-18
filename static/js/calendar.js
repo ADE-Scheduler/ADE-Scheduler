@@ -612,6 +612,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.request();
             },
             request: function() {},
+            updateColor: function() {
+                console.log(this.currentSchedule.color_palette);
+            }
         },
         computed: {
             calendarOpacity: function() {
