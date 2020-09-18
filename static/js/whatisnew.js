@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import { Collapse, ScrollSpy } from 'bootstrap';
 import './base.js';
-import '../css/help.css';
+import '../css/whatisnew.css';
 
 
 document.addEventListener('DOMContentLoaded', function() {

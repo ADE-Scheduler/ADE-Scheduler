@@ -7,5 +7,91 @@
 {% endblock %}
 
 {% block body %}
-COUCOU JYL
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-3 col-lg-2 d-md-block bg-light navigator collapse" id="faq-navigator">
+            <nav class="nav nav-pills navigator-sticky d-flex flex-column p-3">
+
+                <a class="nav-link main-link mb-0" href="#last" v-on:click.prevent="scroll('last', true)">Last amazing feature</a>
+
+                <a class="nav-link main-link mb-0" href="#penul" v-on:click.prevent="scroll('penul', true)">Penultimate amazing feature</a>
+            </nav>
+        </nav>
+
+        <div class="col-md-9 ml-sm-auto col-lg-10 p-3">
+            <div class="container-lg">
+                <h3 class="my-5" id="last">18/09/2020</h3>
+                <hr class="mb-3">
+                <p>
+                    Ajout de cette magnifique page de kaliteyy
+                </p>
+                <p>
+                    Ajout de cette magnifique page de kaliteyy
+                </p>
+                <p>
+                    Ajout de cette magnifique page de kaliteyy
+                </p>
+                <p>
+                    Ajout de cette magnifique page de kaliteyy
+                </p>
+                <p>
+                    Ajout de cette magnifique page de kaliteyy
+                </p>
+                <p>
+                    Ajout de cette magnifique page de kaliteyy
+                </p>
+                <p>
+                    Ajout de cette magnifique page de kaliteyy
+                </p>
+                <p>
+                    Ajout de cette magnifique page de kaliteyy
+                </p>
+                <p>
+                    Ajout de cette magnifique page de kaliteyy
+                </p>
+                <p>
+                    Ajout de cette magnifique page de kaliteyy
+                </p>
+                <p>
+                    Ajout de cette magnifique page de kaliteyy
+                </p>
+                <p>
+                    Ajout de cette magnifique page de kaliteyy
+                </p>
+                <p>
+                    Ajout de cette magnifique page de kaliteyy
+                </p>
+            </div>
+        </div>
+
+        <div class="col-md-9 ml-sm-auto col-lg-10 p-3">
+            <div class="container-lg">
+                <h3 class="my-5" id="penul">16/09/2020</h3>
+                <hr class="mb-3">
+                <p>
+                    Feature from Louis
+                </p>
+                <p>
+                    Feature from Louis
+                </p>
+                <p>
+                    Feature from Louis
+                </p>
+                <p>
+                    Feature from Louis
+                </p>
+                
+            </div>
+        </div>
+    </div>
+
+    <button class="btn btn-dark btn-nav">
+        <svg v-if="navBtn" v-on:click="toggleNav(false)" width="25px" height="25px" viewBox="0 0 16 16" class="bi bi-chevron-bar-contract" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
+        </svg>
+        <svg v-else        v-on:click="toggleNav(true)" width="25px" height="25px" viewBox="0 0 16 16" class="bi bi-chevron-bar-expand" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+        </svg>
+    </button>
+</div>
 {% endblock %}
