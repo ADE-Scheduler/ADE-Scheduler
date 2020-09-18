@@ -345,3 +345,14 @@ def update_color():
     return jsonify({
         'events': session['current_schedule'].get_events(json=True, schedule_number=schedule_number),
     }), 200
+
+
+@calendar.route('/schedule/color', methods=['DELETE'])
+def reset_color():
+    session['current_schedule'].reset_color_palette()
+
+    schedule_number = int(request.args.get('schedule_number'))
+    return jsonify({
+        'color_palette': session['current_schedule'].color_palette,
+        'events': session['current_schedule'].get_events(json=True, schedule_number=schedule_number),
+    }), 200
