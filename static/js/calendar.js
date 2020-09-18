@@ -368,6 +368,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         this.calendarOptions.events = resp.data.events;
                         this.code = '';
                         this.unsaved = resp.data.unsaved;
+                        this.selected_schedule = 0;
                     })
                     .catch(err => {
                         if (err.response.status === 404) {
@@ -391,6 +392,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.codes.splice(this.codes.indexOf(code), 1);
                     this.calendarOptions.events = resp.data.events;
                     this.unsaved = resp.data.unsaved;
+                    this.selected_schedule = 0;
                 })
                 .catch(err => {
                     this.error = true;
@@ -522,6 +524,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     header: {'Content-Type': 'application/json'},
                 })
                 .then(resp => {
+                    this.selected_schedule = 0;
                     this.unsaved = resp.data.unsaved;
                     this.calendarOptions.events = resp.data.events;
                 })
@@ -579,6 +582,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     url: Flask.url_for('calendar.update_poject_id', {id: this.currentProjectId}),
                 })
                 .then(resp => {
+                    this.selected_schedule = 0;
                     this.calendarOptions.events = resp.data.events;
                 })
                 .catch(err => {
@@ -612,6 +616,27 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.request();
             },
             request: function() {},
+            updateColor: function() {
+                this.computing = true;
+                axios({
+                    method: 'POST',
+                    url: Flask.url_for('calendar.update_color'),
+                    header: {'Content-Type': 'applacation/json'},
+                    data: {
+                        schedule_number: this.selected_schedule,
+                        color_palette: this.currentSchedule.color_palette,
+                    },
+                })
+                .then(resp => {
+                    this.calendarOptions.events = resp.data.events;
+                })
+                .catch(err => {
+                    this.error = true;
+                })
+                .then(() => {
+                    this.computing = false;
+                });
+            }
         },
         computed: {
             calendarOpacity: function() {
