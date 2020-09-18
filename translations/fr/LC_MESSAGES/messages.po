@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-09-13 22:15+0200\n"
+"POT-Creation-Date: 2020-09-18 15:16+0200\n"
 "PO-Revision-Date: 2020-07-24 16:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -18,39 +18,39 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: app.py:217
+#: app.py:218
 msgid "An error has occurred. Please contact the admins if it keeps happening."
 msgstr "Une erreur est apparue. Si cela arrive à nouveau, veuillez nous contacter."
 
-#: app.py:223
+#: app.py:224
 msgid "404 Page not found :("
 msgstr "404 Page non trouvée :("
 
-#: backend/events.py:143 templates/calendar.html:277
+#: backend/events.py:143 templates/calendar.html:298
 msgid "Sunday"
 msgstr "Dimanche"
 
-#: backend/events.py:143 templates/calendar.html:271
+#: backend/events.py:143 templates/calendar.html:292
 msgid "Monday"
 msgstr "Lundi"
 
-#: backend/events.py:143 templates/calendar.html:272
+#: backend/events.py:143 templates/calendar.html:293
 msgid "Tuesday"
 msgstr "Mardi"
 
-#: backend/events.py:143 templates/calendar.html:273
+#: backend/events.py:143 templates/calendar.html:294
 msgid "Wednesday"
 msgstr "Mercredi"
 
-#: backend/events.py:143 templates/calendar.html:274
+#: backend/events.py:143 templates/calendar.html:295
 msgid "Thursday"
 msgstr "Jeudi"
 
-#: backend/events.py:143 templates/calendar.html:275
+#: backend/events.py:143 templates/calendar.html:296
 msgid "Friday"
 msgstr "Vendredi"
 
-#: backend/events.py:143 templates/calendar.html:276
+#: backend/events.py:143 templates/calendar.html:297
 msgid "Saturday"
 msgstr "Samedi"
 
@@ -58,25 +58,26 @@ msgstr "Samedi"
 msgid "New schedule"
 msgstr "Nouvel horaire"
 
-#: templates/account.html:14 templates/calendar.html:322
+#: templates/account.html:14 templates/calendar.html:14
+#: templates/calendar.html:343
 msgid "Warning"
 msgstr "Attention"
 
-#: templates/account.html:20
+#: templates/account.html:20 templates/calendar.html:20
 msgid "You have unsaved changes in your current schedule. Continue ?"
 msgstr ""
 "Vous avez des changements qui n'ont pas été sauvegardés: voulez-vous "
 "quand même continuer ?"
 
-#: templates/account.html:23
+#: templates/account.html:23 templates/calendar.html:23
 msgid "Cancel"
 msgstr "Annuler"
 
-#: templates/account.html:24
+#: templates/account.html:24 templates/calendar.html:24
 msgid "Continue"
 msgstr "Continuer"
 
-#: templates/account.html:35 templates/calendar.html:432
+#: templates/account.html:35 templates/calendar.html:499
 #: templates/classroom.html:32
 msgid "A problem has occurred. Please contact us if it happens again."
 msgstr ""
@@ -87,11 +88,11 @@ msgstr ""
 msgid "Color palette"
 msgstr "Palette de couleur"
 
-#: templates/account.html:60 templates/calendar.html:398
+#: templates/account.html:60 templates/calendar.html:452
 msgid "Academic year"
 msgstr "Année académique"
 
-#: templates/account.html:68 templates/calendar.html:344
+#: templates/account.html:68 templates/calendar.html:365
 msgid "Save"
 msgstr "Sauvegarder"
 
@@ -103,19 +104,20 @@ msgstr "Afficher"
 msgid "Delete"
 msgstr "Supprimer"
 
-#: templates/account.html:78
+#: templates/account.html:78 templates/calendar.html:388
+#: templates/calendar.html:397
 msgid "Schedules"
 msgstr "Horaires"
 
-#: templates/account.html:80
+#: templates/account.html:80 templates/calendar.html:399
 msgid "You do not have any saved schedule at the moment"
 msgstr "Vous n'avez aucun horaire sauvegardé pour le moment"
 
-#: templates/account.html:105 templates/calendar.html:415
+#: templates/account.html:105 templates/calendar.html:482
 msgid "Open source software"
 msgstr "Logiciel libre"
 
-#: templates/account.html:105 templates/calendar.html:415
+#: templates/account.html:105 templates/calendar.html:482
 msgid ""
 "designed by Gilles Poncelet, Louis Navarre and Jérome Eertmans, students "
 "at the Ecole polytechnique de Louvain."
@@ -127,33 +129,34 @@ msgstr ""
 msgid "You need to create an account to unlock this page"
 msgstr "Vous devez créer un compte pour débloquer cette page"
 
-#: templates/base.html:39 templates/calendar.html:103
+#: templates/base.html:39 templates/calendar.html:124
 msgid "Do not hesitate to create an account... you can:"
 msgstr "N'hésitez pas à créer un compte... avec, vous pouvez:"
 
-#: templates/base.html:46 templates/calendar.html:110
+#: templates/base.html:46 templates/calendar.html:131
 #: templates/security/register_user.html:20
 msgid "Save your schedules"
 msgstr "Sauvegarder vos horaires"
 
-#: templates/base.html:53 templates/calendar.html:117
+#: templates/base.html:53 templates/calendar.html:138
 #: templates/security/register_user.html:27
 msgid "Manage several schedules following your needs"
 msgstr "Gérer plusieurs horaires selon vos besoins"
 
-#: templates/base.html:60 templates/calendar.html:124
+#: templates/base.html:60 templates/calendar.html:145
 #: templates/security/register_user.html:34
 msgid "Modify the color of the events in the calendar"
 msgstr "Modifier la couleur des événements dans le calendrier"
 
-#: templates/base.html:67 templates/calendar.html:131
+#: templates/base.html:67 templates/calendar.html:152
 #: templates/security/register_user.html:41
 msgid "And so much more !"
 msgstr "Et bien plus !"
 
-#: templates/base.html:72 templates/calendar.html:40 templates/calendar.html:84
-#: templates/calendar.html:179 templates/calendar.html:310
-#: templates/calendar.html:331 templates/classroom.html:23
+#: templates/base.html:72 templates/calendar.html:61
+#: templates/calendar.html:105 templates/calendar.html:200
+#: templates/calendar.html:331 templates/calendar.html:352
+#: templates/classroom.html:23
 msgid "Close"
 msgstr "Fermer"
 
@@ -193,63 +196,63 @@ msgstr "Connexion"
 msgid "Register"
 msgstr "Inscription"
 
-#: templates/calendar.html:14
+#: templates/calendar.html:35
 msgid "Course program"
 msgstr "Programme de cours"
 
-#: templates/calendar.html:41
+#: templates/calendar.html:62
 msgid "Apply"
 msgstr "Appliquer"
 
-#: templates/calendar.html:60 templates/calendar.html:201
+#: templates/calendar.html:81 templates/calendar.html:222
 msgid "Location"
 msgstr "Localisation"
 
-#: templates/calendar.html:71
+#: templates/calendar.html:92
 msgid "Recurring Event !"
 msgstr "Evènement récurrent !"
 
-#: templates/calendar.html:72 templates/calendar.html:224
+#: templates/calendar.html:93 templates/calendar.html:245
 msgid "From"
 msgstr "De"
 
-#: templates/calendar.html:72
+#: templates/calendar.html:93
 msgid "to"
 msgstr "à"
 
-#: templates/calendar.html:73 templates/calendar.html:78
+#: templates/calendar.html:94 templates/calendar.html:99
 msgid "Start:"
 msgstr "Début :"
 
-#: templates/calendar.html:74 templates/calendar.html:79
+#: templates/calendar.html:95 templates/calendar.html:100
 msgid "End:"
 msgstr "Fin :"
 
-#: templates/calendar.html:75
+#: templates/calendar.html:96
 msgid "Days of week:"
 msgstr "Jours de la semaine :"
 
-#: templates/calendar.html:85
+#: templates/calendar.html:106
 msgid "Delete Event"
 msgstr "Supprimer l'évènement"
 
-#: templates/calendar.html:96 templates/calendar.html:342
+#: templates/calendar.html:117 templates/calendar.html:363
 msgid "Export"
 msgstr "Exporter"
 
-#: templates/calendar.html:136
+#: templates/calendar.html:157
 msgid "Subscription Link"
 msgstr "Lien d'abonnement"
 
-#: templates/calendar.html:140 templates/calendar.html:341
+#: templates/calendar.html:161 templates/calendar.html:362
 msgid "Schedule"
 msgstr "Horaire"
 
-#: templates/calendar.html:146 templates/calendar.html:165
+#: templates/calendar.html:167 templates/calendar.html:186
 msgid "Copy to clipboard"
 msgstr "Copier dans le presse-papier"
 
-#: templates/calendar.html:155
+#: templates/calendar.html:176
 msgid ""
 "You can use this link to export the schedule to your personnal calendar "
 "app (Google, iOS, etc.). This will ensure the data always stays up-to-"
@@ -260,59 +263,59 @@ msgstr ""
 "données restent toujours à jour, même en cas de modification d'horaire "
 "par les professeurs."
 
-#: templates/calendar.html:159
+#: templates/calendar.html:180
 msgid "Share Link"
 msgstr "Lien de partage"
 
-#: templates/calendar.html:174
+#: templates/calendar.html:195
 msgid "You can use this link to share your schedule with your friends."
 msgstr "Vous pouvez utiliser ce lien pour partager votre horaire avec vos amis."
 
-#: templates/calendar.html:190
+#: templates/calendar.html:211
 msgid "Add an event"
 msgstr "Ajouter un événement"
 
-#: templates/calendar.html:198 templates/classroom.html:46
+#: templates/calendar.html:219 templates/classroom.html:46
 msgid "Name"
 msgstr "Nom"
 
-#: templates/calendar.html:206
+#: templates/calendar.html:227
 msgid "Description"
 msgstr "Description"
 
-#: templates/calendar.html:216
+#: templates/calendar.html:237
 msgid "Recurring event"
 msgstr "Événement récurrent"
 
-#: templates/calendar.html:244
+#: templates/calendar.html:265
 msgid "To"
 msgstr "À"
 
-#: templates/calendar.html:269
+#: templates/calendar.html:290
 msgid "Days of week"
 msgstr "Jours de la semaine"
 
-#: templates/calendar.html:283
+#: templates/calendar.html:304
 msgid "Start of recurrence"
 msgstr "Début de récurrence"
 
-#: templates/calendar.html:295
+#: templates/calendar.html:316
 msgid "End of recurrence"
 msgstr "Fin de récurrence"
 
-#: templates/calendar.html:311
+#: templates/calendar.html:332
 msgid "Add"
 msgstr "Ajouter"
 
-#: templates/calendar.html:328 views/calendar.py:109
+#: templates/calendar.html:349 views/calendar.py:150
 msgid "The code you added does not exist in our database."
 msgstr "Le code que vous avez entré n'existe pas dans notre base de données."
 
-#: templates/calendar.html:343
+#: templates/calendar.html:364
 msgid "Download"
 msgstr "Télécharger"
 
-#: templates/calendar.html:357
+#: templates/calendar.html:410
 msgid ""
 "To view more info or adapt your schedule, click on a course code. To "
 "change the color palette, go to the account page."
@@ -321,35 +324,39 @@ msgstr ""
 "sur le code d'un cours. Pour changer la palette de couleur, allez sur la "
 "page compte."
 
-#: templates/calendar.html:357
+#: templates/calendar.html:410
 msgid "Note"
 msgstr "Note"
 
-#: templates/calendar.html:378
+#: templates/calendar.html:432
 msgid "Enter code"
 msgstr "Entrez un code"
 
-#: templates/calendar.html:384
+#: templates/calendar.html:438
 msgid "Search results"
 msgstr "Résultats"
 
-#: templates/calendar.html:386
+#: templates/calendar.html:440
 msgid "No results"
 msgstr "Aucun résultat"
 
-#: templates/calendar.html:407
+#: templates/calendar.html:460
+msgid "Colors"
+msgstr "Couleurs"
+
+#: templates/calendar.html:474
 msgid "Compute"
 msgstr "Calculer"
 
-#: templates/calendar.html:410
+#: templates/calendar.html:477
 msgid "New"
 msgstr "Nouveau"
 
-#: templates/calendar.html:426
+#: templates/calendar.html:493
 msgid "Schedule successfuly saved !"
 msgstr "Horaire sauvegardé avec succès !"
 
-#: templates/calendar.html:441
+#: templates/calendar.html:508
 msgid ""
 "Disclaimer: this software is not an official UCLouvain tool. It has been "
 "designed with the purpose to help the EPL students with scheduling. This "
@@ -787,11 +794,11 @@ msgstr ""
 "Si vous ne recevez pas de mail, vérifiez votre dossier de spam. Parfois, "
 "nos mails se perdent là-dedans... :-("
 
-#: views/calendar.py:75 views/calendar.py:86
+#: views/calendar.py:77 views/calendar.py:93
 msgid "current_schedule"
 msgstr "horaire actuel"
 
-#: views/calendar.py:197 views/calendar.py:218
+#: views/calendar.py:249 views/calendar.py:270
 msgid "The schedule you requested does not exist in our database !"
 msgstr "L'horaire que vous avez demandé n'existe pas dans notre base de données !"
 
@@ -898,4 +905,3 @@ msgstr "L'horaire que vous avez demandé n'existe pas dans notre base de donnée
 #~ "Vous avez des changements qui n'ont "
 #~ "pas été sauvegardés: voulez-vous quand"
 #~ " même continue ?"
-
