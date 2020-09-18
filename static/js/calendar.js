@@ -155,7 +155,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     let brightness = Math.round(((parseInt(rgb[0]) * 299) +
                                                  (parseInt(rgb[1]) * 587) +
                                                  (parseInt(rgb[2]) * 114)) / 1000);
-                    arg.el.childNodes[0].style.color = brightness > 170 ? '#4c566a' : '#e5e9f0';
+                    let color = brightness > 170 ? '#4c566a' : '#e5e9f0';
+                    arg.el.childNodes[0].style.color = color;
 
                     // Activate tooltip
                     let evt = arg.event.toPlainObject({collapseExtendedProps: true});
@@ -173,7 +174,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             template: `
                                 <div class="tooltip" role="tooltip">
                                     <div class="tooltip-arrow"></div>
-                                    <div class="tooltip-inner" style="background-color:${evt.backgroundColor}"></div>
+                                    <div class="tooltip-inner" style="background-color:${evt.backgroundColor}; color:${color}"></div>
                                 </div>`,
                             placement: 'auto',
                         });
