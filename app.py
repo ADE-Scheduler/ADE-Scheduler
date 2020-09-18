@@ -34,6 +34,7 @@ from views.classroom import classroom
 from views.help import help
 from views.contact import contact
 from views.api import api
+from views.whatisnew import whatisnew
 
 # CLI commands
 import cli
@@ -49,6 +50,7 @@ app.register_blueprint(classroom, url_prefix='/classroom')
 app.register_blueprint(help, url_prefix='/help')
 app.register_blueprint(contact, url_prefix='/contact')
 app.register_blueprint(api, url_prefix='/api')
+app.register_blueprint(whatisnew, url_prefix='/whatisnew')
 app.config['SECRET_KEY'] = os.environ['FLASK_SECRET_KEY']
 jsglue = JSGlue(app)
 
