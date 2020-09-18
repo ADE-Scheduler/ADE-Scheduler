@@ -187,8 +187,8 @@
     position: relative;
     top: 0;
     height: calc(100vh - 101px);
-    overflow-x: hi
-
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 @supports ((position: -webkit-sticky) or (position: sticky)) {
@@ -224,4 +224,5 @@
     height: 25px;
     border-width: 0;
     padding: 0;
+    cursor: pointer;
 }

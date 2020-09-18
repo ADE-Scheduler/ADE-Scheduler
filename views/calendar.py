@@ -33,7 +33,7 @@ class CalendarDecoder(json.JSONDecoder):
         decoded = json.JSONDecoder().decode(obj)
         for key in decoded:
             obj = decoded[key]
-            if isinstance(obj, list) and isinstance(obj[0], str):
+            if isinstance(obj, list) and isinstance(obj[0], str) and key != 'color_palette':
                 decoded[key] = set(obj)
         return decoded
 
@@ -332,4 +332,16 @@ def compute():
         'n_schedules': len(session['current_schedule'].best_schedules) if bests is not None else 0,
         'events': session['current_schedule'].get_events(json=True, schedule_number=1) if bests is not None else list(),
         'selected_schedule': 1 if bests is not None else 0
+    }), 200
+
+
+@calendar.route('/schedule/color', methods=['POST'])
+def update_color():
+    schedule_number = int(request.json.get('schedule_number'))
+    color_palette = request.json.get('color_palette')
+    if color_palette:
+        session['current_schedule'].color_palette = color_palette
+
+    return jsonify({
+        'events': session['current_schedule'].get_events(json=True, schedule_number=schedule_number),
     }), 200
