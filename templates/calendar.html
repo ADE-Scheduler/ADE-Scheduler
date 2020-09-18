@@ -458,6 +458,9 @@
                     </div>
                     <div class="mt-3">
                         <label class="form-label mb-0" for="color-palette">{{ _('Colors') }}</label>
+<button class="btn btn-outline-dark btn-sm w-10" type="button" v-on:click="resetColorPalette(); toggleNav(false)">
+                            RESET
+                        </button>
                         <div class="d-flex flex-row flex-wrap justify-content-around" id="color-palette">
                             <div class="d-flex justify-content-center swatch-wrapper mt-2"
                                  v-for="(color, i) in currentSchedule.color_palette">
@@ -465,8 +468,11 @@
                                      v-on:change="updateColor"
                                      v-bind:style="{backgroundColor: color}"
                                      v-model="currentSchedule.color_palette[i]">
+
                                 </input>
+
                             </div>
+
                         </div>
                     </div>
                     <div class="btn-group btn-compute-clear mt-3">

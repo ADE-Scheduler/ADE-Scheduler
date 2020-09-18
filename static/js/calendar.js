@@ -540,6 +540,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (this.navBtn)    { codeMenu.show(); }
                 else                { codeMenu.hide(); }
             },
+            resetColorPalette: function () {
+               axios({
+                    method: 'GET',
+                    url: Flask.url_for('calendar.reset_color_palette'),
+                })
+                .then(resp => {
+                    this.currentSchedule.color_palette = resp.data.color_palette;
+                })
+                .catch(err => {
+                    this.error = true;
+                })
+                .then(() => {
+                });
+            },
             removeEvent: function(event) {
                 this.computing = true;
                 axios({
