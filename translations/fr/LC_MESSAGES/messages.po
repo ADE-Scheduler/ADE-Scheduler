@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-09-18 15:16+0200\n"
+"POT-Creation-Date: 2020-09-18 23:57+0200\n"
 "PO-Revision-Date: 2020-07-24 16:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -77,7 +77,7 @@ msgstr "Annuler"
 msgid "Continue"
 msgstr "Continuer"
 
-#: templates/account.html:35 templates/calendar.html:499
+#: templates/account.html:35 templates/calendar.html:508
 #: templates/classroom.html:32
 msgid "A problem has occurred. Please contact us if it happens again."
 msgstr ""
@@ -113,11 +113,11 @@ msgstr "Horaires"
 msgid "You do not have any saved schedule at the moment"
 msgstr "Vous n'avez aucun horaire sauvegardé pour le moment"
 
-#: templates/account.html:105 templates/calendar.html:482
+#: templates/account.html:105 templates/calendar.html:491
 msgid "Open source software"
 msgstr "Logiciel libre"
 
-#: templates/account.html:105 templates/calendar.html:482
+#: templates/account.html:105 templates/calendar.html:491
 msgid ""
 "designed by Gilles Poncelet, Louis Navarre and Jérome Eertmans, students "
 "at the Ecole polytechnique de Louvain."
@@ -340,23 +340,27 @@ msgstr "Résultats"
 msgid "No results"
 msgstr "Aucun résultat"
 
-#: templates/calendar.html:460
+#: templates/calendar.html:461
 msgid "Colors"
 msgstr "Couleurs"
 
-#: templates/calendar.html:474
+#: templates/calendar.html:463
+msgid "Reset colors"
+msgstr "Réinitialiser les couleurs"
+
+#: templates/calendar.html:483
 msgid "Compute"
 msgstr "Calculer"
 
-#: templates/calendar.html:477
+#: templates/calendar.html:486
 msgid "New"
 msgstr "Nouveau"
 
-#: templates/calendar.html:493
+#: templates/calendar.html:502
 msgid "Schedule successfuly saved !"
 msgstr "Horaire sauvegardé avec succès !"
 
-#: templates/calendar.html:508
+#: templates/calendar.html:517
 msgid ""
 "Disclaimer: this software is not an official UCLouvain tool. It has been "
 "designed with the purpose to help the EPL students with scheduling. This "

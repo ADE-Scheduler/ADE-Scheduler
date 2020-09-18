@@ -52,7 +52,11 @@ class Schedule:
         self.best_schedules = list()
         self.custom_events = list()
         self.priorities = dict()
-        self.color_palette = COLOR_PALETTE
+        self.color_palette = list(COLOR_PALETTE)
+
+    def reset_color_palette(self):
+        self.color_palette = list(COLOR_PALETTE)
+        return self.color_palette
 
     def add_filter(self, code: str, filter: Union[Iterable[str], str]):
         if isinstance(filter, str):
