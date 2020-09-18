@@ -187,14 +187,6 @@ def get_info(code):
     }), 200
 
 
-@calendar.route('/reset_color_palette', methods=['GET'])
-def reset_color_palette():
-    color_palette = session['current_schedule'].reset_color_palette()
-    return jsonify({
-        'color_palette': color_palette
-    }), 200
-
-
 @calendar.route('/custom_event', methods=['POST'])
 def add_custom_event():
     event = request.json
@@ -351,5 +343,16 @@ def update_color():
 
     schedule_number = int(request.json.get('schedule_number'))
     return jsonify({
+        'events': session['current_schedule'].get_events(json=True, schedule_number=schedule_number),
+    }), 200
+
+
+@calendar.route('/schedule/color', methods=['DELETE'])
+def reset_color():
+    session['current_schedule'].reset_color_palette()
+
+    schedule_number = int(request.args.get('schedule_number'))
+    return jsonify({
+        'color_palette': session['current_schedule'].color_palette,
         'events': session['current_schedule'].get_events(json=True, schedule_number=schedule_number),
     }), 200

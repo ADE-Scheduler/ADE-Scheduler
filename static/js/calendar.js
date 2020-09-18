@@ -540,20 +540,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (this.navBtn)    { codeMenu.show(); }
                 else                { codeMenu.hide(); }
             },
-            resetColorPalette: function () {
-               axios({
-                    method: 'GET',
-                    url: Flask.url_for('calendar.reset_color_palette'),
-                })
-                .then(resp => {
-                    this.currentSchedule.color_palette = resp.data.color_palette;
-                })
-                .catch(err => {
-                    this.error = true;
-                })
-                .then(() => {
-                });
-            },
             removeEvent: function(event) {
                 this.computing = true;
                 axios({
@@ -650,7 +636,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(() => {
                     this.computing = false;
                 });
-            }
+            },
+            resetColorPalette: function () {
+                this.computing = true;
+                axios({
+                    method: 'DELETE',
+                    url: Flask.url_for('calendar.reset_color', {schedule_number: this.selected_schedule}),
+                })
+                .then(resp => {
+                    this.calendarOptions.events = resp.data.events;
+                    this.currentSchedule.color_palette = resp.data.color_palette;
+                })
+                .catch(err => {
+                    this.error = true;
+                })
+                .then(() => {
+                    this.computing = false;
+                });
+            },
         },
         computed: {
             calendarOpacity: function() {
