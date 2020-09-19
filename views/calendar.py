@@ -277,9 +277,10 @@ def share():
 
 @calendar.route('/schedule', methods=['PUT'])
 def apply_filter():
+
     schedule = session['current_schedule']
-    schedule.reset_filters()
     for code, filters in request.json.items():
+        schedule.reset_filters(code)
         for type, filters in filters.items():
             for filter, value in filters.items():
                 if not value:
