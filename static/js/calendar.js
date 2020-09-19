@@ -8,6 +8,7 @@ import './base.js';
 import '../css/calendar.css';
 const axios = require('axios');
 const debounce = require('lodash/debounce');
+const moment = require('moment'); // require
 
 const uclWeeksNo = {
     '2019': [0, 0, 0, 0, -2, 1, 2, 3, 4, 5, 6, 7, 8, 9, -1, -1, 10, 11, 12, 13, -3, -3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, -3, -3],
@@ -31,6 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
             computing: true,
             error: false,
             saveSuccess: !!document.getElementById('scheduleSaved'),
+            mustResetAddEventForm: true,
             code: '',
             codeSearch: [],
             unsaved: false,
@@ -117,7 +119,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 customButtons: {
                     addEvent: {
                         text: '+',
-                        click: () => { addEventModal.show(); }
+                        click: () => {
+                            vm.beforeAddEvent();
+                            addEventModal.show(); }
                     }
                 },
                 headerToolbar: {
@@ -263,6 +267,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else {
                     this.request();
                 }
+            },
+            beforeAddEvent: function() {
+                if (!this.mustResetAddEventForm) {
+                    return;
+                }
+                let today = moment().format('YYYY-MM-DD');
+                let tomorrow = moment().add(1, 'days').format('YYYY-MM-DD');
+                this.eventForm.beginDay = today;
+                this.eventForm.endDay = today;
+                this.eventForm.beginRecurrDay = today;
+                this.eventForm.endRecurrDay = tomorrow;
+                this.eventForm.beginHour = moment().format('HH:mm');
+                this.eventForm.endHour = moment().add(2, 'hours').format('HH:mm');
+                this.mustResetAddEventForm = false;
             },
             clear: function() {
                 this.request = function() {
@@ -416,7 +434,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     evt.begin = this.eventForm.beginDay + ' ' + this.eventForm.beginHour;
                     evt.end = this.eventForm.endDay + ' ' + this.eventForm.endHour;
                 }
-
                 this.computing = true;
                 axios({
                     method: 'POST',
@@ -449,6 +466,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(() => {
                     this.computing = false;
+                    this.mustResetAddEventForm = true;
                 });
             },
             checkMinDay: function() {
