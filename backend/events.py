@@ -11,7 +11,7 @@ from flask_babelex import _
 
 # We need to set the timezone
 TZ = timezone('Europe/Brussels')
-COURSE_REGEX = '([A-Z]+[0-9]+)'
+COURSE_REGEX = '^([A-Z]+[0-9]+)'
 PRETTY_HOUR_FORMAT = 'HH:mm'
 PRETTY_DATE_FORMAT = 'DD/MM/YY'
 PRETTY_FORMAT = 'HH:mm - DD/MM/YY'
@@ -330,7 +330,8 @@ def extract_type(course_type: str, course_id: str) -> Type[AcademicalEvent]:
     :rtype: Type[AcademicalEvent]
     """
     # We first try to detect the type with the ID regex
-    if re.search(COURSE_REGEX + "-", course_id, re.IGNORECASE):
+
+    if re.search(COURSE_REGEX + r'\-', course_id, re.IGNORECASE):
         return EventCM
     elif re.search(COURSE_REGEX + "_", course_id, re.IGNORECASE):
         return EventTP
