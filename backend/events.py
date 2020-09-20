@@ -143,20 +143,20 @@ class RecurringCustomEvent(CustomEvent):
         DAYS = [_('Sunday'), _('Monday'), _('Tuesday'), _('Wednesday'), _('Thursday'), _('Friday'), _('Saturday')]
 
         self.freq.sort()
-
+        
         r.update(
             {
                 'daysOfWeek': self.freq,
-                'startTime': self.begin.format('hh:mmz'),
-                'endTime': self.end.format('hh:mmz'),
+                'startTime': self.begin.format('HH:mm'),
+                'endTime': self.end.format('HH:mm'),
                 'pretty_startTime': pretty_hour_formatter(self.begin),
                 'pretty_endTime': pretty_hour_formatter(self.end),
-                'starRecur': str(self.begin),
-                'endRecur': str(self.end_recurrence),
+                'startRecur': self.begin.format(),
+                'endRecur': self.end_recurrence.format(),
                 'rrule': {
                     'days': [DAYS[i] for i in self.freq],
                     'start': str(self.begin),
-                    'end': str(self.end_recurrence),
+                    'end': str(self.end),
                     'pretty_days': ', '.join(DAYS[i] for i in self.freq),
                     'pretty_start': f'{DAYS[(self.begin.weekday() + 1) % 7]} {self.begin.format(PRETTY_DATE_FORMAT)}',
                     'pretty_end': f'{DAYS[(self.end_recurrence.weekday() + 1) % 7]} {self.end_recurrence.format(PRETTY_DATE_FORMAT)}'
