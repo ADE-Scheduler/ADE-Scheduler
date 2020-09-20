@@ -105,7 +105,7 @@ class Schedule:
         if code in self.codes:
             self.codes.remove(code)
         if code in self.filtered_subcodes:
-            self.filtered_subcode.pop(code)
+            self.filtered_subcodes.pop(code)
 
     def add_custom_event(self, event: evt.CustomEvent):
         """
