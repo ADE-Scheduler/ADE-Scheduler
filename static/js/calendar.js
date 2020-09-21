@@ -8,7 +8,6 @@ import './base.js';
 import '../css/calendar.css';
 const axios = require('axios');
 const debounce = require('lodash/debounce');
-const moment = require('moment'); // require
 
 const uclWeeksNo = {
     '2019': [0, 0, 0, 0, -2, 1, 2, 3, 4, 5, 6, 7, 8, 9, -1, -1, 10, 11, 12, 13, -3, -3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, -3, -3],
@@ -272,14 +271,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (!this.mustResetAddEventForm) {
                     return;
                 }
-                let today = moment().format('YYYY-MM-DD');
-                let tomorrow = moment().add(1, 'days').format('YYYY-MM-DD');
-                this.eventForm.beginDay = today;
-                this.eventForm.endDay = today;
-                this.eventForm.beginRecurrDay = today;
-                this.eventForm.endRecurrDay = tomorrow;
-                this.eventForm.beginHour = moment().format('HH:mm');
-                this.eventForm.endHour = moment().add(2, 'hours').format('HH:mm');
+
+                let begin = new Date();
+                let end   = new Date(begin.getTime() + 7200e3);
+                this.eventForm.name = '';
+                this.eventForm.location = '';
+                this.eventForm.description = '';
+                this.eventForm.freq = [];
+                this.eventForm.recurring = false;
+                this.eventForm.beginDay = `${begin.getFullYear()}-${('0' + (begin.getMonth() + 1)).slice(-2)}-${('0' + begin.getDate()).slice(-2)}`;
+                this.eventForm.endDay = `${end.getFullYear()}-${('0' + (end.getMonth() + 1)).slice(-2)}-${('0' + end.getDate()).slice(-2)}`;
+                this.eventForm.beginRecurrDay = `${begin.getFullYear()}-${('0' + (begin.getMonth() + 1)).slice(-2)}-${('0' + begin.getDate()).slice(-2)}`;
+                this.eventForm.endRecurrDay = `${begin.getFullYear()}-${('0' + (begin.getMonth() + 1)).slice(-2)}-${('0' + (begin.getDate() + 7)).slice(-2)}`
+                this.eventForm.beginHour = `${('0' + (begin.getHours() + 1) % 24).slice(-2)}:00`;
+                this.eventForm.endHour =   `${('0' + (end.getHours()   + 1) % 24).slice(-2)}:00`;
                 this.mustResetAddEventForm = false;
             },
             clear: function() {
@@ -444,29 +449,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(resp => {
                     this.calendarOptions.events.push(resp.data.event);
                     this.unsaved = resp.data.unsaved;
-                    e.target.reset();
-                    this.eventForm = {
-                        name: '',
-                        location: '',
-                        description: '',
-                        beginDay: '',
-                        endDay: '',
-                        beginHour: '',
-                        endHour: '',
-                        freq: [],
-                        beginRecurrDay: '',
-                        endRecurrDay: '',
-                        recurring: false,
-                    };
-                    this.unsaved = true;
+                    this.mustResetAddEventForm = true;
                     addEventModal.hide();
+                    e.target.reset();
                 })
                 .catch(err => {
                     this.error = true;
                 })
                 .then(() => {
                     this.computing = false;
-                    this.mustResetAddEventForm = true;
                 });
             },
             checkMinDay: function() {
