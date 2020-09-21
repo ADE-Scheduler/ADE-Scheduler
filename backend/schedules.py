@@ -70,8 +70,8 @@ class Schedule:
         else:
             self.filtered_subcodes[code].difference_update(filter)
 
-    def reset_filters(self):
-        self.filtered_subcodes = default_dict_any_to_set()
+    def reset_filters(self, code):
+        self.filtered_subcodes[code] = set()
 
     def add_course(self, codes: Union[Iterable[str], str]) -> List[str]:
         """
@@ -104,6 +104,8 @@ class Schedule:
         self.codes = list(self.codes)
         if code in self.codes:
             self.codes.remove(code)
+        if code in self.filtered_subcodes:
+            self.filtered_subcodes.pop(code)
 
     def add_custom_event(self, event: evt.CustomEvent):
         """
