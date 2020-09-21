@@ -33,7 +33,7 @@ class CalendarDecoder(json.JSONDecoder):
         decoded = json.JSONDecoder().decode(obj)
         for key in decoded:
             obj = decoded[key]
-            if isinstance(obj, list) and isinstance(obj[0], str):
+            if isinstance(obj, list) and isinstance(obj[0], str) and key != 'color_palette':
                 decoded[key] = set(obj)
         return decoded
 
@@ -75,6 +75,7 @@ def clear():
         'current_schedule': {
             'id': session['current_schedule'].id,
             'label': _(session['current_schedule'].label),
+            'color_palette': session['current_schedule'].color_palette,
         },
         'current_project_id': session['current_schedule'].project_id,
     }), 200
@@ -90,6 +91,7 @@ def get_data():
         'current_schedule': {
             'id': session['current_schedule'].id,
             'label': _(session['current_schedule'].label),
+            'color_palette': session['current_schedule'].color_palette,
         },
         'n_schedules': len(session['current_schedule'].best_schedules),
         'events': session['current_schedule'].get_events(json=True),
@@ -113,7 +115,7 @@ def load_schedule(id):
             'current_schedule': {
                 'id': schedule.data.id,
                 'label': _(schedule.data.label),
-                'project_id': schedule.data.project_id,
+                'color_palette': schedule.data.color_palette,
             },
             'project_id': mng.get_project_ids(),
             'current_project_id': session['current_schedule'].project_id,
@@ -275,9 +277,10 @@ def share():
 
 @calendar.route('/schedule', methods=['PUT'])
 def apply_filter():
+
     schedule = session['current_schedule']
-    schedule.reset_filters()
     for code, filters in request.json.items():
+        schedule.reset_filters(code)
         for type, filters in filters.items():
             for filter, value in filters.items():
                 if not value:
@@ -330,4 +333,27 @@ def compute():
         'n_schedules': len(session['current_schedule'].best_schedules) if bests is not None else 0,
         'events': session['current_schedule'].get_events(json=True, schedule_number=1) if bests is not None else list(),
         'selected_schedule': 1 if bests is not None else 0
+    }), 200
+
+
+@calendar.route('/schedule/color', methods=['POST'])
+def update_color():
+    color_palette = request.json.get('color_palette')
+    if color_palette:
+        session['current_schedule'].color_palette = color_palette
+
+    schedule_number = int(request.json.get('schedule_number'))
+    return jsonify({
+        'events': session['current_schedule'].get_events(json=True, schedule_number=schedule_number),
+    }), 200
+
+
+@calendar.route('/schedule/color', methods=['DELETE'])
+def reset_color():
+    session['current_schedule'].reset_color_palette()
+
+    schedule_number = int(request.args.get('schedule_number'))
+    return jsonify({
+        'color_palette': session['current_schedule'].color_palette,
+        'events': session['current_schedule'].get_events(json=True, schedule_number=schedule_number),
     }), 200

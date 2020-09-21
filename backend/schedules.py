@@ -52,7 +52,11 @@ class Schedule:
         self.best_schedules = list()
         self.custom_events = list()
         self.priorities = dict()
-        self.color_palette = COLOR_PALETTE
+        self.color_palette = list(COLOR_PALETTE)
+
+    def reset_color_palette(self):
+        self.color_palette = list(COLOR_PALETTE)
+        return self.color_palette
 
     def add_filter(self, code: str, filter: Union[Iterable[str], str]):
         if isinstance(filter, str):
@@ -66,8 +70,8 @@ class Schedule:
         else:
             self.filtered_subcodes[code].difference_update(filter)
 
-    def reset_filters(self):
-        self.filtered_subcodes = default_dict_any_to_set()
+    def reset_filters(self, code):
+        self.filtered_subcodes[code] = set()
 
     def add_course(self, codes: Union[Iterable[str], str]) -> List[str]:
         """
@@ -100,6 +104,8 @@ class Schedule:
         self.codes = list(self.codes)
         if code in self.codes:
             self.codes.remove(code)
+        if code in self.filtered_subcodes:
+            self.filtered_subcodes.pop(code)
 
     def add_custom_event(self, event: evt.CustomEvent):
         """

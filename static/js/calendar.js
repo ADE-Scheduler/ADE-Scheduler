@@ -8,6 +8,7 @@ import './base.js';
 import '../css/calendar.css';
 const axios = require('axios');
 const debounce = require('lodash/debounce');
+const moment = require('moment'); // require
 
 const uclWeeksNo = {
     '2019': [0, 0, 0, 0, -2, 1, 2, 3, 4, 5, 6, 7, 8, 9, -1, -1, 10, 11, 12, 13, -3, -3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, -3, -3],
@@ -31,6 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
             computing: true,
             error: false,
             saveSuccess: !!document.getElementById('scheduleSaved'),
+            mustResetAddEventForm: true,
             code: '',
             codeSearch: [],
             unsaved: false,
@@ -117,7 +119,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 customButtons: {
                     addEvent: {
                         text: '+',
-                        click: () => { addEventModal.show(); }
+                        click: () => {
+                            vm.beforeAddEvent();
+                            addEventModal.show(); }
                     }
                 },
                 headerToolbar: {
@@ -155,7 +159,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     let brightness = Math.round(((parseInt(rgb[0]) * 299) +
                                                  (parseInt(rgb[1]) * 587) +
                                                  (parseInt(rgb[2]) * 114)) / 1000);
-                    arg.el.childNodes[0].style.color = brightness > 170 ? '#4c566a' : '#e5e9f0';
+                    let color = brightness > 170 ? '#4c566a' : '#e5e9f0';
+                    arg.el.childNodes[0].style.color = color;
 
                     // Activate tooltip
                     let evt = arg.event.toPlainObject({collapseExtendedProps: true});
@@ -173,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             template: `
                                 <div class="tooltip" role="tooltip">
                                     <div class="tooltip-arrow"></div>
-                                    <div class="tooltip-inner" style="background-color:${evt.backgroundColor}"></div>
+                                    <div class="tooltip-inner" style="background-color:${evt.backgroundColor}; color:${color}"></div>
                                 </div>`,
                             placement: 'auto',
                         });
@@ -262,6 +267,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else {
                     this.request();
                 }
+            },
+            beforeAddEvent: function() {
+                if (!this.mustResetAddEventForm) {
+                    return;
+                }
+                let today = moment().format('YYYY-MM-DD');
+                let tomorrow = moment().add(1, 'days').format('YYYY-MM-DD');
+                this.eventForm.beginDay = today;
+                this.eventForm.endDay = today;
+                this.eventForm.beginRecurrDay = today;
+                this.eventForm.endRecurrDay = tomorrow;
+                this.eventForm.beginHour = moment().format('HH:mm');
+                this.eventForm.endHour = moment().add(2, 'hours').format('HH:mm');
+                this.mustResetAddEventForm = false;
             },
             clear: function() {
                 this.request = function() {
@@ -367,6 +386,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         this.calendarOptions.events = resp.data.events;
                         this.code = '';
                         this.unsaved = resp.data.unsaved;
+                        this.selected_schedule = 0;
                     })
                     .catch(err => {
                         if (err.response.status === 404) {
@@ -390,6 +410,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.codes.splice(this.codes.indexOf(code), 1);
                     this.calendarOptions.events = resp.data.events;
                     this.unsaved = resp.data.unsaved;
+                    this.selected_schedule = 0;
                 })
                 .catch(err => {
                     this.error = true;
@@ -413,7 +434,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     evt.begin = this.eventForm.beginDay + ' ' + this.eventForm.beginHour;
                     evt.end = this.eventForm.endDay + ' ' + this.eventForm.endHour;
                 }
-
                 this.computing = true;
                 axios({
                     method: 'POST',
@@ -446,6 +466,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(() => {
                     this.computing = false;
+                    this.mustResetAddEventForm = true;
                 });
             },
             checkMinDay: function() {
@@ -521,6 +542,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     header: {'Content-Type': 'application/json'},
                 })
                 .then(resp => {
+                    this.selected_schedule = 0;
                     this.unsaved = resp.data.unsaved;
                     this.calendarOptions.events = resp.data.events;
                 })
@@ -578,6 +600,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     url: Flask.url_for('calendar.update_poject_id', {id: this.currentProjectId}),
                 })
                 .then(resp => {
+                    this.selected_schedule = 0;
                     this.calendarOptions.events = resp.data.events;
                 })
                 .catch(err => {
@@ -611,6 +634,44 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.request();
             },
             request: function() {},
+            updateColor: function() {
+                this.computing = true;
+                axios({
+                    method: 'POST',
+                    url: Flask.url_for('calendar.update_color'),
+                    header: {'Content-Type': 'applacation/json'},
+                    data: {
+                        schedule_number: this.selected_schedule,
+                        color_palette: this.currentSchedule.color_palette,
+                    },
+                })
+                .then(resp => {
+                    this.calendarOptions.events = resp.data.events;
+                })
+                .catch(err => {
+                    this.error = true;
+                })
+                .then(() => {
+                    this.computing = false;
+                });
+            },
+            resetColorPalette: function () {
+                this.computing = true;
+                axios({
+                    method: 'DELETE',
+                    url: Flask.url_for('calendar.reset_color', {schedule_number: this.selected_schedule}),
+                })
+                .then(resp => {
+                    this.calendarOptions.events = resp.data.events;
+                    this.currentSchedule.color_palette = resp.data.color_palette;
+                })
+                .catch(err => {
+                    this.error = true;
+                })
+                .then(() => {
+                    this.computing = false;
+                });
+            },
         },
         computed: {
             calendarOpacity: function() {

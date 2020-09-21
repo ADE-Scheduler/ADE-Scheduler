@@ -109,8 +109,6 @@
     top: 36px;
     right: 12px;
     z-index: 3;
-    /* width: 15px;
-    height: 15px; */
 }
 
 .dropdown-schedules {
@@ -213,4 +211,18 @@
     .btn-nav {
         display: none;
     }
+}
+
+/*
+ *  Color palette
+ */
+.swatch-wrapper {
+    flex: 1 0 20%;
+}
+.swatch {
+    width: 25px;
+    height: 25px;
+    border-width: 0;
+    padding: 0;
+    cursor: pointer;
 }

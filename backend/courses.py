@@ -109,7 +109,7 @@ class Course:
         :rtype: Dict[str, Set[str]]
         """
         summary = defaultdict(set)
-        ids = self.activities.index.get_level_values('id').unique()
+        ids = self.activities.index.get_level_values('id').sort_values().unique()
         for id in ids:
             event_type, code = id.split(': ', maxsplit=1)
             summary[event_type].add(code)

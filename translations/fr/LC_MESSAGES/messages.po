@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-09-21 15:36+0200\n"
+"POT-Creation-Date: 2020-09-21 16:02+0200\n"
 "PO-Revision-Date: 2020-07-24 16:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -77,7 +77,7 @@ msgstr "Annuler"
 msgid "Continue"
 msgstr "Continuer"
 
-#: templates/account.html:35 templates/calendar.html:486
+#: templates/account.html:35 templates/calendar.html:508
 #: templates/classroom.html:32
 msgid "A problem has occurred. Please contact us if it happens again."
 msgstr ""
@@ -113,11 +113,11 @@ msgstr "Horaires"
 msgid "You do not have any saved schedule at the moment"
 msgstr "Vous n'avez aucun horaire sauvegardé pour le moment"
 
-#: templates/account.html:105 templates/calendar.html:469
+#: templates/account.html:105 templates/calendar.html:491
 msgid "Open source software"
 msgstr "Logiciel libre"
 
-#: templates/account.html:105 templates/calendar.html:469
+#: templates/account.html:105 templates/calendar.html:491
 msgid ""
 "designed by Gilles Poncelet, Louis Navarre and Jérome Eertmans, students "
 "at the Ecole polytechnique de Louvain."
@@ -307,7 +307,7 @@ msgstr "Fin de récurrence"
 msgid "Add"
 msgstr "Ajouter"
 
-#: templates/calendar.html:349 views/calendar.py:148
+#: templates/calendar.html:349 views/calendar.py:150
 msgid "The code you added does not exist in our database."
 msgstr "Le code que vous avez entré n'existe pas dans notre base de données."
 
@@ -341,18 +341,26 @@ msgid "No results"
 msgstr "Aucun résultat"
 
 #: templates/calendar.html:461
+msgid "Colors"
+msgstr "Couleurs"
+
+#: templates/calendar.html:463
+msgid "Reset colors"
+msgstr "Réinitialiser les couleurs"
+
+#: templates/calendar.html:483
 msgid "Compute"
 msgstr "Calculer"
 
-#: templates/calendar.html:464
+#: templates/calendar.html:486
 msgid "New"
 msgstr "Nouveau"
 
-#: templates/calendar.html:480
+#: templates/calendar.html:502
 msgid "Schedule successfuly saved !"
 msgstr "Horaire sauvegardé avec succès !"
 
-#: templates/calendar.html:495
+#: templates/calendar.html:517
 msgid ""
 "Disclaimer: this software is not an official UCLouvain tool. It has been "
 "designed with the purpose to help the EPL students with scheduling. This "
@@ -412,7 +420,7 @@ msgstr "Mot de passe"
 msgid "What is ADE Scheduler ?"
 msgstr "Qu'est-ce qu'ADE Scheduler ?"
 
-#: templates/help.html:18 templates/help.html:59 templates/whatisnew.html:39
+#: templates/help.html:18 templates/help.html:59
 msgid "Getting started"
 msgstr "Pour débuter"
 
@@ -735,8 +743,10 @@ msgid ""
 "The \"What is new\" page shows all important modifications to ADE-"
 "Scheduler. Do not hesitate to take a look from time to time to be aware "
 "of the new features !"
-msgstr "La nouvelle page "Nouveauté" répertorie toutes les modifications notables sur l'outil ADE-Scheduler. "
-"N'hésitez pas à jeter un coup d'oeil de temps en temps pour voir les nouvelles fonctionnalités !"
+msgstr ""
+"La nouvelle page \"Nouveauté\" répertorie toutes les modifications "
+"notables sur l'outil ADE-Scheduler. N'hésitez pas à jeter un coup d'oeil "
+"de temps en temps pour voir les nouvelles fonctionnalités !"
 
 #: templates/whatisnew.html:42
 msgid ""
@@ -746,16 +756,22 @@ msgid ""
 "                        You can also do so without requiring an account. "
 "Moreover, we changed the initial color theme, in order to stress the "
 "difference between two different courses in the schedule."
-msgstr "Nous devons admettre que modifier la couleur des évènements du calendrier depuis la page \"Compte\" n'était pas très intuitif... "
-"C'est pourquoi, il est désormais possible de choisir vos propres couleurs pour les cours/TPs/autres depuis la page \"Calendrier\"! "
-"Et ce, même sans devoir posséder un compte. De plus, nous avons aussi changé le thème couleur initial, afin d'accentuer la différence entre deux cours."
+msgstr ""
+"Nous devons admettre que modifier la couleur des évènements du calendrier"
+" depuis la page \"Compte\" n'était pas très intuitif... C'est pourquoi, "
+"il est désormais possible de choisir vos propres couleurs pour les "
+"cours/TPs/autres depuis la page \"Calendrier\"! Et ce, même sans devoir "
+"posséder un compte. De plus, nous avons aussi changé le thème couleur "
+"initial, afin d'accentuer la différence entre deux cours."
 
 #: templates/whatisnew.html:46
 msgid ""
 "Please note that if you use a non traditional browser, it may happen that"
 " the color palette does not show up. We cannot do anything about it."
-msgstr "Notez tout de même que si vous utilisez un navigateur particulier, il est possible que la palette permettant de "
-"modifier les couleurs à votre guise ne soit pas disponible... Cela est du au navigateur."
+msgstr ""
+"Notez tout de même que si vous utilisez un navigateur particulier, il est"
+" possible que la palette permettant de modifier les couleurs à votre "
+"guise ne soit pas disponible... Cela est du au navigateur."
 
 #: templates/whatisnew.html:52
 msgid ""
@@ -765,18 +781,21 @@ msgid ""
 "                        of the currently selected schedule. You should "
 "see a list of the names of all of them; Selecting one of them will "
 "display it on the calendar."
-msgstr "Vous pouvez désormais consulter et modifier tous vos différents "
-"horaires sauvegardés sans devoir passer par le menu \"Compte\". "
-"Si vous possédez plusieurs calendrier, il suffit pour cela de cliquer sur "
-"le nom de l'horaire affiché actuellement pour voir défiler le nom de tous vos horaires; "
-"il suffit ensuite de sélectionner celui de votre choix."
+msgstr ""
+"Vous pouvez désormais consulter et modifier tous vos différents horaires "
+"sauvegardés sans devoir passer par le menu \"Compte\". Si vous possédez "
+"plusieurs calendrier, il suffit pour cela de cliquer sur le nom de "
+"l'horaire affiché actuellement pour voir défiler le nom de tous vos "
+"horaires; il suffit ensuite de sélectionner celui de votre choix."
 
 #: templates/whatisnew.html:60
 msgid ""
 "Launch of the new ADE-Scheduler ! This version brings a new design, new "
 "features, and is more efficient. Moreover, it is mobile-friendly."
-msgstr "Lancement de la nouvelle version d'ADE-Scheduler ! Cette version, en plus d'un changement de design, "
-"de l'ajout de nouvelles fonctionnaliés, est plus efficace, et surtout adapté aux mobiles."
+msgstr ""
+"Lancement de la nouvelle version d'ADE-Scheduler ! Cette version, en plus"
+" d'un changement de design, de l'ajout de nouvelles fonctionnaliés, est "
+"plus efficace, et surtout adapté aux mobiles."
 
 #: templates/security/change_password.html:19
 #: templates/security/reset_password.html:14
@@ -862,11 +881,11 @@ msgstr ""
 "Si vous ne recevez pas de mail, vérifiez votre dossier de spam. Parfois, "
 "nos mails se perdent là-dedans... :-("
 
-#: views/calendar.py:77 views/calendar.py:92
+#: views/calendar.py:77 views/calendar.py:93
 msgid "current_schedule"
 msgstr "horaire actuel"
 
-#: views/calendar.py:247 views/calendar.py:268
+#: views/calendar.py:249 views/calendar.py:270
 msgid "The schedule you requested does not exist in our database !"
 msgstr "L'horaire que vous avez demandé n'existe pas dans notre base de données !"
 
