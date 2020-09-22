@@ -168,16 +168,15 @@ class RecurringCustomEvent(CustomEvent):
         return r
 
     def __str__(self):
-        days = ['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa']
-        return 'BEGIN:VEVENT\n'\
-               f'DTSTART:{arrow_to_iso(self.begin)}\n'\
-               f'DTEND:{arrow_to_iso(self.end)}\n'\
-               f'RRULE:FREQ=WEEKLY;INTERVAL=1;BYDAY={",".join([days[i] for i in self.freq])};UNTIL={arrow_to_iso(self.end_recurrence)}\n'\
-               f'DESCRIPTION:{self.description if self.description else ""}\n'\
-               f'LOCATION:{self.location if self.location else ""}\n'\
-               f'SUMMARY:{self.name if self.name else ""}\n'\
-               f'UID:{self.uid if self.uid else ""}\n'\
-               'END:VEVENT'
+        days = ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA']
+        rrule = f'RRULE:FREQ=WEEKLY;' \
+                f'INTERVAL=1;' \
+                f'BYDAY={",".join([days[i] for i in self.freq])};' \
+                f'UNTIL={arrow_to_iso(self.end_recurrence)} '
+        s = super().__str__()
+        lines = s.splitlines()
+        lines.insert(-1, rrule)
+        return '\n'.join(lines)
 
 
 class AcademicalEvent(CustomEvent):
