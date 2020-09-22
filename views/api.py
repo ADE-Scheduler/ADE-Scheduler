@@ -39,6 +39,19 @@ api.json_decoder = ApiDecoder
 api.json_encoder = ApiEncoder
 
 
+@api.before_request
+def before_api_request():
+    mng = app.config['MANAGER']
+
+    if not session.get('current_schedule'):
+        session['current_schedule'] = schd.Schedule(mng.get_default_project_id())
+        session['current_schedule_modified'] = False
+
+    project_ids = [int(year['id']) for year in mng.get_project_ids()]
+    if int(session['current_schedule'].project_id) not in project_ids:
+        session['current_schedule'].project_id = mng.get_default_project_id()
+
+
 @api.route('/events', methods=['GET'])
 def get_events():
     """
