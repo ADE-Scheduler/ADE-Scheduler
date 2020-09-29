@@ -150,6 +150,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // Events
                 events: [],
+                eventContent: function(arg) {
+                    let evt = arg.event.toPlainObject({collapseExtendedProps: true});
+                    let italicEl = document.createElement('t');
+                    italicEl.innerHTML = `<b>${evt.title}</b><br/><i>${evt.location}</i>`;
+
+                    let arrayOfDomNodes = [ italicEl ]
+                    return { domNodes: arrayOfDomNodes }
+                },
+                
                 eventTextColor: 'white',
                 eventDisplay: 'block',
                 eventDidMount: function(arg) {
