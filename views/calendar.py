@@ -10,6 +10,7 @@ from flask_babelex import _
 import backend.schedules as schd
 import backend.events as evt
 import backend.models as md
+import backend.utils as utl
 
 
 class CalendarEncoder(json.JSONEncoder):
@@ -45,15 +46,7 @@ calendar.json_encoder = CalendarEncoder
 
 @calendar.before_request
 def before_calendar_request():
-    mng = app.config['MANAGER']
-
-    if not session.get('current_schedule'):
-        session['current_schedule'] = schd.Schedule(mng.get_default_project_id())
-        session['current_schedule_modified'] = False
-
-    project_ids = [int(year['id']) for year in mng.get_project_ids()]
-    if int(session['current_schedule'].project_id) not in project_ids:
-        session['current_schedule'].project_id = mng.get_default_project_id()
+    utl.init_schedule()
 
 
 @calendar.route('/')

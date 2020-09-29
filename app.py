@@ -95,6 +95,7 @@ app.config['SECURITY_CHANGEABLE'] = True
 app.config['SECURITY_RECOVERABLE'] = True
 app.config['SECURITY_PASSWORD_SALT'] = os.environ['FLASK_SALT']
 app.config['SECURITY_CONFIRM_URL'] = '/confirm'
+app.config['SECURITY_REQUIRES_CONFIRMATION_ERROR_VIEW'] = '/confirm'
 app.config['SECURITY_POST_REGISTER_VIEW'] = app.config['SECURITY_CONFIRM_URL']
 app.config['SECURITY_MANAGER'] = Security(app, SQLAlchemyUserDatastore(manager.database, md.User, md.Role))
 
@@ -160,6 +161,12 @@ def before_first_request():
         os.makedirs('static/dist')
     with open('static/dist/jsglue.min.js', 'w') as f:
         f.write(jsmin(jsglue.generate_js()))
+
+
+@app.before_request
+def before_request():
+    # Clear any potential remaining flash message
+    session.pop('_flashes', None)
 
 
 # Reset current schedule on user logout

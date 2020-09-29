@@ -237,6 +237,7 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         mounted: function() {
             this.$nextTick(() => {
+                this.$refs.map.mapObject.addControl(new L.Control.Fullscreen());
                 oms = new window.OverlappingMarkerSpiderfier(this.$refs.map.mapObject, {
                     keepSpiderfied: isTouchDevice,
                 });
