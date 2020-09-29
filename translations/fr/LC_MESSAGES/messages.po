@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-09-18 23:57+0200\n"
+"POT-Creation-Date: 2020-09-21 16:02+0200\n"
 "PO-Revision-Date: 2020-07-24 16:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: app.py:218
+#: app.py:220
 msgid "An error has occurred. Please contact the admins if it keeps happening."
 msgstr "Une erreur est apparue. Si cela arrive à nouveau, veuillez nous contacter."
 
-#: app.py:224
+#: app.py:226
 msgid "404 Page not found :("
 msgstr "404 Page non trouvée :("
 
@@ -180,19 +180,19 @@ msgstr "Compte"
 msgid "Help"
 msgstr "Aide"
 
-#: templates/base.html:109
+#: templates/base.html:112
 msgid "Contact us"
 msgstr "Contact"
 
-#: templates/base.html:133
+#: templates/base.html:136
 msgid "Logout"
 msgstr "Déconnexion"
 
-#: templates/base.html:137
+#: templates/base.html:140
 msgid "Login"
 msgstr "Connexion"
 
-#: templates/base.html:138
+#: templates/base.html:141
 msgid "Register"
 msgstr "Inscription"
 
@@ -714,6 +714,89 @@ msgstr ""
 msgid "Get started"
 msgstr "C'est parti !"
 
+#: templates/whatisnew.html:15 templates/whatisnew.html:32
+msgid "September 2020"
+msgstr "Septembre 2020"
+
+#: templates/whatisnew.html:17 templates/whatisnew.html:33
+msgid "Page \"What is new\""
+msgstr "Page \"Nouveautés\""
+
+#: templates/whatisnew.html:18 templates/whatisnew.html:39
+msgid "Color palette accessible in the calendar"
+msgstr "Palette de couleurs accessibles dans le calendrier"
+
+#: templates/whatisnew.html:19 templates/whatisnew.html:49
+msgid "All schedules accessible from the calendar"
+msgstr "Tous les horaires accessibles depuis le calendrier"
+
+#: templates/whatisnew.html:22 templates/whatisnew.html:56
+msgid "August 2020"
+msgstr "Aout 2020"
+
+#: templates/whatisnew.html:24 templates/whatisnew.html:57
+msgid "Launch of ADE-Scheduler 2.0!"
+msgstr "Lancement d'ADE-Scheduler 2.0!"
+
+#: templates/whatisnew.html:36
+msgid ""
+"The \"What is new\" page shows all important modifications to ADE-"
+"Scheduler. Do not hesitate to take a look from time to time to be aware "
+"of the new features !"
+msgstr ""
+"La nouvelle page \"Nouveauté\" répertorie toutes les modifications "
+"notables sur l'outil ADE-Scheduler. N'hésitez pas à jeter un coup d'oeil "
+"de temps en temps pour voir les nouvelles fonctionnalités !"
+
+#: templates/whatisnew.html:42
+msgid ""
+"We must admit that modifying the events color in the \"Account\" menu is "
+"conter-intuitive... That is why you can now directly choose your own "
+"colors for your schedules directly in the \"Calendar\" menu.\n"
+"                        You can also do so without requiring an account. "
+"Moreover, we changed the initial color theme, in order to stress the "
+"difference between two different courses in the schedule."
+msgstr ""
+"Nous devons admettre que modifier la couleur des évènements du calendrier"
+" depuis la page \"Compte\" n'était pas très intuitif... C'est pourquoi, "
+"il est désormais possible de choisir vos propres couleurs pour les "
+"cours/TPs/autres depuis la page \"Calendrier\"! Et ce, même sans devoir "
+"posséder un compte. De plus, nous avons aussi changé le thème couleur "
+"initial, afin d'accentuer la différence entre deux cours."
+
+#: templates/whatisnew.html:46
+msgid ""
+"Please note that if you use a non traditional browser, it may happen that"
+" the color palette does not show up. We cannot do anything about it."
+msgstr ""
+"Notez tout de même que si vous utilisez un navigateur particulier, il est"
+" possible que la palette permettant de modifier les couleurs à votre "
+"guise ne soit pas disponible... Cela est du au navigateur."
+
+#: templates/whatisnew.html:52
+msgid ""
+"You can now consult and edit all your saved schedules without having to "
+"select them from the \"Account\" menu. If you have several saved "
+"schedules, you just have to click on the name\n"
+"                        of the currently selected schedule. You should "
+"see a list of the names of all of them; Selecting one of them will "
+"display it on the calendar."
+msgstr ""
+"Vous pouvez désormais consulter et modifier tous vos différents horaires "
+"sauvegardés sans devoir passer par le menu \"Compte\". Si vous possédez "
+"plusieurs calendrier, il suffit pour cela de cliquer sur le nom de "
+"l'horaire affiché actuellement pour voir défiler le nom de tous vos "
+"horaires; il suffit ensuite de sélectionner celui de votre choix."
+
+#: templates/whatisnew.html:60
+msgid ""
+"Launch of the new ADE-Scheduler ! This version brings a new design, new "
+"features, and is more efficient. Moreover, it is mobile-friendly."
+msgstr ""
+"Lancement de la nouvelle version d'ADE-Scheduler ! Cette version, en plus"
+" d'un changement de design, de l'ajout de nouvelles fonctionnaliés, est "
+"plus efficace, et surtout adapté aux mobiles."
+
 #: templates/security/change_password.html:19
 #: templates/security/reset_password.html:14
 msgid "New password"
@@ -909,3 +992,4 @@ msgstr "L'horaire que vous avez demandé n'existe pas dans notre base de donnée
 #~ "Vous avez des changements qui n'ont "
 #~ "pas été sauvegardés: voulez-vous quand"
 #~ " même continue ?"
+

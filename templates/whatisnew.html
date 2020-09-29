@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block head %}
+<% _.forEach(htmlWebpackPlugin.files.js, function(file) { %>
+<script type="text/javascript" src="<%= file%>"></script>
+<%}); %>
+<script type="text/javascript" src="https://platform.linkedin.com/badges/js/profile.js" async defer></script>
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-3 col-lg-2 d-md-block bg-light navigator collapse" id="faq-navigator">
+            <nav class="nav nav-pills navigator-sticky d-flex flex-column p-3">
+
+                <a class="nav-link main-link mb-0" href="#sep2020" v-on:click.prevent="scroll('sep2020', true)">{{ _('September 2020') }}</a>
+                <nav class="nav sub-nav flex-column">
+                    <a class="nav-link ml-4" href="#sep2020-whatisnew" v-on:click.prevent="scroll('sep2020-whatisnew')">{{ _('Page "What is new"') }}</a>
+                    <a class="nav-link ml-4" href="#sep2020-colors" v-on:click.prevent="scroll('sep2020-colors')">{{ _('Color palette accessible in the calendar') }}</a>
+                    <a class="nav-link ml-4" href="#sep2020-allsched" v-on:click.prevent="scroll('sep2020-allsched')">{{ _('All schedules accessible from the calendar') }}</a>
+                </nav>
+
+                <a class="nav-link main-link mb-0" href="#aug2020" v-on:click.prevent="scroll('aug2020', true)">{{ _('August 2020') }}</a>
+                <nav class="nav sub-nav flex-column">
+                    <a class="nav-link ml-4" href="#aug2020-v2" v-on:click.prevent="scroll('aug2020-v2')">{{ _('Launch of ADE-Scheduler 2.0!') }}</a>
+                </nav>
+            </nav>
+        </nav>
+
+        <div class="col-md-9 ml-sm-auto col-lg-10 p-3">
+            <div class="container-lg">
+
+                <h3 class="my-5" id="sep2020">{{ _('September 2020') }}</h3>
+                    <h4 id="sep2020-whatisnew">{{ _('Page "What is new"') }}</h4>
+                    <hr class="mb-3">
+                    <p>
+                        {{ _('The "What is new" page shows all important modifications to ADE-Scheduler. Do not hesitate to take a look from time to time to be aware of the new features !') }}
+                    </p>
+
+                    <h4 id="sep2020-colors">{{ _('Color palette accessible in the calendar') }}</h4>
+                    <hr class="mb-3">
+                    <p>
+                        {{ _('We must admit that modifying the events color in the "Account" menu is conter-intuitive... That is why you can now directly choose your own colors for your schedules directly in the "Calendar" menu.
+                        You can also do so without requiring an account. Moreover, we changed the initial color theme, in order to stress the difference between two different courses in the schedule.') }}
+                    </p>
+                    <p>
+                        {{ _('Please note that if you use a non traditional browser, it may happen that the color palette does not show up. We cannot do anything about it.') }}
+                    </p>
+
+                    <h4 id="sep2020-allsched">{{ _('All schedules accessible from the calendar') }}</h4>
+                    <hr class="mb-3">
+                    <p>
+                        {{ _('You can now consult and edit all your saved schedules without having to select them from the "Account" menu. If you have several saved schedules, you just have to click on the name
+                        of the currently selected schedule. You should see a list of the names of all of them; Selecting one of them will display it on the calendar.') }}
+                    </p>
+
+                <h3 class="my-5" id="sep2020">{{ _('August 2020') }}</h3>
+                    <h4 id="aug2020-v2">{{ _('Launch of ADE-Scheduler 2.0!') }}</h4>
+                    <hr class="mb-3">
+                    <p>
+                        {{ _('Launch of the new ADE-Scheduler ! This version brings a new design, new features, and is more efficient. Moreover, it is mobile-friendly.') }}
+                    </p>
+            </div>
+        </div>
+    </div>
+
+    <button class="btn btn-dark btn-nav">
+        <svg v-if="navBtn" v-on:click="toggleNav(false)" width="25px" height="25px" viewBox="0 0 16 16" class="bi bi-chevron-bar-contract" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
+        </svg>
+        <svg v-else        v-on:click="toggleNav(true)" width="25px" height="25px" viewBox="0 0 16 16" class="bi bi-chevron-bar-expand" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+        </svg>
+    </button>
+</div>
+{% endblock %}
