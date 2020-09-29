@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "custom_macros.html" import render_input_field %}
+{% from "custom_macros.html" import render_input_field, render_flash_messages %}
 {% block head %}
 <% _.forEach(htmlWebpackPlugin.files.js, function(file) { %>
 <script type="text/javascript" src="<%= file%>"></script>
@@ -42,6 +42,7 @@
             </li>
         </ul>
 
+        {{ render_flash_messages() }}
         <div class="mb-3">
             <label for="email">{{_('Email')}}</label>
             <div class="input-group">
