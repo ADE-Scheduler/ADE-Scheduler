@@ -17,7 +17,6 @@ dnspython==2.0.0
 docutils==0.16
 email-validator==1.1.1
 Flask==1.1.2
-Flask-Babel==0.12.2
 Flask-BabelEx==0.9.4
 Flask-Compress==1.5.0
 Flask-JSGlue==0.3.1
