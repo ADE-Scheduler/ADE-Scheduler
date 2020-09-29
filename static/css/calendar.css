@@ -53,6 +53,7 @@
 }
 .fc-event {
     cursor: pointer;
+    overflow: hidden;
 }
 
 /*
