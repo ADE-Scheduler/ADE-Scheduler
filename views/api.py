@@ -42,7 +42,7 @@ api.json_encoder = ApiEncoder
 
 @api.before_request
 def before_api_request():
-    utl.init_calendar()
+    utl.init_schedule()
 
 
 @api.route('/events', methods=['GET'])
