@@ -163,12 +163,6 @@ def before_first_request():
         f.write(jsmin(jsglue.generate_js()))
 
 
-@app.before_request
-def before_request():
-    # Clear any potential remaining flash message
-    session.pop('_flashes', None)
-
-
 # Reset current schedule on user logout
 @user_logged_out.connect_via(app)
 def when_user_logged_out(sender, user):
