@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "custom_macros.html" import render_flash_alert %}
 {% block head %}
 <% _.forEach(htmlWebpackPlugin.files.js, function(file) { %>
 <script type="text/javascript" src="<%= file%>"></script>
@@ -28,7 +29,7 @@
 
         <div class="col-md-9 ml-sm-auto col-lg-10 p-3">
             <div class="container-lg">
-
+                {{ render_flash_alert() }}
                 <h3 class="my-5" id="sep2020">{{ _('September 2020') }}</h3>
                     <h4 id="sep2020-whatisnew">{{ _('Page "What is new"') }}</h4>
                     <hr class="mb-3">
