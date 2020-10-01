@@ -173,7 +173,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Activate tooltip
                     let evt = arg.event.toPlainObject({collapseExtendedProps: true});
                     if (!!evt.code || !isTouchDevice) {
-                        let description, location;
+
+                        let description, location, title;
+                        if (!evt.title)         title = 'No title';
+                        else                    title = evt.title;
                         if (!evt.description)   description = 'No description';
                         else                    description = evt.description;
                         if (!evt.location)      location = 'No location';
@@ -181,8 +184,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         arg.el.tooltip = new Tooltip(arg.el, {
                             container: 'body',
                             trigger: 'manual',
-                            title: description + '\n' + location,
+                            title: `<b>${title}</b><br/>${description}<br/><i>${location}</i>`,
                             sanitize: false,
+                            html: true,
                             template: `
                                 <div class="tooltip" role="tooltip">
                                     <div class="tooltip-arrow"></div>
