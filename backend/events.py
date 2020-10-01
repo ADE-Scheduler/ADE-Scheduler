@@ -215,8 +215,7 @@ class AcademicalEvent(CustomEvent):
         self.id = f'{prefix}{id}'
         self.code = code
         self.classrooms = classrooms
-        self.description = f'{self.id}\n'\
-                           f'{self.name}\n'\
+        self.description = f'{self.name}\n'\
                            f'{str(self.duration)}\n'\
                            f'{self.description}'
 
