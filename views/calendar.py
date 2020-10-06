@@ -207,8 +207,8 @@ def delete_custom_event(id):
     }), 200
 
 
-@calendar.route('/custom_event/color/<id>', methods=['POST'])
-def set_custom_event_color(id):
+@calendar.route('/custom_event/<id>', methods=['POST'])
+def update_custom_event(id):
     color = request.json.get('color')
     if color:
         session['current_schedule'].set_custom_event_color(color, id=id)

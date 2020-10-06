@@ -71,9 +71,9 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <input type="color" v-on:change="setEventColor(eventInfo, currentEventColor)"
-                                        v-bind:style="{backgroundColor: currentEventColor}"
-                                        v-model="currentEventColor"
+                    <input type="color" v-on:change="setEventColor(eventInfo)"
+                                        v-bind:style="{backgroundColor: eventInfo.backgroundColor}"
+                                        v-model="eventInfo.backgroundColor"
                                         class="swatch"/>
                     <h5 class="modal-title ml-2">[[ eventInfo.title ]]</h5>
                     <button type="button" class="close" data-dismiss="modal">

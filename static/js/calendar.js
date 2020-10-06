@@ -159,7 +159,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     let arrayOfDomNodes = [ italicEl ]
                     return { domNodes: arrayOfDomNodes }
                 },
-                
                 eventTextColor: 'white',
                 eventDisplay: 'block',
                 eventDidMount: function(arg) {
@@ -212,7 +211,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (!evt.code) {
                         vm.eventInfo = evt;
                         vm.eventInfo.event = arg.event;
-                        vm.getEventColor(arg.event);
                         eventModal.show();
                     } else if (!isTouchDevice) {
                         vm.getDetails(evt.code);
@@ -479,9 +477,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.computing = true;
                 axios({
                     method: 'POST',
-                    url: Flask.url_for('calendar.set_custom_event_color', {'id': event.id}),
+                    url: Flask.url_for('calendar.update_custom_event', {'id': event.id}),
                     data: {
-                        color: color,
+                        color: this.eventInfo.backgroundColor,
                         schedule_number: this.selected_schedule
                     }
                 })
@@ -495,9 +493,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(() => {
                     this.computing = false;
                 });
-            },
-            getEventColor: function(event) {
-                this.currentEventColor = event.backgroundColor;
             },
             checkMinDay: function() {
                 if (this.eventForm.beginDay > this.eventForm.endDay || !this.eventForm.endDay) {
