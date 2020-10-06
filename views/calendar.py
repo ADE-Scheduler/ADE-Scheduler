@@ -220,15 +220,6 @@ def set_custom_event_color(id):
     }), 200
 
 
-@calendar.route('/custom_event/color/<id>', methods=['GET'])
-def get_custom_event_color(id):
-    color = session['current_schedule'].get_custom_event_color(id=id)
-
-    return jsonify({
-        'color': color,
-    }), 200
-
-
 @calendar.route('/schedule', methods=['POST'])
 def save():
     if not current_user.is_authenticated:

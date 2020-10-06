@@ -43,11 +43,19 @@ class CustomEvent(Event):
         - description: str
     :type kwargs: Any
     """
+    DEFAULT_COLOR = '#9e742f'
 
     def __init__(self, weight: Union[int, float] = 5, **kwargs: Any):
         super().__init__(**kwargs)
         self.weight = weight
-        self.color = '#9e742f'
+        self.color = CustomEvent.DEFAULT_COLOR
+
+    def __getattr__(self, item):
+        if item == 'color' and not hasattr(self, 'color'):
+            setattr(self, 'color', self.DEFAULT_COLOR)
+            return self.DEFAULT_COLOR
+        else:
+            return super().__getattr__(item)
 
     def __hash__(self) -> int:
         return super().__hash__()
@@ -135,12 +143,13 @@ class RecurringCustomEvent(CustomEvent):
     :param kwargs: parameters passed to :func:`CustomEvent` constructor
     :type kwargs: Any
     """
+    DEFAULT_COLOR = '#8a7451'
 
     def __init__(self, end_recurrence, freq, **kwargs):
         super().__init__(**kwargs)
         self.end_recurrence = get_arrow(end_recurrence)
         self.freq = [int(i) for i in freq]
-        self.color = '#8a7451'
+        self.color = RecurringCustomEvent.DEFAULT_COLOR
 
     def json(self, color=None):
 

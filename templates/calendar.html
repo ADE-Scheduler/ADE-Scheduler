@@ -71,7 +71,11 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">[[ eventInfo.title ]]</h5>
+                    <input type="color" v-on:change="setEventColor(eventInfo, currentEventColor)"
+                                        v-bind:style="{backgroundColor: currentEventColor}"
+                                        v-model="currentEventColor"
+                                        class="swatch"/>
+                    <h5 class="modal-title ml-2">[[ eventInfo.title ]]</h5>
                     <button type="button" class="close" data-dismiss="modal">
                         <span>&times;</span>
                     </button>
@@ -103,10 +107,6 @@
 
                 </div>
                 <div class="modal-footer">
-                    <input type="color" v-on:change="setEventColor(eventInfo, currentEventColor)"
-                                        v-bind:style="{backgroundColor: currentEventColor}"
-                                        v-model="currentEventColor"
-                                        class="swatch"/>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ _('Close') }}</button>
                     <button type="button" class="btn btn-danger" data-dismiss="modal" v-on:click="removeEvent(eventInfo.event)">{{ _('Delete Event') }}</button>
                 </div>

@@ -497,20 +497,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             },
             getEventColor: function(event) {
-                this.computing = true;
-                axios({
-                    method: 'GET',
-                    url: Flask.url_for('calendar.get_custom_event_color', {'id': event.id}),
-                })
-                .then(resp => {
-                    this.currentEventColor = resp.data.color;
-                })
-                .catch(err => {
-                    this.error = true;
-                })
-                .then(() => {
-                    this.computing = false;
-                });
+                this.currentEventColor = event.backgroundColor;
             },
             checkMinDay: function() {
                 if (this.eventForm.beginDay > this.eventForm.endDay || !this.eventForm.endDay) {
