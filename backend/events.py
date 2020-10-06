@@ -51,7 +51,7 @@ class CustomEvent(Event):
         self.color = CustomEvent.DEFAULT_COLOR
 
     def __getattr__(self, item):
-        if item == 'color' and not hasattr(super(self), 'color'):
+        if item == 'color' and not hasattr(super(), 'color'):
             setattr(self, 'color', self.DEFAULT_COLOR)
             return self.DEFAULT_COLOR
         else:
