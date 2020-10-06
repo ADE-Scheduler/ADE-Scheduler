@@ -103,6 +103,10 @@
 
                 </div>
                 <div class="modal-footer">
+                    <input type="color" v-on:change="setEventColor(eventInfo, currentEventColor)"
+                                        v-bind:style="{backgroundColor: currentEventColor}"
+                                        v-model="currentEventColor"
+                                        class="swatch"/>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ _('Close') }}</button>
                     <button type="button" class="btn btn-danger" data-dismiss="modal" v-on:click="removeEvent(eventInfo.event)">{{ _('Delete Event') }}</button>
                 </div>

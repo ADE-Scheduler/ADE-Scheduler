@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
             codeSearch: [],
             unsaved: false,
             currentSchedule: {},
+            currentEventColor: '',
             codeSearchDisplay: false,
             eventForm: {
                 name: '',
@@ -211,6 +212,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (!evt.code) {
                         vm.eventInfo = evt;
                         vm.eventInfo.event = arg.event;
+                        vm.getEventColor(arg.event);
                         eventModal.show();
                     } else if (!isTouchDevice) {
                         vm.getDetails(evt.code);
@@ -465,6 +467,43 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.mustResetAddEventForm = true;
                     addEventModal.hide();
                     e.target.reset();
+                })
+                .catch(err => {
+                    this.error = true;
+                })
+                .then(() => {
+                    this.computing = false;
+                });
+            },
+            setEventColor: function(event, color) {
+                this.computing = true;
+                axios({
+                    method: 'POST',
+                    url: Flask.url_for('calendar.set_custom_event_color', {'id': event.id}),
+                    data: {
+                        color: color,
+                        schedule_number: this.selected_schedule
+                    }
+                })
+                .then(resp => {
+                    this.unsaved = resp.data.unsaved;
+                    this.calendarOptions.events = resp.data.events;
+                })
+                .catch(err => {
+                    this.error = true;
+                })
+                .then(() => {
+                    this.computing = false;
+                });
+            },
+            getEventColor: function(event) {
+                this.computing = true;
+                axios({
+                    method: 'GET',
+                    url: Flask.url_for('calendar.get_custom_event_color', {'id': event.id}),
+                })
+                .then(resp => {
+                    this.currentEventColor = resp.data.color;
                 })
                 .catch(err => {
                     this.error = true;

@@ -47,6 +47,7 @@ class CustomEvent(Event):
     def __init__(self, weight: Union[int, float] = 5, **kwargs: Any):
         super().__init__(**kwargs)
         self.weight = weight
+        self.color = '#9e742f'
 
     def __hash__(self) -> int:
         return super().__hash__()
@@ -95,7 +96,7 @@ class CustomEvent(Event):
         """
         self.weight = weight
 
-    def json(self, color: str = '#9e742f') -> Dict[str, Any]:
+    def json(self, color: str = None) -> Dict[str, Any]:
         """
         Returns the event as a json-like format.
 
@@ -104,6 +105,10 @@ class CustomEvent(Event):
         :return: a dictionary containing relevant information
         :rtype: Dict[str, Any]
         """
+
+        if color is None:
+            color = self.color
+
         return {
             'id': self.uid,
             'title': self.name,
@@ -135,8 +140,13 @@ class RecurringCustomEvent(CustomEvent):
         super().__init__(**kwargs)
         self.end_recurrence = get_arrow(end_recurrence)
         self.freq = [int(i) for i in freq]
+        self.color = '#8a7451'
 
-    def json(self, color='#8a7451'):
+    def json(self, color=None):
+
+        if color is None:
+            color = self.color
+
         r = super().json(color=color)
         del r['start']
         del r['end']
