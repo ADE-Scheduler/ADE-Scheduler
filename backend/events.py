@@ -50,7 +50,7 @@ class CustomEvent(Event):
         self.weight = weight
         self.color = CustomEvent.DEFAULT_COLOR
 
-    def __getattr__(self, item):
+    def __getattribute__(self, item):
         if item == 'color' and not hasattr(self, 'color'):
             setattr(self, 'color', self.DEFAULT_COLOR)
             return self.DEFAULT_COLOR
