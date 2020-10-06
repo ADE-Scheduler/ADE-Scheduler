@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
             codeSearch: [],
             unsaved: false,
             currentSchedule: {},
+            currentEventColor: '',
             codeSearchDisplay: false,
             eventForm: {
                 name: '',
@@ -158,7 +159,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     let arrayOfDomNodes = [ italicEl ]
                     return { domNodes: arrayOfDomNodes }
                 },
-                
                 eventTextColor: 'white',
                 eventDisplay: 'block',
                 eventDidMount: function(arg) {
@@ -465,6 +465,27 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.mustResetAddEventForm = true;
                     addEventModal.hide();
                     e.target.reset();
+                })
+                .catch(err => {
+                    this.error = true;
+                })
+                .then(() => {
+                    this.computing = false;
+                });
+            },
+            updateEvent: function(event, color) {
+                this.computing = true;
+                axios({
+                    method: 'POST',
+                    url: Flask.url_for('calendar.update_custom_event', {'id': event.id}),
+                    data: {
+                        color: this.eventInfo.backgroundColor,
+                        schedule_number: this.selected_schedule
+                    }
+                })
+                .then(resp => {
+                    this.unsaved = resp.data.unsaved;
+                    this.calendarOptions.events = resp.data.events;
                 })
                 .catch(err => {
                     this.error = true;

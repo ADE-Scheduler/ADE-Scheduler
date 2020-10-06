@@ -87,20 +87,24 @@
                             <label>Description</label>
                             <textarea class="form-control" type="text" rows="4" readonly v-bind:value="eventInfo.description"></textarea>
                         </div>
-                    </div>
+                        <div v-if="eventInfo.rrule">
+                            {{ _('Recurring Event !') }}
+                            <p>{{ _('From') }} [[ eventInfo.pretty_startTime ]] {{ _('to') }} [[ eventInfo.pretty_endTime ]]</p>
+                            <p>{{ _('Start:') }} [[ eventInfo.rrule.pretty_start ]]</p>
+                            <p>{{ _('End:') }} [[ eventInfo.rrule.pretty_end ]]</p>
+                            <p>{{ _('Days of week:') }} [[ eventInfo.rrule.pretty_days ]]</p>
+                        </div>
+                        <div v-else>
+                            <p>{{ _('Start:') }} [[ eventInfo.pretty_start ]]</p>
+                            <p>{{ _('End:') }} [[ eventInfo.pretty_end ]]</p>
+                        </div>
 
-                    <div v-if="eventInfo.rrule">
-                        {{ _('Recurring Event !') }}
-                        <p>{{ _('From') }} [[ eventInfo.pretty_startTime ]] {{ _('to') }} [[ eventInfo.pretty_endTime ]]</p>
-                        <p>{{ _('Start:') }} [[ eventInfo.rrule.pretty_start ]]</p>
-                        <p>{{ _('End:') }} [[ eventInfo.rrule.pretty_end ]]</p>
-                        <p>{{ _('Days of week:') }} [[ eventInfo.rrule.pretty_days ]]</p>
+                        <label>{{ _('Color') }}</label>
+                        <input type="color" v-on:change="updateEvent(eventInfo)"
+                            v-bind:style="{backgroundColor: eventInfo.backgroundColor}"
+                            v-model="eventInfo.backgroundColor"
+                            class="swatch-custom-events ml-3"/>
                     </div>
-                    <div v-else>
-                        <p>{{ _('Start:') }} [[ eventInfo.pretty_start ]]</p>
-                        <p>{{ _('End:') }} [[ eventInfo.pretty_end ]]</p>
-                    </div>
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ _('Close') }}</button>

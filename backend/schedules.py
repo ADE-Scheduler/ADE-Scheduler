@@ -128,13 +128,55 @@ class Schedule:
         """
         if event is not None:
             self.custom_events.remove(event)
-        if id is not None:
+        elif id is not None:
             try:
                 event = next(e for e in self.custom_events if e.uid == id)
             except StopIteration:
                 raise KeyError('Cannot delete non existing custom event')
 
             self.custom_events.remove(event)
+
+    def set_custom_event_color(self, color, event: Optional[evt.CustomEvent] = None, id: Optional[str] = None):
+        """
+        Changes the color of a given custom event
+
+        :param color: the color
+        :type color: str
+        :param event: the event to remove
+        :type event: Optional[CustomEvent]
+        :param id: the unique id of the event
+        :type id: Optional[str]
+        """
+        if event is not None:
+            event.color = color
+        elif id is not None:
+            try:
+                event = next(e for e in self.custom_events if e.uid == id)
+            except StopIteration:
+                raise KeyError('Cannot delete non existing custom event')
+
+            event.color = color
+
+    def get_custom_event_color(self, event: Optional[evt.CustomEvent] = None, id: Optional[str] = None):
+        """
+        Returns the color of a given custom event
+
+        :param event: the event to remove
+        :type event: Optional[CustomEvent]
+        :param id: the unique id of the event
+        :type id: Optional[str]
+        :return: the color
+        :rtype: str
+        """
+        if event is not None:
+            return event.color
+        elif id is not None:
+            try:
+                event = next(e for e in self.custom_events if e.uid == id)
+            except StopIteration:
+                raise KeyError('Cannot delete non existing custom event')
+
+            return event.color
 
     def get_courses(self) -> List[Course]:
         """
