@@ -473,7 +473,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.computing = false;
                 });
             },
-            setEventColor: function(event, color) {
+            updateEvent: function(event, color) {
                 this.computing = true;
                 axios({
                     method: 'POST',
