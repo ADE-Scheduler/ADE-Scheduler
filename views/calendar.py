@@ -207,6 +207,19 @@ def delete_custom_event(id):
     }), 200
 
 
+@calendar.route('/custom_event/<id>', methods=['POST'])
+def update_custom_event(id):
+    color = request.json.get('color')
+    if color:
+        session['current_schedule'].set_custom_event_color(color, id=id)
+
+    session['current_schedule_modified'] = True
+    schedule_number = int(request.json.get('schedule_number'))
+    return jsonify({
+        'events': session['current_schedule'].get_events(json=True, schedule_number=schedule_number),
+    }), 200
+
+
 @calendar.route('/schedule', methods=['POST'])
 def save():
     if not current_user.is_authenticated:
