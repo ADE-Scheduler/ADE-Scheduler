@@ -13,9 +13,8 @@ fsqla.FsModels.set_db_info(db)
 
 
 class LevelAccessDenied(Exception):
-
     def __str__(self):
-        return 'The level access you used is not permitted for this function.'
+        return "The level access you used is not permitted for this function."
 
 
 class ScheduleDoNotMatchError(Exception):
@@ -28,7 +27,7 @@ class ScheduleDoNotMatchError(Exception):
         self.data_id = data_id
 
     def __str__(self):
-        return f'The schedule ID\'s do not match: database ID is {self.database_id} and given data ID is {self.data_id}.'
+        return f"The schedule ID's do not match: database ID is {self.database_id} and given data ID is {self.data_id}."
 
 
 class Role(db.Model, fsqla.FsRoleMixin):
@@ -36,7 +35,7 @@ class Role(db.Model, fsqla.FsRoleMixin):
 
 
 class User(db.Model, fsqla.FsUserMixin):
-    schedules = db.relationship('Schedule', secondary='property')
+    schedules = db.relationship("Schedule", secondary="property")
 
     def add_schedule(self, schedule, level=OWNER_LEVEL):
         if schedule not in self.schedules:
@@ -45,7 +44,7 @@ class User(db.Model, fsqla.FsUserMixin):
                 schedule.property[-1].level = level
             db.session.commit()
 
-    def remove_schedule(self, schedule: 'Schedule'):
+    def remove_schedule(self, schedule: "Schedule"):
         """
         Removes a schedule from the schedules list.
         If user owns this schedule, deletes the schedule for all users.
@@ -62,35 +61,43 @@ class User(db.Model, fsqla.FsUserMixin):
         if level == OWNER_LEVEL:
             raise LevelAccessDenied
 
-        emails = [email for email in emails if email != self.email]  # You should not add yourself as editor or viewer
+        emails = [
+            email for email in emails if email != self.email
+        ]  # You should not add yourself as editor or viewer
         users = User.query.filter(User.email.in_(emails)).all()
 
         for user in users:
             user.add_schedule(schedule, level=level)
 
     def get_schedule(self, id=None, level=None):
-        if id is not None:          # Return the schedule matching the requested ID (if any)
+        if id is not None:  # Return the schedule matching the requested ID (if any)
             for schedule in self.schedules:
                 if schedule.id == id:
                     return schedule
             return None
 
-        elif level is not None:     # Return the schedules matching the ownership level
-            return list(map(lambda y: y.schedule, filter(lambda x: x.level == level, self.property)))
+        elif level is not None:  # Return the schedules matching the ownership level
+            return list(
+                map(
+                    lambda y: y.schedule,
+                    filter(lambda x: x.level == level, self.property),
+                )
+            )
 
         else:
-            return self.schedules   # Return all of this user's schedules
+            return self.schedules  # Return all of this user's schedules
 
 
 class Schedule(db.Model):
     """
     Table used to store Schedules in the database.
     """
-    __tablename__ = 'schedule'
+
+    __tablename__ = "schedule"
     id = db.Column(db.Integer(), primary_key=True)
     data = db.Column(db.PickleType())
-    users = db.relationship('User', secondary='property')
-    link = db.relationship('Link', uselist=False, backref='schedule')
+    users = db.relationship("User", secondary="property")
+    link = db.relationship("Link", uselist=False, backref="schedule")
 
     def __init__(self, data, user=None):
         """
@@ -139,9 +146,9 @@ class Schedule(db.Model):
 
 
 class Link(db.Model):
-    __tablename__ = 'link'
+    __tablename__ = "link"
     id = db.Column(db.Integer(), primary_key=True)
-    schedule_id = db.Column(db.Integer(), db.ForeignKey('schedule.id'))
+    schedule_id = db.Column(db.Integer(), db.ForeignKey("schedule.id"))
     link = db.Column(db.String(100), unique=True, index=True)
     choice = db.Column(db.Integer(), default=0)
 
@@ -159,18 +166,22 @@ class Link(db.Model):
 
 
 class Property(db.Model):
-    __tablename__ = 'property'
+    __tablename__ = "property"
     id = db.Column(db.Integer(), primary_key=True)
-    user_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
-    schedule_id = db.Column(db.Integer(), db.ForeignKey('schedule.id'))
+    user_id = db.Column(db.Integer(), db.ForeignKey("user.id"))
+    schedule_id = db.Column(db.Integer(), db.ForeignKey("schedule.id"))
     level = db.Column(db.Integer(), default=OWNER_LEVEL)
 
-    user = db.relationship('User', backref=db.backref('property', cascade="all, delete-orphan"))
-    schedule = db.relationship('Schedule', backref=db.backref('property', cascade="all, delete-orphan"))
+    user = db.relationship(
+        "User", backref=db.backref("property", cascade="all, delete-orphan")
+    )
+    schedule = db.relationship(
+        "Schedule", backref=db.backref("property", cascade="all, delete-orphan")
+    )
 
 
 class Usage(db.Model):
-    __tablename__ = 'flask_usage'
+    __tablename__ = "flask_usage"
     id = db.Column(db.Integer, primary_key=True)
     url = db.Column(db.String(512))
     ua_browser = db.Column(db.String(16))

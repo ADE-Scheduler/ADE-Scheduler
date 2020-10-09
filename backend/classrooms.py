@@ -30,24 +30,28 @@ class Address:
         return str(self)
 
     def __str__(self) -> str:
-        location = '\n'.join(filter(None,
-                                    [
-                                        self.address[rsrc.INDEX.ADDRESS],
-                                        self.address[rsrc.INDEX.ZIP_CODE],
-                                        self.address[rsrc.INDEX.CITY],
-                                        self.address[rsrc.INDEX.COUNTRY]
-                                    ]))
+        location = "\n".join(
+            filter(
+                None,
+                [
+                    self.address[rsrc.INDEX.ADDRESS],
+                    self.address[rsrc.INDEX.ZIP_CODE],
+                    self.address[rsrc.INDEX.CITY],
+                    self.address[rsrc.INDEX.COUNTRY],
+                ],
+            )
+        )
 
         return location
 
 
 def get_geo_locations():
-    with open('static/json/geo_locations.json', 'r') as f:
+    with open("static/json/geo_locations.json", "r") as f:
         return json.load(f)
 
 
 def save_geo_locations(geo_locations: dict):
-    with open('static/json/geo_locations.json', 'w') as f:
+    with open("static/json/geo_locations.json", "w") as f:
         json.dump(geo_locations, f, sort_keys=True, indent=4)
 
 
@@ -61,22 +65,21 @@ def prettify_classrooms(classrooms: pd.DataFrame, sleep: float = 0) -> pd.DataFr
     :param classrooms: the classrooms with fields defined in backend.resources.py
     """
 
-    geolocator = Nominatim(user_agent='ADE_SCHEDULER')
+    geolocator = Nominatim(user_agent="ADE_SCHEDULER")
     geo_locations = get_geo_locations()
 
     def __pretty__(classroom: pd.Series):
         address = Address(**classroom.to_dict())
-        location = str(address).replace('\n', ', ')
+        location = str(address).replace("\n", ", ")
         name = classroom[rsrc.INDEX.NAME]
         code = classroom[rsrc.INDEX.CODE]
 
-        return pd.Series([name, code, location],
-                         index=['name', 'code', 'address'])
+        return pd.Series([name, code, location], index=["name", "code", "address"])
 
     def __geoloc__(classroom: pd.Series):
-        name = classroom['name']
-        code = classroom['code']
-        address = classroom['address']
+        name = classroom["name"]
+        code = classroom["code"]
+        address = classroom["address"]
 
         geo_location = geo_locations[address]
 
@@ -84,15 +87,18 @@ def prettify_classrooms(classrooms: pd.DataFrame, sleep: float = 0) -> pd.DataFr
             latitude = None
             longitude = None
         else:
-            latitude = geo_location['lat']
-            longitude = geo_location['lon']
+            latitude = geo_location["lat"]
+            longitude = geo_location["lon"]
 
-        return pd.Series([name, code, address, latitude, longitude],
-                         index=['name', 'code', 'address', 'latitude', 'longitude'], dtype=object)
+        return pd.Series(
+            [name, code, address, latitude, longitude],
+            index=["name", "code", "address", "latitude", "longitude"],
+            dtype=object,
+        )
 
-    classrooms = classrooms.apply(__pretty__, axis=1, result_type='expand')
+    classrooms = classrooms.apply(__pretty__, axis=1, result_type="expand")
 
-    for address in classrooms['address'].unique():
+    for address in classrooms["address"].unique():
 
         if address not in geo_locations:
 
@@ -105,7 +111,7 @@ def prettify_classrooms(classrooms: pd.DataFrame, sleep: float = 0) -> pd.DataFr
 
     save_geo_locations(geo_locations)
 
-    return classrooms.apply(__geoloc__, axis=1, result_type='expand')
+    return classrooms.apply(__geoloc__, axis=1, result_type="expand")
 
 
 # TODO: fix the fact that activities in Course class cannot be output in a shell (replace('\\', '\\\\') is not defined)
@@ -121,11 +127,12 @@ class Classroom:
 
     Its main purpose is be used with :func:`location`.
     """
+
     def __init__(self, **kwargs: Union[str, Address]):
         self.infos = kwargs
 
     def __str__(self) -> str:
-        return str(self.infos['name']) + '\n' + str(self.infos['address'])
+        return str(self.infos["name"]) + "\n" + str(self.infos["address"])
 
     def __hash__(self):
         return hash(self.infos)
@@ -134,9 +141,9 @@ class Classroom:
         return self.infos == other.infos
 
     def __repr__(self) -> str:
-        id = self.infos['id']
-        name = self.infos['name']
-        return f'{id}: {name}'
+        id = self.infos["id"]
+        name = self.infos["name"]
+        return f"{id}: {name}"
 
     def location(self) -> str:
         """
@@ -145,7 +152,7 @@ class Classroom:
         :return: the location
         :rtype: str
         """
-        return '\n'.join(filter(None, str(self).split('\n')))  # Removes blank lines
+        return "\n".join(filter(None, str(self).split("\n")))  # Removes blank lines
 
 
 def merge_classrooms(classrooms: Iterable[Classroom]) -> Classroom:
@@ -163,7 +170,11 @@ def merge_classrooms(classrooms: Iterable[Classroom]) -> Classroom:
     >>> c2 = Classroom(address2, 'classB', 2)
     >>> c3 = merge_classrooms((c1, c2))
     """
-    names = ' | '.join(classroom.infos['name'] for classroom in classrooms if classroom.infos['name'])
-    addresses = '\n'.join(str(classroom.infos['address']) for classroom in classrooms)
-    id = '|'.join(classroom.infos['id'] for classroom in classrooms if classroom.infos['id'])
+    names = " | ".join(
+        classroom.infos["name"] for classroom in classrooms if classroom.infos["name"]
+    )
+    addresses = "\n".join(str(classroom.infos["address"]) for classroom in classrooms)
+    id = "|".join(
+        classroom.infos["id"] for classroom in classrooms if classroom.infos["id"]
+    )
     return Classroom(name=names, address=addresses, id=id)

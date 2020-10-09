@@ -1,9 +1,9 @@
 from flask import Blueprint, render_template
 
 
-help = Blueprint('help', __name__, static_folder='../static')
+help = Blueprint("help", __name__, static_folder="../static")
 
 
-@help.route('/')
+@help.route("/")
 def index():
-    return render_template('help.html')
+    return render_template("help.html")

@@ -49,7 +49,13 @@ class Server(Redis):
         """
         super().shutdown(save=True)
 
-    def set_value(self, key: str, value: Any, expire_in: Optional[Dict[str, int]] = None, hmap: bool = False):
+    def set_value(
+        self,
+        key: str,
+        value: Any,
+        expire_in: Optional[Dict[str, int]] = None,
+        hmap: bool = False,
+    ):
         """
         Store a pair key / value in the server, with an optional expiration time.
 
@@ -116,7 +122,9 @@ class Server(Redis):
             else:
                 return None
 
-    def get_multiple_values(self, *keys, prefix: Optional[str] = '', **kwargs) -> Tuple[List[Any], List[str]]:
+    def get_multiple_values(
+        self, *keys, prefix: Optional[str] = "", **kwargs
+    ) -> Tuple[List[Any], List[str]]:
         """
         Returns all the values corresponding the given keys. If key does not match any value, the key is returned
         explicitly tell that it is missing. An optional prefix can be added to every key.
@@ -142,21 +150,3 @@ class Server(Redis):
                 keys_not_found.append(key)
 
         return values, keys_not_found
-
-
-if __name__ == '__main__':
-    s = Server(host='localhost', port=6379)
-
-    print(s.is_running())
-
-    x = {1: 4, "a": [1, 2, 3]}
-
-    print(dumps(x))
-
-    s.set_value('a', dumps(x))
-
-    yb = s.get_value('a')
-
-    print(yb)
-
-    print(loads(yb))
