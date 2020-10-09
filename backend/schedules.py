@@ -10,18 +10,18 @@ from flask_babelex import _
 
 import backend.events as evt
 
-DEFAULT_SCHEDULE_NAME = _('New schedule')
+DEFAULT_SCHEDULE_NAME = _("New schedule")
 COLOR_PALETTE = [
-    '#bf616a',
-    '#2e3440',
-    '#a3be8c',
-    '#5e81ac',
-    '#ebcb8b',
-    '#88c0d0',
-    '#d08770',
-    '#b48ead',
-    '#4c566a',
-    '#81a1c1',
+    "#bf616a",
+    "#2e3440",
+    "#a3be8c",
+    "#5e81ac",
+    "#ebcb8b",
+    "#88c0d0",
+    "#d08770",
+    "#b48ead",
+    "#4c566a",
+    "#81a1c1",
 ]
 
 
@@ -43,7 +43,12 @@ class Schedule:
                This parameter is automatically set when the schedule is saved for the first time.
     """
 
-    def __init__(self, project_id: SupportsInt, schedule_id: int = None, label: str = DEFAULT_SCHEDULE_NAME):
+    def __init__(
+        self,
+        project_id: SupportsInt,
+        schedule_id: int = None,
+        label: str = DEFAULT_SCHEDULE_NAME,
+    ):
         self.id = schedule_id
         self.project_id = project_id
         self.label = label
@@ -116,7 +121,9 @@ class Schedule:
         """
         self.custom_events.append(event)
 
-    def remove_custom_event(self, event: Optional[evt.CustomEvent] = None, id: Optional[str] = None):
+    def remove_custom_event(
+        self, event: Optional[evt.CustomEvent] = None, id: Optional[str] = None
+    ):
         """
         Removes a custom event from the schedule.
         If this event is present multiple times in the schedule, only delete the first occurrence.
@@ -132,11 +139,13 @@ class Schedule:
             try:
                 event = next(e for e in self.custom_events if e.uid == id)
             except StopIteration:
-                raise KeyError('Cannot delete non existing custom event')
+                raise KeyError("Cannot delete non existing custom event")
 
             self.custom_events.remove(event)
 
-    def set_custom_event_color(self, color, event: Optional[evt.CustomEvent] = None, id: Optional[str] = None):
+    def set_custom_event_color(
+        self, color, event: Optional[evt.CustomEvent] = None, id: Optional[str] = None
+    ):
         """
         Changes the color of a given custom event
 
@@ -153,11 +162,13 @@ class Schedule:
             try:
                 event = next(e for e in self.custom_events if e.uid == id)
             except StopIteration:
-                raise KeyError('Cannot delete non existing custom event')
+                raise KeyError("Cannot delete non existing custom event")
 
             event.color = color
 
-    def get_custom_event_color(self, event: Optional[evt.CustomEvent] = None, id: Optional[str] = None):
+    def get_custom_event_color(
+        self, event: Optional[evt.CustomEvent] = None, id: Optional[str] = None
+    ):
         """
         Returns the color of a given custom event
 
@@ -174,7 +185,7 @@ class Schedule:
             try:
                 event = next(e for e in self.custom_events if e.uid == id)
             except StopIteration:
-                raise KeyError('Cannot delete non existing custom event')
+                raise KeyError("Cannot delete non existing custom event")
 
             return event.color
 
@@ -185,10 +196,12 @@ class Schedule:
         :return: the courses
         :rtype: List[Course]
         """
-        mng = app.config['MANAGER']
+        mng = app.config["MANAGER"]
         return mng.get_courses(*self.codes, project_id=self.project_id)
 
-    def get_events(self, json: bool = False, schedule_number: int = 0) -> List[evt.Event]:
+    def get_events(
+        self, json: bool = False, schedule_number: int = 0
+    ) -> List[evt.Event]:
         """
         Extracts all the events matching ids in the filtered_subcodes list.
 
@@ -212,7 +225,9 @@ class Schedule:
         for i, course in enumerate(courses):
             course_events = course.get_events(view=views[course.code], reverse=True)
             if json:
-                events.extend([e.json(self.color_palette[i % n]) for e in course_events])
+                events.extend(
+                    [e.json(self.color_palette[i % n]) for e in course_events]
+                )
             else:
                 events.extend(course_events)
 
@@ -248,7 +263,9 @@ class Schedule:
         """
         return str(Calendar(events=self.get_events(schedule_number=schedule_number)))
 
-    def compute_best(self, n_best: int = 5, safe_compute: bool = True) -> List[Iterable[evt.CustomEvent]]:
+    def compute_best(
+        self, n_best: int = 5, safe_compute: bool = True
+    ) -> List[Iterable[evt.CustomEvent]]:
         """
         Computes best schedules trying to minimize conflicts selecting, for each type of event, one event.
 
@@ -266,38 +283,46 @@ class Schedule:
 
         # Reset the best schedules
         # TODO: pas sûr que c'est la meilleure manière de faire...
-        self.best_schedules = [defaultdict(default_dict_any_to_set) for _ in range(n_best)]
-        best = [[] for _ in range(n_best)]  # We create an empty list which will contain best schedules
+        self.best_schedules = [
+            defaultdict(default_dict_any_to_set) for _ in range(n_best)
+        ]
+        best = [
+            [] for _ in range(n_best)
+        ]  # We create an empty list which will contain best schedules
 
         # Forbidden time slots = events that we cannot move and that we want to minimize conflicts with them
         fts = self.custom_events
 
         # Merge courses applying reverse view on all of them, then get all the activities
-        df = merge_courses(courses, views=self.filtered_subcodes, reverse=True).get_activities()
+        df = merge_courses(
+            courses, views=self.filtered_subcodes, reverse=True
+        ).get_activities()
 
         # We only take care of events which are not of type EvenOTHER
-        valid = df.index.get_level_values('type') != evt.EventOTHER
+        valid = df.index.get_level_values("type") != evt.EventOTHER
         df_main, df_other = df[valid], df[~valid]
 
         max_bests_found = 1  # Number of best schedules found (will take the maximum value out of all weeks)
 
-        for week, week_data in df_main.groupby('week'):
-            if safe_compute:  # We remove events from same course that happen at the same time
-                for _, data in week_data.groupby(level=['code', 'type']):
+        for week, week_data in df_main.groupby("week"):
+            if (
+                safe_compute
+            ):  # We remove events from same course that happen at the same time
+                for _, data in week_data.groupby(level=["code", "type"]):
                     tmp = deque()  # Better for appending
                     # For each event in a given course, for a given type...
                     for index, row in data.iterrows():
-                        e = row['event']
+                        e = row["event"]
                         r = repeat(e)
                         # If that event overlaps with any of the events in tmp
                         if any(starmap(operator.xor, zip(tmp, r))):
-                            week_data.drop(index=index, inplace=True, errors='ignore')
+                            week_data.drop(index=index, inplace=True, errors="ignore")
                         else:
                             # We append to left because last event is most likely to conflict (if sorted)
                             tmp.appendleft(e)
 
             # First, each event is considered to be filtered out.
-            for event in week_data['event']:
+            for event in week_data["event"]:
                 for i in range(n_best):
                     self.best_schedules[i][event.code][week].add(event.id)
 
@@ -307,13 +332,17 @@ class Schedule:
                     self.best_schedules[i][event_code][week].update(filtered_ids)
             # Events present in the best schedule will be later removed from the filter
 
-            events = [[data_id.values for _, data_id in data.groupby(level='id')]
-                      for _, data in week_data.groupby(level=['code', 'type'])['event']]
+            events = [
+                [data_id.values for _, data_id in data.groupby(level="id")]
+                for _, data in week_data.groupby(level=["code", "type"])["event"]
+            ]
 
             # Generate all possible schedules for a given week
             permutations = product(*events)
 
-            best_weeks = nsmallest(n_best, permutations, key=lambda f: evaluate_week(f, fts))
+            best_weeks = nsmallest(
+                n_best, permutations, key=lambda f: evaluate_week(f, fts)
+            )
 
             n = len(best_weeks)  # Sometimes n < n_best
 
@@ -337,14 +366,16 @@ class Schedule:
         del best[max_bests_found:]
         del self.best_schedules[max_bests_found:]
 
-        other = df_other['event'].values.flatten().tolist()
+        other = df_other["event"].values.flatten().tolist()
         if other:
             [schedule.extend(other) for schedule in best]
 
         return best
 
 
-def evaluate_week(week: Iterable[Iterable[evt.CustomEvent]], fts: Iterable[evt.CustomEvent] = None) -> float:
+def evaluate_week(
+    week: Iterable[Iterable[evt.CustomEvent]], fts: Iterable[evt.CustomEvent] = None
+) -> float:
     """
     Evaluates how much a given week contains conflicts.
 
@@ -359,4 +390,6 @@ def evaluate_week(week: Iterable[Iterable[evt.CustomEvent]], fts: Iterable[evt.C
 
     if fts is not None:
         week = sorted(week + fts)  # We additionally sort the fts, within the week
-    return sum(starmap(operator.mul, zip(week[:-1], week[1:])))  # We sum all the overlaps
+    return sum(
+        starmap(operator.mul, zip(week[:-1], week[1:]))
+    )  # We sum all the overlaps

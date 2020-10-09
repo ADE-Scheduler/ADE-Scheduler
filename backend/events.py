@@ -10,15 +10,15 @@ from typing import Type, Tuple, Iterable, Optional, Union, Any, Dict
 from flask_babelex import _
 
 # We need to set the timezone
-TZ = timezone('Europe/Brussels')
-COURSE_REGEX = '^([A-Z]+[0-9]+)'
-PRETTY_HOUR_FORMAT = 'HH:mm'
-PRETTY_DATE_FORMAT = 'DD/MM/YY'
-PRETTY_FORMAT = 'HH:mm - DD/MM/YY'
+TZ = timezone("Europe/Brussels")
+COURSE_REGEX = "^([A-Z]+[0-9]+)"
+PRETTY_HOUR_FORMAT = "HH:mm"
+PRETTY_DATE_FORMAT = "DD/MM/YY"
+PRETTY_FORMAT = "HH:mm - DD/MM/YY"
 
 
 def pretty_hour_formatter(arrow) -> str:
-    return arrow.format(PRETTY_HOUR_FORMAT).replace(':', 'h')
+    return arrow.format(PRETTY_HOUR_FORMAT).replace(":", "h")
 
 
 def pretty_date_formatter(arrow) -> str:
@@ -26,7 +26,7 @@ def pretty_date_formatter(arrow) -> str:
 
 
 def pretty_formatter(arrow) -> str:
-    return f'{pretty_hour_formatter(arrow)} - {pretty_date_formatter(arrow)}'
+    return f"{pretty_hour_formatter(arrow)} - {pretty_date_formatter(arrow)}"
 
 
 class CustomEvent(Event):
@@ -43,7 +43,8 @@ class CustomEvent(Event):
         - description: str
     :type kwargs: Any
     """
-    DEFAULT_COLOR = '#9e742f'
+
+    DEFAULT_COLOR = "#9e742f"
 
     def __init__(self, weight: Union[int, float] = 5, **kwargs: Any):
         super().__init__(**kwargs)
@@ -51,8 +52,8 @@ class CustomEvent(Event):
         self.color = CustomEvent.DEFAULT_COLOR
 
     def __getattr__(self, item):
-        if item == 'color' and not hasattr(super(), 'color'):
-            setattr(self, 'color', self.DEFAULT_COLOR)
+        if item == "color" and not hasattr(super(), "color"):
+            setattr(self, "color", self.DEFAULT_COLOR)
             return self.DEFAULT_COLOR
         else:
             return super().__getattr__(item)
@@ -60,7 +61,7 @@ class CustomEvent(Event):
     def __hash__(self) -> int:
         return super().__hash__()
 
-    def intersects(self, other: 'CustomEvent') -> bool:
+    def intersects(self, other: "CustomEvent") -> bool:
         """
         Returns whether two events intersect each other.
 
@@ -69,11 +70,13 @@ class CustomEvent(Event):
         :return: true if both events intersect
         :rtype: bool
         """
-        return self.end > other.begin and other.end > self.begin  # not(a or b) = not(a) and not(b)
+        return (
+            self.end > other.begin and other.end > self.begin
+        )  # not(a or b) = not(a) and not(b)
 
     __xor__ = intersects
 
-    def overlap(self, other: 'CustomEvent') -> float:
+    def overlap(self, other: "CustomEvent") -> float:
         """
         If both events intersect, returns the product of the weights.
 
@@ -118,17 +121,17 @@ class CustomEvent(Event):
             color = self.color
 
         return {
-            'id': self.uid,
-            'title': self.name,
-            'start': str(self.begin),
-            'end': str(self.end),
-            'location': self.location,
-            'description': self.description,
-            'editable': False,
-            'backgroundColor': color,
-            'borderColor': color,
-            'pretty_start': pretty_formatter(self.begin),
-            'pretty_end': pretty_formatter(self.end)
+            "id": self.uid,
+            "title": self.name,
+            "start": str(self.begin),
+            "end": str(self.end),
+            "location": self.location,
+            "description": self.description,
+            "editable": False,
+            "backgroundColor": color,
+            "borderColor": color,
+            "pretty_start": pretty_formatter(self.begin),
+            "pretty_end": pretty_formatter(self.end),
         }
 
 
@@ -143,7 +146,8 @@ class RecurringCustomEvent(CustomEvent):
     :param kwargs: parameters passed to :func:`CustomEvent` constructor
     :type kwargs: Any
     """
-    DEFAULT_COLOR = '#8a7451'
+
+    DEFAULT_COLOR = "#8a7451"
 
     def __init__(self, end_recurrence, freq, **kwargs):
         super().__init__(**kwargs)
@@ -157,45 +161,54 @@ class RecurringCustomEvent(CustomEvent):
             color = self.color
 
         r = super().json(color=color)
-        del r['start']
-        del r['end']
-        DAYS = [_('Sunday'), _('Monday'), _('Tuesday'), _('Wednesday'), _('Thursday'), _('Friday'), _('Saturday')]
+        del r["start"]
+        del r["end"]
+        DAYS = [
+            _("Sunday"),
+            _("Monday"),
+            _("Tuesday"),
+            _("Wednesday"),
+            _("Thursday"),
+            _("Friday"),
+            _("Saturday"),
+        ]
 
         self.freq.sort()
-        
+
         r.update(
             {
-                'daysOfWeek': self.freq,
-                'startTime': self.begin.format('HH:mm'),
-                'endTime': self.end.format('HH:mm'),
-                'pretty_startTime': pretty_hour_formatter(self.begin),
-                'pretty_endTime': pretty_hour_formatter(self.end),
-                'startRecur': self.begin.format(),
-                'endRecur': self.end_recurrence.format(),
-                'rrule': {
-                    'days': [DAYS[i] for i in self.freq],
-                    'start': str(self.begin),
-                    'end': str(self.end),
-                    'pretty_days': ', '.join(DAYS[i] for i in self.freq),
-                    'pretty_start': f'{DAYS[(self.begin.weekday() + 1) % 7]} {self.begin.format(PRETTY_DATE_FORMAT)}',
-                    'pretty_end': f'{DAYS[(self.end_recurrence.weekday() + 1) % 7]} {self.end_recurrence.format(PRETTY_DATE_FORMAT)}'
-                }
-
+                "daysOfWeek": self.freq,
+                "startTime": self.begin.format("HH:mm"),
+                "endTime": self.end.format("HH:mm"),
+                "pretty_startTime": pretty_hour_formatter(self.begin),
+                "pretty_endTime": pretty_hour_formatter(self.end),
+                "startRecur": self.begin.format(),
+                "endRecur": self.end_recurrence.format(),
+                "rrule": {
+                    "days": [DAYS[i] for i in self.freq],
+                    "start": str(self.begin),
+                    "end": str(self.end),
+                    "pretty_days": ", ".join(DAYS[i] for i in self.freq),
+                    "pretty_start": f"{DAYS[(self.begin.weekday() + 1) % 7]} {self.begin.format(PRETTY_DATE_FORMAT)}",
+                    "pretty_end": f"{DAYS[(self.end_recurrence.weekday() + 1) % 7]} {self.end_recurrence.format(PRETTY_DATE_FORMAT)}",
+                },
             }
         )
 
         return r
 
     def __str__(self):
-        days = ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA']
-        rrule = f'RRULE:FREQ=WEEKLY;' \
-                f'INTERVAL=1;' \
-                f'BYDAY={",".join([days[i] for i in self.freq])};' \
-                f'UNTIL={arrow_to_iso(self.end_recurrence)} '
+        days = ["SU", "MO", "TU", "WE", "TH", "FR", "SA"]
+        rrule = (
+            f"RRULE:FREQ=WEEKLY;"
+            f"INTERVAL=1;"
+            f'BYDAY={",".join([days[i] for i in self.freq])};'
+            f"UNTIL={arrow_to_iso(self.end_recurrence)} "
+        )
         s = super().__str__()
         lines = s.splitlines()
         lines.insert(-1, rrule)
-        return '\n'.join(lines)
+        return "\n".join(lines)
 
 
 class AcademicalEvent(CustomEvent):
@@ -224,38 +237,59 @@ class AcademicalEvent(CustomEvent):
     :type prefix: Optional[str]
     """
 
-    def __init__(self, name: str, begin: datetime, end: datetime, professor: Professor,
-                 classrooms: Optional[Iterable[Classroom]] = None, id: Optional[str] = None,
-                 weight: Union[int, float] = 5,
-                 code: Optional[str] = None, prefix: Optional[str] = None):
-        super().__init__(name=name, location=merge_classrooms(classrooms).location(),
-                         description=str(professor), begin=begin, end=end, weight=weight)
+    def __init__(
+        self,
+        name: str,
+        begin: datetime,
+        end: datetime,
+        professor: Professor,
+        classrooms: Optional[Iterable[Classroom]] = None,
+        id: Optional[str] = None,
+        weight: Union[int, float] = 5,
+        code: Optional[str] = None,
+        prefix: Optional[str] = None,
+    ):
+        super().__init__(
+            name=name,
+            location=merge_classrooms(classrooms).location(),
+            description=str(professor),
+            begin=begin,
+            end=end,
+            weight=weight,
+        )
         # TODO: merge_classrooms fait du gros caca ici
-        self.id = f'{prefix}{id}'
+        self.id = f"{prefix}{id}"
         self.code = code
         self.classrooms = classrooms
-        self.description = f'{self.name}\n'\
-                           f'{str(self.duration)}\n'\
-                           f'{self.description}'
+        self.description = (
+            f"{self.name}\n" f"{str(self.duration)}\n" f"{self.description}"
+        )
 
         if name is None or len(name) == 0:  # Fix for special events with no name
             self.name = id
         else:
-            self.name = f'{prefix}{self.name}'
+            self.name = f"{prefix}{self.name}"
 
     def __hash__(self) -> int:
         return super().__hash__()
 
     def __repr__(self) -> str:
-        tmp = self.id + ':' if self.id is not None else 'FTS:'
-        return tmp + self.begin.strftime('%d/%m - %Hh%M') + ' to ' + self.end.strftime('%Hh%M')
+        tmp = self.id + ":" if self.id is not None else "FTS:"
+        return (
+            tmp
+            + self.begin.strftime("%d/%m - %Hh%M")
+            + " to "
+            + self.end.strftime("%Hh%M")
+        )
 
-    def __eq__(self, other: 'AcademicalEvent') -> bool:
-        return (self.get_id() == other.get_id()
-                and self.begin == other.begin
-                and self.duration == other.duration)
+    def __eq__(self, other: "AcademicalEvent") -> bool:
+        return (
+            self.get_id() == other.get_id()
+            and self.begin == other.begin
+            and self.duration == other.duration
+        )
 
-    def __ne__(self, other: 'AcademicalEvent') -> bool:
+    def __ne__(self, other: "AcademicalEvent") -> bool:
         return not self.__eq__(other)
 
     def get_id(self) -> str:
@@ -267,52 +301,48 @@ class AcademicalEvent(CustomEvent):
         """
         return self.id
 
-    def json(self, color=''):
+    def json(self, color=""):
         r = super().json(color=color)
-        r.update(
-            {
-                'title': self.id,
-                'description': self.description,
-                'code': self.code
-            }
-        )
+        r.update({"title": self.id, "description": self.description, "code": self.code})
 
         # Remove empty lines
-        r['description'] = '\n'.join(line for line in r['description'].splitlines() if line)
+        r["description"] = "\n".join(
+            line for line in r["description"].splitlines() if line
+        )
 
         return r
 
 
 class EventCM(AcademicalEvent):
-    PREFIX = 'CM: '
+    PREFIX = "CM: "
 
     def __init__(self, **kwargs):
         super().__init__(prefix=EventCM.PREFIX, **kwargs)
 
 
 class EventTP(AcademicalEvent):
-    PREFIX = 'TP: '
+    PREFIX = "TP: "
 
     def __init__(self, **kwargs):
         super().__init__(prefix=EventTP.PREFIX, **kwargs)
 
 
 class EventEXAM(AcademicalEvent):
-    PREFIX = 'EXAM: '
+    PREFIX = "EXAM: "
 
     def __init__(self, **kwargs):
         super().__init__(prefix=EventEXAM.PREFIX, **kwargs)
 
 
 class EventORAL(AcademicalEvent):
-    PREFIX = 'ORAL: '
+    PREFIX = "ORAL: "
 
     def __init__(self, **kwargs):
         super().__init__(prefix=EventORAL.PREFIX, **kwargs)
 
 
 class EventOTHER(AcademicalEvent):
-    PREFIX = 'OTHER: '
+    PREFIX = "OTHER: "
 
     def __init__(self, **kwargs):
         super().__init__(prefix=EventOTHER.PREFIX, **kwargs)
@@ -331,7 +361,7 @@ def extract_code(course_id: str) -> str:
     if s:
         return s.group(1)
     else:
-        return ''
+        return ""
 
 
 def extract_type(course_type: str, course_id: str) -> Type[AcademicalEvent]:
@@ -348,24 +378,27 @@ def extract_type(course_type: str, course_id: str) -> Type[AcademicalEvent]:
     """
     # We first try to detect the type with the ID regex
 
-    if re.search(COURSE_REGEX + r'\-', course_id, re.IGNORECASE):
+    if re.search(COURSE_REGEX + r"\-", course_id, re.IGNORECASE):
         return EventCM
     elif re.search(COURSE_REGEX + "_", course_id, re.IGNORECASE):
         return EventTP
-    elif re.search(COURSE_REGEX + "=E", course_id, re.IGNORECASE) or \
-            re.search(COURSE_REGEX + "=P", course_id, re.IGNORECASE):
+    elif re.search(COURSE_REGEX + "=E", course_id, re.IGNORECASE) or re.search(
+        COURSE_REGEX + "=P", course_id, re.IGNORECASE
+    ):
         return EventEXAM
     elif re.search(COURSE_REGEX + "=O", course_id, re.IGNORECASE):
         return EventORAL
 
     # If it fails, we look at the given type (there are some mistakes in the data from ADE, not always trustworthy)
-    elif course_type == 'Cours magistral':
+    elif course_type == "Cours magistral":
         return EventCM
-    elif course_type == 'TP' or 'TD':
+    elif course_type == "TP" or "TD":
         return EventTP
-    elif course_type == 'Examen écrit' or course_type == 'Test / Interrogation / Partiel':
+    elif (
+        course_type == "Examen écrit" or course_type == "Test / Interrogation / Partiel"
+    ):
         return EventEXAM
-    elif course_type == 'Examen oral':
+    elif course_type == "Examen oral":
         return EventORAL
 
     # The search failed, return the "Other" type
@@ -386,8 +419,8 @@ def extract_datetime(date: str, start: str, end: str) -> Tuple[datetime, datetim
     :return: datetime objects (start date, end date)
     :rtype: Tuple[datetime, datetime]
     """
-    t0 = datetime.strptime(date + '-' + start, '%d/%m/%Y-%H:%M').astimezone(TZ)
-    t1 = datetime.strptime(date + '-' + end, '%d/%m/%Y-%H:%M').astimezone(TZ)
+    t0 = datetime.strptime(date + "-" + start, "%d/%m/%Y-%H:%M").astimezone(TZ)
+    t1 = datetime.strptime(date + "-" + end, "%d/%m/%Y-%H:%M").astimezone(TZ)
     if t0 < t1:
         return t0, t1
     else:

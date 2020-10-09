@@ -19,7 +19,7 @@ class ScheduleNotFountError(Exception):
     """
 
     def __str__(self):
-        return 'The given schedule is somehow not saved in our database...'
+        return "The given schedule is somehow not saved in our database..."
 
 
 class Manager:
@@ -42,7 +42,9 @@ class Manager:
         self.client = client
         self.database = database
 
-    def get_courses(self, *codes: str, project_id: SupportsInt = None) -> List[crs.Course]:
+    def get_courses(
+        self, *codes: str, project_id: SupportsInt = None
+    ) -> List[crs.Course]:
         """
         Returns the courses with given codes as a list.
 
@@ -57,26 +59,36 @@ class Manager:
             project_id = self.get_default_project_id()
 
         # Fetch from the server
-        prefix = f'[project_id={project_id}]'
-        courses, codes_not_found = self.server.get_multiple_values(*codes, prefix=prefix)
+        prefix = f"[project_id={project_id}]"
+        courses, codes_not_found = self.server.get_multiple_values(
+            *codes, prefix=prefix
+        )
 
         # Fetch from the api
         if codes_not_found:
             for code_not_found in codes_not_found:
-                resource_ids = self.get_resource_ids(code_not_found, project_id=project_id)
-                course_not_found = ade.response_to_courses(self.client.get_activities(resource_ids, project_id))
-                self.server.set_value(prefix+code_not_found, course_not_found, expire_in={'hours': 3})
+                resource_ids = self.get_resource_ids(
+                    code_not_found, project_id=project_id
+                )
+                course_not_found = ade.response_to_courses(
+                    self.client.get_activities(resource_ids, project_id)
+                )
+                self.server.set_value(
+                    prefix + code_not_found, course_not_found, expire_in={"hours": 3}
+                )
                 courses += course_not_found
 
         return courses
 
-    def get_events_in_classroom(self, classroom_id: str, project_id: SupportsInt = None) -> List[evt.AcademicalEvent]:
+    def get_events_in_classroom(
+        self, classroom_id: str, project_id: SupportsInt = None
+    ) -> List[evt.AcademicalEvent]:
 
         if project_id is None:
             project_id = self.get_default_project_id()
 
         # Fetch from the server
-        key = f'[EVENTS_CLASSROOM_ID={classroom_id}, project_id={project_id}]'
+        key = f"[EVENTS_CLASSROOM_ID={classroom_id}, project_id={project_id}]"
         events = self.server.get_value(key)
 
         if events is not None:
@@ -84,12 +96,14 @@ class Manager:
 
         def filter_func(event: evt.AcademicalEvent):
             for classroom in event.classrooms:
-                if classroom_id == classroom.infos['id']:
+                if classroom_id == classroom.infos["id"]:
                     return True
             return False
 
-        events = ade.response_to_events(self.client.get_activities([classroom_id], project_id), filter_func)
-        self.server.set_value(key, events, expire_in={'hours': 3})
+        events = ade.response_to_events(
+            self.client.get_activities([classroom_id], project_id), filter_func
+        )
+        self.server.set_value(key, events, expire_in={"hours": 3})
         return events
 
     def get_resources(self, project_id: SupportsInt = None) -> pd.DataFrame:
@@ -104,7 +118,7 @@ class Manager:
         if project_id is None:
             project_id = self.get_default_project_id()
 
-        key = f'[RESOURCES,project_id={project_id}]'
+        key = f"[RESOURCES,project_id={project_id}]"
 
         if not self.server.exists(key):
             self.update_resources()
@@ -115,16 +129,16 @@ class Manager:
         """
         Updates the resources contained in the server for all project ids.
         """
-        key = '[PROJECT_IDs]'
+        key = "[PROJECT_IDs]"
         if not self.server.exists(key):
             self.update_project_ids()
 
         for value in self.server.hgetall(key).values():
             value = value.decode()
-            key = f'[RESOURCES,project_id={value}]'
+            key = f"[RESOURCES,project_id={value}]"
 
             resources = ade.response_to_resources(self.client.get_resources(value))
-            self.server.set_value(key, resources, expire_in={'hours': 25})
+            self.server.set_value(key, resources, expire_in={"hours": 25})
 
     def get_course_resources(self, project_id: SupportsInt = None) -> pd.DataFrame:
         """
@@ -138,7 +152,7 @@ class Manager:
         if project_id is None:
             project_id = self.get_default_project_id()
 
-        key = f'[COURSE_RESOURCES,project_id={project_id}]'
+        key = f"[COURSE_RESOURCES,project_id={project_id}]"
 
         if not self.server.exists(key):
             self.update_course_resources()
@@ -149,34 +163,44 @@ class Manager:
         """
         Updates the course resources contained in the server for all project ids.
         """
-        key = '[PROJECT_IDs]'
+        key = "[PROJECT_IDs]"
         if not self.server.exists(key):
             self.update_project_ids()
 
         for value in self.server.hgetall(key).values():
             value = value.decode()
-            key = f'[COURSE_RESOURCES,project_id={value}]'
+            key = f"[COURSE_RESOURCES,project_id={value}]"
 
             resources = self.get_resources(project_id=value)
             resource_types = resources[rsrc.INDEX.TYPE]
-            index = (resource_types == rsrc.TYPES.COURSE) | (resource_types == rsrc.TYPES.COURSE_COMBO)
+            index = (resource_types == rsrc.TYPES.COURSE) | (
+                resource_types == rsrc.TYPES.COURSE_COMBO
+            )
             course_resources = resources[index].copy()
             code = rsrc.INDEX.CODE
             course_resources[code] = course_resources[code].apply(str.upper)
-            self.server.set_value(key, course_resources, expire_in={'hours': 25})
+            self.server.set_value(key, course_resources, expire_in={"hours": 25})
 
-    def get_codes_matching(self, pattern: str, project_id: SupportsInt = None) -> List[str]:
+    def get_codes_matching(
+        self, pattern: str, project_id: SupportsInt = None
+    ) -> List[str]:
         # Actually returns names matchings :)
         course_resources = self.get_course_resources(project_id)
-        matching_code = course_resources[rsrc.INDEX.NAME].str.contains(pattern, case=False, regex=False)
+        matching_code = course_resources[rsrc.INDEX.NAME].str.contains(
+            pattern, case=False, regex=False
+        )
         return course_resources[matching_code][rsrc.INDEX.NAME].to_list()
 
-    def get_classrooms(self, project_id: SupportsInt = None,
-                       search_dict: Dict[str, str] = None, return_json: bool = False):
+    def get_classrooms(
+        self,
+        project_id: SupportsInt = None,
+        search_dict: Dict[str, str] = None,
+        return_json: bool = False,
+    ):
         if project_id is None:
             project_id = self.get_default_project_id()
 
-        key = f'[CLASSROOMS,project_id={project_id}]'
+        key = f"[CLASSROOMS,project_id={project_id}]"
 
         if not self.server.exists(key):
             self.update_classrooms()
@@ -189,7 +213,9 @@ class Manager:
                 classrooms = classrooms[contains]
 
         if return_json:
-            return list(classrooms.reset_index(level=0).to_dict(orient='index').values())
+            return list(
+                classrooms.reset_index(level=0).to_dict(orient="index").values()
+            )
         else:
             return classrooms
 
@@ -197,13 +223,13 @@ class Manager:
         """
         Updates the classrooms contained in the server for all project ids.
         """
-        key = '[PROJECT_IDs]'
+        key = "[PROJECT_IDs]"
         if not self.server.exists(key):
             self.update_project_ids()
 
         for value in self.server.hgetall(key).values():
             value = value.decode()
-            key = f'[CLASSROOMS,project_id={value}]'
+            key = f"[CLASSROOMS,project_id={value}]"
 
             resources = self.get_resources(project_id=value)
 
@@ -211,14 +237,16 @@ class Manager:
             classrooms = resources[classrooms_index]
 
             for drop_index in drop_empty:
-                not_empty = classrooms[drop_index] != ''
+                not_empty = classrooms[drop_index] != ""
                 classrooms = classrooms[not_empty]
 
             classrooms = clrm.prettify_classrooms(classrooms)
 
-            self.server.set_value(key, classrooms, expire_in={'hours': 25})
+            self.server.set_value(key, classrooms, expire_in={"hours": 25})
 
-    def get_resource_ids(self, *codes: str, project_id: SupportsInt = None) -> Iterator[str]:
+    def get_resource_ids(
+        self, *codes: str, project_id: SupportsInt = None
+    ) -> Iterator[str]:
         """
         Returns the resource ids of each code.
 
@@ -232,7 +260,7 @@ class Manager:
         if project_id is None:
             project_id = self.get_default_project_id()
 
-        key = f'[RESOURCE_IDs,project_id={project_id}]'
+        key = f"[RESOURCE_IDs,project_id={project_id}]"
         if not self.server.exists(key):
             self.update_resource_ids()
         return map(lambda x: x.decode(), filter(None, self.server.hmget(key, codes)))
@@ -241,15 +269,17 @@ class Manager:
         """
         Updates the resource ids contained in the server for all project ids.
         """
-        key = '[PROJECT_IDs]'
+        key = "[PROJECT_IDs]"
         if not self.server.exists(key):
             self.update_project_ids()
 
         for value in self.server.hgetall(key).values():
             value = value.decode()
-            key = f'[RESOURCE_IDs,project_id={value}]'
-            resource_ids = ade.response_to_resource_ids(self.client.get_resource_ids(value))
-            self.server.set_value(key, resource_ids, expire_in={'hours': 25}, hmap=True)
+            key = f"[RESOURCE_IDs,project_id={value}]"
+            resource_ids = ade.response_to_resource_ids(
+                self.client.get_resource_ids(value)
+            )
+            self.server.set_value(key, resource_ids, expire_in={"hours": 25}, hmap=True)
 
     def code_exists(self, code, project_id: SupportsInt = None) -> bool:
         """
@@ -258,13 +288,15 @@ class Manager:
         if project_id is None:
             project_id = self.get_default_project_id()
 
-        hmap = f'[RESOURCE_IDs,project_id={project_id}]'
+        hmap = f"[RESOURCE_IDs,project_id={project_id}]"
         if not self.server.contains(hmap):
             self.update_resource_ids()
 
         return self.server.hexists(hmap, code)
 
-    def get_project_ids(self, year: Optional[str] = None) -> Union[List[Dict[str, str]], str, None]:
+    def get_project_ids(
+        self, year: Optional[str] = None
+    ) -> Union[List[Dict[str, str]], str, None]:
         """
         Returns the project ids. If year is specified, only the project id of this year is returned.
 
@@ -273,12 +305,14 @@ class Manager:
         :return: the list of ids and years or the id of one year or None if no id was found
         :rtype: Union[List[Dict[str, str]], str, None]
         """
-        hmap = '[PROJECT_IDs]'
+        hmap = "[PROJECT_IDs]"
         if not self.server.exists(hmap):
             self.update_project_ids()
         if year is None:
-            return [{'id': value.decode(), 'year': key.decode()}
-                    for key, value in self.server.hgetall(hmap).items()]
+            return [
+                {"id": value.decode(), "year": key.decode()}
+                for key, value in self.server.hgetall(hmap).items()
+            ]
         value = self.server.get_value(year, hmap=hmap)
         if value[-1] is not None:
             return value[-1].decode()
@@ -289,9 +323,9 @@ class Manager:
         """
         Updates the project ids.
         """
-        key = '[PROJECT_IDs]'
+        key = "[PROJECT_IDs]"
         project_ids = ade.response_to_project_ids(self.client.get_project_ids())
-        self.server.set_value(key, project_ids, expire_in={'hours': 25}, hmap=True)
+        self.server.set_value(key, project_ids, expire_in={"hours": 25}, hmap=True)
 
     def get_default_project_id(self) -> str:
         """
@@ -300,7 +334,7 @@ class Manager:
         :return: the default project id
         :rtype: str
         """
-        return self.get_project_ids()[0]['id']
+        return self.get_project_ids()[0]["id"]
 
     def save_schedule(self, user: md.User, schedule: schd.Schedule):
         """
@@ -313,13 +347,13 @@ class Manager:
         :return: the scheduler, with its id updated...
 
         """
-        if schedule.id is None:     # this schedule is not yet saved
+        if schedule.id is None:  # this schedule is not yet saved
             schd = md.Schedule(data=schedule, user=user)
             schd.data.id = schd.id
             self.database.session.commit()
             return schd.data
 
-        else:                       # this schedule has already been saved
+        else:  # this schedule has already been saved
             schd = md.Schedule.query.filter(md.Schedule.id == schedule.id).first()
             if schd is None:
                 raise ScheduleNotFountError
@@ -327,7 +361,7 @@ class Manager:
                 schd.update_data(schedule)
 
             if user is not None:
-                user_has_schedule = (user.get_schedule(id=schedule.id) is not None)
+                user_has_schedule = user.get_schedule(id=schedule.id) is not None
             else:
                 user_has_schedule = False
 

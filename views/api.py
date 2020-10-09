@@ -35,7 +35,7 @@ class ApiDecoder(json.JSONDecoder):
         return decoded
 
 
-api = Blueprint('api', __name__, static_folder='../static')
+api = Blueprint("api", __name__, static_folder="../static")
 api.json_decoder = ApiDecoder
 api.json_encoder = ApiEncoder
 
@@ -45,7 +45,7 @@ def before_api_request():
     utl.init_schedule()
 
 
-@api.route('/events', methods=['GET'])
+@api.route("/events", methods=["GET"])
 def get_events():
     """
     API endpoint to fetch the schedule matching the various arguments.
@@ -72,15 +72,15 @@ def get_events():
     or, with filtered events:
         https://ade-scheduler.info.ucl.ac.be/api/events?year=2020-2021&code=LEPL1104&LEPL1104=TP: LEPL1104_Q2B-APE&view=true
     """
-    mng = app.config['MANAGER']
+    mng = app.config["MANAGER"]
 
-    year = request.args.get('year')
-    codes = request.args.getlist('code')
-    view = request.args.get('view')
+    year = request.args.get("year")
+    codes = request.args.getlist("code")
+    view = request.args.get("view")
     if view is None:
         view = False
     else:
-        view = bool(strtobool(request.args.get('view')))
+        view = bool(strtobool(request.args.get("view")))
 
     project_id = mng.get_project_ids(year=year)
     if project_id is None:
@@ -92,9 +92,14 @@ def get_events():
         schedule.add_filter(code.upper(), request.args.getlist(code))
 
     if view:
-        session['current_schedule'] = schedule
-        return redirect(url_for('calendar.index'))
+        session["current_schedule"] = schedule
+        return redirect(url_for("calendar.index"))
 
-    return jsonify({
-        'events': schedule.get_events(json=True),
-    }), 200
+    return (
+        jsonify(
+            {
+                "events": schedule.get_events(json=True),
+            }
+        ),
+        200,
+    )
