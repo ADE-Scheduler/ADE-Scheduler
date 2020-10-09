@@ -9,8 +9,8 @@ View = Union[List[str], Set[str], Dict[int, str]]
 
 
 def generate_empty_dataframe():
-    index = ['code', 'type', 'id']
-    columns = ['week', 'event']
+    index = ["code", "type", "id"]
+    columns = ["week", "event"]
 
     activities = pd.DataFrame(columns=index + columns)
     activities.set_index(keys=index, inplace=True)
@@ -36,7 +36,14 @@ class Course:
 
     >>> course = Course('LMECA2732', 'Robotics')
     """
-    def __init__(self, code: str, name: str, weight: float = 1, activities: Optional[pd.DataFrame] = None):
+
+    def __init__(
+        self,
+        code: str,
+        name: str,
+        weight: float = 1,
+        activities: Optional[pd.DataFrame] = None,
+    ):
         # A Course is defined by its code and its name
         self.code = code
         self.name = name
@@ -47,7 +54,7 @@ class Course:
         else:
             self.activities = generate_empty_dataframe()
 
-    def __eq__(self, other: Union['Course', str]) -> bool:
+    def __eq__(self, other: Union["Course", str]) -> bool:
         if isinstance(other, Course):
             return self.code == other.code
         elif isinstance(other, str):
@@ -55,7 +62,7 @@ class Course:
         else:
             raise TypeError
 
-    def __ne__(self, other: Union['Course', str]) -> bool:
+    def __ne__(self, other: Union["Course", str]) -> bool:
         return not self.__eq__(other)
 
     def __str__(self) -> str:
@@ -81,7 +88,9 @@ class Course:
         df = pd.DataFrame(data=data, columns=self.activities.columns, index=index)
         self.activities = self.activities.append(df)
 
-    def set_weights(self, percentage: float = 50, event_type: Optional[AcademicalEvent] = None):
+    def set_weights(
+        self, percentage: float = 50, event_type: Optional[AcademicalEvent] = None
+    ):
         """
         Modifies this course's events weight.
 
@@ -92,14 +101,14 @@ class Course:
         """
 
         def f(event):
-            event.set_weight(percentage/10)
+            event.set_weight(percentage / 10)
 
         if event_type is None:
-            self.activities['event'].apply(f)
+            self.activities["event"].apply(f)
         else:
             level = self.activities.index.names.index(event_type)
             valid = self.activities.index.get_level_values(level) == event_type
-            self.activities['event'][valid].apply(f)
+            self.activities["event"][valid].apply(f)
 
     def get_summary(self) -> Dict[str, Set[str]]:
         """
@@ -109,14 +118,16 @@ class Course:
         :rtype: Dict[str, Set[str]]
         """
         summary = defaultdict(set)
-        ids = self.activities.index.get_level_values('id').sort_values().unique()
+        ids = self.activities.index.get_level_values("id").sort_values().unique()
         for id in ids:
-            event_type, code = id.split(': ', maxsplit=1)
+            event_type, code = id.split(": ", maxsplit=1)
             summary[event_type].add(code)
 
         return summary
 
-    def get_activities(self, view: Optional[View] = None, reverse: bool = False) -> pd.DataFrame:
+    def get_activities(
+        self, view: Optional[View] = None, reverse: bool = False
+    ) -> pd.DataFrame:
         """
         Returns a table of all activities that optionally match correct ids.
 
@@ -130,7 +141,7 @@ class Course:
         if view is None:
             return self.activities
         elif isinstance(view, list) or isinstance(view, set):
-            valid = self.activities.index.get_level_values('id').isin(view)
+            valid = self.activities.index.get_level_values("id").isin(view)
 
             if reverse:
                 valid = ~valid
@@ -139,14 +150,14 @@ class Course:
         elif isinstance(view, dict):
             activities = [generate_empty_dataframe()]
 
-            grp_weeks = self.activities.groupby('week')
+            grp_weeks = self.activities.groupby("week")
 
             # weeks that are both in ids dict and in activities
             valid_weeks = set(view.keys()).intersection(grp_weeks.groups.keys())
 
             for week in valid_weeks:
                 week_data = grp_weeks.get_group(week)
-                valid = week_data.index.get_level_values('id').isin(view[week])
+                valid = week_data.index.get_level_values("id").isin(view[week])
 
                 if reverse:
                     valid = ~valid
@@ -166,12 +177,17 @@ class Course:
         :return: list of events
         :rtype: Iterable[AcademicalEvent]
         """
-        return self.get_activities(**kwargs)['event'].values
+        return self.get_activities(**kwargs)["event"].values
 
 
-def merge_courses(courses: Iterable[Course], code: str = '0000',
-                  name: str = 'merged', weight: float = 1, views: Optional[Dict[str, View]] = None,
-                  **kwargs: Any) -> Course:
+def merge_courses(
+    courses: Iterable[Course],
+    code: str = "0000",
+    name: str = "merged",
+    weight: float = 1,
+    views: Optional[Dict[str, View]] = None,
+    **kwargs: Any
+) -> Course:
     """
     Merges multiple courses into one.
 
@@ -191,7 +207,10 @@ def merge_courses(courses: Iterable[Course], code: str = '0000',
     :rtype: Course
     """
     if views:
-        activities = pd.concat(course.get_activities(view=views[course.code], **kwargs) for course in courses)
+        activities = pd.concat(
+            course.get_activities(view=views[course.code], **kwargs)
+            for course in courses
+        )
     else:
         activities = pd.concat(course.get_activities(**kwargs) for course in courses)
     return Course(code=code, name=name, weight=weight, activities=activities)

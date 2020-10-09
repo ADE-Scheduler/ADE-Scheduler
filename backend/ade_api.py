@@ -18,7 +18,7 @@ class ExpiredTokenError(Exception):
     """
 
     def __str__(self):
-        return 'The token you were using is now expired! Renew the token to proceed normally.'
+        return "The token you were using is now expired! Renew the token to proceed normally."
 
 
 ClientCredentials = Dict[str, Union[str, List[int]]]
@@ -87,7 +87,7 @@ class DummyClient:
         :return: the response
         :rtype: request.Response
         """
-        return self.request(function='getProjects', detail=2)
+        return self.request(function="getProjects", detail=2)
 
     def get_resources(self, project_id: SupportsInt) -> requests.Response:
         """
@@ -98,7 +98,9 @@ class DummyClient:
         :return: the response
         :rtype: request.Response
         """
-        return self.request(projectId=project_id, function='getResources', detail=13, tree='false')
+        return self.request(
+            projectId=project_id, function="getResources", detail=13, tree="false"
+        )
 
     def get_resource_ids(self, project_id: SupportsInt) -> requests.Response:
         """
@@ -109,7 +111,7 @@ class DummyClient:
         :return: the response
         :rtype: request.Response
         """
-        return self.request(projectId=project_id, function='getResources', detail=2)
+        return self.request(projectId=project_id, function="getResources", detail=2)
 
     def get_classrooms(self, project_id: SupportsInt) -> requests.Response:
         """
@@ -120,10 +122,17 @@ class DummyClient:
         :return: the response
         :rtype: request.Response
         """
-        return self.request(projectId=project_id, function='getResources',
-                            detail=13, tree='false', category='classroom')
+        return self.request(
+            projectId=project_id,
+            function="getResources",
+            detail=13,
+            tree="false",
+            category="classroom",
+        )
 
-    def get_activities(self, resource_ids: List[SupportsInt], project_id: SupportsInt) -> requests.Response:
+    def get_activities(
+        self, resource_ids: List[SupportsInt], project_id: SupportsInt
+    ) -> requests.Response:
         """
         Requests all activities (set of events)  for a specific project.
 
@@ -134,8 +143,13 @@ class DummyClient:
         :return: the response
         :rtype: request.Response
         """
-        return self.request(projectId=project_id, function='getActivities',
-                            tree='false', detail=17, resources='|'.join(map(str, resource_ids)))
+        return self.request(
+            projectId=project_id,
+            function="getActivities",
+            tree="false",
+            detail=17,
+            resources="|".join(map(str, resource_ids)),
+        )
 
 
 class Client(DummyClient):
@@ -165,12 +179,19 @@ class Client(DummyClient):
         if self.is_expired():
             self.renew_token()
 
-        headers = {'Authorization': 'Bearer ' + self.token}
-        user = self.credentials['user']
-        password = self.credentials['password']
-        args = '&'.join('='.join(map(str, _)) for _ in kwargs.items())
+        headers = {"Authorization": "Bearer " + self.token}
+        user = self.credentials["user"]
+        password = self.credentials["password"]
+        args = "&".join("=".join(map(str, _)) for _ in kwargs.items())
 
-        url = 'https://api.sgsi.ucl.ac.be:8243/ade/v0/api?login=' + user + '&password=' + password + '&' + args
+        url = (
+            "https://api.sgsi.ucl.ac.be:8243/ade/v0/api?login="
+            + user
+            + "&password="
+            + password
+            + "&"
+            + args
+        )
 
         try:
             resp = requests.get(url=url, headers=headers)
@@ -191,7 +212,7 @@ def load_responses() -> Dict[str, List[int]]:
     :return: the dictionary of all the responses
     :rtype: Dict[str, List[int]]
     """
-    with open(FakeClient.FILENAME, 'r') as f:
+    with open(FakeClient.FILENAME, "r") as f:
         return json.load(f)
 
 
@@ -208,7 +229,9 @@ def load_response(request_name: str) -> requests.Response:
     try:
         return pickle.loads(bytes(load_responses()[request_name]))
     except KeyError:
-        raise requests.exceptions.HTTPError(f'key [{request_name}] for request was not found')
+        raise requests.exceptions.HTTPError(
+            f"key [{request_name}] for request was not found"
+        )
 
 
 def save_response(response: requests.Response, request_name: str):
@@ -223,7 +246,7 @@ def save_response(response: requests.Response, request_name: str):
     responses = load_responses()
     responses[request_name] = list(pickle.dumps(response))
 
-    with open(FakeClient.FILENAME, 'w') as f:
+    with open(FakeClient.FILENAME, "w") as f:
         json.dump(responses, f)
 
 
@@ -232,7 +255,8 @@ class FakeClient(DummyClient):
     A fake client subclasses the DummyClient abstract class and implements a fake access to ADE API.
     All the API responses you can cannot are stored in json file, which you can change if you want to.
     """
-    FILENAME = 'fake_api.json'
+
+    FILENAME = "fake_api.json"
 
     def __init__(self, credentials: ClientCredentials):
         self.credentials = credentials
@@ -253,7 +277,7 @@ class FakeClient(DummyClient):
         if self.is_expired():
             self.renew_token()
 
-        args = '&'.join('='.join(map(str, _)) for _ in kwargs.items())
+        args = "&".join("=".join(map(str, _)) for _ in kwargs.items())
 
         return load_response(args)
 
@@ -267,12 +291,12 @@ def get_token(credentials: ClientCredentials) -> Tuple[str, int]:
     :return: the token and its time to expiration in seconds
     :rtype: Tuple[str, int]
     """
-    url = credentials['url']
-    data = credentials['data']
-    authorization = credentials['Authorization']
-    header = {'Authorization': authorization}
+    url = credentials["url"]
+    data = credentials["data"]
+    authorization = credentials["Authorization"]
+    header = {"Authorization": authorization}
     r = requests.post(url=url, headers=header, data=data).json()
-    return r['access_token'], int(r['expires_in'])
+    return r["access_token"], int(r["expires_in"])
 
 
 def response_to_root(response: requests.Response) -> etree.ElementTree:
@@ -302,8 +326,8 @@ def response_to_project_ids(project_ids_response: requests.Response) -> Dict[str
     >>> ids_years = response_to_project_ids(response)
     """
     root = response_to_root(project_ids_response)
-    ids = root.xpath('//project/@id')
-    years = root.xpath('//project/@name')
+    ids = root.xpath("//project/@id")
+    years = root.xpath("//project/@name")
 
     return {year: int(id) for id, year in zip(ids, years)}
 
@@ -324,7 +348,7 @@ def response_to_resources(resources_response) -> pd.DataFrame:
     """
     root = response_to_root(resources_response)
 
-    resources = root.xpath('//resource/.')
+    resources = root.xpath("//resource/.")
 
     index = resources[0].attrib.keys()
 
@@ -332,7 +356,7 @@ def response_to_resources(resources_response) -> pd.DataFrame:
 
     df = pd.DataFrame(data=values, columns=index, dtype=str)
 
-    df.set_index('id', inplace=True)
+    df.set_index("id", inplace=True)
 
     return df
 
@@ -353,11 +377,18 @@ def response_to_resource_ids(resource_ids_response) -> Dict[str, str]:
     """
     root = response_to_root(resource_ids_response)
 
-    df = pd.DataFrame(data=root.xpath('//resource/@id'), index=map(lambda x: x.upper(),
-                                                                   root.xpath('//resource/@name'))
-                      , columns=['id'], dtype=str)
+    df = pd.DataFrame(
+        data=root.xpath("//resource/@id"),
+        index=map(lambda x: x.upper(), root.xpath("//resource/@name")),
+        columns=["id"],
+        dtype=str,
+    )
 
-    d = df.groupby(level=0).apply(lambda x: '|'.join(x.to_dict(orient='list')['id'])).to_dict()
+    d = (
+        df.groupby(level=0)
+        .apply(lambda x: "|".join(x.to_dict(orient="list")["id"]))
+        .to_dict()
+    )
 
     return d
 
@@ -372,18 +403,18 @@ def room_to_classroom(room: etree.ElementTree) -> Classroom:
     :rtype: Classroom
     """
     address = Address(
-        address1=room.get('address1'),
-        address2=room.get('address2'),
-        zipCode=room.get('zipCode'),
-        city=room.get('city'),
-        country=room.get('country')
+        address1=room.get("address1"),
+        address2=room.get("address2"),
+        zipCode=room.get("zipCode"),
+        city=room.get("city"),
+        country=room.get("country"),
     )
     classroom = Classroom(
-        name=room.get('name'),
-        type=room.get('type'),
-        size=room.get('size'),
-        id=room.get('id'),
-        address=address
+        name=room.get("name"),
+        type=room.get("type"),
+        size=room.get("size"),
+        id=room.get("id"),
+        address=address,
     )
 
     return classroom
@@ -405,7 +436,7 @@ def response_to_classrooms(classrooms_response: requests.Response) -> List[Class
     """
     root = response_to_root(classrooms_response)
 
-    rooms = root.xpath('//room')
+    rooms = root.xpath("//room")
 
     classrooms = []
     for room in rooms:
@@ -415,8 +446,13 @@ def response_to_classrooms(classrooms_response: requests.Response) -> List[Class
     return classrooms
 
 
-def parse_event(event: etree.ElementTree, event_type: Type[backend.events.AcademicalEvent],
-                activity_name: str, activity_id: str, activity_code: str) -> backend.events.AcademicalEvent:
+def parse_event(
+    event: etree.ElementTree,
+    event_type: Type[backend.events.AcademicalEvent],
+    activity_name: str,
+    activity_id: str,
+    activity_code: str,
+) -> backend.events.AcademicalEvent:
     """
     Parses an element from a request into an academical event.
     An event is from an activity so information about this activity must be provided.
@@ -434,26 +470,33 @@ def parse_event(event: etree.ElementTree, event_type: Type[backend.events.Academ
     :return: the academical event
     :rtype: backend.events.AcademicalEvent
     """
-    event_date = event.attrib['date']
-    event_start = event.attrib['startHour']
-    event_end = event.attrib['endHour']
+    event_date = event.attrib["date"]
+    event_start = event.attrib["startHour"]
+    event_end = event.attrib["endHour"]
     rooms = event.xpath('.//eventParticipant[@category="classroom"]')
     classrooms = [room_to_classroom(room) for room in rooms]
 
     instructors = list()
     for instructor in event.xpath('.//eventParticipant[@category="instructor"]'):
-        instructors.append(
-            professors.Professor(instructor.attrib['name'], None)
-        )
+        instructors.append(professors.Professor(instructor.attrib["name"], None))
     event_instructor = professors.merge_professors(instructors)
 
     # We create the event
     t0, t1 = backend.events.extract_datetime(event_date, event_start, event_end)
-    return event_type(name=activity_name, begin=t0, end=t1, professor=event_instructor,
-                      classrooms=classrooms, id=activity_id, code=activity_code)
+    return event_type(
+        name=activity_name,
+        begin=t0,
+        end=t1,
+        professor=event_instructor,
+        classrooms=classrooms,
+        id=activity_id,
+        code=activity_code,
+    )
 
 
-def parse_activity(activity: etree.ElementTree) -> Tuple[List[backend.events.AcademicalEvent], str, str, str]:
+def parse_activity(
+    activity: etree.ElementTree,
+) -> Tuple[List[backend.events.AcademicalEvent], str, str, str]:
     """
     Parses an element from a request into a list of events and some activity information.
 
@@ -462,21 +505,21 @@ def parse_activity(activity: etree.ElementTree) -> Tuple[List[backend.events.Aca
     :return: the events, the name, the id and the code of this activity
     :rtype: Tuple[List[backend.events.AcademicalEvent], str, str, str]
     """
-    activity_id = activity.attrib['name']
-    activity_type = activity.attrib['type']
-    activity_name = activity.attrib['code']
+    activity_id = activity.attrib["name"]
+    activity_type = activity.attrib["type"]
+    activity_name = activity.attrib["code"]
 
     event_type = backend.events.extract_type(activity_type, activity_id)
     event_codes = activity.xpath('.//eventParticipant[@category="category5"]/@name')
-    events = activity.xpath('.//event')
+    events = activity.xpath(".//event")
     events_list = list()
 
     if len(event_codes) == 0:
         activity_code = backend.events.extract_code(activity_id)
     else:
         activity_code = Counter(event_codes).most_common()[0][0]
-    if activity_code == '':
-        activity_code = 'Other'
+    if activity_code == "":
+        activity_code = "Other"
 
     for event in events:
         events_list.append(
@@ -505,9 +548,11 @@ def response_to_courses(activities_response: requests.Response) -> List[Course]:
     courses = defaultdict(Course)
 
     # Each activity has its unique event type
-    for activity in root.xpath('//activity'):
+    for activity in root.xpath("//activity"):
 
-        events_list, activity_name, activity_id, activity_code = parse_activity(activity)
+        events_list, activity_name, activity_id, activity_code = parse_activity(
+            activity
+        )
 
         if activity_code not in courses and events_list:
             courses[activity_code] = Course(activity_code, activity_name)
@@ -517,9 +562,10 @@ def response_to_courses(activities_response: requests.Response) -> List[Course]:
     return list(courses.values())
 
 
-def response_to_events(activities_response: requests.Response,
-                       filter_func: Callable[[backend.events.AcademicalEvent], bool])\
-        -> List[backend.events.AcademicalEvent]:
+def response_to_events(
+    activities_response: requests.Response,
+    filter_func: Callable[[backend.events.AcademicalEvent], bool],
+) -> List[backend.events.AcademicalEvent]:
     """
     Extracts an API response into list of events.
 
@@ -540,65 +586,12 @@ def response_to_events(activities_response: requests.Response,
     events = list()
 
     # Each activity has its unique event type
-    for activity in root.xpath('//activity'):
+    for activity in root.xpath("//activity"):
 
-        events_list, activity_name, activity_id, activity_code = parse_activity(activity)
-
-        events.extend(
-            filter(filter_func,
-                   events_list)
+        events_list, activity_name, activity_id, activity_code = parse_activity(
+            activity
         )
 
+        events.extend(filter(filter_func, events_list))
+
     return events
-
-
-if __name__ == "__main__":
-
-    import backend.credentials as credentials
-
-    filename = "/home/jerome/ade_api.json"
-
-    credentials.set_credentials(filename, credentials.ADE_API_CREDENTIALS)
-
-    credentials = credentials.get_credentials(credentials.ADE_API_CREDENTIALS)
-
-    client = Client(credentials)
-
-    request = client.get_project_ids()
-
-    ids_years = response_to_project_ids(request)
-
-    # On peut l'obtenir de ids_years
-    project_id = 9
-
-    request = client.get_resource_ids(project_id)
-
-    resources_ids = response_to_resource_ids(request)
-
-    id = resources_ids['LMECA2732']
-
-    # 'LBRAI2206': '12438'
-
-    request = client.get_activities([id], project_id)
-
-    courses = response_to_courses(request)
-
-    client.get_classrooms(project_id)
-
-    response = client.get_resources(9)
-
-    resources = response_to_resources(response)
-
-    import random
-
-    for key, val in resources.items():
-
-        n = random.randint(1, 50)
-
-        print('doing some requests')
-
-        ids = []
-        while len(ids) < n:
-            ids.append(ids)
-
-        client.get_activities(ids, project_id)

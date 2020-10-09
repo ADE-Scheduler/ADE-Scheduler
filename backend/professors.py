@@ -10,13 +10,14 @@ class Professor:
     :param email: the email(s)
     :type email: Optional[str]
     """
+
     def __init__(self, name: str, email: Optional[str] = None):
         self.name = name
         self.email = email
 
     def __str__(self):
         if self.email is not None and len(self.email) > 0:
-            return f'{self.name} ({self.email})'
+            return f"{self.name} ({self.email})"
         else:
             return self.name
 
@@ -36,8 +37,8 @@ def merge_professors(professors: Iterable[Professor]) -> Professor:
     >>> p2 = Professor('Marc Potier', 'marc.potier@mail.com')
     >>> p3 = merge_professors((p1, p2))
     """
-    name = ' & '.join(professor.name for professor in professors)
-    email = ' & '.join(professor.email for professor in professors if professor.email)
+    name = " & ".join(professor.name for professor in professors)
+    email = " & ".join(professor.email for professor in professors if professor.email)
     if len(email) > 0:
         return Professor(name, email)
     else:
