@@ -3,7 +3,7 @@ from flask import url_for
 
 def test_index(client):
     """Test the main view"""
-    rv = client.get('/')
+    rv = client.get(url_for('calendar.index'))
     assert b'ADE Scheduler' in rv.data
 
 

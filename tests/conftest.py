@@ -1,7 +1,6 @@
 import os
 import sys
 import pytest
-import tempfile
 from dotenv import load_dotenv, find_dotenv
 
 sys.path.append(os.getcwd())
