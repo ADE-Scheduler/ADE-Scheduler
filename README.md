@@ -55,7 +55,7 @@ The UI is made mainly with the help of [Bootstrap](https://getbootstrap.com/), w
 ### Functionalities and comparison with ADE
 
 In short, ADE Scheduler offers the same information as ADE, but in a much
- more elegant manner. A side by side comparison of the site schedules just
+ more elegant manner. A side by side comparison of the two sites just
   speaks for itself:
 
  ![](static/img/ade_official_side_by_side.png)
