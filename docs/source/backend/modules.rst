@@ -7,7 +7,6 @@ backend
    ade_api
    classrooms
    courses
-   credentials
    events
    manager
    models

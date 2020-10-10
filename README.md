@@ -3,104 +3,96 @@
   <img src="static/img/ade_scheduler_icon.png" width="200" height="200"> </img>
 </p>
 
-# ADE-Scheduler : un outil horaire destiné aux étudiants
+# ADE Scheduler: a scheduling tool made for humans
 
-[ADE-Scheduler](https://ade-scheduler.info.ucl.ac.be/) est un outil créé par des étudiants et à destination des membres de l'UCLouvain, et plus particulièrement les étudiants de l'EPL.
+[ADE-Scheduler](https://ade-scheduler.info.ucl.ac.be/) is a web-application made by students which is destined to be used by UCLouvain members (students, academics,...).
 
-## Initiateurs du projet :
+### Project creators
 
 - [Eertmans Jérome](https://www.linkedin.com/in/j%C3%A9rome-eertmans-130ab1130/)
 - [Navarre Louis](https://www.linkedin.com/in/louis-navarre-36b78b143/)
 - [Poncelet Gilles](https://www.linkedin.com/in/gilles-poncelet-020442195/)
 
-Nous sommes trois étudiants de l'EPL et entrions tout juste en master 1 quand nous avons commencé ce projet.
+We are three students from the Ecole Polytechnique de Louvain (EPL) and were starting our first master year at the start of the project.
 
-## Raison d'existence
+### Why such a tool ?
 
-Face au service très peu intuitif qu'est le service d'horaire [ade](http://horaire.uclouvain.be/direct/) fourni par l'UCLouvain, nous avons décidé de créer cet outil afin de faciliter la création d'horaire via une interface plus esthitique, plus complète et offrant un panel d'options assez large.
+The currently used scheduling tool used by the UCLouvain, [ADE](http://horaire.uclouvain.be/direct/), lacks an intuitive interface and general usability. Therefore, we decided to create ADE-Scheduler as a "wrapper" around this tool to make it more intuitive, nice and complete.
 
-Avant cela, nous utilisions le très bon outil [ADE2ICS](https://github.com/cdamman/UCL2ICS), réalisé par Corentin Damman, qui nous permettait de créer des liens d'abonnements dans lequel on pouvait choisir nos TPs / CMs. ADE-Scheduler est donc une amélioration de cet outil.
+Before that, we were using the excellent [ADE2ICS](https://github.com/cdamman/UCL2ICS) made by Corentin Damman which allowed to create subscription links where one could select its events (TPs, CMs, etc). ADE-Scheduler is therefore an improvement of this tool.
 
-## Dates importantes
+### Key dates
 
-- **Début août 2019** : début du projet
-- **Début septembre 2019** : obtiention d'un accès à l'api de ADE
-- **Mi-septembre 2019** : mise en ligne du site au monde entier
-- **Eté 2020**: refonte complète du site afin de le rendre plus attractif, intuitif ainsi que compatible avec les mobiles
+- **August 2019** : start of the project
+- **September 2019** : access to the API of ADE and release of the first version of the tool
+- **Summer 2020**: complete overhaul of the tool to make it more attractive, intuitive and mobile-friendly.
+- **September 2020**: release of the second version of the tool
 
-## Comment cela fonctionne
+### How does it work ?
 
-### Back-end <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1024px-Python-logo-notext.svg.png" alt="python" width="20" height="20"></img>
+#### Back-end <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1024px-Python-logo-notext.svg.png" alt="python" width="20" height="20"></img>
 
-#### L'obtention des données
+##### Data source
 
-Grâce à notre accès à l'api de ADE, nos pouvons obtenir toutes les informations dans un format XML.
-De ces données, nous intéressent :
-- la liste de événements par cours (type d'événement, lieu, durée, date, professeur, ...)
-- la liste des locaux de l'UCLouvain et, quand disponible, leur adresse postale
+Thanks to the access to the API of ADE, we obtain all the information in a `XML` format. Those are up-to-date with the infos you will find on the ADE website. We are mainly interested in two type of informations:
+ - Event list sorted by course
+ - Location of every UCLouvain classroom, auditorium, etc.
 
-#### Le traitement des données
+#### Data treatmeant
 
-Les données sont essentiellement traitées avec du Python pure et des méthodes built-in. Néanmoins, le package [pandas](https://pandas.pydata.org/) est presque indispensable pour atteindre de bonnes performances et le package [ics](https://pypi.org/project/ics/) est fort utile quand à la conversion en format iCal.
+The backend of ADE-Scheduler is written in Python using the [Flask](https://flask.palletsprojects.com/en/1.1.x/) micro-framework. Other packages are also used to supply many useful functions to enhance the overall user experience.\
+Among those, we use [pandas](https://pandas.pydata.org/) pandas to optimise the performances, [ics](https://pypi.org/project/ics/) to convert the schedules in the iCal format, [Flask-Security](https://pypi.org/project/Flask-Security-Too/) to handle user registrations and security aspects - and many more.
 
-Nous utilisons un serveur [redis](https://redis.io) afin de stocker toutes les sessions des utilisateurs mais aussi les résultats des requêtes afin de minimiser l'utilisation d'ADE.
+We also use a [Redis](https://redis.io) server to store user sessions and buffer data, as well as a [PostgreSQL](https://www.postgresql.org/) database to store user accounts and schedules.
 
-### Front-end <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1024px-Python-logo-notext.svg.png" alt="python" width="20" height="20"></img> <img src="https://www.w3.org/html/logo/downloads/HTML5_Badge_512.png" alt="html" width="20" height="20"></img> <img src="https://i1.wp.com/www.thekitchencrew.com/wp-content/uploads/2016/03/js-logo.png?fit=500%2C500" alt="js" width="20" height="20"></img>
+### Front-end <img src="https://www.w3.org/html/logo/downloads/HTML5_Badge_512.png" alt="html" width="20" height="20"></img> <img src="https://i1.wp.com/www.thekitchencrew.com/wp-content/uploads/2016/03/js-logo.png?fit=500%2C500" alt="js" width="20" height="20"></img>
 
-L'application web est entièrement gérée grâce au module [Flask](https://pypi.org/project/Flask/). Le côté esthétique est en grosse partie dû à l'usage de deux bibliothèques : [FullCalendar](https://fullcalendar.io) et [Bootstrap](https://getbootstrap.com/).
+Client-side logic is handled using [Vue](https://vuejs.org/), a JavaScript reactive framework. Moreover, the events are displayed on a calendar generated with the help of the [FullCalendar](https://fullcalendar.io) package.
 
-Le serveur et le nom de domaine nous ont été prêtés par le pôle INGI de l'EPL.
+The UI is made mainly with the help of [Bootstrap](https://getbootstrap.com/), which handles all the CSS and makes the website enjoyable and mobile-friendly.
 
-## Fonctionnalités
 
-Ici, sont listées les différentes fonctionnalités qu'offre notre site web :
-- visualisation du calendrier en temps réel
-- ajout et suppression des cours via leur code cours
-- sélection, par cours, des éléments à garder
-  - ex. : pour le cours de Probabilité (LFSAB1105), on choisit de ne prendre que le TP n°3, le mercredi à 14h00
-  - ex. : pour le cours de Logique (LINGI1101), on choisit de ne prendre en compte que les cours magistraux
-- ajout de slots horaires pendant lesquels on souhaite être libre (avec divers niveaux de priorité)
-- génération les "n" meilleurs horaires, minimisant les conflits horaires, et respectant au maximum les souhaits de l'utilisateur, selon une fonction de coûts à minimiser (par exemple : un conflit horaire génère un cout élevé)
-- création un fichier .ics téléchargeable à partir du calendrier visionnié
-- sauvegarde d'un calendrier (sauve les paramètres dans une base de donnée) et obtention d'un code pour récupérer à tout moment la dernière version du calendrier selon les dernières informations de ADE-UCLouvain
-  - utilité : via une url, récupérer un calendrier (via son encodage) en format .ics -> ceci peut faire office de lien d'abonnement iCalendar
-- site disponible en français et en anglais
-- liste de tous les locaux de l'UCLouvain avec, si dispobible, leur adresse
-- possibiblité de voir le planning horaire lié à un local
+### Functionalities and comparison with ADE
 
-### Tableau comparatif avec ADE
-Dans un objectif de palier aux problèmes rencontrés sur ADE, voici les solutions que nous avons mises en place :
+In short, ADE Scheduler offers the same information as ADE, but in a much
+ more elegant manner. A side by side comparison of the site schedules just
+  speaks for itself:
 
-| Problème sur ADE                             | Notre solution                                      |
-|----------------------------------------------|-----------------------------------------------------|
-| Connexion avec mot de passe                  | Pas de mot de passe requis                          |
-| Session d'une durée très courte              | Pas de déconnexion de session en cours              |
-| Aucune sauvegarde de la session              | Votre session est sauvergardée sur notre serveur    |
-| Pas de lien d'abonnement                     | Possibilité de lien d'abonnement                    |
-| Pas de compte personnel                      | Création d'un compte personnel                      |
-| \                                            | Possibilité de mettre à jour son abonnement         |
-| Sélection de plusieurs cours difficile       | Sélection de plusieurs cours très aisée             |
-| Encodage des TP / CM peu lisible             | Décodage des TP / CM                                |
-| Sélection d'un TP parmi plusieurs impossible | Sélections des TP / CM au choix                     |
-| Pas de couleur                               | Une couleur par code                                |
-| Pas d'adresse des locaux                     | Adresse du local quand disponible                   |
-| Peu de description de l'événement            | Description max. de l'événement (prof., cours, ...) |
+ ![](static/img/ade_official_side_by_side.png)
 
-## Documentation
+ ![](static/img/ade_scheduler_side_by_side.png)
 
-La documentation du site web est disponible sur [la page d'aide](https://ade-scheduler.info.ucl.ac.be/help) de ce dernier.
+But design is not the only power of ADE Scheduler, it also comes with
+ several useful tools which ADe does not have:
 
-## Améliorations futures
+- [x] black-listing some events in order to have a clean schedule
+- [x] easily viewing multiple courses
+- [x] handling multiple schedules
+- [x] computing your optimized schedule which minimizes conflicts
+- [x] adding private events
+- [x] no connection required
+- [x] caching of you data so you don't lose everything each time you leave
+- [x] detailed map of classrooms and events associated
+- [x] possibility to download schedule to iCal file or create subscription link
+- [x] you can share you calendar with anyone you would like
 
-Ici, sont listées, par ordre de priorité, les améliorations que nous jugeons intéressantes à ajouter dans un futur plus ou moins proche :
-- créer une version mobile du site plus accessible
-- implémenter une suite de tests à effectuer sur tout code pull-request
-- finir videos de la section aide
-- corriger texte (mise en page + orthographe) de l'aide
+... and many more !
 
-## Contribuer
+### Documentation
 
-Cette application étant open-source, vous êtes invités à contribuer à cette dernière de quelque manière !
-Voici plusieurs manières de contribuer :
-* contribuez au code, pour cela suivez le guide d'installation [ici](/SETUP.md)
-* faites nous part de vos idées, retours ou bugs en nous contactant par [mail](mailto:adescheduler@gmail.com) ou sur ce repo !
+The website's documentation is available on the [help page](https://ade-scheduler.info.ucl.ac.be/help).
+
+### Future improvements
+
+Here are listed a series of issues we would like to implement in the future:
+ - Implement a complete testing suite to enable easy and robust CI
+ - Complete the help section with more videos, tips, etc.
+
+We are open to any suggestions !
+
+## Contributing
+
+This application being open source, everyone is more than welcome to contribute in any way !
+To see more details about our contributing guidelines, please refer to [contributing](/CONTRIBUTING.md).
+
+Any suggestion, idea or bugs are much appreciated, and you can contact us at all times either by [mail](mailto:adescheduler@gmail.com) or directly on this repository.

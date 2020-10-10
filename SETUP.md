@@ -1,20 +1,18 @@
 # SETUP - Everything you need to run this project
 
-Clone the repository: `git clone https://github.com/SnaKyEyeS/ADE-Scheduler`
-
 ## Storage
 
 ##### Redis
 Redis is used as a cache memory and acts as a buffer between the ADE API and ADE-Scheduler, to enhance the performance and try to reduce lag.  \
-To install a Redis server, please refer to [the official website](https://redis.io/topics/quickstart).  
+To install a Redis server, please refer to [the official website](https://redis.io/topics/quickstart).
 
 Various utilities about Redis are integrated in the Flask CLI. To know more, type `flask redis --help`.
 
 ##### SQL Database
 ADE Scheduler uses a SQL database to store any relevant data and uses SQLAlchemy as an ORM, so you can basically plug in any SQL database you may want.  \
-However, every SQL database has its own specific functionnalities, so minor modifications may be required to accomodate another type. Up until now, any of those three databases has been tested and should therefore work: SQLite (recommended for development), MySQL and PostgreSQL (recommended for production).
+However, every SQL database has its own specific functionalities, so minor modifications may be required to accommodate another type. Up until now, any of those three databases has been tested and should therefore work: SQLite (recommended for development), MySQL and PostgreSQL (recommended for production).
 
-Various utilitites about database migrations & data transfers can be found in the Flask CLI. To know more about it, type: `flask db --help` or `flask sql --help`.
+Various utilities about database migrations & data transfers can be found in the Flask CLI. To know more about it, type: `flask db --help` or `flask sql --help`.
 
 ## Python
 We recommend to use a virtual environment to manage the various required python packages:
@@ -59,7 +57,7 @@ MAIL_USERNAME = an-email@address
 MAIL_PASSWORD = password
 ```
 
-##### For production
+##### For production:
 ```
 FLASK_APP = path/to/<repo>/app.py
 FLASK_ENV = production
@@ -72,7 +70,7 @@ MAIL_USERNAME = an-email@address
 MAIL_PASSWORD = password
 ```
 
-##### Access to the ADE API (optionnal)
+##### Access to the ADE API (optional)
 --TODO: explain the procedure to follow to have access to the Dummy Client !
 
 

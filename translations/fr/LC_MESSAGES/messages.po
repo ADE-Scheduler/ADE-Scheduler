@@ -992,4 +992,3 @@ msgstr "L'horaire que vous avez demandé n'existe pas dans notre base de donnée
 #~ "Vous avez des changements qui n'ont "
 #~ "pas été sauvegardés: voulez-vous quand"
 #~ " même continue ?"
-

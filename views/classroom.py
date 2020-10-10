@@ -30,11 +30,4 @@ def get_occupation(id):
         )
         events.extend(map(lambda e: e.json("#2C3E50"), events_in_classroom))
 
-    return (
-        jsonify(
-            {
-                "events": events,
-            }
-        ),
-        200,
-    )
+    return (jsonify({"events": events}), 200)

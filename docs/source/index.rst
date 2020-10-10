@@ -3,31 +3,36 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Bienvenue dans la documentation de ADE-Scheduler!
-=================================================
+
+Welcome to ADE-Scheduler's documentation !
+==========================================
 
 
 .. image:: ../../static/img/ade_scheduler_icon.png
    :width: 200
    :align: center
 
-Cette documentation a pour objectif de faciliter la compréhension des fonctions mises en place et, ainsi, de vous permettre de rapidement contribuer à notre projet.
+This documentation is here to help contributors understanding how the
+project is built.
 
 *******
 Backend
 *******
 
-Ce module implémente toutes les fonctions les plus gourmandes et complexes, de manière plus ou moins performante, afin d'offrir des services complets aux utilisateurs.
+This module implements all the computationally intensive and complex
+functions, in a more or less optimized manner, in order to provide complete
+services to end users.
 
 *****
 Views
 *****
 
-Ce module fait interface entre le backend et le frontend. C'est via lui que toutes les requêtes sont effectées afin d'afficher ce que vous voyez à l'écran.
+This module makes the interface between the backend and the frontend. All
+requests are handled by this module.
 
 .. toctree::
    :maxdepth: 3
-   :caption: Table des matières:
+   :caption: Table of content:
 
    backend/modules
    views/modules

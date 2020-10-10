@@ -50,7 +50,6 @@ class User(db.Model, fsqla.FsUserMixin):
         If user owns this schedule, deletes the schedule for all users.
 
         :param schedule: the schedule
-        :type schedule: Schedule
         """
         if schedule in self.schedules:
             self.schedules.remove(schedule)

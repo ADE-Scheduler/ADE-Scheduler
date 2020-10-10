@@ -95,11 +95,4 @@ def get_events():
         session["current_schedule"] = schedule
         return redirect(url_for("calendar.index"))
 
-    return (
-        jsonify(
-            {
-                "events": schedule.get_events(json=True),
-            }
-        ),
-        200,
-    )
+    return (jsonify({"events": schedule.get_events(json=True)}), 200)
