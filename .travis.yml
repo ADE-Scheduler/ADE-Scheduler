@@ -1,7 +1,9 @@
-language: python
+language: nodejs
 python:
     - "3.6"     # Currently, the website runs on python 3.6
-cache: pip
+cache:
+    - pip
+    - npm
 
 # Databases
 services:
@@ -16,11 +18,13 @@ branches:
 # Dependencies
 install:
     - pip install -r requirements.txt
+    - npm install
 
 # Before tests
 before_script:
     - psql -c 'create database travis_ci_test;' -U postgres
     - flask sql init
+    - npx webpack --mode production
 
 # Run tests
 script:
