@@ -74,10 +74,7 @@ def get_data():
                 "unsaved": session["current_schedule_modified"],
                 "schedules": list(
                     map(
-                        lambda s: {
-                            "id": s.id,
-                            "label": s.data.label,
-                        },
+                        lambda s: {"id": s.id, "label": s.data.label},
                         current_user.get_schedule(),
                     )
                 ),

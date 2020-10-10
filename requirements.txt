@@ -14,18 +14,20 @@ CacheControl==0.12.6
 cachelib==0.1.1
 certifi==2020.6.20
 cffi==1.14.0
+cfgv==3.2.0
 chardet==3.0.4
 click==7.1.2
 colorama==0.4.3
 contextlib2==0.6.0
 cssmin==0.2.0
 cycler==0.10.0
-distlib==0.3.0
+distlib==0.3.1
 distro==1.4.0
 dnspython==2.0.0
 docutils==0.16
 email-validator==1.1.1
 execnet==1.7.1
+filelock==3.0.12
 Flask==1.1.2
 Flask-BabelEx==0.9.4
 Flask-Compress==1.5.0
@@ -44,6 +46,7 @@ geojson==2.5.0
 geopy==2.0.0
 html5lib==1.0.1
 ics==0.7
+identify==1.5.5
 idna==2.10
 imagesize==1.2.0
 iniconfig==1.0.1
@@ -59,6 +62,7 @@ MarkupSafe==1.1.1
 matplotlib==3.3.0
 msgpack==0.6.2
 mypy-extensions==0.4.3
+nodeenv==1.5.0
 numpy==1.19.1
 packaging==20.4
 pandas==1.0.4
@@ -67,6 +71,7 @@ pathspec==0.8.0
 pep517==0.8.2
 Pillow==7.2.0
 pluggy==0.13.1
+pre-commit==2.7.1
 progress==1.5
 psycopg2-binary==2.8.5
 py==1.9.0
@@ -83,6 +88,7 @@ python-dotenv==0.14.0
 python-editor==1.0.4
 pytoml==0.1.21
 pytz==2020.1
+PyYAML==5.3.1
 redis==3.3.8
 regex==2020.9.27
 requests==2.24.0
@@ -106,6 +112,7 @@ typed-ast==1.4.1
 typing-extensions==3.7.4.3
 ujson==3.1.0
 urllib3==1.25.10
+virtualenv==20.0.33
 webassets==2.0
 webencodings==0.5.1
 Werkzeug==0.16.1

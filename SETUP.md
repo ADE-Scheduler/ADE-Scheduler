@@ -6,7 +6,7 @@ Clone the repository: `git clone https://github.com/SnaKyEyeS/ADE-Scheduler`
 
 ##### Redis
 Redis is used as a cache memory and acts as a buffer between the ADE API and ADE-Scheduler, to enhance the performance and try to reduce lag.  \
-To install a Redis server, please refer to [the official website](https://redis.io/topics/quickstart).  
+To install a Redis server, please refer to [the official website](https://redis.io/topics/quickstart).
 
 Various utilities about Redis are integrated in the Flask CLI. To know more, type `flask redis --help`.
 

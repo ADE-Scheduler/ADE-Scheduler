@@ -1,4 +1,3 @@
-import requests
 import backend.ade_api as ade
 
 

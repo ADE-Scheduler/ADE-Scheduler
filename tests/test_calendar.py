@@ -3,7 +3,7 @@ from flask import url_for
 
 def test_clear(client, app):
     """Test the clear route"""
-    assert app.config.get('SESSION_TYPE') == 'redis'
+    assert app.config.get("SESSION_TYPE") == "redis"
 
 
 def test_get_data(client):
@@ -23,5 +23,5 @@ def test_search_code(client):
 
 def test_add_code(client):
     """Test the add_code route"""
-    rv = client.get(url_for('calendar.add_code', code='ELME2M'))
-    assert 'ELME2M' in rv.json.get('codes')
+    rv = client.get(url_for("calendar.add_code", code="ELME2M"))
+    assert "ELME2M" in rv.json.get("codes")
