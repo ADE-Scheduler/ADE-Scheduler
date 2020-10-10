@@ -1,7 +1,5 @@
 # SETUP - Everything you need to run this project
 
-Clone the repository: `git clone https://github.com/SnaKyEyeS/ADE-Scheduler`
-
 ## Storage
 
 ##### Redis
@@ -59,7 +57,7 @@ MAIL_USERNAME = an-email@address
 MAIL_PASSWORD = password
 ```
 
-##### For production
+##### For production:
 ```
 FLASK_APP = path/to/<repo>/app.py
 FLASK_ENV = production
