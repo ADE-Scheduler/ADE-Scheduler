@@ -1,0 +1,9 @@
+# See docs at https://editorconfig.org/
+
+root = true
+
+
+[*.{md, rst, py}]
+ij_visual_guides = 127, 127
+indent_style = space
+indent_size = 4
