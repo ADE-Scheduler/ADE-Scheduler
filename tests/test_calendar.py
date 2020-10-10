@@ -1,12 +1,6 @@
 from flask import url_for
 
 
-def test_index(client):
-    """Test the main view"""
-    rv = client.get(url_for('calendar.index'))
-    assert b'ADE Scheduler' in rv.data
-
-
 def test_clear(client, app):
     """Test the clear route"""
     assert app.config.get('SESSION_TYPE') == 'redis'
