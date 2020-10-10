@@ -7,6 +7,11 @@ services:
     - postgresql
     - redis-server
 
+# Don't build on branch commits; only on master + PRs
+branches:
+    only:
+        - master
+
 # Dependencies
 install:
     - pip install -r requirements.txt
