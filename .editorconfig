@@ -6,7 +6,7 @@ root = true
 # Coding and writing style
 [*.{md, rst, py}]
 ij_wrap_on_typing = true
-ij_visual_guides = 127, 127
+ij_visual_guides = 88, 88
 indent_style = space
 indent_size = 4
 insert_final_newline = true

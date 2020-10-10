@@ -302,9 +302,7 @@ class Schedule:
         valid = df.index.get_level_values("type") != evt.EventOTHER
         df_main, df_other = df[valid], df[~valid]
 
-        max_bests_found = (
-            1
-        )  # Number of best schedules found (will take the maximum value out of all weeks)
+        max_bests_found = 1  # Number of best schedules found (will take the maximum value out of all weeks)
 
         for week, week_data in df_main.groupby("week"):
             if (
