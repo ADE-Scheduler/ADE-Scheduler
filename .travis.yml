@@ -1,0 +1,20 @@
+language: python
+python:
+    - "3.6"     # Currently, the website runs on python 3.6
+
+# Databases
+services:
+    - postgresql
+    - redis-server
+
+# Dependencies
+install:
+    - pip install -r requirements.txt
+
+# Before tests
+before_script:
+    - psql -c 'create database travis_ci_test;' -U postgres
+
+# Run tests
+script:
+    - pytest
