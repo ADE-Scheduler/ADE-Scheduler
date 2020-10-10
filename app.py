@@ -22,7 +22,7 @@ from flask_security import Security, SQLAlchemyUserDatastore
 from flask_login import user_logged_out
 from flask_mail import Mail, Message
 from flask_jsglue import JSGlue
-from flask_babelex import Babel, _
+from flask_babel import Babel, _
 from flask_migrate import Migrate
 from flask_compress import Compress
 from flask_track_usage import TrackUsage
