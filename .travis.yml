@@ -1,6 +1,7 @@
 language: python
 python:
     - "3.6"     # Currently, the website runs on python 3.6
+cache: pip
 
 # Databases
 services:

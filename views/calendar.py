@@ -15,7 +15,7 @@ from flask import (
     g,
 )
 from flask_security import current_user, login_required
-from flask_babelex import _
+from flask_babel import _
 
 import backend.schedules as schd
 import backend.events as evt

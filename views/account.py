@@ -4,7 +4,7 @@ from typing import Any
 from flask import current_app as app
 from flask import Blueprint, render_template, session, request, jsonify
 from flask_security import login_required, current_user
-from flask_babelex import _
+from flask_babel import _
 
 import backend.schedules as schd
 import backend.utils as utl

@@ -7,7 +7,7 @@ from backend.classrooms import merge_classrooms, Classroom
 from backend.professors import Professor
 from typing import Type, Tuple, Iterable, Optional, Union, Any, Dict
 
-from flask_babelex import _
+from flask_babel import _
 
 # We need to set the timezone
 TZ = timezone("Europe/Brussels")
