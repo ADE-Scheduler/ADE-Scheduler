@@ -15,7 +15,7 @@ from flask import (
     g,
 )
 from flask_security import current_user, login_required
-from flask_babelex import _
+from flask_babel import _
 
 import backend.schedules as schd
 import backend.events as evt
@@ -116,10 +116,7 @@ def get_data():
                 if not current_user.is_authenticated
                 else list(
                     map(
-                        lambda s: {
-                            "id": s.id,
-                            "label": _(s.data.label),
-                        },
+                        lambda s: {"id": s.id, "label": _(s.data.label)},
                         current_user.get_schedule(),
                     )
                 ),
@@ -153,10 +150,7 @@ def load_schedule(id):
                     "codes": session["current_schedule"].codes,
                     "schedules": list(
                         map(
-                            lambda s: {
-                                "id": s.id,
-                                "label": _(s.data.label),
-                            },
+                            lambda s: {"id": s.id, "label": _(s.data.label)},
                             current_user.get_schedule(),
                         )
                     ),
@@ -280,7 +274,7 @@ def update_custom_event(id):
             {
                 "events": session["current_schedule"].get_events(
                     json=True, schedule_number=schedule_number
-                ),
+                )
             }
         ),
         200,
@@ -303,10 +297,7 @@ def save():
                 "unsaved": session["current_schedule_modified"],
                 "schedules": list(
                     map(
-                        lambda s: {
-                            "id": s.id,
-                            "label": _(s.data.label),
-                        },
+                        lambda s: {"id": s.id, "label": _(s.data.label)},
                         current_user.get_schedule(),
                     )
                 ),
@@ -388,14 +379,7 @@ def apply_filter():
 def update_poject_id(id):
     session["current_schedule"].project_id = id
     session["current_schedule_modified"] = True
-    return (
-        jsonify(
-            {
-                "events": session["current_schedule"].get_events(json=True),
-            }
-        ),
-        200,
-    )
+    return (jsonify({"events": session["current_schedule"].get_events(json=True)}), 200)
 
 
 @calendar.route("/schedule/link", methods=["GET"])
@@ -411,11 +395,7 @@ def export():
     if link is None:
         return "KO", 401
     else:
-        return jsonify(
-            {
-                "link": link,
-            }
-        )
+        return jsonify({"link": link})
 
 
 @calendar.route("/schedule/events", methods=["GET"])
@@ -426,7 +406,7 @@ def get_events():
             {
                 "events": session["current_schedule"].get_events(
                     json=True, schedule_number=schedule_number
-                ),
+                )
             }
         ),
         200,
@@ -468,7 +448,7 @@ def update_color():
             {
                 "events": session["current_schedule"].get_events(
                     json=True, schedule_number=schedule_number
-                ),
+                )
             }
         ),
         200,

@@ -6,7 +6,7 @@ from typing import Iterable, Union, List, SupportsInt, Dict, Set, Optional
 from backend.courses import Course, merge_courses
 from flask import current_app as app
 from ics import Calendar
-from flask_babelex import _
+from flask_babel import _
 
 import backend.events as evt
 
@@ -302,7 +302,9 @@ class Schedule:
         valid = df.index.get_level_values("type") != evt.EventOTHER
         df_main, df_other = df[valid], df[~valid]
 
-        max_bests_found = 1  # Number of best schedules found (will take the maximum value out of all weeks)
+        max_bests_found = (
+            1
+        )  # Number of best schedules found (will take the maximum value out of all weeks)
 
         for week, week_data in df_main.groupby("week"):
             if (
