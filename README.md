@@ -52,40 +52,31 @@ Client-side logic is handled using [Vue](https://vuejs.org/), a JavaScript react
 The UI is made mainly with the help of [Bootstrap](https://getbootstrap.com/), which handles all the CSS and makes the website enjoyable and mobile-friendly.
 
 
-### Fonctionnalités
+### Functionalities and comparison with ADE
 
-Ici, sont listées les différentes fonctionnalités qu'offre notre site web :
-- visualisation du calendrier en temps réel
-- ajout et suppression des cours via leur code cours
-- sélection, par cours, des éléments à garder
-  - ex. : pour le cours de Probabilité (LFSAB1105), on choisit de ne prendre que le TP n°3, le mercredi à 14h00
-  - ex. : pour le cours de Logique (LINGI1101), on choisit de ne prendre en compte que les cours magistraux
-- ajout de slots horaires pendant lesquels on souhaite être libre (avec divers niveaux de priorité)
-- génération les "n" meilleurs horaires, minimisant les conflits horaires, et respectant au maximum les souhaits de l'utilisateur, selon une fonction de coûts à minimiser (par exemple : un conflit horaire génère un cout élevé)
-- création un fichier .ics téléchargeable à partir du calendrier visionnié
-- sauvegarde d'un calendrier (sauve les paramètres dans une base de donnée) et obtention d'un code pour récupérer à tout moment la dernière version du calendrier selon les dernières informations de ADE-UCLouvain
-  - utilité : via une url, récupérer un calendrier (via son encodage) en format .ics -> ceci peut faire office de lien d'abonnement iCalendar
-- site disponible en français et en anglais
-- liste de tous les locaux de l'UCLouvain avec, si dispobible, leur adresse
-- possibiblité de voir le planning horaire lié à un local
+In short, ADE Scheduler offers the same information as ADE, but in a much
+ more elegant manner. A side by side comparison of the site schedules just
+  speaks for itself:
 
-#### Comparaison with ADE
-Dans un objectif de palier aux problèmes rencontrés sur ADE, voici les solutions que nous avons mises en place :
+ ![](static/img/ade_official_side_by_side.png)
 
-| Problème sur ADE                             | Notre solution                                      |
-|----------------------------------------------|-----------------------------------------------------|
-| Connexion avec mot de passe                  | Pas de mot de passe requis                          |
-| Session d'une durée très courte              | Pas de déconnexion de session en cours              |
-| Aucune sauvegarde de la session              | Votre session est sauvergardée sur notre serveur    |
-| Pas de lien d'abonnement                     | Possibilité de lien d'abonnement                    |
-| Pas de compte personnel                      | Création d'un compte personnel                      |
-| \                                            | Possibilité de mettre à jour son abonnement         |
-| Sélection de plusieurs cours difficile       | Sélection de plusieurs cours très aisée             |
-| Encodage des TP / CM peu lisible             | Décodage des TP / CM                                |
-| Sélection d'un TP parmi plusieurs impossible | Sélections des TP / CM au choix                     |
-| Pas de couleur                               | Une couleur par code                                |
-| Pas d'adresse des locaux                     | Adresse du local quand disponible                   |
-| Peu de description de l'événement            | Description max. de l'événement (prof., cours, ...) |
+ ![](static/img/ade_scheduler_side_by_side.png)
+
+But design is not the only power of ADE Scheduler, it also comes with
+ several useful tools which ADe does not have:
+
+- [x] black-listing some events in order to have a clean schedule
+- [x] easily viewing multiple courses
+- [x] handling multiple schedules
+- [x] computing your optimized schedule which minimizes conflicts
+- [x] adding private events
+- [x] no connection required
+- [x] caching of you data so you don't lose everything each time you leave
+- [x] detailed map of classrooms and events associated
+- [x] possibility to download schedule to iCal file or create subscription link
+- [x] you can share you calendar with anyone you would like
+
+... and many more !
 
 ### Documentation
 
