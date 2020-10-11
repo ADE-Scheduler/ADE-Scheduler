@@ -99,7 +99,7 @@ def get_events():
     return (jsonify({"events": schedule.get_events(json=True)}), 200)
 
 
-@api.route("/shield", methods=["GET"])
+@api.route("/shield/user", methods=["GET"])
 def user_shield():
     return jsonify(
         {
