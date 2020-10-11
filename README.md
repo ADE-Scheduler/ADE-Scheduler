@@ -62,8 +62,8 @@ In short, ADE Scheduler offers the same information as ADE, but in a much
 
  ![](static/img/ade_scheduler_side_by_side.png)
 
-But design is not the only power of ADE Scheduler, it also comes with
- several useful tools which ADe does not have:
+But an intuitive design is not the only advantage of ADE Scheduler, it also
+ comes with several useful tools which ADE does not have:
 
 - [x] black-listing some events in order to have a clean schedule
 - [x] easily viewing multiple courses
