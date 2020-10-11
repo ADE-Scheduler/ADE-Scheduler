@@ -6,6 +6,7 @@ from flask import current_app as app
 from flask import Blueprint, jsonify, request, session, redirect, url_for
 
 import backend.schedules as schd
+import backend.models as md
 import backend.utils as utl
 
 
@@ -96,3 +97,27 @@ def get_events():
         return redirect(url_for("calendar.index"))
 
     return (jsonify({"events": schedule.get_events(json=True)}), 200)
+
+
+@api.route("/shield", methods=["GET"])
+def user_shield():
+    return jsonify(
+        {
+            "schemaVersion": 1,
+            "label": "Users",
+            "message": f"{md.User.query.filter(None != md.User.confirmed_at).count()}",
+            "color": "blue",
+        }
+    )
+
+
+@api.route("/shield/schedule", methods=["GET"])
+def schedule_shield():
+    return jsonify(
+        {
+            "schemaVersion": 1,
+            "label": "Schedules",
+            "message": f"{md.Schedule.query.count()}",
+            "color": "blue",
+        }
+    )
