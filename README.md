@@ -2,6 +2,13 @@
 <p align="center">
   <img src="static/img/ade_scheduler_icon.png" width="200" height="200"> </img>
 </p>
+<p align="center">
+    <img alt="Website" src="https://img.shields.io/website?down_color=red&down_message=offline&label=Status%20&style=for-the-badge&up_color=green&up_message=online&url=https%3A%2F%2Fade-scheduler.info.ucl.ac.be">
+</p>
+<p align="center">
+<img src="https://img.shields.io/endpoint?url=https://ade-scheduler.info.ucl.ac.be/api/shield/user">
+<img src="https://img.shields.io/endpoint?url=https://ade-scheduler.info.ucl.ac.be/api/shield/schedule">
+</p>
 
 # ADE Scheduler: a scheduling tool made for humans
 

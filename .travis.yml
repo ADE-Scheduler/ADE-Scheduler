@@ -1,7 +1,15 @@
+# Make sure the version match the ones used in production
+# NOTE: there is currently no npm/node version specified -- may
+# be a good idea to add a check in the future ?
+# May be doable using nvm and a .nvmrc file...
+# https://docs.travis-ci.com/user/languages/javascript-with-nodejs/
 language: python
-python:
-    - "3.6"     # Currently, the website runs on python 3.6
-cache: pip
+python: "3.6"
+
+# Cache install data
+cache:
+    - pip
+    - npm
 
 # Databases
 services:
@@ -16,13 +24,15 @@ branches:
 # Dependencies
 install:
     - pip install -r requirements.txt
+    - npm install
 
 # Before tests
 before_script:
     - psql -c 'create database travis_ci_test;' -U postgres
+    - npx webpack --mode production
     - flask sql init
 
 # Run tests
 script:
-    - pytest
     - pre-commit run --all-files --show-diff-on-failure
+    - pytest
