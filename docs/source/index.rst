@@ -3,41 +3,71 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-
-Welcome to ADE-Scheduler's documentation !
-==========================================
-
-
 .. image:: ../../static/img/ade_scheduler_icon.png
    :width: 200
    :align: center
 
+==========================================
+Welcome to ADE-Scheduler's documentation !
+==========================================
+
 This documentation is here to help contributors understanding how the
 project is built.
 
-*******
-Backend
-*******
+Quickstart
+==========
 
-This module implements all the computationally intensive and complex
-functions, in a more or less optimized manner, in order to provide complete
-services to end users.
+Installation
+------------
 
-*****
-Views
-*****
+To setup your ADE Scheduler project locally, we recommend you to follow our
+`SETUP GUIDE <https://github.com/SnaKyEyeS/ADE-Scheduler/blob/master/SETUP
+.md>`_.
 
-This module makes the interface between the backend and the frontend. All
-requests are handled by this module.
+Documentation
+-------------
+
+
+* **Backend**
+
+.. note::
+
+    This module implements all the computationally intensive and complex
+    functions, in a more or less optimized manner, in order to provide complete
+    services to end users.
+
+
+* **Views**
+
+.. note::
+
+    This module makes the interface between the backend and the frontend. All
+    requests are handled by this module.
 
 .. toctree::
    :maxdepth: 3
-   :caption: Table of content:
+   :caption: Python modules:
 
    backend/modules
    views/modules
 
 
+Contributor Guide
+=================
+
+We really encourage people who want to contribute in any way to do so !
+There are many ways to help us:
+
+- Pointing a problem
+- Asking for a new feature
+- Fixing a problem
+- Adding language translations
+- Fixing typos in the code
+
+and so on...
+
+Please take a look at our `CONTRIBUTION GUIDE
+<https://github.com/SnaKyEyeS/ADE-Scheduler/blob/master/CONTRIBUTING.md>`_.
 
 
 Index et tables
