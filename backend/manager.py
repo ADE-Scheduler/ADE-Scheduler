@@ -1,7 +1,7 @@
 from multiprocessing import Process
 import pandas as pd
 import time
-from typing import SupportsInt, List, Iterator, Optional, Union, Dict
+from typing import List, Iterator, Optional, Union, Dict
 
 import backend.servers as srv
 import backend.ade_api as ade
@@ -42,16 +42,14 @@ class Manager:
         self.client = client
         self.database = database
 
-    def get_courses(
-        self, *codes: str, project_id: SupportsInt = None
-    ) -> List[crs.Course]:
+    def get_courses(self, *codes: str, project_id: str = None) -> List[crs.Course]:
         """
         Returns the courses with given codes as a list.
 
         :param codes: the code(s) of the course(s)
         :type codes: str
         :param project_id: the project id
-        :type project_id: SupportsInt
+        :type project_id: str
         :return: the list of courses
         :rtype: List[crs.Course]
         """
@@ -81,7 +79,7 @@ class Manager:
         return courses
 
     def get_events_in_classroom(
-        self, classroom_id: str, project_id: SupportsInt = None
+        self, classroom_id: str, project_id: str = None
     ) -> List[evt.AcademicalEvent]:
 
         if project_id is None:
@@ -106,12 +104,12 @@ class Manager:
         self.server.set_value(key, events, expire_in={"hours": 3})
         return events
 
-    def get_resources(self, project_id: SupportsInt = None) -> pd.DataFrame:
+    def get_resources(self, project_id: str = None) -> pd.DataFrame:
         """
         Returns the resources.
 
         :param project_id: the project id
-        :type project_id: SupportsInt
+        :type project_id: str
         :return: the resources
         :rtype: pd.DataFrame
         """
@@ -140,12 +138,12 @@ class Manager:
             resources = ade.response_to_resources(self.client.get_resources(value))
             self.server.set_value(key, resources, expire_in={"hours": 25})
 
-    def get_course_resources(self, project_id: SupportsInt = None) -> pd.DataFrame:
+    def get_course_resources(self, project_id: str = None) -> pd.DataFrame:
         """
         Returns the course resources.
 
         :param project_id: the project id
-        :type project_id: SupportsInt
+        :type project_id: str
         :return: the courses resources
         :rtype: pd.DataFrame
         """
@@ -181,9 +179,7 @@ class Manager:
             course_resources[code] = course_resources[code].apply(str.upper)
             self.server.set_value(key, course_resources, expire_in={"hours": 25})
 
-    def get_codes_matching(
-        self, pattern: str, project_id: SupportsInt = None
-    ) -> List[str]:
+    def get_codes_matching(self, pattern: str, project_id: str = None) -> List[str]:
         # Actually returns names matchings :)
         course_resources = self.get_course_resources(project_id)
         matching_code = course_resources[rsrc.INDEX.NAME].str.contains(
@@ -193,7 +189,7 @@ class Manager:
 
     def get_classrooms(
         self,
-        project_id: SupportsInt = None,
+        project_id: str = None,
         search_dict: Dict[str, str] = None,
         return_json: bool = False,
     ):
@@ -244,16 +240,14 @@ class Manager:
 
             self.server.set_value(key, classrooms, expire_in={"hours": 25})
 
-    def get_resource_ids(
-        self, *codes: str, project_id: SupportsInt = None
-    ) -> Iterator[str]:
+    def get_resource_ids(self, *codes: str, project_id: str = None) -> Iterator[str]:
         """
         Returns the resource ids of each code.
 
         :param codes: the code(s) (name(s)) of the resources
         :type codes: str
         :param project_id: the project id
-        :type project_id: SupportsInt
+        :type project_id: str
         :return: the resource ids
         :rtype: Iterator[str]
         """
@@ -281,7 +275,7 @@ class Manager:
             )
             self.server.set_value(key, resource_ids, expire_in={"hours": 25}, hmap=True)
 
-    def code_exists(self, code, project_id: SupportsInt = None) -> bool:
+    def code_exists(self, code, project_id: str = None) -> bool:
         """
         Checks if a given code exists in the database for a given project id
         """
