@@ -2,7 +2,7 @@ from itertools import product, chain, starmap, repeat
 from collections import deque, defaultdict
 from heapq import nsmallest
 import operator
-from typing import Iterable, Union, List, SupportsInt, Dict, Set, Optional
+from typing import Iterable, Union, List, Dict, Set, Optional
 from backend.courses import Course, merge_courses
 from flask import current_app as app
 from ics import Calendar
@@ -45,7 +45,7 @@ class Schedule:
 
     def __init__(
         self,
-        project_id: SupportsInt,
+        project_id: str,
         schedule_id: int = None,
         label: str = DEFAULT_SCHEDULE_NAME,
     ):
