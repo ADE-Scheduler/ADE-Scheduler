@@ -1,16 +1,3 @@
-@import "nord/src/sass/nord.scss";
-$theme-colors: (
-  "primary":    $nord10,
-  "secondary":  $nord3,
-  "success":    darken($nord14, 16%),
-  "info":       $nord7,
-  "warning":    $nord13,
-  "danger":     $nord11,
-  "light":      $nord6,
-  "dark":       $nord0,
-);
-@import "bootstrap/scss/bootstrap";
-
 html,
 body {
     overflow-x: hidden; /* Prevent scroll on narrow devices */
