@@ -28,8 +28,8 @@ install:
 
 # Before tests
 before_script:
+    # - npx webpack --mode production
     - psql -c 'create database travis_ci_test;' -U postgres
-    - npx webpack --mode production
     - flask sql init
 
 # Run tests
