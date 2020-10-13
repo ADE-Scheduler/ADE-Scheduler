@@ -114,6 +114,6 @@ urllib3==1.25.10
 virtualenv==20.0.33
 webassets==2.0
 webencodings==0.5.1
-Werkzeug==0.16.1
+Werkzeug==1.0.1
 WTForms==2.3.1
 xarray==0.16.0
