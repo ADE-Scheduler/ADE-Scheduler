@@ -29,7 +29,7 @@
     "sass-loader": "^10.0.3",
     "style-loader": "^2.0.0",
     "vue-loader": "^15.9.3",
-    "vue-template-compiler": "^2.6.11",
+    "vue-template-compiler": "^2.6.12",
     "webpack": "^4.44.2",
     "webpack-cli": "^4.0.0"
   },
@@ -44,7 +44,7 @@
     "nord": "^0.2.1",
     "overlapping-marker-spiderfier-leaflet": "^0.2.7",
     "popper.js": "^1.16.1",
-    "vue": "^2.6.11",
+    "vue": "^2.6.12",
     "vue-swatches": "^2.1.0",
     "vue2-leaflet": "^2.5.2"
   }
