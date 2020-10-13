@@ -22,7 +22,7 @@ from flask_security import Security, SQLAlchemyUserDatastore
 from flask_login import user_logged_out
 from flask_mail import Mail, Message
 from flask_jsglue import JSGlue
-from flask_babel import Babel, _
+from flask_babel import Babel, gettext
 from flask_migrate import Migrate
 from flask_compress import Compress
 from flask_track_usage import TrackUsage
@@ -237,7 +237,9 @@ def handle_exception(e):
         )
         app.config["MAIL_MANAGER"].send(msg)
     return (
-        _("An error has occurred. Please contact the admins if it keeps happening."),
+        gettext(
+            "An error has occurred. Please contact the admins if it keeps happening."
+        ),
         500,
     )
 
@@ -245,7 +247,7 @@ def handle_exception(e):
 @app.errorhandler(404)  # URL NOT FOUND
 @app.errorhandler(405)  # METHOD NOT ALLOWED
 def page_not_found(e):
-    message = _("404 Page not found :(")
+    message = gettext("404 Page not found :(")
     return render_template("errorhandler/404.html", message=message)
 
 

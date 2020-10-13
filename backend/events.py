@@ -7,7 +7,7 @@ from backend.classrooms import merge_classrooms, Classroom
 from backend.professors import Professor
 from typing import Type, Tuple, Iterable, Optional, Union, Any, Dict
 
-from flask_babel import _
+from flask_babel import gettext
 
 # We need to set the timezone
 TZ = timezone("Europe/Brussels")
@@ -164,13 +164,13 @@ class RecurringCustomEvent(CustomEvent):
         del r["start"]
         del r["end"]
         DAYS = [
-            _("Sunday"),
-            _("Monday"),
-            _("Tuesday"),
-            _("Wednesday"),
-            _("Thursday"),
-            _("Friday"),
-            _("Saturday"),
+            gettext("Sunday"),
+            gettext("Monday"),
+            gettext("Tuesday"),
+            gettext("Wednesday"),
+            gettext("Thursday"),
+            gettext("Friday"),
+            gettext("Saturday"),
         ]
 
         self.freq.sort()
