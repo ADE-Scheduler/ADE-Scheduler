@@ -9,9 +9,7 @@
 <div class="container-lg pt-3">
     <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
         {{ message }}
-        <button type="button" class="close" data-dismiss="alert">
-            <span>&times;</span>
-        </button>
+        <button type="button" class="btn-close" data-dismiss="alert"></button>
     </div>
     <img src="{{ url_for('static', filename='img/404.jpg') }}" class="img-fluid" alt="Responsive image">
 </div>

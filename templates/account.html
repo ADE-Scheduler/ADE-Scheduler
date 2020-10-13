@@ -13,9 +13,7 @@
         <div class="modal-content alert-danger">
             <div class="modal-header">
                 <h5 class="modal-title">{{ _('Warning') }}</h5>
-                <button type="button" class="close" data-dismiss="modal">
-                    <span>&times;</span>
-                </button>
+                <button type="button" class="btn-close" data-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 {{  _('You have unsaved changes in your current schedule. Continue ?') }}
@@ -35,9 +33,7 @@
             {{ render_flash_alert() }}
             <div class="alert alert-danger alert-dismissible" v-show="error">
                 {{  _('A problem has occurred. Please contact us if it happens again.') }}
-                <button type="button" class="close" v-on:click="error = false">
-                    <span>&times;</span>
-                </button>
+                <button type="button" class="btn-close" v-on:click="error = false"></button>
             </div>
             <div class="card">
                 <div class="spinner-border text-primary spinner-compute" v-show="computing"></div>
