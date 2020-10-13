@@ -318,7 +318,7 @@ class Schedule:
                         r = repeat(e)
                         # If that event overlaps with any of the events in tmp
                         if any(starmap(operator.xor, zip(tmp, r))):
-                            week_data.drop(index=index, inplace=True, errors="ignore")
+                            week_data = week_data.drop(index=index, errors="ignore")
                         else:
                             # We append to left because last event is most likely to conflict (if sorted)
                             tmp.appendleft(e)
