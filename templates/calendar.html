@@ -13,9 +13,7 @@
             <div class="modal-content alert-danger">
                 <div class="modal-header">
                     <h5 class="modal-title">{{ _('Warning') }}</h5>
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span>&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     {{  _('You have unsaved changes in your current schedule. Continue ?') }}
@@ -34,9 +32,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">{{_('Course program')}}</h5>
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span>&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row" v-for="(value, name) in courseInfo.summary" v-bind:key="name">
@@ -72,9 +68,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">[[ eventInfo.title ]]</h5>
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span>&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -120,9 +114,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">{{_('Export')}}</h5>
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span>&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     {% if not current_user.is_authenticated %}
@@ -214,9 +206,7 @@
             <form class="modal-content needs-validation" id="form-add-event" v-on:submit.prevent="addEvent">
                 <div class="modal-header">
                     <h5 class="modal-title">{{_('Add an event')}}</h5>
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span>&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -346,9 +336,7 @@
             <div class="modal-content alert-danger">
                 <div class="modal-header">
                     <h5 class="modal-title">{{ _('Warning') }}</h5>
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span>&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     {{  _('The code you added does not exist in our database.') }}
@@ -506,15 +494,11 @@
                 {% if saved %}<div style="display:none" id="scheduleSaved"></div>{% endif %}
                 <div class="alert alert-success alert-dismissible" v-show="saveSuccess">
                     {{_('Schedule successfuly saved !')}}
-                    <button type="button" class="close"v-on:click="saveSuccess = false">
-                        <span>&times;</span>
-                    </button>
+                    <button type="button" class="btn-close"v-on:click="saveSuccess = false"></button>
                 </div>
                 <div class="alert alert-danger alert-dismissible" v-show="error">
                     {{_('A problem has occurred. Please contact us if it happens again.')}}
-                    <button type="button" class="close" v-on:click="error = false">
-                        <span>&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" v-on:click="error = false"></button>
                 </div>
                 <div class="spinner-border text-primary spinner-compute" v-show="computing"></div>
                 <full-calendar ref="calendar" v-bind:options="calendarOptions" v-bind:style="calendarOpacity"></full-calendar>
