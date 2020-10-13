@@ -15,7 +15,7 @@ from flask import (
     g,
 )
 from flask_security import current_user, login_required
-from flask_babel import _
+from flask_babel import gettext
 
 import backend.schedules as schd
 import backend.events as evt
@@ -85,7 +85,7 @@ def clear():
             {
                 "current_schedule": {
                     "id": session["current_schedule"].id,
-                    "label": _(session["current_schedule"].label),
+                    "label": gettext(session["current_schedule"].label),
                     "color_palette": session["current_schedule"].color_palette,
                 },
                 "current_project_id": session["current_schedule"].project_id,
@@ -106,7 +106,7 @@ def get_data():
                 "unsaved": session["current_schedule_modified"],
                 "current_schedule": {
                     "id": session["current_schedule"].id,
-                    "label": _(session["current_schedule"].label),
+                    "label": gettext(session["current_schedule"].label),
                     "color_palette": session["current_schedule"].color_palette,
                 },
                 "n_schedules": len(session["current_schedule"].best_schedules),
@@ -116,7 +116,7 @@ def get_data():
                 if not current_user.is_authenticated
                 else list(
                     map(
-                        lambda s: {"id": s.id, "label": _(s.data.label)},
+                        lambda s: {"id": s.id, "label": gettext(s.data.label)},
                         current_user.get_schedule(),
                     )
                 ),
@@ -139,7 +139,7 @@ def load_schedule(id):
                 {
                     "current_schedule": {
                         "id": schedule.data.id,
-                        "label": _(schedule.data.label),
+                        "label": gettext(schedule.data.label),
                         "color_palette": schedule.data.color_palette,
                     },
                     "project_id": mng.get_project_ids(),
@@ -150,7 +150,7 @@ def load_schedule(id):
                     "codes": session["current_schedule"].codes,
                     "schedules": list(
                         map(
-                            lambda s: {"id": s.id, "label": _(s.data.label)},
+                            lambda s: {"id": s.id, "label": gettext(s.data.label)},
                             current_user.get_schedule(),
                         )
                     ),
@@ -175,7 +175,7 @@ def add_code(code):
     mng = app.config["MANAGER"]
     code = code.upper()
     if not mng.code_exists(code, project_id=session["current_schedule"].project_id):
-        return _("The code you added does not exist in our database."), 404
+        return gettext("The code you added does not exist in our database."), 404
 
     codes = session["current_schedule"].add_course(code)
     if codes:
@@ -297,7 +297,7 @@ def save():
                 "unsaved": session["current_schedule_modified"],
                 "schedules": list(
                     map(
-                        lambda s: {"id": s.id, "label": _(s.data.label)},
+                        lambda s: {"id": s.id, "label": gettext(s.data.label)},
                         current_user.get_schedule(),
                     )
                 ),
@@ -322,7 +322,10 @@ def download():
         schedule.project_id = mng.get_default_project_id()
 
     if schedule is None:
-        return _("The schedule you requested does not exist in our database !"), 400
+        return (
+            gettext("The schedule you requested does not exist in our database !"),
+            400,
+        )
     else:
         resp = make_response(schedule.get_ics_file(schedule_number=choice))
         resp.mimetype = "text/calendar"
@@ -345,7 +348,10 @@ def share():
         schedule = None
 
     if schedule is None:
-        return _("The schedule you requested does not exist in our database !"), 400
+        return (
+            gettext("The schedule you requested does not exist in our database !"),
+            400,
+        )
     else:
         g.track_var["schedule share"] = schedule.id
         session["current_schedule"] = schedule

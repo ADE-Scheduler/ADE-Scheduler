@@ -6,11 +6,11 @@ from typing import Iterable, Union, List, SupportsInt, Dict, Set, Optional
 from backend.courses import Course, merge_courses
 from flask import current_app as app
 from ics import Calendar
-from flask_babel import _
+from flask_babel import gettext
 
 import backend.events as evt
 
-DEFAULT_SCHEDULE_NAME = _("New schedule")
+DEFAULT_SCHEDULE_NAME = gettext("New schedule")
 COLOR_PALETTE = [
     "#bf616a",
     "#2e3440",
