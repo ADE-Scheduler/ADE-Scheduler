@@ -8,7 +8,7 @@ Babel==2.8.0
 bcrypt==3.2.0
 beautifulsoup4==4.9.3
 blinker==1.4
-Brotli==1.0.7
+Brotli==1.0.9
 CacheControl==0.12.6
 cachelib==0.1.1
 certifi==2020.6.20
@@ -37,7 +37,7 @@ Flask-Migrate==2.5.3
 Flask-Principal==0.4.0
 Flask-Security-Too==4.0.0rc1
 Flask-Session==0.3.2
-Flask-SQLAlchemy==2.4.3
+Flask-SQLAlchemy==2.4.4
 git+https://github.com/SnaKyEyeS/flask-track-usage#egg=Flask-Track-Usage
 Flask-WTF==0.14.3
 geographiclib==1.50
