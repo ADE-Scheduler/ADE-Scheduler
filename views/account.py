@@ -4,7 +4,7 @@ from typing import Any
 from flask import current_app as app
 from flask import Blueprint, render_template, session, request, jsonify
 from flask_security import login_required, current_user
-from flask_babel import _
+from flask_babel import gettext
 
 import backend.schedules as schd
 import backend.utils as utl
@@ -64,7 +64,7 @@ def get_data():
     label = session["current_schedule"].label
 
     if label == schd.DEFAULT_SCHEDULE_NAME:  # Translates the default schedule name
-        session["current_schedule"].label = _(label)
+        session["current_schedule"].label = gettext(label)
         # Might exist a better way ...
 
     return (
