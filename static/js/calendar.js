@@ -242,6 +242,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.calendarOptions.events = resp.data.events;
                     this.currentSchedule = resp.data.current_schedule;
                     this.setUnsavedStatus(resp.data.unsaved);
+                    this.autoSave = resp.data.autosave;
                 })
                 .catch(err => {
                     this.error = true;
@@ -369,13 +370,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             },
             setUnsavedStatus(unsaved) {
-                console.log("setUn");
-                console.log(this.autoSave);
-                this.unsaved = unsaved;
+                this.unsaved = unsaved; // TODO virer cette fonction useless
             },
             changeAutoSave() {
-                console.log("ici");
-                this.autoSave = !this.autoSave;
+                this.computing = true;
+                axios({
+                    method: 'POST',
+                    url: Flask.url_for('account.autosave'),
+                    header: {'Content-Type': 'application/json'},
+                    data: { autosave: this.autoSave },
+                })
+                .then(resp => {})
+                .catch(err => {
+                    this.error = true;
+                })
+                .then(() => {
+                    this.computing = false;
+                });
             },
             save: function() {
                 console.log("Saving");

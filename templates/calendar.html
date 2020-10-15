@@ -442,9 +442,11 @@
                         </li>
                     </div>
 
+                    {% if current_user.is_authenticated %}
                     <div class="mt3">
-                        <input type="checkbox" checked data-toggle="toggle" v-bind:value="autoSave" v-on:change="changeAutoSave">
+                        <input type="checkbox" checked data-toggle="toggle" v-model="autoSave" v-on:click="changeAutoSave">
                     </div>
+                    {% endif %}
                     <div class="mt-3">
                         <label class="form-label" for="select-project-id">{{ _('Academic year') }}</label>
                         <select class="form-select" v-model="currentProjectId" v-on:change="updateYear">
