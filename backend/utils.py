@@ -20,9 +20,9 @@ def init_schedule():
 def autosave_schedule():
     mng = app.config["MANAGER"]
 
-    # TODO: autosave only if option is set
-    if current_user.is_authenticated:
-        mng = app.config["MANAGER"]
-        session["current_schedule"] = mng.save_schedule(
-            current_user, session["current_schedule"]
-        )
+    if session["current_schedule_modified"]:
+        if current_user.is_authenticated and current_user.autosave:
+            mng = app.config["MANAGER"]
+            session["current_schedule"] = mng.save_schedule(
+                current_user, session["current_schedule"]
+            )
