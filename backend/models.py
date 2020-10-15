@@ -93,6 +93,10 @@ class User(db.Model, fsqla.FsUserMixin):
         else:
             return self.schedules  # Return all of this user's schedules
 
+    def set_autosave(self, autosave):
+        self.autosave = autosave
+        db.session.commit()
+
 
 class Schedule(db.Model):
     """

@@ -125,6 +125,7 @@ def get_data():
                         current_user.get_schedule(),
                     )
                 ),
+                "autosave": getattr(current_user, "autosave", False),
             }
         ),
         200,

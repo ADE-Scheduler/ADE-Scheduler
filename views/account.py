@@ -195,3 +195,11 @@ def save():
         ),
         200,
     )
+
+
+@account.route("/autosave", methods=["POST"])
+@login_required
+def autosave():
+    print(request.json["autosave"])
+    current_user.set_autosave(request.json["autosave"])
+    return jsonify({}), 200

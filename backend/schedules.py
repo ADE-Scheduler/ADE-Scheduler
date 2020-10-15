@@ -58,17 +58,17 @@ class Schedule:
         self.custom_events = list()
         self.priorities = dict()
         self.color_palette = list(COLOR_PALETTE)
-        self.options = defaultdict(lambda: False)
+        self.options = dict()
 
     def get_option(self, option: str) -> bool:
         if not hasattr(self, "options"):
-            setattr(self, "options", defaultdict(lambda: False))
+            setattr(self, "options", None)
 
         return self.options[option]
 
     def set_option(self, option: str, value: bool):
         if not hasattr(self, "options"):
-            setattr(self, "options", defaultdict(lambda: False))
+            setattr(self, "options", None)
 
         self.options[option] = value
 
