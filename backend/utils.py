@@ -1,5 +1,6 @@
 from flask import current_app as app
 from flask import session
+from flask_security import current_user
 
 import backend.schedules as schd
 
@@ -14,3 +15,14 @@ def init_schedule():
     project_ids = [int(year["id"]) for year in mng.get_project_ids()]
     if int(session["current_schedule"].project_id) not in project_ids:
         session["current_schedule"].project_id = mng.get_default_project_id()
+
+
+def autosave_schedule():
+    mng = app.config["MANAGER"]
+
+    # TODO: autosave only if option is set
+    if current_user.is_authenticated:
+        mng = app.config["MANAGER"]
+        session["current_schedule"] = mng.save_schedule(
+            current_user, session["current_schedule"]
+        )

@@ -372,9 +372,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log("setUn");
                 console.log(this.autoSave);
                 this.unsaved = unsaved;
-                if (this.unsaved && this.autoSave) {
-                    this.save();
-                }
             },
             changeAutoSave() {
                 console.log("ici");
