@@ -51,14 +51,6 @@ def before_account_request():
     utl.init_schedule()
 
 
-@account.teardown_request
-def account_teardown_request(exception):
-    utl.autosave_schedule()
-    # TODO: there is no request to the backend when changing a color on account
-    # nor when changing project_id
-    # Thus, autosave isn't taken into account for this page...
-
-
 @account.route("/")
 @login_required
 def index():
