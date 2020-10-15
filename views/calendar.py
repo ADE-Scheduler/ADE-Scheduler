@@ -385,7 +385,15 @@ def apply_filter():
 def update_poject_id(id):
     session["current_schedule"].project_id = id
     session["current_schedule_modified"] = True
-    return (jsonify({"events": session["current_schedule"].get_events(json=True)}), 200)
+    return (
+        jsonify(
+            {
+                "events": session["current_schedule"].get_events(json=True),
+                "unsaved": session["current_schedule_modified"],
+            }
+        ),
+        200,
+    )
 
 
 @calendar.route("/schedule/link", methods=["GET"])
@@ -449,12 +457,14 @@ def update_color():
         session["current_schedule"].color_palette = color_palette
 
     schedule_number = int(request.json.get("schedule_number"))
+    session["current_schedule_modified"] = True
     return (
         jsonify(
             {
                 "events": session["current_schedule"].get_events(
                     json=True, schedule_number=schedule_number
-                )
+                ),
+                "unsaved": session["current_schedule_modified"],
             }
         ),
         200,
@@ -466,6 +476,7 @@ def reset_color():
     session["current_schedule"].reset_color_palette()
 
     schedule_number = int(request.args.get("schedule_number"))
+    session["current_schedule_modified"] = True
     return (
         jsonify(
             {
@@ -473,6 +484,7 @@ def reset_color():
                 "events": session["current_schedule"].get_events(
                     json=True, schedule_number=schedule_number
                 ),
+                "unsaved": session["current_schedule_modified"],
             }
         ),
         200,
