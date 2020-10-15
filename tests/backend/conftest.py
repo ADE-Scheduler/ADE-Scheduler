@@ -1,6 +1,7 @@
 import os
 import pytest
 import backend.ade_api as ade
+import backend.servers as srv
 
 
 @pytest.fixture(scope="session")
@@ -56,3 +57,8 @@ def courses(ade_client, project_id, resource_ids):
     resp = ade_client.get_activities(ids, project_id)
 
     return ade.response_to_courses(resp)
+
+
+@pytest.fixture
+def server():
+    return srv.Server()
