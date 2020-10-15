@@ -63,6 +63,11 @@ def before_calendar_request():
     utl.init_schedule()
 
 
+@calendar.teardown_request
+def calendar_teardown_request(exception):
+    utl.autosave_schedule()
+
+
 @calendar.route("/")
 def index():
     if bool(request.args.get("save")) and current_user.is_authenticated:

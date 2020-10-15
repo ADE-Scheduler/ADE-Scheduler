@@ -51,6 +51,11 @@ def before_account_request():
     utl.init_schedule()
 
 
+@calendar.teardown_request
+def calendar_teardown_request(exception):
+    utl.autosave_schedule()
+
+
 @account.route("/")
 @login_required
 def index():
