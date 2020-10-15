@@ -1,4 +1,5 @@
 import secrets
+import sqlalchemy as sa
 
 from copy import copy
 from flask_sqlalchemy import SQLAlchemy
@@ -35,6 +36,12 @@ class Role(db.Model, fsqla.FsRoleMixin):
 
 
 class User(db.Model, fsqla.FsUserMixin):
+    autosave = db.Column(
+        db.Boolean(),
+        nullable=False,
+        default=False,
+        server_default=sa.sql.expression.literal(False),
+    )
     schedules = db.relationship("Schedule", secondary="property")
 
     def add_schedule(self, schedule, level=OWNER_LEVEL):
