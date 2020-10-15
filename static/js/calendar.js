@@ -370,23 +370,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             },
             setUnsavedStatus(unsaved) {
-                this.unsaved = unsaved; // TODO virer cette fonction useless
-            },
-            changeAutoSave() {
-                this.computing = true;
-                axios({
-                    method: 'POST',
-                    url: Flask.url_for('account.autosave'),
-                    header: {'Content-Type': 'application/json'},
-                    data: { autosave: this.autoSave },
-                })
-                .then(resp => {})
-                .catch(err => {
-                    this.error = true;
-                })
-                .then(() => {
-                    this.computing = false;
-                });
+                if (this.autoSave) {
+                    this.unsaved = false;
+                } else {
+                    this.unsaved = unsaved;
+                }
             },
             save: function() {
                 this.computing = true;

@@ -35,11 +35,30 @@
                 {{  _('A problem has occurred. Please contact us if it happens again.') }}
                 <button type="button" class="btn-close" v-on:click="error = false"></button>
             </div>
+
+            <div class="card mb-3">
+                <div class="card-header">
+                    <div class="h5 mb-0 text-muted">
+                        {{ _('User settings') }}
+                    </div>
+                </div>
+                <div class="card-body" v-bind:style="opacity">
+                    <div class="form-check form-switch">
+                        <label class="form-check-label">{{ _('Automatically save your changes') }}</label>
+                        <input class="form-check-input" type="checkbox" v-model="autoSave" v-on:change="changeAutoSave">
+                    </div>
+
+                    <div class="mt-4">
+                        <a class="link-primary" href="{{ url_for('security.change_password') }}">{{ _('Change your password') }}</a>
+                    </div>
+                </div>
+            </div>
+
             <div class="card">
                 <div class="spinner-border text-primary spinner-compute" v-show="computing"></div>
                 <div class="card-header d-flex justify-content-between align-items-center" id="form-update-label" v-bind:style="opacity">
                     <input class="form-control mr-4" type="text" v-focus v-model="currentSchedule.label" v-if="isEditing" v-on:keyup.enter="updateLabel($event, currentSchedule.id)" v-on:blur="isEditing = false" v-on:keyup.esc="isEditing = false"/>
-                    <div id="schedule-label" v-else v-on:click="isEditing = true">
+                    <div class="h5 mb-0 text-muted" id="schedule-label" v-else v-on:click="isEditing = true">
                         [[ currentSchedule.label ]]
                     </div>
                     <a class="text-dark" href="#" v-on:click="updateLabel($event, currentSchedule.id)">
@@ -63,9 +82,9 @@
                         </select>
                     </div>
                     <div class="btn-group d-flex">
-                        <button class="btn btn-outline-secondary" v-on:click="save">{{ _('Save') }}</button>
-                        <button class="btn btn-outline-secondary" v-on:click="viewSchedule($event, currentSchedule.id)">{{ _('View') }}</button>
-                        <button class="btn btn-danger" v-on:click="deleteSchedule($event, currentSchedule.id)">{{  _('Delete') }}</button>
+                        <button class="btn btn-outline-secondary text-truncate" v-on:click="save">{{ _('Save') }}</button>
+                        <button class="btn btn-outline-secondary text-truncate" v-on:click="viewSchedule($event, currentSchedule.id)">{{ _('View') }}</button>
+                        <button class="btn btn-danger text-truncate" v-on:click="deleteSchedule($event, currentSchedule.id)">{{  _('Delete') }}</button>
                     </div>
                 </div>
             </div>
