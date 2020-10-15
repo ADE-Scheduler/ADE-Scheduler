@@ -389,7 +389,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             },
             save: function() {
-                console.log("Saving");
                 this.computing = true;
                 axios({
                     method: 'POST',
