@@ -80,6 +80,7 @@ def get_data():
             {
                 "project_id": mng.get_project_ids(),
                 "unsaved": session["current_schedule_modified"],
+                "autosave": current_user.autosave,
                 "schedules": list(
                     map(
                         lambda s: {"id": s.id, "label": s.data.label},
