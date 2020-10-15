@@ -1,3 +1,5 @@
+import json
+
 from flask import current_app as app
 from flask import session
 from flask_security import current_user
@@ -17,12 +19,19 @@ def init_schedule():
         session["current_schedule"].project_id = mng.get_default_project_id()
 
 
-def autosave_schedule():
-    mng = app.config["MANAGER"]
+def autosave_schedule(response):
+    if response.is_json and session["current_schedule_modified"]:
+        mng = app.config["MANAGER"]
 
-    if session["current_schedule_modified"]:
         if current_user.is_authenticated and current_user.autosave:
             mng = app.config["MANAGER"]
             session["current_schedule"] = mng.save_schedule(
                 current_user, session["current_schedule"]
             )
+            session["current_schedule_modified"] = False
+
+        data = json.loads(response.get_data())
+        data["unsaved"] = session["current_schedule_modified"]
+        response.set_data(json.dumps(data))
+
+    return response

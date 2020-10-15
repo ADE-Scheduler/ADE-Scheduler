@@ -63,9 +63,10 @@ def before_calendar_request():
     utl.init_schedule()
 
 
-@calendar.teardown_request
-def calendar_teardown_request(exception):
-    utl.autosave_schedule()
+@calendar.after_request
+def after_calendar_request(response):
+    response = utl.autosave_schedule(response)
+    return response
 
 
 @calendar.route("/")
@@ -108,7 +109,6 @@ def get_data():
             {
                 "project_id": mng.get_project_ids(),
                 "current_project_id": session["current_schedule"].project_id,
-                "unsaved": session["current_schedule_modified"],
                 "current_schedule": {
                     "id": session["current_schedule"].id,
                     "label": gettext(session["current_schedule"].label),
@@ -150,7 +150,6 @@ def load_schedule(id):
                     },
                     "project_id": mng.get_project_ids(),
                     "current_project_id": session["current_schedule"].project_id,
-                    "unsaved": session["current_schedule_modified"],
                     "n_schedules": len(session["current_schedule"].best_schedules),
                     "events": session["current_schedule"].get_events(json=True),
                     "codes": session["current_schedule"].codes,
@@ -191,7 +190,6 @@ def add_code(code):
             {
                 "codes": codes,
                 "events": session["current_schedule"].get_events(json=True),
-                "unsaved": session["current_schedule_modified"],
             }
         ),
         200,
@@ -202,15 +200,7 @@ def add_code(code):
 def remove_code(code):
     session["current_schedule"].remove_course(code)
     session["current_schedule_modified"] = True
-    return (
-        jsonify(
-            {
-                "events": session["current_schedule"].get_events(json=True),
-                "remove": session["current_schedule_modified"],
-            }
-        ),
-        200,
-    )
+    return (jsonify({"events": session["current_schedule"].get_events(json=True)}), 200)
 
 
 @calendar.route("/<path:code>/info", methods=["GET"])
@@ -252,19 +242,14 @@ def add_custom_event():
         event = evt.CustomEvent(**event)
     session["current_schedule"].add_custom_event(event)
     session["current_schedule_modified"] = True
-    return (
-        jsonify(
-            {"event": event.json(), "unsaved": session["current_schedule_modified"]}
-        ),
-        200,
-    )
+    return (jsonify({"event": event.json()}), 200)
 
 
 @calendar.route("/custom_event/<id>", methods=["DELETE"])
 def delete_custom_event(id):
     session["current_schedule"].remove_custom_event(id=id)
     session["current_schedule_modified"] = True
-    return jsonify({"unsaved": session["current_schedule_modified"]}), 200
+    return jsonify({}), 200
 
 
 @calendar.route("/custom_event/<id>", methods=["POST"])
@@ -300,13 +285,12 @@ def save():
     return (
         jsonify(
             {
-                "unsaved": session["current_schedule_modified"],
                 "schedules": list(
                     map(
                         lambda s: {"id": s.id, "label": gettext(s.data.label)},
                         current_user.get_schedule(),
                     )
-                ),
+                )
             }
         ),
         200,
@@ -376,30 +360,14 @@ def apply_filter():
                 if not value:
                     schedule.add_filter(code, type + ": " + filter)
     session["current_schedule_modified"] = True
-    return (
-        jsonify(
-            {
-                "unsaved": session["current_schedule_modified"],
-                "events": session["current_schedule"].get_events(json=True),
-            }
-        ),
-        200,
-    )
+    return (jsonify({"events": session["current_schedule"].get_events(json=True)}), 200)
 
 
 @calendar.route("/schedule/year/<id>", methods=["PUT"])
 def update_poject_id(id):
     session["current_schedule"].project_id = id
     session["current_schedule_modified"] = True
-    return (
-        jsonify(
-            {
-                "events": session["current_schedule"].get_events(json=True),
-                "unsaved": session["current_schedule_modified"],
-            }
-        ),
-        200,
-    )
+    return (jsonify({"events": session["current_schedule"].get_events(json=True)}), 200)
 
 
 @calendar.route("/schedule/link", methods=["GET"])
@@ -440,7 +408,6 @@ def compute():
     return (
         jsonify(
             {
-                "unsaved": session["current_schedule_modified"],
                 "n_schedules": len(session["current_schedule"].best_schedules)
                 if bests is not None
                 else 0,
@@ -469,8 +436,7 @@ def update_color():
             {
                 "events": session["current_schedule"].get_events(
                     json=True, schedule_number=schedule_number
-                ),
-                "unsaved": session["current_schedule_modified"],
+                )
             }
         ),
         200,
@@ -490,7 +456,6 @@ def reset_color():
                 "events": session["current_schedule"].get_events(
                     json=True, schedule_number=schedule_number
                 ),
-                "unsaved": session["current_schedule_modified"],
             }
         ),
         200,
