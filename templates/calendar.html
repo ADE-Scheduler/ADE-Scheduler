@@ -444,7 +444,7 @@
 
                     {% if current_user.is_authenticated %}
                     <div class="mt3">
-                        <input type="checkbox" checked data-toggle="toggle" v-model="autoSave" v-on:click="changeAutoSave">
+                        <input type="checkbox" checked data-toggle="toggle" v-model="autoSave" v-on:change="changeAutoSave">
                     </div>
                     {% endif %}
                     <div class="mt-3">
