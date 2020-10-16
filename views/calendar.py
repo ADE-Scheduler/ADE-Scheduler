@@ -61,6 +61,7 @@ calendar.json_encoder = CalendarEncoder
 @calendar.before_request
 def before_calendar_request():
     utl.init_schedule()
+    utl.autoload_schedule()
 
 
 @calendar.after_request
@@ -74,7 +75,7 @@ def index():
     if bool(request.args.get("save")) and current_user.is_authenticated:
         mng = app.config["MANAGER"]
         session["current_schedule"] = mng.save_schedule(
-            current_user, session["current_schedule"]
+            current_user, session["current_schedule"], session.get("uuid")
         )
         session["current_schedule_modified"] = False
         return render_template("calendar.html", saved=True)
@@ -279,7 +280,7 @@ def save():
 
     mng = app.config["MANAGER"]
     session["current_schedule"] = mng.save_schedule(
-        current_user, session["current_schedule"]
+        current_user, session["current_schedule"], session.get("uuid")
     )
     session["current_schedule_modified"] = False
     return (
@@ -377,6 +378,7 @@ def export():
         session["current_schedule"] = mng.save_schedule(
             current_user if current_user.is_authenticated else None,
             session["current_schedule"],
+            session.get("uuid"),
         )
 
     link = mng.get_link(session["current_schedule"].id)

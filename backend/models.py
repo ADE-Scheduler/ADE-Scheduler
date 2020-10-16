@@ -1,5 +1,9 @@
+import uuid
 import secrets
 import sqlalchemy as sa
+
+from sqlalchemy.types import TypeDecorator, CHAR
+from sqlalchemy.dialects.postgresql import UUID
 
 from copy import copy
 from flask_sqlalchemy import SQLAlchemy
@@ -11,6 +15,43 @@ VIEWER_LEVEL = 2
 
 db = SQLAlchemy()
 fsqla.FsModels.set_db_info(db)
+
+
+class GUID(TypeDecorator):
+    """Platform-independent GUID type.
+
+    Uses PostgreSQL's UUID type, otherwise uses
+    CHAR(32), storing as stringified hex values.
+
+    """
+
+    impl = CHAR
+
+    def load_dialect_impl(self, dialect):
+        if dialect.name == "postgresql":
+            return dialect.type_descriptor(UUID())
+        else:
+            return dialect.type_descriptor(CHAR(32))
+
+    def process_bind_param(self, value, dialect):
+        if value is None:
+            return value
+        elif dialect.name == "postgresql":
+            return str(value)
+        else:
+            if not isinstance(value, uuid.UUID):
+                return "%.32x" % uuid.UUID(value).int
+            else:
+                # hexstring
+                return "%.32x" % value.int
+
+    def process_result_value(self, value, dialect):
+        if value is None:
+            return value
+        else:
+            if not isinstance(value, uuid.UUID):
+                value = uuid.UUID(value)
+            return value
 
 
 class LevelAccessDenied(Exception):
@@ -105,6 +146,7 @@ class Schedule(db.Model):
 
     __tablename__ = "schedule"
     id = db.Column(db.Integer(), primary_key=True)
+    last_modified = db.Column(GUID(), nullable=True)
     data = db.Column(db.PickleType())
     users = db.relationship("User", secondary="property")
     link = db.relationship("Link", uselist=False, backref="schedule")
@@ -153,6 +195,10 @@ class Schedule(db.Model):
         if self.link is None:
             Link(self)
         return self.link
+
+    def update_last_modified(self, uuid):
+        self.last_modified = uuid
+        db.session.commit()
 
 
 class Link(db.Model):
