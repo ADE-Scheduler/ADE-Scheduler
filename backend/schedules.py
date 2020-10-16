@@ -87,6 +87,9 @@ class Schedule:
 
         self.options[option] = value
 
+    def is_empty(self):
+        return len(self.codes) == 0 and len(self.custom_events) == 0
+
     def reset_color_palette(self):
         self.color_palette = list(COLOR_PALETTE)
         return self.color_palette
