@@ -188,6 +188,7 @@ def when_user_logged_out(sender, user):
         session["current_schedule_modified"] = False
 
 
+# Load previous "current schedule" on user login
 @user_logged_in.connect_via(app)
 def when_user_logged_in(sender, user):
     if session["current_schedule"].is_empty() and user.last_schedule_id is not None:
