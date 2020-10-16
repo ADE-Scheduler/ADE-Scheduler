@@ -35,6 +35,21 @@ def default_dict_any_to_set() -> defaultdict:
     return defaultdict(set)
 
 
+def default_options() -> defaultdict:
+    """
+    Create a collections.defaultdict object mapping each key to a boolean.
+    Default value is false.
+
+    :return: the dictionary
+    :rtype: collections.defaultdict
+    """
+
+    def false():
+        return False
+
+    return defaultdict(false)
+
+
 class Schedule:
     """
     A schedule is essentially a combination of courses stored as a master course, from which some events can be removed.
@@ -62,13 +77,13 @@ class Schedule:
 
     def get_option(self, option: str) -> bool:
         if not hasattr(self, "options"):
-            setattr(self, "options", None)
+            setattr(self, "options", default_options())
 
         return self.options[option]
 
     def set_option(self, option: str, value: bool):
         if not hasattr(self, "options"):
-            setattr(self, "options", None)
+            setattr(self, "options", default_options())
 
         self.options[option] = value
 
@@ -303,10 +318,12 @@ class Schedule:
             [] for _ in range(n_best)
         ]  # We create an empty list which will contain best schedules
 
-        # Forbidden time slots = events that we cannot move and that we want to minimize conflicts with them
+        # Forbidden time slots = events that we cannot move and that we want to
+        # minimize conflicts with them
         fts = self.custom_events
 
-        # Merge courses applying reverse view on all of them, then get all the activities
+        # Merge courses applying reverse view on all of them, then get all the
+        # activities
         df = merge_courses(
             courses, views=self.filtered_subcodes, reverse=True
         ).get_activities()
@@ -317,7 +334,8 @@ class Schedule:
 
         max_bests_found = (
             1
-        )  # Number of best schedules found (will take the maximum value out of all weeks)
+        )  # Number of best schedules found (will take the maximum value out of all
+        # weeks)
 
         for week, week_data in df_main.groupby("week"):
             if (
@@ -333,7 +351,8 @@ class Schedule:
                         if any(starmap(operator.xor, zip(tmp, r))):
                             week_data = week_data.drop(index=index, errors="ignore")
                         else:
-                            # We append to left because last event is most likely to conflict (if sorted)
+                            # We append to left because last event is most likely to
+                            # conflict (if sorted)
                             tmp.appendleft(e)
 
             # First, each event is considered to be filtered out.
