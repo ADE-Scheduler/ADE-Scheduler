@@ -83,6 +83,7 @@ class User(db.Model, fsqla.FsUserMixin):
         default=False,
         server_default=sa.sql.expression.literal(False),
     )
+    last_schedule_id = db.Column(db.Integer(), nullable=True)
     schedules = db.relationship("Schedule", secondary="property")
 
     def add_schedule(self, schedule, level=OWNER_LEVEL):
@@ -136,6 +137,10 @@ class User(db.Model, fsqla.FsUserMixin):
 
     def set_autosave(self, autosave):
         self.autosave = autosave
+        db.session.commit()
+
+    def set_last_schedule_id(self, schedule_id):
+        self.last_schedule_id = schedule_id
         db.session.commit()
 
 
