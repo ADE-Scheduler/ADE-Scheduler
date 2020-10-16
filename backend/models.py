@@ -151,7 +151,7 @@ class Schedule(db.Model):
 
     __tablename__ = "schedule"
     id = db.Column(db.Integer(), primary_key=True)
-    last_modified = db.Column(GUID(), nullable=True)
+    last_modified_by = db.Column(GUID(), nullable=True)
     data = db.Column(db.PickleType())
     users = db.relationship("User", secondary="property")
     link = db.relationship("Link", uselist=False, backref="schedule")
@@ -201,8 +201,8 @@ class Schedule(db.Model):
             Link(self)
         return self.link
 
-    def update_last_modified(self, uuid):
-        self.last_modified = uuid
+    def update_last_modified_by(self, uuid):
+        self.last_modified_by = uuid
         db.session.commit()
 
 
