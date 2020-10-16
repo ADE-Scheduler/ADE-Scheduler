@@ -46,6 +46,6 @@
     "popper.js": "^1.16.1",
     "vue": "^2.6.12",
     "vue-swatches": "^2.1.0",
-    "vue2-leaflet": "^2.5.2"
+    "vue2-leaflet": "^2.6.0"
   }
 }
