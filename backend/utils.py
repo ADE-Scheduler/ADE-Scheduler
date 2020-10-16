@@ -1,4 +1,5 @@
 import json
+import uuid
 
 from flask import current_app as app
 from flask import session
@@ -26,7 +27,7 @@ def autosave_schedule(response):
         if current_user.is_authenticated and current_user.autosave:
             mng = app.config["MANAGER"]
             session["current_schedule"] = mng.save_schedule(
-                current_user, session["current_schedule"]
+                current_user, session["current_schedule"], session["uuid"]
             )
             session["current_schedule_modified"] = False
 
@@ -35,3 +36,15 @@ def autosave_schedule(response):
         response.set_data(json.dumps(data))
 
     return response
+
+
+def autoload_schedule():
+    if session.get("uuid") is None:
+        session["uuid"] = uuid.uuid4()
+
+    if current_user.is_authenticated and session["current_schedule"].id is not None:
+        schedule = current_user.get_schedule(id=session["current_schedule"].id)
+
+        if schedule.last_modified != session["uuid"]:
+            session["current_schedule"] = schedule.data
+            schedule.update_last_modified(session["uuid"])

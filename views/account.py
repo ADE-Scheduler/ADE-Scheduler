@@ -49,6 +49,7 @@ account.json_encoder = AccountEncoder
 @account.before_request
 def before_account_request():
     utl.init_schedule()
+    utl.autoload_schedule()
 
 
 @account.route("/")
@@ -174,7 +175,9 @@ def save():
     s.project_id = request.json["project_id"]
     s.color_palette = request.json["color_palette"]
     mng = app.config["MANAGER"]
-    session["current_schedule"] = mng.save_schedule(current_user, s)
+    session["current_schedule"] = mng.save_schedule(
+        current_user, s, session.get("uuid")
+    )
     session["current_schedule_modified"] = False
     return (
         jsonify(
