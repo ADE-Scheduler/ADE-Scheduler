@@ -368,7 +368,7 @@ class Manager:
                 user.add_schedule(schd)
 
         # Update the last person to modify the schedule
-        schd.update_last_modified(uuid)
+        schd.update_last_modified_by(uuid)
         return schd.data
 
     def get_schedule(self, link):
