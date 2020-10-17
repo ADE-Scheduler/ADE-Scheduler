@@ -1,7 +1,7 @@
 # Documentation
 
 In order to easily document our code, we use Sphinx. The master branch documentation is
- automatically compiled and hosted on [Read The Docs](https://readthedocs.org/projects/ade-scheduler/).
+ automatically compiled and hosted on [Read The Docs](https://ade-scheduler.readthedocs.io/en/latest/).
 
 ## Building the docs
 
