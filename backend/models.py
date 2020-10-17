@@ -9,6 +9,8 @@ from copy import copy
 from flask_sqlalchemy import SQLAlchemy
 from flask_security.models import fsqla_v2 as fsqla
 
+from typing import Union
+
 OWNER_LEVEL = 0
 EDITOR_LEVEL = 1
 VIEWER_LEVEL = 2
@@ -33,17 +35,19 @@ class GUID(TypeDecorator):
         else:
             return dialect.type_descriptor(CHAR(32))
 
-    def process_bind_param(self, value, dialect):
+    def process_bind_param(
+        self, value: Union[None, uuid.UUID, str], dialect
+    ) -> Union[None, str]:
         if value is None:
             return value
         elif dialect.name == "postgresql":
             return str(value)
         else:
             if not isinstance(value, uuid.UUID):
-                return "%.32x" % uuid.UUID(value).int
+                return str(value)
             else:
                 # hexstring
-                return "%.32x" % value.int
+                return value.hex
 
     def process_result_value(self, value, dialect):
         if value is None:
