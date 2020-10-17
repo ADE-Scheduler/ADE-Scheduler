@@ -46,7 +46,7 @@ def autoload_schedule():
         schedule = current_user.get_schedule(id=session["current_schedule"].id)
 
         if schedule is None:
-            session["current_schedule"].id = None
+            session["current_schedule"] = schd.Schedule(mng.get_default_project_id())
             return
 
         if schedule.last_modified_by != session["uuid"]:
