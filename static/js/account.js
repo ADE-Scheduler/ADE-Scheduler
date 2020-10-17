@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
             currentSchedule: {},
             computing: true,
             unsaved: true,
+            autoSave: false,
             error: false,
             isEditing: false,
         },
@@ -33,7 +34,24 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.unsaved = resp.data.unsaved;
                     this.schedules = resp.data.schedules;
                     this.currentSchedule = resp.data.current_schedule;
+                    this.autoSave = resp.data.autosave;
                 })
+                .catch(err => {
+                    this.error = true;
+                })
+                .then(() => {
+                    this.computing = false;
+                });
+            },
+            changeAutoSave: function () {
+                this.computing = true;
+                axios({
+                    method: 'POST',
+                    url: Flask.url_for('account.autosave'),
+                    header: {'Content-Type': 'application/json'},
+                    data: { autosave: this.autoSave },
+                })
+                .then(resp => {})
                 .catch(err => {
                     this.error = true;
                 })

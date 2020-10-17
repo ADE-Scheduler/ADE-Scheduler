@@ -22,7 +22,7 @@
   "homepage": "https://github.com/SnaKyEyeS/ADE-Scheduler#readme",
   "devDependencies": {
     "clean-webpack-plugin": "^3.0.0",
-    "css-loader": "^4.3.0",
+    "css-loader": "^5.0.0",
     "file-loader": "^6.1.1",
     "html-webpack-plugin": "^4.5.0",
     "sass": "^1.27.0",
@@ -46,6 +46,6 @@
     "popper.js": "^1.16.1",
     "vue": "^2.6.12",
     "vue-swatches": "^2.1.0",
-    "vue2-leaflet": "^2.5.2"
+    "vue2-leaflet": "^2.6.0"
   }
 }

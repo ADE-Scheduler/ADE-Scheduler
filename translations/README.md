@@ -4,27 +4,36 @@
 
 <https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xiii-i18n-and-l10n>
 
-## En résumé
+## In short
 
-Mettre tous les string dans les `.html` à traduire entre moustaches comme suit:  `{{ _('string_to_translate') }}`
+In the `.html` files, write all the strings to be translated in this format: `{{ _
+('string_to_translate') }}`.
 
-Ensuite, il faut dire à Babel d'aller chercher tous ces strings à traduire en exécutant la commande suivante dans le dossier `<repo>` (en ayant installé au préalable la commande pybabel `sudo apt-get install python-babel`):
+In the `.py` files, you should import `gettext` function
+```python
+from flask_babel import gettext
+```
+and all the strings to be translated should be called by this function.
+```python
+x = gettext("string_to_translate")
+```
 
+Next, you need to ask Babel to get all these strings by executing these commands in
+ the `<repo>` folder:
 ```bash
 pybabel extract -F translations/babel.cfg -k _l -o translations/messages.pot .
 pybabel update -i translations/messages.pot -d translations
 ```
 
-Ensuite, on entre manuellement les traductions dans les fichiers `messages.po`. Une fois que c'est fait, compiler:
-
+Finally, you manually enter the translations in the `messages.po` files and, then
+, you compile:
 ```bash
 pybabel compile -d translations
 ```
 
-## Ajouter une nouvelle langue
+## Adding a new language
 
-Il est possible d'ajouter une nouvelle langue à l'aide de la commande suivante:
-
+You can add a new language (here `fr`) by executing this command:
 ```bash
 pybabel init -i translations/messages.pot -d translations -l fr
 ```

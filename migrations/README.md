@@ -1,24 +1,23 @@
-# Migration de base de données
-Basé sur le Flask Mega-Tutorial: https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-iv-database
+# Migrate the database
+Base on the Flask Mega-Tutorial: https://blog.miguelgrinberg.com/post/the-flask-mega
+-tutorial-part-iv-database
 
-## Générer le script de migration
+## Generate the migration script
 
-Les différentes versions de la base de données sont stockées dans ce dossier.
-Quand un changement est effectué sur les modèles de la base de données (tels qu'ils sont définis dans le fichier backend/models.py),
-il faut exécter cette commande pour créer un script de migration:
+Multiple versions of the database are stored in the folder.
+When a change occurs on any of the database models (see `backend/models.py`), you
+ must execute this command in order to create the migration script:
 ```
-cd <repo>
 flask db migrate -m "version description"
 ```
 
 ## Upgrade/Downgrade workflow
 
-Ensuite, pour appliquer les changements, exécuter la commande suivante:
+Next, to apply changes, execute this command:
 ```
-cd <repo>
 flask db upgrade
 ```
 
-Il existe aussi la commande `flask db downgrade` pour défaire la dernière migration si nécessaire.
+There also exists the `flask db downgrade` to revert last migration if needed.
 
-Note: la variable d'environnement `FLASK_APP` doit être définie pour que ça fonctionne.
+*Note: the `FLASK_APP` environment variable must be defined in order for it to work.

@@ -1,8 +1,15 @@
+import uuid
 import secrets
+import sqlalchemy as sa
+
+from sqlalchemy.types import TypeDecorator, CHAR
+from sqlalchemy.dialects.postgresql import UUID
 
 from copy import copy
 from flask_sqlalchemy import SQLAlchemy
 from flask_security.models import fsqla_v2 as fsqla
+
+from typing import Union
 
 OWNER_LEVEL = 0
 EDITOR_LEVEL = 1
@@ -10,6 +17,46 @@ VIEWER_LEVEL = 2
 
 db = SQLAlchemy()
 fsqla.FsModels.set_db_info(db)
+
+
+class GUID(TypeDecorator):
+    """
+    Platform-independent GUID type.
+
+    Uses PostgreSQL's UUID type, otherwise uses
+    CHAR(32), storing as stringified hex values.
+
+    """
+
+    impl = CHAR
+
+    def load_dialect_impl(self, dialect):
+        if dialect.name == "postgresql":
+            return dialect.type_descriptor(UUID())
+        else:
+            return dialect.type_descriptor(CHAR(32))
+
+    def process_bind_param(
+        self, value: Union[None, uuid.UUID, str], dialect
+    ) -> Union[None, str]:
+        if value is None:
+            return value
+        elif dialect.name == "postgresql":
+            return str(value)
+        else:
+            if not isinstance(value, uuid.UUID):
+                return str(value)
+            else:
+                # hexstring
+                return value.hex
+
+    def process_result_value(self, value, dialect):
+        if value is None:
+            return value
+        else:
+            if not isinstance(value, uuid.UUID):
+                value = uuid.UUID(value)
+            return value
 
 
 class LevelAccessDenied(Exception):
@@ -35,6 +82,13 @@ class Role(db.Model, fsqla.FsRoleMixin):
 
 
 class User(db.Model, fsqla.FsUserMixin):
+    autosave = db.Column(
+        db.Boolean(),
+        nullable=False,
+        default=False,
+        server_default=sa.sql.expression.literal(False),
+    )
+    last_schedule_id = db.Column(db.Integer(), nullable=True)
     schedules = db.relationship("Schedule", secondary="property")
 
     def add_schedule(self, schedule, level=OWNER_LEVEL):
@@ -86,6 +140,14 @@ class User(db.Model, fsqla.FsUserMixin):
         else:
             return self.schedules  # Return all of this user's schedules
 
+    def set_autosave(self, autosave):
+        self.autosave = autosave
+        db.session.commit()
+
+    def set_last_schedule_id(self, schedule_id):
+        self.last_schedule_id = schedule_id
+        db.session.commit()
+
 
 class Schedule(db.Model):
     """
@@ -94,6 +156,7 @@ class Schedule(db.Model):
 
     __tablename__ = "schedule"
     id = db.Column(db.Integer(), primary_key=True)
+    last_modified_by = db.Column(GUID(), nullable=True)
     data = db.Column(db.PickleType())
     users = db.relationship("User", secondary="property")
     link = db.relationship("Link", uselist=False, backref="schedule")
@@ -142,6 +205,10 @@ class Schedule(db.Model):
         if self.link is None:
             Link(self)
         return self.link
+
+    def update_last_modified_by(self, uuid):
+        self.last_modified_by = uuid
+        db.session.commit()
 
 
 class Link(db.Model):

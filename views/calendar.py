@@ -15,12 +15,12 @@ from flask import (
     g,
 )
 from flask_security import current_user, login_required
-from flask_babel import _
+from flask_babel import gettext
 
 import backend.schedules as schd
 import backend.events as evt
 import backend.models as md
-import backend.utils as utl
+import views.utils as utl
 
 
 class CalendarEncoder(json.JSONEncoder):
@@ -61,6 +61,13 @@ calendar.json_encoder = CalendarEncoder
 @calendar.before_request
 def before_calendar_request():
     utl.init_schedule()
+    utl.autoload_schedule()
+
+
+@calendar.after_request
+def after_calendar_request(response):
+    response = utl.autosave_schedule(response)
+    return response
 
 
 @calendar.route("/")
@@ -68,7 +75,7 @@ def index():
     if bool(request.args.get("save")) and current_user.is_authenticated:
         mng = app.config["MANAGER"]
         session["current_schedule"] = mng.save_schedule(
-            current_user, session["current_schedule"]
+            current_user, session["current_schedule"], session.get("uuid")
         )
         session["current_schedule_modified"] = False
         return render_template("calendar.html", saved=True)
@@ -85,7 +92,7 @@ def clear():
             {
                 "current_schedule": {
                     "id": session["current_schedule"].id,
-                    "label": _(session["current_schedule"].label),
+                    "label": gettext(session["current_schedule"].label),
                     "color_palette": session["current_schedule"].color_palette,
                 },
                 "current_project_id": session["current_schedule"].project_id,
@@ -103,10 +110,9 @@ def get_data():
             {
                 "project_id": mng.get_project_ids(),
                 "current_project_id": session["current_schedule"].project_id,
-                "unsaved": session["current_schedule_modified"],
                 "current_schedule": {
                     "id": session["current_schedule"].id,
-                    "label": _(session["current_schedule"].label),
+                    "label": gettext(session["current_schedule"].label),
                     "color_palette": session["current_schedule"].color_palette,
                 },
                 "n_schedules": len(session["current_schedule"].best_schedules),
@@ -116,10 +122,11 @@ def get_data():
                 if not current_user.is_authenticated
                 else list(
                     map(
-                        lambda s: {"id": s.id, "label": _(s.data.label)},
+                        lambda s: {"id": s.id, "label": gettext(s.data.label)},
                         current_user.get_schedule(),
                     )
                 ),
+                "autosave": getattr(current_user, "autosave", False),
             }
         ),
         200,
@@ -139,18 +146,17 @@ def load_schedule(id):
                 {
                     "current_schedule": {
                         "id": schedule.data.id,
-                        "label": _(schedule.data.label),
+                        "label": gettext(schedule.data.label),
                         "color_palette": schedule.data.color_palette,
                     },
                     "project_id": mng.get_project_ids(),
                     "current_project_id": session["current_schedule"].project_id,
-                    "unsaved": session["current_schedule_modified"],
                     "n_schedules": len(session["current_schedule"].best_schedules),
                     "events": session["current_schedule"].get_events(json=True),
                     "codes": session["current_schedule"].codes,
                     "schedules": list(
                         map(
-                            lambda s: {"id": s.id, "label": _(s.data.label)},
+                            lambda s: {"id": s.id, "label": gettext(s.data.label)},
                             current_user.get_schedule(),
                         )
                     ),
@@ -175,7 +181,7 @@ def add_code(code):
     mng = app.config["MANAGER"]
     code = code.upper()
     if not mng.code_exists(code, project_id=session["current_schedule"].project_id):
-        return _("The code you added does not exist in our database."), 404
+        return gettext("The code you added does not exist in our database."), 404
 
     codes = session["current_schedule"].add_course(code)
     if codes:
@@ -185,7 +191,6 @@ def add_code(code):
             {
                 "codes": codes,
                 "events": session["current_schedule"].get_events(json=True),
-                "unsaved": session["current_schedule_modified"],
             }
         ),
         200,
@@ -196,15 +201,7 @@ def add_code(code):
 def remove_code(code):
     session["current_schedule"].remove_course(code)
     session["current_schedule_modified"] = True
-    return (
-        jsonify(
-            {
-                "events": session["current_schedule"].get_events(json=True),
-                "remove": session["current_schedule_modified"],
-            }
-        ),
-        200,
-    )
+    return (jsonify({"events": session["current_schedule"].get_events(json=True)}), 200)
 
 
 @calendar.route("/<path:code>/info", methods=["GET"])
@@ -246,19 +243,14 @@ def add_custom_event():
         event = evt.CustomEvent(**event)
     session["current_schedule"].add_custom_event(event)
     session["current_schedule_modified"] = True
-    return (
-        jsonify(
-            {"event": event.json(), "unsaved": session["current_schedule_modified"]}
-        ),
-        200,
-    )
+    return (jsonify({"event": event.json()}), 200)
 
 
 @calendar.route("/custom_event/<id>", methods=["DELETE"])
 def delete_custom_event(id):
     session["current_schedule"].remove_custom_event(id=id)
     session["current_schedule_modified"] = True
-    return jsonify({"unsaved": session["current_schedule_modified"]}), 200
+    return jsonify({}), 200
 
 
 @calendar.route("/custom_event/<id>", methods=["POST"])
@@ -288,19 +280,18 @@ def save():
 
     mng = app.config["MANAGER"]
     session["current_schedule"] = mng.save_schedule(
-        current_user, session["current_schedule"]
+        current_user, session["current_schedule"], session.get("uuid")
     )
     session["current_schedule_modified"] = False
     return (
         jsonify(
             {
-                "unsaved": session["current_schedule_modified"],
                 "schedules": list(
                     map(
-                        lambda s: {"id": s.id, "label": _(s.data.label)},
+                        lambda s: {"id": s.id, "label": gettext(s.data.label)},
                         current_user.get_schedule(),
                     )
-                ),
+                )
             }
         ),
         200,
@@ -322,7 +313,10 @@ def download():
         schedule.project_id = mng.get_default_project_id()
 
     if schedule is None:
-        return _("The schedule you requested does not exist in our database !"), 400
+        return (
+            gettext("The schedule you requested does not exist in our database !"),
+            400,
+        )
     else:
         resp = make_response(schedule.get_ics_file(schedule_number=choice))
         resp.mimetype = "text/calendar"
@@ -345,7 +339,10 @@ def share():
         schedule = None
 
     if schedule is None:
-        return _("The schedule you requested does not exist in our database !"), 400
+        return (
+            gettext("The schedule you requested does not exist in our database !"),
+            400,
+        )
     else:
         g.track_var["schedule share"] = schedule.id
         session["current_schedule"] = schedule
@@ -364,15 +361,7 @@ def apply_filter():
                 if not value:
                     schedule.add_filter(code, type + ": " + filter)
     session["current_schedule_modified"] = True
-    return (
-        jsonify(
-            {
-                "unsaved": session["current_schedule_modified"],
-                "events": session["current_schedule"].get_events(json=True),
-            }
-        ),
-        200,
-    )
+    return (jsonify({"events": session["current_schedule"].get_events(json=True)}), 200)
 
 
 @calendar.route("/schedule/year/<id>", methods=["PUT"])
@@ -389,6 +378,7 @@ def export():
         session["current_schedule"] = mng.save_schedule(
             current_user if current_user.is_authenticated else None,
             session["current_schedule"],
+            session.get("uuid"),
         )
 
     link = mng.get_link(session["current_schedule"].id)
@@ -420,7 +410,6 @@ def compute():
     return (
         jsonify(
             {
-                "unsaved": session["current_schedule_modified"],
                 "n_schedules": len(session["current_schedule"].best_schedules)
                 if bests is not None
                 else 0,
@@ -443,6 +432,7 @@ def update_color():
         session["current_schedule"].color_palette = color_palette
 
     schedule_number = int(request.json.get("schedule_number"))
+    session["current_schedule_modified"] = True
     return (
         jsonify(
             {
@@ -460,6 +450,7 @@ def reset_color():
     session["current_schedule"].reset_color_palette()
 
     schedule_number = int(request.args.get("schedule_number"))
+    session["current_schedule_modified"] = True
     return (
         jsonify(
             {
