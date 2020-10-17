@@ -1,15 +1,27 @@
 # Documentation
 
-Afin de faciliter la documentation de nos fonctions, nous utilisons Sphinx. La page contenant la documentation est /docs/build/html/index.html. Pour mettre à jour :
-```
+In order to easily document our code, we use Sphinx. The master branch documentation is
+ automatically compiled and hosted on [Read The Docs](https://readthedocs.org/projects/ade-scheduler/).
+
+## Building the docs
+
+If you make any change in the documentation, then run these commands:
+
+```bash
 cd docs
 sphinx-apidoc -o source/backend ../backend -f
 sphinx-apidoc -o source/views ../views -f
 make html
 ```
-Nous utilisons également le package built-in `typing` qui permet de définir le type des objets. Ceci n'a aucun impact sur le code car cela est juste une indication mais certains IDE comme PyCharm utilisent ces informations pour aider au débuggage.
+Then refer to your local documentation build located [here](/docs/build/html/index.html).
 
-Pour savoir comment documenter votre code de la même manière que nous :
+## Coding style
+
+The coding style we follow is described in the [CONTRIBUTING GUIDE](CONTRIBUTING.md).
+
+## Readings
+
+More informations about how to use Sphinx can be found here:
 - https://sphinx-rtd-tutorial.readthedocs.io/en/latest/docstrings.html
 - https://thomas-cokelaer.info/tutorials/sphinx/docstring_python.html
 - https://thomas-cokelaer.info/tutorials/sphinx/rest_syntax.html
