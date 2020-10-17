@@ -13,6 +13,12 @@
         <nav class="col-md-3 col-lg-2 d-md-block bg-light navigator collapse" id="faq-navigator">
             <nav class="nav nav-pills navigator-sticky d-flex flex-column p-3">
 
+                <a class="nav-link main-link mb-0" href="#oct2020" v-on:click.prevent="scroll('oct2020', true)">{{ _('October 2020') }}</a>
+                <nav class="nav sub-nav flex-column">
+                    <a class="nav-link ml-4" href="#oct2020-custom-events-color" v-on:click.prevent="scroll('oct2020-custom-events-color')">{{ _('Custom events color') }}</a>
+                    <a class="nav-link ml-4" href="#oct2020-auto-save" v-on:click.prevent="scroll('oct2020-auto-save')">{{ _('Your changes can be automatically saved') }}</a>
+                </nav>
+
                 <a class="nav-link main-link mb-0" href="#sep2020" v-on:click.prevent="scroll('sep2020', true)">{{ _('September 2020') }}</a>
                 <nav class="nav sub-nav flex-column">
                     <a class="nav-link ml-4" href="#sep2020-whatisnew" v-on:click.prevent="scroll('sep2020-whatisnew')">{{ _('Page "What is new"') }}</a>
@@ -30,6 +36,20 @@
         <div class="col-md-9 ml-sm-auto col-lg-10 p-3">
             <div class="container-lg">
                 {{ render_flash_alert() }}
+                <h3 class="my-5" id="oct2020">{{ _('October 2020') }}</h3>
+                    <h4 id="oct2020-custom-events-color">{{ _('Custom events color') }}</h4>
+                    <hr class="mb-3">
+                    <p>
+                        {{ _('You can now modify the color of each individual custom event.') }}
+                    </p>
+
+                    <h4 id="oct2020-auto-save">{{ _('Your changes can be automatically saved') }}</h4>
+                    <hr class="mb-3">
+                    <p>
+                        {{ _('Sometimes, you make changes on your schedule, your forget to saved them, and, when you change device, your schedule is not up to date with your lastest changes.
+                        To avoid this problem, you can now toggle the automatic saving of your schedule on your account page.') }}
+                    </p>
+
                 <h3 class="my-5" id="sep2020">{{ _('September 2020') }}</h3>
                     <h4 id="sep2020-whatisnew">{{ _('Page "What is new"') }}</h4>
                     <hr class="mb-3">
@@ -54,7 +74,7 @@
                         of the currently selected schedule. You should see a list of the names of all of them; Selecting one of them will display it on the calendar.') }}
                     </p>
 
-                <h3 class="my-5" id="sep2020">{{ _('August 2020') }}</h3>
+                <h3 class="my-5" id="aug2020">{{ _('August 2020') }}</h3>
                     <h4 id="aug2020-v2">{{ _('Launch of ADE-Scheduler 2.0!') }}</h4>
                     <hr class="mb-3">
                     <p>
