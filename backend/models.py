@@ -20,7 +20,8 @@ fsqla.FsModels.set_db_info(db)
 
 
 class GUID(TypeDecorator):
-    """Platform-independent GUID type.
+    """
+    Platform-independent GUID type.
 
     Uses PostgreSQL's UUID type, otherwise uses
     CHAR(32), storing as stringified hex values.
