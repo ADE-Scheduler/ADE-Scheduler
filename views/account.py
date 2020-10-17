@@ -7,7 +7,7 @@ from flask_security import login_required, current_user
 from flask_babel import gettext
 
 import backend.schedules as schd
-import backend.utils as utl
+import views.utils as utl
 
 
 class AccountEncoder(json.JSONEncoder):

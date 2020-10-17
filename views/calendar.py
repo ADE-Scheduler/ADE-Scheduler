@@ -20,7 +20,7 @@ from flask_babel import gettext
 import backend.schedules as schd
 import backend.events as evt
 import backend.models as md
-import backend.utils as utl
+import views.utils as utl
 
 
 class CalendarEncoder(json.JSONEncoder):
