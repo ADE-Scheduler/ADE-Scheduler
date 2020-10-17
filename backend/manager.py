@@ -330,7 +330,7 @@ class Manager:
         """
         return self.get_project_ids()[0]["id"]
 
-    def save_schedule(self, user: md.User, schedule: schd.Schedule):
+    def save_schedule(self, user: md.User, schedule: schd.Schedule, uuid):
         """
         Saves a schedule binding it to a user into the database.
 
@@ -345,7 +345,6 @@ class Manager:
             schd = md.Schedule(data=schedule, user=user)
             schd.data.id = schd.id
             self.database.session.commit()
-            return schd.data
 
         else:  # this schedule has already been saved
             schd = md.Schedule.query.filter(md.Schedule.id == schedule.id).first()
@@ -362,7 +361,9 @@ class Manager:
             if not user_has_schedule and user is not None:
                 user.add_schedule(schd)
 
-            return schd.data
+        # Update the last person to modify the schedule
+        schd.update_last_modified_by(uuid)
+        return schd.data
 
     def get_schedule(self, link):
         query = md.Link.query.filter(md.Link.link == link).first()

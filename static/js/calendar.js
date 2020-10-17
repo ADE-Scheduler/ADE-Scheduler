@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
             mustResetAddEventForm: true,
             code: '',
             codeSearch: [],
+            autoSave: false,
             unsaved: false,
             currentSchedule: {},
             currentEventColor: '',
@@ -239,8 +240,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.n_schedules = resp.data.n_schedules;
                     this.schedules = resp.data.schedules;
                     this.calendarOptions.events = resp.data.events;
-                    this.unsaved = resp.data.unsaved;
                     this.currentSchedule = resp.data.current_schedule;
+                    this.setUnsavedStatus(resp.data.unsaved);
+                    this.autoSave = resp.data.autosave;
                 })
                 .catch(err => {
                     this.error = true;
@@ -263,8 +265,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         this.n_schedules = resp.data.n_schedules;
                         this.schedules = resp.data.schedules;
                         this.calendarOptions.events = resp.data.events;
-                        this.unsaved = resp.data.unsaved;
                         this.currentSchedule = resp.data.current_schedule;
+                        this.setUnsavedStatus(resp.data.unsaved);
                     })
                     .catch(err => {
                         this.error = true;
@@ -313,8 +315,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         this.selected_schedule = 0;
                         this.codes = [];
                         this.currentProjectId = resp.data.current_project_id;
-                        this.unsaved = resp.data.unsaved;
-                        this.currentSchedule = resp.data.current_schedule
+                        this.currentSchedule = resp.data.current_schedule;
+                        this.setUnsavedStatus(resp.data.unsaved);
                     })
                     .catch(err => {
                         this.error = true;
@@ -337,10 +339,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     url: Flask.url_for('calendar.compute'),
                 })
                 .then(resp => {
-                    this.unsaved = resp.data.unsaved;
                     this.n_schedules = resp.data.n_schedules;
                     this.selected_schedule = resp.data.selected_schedule;
                     this.calendarOptions.events = resp.data.events;
+                    this.setUnsavedStatus(resp.data.unsaved);
                 })
                 .catch(err => {
                     this.error = true;
@@ -367,6 +369,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.computing = false;
                 });
             },
+            setUnsavedStatus(unsaved) {
+                if (this.autoSave) {
+                    this.unsaved = false;
+                } else {
+                    this.unsaved = unsaved;
+                }
+            },
             save: function() {
                 this.computing = true;
                 axios({
@@ -375,8 +384,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(resp => {
                     this.saveSuccess = true;
-                    this.unsaved = resp.data.unsaved;
                     this.schedules = resp.data.schedules;
+                    this.setUnsavedStatus(resp.data.unsaved);
                 })
                 .catch(err => {
                     if (err.response.status === 401) {
@@ -403,8 +412,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         this.codes = this.codes.concat(resp.data.codes);
                         this.calendarOptions.events = resp.data.events;
                         this.code = '';
-                        this.unsaved = resp.data.unsaved;
                         this.selected_schedule = 0;
+                        this.setUnsavedStatus(resp.data.unsaved);
                     })
                     .catch(err => {
                         if (err.response.status === 404) {
@@ -427,8 +436,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(resp => {
                     this.codes.splice(this.codes.indexOf(code), 1);
                     this.calendarOptions.events = resp.data.events;
-                    this.unsaved = resp.data.unsaved;
                     this.selected_schedule = 0;
+                    this.setUnsavedStatus(resp.data.unsaved);
                 })
                 .catch(err => {
                     this.error = true;
@@ -461,10 +470,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(resp => {
                     this.calendarOptions.events.push(resp.data.event);
-                    this.unsaved = resp.data.unsaved;
                     this.mustResetAddEventForm = true;
                     addEventModal.hide();
                     e.target.reset();
+                    this.setUnsavedStatus(resp.data.unsaved);
                 })
                 .catch(err => {
                     this.error = true;
@@ -484,8 +493,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 })
                 .then(resp => {
-                    this.unsaved = resp.data.unsaved;
                     this.calendarOptions.events = resp.data.events;
+                    this.setUnsavedStatus(resp.data.unsaved);
                 })
                 .catch(err => {
                     this.error = true;
@@ -568,8 +577,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(resp => {
                     this.selected_schedule = 0;
-                    this.unsaved = resp.data.unsaved;
                     this.calendarOptions.events = resp.data.events;
+                    this.setUnsavedStatus(resp.data.unsaved);
                 })
                 .catch(err => {
                     this.error = true;
@@ -591,7 +600,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(resp => {
                     this.calendarOptions.events = this.calendarOptions.events.filter(item => item.id !== event.id);
-                    this.unsaved = resp.data.unsaved;
+                    this.setUnsavedStatus(resp.data.unsaved);
                 })
                 .catch(err => {
                     this.error = true;
@@ -627,6 +636,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(resp => {
                     this.selected_schedule = 0;
                     this.calendarOptions.events = resp.data.events;
+                    this.setUnsavedStatus(resp.data.unsaved);
                 })
                 .catch(err => {
                     this.error = true;
@@ -672,6 +682,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(resp => {
                     this.calendarOptions.events = resp.data.events;
+                    this.setUnsavedStatus(resp.data.unsaved);
                 })
                 .catch(err => {
                     this.error = true;
@@ -689,6 +700,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(resp => {
                     this.calendarOptions.events = resp.data.events;
                     this.currentSchedule.color_palette = resp.data.color_palette;
+                    this.setUnsavedStatus(resp.data.unsaved);
                 })
                 .catch(err => {
                     this.error = true;
