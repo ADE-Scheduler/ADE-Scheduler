@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-10-16 09:15+0200\n"
+"POT-Creation-Date: 2020-10-17 12:26+0200\n"
 "PO-Revision-Date: 2020-07-24 16:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: app.py:240
+#: app.py:250
 msgid "An error has occurred. Please contact the admins if it keeps happening."
 msgstr "Une erreur est apparue. Si cela arrive à nouveau, veuillez nous contacter."
 
-#: app.py:250
+#: app.py:260
 msgid "404 Page not found :("
 msgstr "404 Page non trouvée :("
 
@@ -346,7 +346,7 @@ msgstr "Fin de récurrence"
 msgid "Add"
 msgstr "Ajouter"
 
-#: templates/calendar.html:342 views/calendar.py:183
+#: templates/calendar.html:342 views/calendar.py:184
 msgid "The code you added does not exist in our database."
 msgstr "Le code que vous avez entré n'existe pas dans notre base de données."
 
@@ -778,31 +778,60 @@ msgstr ""
 msgid "Get started"
 msgstr "C'est parti !"
 
-#: templates/whatisnew.html:16 templates/whatisnew.html:33
+#: templates/whatisnew.html:16 templates/whatisnew.html:39
+msgid "October 2020"
+msgstr "Octobre 2020"
+
+#: templates/whatisnew.html:18 templates/whatisnew.html:40
+msgid "Custom events color"
+msgstr "Couleur des évènements personnels"
+
+#: templates/whatisnew.html:19 templates/whatisnew.html:46
+msgid "Your changes can be automatically saved"
+msgstr "Vos changements peuvent être sauvegardés automatiquement"
+
+#: templates/whatisnew.html:22 templates/whatisnew.html:53
 msgid "September 2020"
 msgstr "Septembre 2020"
 
-#: templates/whatisnew.html:18 templates/whatisnew.html:34
+#: templates/whatisnew.html:24 templates/whatisnew.html:54
 msgid "Page \"What is new\""
 msgstr "Page \"Nouveautés\""
 
-#: templates/whatisnew.html:19 templates/whatisnew.html:40
+#: templates/whatisnew.html:25 templates/whatisnew.html:60
 msgid "Color palette accessible in the calendar"
 msgstr "Palette de couleurs accessibles dans le calendrier"
 
-#: templates/whatisnew.html:20 templates/whatisnew.html:50
+#: templates/whatisnew.html:26 templates/whatisnew.html:70
 msgid "All schedules accessible from the calendar"
 msgstr "Tous les horaires accessibles depuis le calendrier"
 
-#: templates/whatisnew.html:23 templates/whatisnew.html:57
+#: templates/whatisnew.html:29 templates/whatisnew.html:77
 msgid "August 2020"
-msgstr "Aout 2020"
+msgstr "Août 2020"
 
-#: templates/whatisnew.html:25 templates/whatisnew.html:58
+#: templates/whatisnew.html:31 templates/whatisnew.html:78
 msgid "Launch of ADE-Scheduler 2.0!"
 msgstr "Lancement d'ADE-Scheduler 2.0!"
 
-#: templates/whatisnew.html:37
+#: templates/whatisnew.html:43
+msgid "You can now modify the color of each individual custom event."
+msgstr "Vous pouvez maintenant modifier la couleur de chacun de vos évènements personnels."
+
+#: templates/whatisnew.html:49
+msgid ""
+"Sometimes, you make changes on your schedule, your forget to saved them, "
+"and, when you change device, your schedule is not up to date with your "
+"lastest changes.\n"
+"                        To avoid this problem, you can now toggle the "
+"automatic saving of your schedule on your account page."
+msgstr ""
+"Parfois, vous faites des modifications sur votre horaire, vous oubliez de les sauvergarder, "
+"et, quand vous changez d'appareil, votre horaire n'est pas à jour avec vos derniers changements.\n"
+"Pour éviter ce problème, vous pouvez maintenant activer la sauvegarde automatique dans "
+"les paramètres de votre compte."
+
+#: templates/whatisnew.html:57
 msgid ""
 "The \"What is new\" page shows all important modifications to ADE-"
 "Scheduler. Do not hesitate to take a look from time to time to be aware "
@@ -812,7 +841,7 @@ msgstr ""
 "notables sur l'outil ADE-Scheduler. N'hésitez pas à jeter un coup d'oeil "
 "de temps en temps pour voir les nouvelles fonctionnalités !"
 
-#: templates/whatisnew.html:43
+#: templates/whatisnew.html:63
 msgid ""
 "We must admit that modifying the events color in the \"Account\" menu is "
 "conter-intuitive... That is why you can now directly choose your own "
@@ -828,7 +857,7 @@ msgstr ""
 "posséder un compte. De plus, nous avons aussi changé le thème couleur "
 "initial, afin d'accentuer la différence entre deux cours."
 
-#: templates/whatisnew.html:47
+#: templates/whatisnew.html:67
 msgid ""
 "Please note that if you use a non traditional browser, it may happen that"
 " the color palette does not show up. We cannot do anything about it."
@@ -837,7 +866,7 @@ msgstr ""
 " possible que la palette permettant de modifier les couleurs à votre "
 "guise ne soit pas disponible... Cela est du au navigateur."
 
-#: templates/whatisnew.html:53
+#: templates/whatisnew.html:73
 msgid ""
 "You can now consult and edit all your saved schedules without having to "
 "select them from the \"Account\" menu. If you have several saved "
@@ -852,7 +881,7 @@ msgstr ""
 "l'horaire affiché actuellement pour voir défiler le nom de tous vos "
 "horaires; il suffit ensuite de sélectionner celui de votre choix."
 
-#: templates/whatisnew.html:61
+#: templates/whatisnew.html:81
 msgid ""
 "Launch of the new ADE-Scheduler ! This version brings a new design, new "
 "features, and is more efficient. Moreover, it is mobile-friendly."
@@ -1044,11 +1073,11 @@ msgstr ""
 "Si vous ne recevez pas de mail, vérifiez votre dossier de spam. Parfois, "
 "nos mails se perdent là-dedans... :-("
 
-#: views/calendar.py:94 views/calendar.py:114
+#: views/calendar.py:95 views/calendar.py:115
 msgid "current_schedule"
 msgstr "horaire actuel"
 
-#: views/calendar.py:316 views/calendar.py:342
+#: views/calendar.py:317 views/calendar.py:343
 msgid "The schedule you requested does not exist in our database !"
 msgstr "L'horaire que vous avez demandé n'existe pas dans notre base de données !"
 
