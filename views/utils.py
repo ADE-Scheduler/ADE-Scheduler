@@ -45,6 +45,10 @@ def autoload_schedule():
     if current_user.is_authenticated and session["current_schedule"].id is not None:
         schedule = current_user.get_schedule(id=session["current_schedule"].id)
 
+        if schedule is None:
+            session["current_schedule"].id = None
+            return
+
         if schedule.last_modified_by != session["uuid"]:
             session["current_schedule"] = schedule.data
             schedule.update_last_modified_by(session["uuid"])
