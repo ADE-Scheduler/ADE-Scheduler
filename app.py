@@ -19,7 +19,7 @@ from flask import (
 )
 from flask_session import Session
 from flask_security import Security, SQLAlchemyUserDatastore
-from flask_login import user_logged_out
+from flask_login import user_logged_out, user_logged_in
 from flask_mail import Mail, Message
 from flask_jsglue import JSGlue
 from flask_babel import Babel, gettext
@@ -181,8 +181,18 @@ def before_first_request():
 # Reset current schedule on user logout
 @user_logged_out.connect_via(app)
 def when_user_logged_out(sender, user):
-    session["current_schedule"] = schd.Schedule(manager.get_default_project_id())
-    session["current_schedule_modified"] = False
+    if session["current_schedule"].id is not None:
+        user.set_last_schedule_id(session["current_schedule"].id)
+
+        session["current_schedule"] = schd.Schedule(manager.get_default_project_id())
+        session["current_schedule_modified"] = False
+
+
+# Load previous "current schedule" on user login
+@user_logged_in.connect_via(app)
+def when_user_logged_in(sender, user):
+    if session["current_schedule"].is_empty() and user.last_schedule_id is not None:
+        session["current_schedule"] = user.get_schedule(id=user.last_schedule_id).data
 
 
 # Main page
