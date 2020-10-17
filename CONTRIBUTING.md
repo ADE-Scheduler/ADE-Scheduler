@@ -26,9 +26,9 @@ When your code is written, tested and formatted, you can submit a pull request t
 
 Before issuing a pull request, it is imperative that you run the tests. If your code does not passes the test, it will not be integrated ! Moreover, you need to write tests for any new features you might have added to ensure a smooth continuous integration. To run the test, you just need to run the `pytest` command in the main folder.
 
-### Code format
+### Code format and coding style
 
-To maintain a minimal standard, we decided to adopt the [black code formatter](https://github.com/psf/black) accross all python files.\
+To maintain a minimal standard, we decided to adopt the [black code formatter](https://github.com/psf/black) across all python files.\
 To make sure your code complies with our standards, you need to run the following:
 ```bash
 pre-commit install
