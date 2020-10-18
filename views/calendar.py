@@ -302,7 +302,13 @@ def save():
 def download():
     mng = app.config["MANAGER"]
     link = request.args.get("link")
-    choice = int(request.args.get("choice")) if request.args.get("choice") else 0
+
+    try:
+        choice = int(request.args.get("choice")) if request.args.get("choice") else 0
+    except ValueError as e:
+        choice = 0
+        # No comment... long live the user !
+
     if link:
         schedule = mng.get_schedule(link)[0]
     else:
