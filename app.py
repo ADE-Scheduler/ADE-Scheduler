@@ -191,8 +191,16 @@ def when_user_logged_out(sender, user):
 # Load previous "current schedule" on user login
 @user_logged_in.connect_via(app)
 def when_user_logged_in(sender, user):
-    if session["current_schedule"].is_empty() and user.last_schedule_id is not None:
-        session["current_schedule"] = user.get_schedule(id=user.last_schedule_id).data
+    if user.last_schedule_id is not None:
+        if session.get("current_schedule") is None:
+            session["current_schedule"] = user.get_schedule(
+                id=user.last_schedule_id
+            ).data
+
+        elif session["current_schedule"].is_empty():
+            session["current_schedule"] = user.get_schedule(
+                id=user.last_schedule_id
+            ).data
 
 
 # Main page
