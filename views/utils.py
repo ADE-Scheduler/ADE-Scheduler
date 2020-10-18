@@ -46,6 +46,7 @@ def autoload_schedule():
         schedule = current_user.get_schedule(id=session["current_schedule"].id)
 
         if schedule is None:
+            mng = app.config["MANAGER"]
             session["current_schedule"] = schd.Schedule(mng.get_default_project_id())
             return
 
