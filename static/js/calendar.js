@@ -62,6 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 event: {},
                 rrule: {},
             },
+            isEditingCustomEvent: false,
             navBtn: false,
             calendarOptions: {
                 plugins: [ dayGridPlugin, timeGridPlugin ],
@@ -481,6 +482,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(() => {
                     this.computing = false;
                 });
+            },
+            updateEditingCustomEvent() {
+                this.isEditingCustomEvent = !this.isEditingCustomEvent;
             },
             updateEvent: function(event) {
                 this.computing = true;
