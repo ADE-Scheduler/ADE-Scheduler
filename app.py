@@ -35,6 +35,7 @@ import backend.ade_api as ade
 import backend.manager as mng
 import backend.schedules as schd
 import backend.events as evt
+import views.utils as utl
 
 # Views imports
 from views.calendar import calendar
@@ -176,6 +177,12 @@ def before_first_request():
         os.makedirs("static/dist")
     with open("static/dist/jsglue.min.js", "w") as f:
         f.write(jsmin(jsglue.generate_js()))
+
+
+# Initialise the Session
+@app.before_request
+def before_request():
+    utl.init_session()
 
 
 # Reset current schedule on user logout
