@@ -501,6 +501,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(resp => {
                     this.calendarOptions.events = resp.data.events;
+                    this.isEditingCustomEvent = false;
                     this.setUnsavedStatus(resp.data.unsaved);
                 })
                 .catch(err => {
