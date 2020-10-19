@@ -568,7 +568,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             Object.entries(val).forEach(([k, v]) => {
                                 Vue.set(this.courseInfo.filtered[key], k, {});
                                 v.forEach(item => {
-                                    Vue.set(this.courseInfo.filtered[key][k], item, !resp.data.filtered[key].includes(k + ': ' + item));
+                                    if (resp.data.filtered[key])
+                                        Vue.set(this.courseInfo.filtered[key][k], item, !resp.data.filtered[key].includes(k + ': ' + item));
                                 });
                             });
                         });
