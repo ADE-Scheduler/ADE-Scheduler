@@ -484,18 +484,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             },
             updateEditingCustomEvent() {
-                this.isEditingCustomEvent = !this.isEditingCustomEvent;
+                if (this.isEditingCustomEvent) {
+                    this.updateEvent();
+                } else {
+                    this.isEditingCustomEvent = true;
+                }
             },
-            updateEvent: function(event) {
+            updateEvent() {
                 this.computing = true;
                 axios({
                     method: 'POST',
-                    url: Flask.url_for('calendar.update_custom_event', {'id': event.id}),
+                    url: Flask.url_for('calendar.update_custom_event', {'id': this.eventInfo.id}),
                     data: {
-                        title: event.title,
-                        location: event.location,
-                        description: event.description,
-                        color: event.backgroundColor,
+                        title: this.eventInfo.title,
+                        location: this.eventInfo.location,
+                        description: this.eventInfo.description,
+                        color: this.eventInfo.backgroundColor,
                         schedule_number: this.selected_schedule
                     }
                 })
