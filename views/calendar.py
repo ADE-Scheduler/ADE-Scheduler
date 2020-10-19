@@ -255,9 +255,14 @@ def delete_custom_event(id):
 
 @calendar.route("/custom_event/<id>", methods=["POST"])
 def update_custom_event(id):
+    title = request.json.get("title")
     color = request.json.get("color")
-    if color:
-        session["current_schedule"].set_custom_event_color(color, id=id)
+    location = request.json.get("location")
+    description = request.json.get("description")
+
+    session["current_schedule"].set_custom_event_attributes(
+        id, name=title, color=color, location=location, description=description
+    )
 
     session["current_schedule_modified"] = True
     schedule_number = int(request.json.get("schedule_number"))

@@ -482,13 +482,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.computing = false;
                 });
             },
-            updateEvent: function(event, color) {
+            updateEvent: function(event) {
                 this.computing = true;
                 axios({
                     method: 'POST',
                     url: Flask.url_for('calendar.update_custom_event', {'id': event.id}),
                     data: {
-                        color: this.eventInfo.backgroundColor,
+                        title: event.title,
+                        location: event.location,
+                        description: event.description,
+                        color: event.backgroundColor,
                         schedule_number: this.selected_schedule
                     }
                 })
