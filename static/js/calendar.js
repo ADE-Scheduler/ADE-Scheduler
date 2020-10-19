@@ -213,6 +213,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (!evt.code) {
                         vm.eventInfo = evt;
                         vm.eventInfo.event = arg.event;
+                        vm.isEditingCustomEvent = false;    // a better way would be to define
+                                                            // an event handler on hidden.bs.modal
+                                                            // to set isEditingCustomEvent to false
                         eventModal.show();
                     } else if (!isTouchDevice) {
                         vm.getDetails(evt.code);
@@ -507,6 +510,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.calendarOptions.events = resp.data.events;
                     this.isEditingCustomEvent = false;
                     this.setUnsavedStatus(resp.data.unsaved);
+                    eventModal.hide();
                 })
                 .catch(err => {
                     this.error = true;
