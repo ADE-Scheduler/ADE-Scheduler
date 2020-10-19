@@ -43,12 +43,15 @@
                     </div>
                 </div>
                 <div class="card-body" v-bind:style="opacity">
-                    <div class="form-check form-switch">
-                        <label class="form-check-label">{{ _('Automatically save your changes') }}</label>
-                        <input class="form-check-input" type="checkbox" v-model="autoSave" v-on:change="changeAutoSave">
+                    <div class="d-flex flex-row justify-content-between">
+                        <h6>{{ _('Automatically save your changes') }}</h6>
+                        <button class="btn" v-on:click="autoSave = !autoSave; changeAutoSave()"
+                                v-bind:class="[[ autoSave ? 'btn-outline-danger':'btn-outline-success' ]]"
+                        >
+                            [[ autoSave ? "{{ _('Deactivate') }}":"{{ _('Activate') }}" ]]
+                        </button>
                     </div>
-
-                    <div class="mt-4">
+                    <div class="mt-3">
                         <a class="link-primary" href="{{ url_for('security.change_password') }}">{{ _('Change your password') }}</a>
                     </div>
                 </div>
