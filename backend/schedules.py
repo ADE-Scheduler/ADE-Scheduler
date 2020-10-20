@@ -152,6 +152,20 @@ class Schedule:
         """
         self.custom_events.append(event)
 
+    def get_custom_event(self, id: str) -> evt.CustomEvent:
+        """
+        Returns the custom event matching  given id
+
+        :param id: the unique id of the event
+        :type id: str
+        :return: the custom event
+        :rtype: CustomEvent
+        """
+        try:
+            return next(e for e in self.custom_events if e.uid == id)
+        except StopIteration:
+            raise KeyError("Cannot return non existing custom event")
+
     def remove_custom_event(
         self, event: Optional[evt.CustomEvent] = None, id: Optional[str] = None
     ):
@@ -167,35 +181,23 @@ class Schedule:
         if event is not None:
             self.custom_events.remove(event)
         elif id is not None:
-            try:
-                event = next(e for e in self.custom_events if e.uid == id)
-            except StopIteration:
-                raise KeyError("Cannot delete non existing custom event")
+            event = self.get_custom_event(id)
 
             self.custom_events.remove(event)
 
-    def set_custom_event_color(
-        self, color, event: Optional[evt.CustomEvent] = None, id: Optional[str] = None
-    ):
+    def set_custom_event_attributes(self, id: str, **kwargs: str):
         """
-        Changes the color of a given custom event
+        Changes the custom event's attributes.
 
-        :param color: the color
-        :type color: str
-        :param event: the event to remove
-        :type event: Optional[CustomEvent]
         :param id: the unique id of the event
-        :type id: Optional[str]
+        :type id: str
+        :param kwargs: the attributes and their value
+        :type kwargs: str
         """
-        if event is not None:
-            event.color = color
-        elif id is not None:
-            try:
-                event = next(e for e in self.custom_events if e.uid == id)
-            except StopIteration:
-                raise KeyError("Cannot delete non existing custom event")
+        event = self.get_custom_event(id)
 
-            event.color = color
+        for attr, value in kwargs.items():
+            setattr(event, attr, value)
 
     def get_custom_event_color(
         self, event: Optional[evt.CustomEvent] = None, id: Optional[str] = None
@@ -213,10 +215,7 @@ class Schedule:
         if event is not None:
             return event.color
         elif id is not None:
-            try:
-                event = next(e for e in self.custom_events if e.uid == id)
-            except StopIteration:
-                raise KeyError("Cannot delete non existing custom event")
+            event = self.get_custom_event(id)
 
             return event.color
 

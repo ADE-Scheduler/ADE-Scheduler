@@ -7,7 +7,6 @@ from flask import Blueprint, jsonify, request, session, redirect, url_for
 
 import backend.schedules as schd
 import backend.models as md
-import views.utils as utl
 
 
 class ApiEncoder(json.JSONEncoder):
@@ -39,11 +38,6 @@ class ApiDecoder(json.JSONDecoder):
 api = Blueprint("api", __name__, static_folder="../static")
 api.json_decoder = ApiDecoder
 api.json_encoder = ApiEncoder
-
-
-@api.before_request
-def before_api_request():
-    utl.init_schedule()
 
 
 @api.route("/events", methods=["GET"])
