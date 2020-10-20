@@ -1,7 +1,7 @@
 command-line tools
 ==================
 
-Here a listed the different command-line tools which can be used directly in a command shell.
+Here are listed the different command-line tools which can be used directly in a command shell.
 **Warning**: only the commands we have created are documented here, but many more
 exist !
 
