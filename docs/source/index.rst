@@ -52,6 +52,17 @@ Documentation
    views/modules
 
 
+.. toctree::
+   :maxdepth: 2
+   :caption: Client modules:
+
+   cli/modules
+
+.. note::
+
+    This module contains all the command-line tools built to interact with
+    ADE-Scheduler's data such database statistics.
+
 Contributor Guide
 =================
 
