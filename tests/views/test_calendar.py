@@ -1,10 +1,20 @@
 from flask import url_for
+from flask_security import current_user
 
 
-def test_clear(client, app):
+def test_clear(client, jyl, louwi, jerom):
     """Test the clear route"""
     # TODO
     assert True
+
+    assert jyl.email == "jyl@scheduler.ade"
+    assert jyl.schedules[0].data.label == "JYL'S SCHEDULE"
+
+    assert current_user.is_authenticated
+    assert current_user.email == "jyl@scheduler.ade"
+
+    assert louwi.schedules == []
+    assert jerom.schedules[0].data.label == "JEROM'S SCHEDULE"
 
 
 def test_get_data(client):
