@@ -49,23 +49,23 @@ def gerom(app):
     mng = app.config["MANAGER"]
     user_datastore = app.config["SECURITY_MANAGER"].datastore
 
-    jerom = user_datastore.create_user(
-        email="jerom@scheduler.ade",
+    gerom = user_datastore.create_user(
+        email="gerom@scheduler.ade",
         password=hash_password("password"),
         confirmed_at=datetime.datetime.now(),
     )
 
     schedule = md.Schedule(
-        schd.Schedule(mng.get_default_project_id(), label="JEROM'S SCHEDULE"),
-        user=jerom,
+        schd.Schedule(mng.get_default_project_id(), label="gerom'S SCHEDULE"),
+        user=gerom,
     )
     md.db.session.add(schedule)
     md.db.session.commit()
 
-    yield jerom
+    yield gerom
 
     md.db.session.delete(schedule)
-    md.db.session.delete(jerom)
+    md.db.session.delete(gerom)
     md.db.session.commit()
 
 
