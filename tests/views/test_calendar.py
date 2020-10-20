@@ -2,7 +2,7 @@ from flask import url_for
 from flask_security import current_user
 
 
-def test_clear(client, jyl, louwi, jerom):
+def test_clear(client, jyl, louwi, gerom):
     """Test the clear route"""
     # TODO
     assert True
@@ -14,7 +14,7 @@ def test_clear(client, jyl, louwi, jerom):
     assert current_user.email == "jyl@scheduler.ade"
 
     assert louwi.schedules == []
-    assert jerom.schedules[0].data.label == "JEROM'S SCHEDULE"
+    assert gerom.schedules[0].data.label == "gerom'S SCHEDULE"
 
 
 def test_get_data(client):

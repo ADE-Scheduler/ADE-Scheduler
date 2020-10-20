@@ -44,7 +44,7 @@ def jyl(app):
 
 
 @pytest.fixture
-def jerom(app):
+def gerom(app):
     """Create a test user - this one is not logged in"""
     mng = app.config["MANAGER"]
     user_datastore = app.config["SECURITY_MANAGER"].datastore
