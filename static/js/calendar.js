@@ -62,6 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 event: {},
                 rrule: {},
             },
+            isEditingCustomEvent: false,
             navBtn: false,
             calendarOptions: {
                 plugins: [ dayGridPlugin, timeGridPlugin ],
@@ -212,6 +213,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (!evt.code) {
                         vm.eventInfo = evt;
                         vm.eventInfo.event = arg.event;
+                        vm.isEditingCustomEvent = false;    // a better way would be to define
+                                                            // an event handler on hidden.bs.modal
+                                                            // to set isEditingCustomEvent to false
                         eventModal.show();
                     } else if (!isTouchDevice) {
                         vm.getDetails(evt.code);
@@ -482,19 +486,31 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.computing = false;
                 });
             },
-            updateEvent: function(event, color) {
+            updateEditingCustomEvent() {
+                if (this.isEditingCustomEvent) {
+                    this.updateEvent();
+                } else {
+                    this.isEditingCustomEvent = true;
+                }
+            },
+            updateEvent() {
                 this.computing = true;
                 axios({
                     method: 'POST',
-                    url: Flask.url_for('calendar.update_custom_event', {'id': event.id}),
+                    url: Flask.url_for('calendar.update_custom_event', {'id': this.eventInfo.id}),
                     data: {
+                        title: this.eventInfo.title,
+                        location: this.eventInfo.location,
+                        description: this.eventInfo.description,
                         color: this.eventInfo.backgroundColor,
                         schedule_number: this.selected_schedule
                     }
                 })
                 .then(resp => {
                     this.calendarOptions.events = resp.data.events;
+                    this.isEditingCustomEvent = false;
                     this.setUnsavedStatus(resp.data.unsaved);
+                    eventModal.hide();
                 })
                 .catch(err => {
                     this.error = true;
@@ -552,7 +568,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             Object.entries(val).forEach(([k, v]) => {
                                 Vue.set(this.courseInfo.filtered[key], k, {});
                                 v.forEach(item => {
-                                    Vue.set(this.courseInfo.filtered[key][k], item, !resp.data.filtered[key].includes(k + ': ' + item));
+                                    if (resp.data.filtered[key])
+                                        Vue.set(this.courseInfo.filtered[key][k], item, !resp.data.filtered[key].includes(k + ': ' + item));
                                 });
                             });
                         });

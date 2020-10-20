@@ -8,7 +8,7 @@ from flask_security import current_user
 import backend.schedules as schd
 
 
-def init_schedule():
+def init_session():
     mng = app.config["MANAGER"]
 
     if not session.get("current_schedule"):
