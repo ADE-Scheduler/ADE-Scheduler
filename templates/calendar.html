@@ -81,7 +81,7 @@
                             </div>
                         </div>
                         <div class="col-6 text-right">
-                            <h6>Description</h6>
+                            <h6>{{ _('Description') }}</h6>
                             <textarea v-if="isEditingCustomEvent" class="form-control" type="text" v-model="eventInfo.description"></textarea>
                             <div v-else v-bind:class="{'text-muted': !eventInfo.description}">
                                 [[ eventInfo.description ? eventInfo.description:"{{ _('No description') }}" ]]
