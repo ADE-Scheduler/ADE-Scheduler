@@ -8,7 +8,7 @@ from flask_security import current_user
 import backend.schedules as schd
 
 
-def init_schedule():
+def init_session():
     mng = app.config["MANAGER"]
 
     if not session.get("current_schedule"):
@@ -44,6 +44,11 @@ def autoload_schedule():
 
     if current_user.is_authenticated and session["current_schedule"].id is not None:
         schedule = current_user.get_schedule(id=session["current_schedule"].id)
+
+        if schedule is None:
+            mng = app.config["MANAGER"]
+            session["current_schedule"] = schd.Schedule(mng.get_default_project_id())
+            return
 
         if schedule.last_modified_by != session["uuid"]:
             session["current_schedule"] = schedule.data

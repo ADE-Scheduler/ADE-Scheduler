@@ -60,7 +60,6 @@ calendar.json_encoder = CalendarEncoder
 
 @calendar.before_request
 def before_calendar_request():
-    utl.init_schedule()
     utl.autoload_schedule()
 
 
@@ -255,9 +254,14 @@ def delete_custom_event(id):
 
 @calendar.route("/custom_event/<id>", methods=["POST"])
 def update_custom_event(id):
+    title = request.json.get("title")
     color = request.json.get("color")
-    if color:
-        session["current_schedule"].set_custom_event_color(color, id=id)
+    location = request.json.get("location")
+    description = request.json.get("description")
+
+    session["current_schedule"].set_custom_event_attributes(
+        id, name=title, color=color, location=location, description=description
+    )
 
     session["current_schedule_modified"] = True
     schedule_number = int(request.json.get("schedule_number"))
@@ -302,7 +306,12 @@ def save():
 def download():
     mng = app.config["MANAGER"]
     link = request.args.get("link")
-    choice = int(request.args.get("choice")) if request.args.get("choice") else 0
+
+    try:
+        choice = int(request.args.get("choice")) if request.args.get("choice") else 0
+    except ValueError as e:
+        choice = 0
+
     if link:
         schedule = mng.get_schedule(link)[0]
     else:

@@ -125,7 +125,7 @@ class User(db.Model, fsqla.FsUserMixin):
     def get_schedule(self, id=None, level=None):
         if id is not None:  # Return the schedule matching the requested ID (if any)
             for schedule in self.schedules:
-                if schedule.id == id:
+                if int(schedule.id) == int(id):
                     return schedule
             return None
 

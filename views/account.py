@@ -48,7 +48,6 @@ account.json_encoder = AccountEncoder
 
 @account.before_request
 def before_account_request():
-    utl.init_schedule()
     utl.autoload_schedule()
 
 

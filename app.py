@@ -35,6 +35,7 @@ import backend.ade_api as ade
 import backend.manager as mng
 import backend.schedules as schd
 import backend.events as evt
+import views.utils as utl
 
 # Views imports
 from views.calendar import calendar
@@ -46,7 +47,7 @@ from views.api import api
 from views.whatisnew import whatisnew
 
 # CLI commands
-import cli
+from cli import cli
 
 # Change current working directory to main directory
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
@@ -178,6 +179,12 @@ def before_first_request():
         f.write(jsmin(jsglue.generate_js()))
 
 
+# Initialise the Session
+@app.before_request
+def before_request():
+    utl.init_session()
+
+
 # Reset current schedule on user logout
 @user_logged_out.connect_via(app)
 def when_user_logged_out(sender, user):
@@ -191,8 +198,16 @@ def when_user_logged_out(sender, user):
 # Load previous "current schedule" on user login
 @user_logged_in.connect_via(app)
 def when_user_logged_in(sender, user):
-    if session["current_schedule"].is_empty() and user.last_schedule_id is not None:
-        session["current_schedule"] = user.get_schedule(id=user.last_schedule_id).data
+    if user.last_schedule_id is not None:
+        if session.get("current_schedule") is None:
+            session["current_schedule"] = user.get_schedule(
+                id=user.last_schedule_id
+            ).data
+
+        elif session["current_schedule"].is_empty():
+            session["current_schedule"] = user.get_schedule(
+                id=user.last_schedule_id
+            ).data
 
 
 # Main page
