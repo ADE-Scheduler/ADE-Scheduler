@@ -47,7 +47,7 @@ from views.api import api
 from views.whatisnew import whatisnew
 
 # CLI commands
-import cli
+from cli import cli
 
 # Change current working directory to main directory
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
