@@ -1,11 +1,27 @@
+import json
+import pytest
+
 from flask import url_for, session
 from flask_security import current_user
+from flask_babel import gettext
 
 
-def test_clear(client):
+@pytest.mark.parametrize("user", ["jyl", "louwi"], indirect=True)
+def test_clear(client, user):
     """Test the clear route"""
-    # TODO
-    assert True
+    rv = client.delete(url_for("calendar.clear"))
+    data = json.loads(rv.data)
+    schd = session["current_schedule"]
+
+    # Check the Session
+    assert schd.label == "New schedule"
+    assert schd.is_empty()
+
+    # Check the returned data
+    assert data["current_schedule"]["id"] == schd.id
+    assert data["current_schedule"]["label"] == gettext(schd.label)
+    assert data["current_schedule"]["color_palette"] == schd.color_palette
+    assert data["current_project_id"] == schd.project_id
 
 
 def test_get_data(client):

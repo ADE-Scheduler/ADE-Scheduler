@@ -6,6 +6,7 @@ import backend.schedules as schd
 import views.utils as utl
 
 from app import app as ade_scheduler
+from flask import session
 from flask_security import hash_password, login_user, logout_user
 
 
@@ -15,9 +16,16 @@ def app(scope="session"):
 
 
 @pytest.fixture
-def jyl(app):
-    """Create a test user - this one is logged in"""
-    mng = app.config["MANAGER"]
+def manager(app, scope="session"):
+    yield app.config["MANAGER"]
+
+
+@pytest.fixture
+def jyl(app, manager):
+    """
+    Create a test user.
+    JYL has a confirmed account and is logged in.
+    """
     user_datastore = app.config["SECURITY_MANAGER"].datastore
 
     jyl = user_datastore.create_user(
@@ -26,12 +34,15 @@ def jyl(app):
         confirmed_at=datetime.datetime.now(),
         active=True,
     )
+    jyl.set_autosave(True)
     login_user(jyl)
     utl.init_session()
 
     schedule = md.Schedule(
-        schd.Schedule(mng.get_default_project_id(), label="JYL'S SCHEDULE"), user=jyl
+        schd.Schedule(manager.get_default_project_id(), label="JYL'S SCHEDULE"),
+        user=jyl,
     )
+    session["current_schedule"] = schedule.data
     md.db.session.add(schedule)
     md.db.session.commit()
 
@@ -44,9 +55,12 @@ def jyl(app):
 
 
 @pytest.fixture
-def gerom(app):
-    """Create a test user - this one is not logged in"""
-    mng = app.config["MANAGER"]
+def gerom(app, manager):
+
+    """
+    Create a test user.
+    Gerom has a confirmed account, but is not logged in.
+    """
     user_datastore = app.config["SECURITY_MANAGER"].datastore
 
     gerom = user_datastore.create_user(
@@ -56,7 +70,7 @@ def gerom(app):
     )
 
     schedule = md.Schedule(
-        schd.Schedule(mng.get_default_project_id(), label="gerom'S SCHEDULE"),
+        schd.Schedule(manager.get_default_project_id(), label="gerom'S SCHEDULE"),
         user=gerom,
     )
     md.db.session.add(schedule)
@@ -70,19 +84,18 @@ def gerom(app):
 
 
 @pytest.fixture
-def louwi(app):
-    """Create a test user - this one has no schedules"""
-    mng = app.config["MANAGER"]
-    user_datastore = app.config["SECURITY_MANAGER"].datastore
+def louwi(manager):
+    """
+    Create a test user.
+    Louwi has no account, but is an active anonymous user.
+    """
+    utl.init_session()
 
-    louwi = user_datastore.create_user(
-        email="louwi@scheduler.ade",
-        password=hash_password("password"),
-        confirmed_at=datetime.datetime.now(),
+    session["current_schedule"] = schd.Schedule(
+        manager.get_default_project_id(), label="LOUWI'S SCHEDULE"
     )
-    md.db.session.commit()
 
-    yield louwi
 
-    md.db.session.delete(louwi)
-    md.db.session.commit()
+@pytest.fixture
+def user(request):
+    return request.getfixturevalue(request.param)
