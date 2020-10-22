@@ -10,14 +10,13 @@ from flask import session
 from flask_security import hash_password, login_user, logout_user
 
 
-@pytest.fixture
-def app(scope="session"):
-    ade_scheduler.config["TESTING"] = True
-    yield ade_scheduler
+@pytest.fixture(scope="session")
+def app():
+    return ade_scheduler
 
 
-@pytest.fixture
-def manager(app, scope="session"):
+@pytest.fixture(scope="session")
+def manager(app):
     yield app.config["MANAGER"]
 
 
@@ -71,7 +70,7 @@ def gerom(app, manager):
     )
 
     schedule = md.Schedule(
-        schd.Schedule(manager.get_default_project_id(), label="gerom'S SCHEDULE"),
+        schd.Schedule(manager.get_default_project_id(), label="GEROM'S SCHEDULE"),
         user=gerom,
     )
     md.db.session.add(schedule)
