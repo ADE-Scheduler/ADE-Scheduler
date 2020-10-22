@@ -12,6 +12,7 @@ from flask_security import hash_password, login_user, logout_user
 
 @pytest.fixture
 def app(scope="session"):
+    ade_scheduler.config["TESTING"] = True
     yield ade_scheduler
 
 
