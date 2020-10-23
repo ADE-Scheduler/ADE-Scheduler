@@ -41,8 +41,6 @@ def test_autosave_schedule(client, jyl):
     assert "ELME2M" in jyl.schedules[0].data.codes
     assert not session["current_schedule_modified"]
 
-    # TODO calendar.get_data sets current_schedule_modified to False...?
-
 
 def test_autoload_schedule(client, jyl):
     """Test the schedule autoload"""
