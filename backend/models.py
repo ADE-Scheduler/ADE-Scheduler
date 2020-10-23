@@ -192,13 +192,12 @@ class Schedule(db.Model):
         """
         if int(data.id) != int(self.id):
             raise ScheduleDoNotMatchError(self.id, data.id)
-        self.data = data
+        self.data = copy(data)
         db.session.commit()
 
     def update_label(self, label):
-        data = copy(self.data)
-        data.label = label
-        self.data = data
+        self.data.label = label
+        self.update_data(self.data)
         db.session.commit()
 
     def get_link(self):
