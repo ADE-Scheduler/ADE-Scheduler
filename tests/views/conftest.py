@@ -17,83 +17,106 @@ def app():
 
 @pytest.fixture(scope="session")
 def manager(app):
-    yield app.config["MANAGER"]
+    return app.config["MANAGER"]
+
+
+@pytest.fixture(scope="session")
+def db(manager):
+    return manager.database
+
+
+@pytest.fixture(scope="session")
+def user_ds(app):
+    return app.config["SECURITY_MANAGER"].datastore
 
 
 @pytest.fixture
-def jyl(app, manager):
+def jyl(app, manager, user_ds, db):
     """
     Create a test user.
     JYL has a confirmed account and is logged in.
     """
-    user_datastore = app.config["SECURITY_MANAGER"].datastore
-
-    jyl = user_datastore.create_user(
+    jyl = user_ds.create_user(
         email="jyl@scheduler.ade",
         password=hash_password("password"),
         confirmed_at=datetime.datetime.now(),
         active=True,
     )
-    jyl.set_autosave(True)
-    login_user(jyl)
-    utl.init_session()
-
     schedule = md.Schedule(
         schd.Schedule(manager.get_default_project_id(), label="JYL'S SCHEDULE"),
         user=jyl,
     )
-    session["current_schedule"] = schedule.data
-    md.db.session.add(schedule)
-    md.db.session.commit()
+    db.session.add(schedule)
+    db.session.commit()
+
+    # Login user
+    @app.login_manager.request_loader
+    def load_user_from_request(request):
+        utl.init_session()
+        session["current_schedule"] = jyl.schedules[0].data
+        return jyl
 
     yield jyl
 
-    logout_user()
-    md.db.session.delete(schedule)
-    md.db.session.delete(jyl)
-    md.db.session.commit()
+    # Logout & delete user
+    @app.login_manager.request_loader
+    def load_user_from_request(request):
+        return None
+
+        db.session.delete(schedule)
+
+    db.session.delete(jyl)
+    db.session.commit()
 
 
 @pytest.fixture
-def gerom(app, manager):
+def gerom(app, manager, user_ds, db):
 
     """
     Create a test user.
     Gerom has a confirmed account, but is not logged in.
     """
-    user_datastore = app.config["SECURITY_MANAGER"].datastore
-
-    gerom = user_datastore.create_user(
+    gerom = user_ds.create_user(
         email="gerom@scheduler.ade",
         password=hash_password("password"),
         confirmed_at=datetime.datetime.now(),
+        active=True,
     )
 
     schedule = md.Schedule(
         schd.Schedule(manager.get_default_project_id(), label="GEROM'S SCHEDULE"),
         user=gerom,
     )
-    md.db.session.add(schedule)
-    md.db.session.commit()
+    db.session.add(schedule)
+    db.session.commit()
 
     yield gerom
 
-    md.db.session.delete(schedule)
-    md.db.session.delete(gerom)
-    md.db.session.commit()
+    db.session.delete(schedule)
+    db.session.delete(gerom)
+    db.session.commit()
 
 
 @pytest.fixture
-def louwi(manager):
+def louwi(app, manager):
     """
     Create a test user.
     Louwi has no account, but is an active anonymous user.
     """
-    utl.init_session()
 
-    session["current_schedule"] = schd.Schedule(
-        manager.get_default_project_id(), label="LOUWI'S SCHEDULE"
-    )
+    @app.login_manager.requset_loader
+    def load_user_from_request(request):
+        utl.init_session()
+        session["current_schedule"] = schd.Schedule(
+            manager.get_default_project_id(), label="LOUWI'S SCHEDULE"
+        )
+        return None
+
+    yield None
+
+    @app.login_manager.request_loader
+    def load_user_from_request(request):
+        return None
 
 
 @pytest.fixture
