@@ -2,13 +2,6 @@ from flask import url_for, session
 from flask_security import current_user
 
 
-def test_index(client, jyl):
-    """Test if the HTML file is correctly served"""
-    rv = client.get(url_for("account.index"))
-
-    assert rv.status_code == 200
-
-
 def test_get_data(client, manager, jyl):
     """Test the get_data route"""
     rv = client.get(url_for("account.get_data"))
