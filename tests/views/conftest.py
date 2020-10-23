@@ -42,11 +42,17 @@ def jyl(app, manager, user_ds, db):
         confirmed_at=datetime.datetime.now(),
         active=True,
     )
-    schedule = md.Schedule(
+
+    active_schedule = md.Schedule(
         schd.Schedule(manager.get_default_project_id(), label="JYL'S SCHEDULE"),
         user=jyl,
     )
-    db.session.add(schedule)
+    db.session.add(active_schedule)
+
+    old_schedule = md.Schedule(
+        schd.Schedule(manager.get_default_project_id(), label="OLD SCHEDULE"), user=jyl
+    )
+    db.session.add(old_schedule)
     db.session.commit()
 
     # Login user
@@ -63,8 +69,8 @@ def jyl(app, manager, user_ds, db):
     def load_user_from_request(request):
         return None
 
-        db.session.delete(schedule)
-
+    db.session.delete(active_schedule)
+    db.session.delete(old_schedule)
     db.session.delete(jyl)
     db.session.commit()
 
