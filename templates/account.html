@@ -45,7 +45,7 @@
                 <div class="card-body" v-bind:style="opacity">
                     <div class="d-flex flex-row justify-content-between">
                         <h6>{{ _('Automatically save your changes') }}</h6>
-                        <button class="btn" v-on:click="autoSave = !autoSave; changeAutoSave()"
+                        <button class="btn btn-sm" v-on:click="autoSave = !autoSave; changeAutoSave()"
                                 v-bind:class="[[ autoSave ? 'btn-outline-danger':'btn-outline-success' ]]"
                         >
                             [[ autoSave ? "{{ _('Deactivate') }}":"{{ _('Activate') }}" ]]
