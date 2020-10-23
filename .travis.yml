@@ -1,8 +1,4 @@
-# Make sure the version match the ones used in production
-# NOTE: there is currently no npm/node version specified -- may
-# be a good idea to add a check in the future ?
-# May be doable using nvm and a .nvmrc file...
-# https://docs.travis-ci.com/user/languages/javascript-with-nodejs/
+# Python version that is used in prod
 language: python
 python: "3.6"
 
@@ -14,12 +10,20 @@ cache:
 # Databases
 services:
     - postgresql
-    - redis-server
+    - redis
 
 # Don't build on branch commits; only on master + PRs
 branches:
     only:
         - master
+
+# Nodejs/npm version that is used in prod
+before_install:
+    - nvm install 10.22.0
+    - nvm use 10.22.0
+    # - curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+    # - sudo apt-get install -y nodejs
+    # - if [[ `npm -v` != 6.14* ]]; then npm i -g npm@6.14; fi
 
 # Dependencies
 install:
@@ -28,11 +32,11 @@ install:
 
 # Before tests
 before_script:
-    - npx webpack --mode production
     - psql -c 'create database travis_ci_test;' -U postgres
     - flask sql init
 
 # Run tests
 script:
+    - npm run build
     - pre-commit run --all-files --show-diff-on-failure
     - pytest
