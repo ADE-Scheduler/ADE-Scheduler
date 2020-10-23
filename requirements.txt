@@ -68,7 +68,7 @@ pandas==1.1.3
 passlib==1.7.4
 pathspec==0.8.0
 pep517==0.9.1
-Pillow==8.0.0
+Pillow==8.0.1
 pluggy==0.13.1
 pre-commit==2.7.1
 progress==1.5
@@ -87,7 +87,7 @@ pytoml==0.1.21
 pytz==2020.1
 PyYAML==5.3.1
 redis==3.5.3
-regex==2020.10.15
+regex==2020.10.23
 requests==2.24.0
 retrying==1.3.3
 six==1.15.0
