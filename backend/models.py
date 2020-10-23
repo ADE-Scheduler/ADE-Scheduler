@@ -89,7 +89,9 @@ class User(db.Model, fsqla.FsUserMixin):
         server_default=sa.sql.expression.literal(False),
     )
     last_schedule_id = db.Column(db.Integer(), nullable=True)
-    schedules = db.relationship("Schedule", secondary="property")
+    schedules = db.relationship(
+        "Schedule", secondary="property", back_populates="users"
+    )
 
     def add_schedule(self, schedule, level=OWNER_LEVEL):
         if schedule not in self.schedules:
@@ -158,7 +160,7 @@ class Schedule(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     last_modified_by = db.Column(GUID(), nullable=True)
     data = db.Column(db.PickleType())
-    users = db.relationship("User", secondary="property")
+    users = db.relationship("User", secondary="property", back_populates="schedules")
     link = db.relationship("Link", uselist=False, backref="schedule")
 
     def __init__(self, data, user=None):
@@ -232,6 +234,8 @@ class Link(db.Model):
 
 class Property(db.Model):
     __tablename__ = "property"
+    __mapper_args__ = {"confirm_deleted_rows": False}
+
     id = db.Column(db.Integer(), primary_key=True)
     user_id = db.Column(db.Integer(), db.ForeignKey("user.id"))
     schedule_id = db.Column(db.Integer(), db.ForeignKey("schedule.id"))
