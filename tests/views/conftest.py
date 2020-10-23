@@ -110,7 +110,7 @@ def louwi(app, manager):
     Louwi has no account, but is an active anonymous user.
     """
 
-    @app.login_manager.requset_loader
+    @app.login_manager.request_loader
     def load_user_from_request(request):
         utl.init_session()
         session["current_schedule"] = schd.Schedule(
