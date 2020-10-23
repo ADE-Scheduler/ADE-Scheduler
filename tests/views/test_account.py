@@ -1,4 +1,8 @@
 from flask import url_for, session
+from flask_security import current_user, login_user
+
+import backend.models as md
+import views.utils as utl
 
 
 def test_get_data(client):
@@ -26,10 +30,9 @@ def test_update_label(client, jyl):
         json=dict(label="LABEL CHANGED"),
     )
 
-    # TODO: il considère pas que JYL est connecté :-(
-    # assert rv.status_code == 200
-    # assert jyl.schedules[0].data.label == "LABEL CHANGED"
-    # assert session["current_schedule"].label == "LABEL CHANGED"
+    assert rv.status_code == 200
+    assert jyl.schedules[0].data.label == "LABEL CHANGED"
+    assert session["current_schedule"].label == "LABEL CHANGED"
 
 
 def test_save(client):
@@ -38,7 +41,7 @@ def test_save(client):
     assert True
 
 
-def test_login_required(client, louwi):
+def test_login_required(client):
     """Test if every route is access-restricted to logged in users"""
     rv = client.get(url_for("account.index"))
     assert rv.status_code == 302
