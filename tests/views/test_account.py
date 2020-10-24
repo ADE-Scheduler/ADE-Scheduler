@@ -22,31 +22,53 @@ def test_get_data(client, manager, jyl):
 
 def test_load_schedule(client, jyl):
     """Test the load_schedule(id) route"""
+    # This is required to ensure the schedule are sorted
+    # PostgreSQL does not always return the list in the same order
+    schedules = sorted(jyl.schedules, key=lambda e: int(e.id))
+
     rv = client.get(url_for("account.load_schedule", id=42666))
 
     assert rv.status_code == 403
 
-    rv = client.get(url_for("account.load_schedule", id=jyl.schedules[1].id))
+    rv = client.get(url_for("account.load_schedule", id=schedules[1].id))
 
     assert rv.status_code == 200
-    assert session["current_schedule"].id == jyl.schedules[1].id
+    assert session["current_schedule"].id == schedules[1].id
 
 
 def test_delete_schedule(client, jyl):
     """Test the delete_schedule route"""
+    # This is required to ensure the schedule are sorted
+    # PostgreSQL does not always return the list in the same order
+    schedules = sorted(jyl.schedules, key=lambda e: int(e.id))
+
     rv = client.delete(url_for("account.delete_schedule", id=42666))
 
     assert rv.status_code == 403
 
-    rv = client.delete(url_for("account.delete_schedule", id=jyl.schedules[0].id))
+    # Test delete another schedule
+    rv = client.delete(url_for("account.delete_schedule", id=schedules[1].id))
 
     assert rv.status_code == 200
-    assert len(jyl.schedules) == 1
+    assert len(jyl.schedules) == len(schedules) - 1
+    assert session["current_schedule"].id == schedules[0].id
+
+    # Test delete current schedule
+    rv = client.delete(
+        url_for("account.delete_schedule", id=session["current_schedule"].id)
+    )
+
+    assert rv.status_code == 200
+    assert len(jyl.schedules) == len(schedules) - 2
     assert session["current_schedule"].id == None
 
 
 def test_update_label(client, jyl):
     """Test the update_label(id) route"""
+    # This is required to ensure the schedule are sorted
+    # PostgreSQL does not always return the list in the same order
+    schedules = sorted(jyl.schedules, key=lambda e: int(e.id))
+
     rv = client.patch(
         url_for("account.update_label", id=42666), json=dict(label="LABEL CHANGED")
     )
@@ -54,21 +76,25 @@ def test_update_label(client, jyl):
     assert rv.status_code == 403
 
     rv = client.patch(
-        url_for("account.update_label", id=jyl.schedules[0].id),
+        url_for("account.update_label", id=schedules[0].id),
         json=dict(label="LABEL CHANGED"),
     )
 
     assert rv.status_code == 200
-    assert jyl.schedules[0].data.label == "LABEL CHANGED"
+    assert schedules[0].data.label == "LABEL CHANGED"
     assert session["current_schedule"].label == "LABEL CHANGED"
 
 
 def test_save(client, jyl):
     """Test the save route"""
+    # This is required to ensure the schedule are sorted
+    # PostgreSQL does not always return the list in the same order
+    schedules = sorted(jyl.schedules, key=lambda e: int(e.id))
+
     data = dict(project_id=42, color_palette=["BLACK", "YELLOW", "RED"])
     rv = client.post(url_for("account.save"), json=data)
 
-    schd = jyl.schedules[0]
+    schd = schedules[0]
     assert rv.status_code == 200
     assert schd.data.project_id == data["project_id"]
     assert schd.data.color_palette == set(data["color_palette"])
