@@ -70,6 +70,6 @@ def test_autoload_schedule(client, jyl):
 
     assert session["current_schedule"].label == "JYL'S SCHEDULE"
 
-    rv = client.get(url_for("calendar.get_data"))
+    rv = client.get(url_for("calendar.index"))
 
     assert session["current_schedule"].label == "ANOTHER LABEL"
