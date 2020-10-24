@@ -21,9 +21,6 @@ branches:
 before_install:
     - nvm install 10.22.0
     - nvm use 10.22.0
-    # - curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
-    # - sudo apt-get install -y nodejs
-    # - if [[ `npm -v` != 6.14* ]]; then npm i -g npm@6.14; fi
 
 # Dependencies
 install:
@@ -34,9 +31,9 @@ install:
 before_script:
     - psql -c 'create database travis_ci_test;' -U postgres
     - flask sql init
+    - npm run build
 
 # Run tests
 script:
-    - npm run build
     - pre-commit run --all-files --show-diff-on-failure
     - pytest
