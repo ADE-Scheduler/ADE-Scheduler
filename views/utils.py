@@ -48,6 +48,9 @@ def autoload_schedule():
             session["current_schedule"] = schd.Schedule(mng.get_default_project_id())
             return
 
-        if schedule.last_modified_by != session["uuid"]:
+        if (
+            schedule.last_modified_by != session["uuid"]
+            and schedule.last_modified_by is not None
+        ):
             session["current_schedule"] = schedule.data
             schedule.update_last_modified_by(session["uuid"])
