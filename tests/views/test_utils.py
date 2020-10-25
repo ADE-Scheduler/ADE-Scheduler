@@ -63,7 +63,7 @@ def test_autoload_schedule(client, jyl):
     schedules[0].update_data(schedule)
 
     assert session["current_schedule"].label == "JYL'S SCHEDULE"
-    assert session["current_schedule"].codes == []
+    assert session["current_schedule"].codes == ["LEPL1104"]
 
     rv = client.get(url_for("calendar.index"))
 
