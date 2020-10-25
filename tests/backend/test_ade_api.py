@@ -140,12 +140,13 @@ def test_all_requests(ade_client):
 
     assert activity is not None
 
-    events = activities[0].xpath(".//event")
+    events = list()
 
-    """ TODO: this returns an IndexError, how to fix ?
+    for activity in activities:
+        events.extend(activity.xpath(".//event"))
+
     event = assert_correct_typing(ade.parse_event)(
         events[0], AcademicalEvent, "", "", ""
     )
 
     assert event is not None
-    """
