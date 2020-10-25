@@ -4,6 +4,7 @@ import pytest
 from flask import url_for, session
 from flask_babel import gettext
 
+import backend.models as md
 import backend.schedules as schd
 
 
@@ -213,10 +214,18 @@ def test_download(client):
     assert True
 
 
-def test_share(client):
+def test_share(client, jyl, gerom):
     """Test the share route"""
-    # TODO
-    assert True
+    data = dict(link=gerom.get_schedules()[0].get_link().link)
+    rv = client.get(url_for("calendar.share"), query_string=data)
+
+    assert rv.status_code == 302  # There is a redirect
+    assert session["current_schedule"].label == "GEROM'S SCHEDULE"
+
+    data = dict(link="does_not_exist")
+    rv = client.get(url_for("calendar.share"), query_string=data)
+
+    assert rv.status_code == 400
 
 
 def test_apply_filter(client):
@@ -231,22 +240,59 @@ def test_update_project_id(client):
     assert True
 
 
-def test_export(client):
+def test_export(client, jyl):
     """Test the export route"""
-    # TODO
-    assert True
+    rv = client.get(url_for("calendar.export"))
+    data = json.loads(rv.data)
+
+    assert rv.status_code == 200
+    assert data["link"] == jyl.get_schedules()[0].get_link().link
 
 
-def test_get_events(client):
+def test_export_anonymous(client, louwi):
+    """Test the export route, anonymous user version"""
+    rv = client.get(url_for("calendar.export"))
+    data = json.loads(rv.data)
+
+    assert rv.status_code == 200
+    assert session["current_schedule"].id is not None
+
+    schd = md.Schedule.query.filter(
+        md.Schedule.id == session["current_schedule"].id
+    ).first()
+    assert schd.data.label == "LOUWI'S SCHEDULE"
+    assert data["link"] == schd.link.link
+
+
+@pytest.mark.parametrize("user", ["jyl", "louwi"], indirect=True)
+def test_get_events(client, user):
     """Test the get_event route"""
-    # TODO
-    assert True
+    for i in range(5):
+        rv = client.get(
+            url_for("calendar.get_events"), query_string=dict(schedule_number=i)
+        )
+        data = json.loads(rv.data)
+
+        assert rv.status_code == 200
+        assert data["events"] == session["current_schedule"].get_events(
+            json=True, schedule_number=i
+        )
 
 
-def test_compute(client):
+@pytest.mark.parametrize("user", ["jyl", "louwi"], indirect=True)
+def test_compute(client, user):
     """Test the compute route"""
-    # TODO
-    assert True
+    rv = client.put(url_for("calendar.compute"))
+    data = json.loads(rv.data)
+
+    assert rv.status_code == 200
+    assert data["n_schedules"] == len(session["current_schedule"].best_schedules)
+    assert data["events"] == session["current_schedule"].get_events(
+        json=True, schedule_number=1
+    )
+    assert (data["selected_schedule"]) == (
+        1 if len(session["current_schedule"].best_schedules) > 0 else 0
+    )
 
 
 @pytest.mark.parametrize("user", ["jyl", "louwi"], indirect=True)
