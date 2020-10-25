@@ -140,9 +140,14 @@ class User(db.Model, fsqla.FsUserMixin):
             )
 
         else:
-            # Return all the user's schedules
-            # Ensure those are sorted according to their IDs
-            return sorted(self.schedules, key=lambda e: int(e.id))
+            return None
+
+    def get_schedules(self):
+        """
+        Equivalent to User.schedules, but sorts the schedules according to their IDs
+        to ensure similar behavior throughout the SQL databases.
+        """
+        return sorted(self.schedules, key=lambda e: int(e.id))
 
     def set_autosave(self, autosave):
         self.autosave = autosave
