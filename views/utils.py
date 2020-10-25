@@ -11,6 +11,9 @@ import backend.schedules as schd
 def init_session():
     mng = app.config["MANAGER"]
 
+    if not session.get("uuid"):
+        session["uuid"] = uuid.uuid4()
+
     if not session.get("current_schedule"):
         session["current_schedule"] = schd.Schedule(mng.get_default_project_id())
         session["current_schedule_modified"] = False
@@ -22,8 +25,6 @@ def init_session():
 
 def autosave_schedule(response):
     if response.is_json and session["current_schedule_modified"]:
-        mng = app.config["MANAGER"]
-
         if current_user.is_authenticated and current_user.autosave:
             mng = app.config["MANAGER"]
             session["current_schedule"] = mng.save_schedule(
@@ -39,9 +40,7 @@ def autosave_schedule(response):
 
 
 def autoload_schedule():
-    if session.get("uuid") is None:
-        session["uuid"] = uuid.uuid4()
-
+    return
     if current_user.is_authenticated and session["current_schedule"].id is not None:
         schedule = current_user.get_schedule(id=session["current_schedule"].id)
 
@@ -50,6 +49,9 @@ def autoload_schedule():
             session["current_schedule"] = schd.Schedule(mng.get_default_project_id())
             return
 
-        if schedule.last_modified_by != session["uuid"]:
+        if (
+            schedule.last_modified_by != session["uuid"]
+            and schedule.last_modified_by is not None
+        ):
             session["current_schedule"] = schedule.data
             schedule.update_last_modified_by(session["uuid"])

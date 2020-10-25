@@ -78,7 +78,7 @@ def get_events():
         view = bool(strtobool(request.args.get("view")))
 
     project_id = mng.get_project_ids(year=year)
-    if project_id is None:
+    if year is None or project_id is None:
         project_id = mng.get_default_project_id()
 
     schedule = schd.Schedule(project_id=project_id)
@@ -95,6 +95,7 @@ def get_events():
 
 @api.route("/shield/user", methods=["GET"])
 def user_shield():
+    """API route for badges on the GitHub Repository, per shields.io"""
     return jsonify(
         {
             "schemaVersion": 1,
@@ -107,6 +108,7 @@ def user_shield():
 
 @api.route("/shield/schedule", methods=["GET"])
 def schedule_shield():
+    """API route for badges on the GitHub Repository, per shields.io"""
     return jsonify(
         {
             "schemaVersion": 1,
