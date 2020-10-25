@@ -73,7 +73,7 @@ class Server(Redis):
         >>> s.set_value('apple', {'weight': 400, 'unit': 'g'}, expire_in={'hours': 10})
         """
         if hmap:
-            self.hmset(key, value)
+            self.hset(key, mapping=value)
 
             if expire_in:
                 self.expire(key, timedelta(**expire_in))
