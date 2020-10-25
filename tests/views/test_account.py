@@ -12,7 +12,7 @@ def test_get_data(client, manager, jyl):
     assert rv.json["unsaved"] == session["current_schedule_modified"]
     assert rv.json["autosave"] == current_user.autosave
     assert rv.json["schedules"] == list(
-        map(lambda s: {"id": s.id, "label": s.data.label}, current_user.get_schedule())
+        map(lambda s: {"id": s.id, "label": s.data.label}, current_user.get_schedules())
     )
     assert rv.json["current_schedule"]["id"] == schd.id
     assert rv.json["current_schedule"]["project_id"] == schd.project_id
@@ -22,7 +22,7 @@ def test_get_data(client, manager, jyl):
 
 def test_load_schedule(client, jyl):
     """Test the load_schedule(id) route"""
-    schedules = jyl.get_schedule()
+    schedules = jyl.get_schedules()
 
     rv = client.get(url_for("account.load_schedule", id=42666))
 
@@ -36,7 +36,7 @@ def test_load_schedule(client, jyl):
 
 def test_delete_schedule(client, jyl):
     """Test the delete_schedule route"""
-    schedules = jyl.get_schedule()
+    schedules = jyl.get_schedules()
 
     rv = client.delete(url_for("account.delete_schedule", id=42666))
 
@@ -61,7 +61,7 @@ def test_delete_schedule(client, jyl):
 
 def test_update_label(client, jyl):
     """Test the update_label(id) route"""
-    schedules = jyl.get_schedule()
+    schedules = jyl.get_schedules()
 
     rv = client.patch(
         url_for("account.update_label", id=42666), json=dict(label="LABEL CHANGED")
@@ -81,7 +81,7 @@ def test_update_label(client, jyl):
 
 def test_save(client, jyl):
     """Test the save route"""
-    schedules = jyl.get_schedule()
+    schedules = jyl.get_schedules()
 
     data = dict(project_id=42, color_palette=["BLACK", "YELLOW", "RED"])
     rv = client.post(url_for("account.save"), json=data)

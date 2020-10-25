@@ -27,7 +27,7 @@ def test_init_session(app, manager):
 
 def test_autosave_schedule(client, jyl, db):
     """Test the schedule autosave"""
-    schedules = jyl.get_schedule()
+    schedules = jyl.get_schedules()
 
     assert "ELME2M" not in schedules[0].data.codes
 
@@ -58,7 +58,7 @@ def test_autoload_schedule(client, jyl):
     schedule = copy.copy(session["current_schedule"])
     schedule.label = "ANOTHER LABEL"
     schedule.codes = ["CODE", "LIST"]
-    jyl.get_schedule()[0].update_data(schedule)
+    jyl.get_schedules()[0].update_data(schedule)
 
     assert session["current_schedule"].label == "JYL'S SCHEDULE"
 

@@ -76,7 +76,7 @@ def get_data():
                 "schedules": list(
                     map(
                         lambda s: {"id": s.id, "label": s.data.label},
-                        current_user.get_schedule(),
+                        current_user.get_schedules(),
                     )
                 ),
                 "current_schedule": {
