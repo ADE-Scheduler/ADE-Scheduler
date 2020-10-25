@@ -9,7 +9,7 @@ from backend.classrooms import Classroom, Address
 from backend.courses import Course
 from backend import professors
 import backend.events
-from typing import Dict, Union, List, Tuple, SupportsInt, Callable, Type
+from typing import Dict, Union, List, Tuple, Callable, Type
 
 
 class ExpiredTokenError(Exception):
@@ -89,12 +89,12 @@ class DummyClient:
         """
         return self.request(function="getProjects", detail=2)
 
-    def get_resources(self, project_id: SupportsInt) -> requests.Response:
+    def get_resources(self, project_id: str) -> requests.Response:
         """
         Requests the ids of all the resource for a specific project.
 
         :param project_id: the id of the project
-        :type project_id: SupportsInt
+        :type project_id: str
         :return: the response
         :rtype: request.Response
         """
@@ -102,23 +102,23 @@ class DummyClient:
             projectId=project_id, function="getResources", detail=13, tree="false"
         )
 
-    def get_resource_ids(self, project_id: SupportsInt) -> requests.Response:
+    def get_resource_ids(self, project_id: str) -> requests.Response:
         """
         Requests the ids of all the resource for a specific project.
 
         :param project_id: the id of the project
-        :type project_id: SupportsInt
+        :type project_id: str
         :return: the response
         :rtype: request.Response
         """
         return self.request(projectId=project_id, function="getResources", detail=2)
 
-    def get_classrooms(self, project_id: SupportsInt) -> requests.Response:
+    def get_classrooms(self, project_id: str) -> requests.Response:
         """
         Requests all the classrooms for a specific project.
 
         :param project_id: the id of the project
-        :type project_id: SupportsInt
+        :type project_id: str
         :return: the response
         :rtype: request.Response
         """
@@ -131,15 +131,15 @@ class DummyClient:
         )
 
     def get_activities(
-        self, resource_ids: List[SupportsInt], project_id: SupportsInt
+        self, resource_ids: List[str], project_id: str
     ) -> requests.Response:
         """
         Requests all activities (set of events)  for a specific project.
 
         :param resource_ids: the ids of all the resources the activities are requested
-        :type resource_ids: List[SupportsInt]
+        :type resource_ids: List[str]
         :param project_id: the id of the project
-        :type project_id: SupportsInt
+        :type project_id: str
         :return: the response
         :rtype: request.Response
         """
@@ -299,7 +299,7 @@ def get_token(credentials: ClientCredentials) -> Tuple[str, int]:
     return r["access_token"], int(r["expires_in"])
 
 
-def response_to_root(response: requests.Response) -> etree.ElementTree:
+def response_to_root(response: requests.Response) -> etree._Element:
     """
     Parses an API response into a tree structure.
 
@@ -311,7 +311,7 @@ def response_to_root(response: requests.Response) -> etree.ElementTree:
     return etree.fromstring(response.content)
 
 
-def response_to_project_ids(project_ids_response: requests.Response) -> Dict[str, int]:
+def response_to_project_ids(project_ids_response: requests.Response) -> Dict[str, str]:
     """
     Extracts an API response into an iterator of project ids and years.
 
@@ -329,10 +329,10 @@ def response_to_project_ids(project_ids_response: requests.Response) -> Dict[str
     ids = root.xpath("//project/@id")
     years = root.xpath("//project/@name")
 
-    return {year: int(id) for id, year in zip(ids, years)}
+    return {year: id for id, year in zip(ids, years)}
 
 
-def response_to_resources(resources_response) -> pd.DataFrame:
+def response_to_resources(resources_response: requests.Response) -> pd.DataFrame:
     """
     Extracts an API response into an dataframe mapping a resource name to its ids.
 
@@ -393,12 +393,12 @@ def response_to_resource_ids(resource_ids_response) -> Dict[str, str]:
     return d
 
 
-def room_to_classroom(room: etree.ElementTree) -> Classroom:
+def room_to_classroom(room: etree._Element) -> Classroom:
     """
     Parses the (class)room retrieved from API to a more convenient Classroom object.
 
     :param room: (class)room as a tree structure
-    :type room: etree.ElementTree
+    :type room: etree._Element
     :return: the classroom
     :rtype: Classroom
     """
@@ -447,8 +447,8 @@ def response_to_classrooms(classrooms_response: requests.Response) -> List[Class
 
 
 def parse_event(
-    event: etree.ElementTree,
-    event_type: Type[backend.events.AcademicalEvent],
+    event: etree._Element,
+    event_type: backend.events.AcademicalEvent,
     activity_name: str,
     activity_id: str,
     activity_code: str,
@@ -458,7 +458,7 @@ def parse_event(
     An event is from an activity so information about this activity must be provided.
 
     :param event: the event element
-    :type event: etree.ElementTree
+    :type event: etree._Element
     :param event_type: the constructor used to initiate to event object
     :type event_type: Type[backend.events.AcademicalEvent]
     :param activity_name: the name of the activity
@@ -495,13 +495,13 @@ def parse_event(
 
 
 def parse_activity(
-    activity: etree.ElementTree,
+    activity: etree._Element,
 ) -> Tuple[List[backend.events.AcademicalEvent], str, str, str]:
     """
     Parses an element from a request into a list of events and some activity information.
 
     :param activity: the activity element
-    :type activity: etree.ElementTree
+    :type activity: etree._Element
     :return: the events, the name, the id and the code of this activity
     :rtype: Tuple[List[backend.events.AcademicalEvent], str, str, str]
     """

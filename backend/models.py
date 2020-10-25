@@ -89,7 +89,9 @@ class User(db.Model, fsqla.FsUserMixin):
         server_default=sa.sql.expression.literal(False),
     )
     last_schedule_id = db.Column(db.Integer(), nullable=True)
-    schedules = db.relationship("Schedule", secondary="property")
+    schedules = db.relationship(
+        "Schedule", secondary="property", back_populates="users"
+    )
 
     def add_schedule(self, schedule, level=OWNER_LEVEL):
         if schedule not in self.schedules:
@@ -122,23 +124,25 @@ class User(db.Model, fsqla.FsUserMixin):
         for user in users:
             user.add_schedule(schedule, level=level)
 
-    def get_schedule(self, id=None, level=None):
-        if id is not None:  # Return the schedule matching the requested ID (if any)
+    def get_schedule(self, id):
+        """
+        Return the schedule in this user's schedule list matching the given ID.
+        None if no match is found.
+        """
+        if id is not None:
             for schedule in self.schedules:
                 if int(schedule.id) == int(id):
                     return schedule
             return None
-
-        elif level is not None:  # Return the schedules matching the ownership level
-            return list(
-                map(
-                    lambda y: y.schedule,
-                    filter(lambda x: x.level == level, self.property),
-                )
-            )
-
         else:
-            return self.schedules  # Return all of this user's schedules
+            return None
+
+    def get_schedules(self):
+        """
+        Equivalent to User.schedules, but sorts the schedules according to their IDs
+        to ensure similar behavior throughout the SQL databases.
+        """
+        return sorted(self.schedules, key=lambda e: int(e.id))
 
     def set_autosave(self, autosave):
         self.autosave = autosave
@@ -158,7 +162,7 @@ class Schedule(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     last_modified_by = db.Column(GUID(), nullable=True)
     data = db.Column(db.PickleType())
-    users = db.relationship("User", secondary="property")
+    users = db.relationship("User", secondary="property", back_populates="schedules")
     link = db.relationship("Link", uselist=False, backref="schedule")
 
     def __init__(self, data, user=None):
@@ -192,13 +196,12 @@ class Schedule(db.Model):
         """
         if int(data.id) != int(self.id):
             raise ScheduleDoNotMatchError(self.id, data.id)
-        self.data = data
+        self.data = copy(data)
         db.session.commit()
 
     def update_label(self, label):
-        data = copy(self.data)
-        data.label = label
-        self.data = data
+        self.data.label = label
+        self.update_data(self.data)
         db.session.commit()
 
     def get_link(self):
@@ -233,6 +236,8 @@ class Link(db.Model):
 
 class Property(db.Model):
     __tablename__ = "property"
+    __mapper_args__ = {"confirm_deleted_rows": False}
+
     id = db.Column(db.Integer(), primary_key=True)
     user_id = db.Column(db.Integer(), db.ForeignKey("user.id"))
     schedule_id = db.Column(db.Integer(), db.ForeignKey("schedule.id"))

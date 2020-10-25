@@ -122,7 +122,7 @@ def get_data():
                 else list(
                     map(
                         lambda s: {"id": s.id, "label": gettext(s.data.label)},
-                        current_user.get_schedule(),
+                        current_user.get_schedules(),
                     )
                 ),
                 "autosave": getattr(current_user, "autosave", False),
@@ -156,7 +156,7 @@ def load_schedule(id):
                     "schedules": list(
                         map(
                             lambda s: {"id": s.id, "label": gettext(s.data.label)},
-                            current_user.get_schedule(),
+                            current_user.get_schedules(),
                         )
                     ),
                 }
@@ -282,6 +282,8 @@ def save():
     if not current_user.is_authenticated:
         return "Login is required", 401
 
+    print(session["current_schedule"].label)
+
     mng = app.config["MANAGER"]
     session["current_schedule"] = mng.save_schedule(
         current_user, session["current_schedule"], session.get("uuid")
@@ -293,7 +295,7 @@ def save():
                 "schedules": list(
                     map(
                         lambda s: {"id": s.id, "label": gettext(s.data.label)},
-                        current_user.get_schedule(),
+                        current_user.get_schedules(),
                     )
                 )
             }
