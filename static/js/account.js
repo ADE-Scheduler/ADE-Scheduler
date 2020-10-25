@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
             currentSchedule: {},
             computing: true,
             unsaved: true,
+            autoSave: false,
             error: false,
             isEditing: false,
         },
@@ -33,7 +34,24 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.unsaved = resp.data.unsaved;
                     this.schedules = resp.data.schedules;
                     this.currentSchedule = resp.data.current_schedule;
+                    this.autoSave = resp.data.autosave;
                 })
+                .catch(err => {
+                    this.error = true;
+                })
+                .then(() => {
+                    this.computing = false;
+                });
+            },
+            changeAutoSave: function () {
+                this.computing = true;
+                axios({
+                    method: 'POST',
+                    url: Flask.url_for('account.autosave'),
+                    header: {'Content-Type': 'application/json'},
+                    data: { autosave: this.autoSave },
+                })
+                .then(resp => {})
                 .catch(err => {
                     this.error = true;
                 })
@@ -113,34 +131,29 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.computing = false;
                 });
             },
-            updateLabel: function(e, id) {
+            updateLabel: function(id) {
                 // ...
-                if (this.isEditing) {
-                    this.computing = true;
-                    if (id == null) { id = -1; }
-                    axios({
-                        method: 'PATCH',
-                        url: Flask.url_for('account.update_label', {'id': id}),
-                        header: {'Content-Type': 'applacation/json'},
-                        data: {'label': this.currentSchedule.label},
-                    })
-                    .then(resp => {
-                        this.isEditing = false;
-                        let schedule = this.schedules.find(s => s.id === id);
-                        if (schedule) {
-                            schedule.label = this.currentSchedule.label;
-                        }
-                    })
-                    .catch(err => {
-                        this.error = true;
-                        console.log(err);
-                    })
-                    .then(() => {
-                        this.computing = false;
-                    });
-                } else {
-                    this.isEditing = true;
-                }
+                this.computing = true;
+                if (id == null) { id = -1; }
+                axios({
+                    method: 'PATCH',
+                    url: Flask.url_for('account.update_label', {'id': id}),
+                    header: {'Content-Type': 'applacation/json'},
+                    data: {'label': this.currentSchedule.label},
+                })
+                .then(resp => {
+                    this.isEditing = false;
+                    let schedule = this.schedules.find(s => s.id === id);
+                    if (schedule) {
+                        schedule.label = this.currentSchedule.label;
+                    }
+                })
+                .catch(err => {
+                    this.error = true;
+                })
+                .then(() => {
+                    this.computing = false;
+                });
             },
             save: function(e) {
                 this.computing = true;

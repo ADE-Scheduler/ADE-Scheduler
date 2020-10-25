@@ -67,42 +67,85 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">[[ eventInfo.title ]]</h5>
+                    <input v-if="isEditingCustomEvent" class="form-control" type="text" v-model="eventInfo.title"/>
+                    <h5 v-else class="modal-title">[[ eventInfo.title ]]</h5>
                     <button type="button" class="btn-close" data-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
+                    <div class="row mb-3">
                         <div class="col-6">
-                            <label>{{ _('Location') }}</label>
-                            <input class="form-control" type="text" readonly v-bind:value="eventInfo.location"/>
+                            <h6>{{ _('Location') }}</h6>
+                            <textarea v-if="isEditingCustomEvent" class="form-control" type="text" v-model="eventInfo.location"></textarea>
+                            <div v-else v-bind:class="{'text-muted': !eventInfo.location}">
+                                [[ eventInfo.location ? eventInfo.location:"{{ _('No location') }}"]]
+                            </div>
+                        </div>
+                        <div class="col-6 text-right">
+                            <h6>{{ _('Description') }}</h6>
+                            <textarea v-if="isEditingCustomEvent" class="form-control" type="text" v-model="eventInfo.description"></textarea>
+                            <div v-else v-bind:class="{'text-muted': !eventInfo.description}">
+                                [[ eventInfo.description ? eventInfo.description:"{{ _('No description') }}" ]]
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+
+                    <div v-if="eventInfo.rrule">
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <h6>{{ _('Start') }}</h6>
+                                [[ eventInfo.rrule.pretty_start ]]
+                            </div>
+                            <div class="col-6 text-right">
+                                <h6>{{ _('End') }}</h6>
+                                [[ eventInfo.rrule.pretty_end ]]
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <h6>{{ _('Time') }}</h6>
+                                [[ eventInfo.pretty_startTime ]] {{ _('to') }} [[ eventInfo.pretty_endTime ]]
+                            </div>
+                            <div class="col-6 text-right">
+                                <h6>{{ _('Days') }}</h6>
+                                [[ eventInfo.rrule.pretty_days ]]
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3" v-else>
+                        <div class="col-6">
+                            <h6>{{ _('Start') }}</h6>
+                            [[ eventInfo.pretty_start ]]
                         </div>
 
                         <div class="col-6 text-right">
-                            <label>Description</label>
-                            <textarea class="form-control" type="text" rows="4" readonly v-bind:value="eventInfo.description"></textarea>
+                            <h6>{{ _('End') }}</h6>
+                            [[ eventInfo.pretty_end ]]
                         </div>
-                        <div v-if="eventInfo.rrule">
-                            {{ _('Recurring Event !') }}
-                            <p>{{ _('From') }} [[ eventInfo.pretty_startTime ]] {{ _('to') }} [[ eventInfo.pretty_endTime ]]</p>
-                            <p>{{ _('Start:') }} [[ eventInfo.rrule.pretty_start ]]</p>
-                            <p>{{ _('End:') }} [[ eventInfo.rrule.pretty_end ]]</p>
-                            <p>{{ _('Days of week:') }} [[ eventInfo.rrule.pretty_days ]]</p>
-                        </div>
-                        <div v-else>
-                            <p>{{ _('Start:') }} [[ eventInfo.pretty_start ]]</p>
-                            <p>{{ _('End:') }} [[ eventInfo.pretty_end ]]</p>
-                        </div>
+                    </div>
+                    <hr>
 
-                        <label>{{ _('Color') }}</label>
-                        <input type="color" v-on:change="updateEvent(eventInfo)"
-                            v-bind:style="{backgroundColor: eventInfo.backgroundColor}"
-                            v-model="eventInfo.backgroundColor"
-                            class="swatch-custom-events ml-3"/>
+                    <div class="row">
+                        <div class="col-6">
+                            <h6>{{ _('Color') }}</h6>
+                        </div>
+                        <div class="col-6 text-right">
+                            <input type="color"
+                                v-bind:style="{backgroundColor: eventInfo.backgroundColor}"
+                                v-model="eventInfo.backgroundColor"
+                                v-on:change="isEditingCustomEvent = true"
+                                class="swatch-custom-events ml-3"/>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ _('Close') }}</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal" v-on:click="removeEvent(eventInfo.event)">{{ _('Delete Event') }}</button>
+                    <button type="button" class="btn"
+                            v-bind:class="[[ isEditingCustomEvent ? 'btn-success':'btn-primary' ]]"
+                            v-on:click="updateEditingCustomEvent">
+                        [[ isEditingCustomEvent ? "{{ _('Save') }}":"{{ _('Edit') }}" ]]
+                    </button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" v-on:click="removeEvent(eventInfo.event)">{{ _('Delete') }}</button>
                 </div>
             </div>
         </div>
@@ -441,6 +484,7 @@
                             </form>
                         </li>
                     </div>
+
                     <div class="mt-3">
                         <label class="form-label" for="select-project-id">{{ _('Academic year') }}</label>
                         <select class="form-select" v-model="currentProjectId" v-on:change="updateYear">
