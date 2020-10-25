@@ -35,6 +35,21 @@ def default_dict_any_to_set() -> defaultdict:
     return defaultdict(set)
 
 
+def default_options() -> defaultdict:
+    """
+    Create a collections.defaultdict object mapping each key to a boolean.
+    Default value is false.
+
+    :return: the dictionary
+    :rtype: collections.defaultdict
+    """
+
+    def false():
+        return False
+
+    return defaultdict(false)
+
+
 class Schedule:
     """
     A schedule is essentially a combination of courses stored as a master course, from which some events can be removed.
@@ -58,6 +73,22 @@ class Schedule:
         self.custom_events = list()
         self.priorities = dict()
         self.color_palette = list(COLOR_PALETTE)
+        self.options = dict()
+
+    def get_option(self, option: str) -> bool:
+        if not hasattr(self, "options"):
+            setattr(self, "options", default_options())
+
+        return self.options[option]
+
+    def set_option(self, option: str, value: bool):
+        if not hasattr(self, "options"):
+            setattr(self, "options", default_options())
+
+        self.options[option] = value
+
+    def is_empty(self):
+        return len(self.codes) == 0 and len(self.custom_events) == 0
 
     def reset_color_palette(self):
         self.color_palette = list(COLOR_PALETTE)
@@ -121,6 +152,20 @@ class Schedule:
         """
         self.custom_events.append(event)
 
+    def get_custom_event(self, id: str) -> evt.CustomEvent:
+        """
+        Returns the custom event matching  given id
+
+        :param id: the unique id of the event
+        :type id: str
+        :return: the custom event
+        :rtype: CustomEvent
+        """
+        try:
+            return next(e for e in self.custom_events if e.uid == id)
+        except StopIteration:
+            raise KeyError("Cannot return non existing custom event")
+
     def remove_custom_event(
         self, event: Optional[evt.CustomEvent] = None, id: Optional[str] = None
     ):
@@ -136,35 +181,23 @@ class Schedule:
         if event is not None:
             self.custom_events.remove(event)
         elif id is not None:
-            try:
-                event = next(e for e in self.custom_events if e.uid == id)
-            except StopIteration:
-                raise KeyError("Cannot delete non existing custom event")
+            event = self.get_custom_event(id)
 
             self.custom_events.remove(event)
 
-    def set_custom_event_color(
-        self, color, event: Optional[evt.CustomEvent] = None, id: Optional[str] = None
-    ):
+    def set_custom_event_attributes(self, id: str, **kwargs: str):
         """
-        Changes the color of a given custom event
+        Changes the custom event's attributes.
 
-        :param color: the color
-        :type color: str
-        :param event: the event to remove
-        :type event: Optional[CustomEvent]
         :param id: the unique id of the event
-        :type id: Optional[str]
+        :type id: str
+        :param kwargs: the attributes and their value
+        :type kwargs: str
         """
-        if event is not None:
-            event.color = color
-        elif id is not None:
-            try:
-                event = next(e for e in self.custom_events if e.uid == id)
-            except StopIteration:
-                raise KeyError("Cannot delete non existing custom event")
+        event = self.get_custom_event(id)
 
-            event.color = color
+        for attr, value in kwargs.items():
+            setattr(event, attr, value)
 
     def get_custom_event_color(
         self, event: Optional[evt.CustomEvent] = None, id: Optional[str] = None
@@ -182,10 +215,7 @@ class Schedule:
         if event is not None:
             return event.color
         elif id is not None:
-            try:
-                event = next(e for e in self.custom_events if e.uid == id)
-            except StopIteration:
-                raise KeyError("Cannot delete non existing custom event")
+            event = self.get_custom_event(id)
 
             return event.color
 
@@ -290,10 +320,12 @@ class Schedule:
             [] for _ in range(n_best)
         ]  # We create an empty list which will contain best schedules
 
-        # Forbidden time slots = events that we cannot move and that we want to minimize conflicts with them
+        # Forbidden time slots = events that we cannot move and that we want to
+        # minimize conflicts with them
         fts = self.custom_events
 
-        # Merge courses applying reverse view on all of them, then get all the activities
+        # Merge courses applying reverse view on all of them, then get all the
+        # activities
         df = merge_courses(
             courses, views=self.filtered_subcodes, reverse=True
         ).get_activities()
@@ -304,7 +336,8 @@ class Schedule:
 
         max_bests_found = (
             1
-        )  # Number of best schedules found (will take the maximum value out of all weeks)
+        )  # Number of best schedules found (will take the maximum value out of all
+        # weeks)
 
         for week, week_data in df_main.groupby("week"):
             if (
@@ -320,7 +353,8 @@ class Schedule:
                         if any(starmap(operator.xor, zip(tmp, r))):
                             week_data = week_data.drop(index=index, errors="ignore")
                         else:
-                            # We append to left because last event is most likely to conflict (if sorted)
+                            # We append to left because last event is most likely to
+                            # conflict (if sorted)
                             tmp.appendleft(e)
 
             # First, each event is considered to be filtered out.

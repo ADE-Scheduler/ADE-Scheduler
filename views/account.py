@@ -7,7 +7,7 @@ from flask_security import login_required, current_user
 from flask_babel import gettext
 
 import backend.schedules as schd
-import backend.utils as utl
+import views.utils as utl
 
 
 class AccountEncoder(json.JSONEncoder):
@@ -48,7 +48,7 @@ account.json_encoder = AccountEncoder
 
 @account.before_request
 def before_account_request():
-    utl.init_schedule()
+    utl.autoload_schedule()
 
 
 @account.route("/")
@@ -72,6 +72,7 @@ def get_data():
             {
                 "project_id": mng.get_project_ids(),
                 "unsaved": session["current_schedule_modified"],
+                "autosave": current_user.autosave,
                 "schedules": list(
                     map(
                         lambda s: {"id": s.id, "label": s.data.label},
@@ -173,7 +174,9 @@ def save():
     s.project_id = request.json["project_id"]
     s.color_palette = request.json["color_palette"]
     mng = app.config["MANAGER"]
-    session["current_schedule"] = mng.save_schedule(current_user, s)
+    session["current_schedule"] = mng.save_schedule(
+        current_user, s, session.get("uuid")
+    )
     session["current_schedule_modified"] = False
     return (
         jsonify(
@@ -187,3 +190,10 @@ def save():
         ),
         200,
     )
+
+
+@account.route("/autosave", methods=["POST"])
+@login_required
+def autosave():
+    current_user.set_autosave(request.json["autosave"])
+    return jsonify({}), 200
