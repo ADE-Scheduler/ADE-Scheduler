@@ -6,6 +6,14 @@ from flask_security import current_user
 from flask_babel import gettext
 
 
+def test_index(client):
+    """Test the index route"""
+    rv = client.get(url_for("calendar.index"))
+
+    assert rv.status_code == 200
+    assert b"DOCTYPE html" in rv.data
+
+
 @pytest.mark.parametrize("user", ["jyl", "louwi"], indirect=True)
 def test_clear(client, user):
     """Test the clear route"""
