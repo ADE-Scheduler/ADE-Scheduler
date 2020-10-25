@@ -1,3 +1,4 @@
+import copy
 import pytest
 import datetime
 
@@ -59,7 +60,7 @@ def jyl(app, manager, user_ds, db):
     @app.login_manager.request_loader
     def load_user_from_request(request):
         utl.init_session()
-        session["current_schedule"] = jyl.get_schedules()[0].data
+        session["current_schedule"] = copy.copy(jyl.get_schedules()[0].data)
         return jyl
 
     yield jyl
