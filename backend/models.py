@@ -124,21 +124,16 @@ class User(db.Model, fsqla.FsUserMixin):
         for user in users:
             user.add_schedule(schedule, level=level)
 
-    def get_schedule(self, id=None, level=None):
-        if id is not None:  # Return the schedule matching the requested ID (if any)
+    def get_schedule(self, id):
+        """
+        Return the schedule in this user's schedule list matching the given ID.
+        None if no match is found.
+        """
+        if id is not None:
             for schedule in self.schedules:
                 if int(schedule.id) == int(id):
                     return schedule
             return None
-
-        elif level is not None:  # Return the schedules matching the ownership level
-            return list(
-                map(
-                    lambda y: y.schedule,
-                    filter(lambda x: x.level == level, self.property),
-                )
-            )
-
         else:
             return None
 
