@@ -166,7 +166,8 @@ def test_remove_code(client, user):
 
 def test_get_info(client):
     """Test the get_info route"""
-    pass
+    # TODO
+    assert True
 
 
 def test_add_custom_event(client):
