@@ -17,7 +17,7 @@ class TestServer:
         args = [
             ["0", 1234, None, False],
             ["1", 1111, {"hours": 10}, False],
-            ["2", {1: "a", 2: "b"}, False],
+            ["2", {1: "a", 2: "b"}, None, False],
         ]
 
         for key, value, expire_in, hmap in args:
