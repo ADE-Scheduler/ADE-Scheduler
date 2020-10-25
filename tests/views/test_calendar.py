@@ -248,7 +248,8 @@ def test_compute(client):
     assert True
 
 
-def test_update_color(client):
+@pytest.mark.parametrize("user", ["jyl", "louwi"], indirect=True)
+def test_update_color(client, user):
     """Test the update_color route"""
     data = dict(color_palette=["BLACK", "YELLOW", "RED"], schedule_number=0)
     rv = client.post(url_for("calendar.update_color"), json=data)
@@ -259,7 +260,8 @@ def test_update_color(client):
     assert session["current_schedule"].color_palette == ["BLACK", "YELLOW", "RED"]
 
 
-def test_reset_color(client):
+@pytest.mark.parametrize("user", ["jyl", "louwi"], indirect=True)
+def test_reset_color(client, user):
     """Test the reset_color route"""
     rv = client.delete(url_for("calendar.reset_color"), json=dict(schedule_number=0))
     data = json.loads(rv.data)
