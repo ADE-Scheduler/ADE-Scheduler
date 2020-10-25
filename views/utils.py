@@ -24,6 +24,7 @@ def init_session():
 
 
 def autosave_schedule(response):
+    return response
     if response.is_json and session["current_schedule_modified"]:
         if current_user.is_authenticated and current_user.autosave:
             mng = app.config["MANAGER"]
@@ -40,6 +41,7 @@ def autosave_schedule(response):
 
 
 def autoload_schedule():
+    return
     if current_user.is_authenticated and session["current_schedule"].id is not None:
         schedule = current_user.get_schedule(id=session["current_schedule"].id)
 
