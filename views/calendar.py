@@ -282,6 +282,8 @@ def save():
     if not current_user.is_authenticated:
         return "Login is required", 401
 
+    print(session["current_schedule"].label)
+
     mng = app.config["MANAGER"]
     session["current_schedule"] = mng.save_schedule(
         current_user, session["current_schedule"], session.get("uuid")
