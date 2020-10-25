@@ -75,7 +75,8 @@ def test_load_schedule(client, jyl):
     assert session["current_schedule"].id == schedules[1].id
 
 
-def test_search_code(client):
+@pytest.mark.parametrize("user", ["jyl", "louwi"], indirect=True)
+def test_search_code(client, user):
     """Test the search_code route"""
 
     # Test for "ELME2M"
