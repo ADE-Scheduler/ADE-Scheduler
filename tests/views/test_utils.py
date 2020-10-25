@@ -27,9 +27,7 @@ def test_init_session(app, manager):
 
 def test_autosave_schedule(client, jyl, db):
     """Test the schedule autosave"""
-    # This is required to ensure the schedule are sorted
-    # PostgreSQL does not always return the list in the same order
-    schedules = copy.copy(sorted(jyl.schedules, key=lambda e: int(e.id)))
+    schedules = jyl.get_schedule()
 
     assert "ELME2M" not in schedules[0].data.codes
 
@@ -50,10 +48,6 @@ def test_autosave_schedule(client, jyl, db):
 
 def test_autoload_schedule(client, jyl):
     """Test the schedule autoload"""
-    # This is required to ensure the schedule are sorted
-    # PostgreSQL does not always return the list in the same order
-    schedules = sorted(jyl.schedules, key=lambda e: int(e.id))
-
     # Save the current schedule once
     rv = client.post(url_for("calendar.save"))
 
@@ -64,7 +58,7 @@ def test_autoload_schedule(client, jyl):
     schedule = copy.copy(session["current_schedule"])
     schedule.label = "ANOTHER LABEL"
     schedule.codes = ["CODE", "LIST"]
-    schedules[0].update_data(schedule)
+    jyl.get_schedule()[0].update_data(schedule)
 
     assert session["current_schedule"].label == "JYL'S SCHEDULE"
 

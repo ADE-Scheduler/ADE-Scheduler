@@ -22,9 +22,7 @@ def test_get_data(client, manager, jyl):
 
 def test_load_schedule(client, jyl):
     """Test the load_schedule(id) route"""
-    # This is required to ensure the schedule are sorted
-    # PostgreSQL does not always return the list in the same order
-    schedules = sorted(jyl.schedules, key=lambda e: int(e.id))
+    schedules = jyl.get_schedule()
 
     rv = client.get(url_for("account.load_schedule", id=42666))
 
@@ -38,9 +36,7 @@ def test_load_schedule(client, jyl):
 
 def test_delete_schedule(client, jyl):
     """Test the delete_schedule route"""
-    # This is required to ensure the schedule are sorted
-    # PostgreSQL does not always return the list in the same order
-    schedules = sorted(jyl.schedules, key=lambda e: int(e.id))
+    schedules = jyl.get_schedule()
 
     rv = client.delete(url_for("account.delete_schedule", id=42666))
 
@@ -65,9 +61,7 @@ def test_delete_schedule(client, jyl):
 
 def test_update_label(client, jyl):
     """Test the update_label(id) route"""
-    # This is required to ensure the schedule are sorted
-    # PostgreSQL does not always return the list in the same order
-    schedules = sorted(jyl.schedules, key=lambda e: int(e.id))
+    schedules = jyl.get_schedule()
 
     rv = client.patch(
         url_for("account.update_label", id=42666), json=dict(label="LABEL CHANGED")
@@ -87,9 +81,7 @@ def test_update_label(client, jyl):
 
 def test_save(client, jyl):
     """Test the save route"""
-    # This is required to ensure the schedule are sorted
-    # PostgreSQL does not always return the list in the same order
-    schedules = sorted(jyl.schedules, key=lambda e: int(e.id))
+    schedules = jyl.get_schedule()
 
     data = dict(project_id=42, color_palette=["BLACK", "YELLOW", "RED"])
     rv = client.post(url_for("account.save"), json=data)
