@@ -48,6 +48,8 @@ def test_autosave_schedule(client, jyl, db):
 
 def test_autoload_schedule(client, jyl):
     """Test the schedule autoload"""
+    schedules = jyl.get_schedules()
+
     # Save the current schedule once
     rv = client.post(url_for("calendar.save"))
 
@@ -55,13 +57,15 @@ def test_autoload_schedule(client, jyl):
 
     # Simulate a change of device
     session["uuid"] = uuid.uuid4()
-    schedule = copy.copy(session["current_schedule"])
+    schedule = copy.copy(schedules[0].data)
     schedule.label = "ANOTHER LABEL"
     schedule.codes = ["CODE", "LIST"]
-    jyl.get_schedules()[0].update_data(schedule)
+    schedules[0].update_data(schedule)
 
     assert session["current_schedule"].label == "JYL'S SCHEDULE"
+    assert session["current_schedule"].codes == []
 
     rv = client.get(url_for("calendar.index"))
 
     assert session["current_schedule"].label == "ANOTHER LABEL"
+    assert session["current_schedule"].codes == ["CODE", "LIST"]
