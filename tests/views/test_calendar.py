@@ -2,8 +2,9 @@ import json
 import pytest
 
 from flask import url_for, session
-from flask_security import current_user
 from flask_babel import gettext
+
+import backend.schedules as schd
 
 
 def test_index(client):
@@ -54,7 +55,7 @@ def test_get_data(client, manager, user):
         assert data["schedules"] == list(
             map(
                 lambda s: {"id": s.id, "label": gettext(s.data.label)},
-                current_user.get_schedules(),
+                user.get_schedules(),
             )
         )
     else:
@@ -186,10 +187,23 @@ def test_update_custom_event(client):
     assert True
 
 
-def test_save(client):
+@pytest.mark.parametrize("user", ["jyl", "louwi"], indirect=True)
+def test_save(client, user):
     """Test the save route"""
-    # TODO
-    assert True
+    rv = client.post(url_for("calendar.save"))
+
+    if user.is_authenticated:
+        data = json.loads(rv.data)
+        assert rv.status_code == 200
+        assert not session["current_schedule_modified"]
+        assert data["schedules"] == list(
+            map(
+                lambda s: {"id": s.id, "label": gettext(s.data.label)},
+                user.get_schedules(),
+            )
+        )
+    else:
+        assert rv.status_code == 401
 
 
 def test_download(client):
@@ -236,11 +250,21 @@ def test_compute(client):
 
 def test_update_color(client):
     """Test the update_color route"""
-    # TODO
-    assert True
+    data = dict(color_palette=["BLACK", "YELLOW", "RED"], schedule_number=0)
+    rv = client.post(url_for("calendar.update_color"), json=data)
+    data = json.loads(rv.data)
+
+    assert rv.status_code == 200
+    assert data["events"] == session["current_schedule"].get_events(json=True)
+    assert session["current_schedule"].color_palette == ["BLACK", "YELLOW", "RED"]
 
 
 def test_reset_color(client):
     """Test the reset_color route"""
-    # TODO
-    assert True
+    rv = client.delete(url_for("calendar.reset_color"), json=dict(schedule_number=0))
+    data = json.loads(rv.data)
+
+    assert rv.status_code == 200
+    assert data["events"] == session["current_schedule"].get_events(json=True)
+    assert data["color_palette"] == schd.COLOR_PALETTE
+    assert session["current_schedule"].color_palette == schd.COLOR_PALETTE

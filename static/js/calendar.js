@@ -712,7 +712,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.computing = true;
                 axios({
                     method: 'DELETE',
-                    url: Flask.url_for('calendar.reset_color', {schedule_number: this.selected_schedule}),
+                    url: Flask.url_for('calendar.reset_color'),
+                    data: {schedule_number: this.selected_schedule},
                 })
                 .then(resp => {
                     this.calendarOptions.events = resp.data.events;
