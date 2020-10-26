@@ -165,10 +165,31 @@ def test_remove_code(client, user):
     assert "FAKECODE" not in session["current_schedule"].codes
 
 
-def test_get_info(client):
+@pytest.mark.parametrize("user", ["jyl", "louwi"], indirect=True)
+def test_get_info(client, manager, user):
     """Test the get_info route"""
-    # TODO
-    assert True
+
+    # Test with "ELME2M", a "master" course
+    rv = client.get(url_for("calendar.get_info", code="ELME2M"))
+    data = json.loads(rv.data)
+
+    assert rv.status_code == 200
+    assert isinstance(data["title"], dict)
+    assert len(data["title"]) > 1
+    assert isinstance(data["summary"], dict)
+    assert len(data["summary"]) > 1
+    assert data["filtered"] == session["current_schedule"].filtered_subcodes
+
+    # Test with a classical course "LEPL1109"
+    rv = client.get(url_for("calendar.get_info", code="LEPL1109"))
+    data = json.loads(rv.data)
+
+    assert rv.status_code == 200
+    assert isinstance(data["title"], dict)
+    assert len(data["title"]) == 1
+    assert isinstance(data["summary"], dict)
+    assert len(data["summary"]) == 1
+    assert data["filtered"] == session["current_schedule"].filtered_subcodes
 
 
 def test_add_custom_event(client):
