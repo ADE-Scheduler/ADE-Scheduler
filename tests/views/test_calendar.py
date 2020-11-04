@@ -192,22 +192,200 @@ def test_get_info(client, manager, user):
     assert data["filtered"] == session["current_schedule"].filtered_subcodes
 
 
-def test_add_custom_event(client):
+CUSTOM_EVENT_EDITABLE_KEYS = {
+    "name": "title",
+    "location": "location",
+    "description": "description",
+}
+
+CUSTOM_EVENT = dict(
+    name="The event of the year",
+    location="Earth",
+    description="It's gonna be great!",
+    begin="2020-09-14 12:20",
+    end="2020-09-18 17:30",
+)
+
+CUSTOM_EVENT_MANDATORY_KEYS = {
+    "backgroundColor",
+    "description",
+    "end",
+    "id",
+    "location",
+    "pretty_end",
+    "pretty_start",
+    "start",
+    "title",
+}
+
+CUSTOM_RECURRING_EVENT = {
+    **CUSTOM_EVENT,
+    **dict(
+        begin="2020-09-14 12:00",
+        end="2020-09-14 16:00",
+        end_recurrence="2020-12-30 16:00",
+        freq=[0, 2, 6],
+    ),
+}
+
+CUSTOM_RECURRING_EVENT_MANDATORY_KEYS = CUSTOM_EVENT_MANDATORY_KEYS | {
+    "daysOfWeek",
+    "endRecur",
+    "endTime",
+    "pretty_endTime",
+    "pretty_startTime",
+    "rrule",
+}
+
+CUSTOM_RECURRING_EVENT_RRULE_MANDATORY_KEYS = {
+    "start",
+    "pretty_start",
+    "pretty_end",
+    "pretty_days",
+    "end",
+    "days",
+}
+
+CUSTOM_RECURRING_EVENT_MANDATORY_KEYS -= CUSTOM_RECURRING_EVENT_RRULE_MANDATORY_KEYS
+
+
+@pytest.mark.parametrize("user", ["jyl", "louwi"], indirect=True)
+def test_add_custom_event(client, user):
     """Test the add_custom_event route"""
-    # TODO
-    assert True
+
+    # Test non-recurring event
+    rv = client.post(
+        url_for("calendar.add_custom_event"),
+        data=json.dumps(CUSTOM_EVENT),
+        content_type="application/json",
+    )
+    data = json.loads(rv.data)
+
+    assert rv.status_code == 200
+
+    for key in CUSTOM_EVENT_MANDATORY_KEYS:
+        assert key in data["event"]
+
+    for key_in, key_out in CUSTOM_EVENT_EDITABLE_KEYS.items():
+        assert CUSTOM_EVENT[key_in] == data["event"][key_out]
+
+    session["current_schedule"].get_custom_event(data["event"]["id"])
+
+    # Test recurring event
+    rv = client.post(
+        url_for("calendar.add_custom_event"),
+        data=json.dumps(CUSTOM_RECURRING_EVENT),
+        content_type="application/json",
+    )
+    data = json.loads(rv.data)
+
+    assert rv.status_code == 200
+
+    for key in CUSTOM_RECURRING_EVENT_MANDATORY_KEYS:
+        assert key in data["event"]
+
+    for key in CUSTOM_RECURRING_EVENT_RRULE_MANDATORY_KEYS:
+        assert key in data["event"]["rrule"]
+
+    for key_in, key_out in CUSTOM_EVENT_EDITABLE_KEYS.items():
+        assert CUSTOM_RECURRING_EVENT[key_in] == data["event"][key_out]
+
+    session["current_schedule"].get_custom_event(data["event"]["id"])
 
 
-def test_delete_custom_event(client):
+@pytest.mark.parametrize("user", ["jyl"], indirect=True)
+def test_delete_custom_event(client, user):
     """Test the delete_custom_event(id) route"""
-    # TODO
-    assert True
+    # Test non-recurring event
+    rv = client.post(
+        url_for("calendar.add_custom_event"),
+        data=json.dumps(CUSTOM_EVENT),
+        content_type="application/json",
+    )
+    data = json.loads(rv.data)
+    id_1 = data["event"]["id"]
+    rv = client.delete(url_for("calendar.delete_custom_event", id=id_1))
+
+    assert rv.status_code == 200
+
+    # Test recurring event
+    rv = client.post(
+        url_for("calendar.add_custom_event"),
+        data=json.dumps(CUSTOM_RECURRING_EVENT),
+        content_type="application/json",
+    )
+    data = json.loads(rv.data)
+    id_2 = data["event"]["id"]
+    rv = client.delete(url_for("calendar.delete_custom_event", id=id_2))
+
+    assert rv.status_code == 200
+
+    rv = client.get(url_for("calendar.get_events", schedule_number=0))
+    data = json.loads(rv.data)
+    events = data["events"]
+    ids = [event["id"] for event in events]
+
+    for id in [id_1, id_2]:
+        assert id not in ids
+
+    # Delete non existing event (already deleted)
+    error = None
+    try:
+        client.delete(url_for("calendar.delete_custom_event", id=id_1))
+    except KeyError as e:
+        error = e
+
+    assert type(error) == KeyError
 
 
-def test_update_custom_event(client):
+@pytest.mark.parametrize("user", ["jyl"], indirect=True)
+def test_update_custom_event(client, user):
     """Test the update_custom_event(id) route"""
-    # TODO
-    assert True
+    changes = dict(title="Changed", description="Changed", location="Changed")
+
+    param = {**changes, **dict(schedule_number=0, color="Color")}
+
+    # Test non-recurring event
+    rv = client.post(
+        url_for("calendar.add_custom_event"),
+        data=json.dumps(CUSTOM_EVENT),
+        content_type="application/json",
+    )
+    data = json.loads(rv.data)
+    id_1 = data["event"]["id"]
+
+    rv = client.post(
+        url_for("calendar.update_custom_event", id=id_1),
+        data=json.dumps(param),
+        content_type="application/json",
+    )
+    event = session["current_schedule"].get_custom_event(id_1).json()
+
+    for key, value in changes.items():
+        assert event[key] == value
+
+    assert rv.status_code == 200
+
+    # Test recurring event
+    rv = client.post(
+        url_for("calendar.add_custom_event"),
+        data=json.dumps(CUSTOM_RECURRING_EVENT),
+        content_type="application/json",
+    )
+    data = json.loads(rv.data)
+    id_2 = data["event"]["id"]
+
+    rv = client.post(
+        url_for("calendar.update_custom_event", id=id_2),
+        data=json.dumps(param),
+        content_type="application/json",
+    )
+    event = session["current_schedule"].get_custom_event(id_2).json()
+
+    for key, value in changes.items():
+        assert event[key] == value
+
+    assert rv.status_code == 200
 
 
 @pytest.mark.parametrize("user", ["jyl", "louwi"], indirect=True)
