@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+    <% _.forEach(htmlWebpackPlugin.files.js, function(file) { %>
+    <script type="text/javascript" src="<%= file%>"></script>
+    <%}); %>
+    </head>
+
+    Hello World ! test
+
+    <div class="alert alert-warning" role="alert">
+        This is a warning alert—check it out!
+    </div>
+</html>
