@@ -1,1 +1,1 @@
-import '../../css/bootstrap.scss'
+import '../base.js';

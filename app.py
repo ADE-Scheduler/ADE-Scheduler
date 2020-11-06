@@ -182,7 +182,8 @@ def before_first_request():
 # Initialise the Session
 @app.before_request
 def before_request():
-    utl.init_session()
+    # utl.init_session()
+    pass
 
 
 # Reset current schedule on user logout
