@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const pages = [
     'errorhandler/404',
+    'errorhandler/500',
     'security/change_password',
     'security/forgot_password',
     'security/login_user',

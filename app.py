@@ -261,12 +261,7 @@ def handle_exception(e):
             recipients=app.config["ADMINS"],
         )
         app.config["MAIL_MANAGER"].send(msg)
-    return (
-        gettext(
-            "An error has occurred. Please contact the admins if it keeps happening."
-        ),
-        500,
-    )
+    return render_template("errorhandler/500.html")
 
 
 @app.errorhandler(404)  # URL NOT FOUND
