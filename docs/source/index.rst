@@ -27,6 +27,24 @@ To setup your ADE Scheduler project locally, we recommend you to follow our
 Documentation
 -------------
 
+* **Tutorials**
+
+.. note::
+
+    This section contains many tutorials on how ADE Scheduler is built and how to
+    run the project on your local machine.
+
+.. toctree::
+    :maxdepth: 2
+
+    tutorials/index
+
+.. toctree::
+   :maxdepth: 3
+   :caption: Python modules:
+
+   backend/modules
+   views/modules
 
 * **Backend**
 
@@ -43,13 +61,6 @@ Documentation
 
     This module makes the interface between the backend and the frontend. All
     requests are handled by this module.
-
-.. toctree::
-   :maxdepth: 3
-   :caption: Python modules:
-
-   backend/modules
-   views/modules
 
 
 .. toctree::
