@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-11-06 23:20+0100\n"
+"POT-Creation-Date: 2020-11-06 23:39+0100\n"
 "PO-Revision-Date: 2020-07-24 16:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -73,7 +73,7 @@ msgstr "Annuler"
 msgid "Continue"
 msgstr "Continuer"
 
-#: templates/account.html:35 templates/calendar.html:544
+#: templates/account.html:35 templates/calendar.html:552
 #: templates/classroom.html:34
 msgid "A problem has occurred. Please contact us if it happens again."
 msgstr ""
@@ -385,11 +385,32 @@ msgstr "Calculer"
 msgid "New"
 msgstr "Nouveau"
 
-#: templates/calendar.html:540
+#: templates/calendar.html:538 templates/errorhandler/500.html:11
+msgid "ADE Scheduler is temporarily unusable"
+msgstr "ADE Scheduler est temporairement inutilisable"
+
+#: templates/calendar.html:541 templates/errorhandler/500.html:14
+msgid ""
+"There are some issues with the ADE webapi and our access has been "
+"temporarily revoked. This will likely not be resolved before Monday. We "
+"are sorry in advance for the disagreement caused."
+msgstr "Il y a des problèmes avec la webapi ADE et notre accès a temporairement été révoqué. Cela va probablement durer au moins jusqu'à lundi. Nous sommes désolé pour tout désagrément ainsi causé."
+
+#: templates/calendar.html:542 templates/errorhandler/500.html:15
+msgid ""
+"In the meantime, you can still use the <a "
+"href=\"http://horaire.uclouvain.be/direct/\" class=\"alert-"
+"link\">official website</a>."
+msgstr ""
+"En attendant, vous pouvez toujours utiliser le <a "
+"href=\"http://horaire.uclouvain.be/direct/\" class=\"alert-link\">site "
+"officiel</a>."
+
+#: templates/calendar.html:548
 msgid "Schedule successfuly saved !"
 msgstr "Horaire sauvegardé avec succès !"
 
-#: templates/calendar.html:551
+#: templates/calendar.html:559
 msgid ""
 "Disclaimer: this software is not an official UCLouvain tool. It has been "
 "designed with the purpose to help the EPL students with scheduling. This "
@@ -857,27 +878,6 @@ msgstr ""
 "Lancement de la nouvelle version d'ADE-Scheduler ! Cette version, en plus"
 " d'un changement de design, de l'ajout de nouvelles fonctionnaliés, est "
 "plus efficace, et surtout adapté aux mobiles."
-
-#: templates/errorhandler/500.html:11
-msgid "ADE Scheduler is temporarily unusable"
-msgstr "ADE Scheduler est temporairement inutilisable"
-
-#: templates/errorhandler/500.html:14
-msgid ""
-"There are some issues with the ADE webapi and our access has been "
-"temporarily revoked. This will likely not be resolved before Monday. We "
-"are sorry in advance for the disagreement caused."
-msgstr ""
-
-#: templates/errorhandler/500.html:15
-msgid ""
-"In the meantime, you can still use the <a "
-"href=\"http://horaire.uclouvain.be/direct/\" class=\"alert-"
-"link\">official website</a>."
-msgstr ""
-"En attendant, vous pouvez toujours utiliser le <a "
-"href=\"http://horaire.uclouvain.be/direct/\" class=\"alert-link\">site "
-"officiel</a>."
 
 #: templates/security/change_password.html:20
 #: templates/security/reset_password.html:15
