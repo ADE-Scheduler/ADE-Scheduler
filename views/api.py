@@ -40,6 +40,11 @@ api.json_decoder = ApiDecoder
 api.json_encoder = ApiEncoder
 
 
+@api.before_request
+def before_api_request():
+    utl.init_session()
+
+
 @api.route("/events", methods=["GET"])
 def get_events():
     """
