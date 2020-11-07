@@ -261,14 +261,24 @@ def handle_exception(e):
             recipients=app.config["ADMINS"],
         )
         app.config["MAIL_MANAGER"].send(msg)
-    return render_template("errorhandler/500.html")
+    if request.is_json:
+        return gettext("An error has occurred"), 500
+    else:
+        return render_template("errorhandler/500.html"), 500
 
 
 @app.errorhandler(404)  # URL NOT FOUND
 @app.errorhandler(405)  # METHOD NOT ALLOWED
 def page_not_found(e):
-    message = gettext("404 Page not found :(")
-    return render_template("errorhandler/404.html", message=message)
+    if request.is_json:
+        return gettext("Resource not found"), 500
+    else:
+        return (
+            render_template(
+                "errorhandler/404.html", message=gettext("404 Page not found :(")
+            ),
+            404,
+        )
 
 
 # Shell context default exports
