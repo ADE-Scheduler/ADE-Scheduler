@@ -60,6 +60,7 @@ calendar.json_encoder = CalendarEncoder
 
 @calendar.before_request
 def before_calendar_request():
+    utl.init_session()
     utl.autoload_schedule()
 
 

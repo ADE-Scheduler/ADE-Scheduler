@@ -179,12 +179,6 @@ def before_first_request():
         f.write(jsmin(jsglue.generate_js()))
 
 
-# Initialise the Session
-@app.before_request
-def before_request():
-    utl.init_session()
-
-
 # Reset current schedule on user logout
 @user_logged_out.connect_via(app)
 def when_user_logged_out(sender, user):
@@ -216,6 +210,7 @@ def welcome():
     if session.get("previous_user"):
         return redirect(url_for("calendar.index"))
     else:
+        utl.init_session()
         g.track_var["new user"] = "+1"
         session["previous_user"] = True
         return render_template("welcome.html")
