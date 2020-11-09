@@ -179,12 +179,6 @@ def before_first_request():
         f.write(jsmin(jsglue.generate_js()))
 
 
-# Initialise the Session
-@app.before_request
-def before_request():
-    utl.init_session()
-
-
 # Reset current schedule on user logout
 @user_logged_out.connect_via(app)
 def when_user_logged_out(sender, user):
@@ -216,6 +210,7 @@ def welcome():
     if session.get("previous_user"):
         return redirect(url_for("calendar.index"))
     else:
+        utl.init_session()
         g.track_var["new user"] = "+1"
         session["previous_user"] = True
         return render_template("welcome.html")
@@ -261,19 +256,24 @@ def handle_exception(e):
             recipients=app.config["ADMINS"],
         )
         app.config["MAIL_MANAGER"].send(msg)
-    return (
-        gettext(
-            "An error has occurred. Please contact the admins if it keeps happening."
-        ),
-        500,
-    )
+    if request.is_json:
+        return gettext("An error has occurred"), 500
+    else:
+        return render_template("errorhandler/500.html"), 500
 
 
 @app.errorhandler(404)  # URL NOT FOUND
 @app.errorhandler(405)  # METHOD NOT ALLOWED
 def page_not_found(e):
-    message = gettext("404 Page not found :(")
-    return render_template("errorhandler/404.html", message=message)
+    if request.is_json:
+        return gettext("Resource not found"), 500
+    else:
+        return (
+            render_template(
+                "errorhandler/404.html", message=gettext("404 Page not found :(")
+            ),
+            404,
+        )
 
 
 # Shell context default exports
@@ -286,6 +286,7 @@ def make_shell_context():
         "Link": md.Link,
         "User": md.User,
         "Usage": md.Usage,
+        "Api": md.ApiUsage,
         "mng": app.config["MANAGER"],
         "t": storage,
     }

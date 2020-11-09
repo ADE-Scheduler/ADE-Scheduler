@@ -9,7 +9,9 @@ from backend.classrooms import Classroom, Address
 from backend.courses import Course
 from backend import professors
 import backend.events
+import backend.models as md
 from typing import Dict, Union, List, Tuple, Callable, Type
+from flask import current_app
 
 
 class ExpiredTokenError(Exception):
@@ -192,17 +194,10 @@ class Client(DummyClient):
             + "&"
             + args
         )
+        resp = requests.get(url=url, headers=headers)
 
-        try:
-            resp = requests.get(url=url, headers=headers)
-            resp.raise_for_status()
-        except requests.HTTPError:  # Because we can't really renew token, we catch the first error
-            self.renew_token()  # Hopefully, will fix error
-            resp = requests.get(url=url, headers=headers)
-            resp.raise_for_status()
-
-        # save_response(resp, args)
-
+        md.ApiUsage(url, resp)
+        resp.raise_for_status()
         return resp
 
 
@@ -295,7 +290,12 @@ def get_token(credentials: ClientCredentials) -> Tuple[str, int]:
     data = credentials["data"]
     authorization = credentials["Authorization"]
     header = {"Authorization": authorization}
-    r = requests.post(url=url, headers=header, data=data).json()
+    resp = requests.post(url=url, headers=header, data=data)
+
+    if current_app:  # To prevent error on app initilisation where a token is requested
+        md.ApiUsage("token", resp)
+    resp.raise_for_status()
+    r = resp.json()
     return r["access_token"], int(r["expires_in"])
 
 
