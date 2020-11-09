@@ -1,5 +1,6 @@
 import uuid
 import secrets
+import datetime
 import sqlalchemy as sa
 
 from sqlalchemy.types import TypeDecorator, CHAR
@@ -271,3 +272,22 @@ class Usage(db.Model):
     datetime = db.Column(db.DateTime)
     username = db.Column(db.String(128))
     track_var = db.Column(db.String(256))
+
+
+class ApiUsage(db.Model):
+    __tablename__ = "api_usage"
+    id = db.Column(db.Integer, primary_key=True)
+    url = db.Column(db.String(256))
+    speed = db.Column(db.Float)
+    status = db.Column(db.Integer)
+    datetime = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+
+    def __init__(self, url, response):
+        """
+        Logs one request made to the API.
+        """
+        self.url = url
+        self.speed = response.elapsed.total_seconds()
+        self.status = response.status_code
+        db.session.add(self)
+        db.session.commit()
