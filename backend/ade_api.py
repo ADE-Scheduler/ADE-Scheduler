@@ -198,9 +198,6 @@ class Client(DummyClient):
 
         md.ApiUsage(url, resp)
         resp.raise_for_status()
-
-        print(resp.content)
-
         return resp
 
 
