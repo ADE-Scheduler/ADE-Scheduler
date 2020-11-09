@@ -286,6 +286,7 @@ def make_shell_context():
         "Link": md.Link,
         "User": md.User,
         "Usage": md.Usage,
+        "Api": md.ApiUsage,
         "mng": app.config["MANAGER"],
         "t": storage,
     }
