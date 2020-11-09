@@ -1,8 +1,15 @@
 from flask import current_app as app
 from flask import Blueprint, render_template, jsonify
 
+import views.utils as utl
+
 
 classroom = Blueprint("classroom", __name__, static_folder="../static")
+
+
+@classroom.before_request
+def before_classroom_request():
+    utl.init_session()
 
 
 @classroom.route("/")
