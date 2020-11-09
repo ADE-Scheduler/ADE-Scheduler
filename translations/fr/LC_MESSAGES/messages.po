@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-11-06 23:39+0100\n"
+"POT-Creation-Date: 2020-11-09 23:25+0100\n"
 "PO-Revision-Date: 2020-07-24 16:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -18,7 +18,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: app.py:270
+#: app.py:260
+msgid "An error has occurred"
+msgstr "Il y a eu une erreur"
+
+#: app.py:269
+msgid "Resource not found"
+msgstr "Ressource non trouvée"
+
+#: app.py:273
 msgid "404 Page not found :("
 msgstr "404 Page non trouvée :("
 
@@ -73,7 +81,7 @@ msgstr "Annuler"
 msgid "Continue"
 msgstr "Continuer"
 
-#: templates/account.html:35 templates/calendar.html:552
+#: templates/account.html:35 templates/calendar.html:544
 #: templates/classroom.html:34
 msgid "A problem has occurred. Please contact us if it happens again."
 msgstr ""
@@ -336,7 +344,7 @@ msgstr "Fin de récurrence"
 msgid "Add"
 msgstr "Ajouter"
 
-#: templates/calendar.html:385 views/calendar.py:183
+#: templates/calendar.html:385 views/calendar.py:184
 msgid "The code you added does not exist in our database."
 msgstr "Le code que vous avez entré n'existe pas dans notre base de données."
 
@@ -385,32 +393,11 @@ msgstr "Calculer"
 msgid "New"
 msgstr "Nouveau"
 
-#: templates/calendar.html:538 templates/errorhandler/500.html:11
-msgid "ADE Scheduler is temporarily unusable"
-msgstr "ADE Scheduler est temporairement inutilisable"
-
-#: templates/calendar.html:541 templates/errorhandler/500.html:14
-msgid ""
-"There are some issues with the ADE webapi and our access has been "
-"temporarily revoked. This will likely not be resolved before Monday. We "
-"are sorry in advance for the disagreement caused."
-msgstr "Il y a des problèmes avec la webapi ADE et notre accès a temporairement été révoqué. Cela va probablement durer au moins jusqu'à lundi. Nous sommes désolé pour tout désagrément ainsi causé."
-
-#: templates/calendar.html:542 templates/errorhandler/500.html:15
-msgid ""
-"In the meantime, you can still use the <a "
-"href=\"http://horaire.uclouvain.be/direct/\" class=\"alert-"
-"link\">official website</a>."
-msgstr ""
-"En attendant, vous pouvez toujours utiliser le <a "
-"href=\"http://horaire.uclouvain.be/direct/\" class=\"alert-link\">site "
-"officiel</a>."
-
-#: templates/calendar.html:548
+#: templates/calendar.html:540
 msgid "Schedule successfuly saved !"
 msgstr "Horaire sauvegardé avec succès !"
 
-#: templates/calendar.html:559
+#: templates/calendar.html:551
 msgid ""
 "Disclaimer: this software is not an official UCLouvain tool. It has been "
 "designed with the purpose to help the EPL students with scheduling. This "
@@ -879,6 +866,26 @@ msgstr ""
 " d'un changement de design, de l'ajout de nouvelles fonctionnaliés, est "
 "plus efficace, et surtout adapté aux mobiles."
 
+#: templates/errorhandler/500.html:11
+msgid "Ooops... looks like the website is temporarily unusable."
+msgstr "Ooops... on dirait que le site est temporairement inutilisable."
+
+#: templates/errorhandler/500.html:14
+msgid ""
+"There are some running issues, but we are doing our best to fix them as "
+"soon as possible. We are sorry for the caused inconvenience."
+msgstr "Il y a des soucis sur le serveur, mais nous faisons de notre mieux pour les régler aussi vite que possible. Nous sommes désolés pour la gêne ainsi causée."
+
+#: templates/errorhandler/500.html:15
+msgid ""
+"In the meantime, you can still use the <a "
+"href=\"http://horaire.uclouvain.be/direct/\" class=\"alert-"
+"link\">official website</a>."
+msgstr ""
+"En attendant, vous pouvez toujours utiliser le <a "
+"href=\"http://horaire.uclouvain.be/direct/\" class=\"alert-link\">site "
+"officiel</a>."
+
 #: templates/security/change_password.html:20
 #: templates/security/reset_password.html:15
 msgid "New password"
@@ -963,11 +970,11 @@ msgstr ""
 "Si vous ne recevez pas de mail, vérifiez votre dossier de spam. Parfois, "
 "nos mails se perdent là-dedans... :-("
 
-#: views/calendar.py:94 views/calendar.py:114
+#: views/calendar.py:95 views/calendar.py:115
 msgid "current_schedule"
 msgstr "horaire actuel"
 
-#: views/calendar.py:328 views/calendar.py:354
+#: views/calendar.py:329 views/calendar.py:355
 msgid "The schedule you requested does not exist in our database !"
 msgstr "L'horaire que vous avez demandé n'existe pas dans notre base de données !"
 
@@ -1109,3 +1116,21 @@ msgstr "L'horaire que vous avez demandé n'existe pas dans notre base de donnée
 #~ "are sorry in advance for the "
 #~ "disagreement caused."
 #~ msgstr ""
+
+#~ msgid "ADE Scheduler is temporarily unusable"
+#~ msgstr "ADE Scheduler est temporairement inutilisable"
+
+#~ msgid ""
+#~ "There are some issues with the ADE"
+#~ " webapi and our access has been "
+#~ "temporarily revoked. This will likely "
+#~ "not be resolved before Monday. We "
+#~ "are sorry in advance for the "
+#~ "disagreement caused."
+#~ msgstr ""
+#~ "Il y a des problèmes avec la "
+#~ "webapi ADE et notre accès a "
+#~ "temporairement été révoqué. Cela va "
+#~ "probablement durer au moins jusqu'à "
+#~ "lundi. Nous sommes désolé pour tout "
+#~ "désagrément ainsi causé."
