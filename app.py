@@ -4,6 +4,8 @@ import traceback
 from datetime import timedelta
 from jsmin import jsmin
 from ics import Calendar
+import configparser
+import ast
 
 # Flask imports
 from werkzeug.exceptions import InternalServerError
@@ -52,6 +54,7 @@ from cli import cli
 # Change current working directory to main directory
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
+
 # Setup app
 app = Flask(__name__, template_folder="static/dist/html")
 app.register_blueprint(calendar, url_prefix="/calendar")
@@ -70,6 +73,19 @@ app.cli.add_command(cli.redis)
 app.cli.add_command(cli.client)
 app.cli.add_command(cli.schedules)
 
+# Load REDIS TTL config
+redis_ttl_config = configparser.ConfigParser()
+redis_ttl_config.read(".redis-config-ttl.cfg")
+
+mode = os.environ["FLASK_ENV"]  # production of development
+
+if mode not in redis_ttl_config:
+    raise ValueError(f"Redis TTL config file is missing `{mode}` mode")
+
+redis_ttl_config = srv.parse_redis_ttl_config(redis_ttl_config[mode])
+
+app.config["REDIS-TTL"] = redis_ttl_config
+
 # Setup the API Manager
 app.config["ADE_API_CREDENTIALS"] = {
     "user": os.environ["ADE_USER"],
@@ -83,8 +99,10 @@ manager = mng.Manager(
     ade.Client(app.config["ADE_API_CREDENTIALS"]),
     srv.Server(host="localhost", port=6379),
     md.db,
+    redis_ttl_config,
 )
 app.config["MANAGER"] = manager
+
 
 # Setup Flask-Mail
 app.config["MAIL_SERVER"] = os.environ["MAIL_SERVER"]
@@ -118,7 +136,7 @@ app.config["SECURITY_MANAGER"] = Security(
 # Setup Flask-Session
 app.config["SESSION_TYPE"] = "redis"
 app.config["SESSION_REDIS"] = manager.server
-app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=100)
+app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(**redis_ttl_config["user_session"])
 app.config["SESSION_MANAGER"] = Session(app)
 
 # Setup Flask-TrackUsage
