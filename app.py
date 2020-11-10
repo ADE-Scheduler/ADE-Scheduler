@@ -5,7 +5,6 @@ from datetime import timedelta
 from jsmin import jsmin
 from ics import Calendar
 import configparser
-import ast
 
 # Flask imports
 from werkzeug.exceptions import InternalServerError
