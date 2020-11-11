@@ -4,6 +4,7 @@ import traceback
 from datetime import timedelta
 from jsmin import jsmin
 from ics import Calendar
+import configparser
 
 # Flask imports
 from werkzeug.exceptions import InternalServerError
@@ -52,6 +53,7 @@ from cli import cli
 # Change current working directory to main directory
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
+
 # Setup app
 app = Flask(__name__, template_folder="static/dist/html")
 app.register_blueprint(calendar, url_prefix="/calendar")
@@ -70,6 +72,17 @@ app.cli.add_command(cli.redis)
 app.cli.add_command(cli.client)
 app.cli.add_command(cli.schedules)
 
+# Load REDIS TTL config
+redis_ttl_config = configparser.ConfigParser()
+redis_ttl_config.read(".redis-config-ttl.cfg")
+mode = os.environ["FLASK_ENV"]  # production of development
+
+if mode not in redis_ttl_config:
+    raise ValueError(f"Redis TTL config file is missing `{mode}` mode")
+
+redis_ttl_config = srv.parse_redis_ttl_config(redis_ttl_config[mode])
+app.config["REDIS_TTL"] = redis_ttl_config
+
 # Setup the API Manager
 app.config["ADE_API_CREDENTIALS"] = {
     "user": os.environ["ADE_USER"],
@@ -83,6 +96,7 @@ manager = mng.Manager(
     ade.Client(app.config["ADE_API_CREDENTIALS"]),
     srv.Server(host="localhost", port=6379),
     md.db,
+    redis_ttl_config,
 )
 app.config["MANAGER"] = manager
 
@@ -118,7 +132,7 @@ app.config["SECURITY_MANAGER"] = Security(
 # Setup Flask-Session
 app.config["SESSION_TYPE"] = "redis"
 app.config["SESSION_REDIS"] = manager.server
-app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=100)
+app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(**redis_ttl_config["user_session"])
 app.config["SESSION_MANAGER"] = Session(app)
 
 # Setup Flask-TrackUsage
@@ -182,6 +196,10 @@ def before_first_request():
 # Reset current schedule on user logout
 @user_logged_out.connect_via(app)
 def when_user_logged_out(sender, user):
+    # When pressing confirmation link, somehow this function is triggered
+    # without an initialised session...
+    utl.init_session()
+
     if session["current_schedule"].id is not None:
         user.set_last_schedule_id(session["current_schedule"].id)
 
