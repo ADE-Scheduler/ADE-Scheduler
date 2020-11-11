@@ -1,26 +1,44 @@
-.. _dabatase tutorials:
+.. dabatase tutorials
 
 ==================
 Database tutorials
 ==================
 
+
+.. database info begin
+
+.. note::
+
+    For permanent or long-term storage, a SQL database is used. While many
+    implementations exist, we choose to use PostgreSQL for its robustness against
+    high activity. SQLite has proven to be a bottleneck in performances for ADE
+    Scheduler (in production) but can still be used for development.
+
+.. database info end
+
 .. contents:: Table of content
 
-0. PostgreSQL setup
-===================
 
-Before running into the other tutorials, you should go through this one in order to
-setup all you need for database manipulations. As ADE Scheduler is hosted on a UNIX
-system machine, this tutorial will use the same commands as UNIX / LINUX system
-machines. No current support is provided for Windows users.
+PostgreSQL setup
+================
 
-0.1 Install PostgreSQL
-----------------------
+.. note::
+    Before running into the other tutorials, you should go through this one in
+    order to setup all you need for database manipulations.
+    As ADE Scheduler is hosted on a UNIX system machine, this tutorial will use the
+    same commands as UNIX / LINUX system machines. No current support is provided for
+    Windows users.
+
+
+.. database setup begin
+
+I. Install PostgreSQL
+---------------------
 
 For this, we highly recommend you to follow this guide:
 https://www.postgresqltutorial.com/install-postgresql/
 
-0.2 Setup a password
+II. Setup a password
 --------------------
 
 Even if it is not always required, it is good practice to setup a password for the
@@ -29,23 +47,23 @@ Even if it is not always required, it is good practice to setup a password for t
 .. code-block:: console
     :caption: Tutorial from: https://docs.boundlessgeo.com/suite/1.1.1/dataadmin/pgGettingStarted/firstconnect.html
 
-    sudo -u postgres psql postgres
-    \password
-    # enter your password_psql and confirm
-    \q
+    $ sudo -u postgres psql postgres
+    $ \password
+    enter your password_psql and confirm
+    $ \q
 
-0.3 Create a database
----------------------
+III. Create a database
+----------------------
 
 In order to manipulate databases, you need to create a database instance:
 
 .. code-block:: console
 
-    sudo su - postgres
-    createdb ade-database
-    exit
+    $ sudo su - postgres
+    $ createdb ade-database
+    $ exit
 
-0.4 Setup read without password access
+IV. Setup read without password access
 --------------------------------------
 
 By default, ADE Scheduler tries to access the database without password. Here, we need
@@ -54,19 +72,21 @@ to explicitly allow the program to access the newly created database without pas
 .. code-block:: console
     :caption: You main need to replace *12* with your actual version if it differs
 
-    sudo {vim|geany|nano|...} /etc/postgresql/12/main/pg_hba.conf
-    # and change `peer`/`md5` values to `trust`
-    sudo systemctl restart postgresql
+    $ sudo {vim|geany|nano|...} /etc/postgresql/12/main/pg_hba.conf
+    and change `peer`/`md5` values to `trust`
+    $ sudo systemctl restart postgresql
 
-0.5 Link database in .flaskenv
-------------------------------
+V. Link database in .flaskenv
+-----------------------------
 
 Now, you will need to tell the program where your database is located. To do so, add
 this line in your :code:`ADE-Scheduler/.flaskenv` file:
 
 .. code-block:: console
 
-    ADE_DB_PATH="postgresql://postgres@localhost/ade-database"
+    $ ADE_DB_PATH="postgresql://postgres@localhost/ade-database"
+
+.. database setup end
 
 1. Recovering data from backup version
 ======================================
@@ -86,9 +106,9 @@ the server to your local machine.
 
 .. code-block:: console
 
-    gzip -d {db-backup}.sql.gz
-    # un-zip database
-    psql -U postgres --host=localhost --dbname=ade-database < {db-backup}.sql
-    # un-dump database
-    # eventually enter you password_psql
+    $ gzip -d {db-backup}.sql.gz
+    un-zip database
+    $ psql -U postgres --host=localhost --dbname=ade-database < {db-backup}.sql
+    $ un-dump database
+    $ eventually enter you password_psql
 
