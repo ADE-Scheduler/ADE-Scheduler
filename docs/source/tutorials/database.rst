@@ -85,6 +85,18 @@ this line in your :code:`<repo>/.flaskenv` file:
 .. code-block:: console
 
     $ ADE_DB_PATH="postgresql://postgres@localhost/ade-database"
+    or, alternatively, you can use an other database you have
+    $ ADE_DB_PATH=<database URI>
+
+VI. Populate the database
+-------------------------
+
+If your database is empty, you need to populate it with the correct tables and columns.
+This can be done using the client:
+
+.. code-block:: console
+
+    $ flask sql init
 
 .. database setup end
 
@@ -110,7 +122,7 @@ the server to your local machine.
     un-zip database
     $ psql -U postgres --host=localhost --dbname=ade-database < {db-backup}.sql
     $ un-dump database
-    $ eventually enter you password_psql
+    eventually enter you password_psql
 
 
 2. SQL client

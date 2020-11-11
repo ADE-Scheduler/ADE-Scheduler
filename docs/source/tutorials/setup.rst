@@ -88,4 +88,11 @@ with more details on how to use particular tools.
 6. Contributing
 ===============
 
-# Should include pre-commit, black linter, tests
+.. include:: contribute.rst
+    :start-after: contribute info begin
+    :end-before: contribute info end
+
+
+.. include:: contribute.rst
+    :start-after: contribute setup begin
+    :end-before: contribute setup en

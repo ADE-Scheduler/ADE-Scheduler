@@ -23,7 +23,7 @@ Email setup
 
 .. note::
     Before running into the other tutorials, you should go through this one in
-    order to setup all you need for the email feedback system to work properly.
+    order to setup all you need for the feedback system to work properly.
     As ADE Scheduler is hosted on a UNIX system machine, this tutorial will use the
     same commands as UNIX / LINUX system machines. No current support is provided for
     Windows users.
@@ -39,9 +39,10 @@ Email setup
 I. With credentials
 -------------------
 
-If you are one of the maintainers, you should have received credentials in order to
-proceed requests to the ADE API. If you do not have such credentials, please read
-next section.
+Here, you will allow ADE Scheduler to send emails using your email address. You may
+need to allow third-party applications to let ADE Schedule use your email address.
+Please refer to your email provider documentation if so.
+If you do not want to use the emails, please read next section.
 
 In the :code:`<repo>/.flaskenv` file, make sure to write those lines and complete with
 your
@@ -49,31 +50,31 @@ credentials:
 
 .. code-block:: bash
 
-    ADE_SECRET_KEY=<secret key in bytes>
-    ADE_URL=<url to get token>
-    ADE_USER=<user>
-    ADE_PASSWORD=<password>
-    ADE_DATA=<grant_type>
-    ADE_AUTHORIZATION=<authorization access>
+    MAIL_USERNAME = <email address>
+    MAIL_PASSWORD = <password>
+
 
 
 II. Without credentials
 -----------------------
 
-Because we cannot share the credentials with everyone, but we want people to be able
-to have the best environment to contribute to ADE Scheduler, we created a fake API.
-To use this fake API, you will need to modify the :code:`<repo>/.flaskenv`
+In the :code:`<repo>/.flaskenv` file, make sure to write those lines:
 
 .. code-block:: bash
 
-    ADE_SECRET_KEY=<leave empty>
-    ADE_URL=<leave empty>
-    ADE_USER=<leave empty>
-    ADE_PASSWORD=<leave empty>
-    ADE_DATA=<leave empty>
-    ADE_AUTHORIZATION=<leave empty>
+    MAIL_USERNAME = <leave empty>
+    MAIL_PASSWORD = <leave empty>
+    MAIL_DISABLE = true
 
-    ADE_FAKE_API=true
 
 .. email setup end
 
+
+1. Disable error emails
+=======================
+
+In the :code:`<repo>/.flaskenv` file, add this line:
+
+.. code-block:: bash
+
+    MAIL_SEND_ERRORS = false
