@@ -7,4 +7,5 @@ Tutorials
     :maxdepth: 2
     :glob:
 
+    setup
     *

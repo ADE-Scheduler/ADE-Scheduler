@@ -204,6 +204,7 @@ class Client(DummyClient):
 def load_responses() -> Dict[str, List[int]]:
     """
     Loads the responses stored in the json file
+
     :return: the dictionary of all the responses
     :rtype: Dict[str, List[int]]
     """
@@ -306,7 +307,7 @@ def response_to_root(response: requests.Response) -> etree._Element:
     :param response: a response from the API
     :type response: requests.Response
     :return: the tree structure
-    :rtype: etree.ElementTree
+    :rtype: etree._ElementTree
     """
     return etree.fromstring(response.content)
 
