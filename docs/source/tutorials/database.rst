@@ -80,7 +80,7 @@ V. Link database in .flaskenv
 -----------------------------
 
 Now, you will need to tell the program where your database is located. To do so, add
-this line in your :code:`ADE-Scheduler/.flaskenv` file:
+this line in your :code:`<repo>/.flaskenv` file:
 
 .. code-block:: console
 
@@ -111,4 +111,26 @@ the server to your local machine.
     $ psql -U postgres --host=localhost --dbname=ade-database < {db-backup}.sql
     $ un-dump database
     $ eventually enter you password_psql
+
+
+2. SQL client
+=============
+
+Once the project is setup, you can use the various commands in the shell in order to
+interact with the database:
+
+.. code-block:: console
+
+    $ flask db --help
+    $ flask sql --help
+
+3. Modify the database structure
+================================
+
+.. todo
+
+4. Update or migrate the database
+=================================
+
+.. todo
 

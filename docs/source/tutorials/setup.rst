@@ -1,18 +1,18 @@
-.. _setup tutorials:
+.. _setup tutorial:
 
-===============
-Setup tutorials
-===============
+==============
+Setup tutorial
+==============
 
 .. centered::
-    Everything you need in order to run this project
+    *Everything you need in order to run this project*
 
 .. contents:: Table of content
 
 
 This page contains all the required steps that you must follow in order to have a
 fully working development environment. Each tutorial can be found its in own section
-with more details on own to use particular tools.
+with more details on how to use particular tools.
 
 .. warning::
 
@@ -61,9 +61,31 @@ with more details on own to use particular tools.
 4. ADE API
 ==========
 
-# Should talk about token granting and fake api
+.. include:: ade-api.rst
+    :start-after: ade-api info begin
+    :end-before: ade-api info end
 
-5. Contributing
+
+.. include:: ade-api.rst
+    :start-after: ade-api setup begin
+    :end-before: ade-api setup en
+
+
+5. Email
+========
+
+.. include:: email.rst
+    :start-after: email info begin
+    :end-before: email info end
+
+
+.. include:: email.rst
+    :start-after: email setup begin
+    :end-before: email setup en
+
+
+
+6. Contributing
 ===============
 
-# Should incude pre-commit, black linter, tests
+# Should include pre-commit, black linter, tests

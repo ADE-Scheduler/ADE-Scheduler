@@ -56,3 +56,31 @@ you can manually start a server from command line. Something like this should wo
     this kills the redis server
 
 .. redis-server setup end
+
+
+1. Redis clients
+================
+
+There are 2 clients for the Redis server:
+
+1.1 Built-in client
+-------------------
+
+The built-in client is provided with Redis installation. Its purpose is to provide tools
+to modify or to read the content of the server. The documentation of this client can
+be found online: https://redis.io/documentation
+
+.. code-block:: console
+    :caption: Invoking the Redis client (a Redis server must be running!)
+
+    $ redis-cli
+
+1.2 Flask client
+----------------
+
+The Flask client is defined by the `cli` module and its documentation can be found in
+the appropriate section.
+
+.. code-block:: console
+
+    $ flask redis --help

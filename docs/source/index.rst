@@ -21,8 +21,7 @@ Installation
 ------------
 
 To setup your ADE Scheduler project locally, we recommend you to follow our
-`SETUP GUIDE <https://github.com/SnaKyEyeS/ADE-Scheduler/blob/master/SETUP
-.md>`_.
+:ref:`setup tutorial`.
 
 Documentation
 -------------
@@ -36,7 +35,9 @@ Documentation
 
 .. toctree::
     :maxdepth: 2
+    :caption: Tutorials:
 
+    tutorials/setup
     tutorials/index
 
 .. toctree::
