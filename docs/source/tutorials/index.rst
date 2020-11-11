@@ -1,11 +1,16 @@
-=========
-Tutorials
-=========
+===============
+Other tutorials
+===============
 
 
 .. toctree::
     :maxdepth: 2
     :glob:
 
-    setup
-    *
+    ade-api
+    ade-scheduler
+    database
+    email
+    redis-server
+
+
