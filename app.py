@@ -75,15 +75,13 @@ app.cli.add_command(cli.schedules)
 # Load REDIS TTL config
 redis_ttl_config = configparser.ConfigParser()
 redis_ttl_config.read(".redis-config-ttl.cfg")
-
 mode = os.environ["FLASK_ENV"]  # production of development
 
 if mode not in redis_ttl_config:
     raise ValueError(f"Redis TTL config file is missing `{mode}` mode")
 
 redis_ttl_config = srv.parse_redis_ttl_config(redis_ttl_config[mode])
-
-app.config["REDIS-TTL"] = redis_ttl_config
+app.config["REDIS_TTL"] = redis_ttl_config
 
 # Setup the API Manager
 app.config["ADE_API_CREDENTIALS"] = {
@@ -101,7 +99,6 @@ manager = mng.Manager(
     redis_ttl_config,
 )
 app.config["MANAGER"] = manager
-
 
 # Setup Flask-Mail
 app.config["MAIL_SERVER"] = os.environ["MAIL_SERVER"]
@@ -199,6 +196,10 @@ def before_first_request():
 # Reset current schedule on user logout
 @user_logged_out.connect_via(app)
 def when_user_logged_out(sender, user):
+    # When pressing confirmation link, somehow this function is triggered
+    # without an initialised session...
+    utl.init_session()
+
     if session["current_schedule"].id is not None:
         user.set_last_schedule_id(session["current_schedule"].id)
 
