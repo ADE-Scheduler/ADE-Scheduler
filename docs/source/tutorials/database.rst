@@ -32,14 +32,45 @@ PostgreSQL setup
 
 .. database setup begin
 
-I. Install PostgreSQL
----------------------
+
+I. Lite setup
+-------------
+
+.. note::
+    If it is your first time working on this project, we highly recommend you to follow
+    this setup. The complete setup is only required for maintainers working with the
+    database hosted on the ADE Scheduler server.
+
+I-a. Install SQLite3
+********************
+
+You will need to install SQLite3 to perform operation on your database.
+To do so, refer to instructions related to your machine. For ubuntu:
+
+.. code-block:: console
+
+    $ sudo apt-get install sqlite3
+
+I-b. Create a database
+**********************
+
+You will need to create an empty database, wherever you want, on your machine.
+Just create an empty file name :code:`ade-database.db`.
+
+Please, remember the location of the database, as you will need it for later in the
+tutorial. Now, you can directly jump to section *III*.
+
+II. Complete setup
+------------------
+
+II-a. Install PostgreSQL
+************************
 
 For this, we highly recommend you to follow this guide:
 https://www.postgresqltutorial.com/install-postgresql/
 
-II. Setup a password
---------------------
+II-b. Setup a password
+**********************
 
 Even if it is not always required, it is good practice to setup a password for the
 :code:`postgres` user:
@@ -52,8 +83,8 @@ Even if it is not always required, it is good practice to setup a password for t
     enter your password_psql and confirm
     $ \q
 
-III. Create a database
-----------------------
+II-c. Create a database
+***********************
 
 In order to manipulate databases, you need to create a database instance:
 
@@ -63,8 +94,8 @@ In order to manipulate databases, you need to create a database instance:
     $ createdb ade-database
     $ exit
 
-IV. Setup read without password access
---------------------------------------
+II-d. Setup read without password access
+****************************************
 
 By default, ADE Scheduler tries to access the database without password. Here, we need
 to explicitly allow the program to access the newly created database without password:
@@ -76,19 +107,23 @@ to explicitly allow the program to access the newly created database without pas
     and change `peer`/`md5` values to `trust`
     $ sudo systemctl restart postgresql
 
-V. Link database in .flaskenv
------------------------------
+
+III. Link database in .flaskenv
+-------------------------------
 
 Now, you will need to tell the program where your database is located. To do so, add
 this line in your :code:`<repo>/.flaskenv` file:
 
 .. code-block:: console
 
+    $ ADE_DB_PATH="sqlite:///<path/to>/ade_database.db"
+    for SQLite3 (warning, <path/to> may be "/home/..." so it will add 1 more "/")
     $ ADE_DB_PATH="postgresql://postgres@localhost/ade-database"
+    for PostgreSQL
     or, alternatively, you can use an other database you have
     $ ADE_DB_PATH=<database URI>
 
-VI. Populate the database
+IV. Populate the database
 -------------------------
 
 If your database is empty, you need to populate it with the correct tables and columns.
