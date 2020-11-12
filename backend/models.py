@@ -10,7 +10,9 @@ from copy import copy
 from flask_sqlalchemy import SQLAlchemy
 from flask_security.models import fsqla_v2 as fsqla
 
-from typing import Union
+import pandas as pd
+
+from typing import Union, Any
 
 OWNER_LEVEL = 0
 EDITOR_LEVEL = 1
@@ -18,6 +20,22 @@ VIEWER_LEVEL = 2
 
 db = SQLAlchemy()
 fsqla.FsModels.set_db_info(db)
+
+
+def table_to_dataframe(table: db.Model, *args: Any, **kwargs: Any) -> pd.DataFrame:
+    """
+    Parses a table from the database into a dataframe
+
+    :param table: the table to be parsed
+    :type table: db.Model
+    :param args: positional arguments to be passed to :func:`pandas.read_sql`
+    :type args: Any
+    :param kwargs: keyword arguments to be passed to :func:`pandas.read_sql`
+    :type kwargs: Any
+    :return: a dataframe of table
+    :rtype: pd.DataFrame
+    """
+    return pd.read_sql(table.query.statement, table.query.session.bind, *args, **kwargs)
 
 
 class GUID(TypeDecorator):

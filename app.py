@@ -69,6 +69,7 @@ app.cli.add_command(cli.sql)
 app.cli.add_command(cli.redis)
 app.cli.add_command(cli.client)
 app.cli.add_command(cli.schedules)
+app.cli.add_command(cli.usage)
 
 # Setup the API Manager
 app.config["ADE_API_CREDENTIALS"] = {
