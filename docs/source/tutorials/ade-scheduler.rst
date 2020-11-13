@@ -58,6 +58,29 @@ Once it is installed, go to the :code:`<repo>` directory and run:
 
 This will install all the Javascript packages we use in the project.
 
+Any javascript or HTML asset needs to be bundled by webpack before being used.
+To do so, run in :code:`<repo>`:
+
+.. code-block:: console
+
+    $ npx webpack
+
+Moreover, you can activate the file watcher for hot-reloading and map source files
+for easy debugging by running:
+
+.. code-block:: console
+
+    $  npx webpack --watch --devtool inline-source-map
+
+If an error appears about the maximum amount of allowed watchers,
+you can fix this by running:
+
+.. code-block:: console
+    :caption: from https://stackoverflow.com/questions/53930305/nodemon-error-system-limit-for-number-of-file-watchers-reached
+
+    $ console echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf \
+    && sudo sysctl -p
+
 III. Install Python
 -------------------
 
