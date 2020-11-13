@@ -89,8 +89,7 @@ There are many ways to help us:
 
 and so on...
 
-Please take a look at our `CONTRIBUTION GUIDE
-<https://github.com/SnaKyEyeS/ADE-Scheduler/blob/master/CONTRIBUTING.md>`_.
+Please take a look at our Contribution tutorials.
 
 
 Index et tables
