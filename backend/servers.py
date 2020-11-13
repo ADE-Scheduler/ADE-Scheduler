@@ -1,8 +1,66 @@
 from redis import Redis
 from redis.exceptions import ConnectionError
 from datetime import timedelta
-from typing import Optional, Dict, Any, Tuple, List
+from typing import Optional, Dict, Any, Tuple, List, Mapping
 from pickle import dumps, loads
+
+VALID_TTL_KEYS = [
+    "days",
+    "seconds",
+    "seconds",
+    "microseconds",
+    "milliseconds",
+    "minutes",
+    "hours",
+    "weeks",
+]
+
+REQUIRED_CONFIG_KEYS = [
+    "classrooms",
+    "course_resources",
+    "courses",
+    "events_in_classroom",
+    "project_ids",
+    "resource_ids",
+    "resources",
+    "user_session",
+]
+
+
+def parse_redis_ttl_config(conf: Mapping[str, str]) -> Dict[str, Dict[str, int]]:
+    """
+    Parses a config mapping (from a config file for example) into a usable TTL config.
+    Each key, value pair holds the name of the resource stored in the server and the
+    parameters to setup the default expiry duration.
+
+    :param conf: the config mapping
+    :type conf: Mapping[str, str]
+    :return: the TTL config mapping
+    :rtype: Dict[str, Dict[str, int]]
+    """
+
+    def _parse_ttl(ttl_str):
+        key_val = (
+            key_val_str.split("=", maxsplit=1) for key_val_str in ttl_str.split(",")
+        )
+        _ret = {key.strip(): int(val.strip()) for key, val in key_val}
+
+        for key in _ret:
+            if key not in VALID_TTL_KEYS:
+                raise AttributeError(
+                    f"Keyword argument `{key}` is not supported by "
+                    f"`timedelta` function, make sure it is in this "
+                    f"list {VALID_TTL_KEYS} (case sensitive)"
+                )
+        return _ret
+
+    ret = {key: _parse_ttl(ttl_str) for key, ttl_str in conf.items()}
+
+    for key in REQUIRED_CONFIG_KEYS:
+        if key not in ret:
+            raise ValueError(f"The ttl configuration is missing the `{key}` key")
+
+    return ret
 
 
 class Server(Redis):
