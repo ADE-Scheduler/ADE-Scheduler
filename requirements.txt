@@ -29,7 +29,6 @@ execnet==1.7.1
 filelock==3.0.12
 Flask==1.1.2
 Flask-Babel==2.0.0
-Flask-Compress==1.8.0
 Flask-JSGlue==0.3.1
 Flask-Login==0.5.0
 Flask-Mail==0.9.1
