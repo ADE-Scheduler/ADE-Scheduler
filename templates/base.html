@@ -104,7 +104,7 @@
                             <a class="nav-link" v-bind:class="{'active-page': currentPath === '{{ url_for('help.index') }}'}" href="{{ url_for('help.index') }}">{{_('Help')}}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" v-bind:class="{'active-page': currentPath === '{{ url_for('whatisnew.index') }}'}" href="{{ url_for('whatisnew.index') }}">Nouveautés</a>
+                            <a class="nav-link" v-bind:class="{'active-page': currentPath === '{{ url_for('whatisnew.index') }}'}" href="{{ url_for('whatisnew.index') }}">{{ _('News') }}</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" v-bind:class="{'active-page': currentPath === '{{ url_for('contact.index') }}'}" href="{{ url_for('contact.index') }}">{{_('Contact us')}}</a>
