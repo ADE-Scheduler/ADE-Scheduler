@@ -98,7 +98,7 @@ def update(sleep):
     except Exception as e:
         click.secho("Error updating the classrooms", fg="red")
 
-    click.secho("Successfully updated the tables.", fg="green")
+    click.secho("Successfully updated the tables.\n", fg="green")
 
 
 @redis.command()
