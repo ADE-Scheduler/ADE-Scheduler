@@ -156,7 +156,7 @@ the server to your local machine.
     $ gzip -d {db-backup}.sql.gz
     un-zip database
     $ psql -U postgres --host=localhost --dbname=ade-database < {db-backup}.sql
-    $ un-dump database
+    un-dump database
     eventually enter you password_psql
 
 
