@@ -68,13 +68,14 @@ def test_all_requests(ade_client):
 
     # 2. Resources
 
-    resp = assert_correct_typing(ade_client.get_resources)(project_id)
+    if False:  # We avoid getting all resources if this function is not used
+        resp = assert_correct_typing(ade_client.get_resources)(project_id)
 
-    assert resp is not None
+        assert resp is not None
 
-    resources = assert_correct_typing(ade.response_to_resources)(resp)
+        resources = assert_correct_typing(ade.response_to_resources)(resp)
 
-    assert resources is not None
+        assert resources is not None
 
     # 3. Resource ids
 

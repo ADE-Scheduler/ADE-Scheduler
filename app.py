@@ -119,10 +119,12 @@ for optional, default in [("MAIL_DISABLE", False), ("MAIL_SEND_ERRORS", True)]:
 
 def log_mail_message(message, app):
     """If mails are disabled, their content will be outputted in the debug output"""
-    app.logger.debug(f"A mail was supposed to be send:\n"
-                     f"[SUBJECT]:\n{message.subject}\n"
-                     f"[BODY]:\n{message.body}\n"
-                     f"[END]")
+    app.logger.debug(
+        f"A mail was supposed to be send:\n"
+        f"[SUBJECT]:\n{message.subject}\n"
+        f"[BODY]:\n{message.body}\n"
+        f"[END]"
+    )
 
 
 if app.config["MAIL_DISABLE"]:
@@ -326,4 +328,3 @@ def make_shell_context():
         "mng": app.config["MANAGER"],
         "t": storage,
     }
-
