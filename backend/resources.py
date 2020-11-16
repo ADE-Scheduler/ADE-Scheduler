@@ -1,4 +1,12 @@
 class INDEX:
+    """
+    The INDEX class only contains static string values.
+
+    These values are attributes in the events returned by ADE API.
+    Remembering all the names can be quite difficult so this class is here to help
+    with it, while providing robustness if any of these attributes might change.
+    """
+
     ID = "id"
     TYPE = "category"
     NAME = "name"
@@ -45,6 +53,14 @@ class INDEX:
 
 
 class TYPES:
+    """
+    The TYPES class only contains static string values.
+
+    These values are possible resource types returned by ADE API.
+    Remembering all the names can be quite difficult so this class is here to help
+    with it, while providing robustness if any of these attributes might change.
+    """
+
     TEACHER = "instructor"
     CLASSROOM = "classroom"
     COURSE = "category5"
@@ -66,10 +82,10 @@ class Resource:
         return str(self.kwargs)
 
     def __repr__(self):
-        return str(self.kwargs["name"])
+        return str(self.kwargs[INDEX.NAME])
 
     def __hash__(self):
         return hash(self.kwargs)
 
     def __eq__(self, other):
-        return self.kwargs["name"] == other.kwargs["name"]
+        return self.kwargs[INDEX.NAME] == other.kwargs[INDEX.NAME]

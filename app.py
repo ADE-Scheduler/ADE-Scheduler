@@ -4,6 +4,7 @@ import traceback
 from datetime import timedelta
 from jsmin import jsmin
 from ics import Calendar
+import distutils
 import configparser
 
 # Flask imports
@@ -21,11 +22,10 @@ from flask import (
 from flask_session import Session
 from flask_security import Security, SQLAlchemyUserDatastore
 from flask_login import user_logged_out, user_logged_in
-from flask_mail import Mail, Message
+from flask_mail import Mail, Message, email_dispatched
 from flask_jsglue import JSGlue
 from flask_babel import Babel, gettext
 from flask_migrate import Migrate
-from flask_compress import Compress
 from flask_track_usage import TrackUsage
 from flask_track_usage.storage.sql import SQLStorage
 
@@ -108,6 +108,29 @@ app.config["MAIL_USERNAME"] = os.environ["MAIL_USERNAME"]
 app.config["MAIL_PASSWORD"] = os.getenv("MAIL_PASSWORD", None)
 app.config["MAIL_DEFAULT_SENDER"] = os.environ["MAIL_USERNAME"]
 app.config["ADMINS"] = [os.environ["MAIL_ADMIN"]]
+
+
+for optional, default in [("MAIL_DISABLE", False), ("MAIL_SEND_ERRORS", True)]:
+    if optional in os.environ:
+        app.config[optional] = bool(distutils.util.strtobool(os.environ[optional]))
+    else:
+        app.config[optional] = default
+
+
+def log_mail_message(message, app):
+    """If mails are disabled, their content will be outputted in the debug output"""
+    app.logger.debug(f"A mail was supposed to be send:\n"
+                     f"[SUBJECT]:\n{message.subject}\n"
+                     f"[BODY]:\n{message.body}\n"
+                     f"[END]")
+
+
+if app.config["MAIL_DISABLE"]:
+    app.config["MAIL_DEBUG"] = True
+    app.config["MAIL_SUPPRESS_SEND"] = True
+    email_dispatched.connect(log_mail_message)
+
+
 app.config["MAIL_MANAGER"] = Mail(app)
 
 # Setup Flask-SQLAlchemy
@@ -142,11 +165,6 @@ app.config["TRACK_USAGE_INCLUDE_OR_EXCLUDE_VIEWS"] = "exclude"
 with app.app_context():
     storage = SQLStorage(db=manager.database)
 t = TrackUsage(app, storage)
-
-# Allows compression of text assets
-# If the production server has automatic compression, comment this line,
-# which is the case for the server on which ADE-Scheduler runs.
-# compress = Compress(app)
 
 # Setup Flask-Babel
 app.config["LANGUAGES"] = ["en", "fr"]
@@ -259,7 +277,7 @@ def update_notification(link):
 # Error handlers
 @app.errorhandler(InternalServerError)
 def handle_exception(e):
-    if not app.debug:
+    if not app.debug and app.config["MAIL_SEND_ERRORS"]:
         error = e.original_exception
         error_request = f"{request.path} [{request.method}]"
         error_module = error.__class__.__module__
@@ -308,3 +326,4 @@ def make_shell_context():
         "mng": app.config["MANAGER"],
         "t": storage,
     }
+
