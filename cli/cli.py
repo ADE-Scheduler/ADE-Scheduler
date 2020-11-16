@@ -1,6 +1,7 @@
 import random as rnd
 import pickle as pkl
 import click
+import time
 from datetime import datetime
 from flask import current_app as app
 from flask.cli import with_appcontext
@@ -43,8 +44,11 @@ def redis():
 
 
 @redis.command()
+@click.option(
+    "--sleep/--no-sleep", default=True, help="Pause execution between updates."
+)
 @with_appcontext
-def update(with_appcontext=False):
+def update(sleep):
     """Updates Redis' tables."""
     click.secho(
         f'Updating Redis\' tables on on {datetime.now().strftime("%d/%m/%Y at %H:%M:%S")}',
@@ -58,11 +62,17 @@ def update(with_appcontext=False):
     except Exception as e:
         click.secho("Error updating the project IDs", fg="red")
 
+    if sleep:
+        time.sleep(60)
+
     # Update resource IDs
     try:
         mng.update_resource_ids()
     except Exception as e:
         click.secho("Error updating the resource IDs", fg="red")
+
+    if sleep:
+        time.sleep(60)
 
     # Update course resources
     try:
@@ -70,11 +80,17 @@ def update(with_appcontext=False):
     except Exception as e:
         click.secho("Error updating the course resources", fg="red")
 
+    if sleep:
+        time.sleep(60)
+
     # Update resoruces
     try:
         mng.update_resources()
     except Exception as e:
         click.secho("Error updating the resources", fg="red")
+
+    if sleep:
+        time.sleep(60)
 
     # Update classroom resources
     try:
