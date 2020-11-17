@@ -231,10 +231,12 @@ def plot_users_hist():
         yaxis_title="Number of users"
     )
 
-    filename = "plots/users_hist.html"
-    fig.write_html(filename)
+    key = "[PLOT,context=usage]users_hist"
+    server = app.config["MANAGER"].server
+    value = fig.to_json()
+    server.set(key, value)
 
-    click.echo(f"Successfully created a plot and saved it to {filename}")
+    click.echo(f"Successfully created a plot and saved into server with key={key}")
 
 
 @click.group()
@@ -423,7 +425,9 @@ def plot_requests_hist():
         legend_title="Status"
     )
 
-    filename = "plots/api_usage_requests_hist.html"
-    fig.write_html(filename)
+    key = "[PLOT,context=api_usage]requests_hist"
+    server = app.config["MANAGER"].server
+    value = fig.to_json()
+    server.set(key, value)
 
-    click.echo(f"Successfully created a plot and saved it to {filename}")
+    click.echo(f"Successfully created a plot and saved into server with key={key}")
