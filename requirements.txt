@@ -29,6 +29,7 @@ execnet==1.7.1
 filelock==3.0.12
 Flask==1.1.2
 Flask-Babel==2.0.0
+Flask-Compress==1.8.0
 Flask-JSGlue==0.3.1
 Flask-Login==0.5.0
 Flask-Mail==0.9.1
@@ -66,6 +67,7 @@ packaging==20.4
 pandas==1.1.4
 passlib==1.7.4
 pathspec==0.8.1
+pbr==5.5.1
 pep517==0.9.1
 Pillow==8.0.1
 plotly==4.12.0
