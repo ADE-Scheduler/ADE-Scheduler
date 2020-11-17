@@ -5,11 +5,16 @@ import json
 from lxml import etree
 import pandas as pd
 from collections import defaultdict, Counter
+import warnings
+
 from backend.classrooms import Classroom, Address
 from backend.courses import Course
 from backend import professors
 import backend.events
 import backend.models as md
+import backend.resources as rsrc
+
+
 from typing import Dict, Union, List, Tuple, Callable, Type
 from flask import current_app
 
@@ -93,16 +98,51 @@ class DummyClient:
 
     def get_resources(self, project_id: str) -> requests.Response:
         """
-        Requests the ids of all the resource for a specific project.
+        Requests all the resource for a specific project.
 
         :param project_id: the id of the project
         :type project_id: str
         :return: the response
         :rtype: request.Response
         """
+        warnings.warn(
+            "Requesting all the resources is expensive and can "
+            "impact the whole ADE API if too many requests are "
+            "done. You should only use this request if you "
+            "really need all the resources.",
+            DeprecationWarning,
+        )
         return self.request(
             projectId=project_id, function="getResources", detail=13, tree="false"
         )
+
+    def get_course_resources(
+        self, project_id: str
+    ) -> Tuple[requests.Response, requests.Response]:
+        """
+        Requests all the course resource for a specific project.
+
+        :param project_id: the id of the project
+        :type project_id: str
+        :return: a tuple the response
+        :rtype: Tuple[request.Response, requests.Response]
+        """
+        course_resources = self.request(
+            projectId=project_id,
+            function="getResources",
+            detail=11,
+            tree="false",
+            category=rsrc.TYPES.COURSE,
+        )
+        course_combo_resources = self.request(
+            projectId=project_id,
+            function="getResources",
+            detail=11,
+            tree="false",
+            category=rsrc.TYPES.COURSE_COMBO,
+        )
+
+        return course_resources, course_combo_resources
 
     def get_resource_ids(self, project_id: str) -> requests.Response:
         """
@@ -335,7 +375,7 @@ def response_to_project_ids(project_ids_response: requests.Response) -> Dict[str
 
 def response_to_resources(resources_response: requests.Response) -> pd.DataFrame:
     """
-    Extracts an API response into an dataframe mapping a resource name to its ids.
+    Extracts an API response into an dataframe containing all resources.
 
     :param resources_response: a response from the API to the resources request
     :type resources_response: requests.Response
@@ -360,6 +400,41 @@ def response_to_resources(resources_response: requests.Response) -> pd.DataFrame
     df.set_index("id", inplace=True)
 
     return df
+
+
+def response_to_course_resources(
+    course_resources_response: Tuple[requests.Response, requests.Response]
+) -> pd.DataFrame:
+    """
+    Extracts an API response into an dataframe containing all course resources.
+
+    :param course_resources_response: a response from the API to the course resources
+        request
+    :type course_resources_response: Tuple[requests.Response, requests.Response]
+    :return: all the course resources
+    :rtype: pd.Dataframe
+    """
+    dfs = []
+
+    categories = [rsrc.TYPES.COURSE, rsrc.TYPES.COURSE_COMBO]
+
+    for response, category in zip(course_resources_response, categories):
+
+        root = response_to_root(response)
+
+        resources = root.xpath(f"//{category}/.")
+
+        index = resources[0].attrib.keys()
+
+        values = [resource.attrib.values() for resource in resources]
+
+        df = pd.DataFrame(data=values, columns=index, dtype=str)
+
+        df.set_index("id", inplace=True)
+
+        dfs.append(df)
+
+    return pd.concat(dfs)
 
 
 def response_to_resource_ids(resource_ids_response) -> Dict[str, str]:
