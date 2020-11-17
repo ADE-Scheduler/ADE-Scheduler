@@ -174,7 +174,9 @@ class Manager:
             value = value.decode()
             key = f"[COURSE_RESOURCES,project_id={value}]"
 
-            resources = self.get_resources(project_id=value)
+            resources = ade.response_to_course_resources(
+                self.client.get_course_resources(project_id=value)
+            )
             resource_types = resources[rsrc.INDEX.TYPE]
             index = (resource_types == rsrc.TYPES.COURSE) | (
                 resource_types == rsrc.TYPES.COURSE_COMBO
