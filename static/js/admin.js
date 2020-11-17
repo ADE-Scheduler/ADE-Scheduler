@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         this.plots.forEach(plot => {
                             let obj = JSON.parse(plot.data);
                             obj.layout.width = document.getElementById('carouselPlots').offsetWidth-320;
+                            obj.layout.height = obj.layout.width * 0.7;
                             Plotly.newPlot(plot.id, obj);
                         });
                     });
