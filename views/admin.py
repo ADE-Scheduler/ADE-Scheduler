@@ -4,7 +4,7 @@ from flask_security import roles_required
 admin = Blueprint("admin", __name__, static_folder="../static")
 
 
-@roles_required("admin")
 @admin.route("/")
+@roles_required("admin")
 def index():
     return render_template("admin.html")
