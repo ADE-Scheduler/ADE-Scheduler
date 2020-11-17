@@ -46,4 +46,6 @@ def plot_requests_hist():
     value = fig.to_json()
     server.set_value(key, value)
 
-    click.echo(f"Successfully created a plot and saved into server with key={key}")
+    click.secho(
+        f"Successfully created a plot and saved into server with key={key}", fg="green"
+    )
