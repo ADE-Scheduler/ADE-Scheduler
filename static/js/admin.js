@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import { Carousel } from 'bootstrap'
 
 import './base.js';
 import '../css/admin.css';
@@ -25,10 +26,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(resp => {
                     this.plots = resp.data;
-
                     this.$nextTick(() => {
                         this.plots.forEach(plot => {
-                            Plotly.newPlot(plot.id, JSON.parse(plot.data));
+                            let obj = JSON.parse(plot.data);
+                            obj.layout.width = document.getElementById('carouselPlots').offsetWidth-320;
+                            Plotly.newPlot(plot.id, obj);
                         });
                     });
                 })
@@ -42,6 +44,11 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         created:  function () {
             this.fetchData();
+        },
+        computed: {
+            opacity: function() {
+                return {'opacity': this.computing ? '0.2':'1'}
+            },
         },
     });
 });

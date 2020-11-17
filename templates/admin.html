@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "custom_macros.html" import render_flash_alert %}
 {% block head %}
 <% _.forEach(htmlWebpackPlugin.files.js, function(file) { %>
 <script type="text/javascript" src="<%= file%>"></script>
@@ -6,8 +7,48 @@
 {% endblock %}
 
 {% block body %}
-<div class="container-fluid">
-    <div v-for="plot in plots" v-bind:key="plot.id" v-bind:id="plot.id">
+<div class="container pt-4">
+    <div class="spinner-border text-primary spinner-compute" v-show="computing"></div>
+    {{ render_flash_alert() }}
+    <div class="alert alert-danger alert-dismissible" v-show="error">
+        {{  _('A problem has occurred. Please contact us if it happens again.') }}
+        <button type="button" class="btn-close" v-on:click="error = false"></button>
     </div>
+
+    <div class="carousel carousel-dark slide"
+         data-interval="false"
+         data-ride="carousel" id="carouselPlots"
+         v-bind:style="opacity"
+         v-show="plots.length > 0"
+    >
+        <ol class="carousel-indicators">
+            <li data-target="#carouselPlots"
+                v-for="(plot, index) in plots"
+                v-bind:key="plot.id"
+                v-bind:class="{ active: index == 0 }"
+                v-bind:data-slide-to="index"
+            >
+            </li>
+        </ol>
+        <div class="carousel-inner">
+            <div class="carousel-item"
+                 v-for="(plot, index) in plots"
+                 v-bind:key="plot.id"
+                 v-bind:class="{ active: index == 0 }"
+            >
+                <div class="d-flex justify-content-center mb-3" v-bind:id="plot.id"></div>
+            </div>
+        </div>
+
+        <a class="carousel-control-prev" href="#carouselPlots" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+            <span class="visually-hidden">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselPlots" role="button" data-slide="next">
+            <span class="carousel-control-next-icon"></span>
+            <span class="visually-hidden">Next</span>
+        </a>
+    </div>
+
 </div>
 {% endblock %}
