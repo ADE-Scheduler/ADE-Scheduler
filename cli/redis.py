@@ -4,7 +4,11 @@ from datetime import datetime
 
 from flask import current_app as app
 from flask.cli import with_appcontext
-from cli.cli import redis
+
+
+@click.group()
+def redis():
+    """Performs operations on Redis."""
 
 
 @redis.command()

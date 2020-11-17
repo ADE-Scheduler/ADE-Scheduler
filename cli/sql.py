@@ -2,10 +2,14 @@ import click
 import pickle as pkl
 
 from flask.cli import with_appcontext
-from cli.cli import sql
 from sqlalchemy import func
 
 import backend.models as md
+
+
+@click.group()
+def sql():
+    """Performs operations on the SQL database."""
 
 
 @sql.command()

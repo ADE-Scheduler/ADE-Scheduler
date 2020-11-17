@@ -6,7 +6,12 @@ import plotly.express as px
 
 from flask import current_app as app
 from flask.cli import with_appcontext
-from cli.cli import api_usage
+
+
+@click.group()
+def api_usage():
+    """Performs operations on the ApiUsage table."""
+    pass
 
 
 @api_usage.command()
