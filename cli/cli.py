@@ -7,12 +7,14 @@ import flask
 from flask.cli import with_appcontext
 from flask_security.cli import users
 from sqlalchemy import func
+import json
 
 # Manipulating data
 import pandas as pd
 import numpy as np
 
 # Generating pretty plots
+import plotly
 import plotly.graph_objects as go
 import plotly.express as px
 from plotly.subplots import make_subplots
@@ -233,8 +235,8 @@ def plot_users_hist():
 
     key = "[PLOT,context=usage]users_hist"
     server = app.config["MANAGER"].server
-    value = fig.to_json()
-    server.set(key, value)
+    value = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    server.set_value(key, value)
 
     click.echo(f"Successfully created a plot and saved into server with key={key}")
 
@@ -427,7 +429,7 @@ def plot_requests_hist():
 
     key = "[PLOT,context=api_usage]requests_hist"
     server = app.config["MANAGER"].server
-    value = fig.to_json()
-    server.set(key, value)
+    value = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    server.set_value(key, value)
 
     click.echo(f"Successfully created a plot and saved into server with key={key}")
