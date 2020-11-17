@@ -1,12 +1,11 @@
 import click
 from cli.cli_api_usage import plot_requests_hist
 from cli.cli_users import plot_users_hist
-
-from flask import current_app as app
-from flask.cli import with_appcontext
+from cli.cli_usage import plot_requests_per_blueprint_hist
 
 F_PLOTS = {
     "api-usage-requests-hist": plot_requests_hist,
+    "requests-per-blueprint-hist": plot_requests_per_blueprint_hist,
     "users-hist": plot_users_hist
 }
 

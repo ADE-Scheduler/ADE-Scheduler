@@ -83,7 +83,7 @@ def plot_users_hist():
     fig.update_layout(
         title="Number of users created per datetime",
         xaxis_title="Datetime",
-        yaxis_title="Number of users",
+        yaxis_title="Number of users"
     )
 
     key = "[PLOT,context=usage]users_hist"
