@@ -72,6 +72,7 @@ app.cli.add_command(cli.redis)
 app.cli.add_command(cli.client)
 app.cli.add_command(cli.schedules)
 app.cli.add_command(cli.usage)
+app.cli.add_command(cli.api_usage)
 
 # Load REDIS TTL config
 redis_ttl_config = configparser.ConfigParser()

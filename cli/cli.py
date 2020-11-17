@@ -7,9 +7,17 @@ import flask
 from flask.cli import with_appcontext
 from flask_security.cli import users
 from sqlalchemy import func
+
+# Manipulating data
 import pandas as pd
 import numpy as np
 
+# Generating pretty plots
+import plotly.graph_objects as go
+import plotly.express as px
+from plotly.subplots import make_subplots
+
+# Reading database
 import backend.models as md
 
 
@@ -191,6 +199,44 @@ def stats():
         click.echo(f"\t{x}: {value}")
 
 
+@users.command()
+@with_appcontext
+def plot_users_hist():
+
+    colors = px.colors.qualitative.Plotly
+
+    click.echo("Reading datase...")
+    df = md.query_to_dataframe(md.User.query.filter(None != md.User.confirmed_at))
+
+    fig = make_subplots(specs=[[{"secondary_y": True}]])
+
+    click.echo("Generating plot...")
+    fig_1 = df.confirmed_at.hist(bins=100, backend="plotly")
+    fig_2 = df.confirmed_at.hist(bins=100, cumulative=True, backend="plotly")
+
+    trace_1 = next(fig_1.select_traces())
+    trace_1.name = "per datetime"
+    trace_1.marker.color = colors[0]
+    fig.add_trace(trace_1, secondary_y=False)
+
+    trace_2 = next(fig_2.select_traces())
+    trace_2.name = "cumulative"
+    trace_2.marker.color = colors[1]
+    trace_2.opacity = 0.5
+    fig.add_trace(trace_2, secondary_y=True)
+
+    fig.update_layout(
+        title="Number of users created per datetime",
+        xaxis_title="Datetime",
+        yaxis_title="Number of users"
+    )
+
+    filename = "plots/users_hist.html"
+    fig.write_html(filename)
+
+    click.echo(f"Successfully created a plot and saved it to {filename}")
+
+
 @click.group()
 def schedules():
     """Performs operations with the schedules"""
@@ -253,7 +299,7 @@ def init():
 @with_appcontext
 def dump(output):
     """Dumps the database."""
-    tables = [md.Role, md.User, md.Schedule, md.Link, md.Property, md.Usage]
+    tables = [md.Role, md.User, md.Schedule, md.Link, md.Property, md.Usage, md.ApiUsage]
 
     with open(output, "wb") as f:
         for table in tables:
@@ -272,7 +318,7 @@ def load(input):
     Tested with PostgreSQL, MySQL & SQLite.
     """
     db = app.config["MANAGER"].database
-    tables = [md.Role, md.User, md.Schedule, md.Link, md.Property, md.Usage]
+    tables = [md.Role, md.User, md.Schedule, md.Link, md.Property, md.Usage, md.ApiUsage]
 
     with open(input, "rb") as f:
         with db.session.no_autoflush:
@@ -310,6 +356,7 @@ def fix():
 
 @click.group()
 def usage():
+    """Performs operations on the Usage table."""
     pass
 
 
@@ -340,3 +387,43 @@ def stats():
 
     click.echo(req_stats.speed.describe())
     click.echo(host_url)
+
+
+@click.group()
+def api_usage():
+    """Performs operations on the ApiUsage table."""
+    pass
+
+
+@api_usage.command()
+@with_appcontext
+def plot_requests_hist():
+
+    colors = px.colors.qualitative.Plotly
+    fig = go.Figure()
+
+    click.echo("Reading datase...")
+    df = md.table_to_dataframe(md.ApiUsage)
+
+    click.echo("Generating plot...")
+    figs = df.groupby("status").datetime.hist(bins=100, legend=True, backend="plotly")
+
+    i = 0
+    for figure in figs:
+        for trace in figure.select_traces():
+            trace.marker.color = colors[i]
+            fig.add_trace(trace)
+
+            i += 1
+
+    fig.update_layout(
+        title="ADE Api requests per status",
+        xaxis_title="Datetime",
+        yaxis_title="Number of requests",
+        legend_title="Status"
+    )
+
+    filename = "plots/api_usage_requests_hist.html"
+    fig.write_html(filename)
+
+    click.echo(f"Successfully created a plot and saved it to {filename}")
