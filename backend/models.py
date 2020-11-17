@@ -9,6 +9,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from copy import copy
 from flask_sqlalchemy import SQLAlchemy
 from flask_security.models import fsqla_v2 as fsqla
+from flask_sqlalchemy import BaseQuery
 
 import pandas as pd
 
@@ -22,9 +23,25 @@ db = SQLAlchemy()
 fsqla.FsModels.set_db_info(db)
 
 
+def query_to_dataframe(query: BaseQuery, *args: Any, **kwargs: Any) -> pd.DataFrame:
+    """
+    Parses a SQL query from the database into a dataframe.
+
+    :param query: the query to be read
+    :type query: BaseQuery
+    :param args: positional arguments to be passed to :func:`pandas.read_sql`
+    :type args: Any
+    :param kwargs: keyword arguments to be passed to :func:`pandas.read_sql`
+    :type kwargs: Any
+    :return: a dataframe of table
+    :rtype: pd.DataFrame
+    """
+    return pd.read_sql(query.statement, query.session.bind, *args, **kwargs)
+
+
 def table_to_dataframe(table: db.Model, *args: Any, **kwargs: Any) -> pd.DataFrame:
     """
-    Parses a table from the database into a dataframe
+    Parses a table from the database into a dataframe.
 
     :param table: the table to be parsed
     :type table: db.Model
