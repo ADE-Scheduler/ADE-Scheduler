@@ -400,6 +400,6 @@ class Manager:
         """
         plots = []
         for key in self.server.scan_iter(match="*PLOT*"):
-            plots.append((key, self.server.get_value(key)))
+            plots.append({"id": key.decode(), "data": self.server.get_value(key)})
 
         return plots

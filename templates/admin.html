@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% from "custom_macros.html" import render_flash_alert %}
 {% block head %}
 <% _.forEach(htmlWebpackPlugin.files.js, function(file) { %>
 <script type="text/javascript" src="<%= file%>"></script>
@@ -8,6 +7,7 @@
 
 {% block body %}
 <div class="container-fluid">
-    Hello
+    <div v-for="plot in plots" v-bind:key="plot.id" v-bind:id="plot.id">
+    </div>
 </div>
 {% endblock %}
