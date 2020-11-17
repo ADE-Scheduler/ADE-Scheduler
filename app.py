@@ -27,6 +27,7 @@ from flask_jsglue import JSGlue
 from flask_babel import Babel, gettext
 from flask_migrate import Migrate
 from flask_track_usage import TrackUsage
+from flask_compress import Compress
 from flask_track_usage.storage.sql import SQLStorage
 
 # API imports
@@ -122,6 +123,10 @@ app.config["MAIL_PASSWORD"] = os.getenv("MAIL_PASSWORD", None)
 app.config["MAIL_DEFAULT_SENDER"] = os.environ["MAIL_USERNAME"]
 app.config["ADMINS"] = [os.environ["MAIL_ADMIN"]]
 
+# Allows compression of text assets
+# Production server has integrated compression support
+if app.env == "development":
+    compress = Compress(app)
 
 for optional, default in [("MAIL_DISABLE", False), ("MAIL_SEND_ERRORS", True)]:
     if optional in os.environ:
