@@ -389,3 +389,10 @@ class Manager:
             return query.link.link
         else:
             return None
+
+    def get_plots(self):
+        plots = []
+        for key in self.server.scan_iter(match="*PLOT*"):
+            plots.append((key, self.server.get_value(key)))
+
+        return plots
