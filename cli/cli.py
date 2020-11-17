@@ -83,14 +83,16 @@ def update(sleep):
     if sleep:
         time.sleep(60)
 
-    # Update resoruces
+    # Update resources
     try:
-        mng.update_resources()
+        pass  # We do not need resources for the moment
+        # mng.update_resources()
     except Exception as e:
         click.secho("Error updating the resources", fg="red")
 
     if sleep:
-        time.sleep(60)
+        pass  # ...
+        # time.sleep(60)
 
     # Update classroom resources
     try:
