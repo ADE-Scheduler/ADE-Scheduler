@@ -27,6 +27,7 @@ from flask_jsglue import JSGlue
 from flask_babel import Babel, gettext
 from flask_migrate import Migrate
 from flask_track_usage import TrackUsage
+from flask_compress import Compress
 from flask_track_usage.storage.sql import SQLStorage
 
 # API imports
@@ -46,9 +47,17 @@ from views.help import help
 from views.contact import contact
 from views.api import api
 from views.whatisnew import whatisnew
+from views.admin import admin
 
 # CLI commands
-from cli import cli
+from cli import cli_api_usage
+from cli import cli_client
+from cli import cli_redis
+from cli import cli_schedules
+from cli import cli_sql
+from cli import cli_usage
+from cli import cli_users
+from cli import cli_plots
 
 # Change current working directory to main directory
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
@@ -63,14 +72,19 @@ app.register_blueprint(help, url_prefix="/help")
 app.register_blueprint(contact, url_prefix="/contact")
 app.register_blueprint(api, url_prefix="/api")
 app.register_blueprint(whatisnew, url_prefix="/whatisnew")
+app.register_blueprint(admin, url_prefix="/admin")
 app.config["SECRET_KEY"] = os.environ["FLASK_SECRET_KEY"]
 jsglue = JSGlue(app)
 
 # Register new commands
-app.cli.add_command(cli.sql)
-app.cli.add_command(cli.redis)
-app.cli.add_command(cli.client)
-app.cli.add_command(cli.schedules)
+app.cli.add_command(cli_sql.sql)
+app.cli.add_command(cli_redis.redis)
+app.cli.add_command(cli_client.client)
+app.cli.add_command(cli_schedules.schedules)
+app.cli.add_command(cli_usage.usage)
+app.cli.add_command(cli_users.users)
+app.cli.add_command(cli_api_usage.api_usage)
+app.cli.add_command(cli_plots.plots)
 
 # Load REDIS TTL config
 redis_ttl_config = configparser.ConfigParser()
@@ -109,6 +123,10 @@ app.config["MAIL_PASSWORD"] = os.getenv("MAIL_PASSWORD", None)
 app.config["MAIL_DEFAULT_SENDER"] = os.environ["MAIL_USERNAME"]
 app.config["ADMINS"] = [os.environ["MAIL_ADMIN"]]
 
+# Allows compression of text assets
+# Production server has integrated compression support
+if app.env == "development":
+    compress = Compress(app)
 
 for optional, default in [("MAIL_DISABLE", False), ("MAIL_SEND_ERRORS", True)]:
     if optional in os.environ:
@@ -142,6 +160,7 @@ manager.database.init_app(app)
 migrate = Migrate(app, manager.database)
 
 # Setup Flask-Security
+app.config["SECURITY_TRACKABLE"] = True
 app.config["SECURITY_CONFIRMABLE"] = True
 app.config["SECURITY_REGISTERABLE"] = True
 app.config["SECURITY_CHANGEABLE"] = True
@@ -319,6 +338,7 @@ def page_not_found(e):
 def make_shell_context():
     return {
         "db": md.db,
+        "Role": md.Role,
         "Property": md.Property,
         "Schedule": md.Schedule,
         "Link": md.Link,
