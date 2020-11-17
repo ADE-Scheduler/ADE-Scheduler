@@ -130,6 +130,7 @@ manager.database.init_app(app)
 migrate = Migrate(app, manager.database)
 
 # Setup Flask-Security
+app.config["SECURITY_TRACKABLE"] = True
 app.config["SECURITY_CONFIRMABLE"] = True
 app.config["SECURITY_REGISTERABLE"] = True
 app.config["SECURITY_CHANGEABLE"] = True
