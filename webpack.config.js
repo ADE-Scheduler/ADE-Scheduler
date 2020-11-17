@@ -17,7 +17,8 @@ const pages = [
     'help',
     'welcome',
     'contact',
-    'whatisnew'
+    'whatisnew',
+    'admin',
 ];
 
 const conf = {
