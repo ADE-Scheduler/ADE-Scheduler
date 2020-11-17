@@ -1,6 +1,6 @@
 import click
-from cli.api_usage import plot_requests_hist
-from cli.users import plot_users_hist
+from cli.cli_api_usage import plot_requests_hist
+from cli.cli_users import plot_users_hist
 
 from flask import current_app as app
 from flask.cli import with_appcontext
