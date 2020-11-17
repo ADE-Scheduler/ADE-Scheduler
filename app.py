@@ -56,6 +56,7 @@ from cli.schedules import schedules as cli_schedules
 from cli.sql import sql as cli_sql
 from cli.usage import usage as cli_usage
 from cli.users import users as cli_users
+from cli.plots import plots as cli_plots
 
 # Change current working directory to main directory
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
@@ -80,7 +81,9 @@ app.cli.add_command(cli_redis)
 app.cli.add_command(cli_client)
 app.cli.add_command(cli_schedules)
 app.cli.add_command(cli_usage)
+app.cli.add_command(cli_users)
 app.cli.add_command(cli_api_usage)
+app.cli.add_command(cli_plots)
 
 # Load REDIS TTL config
 redis_ttl_config = configparser.ConfigParser()
