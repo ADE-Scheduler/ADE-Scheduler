@@ -228,7 +228,7 @@ def plot_users_hist():
     fig.update_layout(
         title="Number of users created per datetime",
         xaxis_title="Datetime",
-        yaxis_title="Number of users"
+        yaxis_title="Number of users",
     )
 
     key = "[PLOT,context=usage]users_hist"
@@ -301,7 +301,15 @@ def init():
 @with_appcontext
 def dump(output):
     """Dumps the database."""
-    tables = [md.Role, md.User, md.Schedule, md.Link, md.Property, md.Usage, md.ApiUsage]
+    tables = [
+        md.Role,
+        md.User,
+        md.Schedule,
+        md.Link,
+        md.Property,
+        md.Usage,
+        md.ApiUsage,
+    ]
 
     with open(output, "wb") as f:
         for table in tables:
@@ -320,7 +328,15 @@ def load(input):
     Tested with PostgreSQL, MySQL & SQLite.
     """
     db = app.config["MANAGER"].database
-    tables = [md.Role, md.User, md.Schedule, md.Link, md.Property, md.Usage, md.ApiUsage]
+    tables = [
+        md.Role,
+        md.User,
+        md.Schedule,
+        md.Link,
+        md.Property,
+        md.Usage,
+        md.ApiUsage,
+    ]
 
     with open(input, "rb") as f:
         with db.session.no_autoflush:
@@ -362,33 +378,7 @@ def usage():
     pass
 
 
-@usage.command()
-@with_appcontext
-def stats():
-    threshold = 100
-    pd.set_option('display.max_rows', None)
-    pd.set_option('display.max_columns', None)
-
-    click.echo("Reading datase...")
-    df = md.table_to_dataframe(md.Usage, columns=["url", "speed", "blueprint"])
-
-    with app.test_request_context():
-        host_url = flask.request.host_url
-
-    host_url = "https://ade-scheduler.info.ucl.ac.be/"
-
-    click.echo(f"Computing all requests matching {host_url}<blueprint>/<request>)"
-               f" and appearing at least {threshold: d} times...")
-
-    endpoints = df["url"].str.replace(host_url[:-1], "").str.extract(r"^\/\w+\/(\w+)",
-                                                                     expand=False)
-    df["url"] = endpoints
-    req_stats = df.groupby(["blueprint", "url"])\
-        .filter(lambda x: len(x) > threshold)\
-        .groupby(["blueprint", "url"])
-
-    click.echo(req_stats.speed.describe())
-    click.echo(host_url)
+import cli.usage
 
 
 @click.group()
@@ -397,37 +387,4 @@ def api_usage():
     pass
 
 
-@api_usage.command()
-@with_appcontext
-def plot_requests_hist():
-
-    colors = px.colors.qualitative.Plotly
-    fig = go.Figure()
-
-    click.echo("Reading datase...")
-    df = md.table_to_dataframe(md.ApiUsage)
-
-    click.echo("Generating plot...")
-    figs = df.groupby("status").datetime.hist(bins=100, legend=True, backend="plotly")
-
-    i = 0
-    for figure in figs:
-        for trace in figure.select_traces():
-            trace.marker.color = colors[i]
-            fig.add_trace(trace)
-
-            i += 1
-
-    fig.update_layout(
-        title="ADE Api requests per status",
-        xaxis_title="Datetime",
-        yaxis_title="Number of requests",
-        legend_title="Status"
-    )
-
-    key = "[PLOT,context=api_usage]requests_hist"
-    server = app.config["MANAGER"].server
-    value = fig.to_json()
-    server.set(key, value)
-
-    click.echo(f"Successfully created a plot and saved into server with key={key}")
+import cli.api_usage
