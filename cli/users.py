@@ -4,7 +4,7 @@ from datetime import datetime
 
 from flask import current_app as app
 from flask.cli import with_appcontext
-from cli.cli import users
+from flask_security.cli import users
 
 import plotly.express as px
 from plotly.subplots import make_subplots

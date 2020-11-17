@@ -2,7 +2,11 @@ import click
 
 from flask import current_app as app
 from flask.cli import with_appcontext
-from cli.cli import client
+
+
+@click.group()
+def client():
+    """Performs operation on client."""
 
 
 @client.command()

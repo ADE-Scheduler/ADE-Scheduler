@@ -49,7 +49,13 @@ from views.whatisnew import whatisnew
 from views.admin import admin
 
 # CLI commands
-from cli import cli
+from cli.api_usage import api_usage
+from cli.client import client
+from cli.redis import redis
+from cli.schedules import schedules
+from cli.sql import sql
+from cli.usage import usage
+from cli.users import users
 
 # Change current working directory to main directory
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
@@ -69,12 +75,12 @@ app.config["SECRET_KEY"] = os.environ["FLASK_SECRET_KEY"]
 jsglue = JSGlue(app)
 
 # Register new commands
-app.cli.add_command(cli.sql)
-app.cli.add_command(cli.redis)
-app.cli.add_command(cli.client)
-app.cli.add_command(cli.schedules)
-app.cli.add_command(cli.usage)
-app.cli.add_command(cli.api_usage)
+app.cli.add_command(sql)
+app.cli.add_command(redis)
+app.cli.add_command(client)
+app.cli.add_command(schedules)
+app.cli.add_command(usage)
+app.cli.add_command(api_usage)
 
 # Load REDIS TTL config
 redis_ttl_config = configparser.ConfigParser()

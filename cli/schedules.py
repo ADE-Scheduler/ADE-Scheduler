@@ -2,9 +2,13 @@ import click
 import numpy as np
 
 from flask.cli import with_appcontext
-from cli.cli import schedules
 
 import backend.models as md
+
+
+@click.group()
+def schedules():
+    """Performs operations with the schedules"""
 
 
 @schedules.command()

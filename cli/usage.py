@@ -4,7 +4,12 @@ import backend.models as md
 
 from flask import current_app as app
 from flask.cli import with_appcontext
-from cli.cli import usage
+
+
+@click.group()
+def usage():
+    """Performs operations on the Usage table."""
+    pass
 
 
 @usage.command()
