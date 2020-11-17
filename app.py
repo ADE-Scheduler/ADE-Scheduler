@@ -46,6 +46,7 @@ from views.help import help
 from views.contact import contact
 from views.api import api
 from views.whatisnew import whatisnew
+from views.admin import admin
 
 # CLI commands
 from cli import cli
@@ -63,6 +64,7 @@ app.register_blueprint(help, url_prefix="/help")
 app.register_blueprint(contact, url_prefix="/contact")
 app.register_blueprint(api, url_prefix="/api")
 app.register_blueprint(whatisnew, url_prefix="/whatisnew")
+app.register_blueprint(admin, url_prefix="/admin")
 app.config["SECRET_KEY"] = os.environ["FLASK_SECRET_KEY"]
 jsglue = JSGlue(app)
 
@@ -71,6 +73,8 @@ app.cli.add_command(cli.sql)
 app.cli.add_command(cli.redis)
 app.cli.add_command(cli.client)
 app.cli.add_command(cli.schedules)
+app.cli.add_command(cli.usage)
+app.cli.add_command(cli.api_usage)
 
 # Load REDIS TTL config
 redis_ttl_config = configparser.ConfigParser()
