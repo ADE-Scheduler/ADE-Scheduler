@@ -112,7 +112,7 @@ Once the code is written, you need to extract the strings to translate:
 
 .. code-block:: console
 
-    $ cd docs
+    $ cd <repo>
     $ pybabel extract -F translations/babel.cfg -k _l -o translations/messages.pot .
     $ pybabel update -i translations/messages.pot -d translations
 
