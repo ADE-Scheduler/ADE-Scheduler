@@ -109,6 +109,11 @@
                         <li class="nav-item">
                             <a class="nav-link" v-bind:class="{'active-page': currentPath === '{{ url_for('contact.index') }}'}" href="{{ url_for('contact.index') }}">{{_('Contact us')}}</a>
                         </li>
+                        {% if current_user.has_role("admin") %}
+                        <li class="nav-item">
+                            <a class="nav-link" v-bind:class="{'active-page': currentPath === '{{ url_for('admin.index') }}'}" href="{{ url_for('admin.index') }}">Admin</a>
+                        </li>
+                        {% endif %}
                     </ul>
 
 
