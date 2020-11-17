@@ -1,5 +1,5 @@
 import pandas as pd
-from typing import List, Iterator, Optional, Union, Dict
+from typing import List, Iterator, Optional, Union, Dict, Tuple
 
 import backend.servers as srv
 import backend.ade_api as ade
@@ -391,3 +391,17 @@ class Manager:
             return query.link.link
         else:
             return None
+
+    def get_plots(self) -> List[Tuple[str, dict]]:
+        """
+        Returns all the (key, plot) pairs stored in the server.
+        Plots are json dictionary generated using Plotly.
+
+        :return: the pairs of (key, plot) that were stored in the server
+        :rtype: List[Tuple[str, dict]]
+        """
+        plots = []
+        for key in self.server.scan_iter(match="*PLOT*"):
+            plots.append({"id": key.decode(), "data": self.server.get_value(key)})
+
+        return plots

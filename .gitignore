@@ -133,3 +133,5 @@ cache/
 
 .flaskenv
 geo_localisations.json
+
+plots/
