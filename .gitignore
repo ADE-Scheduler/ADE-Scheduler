@@ -132,4 +132,6 @@ dump.rdb
 cache/
 
 .flaskenv
-geo_locations.jsonc
+geo_locations.json
+
+plots/

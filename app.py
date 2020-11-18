@@ -4,6 +4,8 @@ import traceback
 from datetime import timedelta
 from jsmin import jsmin
 from ics import Calendar
+import distutils
+import configparser
 
 # Flask imports
 from werkzeug.exceptions import InternalServerError
@@ -20,12 +22,12 @@ from flask import (
 from flask_session import Session
 from flask_security import Security, SQLAlchemyUserDatastore
 from flask_login import user_logged_out, user_logged_in
-from flask_mail import Mail, Message
+from flask_mail import Mail, Message, email_dispatched
 from flask_jsglue import JSGlue
 from flask_babel import Babel, gettext
 from flask_migrate import Migrate
-from flask_compress import Compress
 from flask_track_usage import TrackUsage
+from flask_compress import Compress
 from flask_track_usage.storage.sql import SQLStorage
 
 # API imports
@@ -45,12 +47,21 @@ from views.help import help
 from views.contact import contact
 from views.api import api
 from views.whatisnew import whatisnew
+from views.admin import admin
 
 # CLI commands
-from cli import cli
+from cli import cli_api_usage
+from cli import cli_client
+from cli import cli_redis
+from cli import cli_schedules
+from cli import cli_sql
+from cli import cli_usage
+from cli import cli_users
+from cli import cli_plots
 
 # Change current working directory to main directory
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
+
 
 # Setup app
 app = Flask(__name__, template_folder="static/dist/html")
@@ -61,14 +72,30 @@ app.register_blueprint(help, url_prefix="/help")
 app.register_blueprint(contact, url_prefix="/contact")
 app.register_blueprint(api, url_prefix="/api")
 app.register_blueprint(whatisnew, url_prefix="/whatisnew")
+app.register_blueprint(admin, url_prefix="/admin")
 app.config["SECRET_KEY"] = os.environ["FLASK_SECRET_KEY"]
 jsglue = JSGlue(app)
 
 # Register new commands
-app.cli.add_command(cli.sql)
-app.cli.add_command(cli.redis)
-app.cli.add_command(cli.client)
-app.cli.add_command(cli.schedules)
+app.cli.add_command(cli_sql.sql)
+app.cli.add_command(cli_redis.redis)
+app.cli.add_command(cli_client.client)
+app.cli.add_command(cli_schedules.schedules)
+app.cli.add_command(cli_usage.usage)
+app.cli.add_command(cli_users.users)
+app.cli.add_command(cli_api_usage.api_usage)
+app.cli.add_command(cli_plots.plots)
+
+# Load REDIS TTL config
+redis_ttl_config = configparser.ConfigParser()
+redis_ttl_config.read(".redis-config-ttl.cfg")
+mode = os.environ["FLASK_ENV"]  # production of development
+
+if mode not in redis_ttl_config:
+    raise ValueError(f"Redis TTL config file is missing `{mode}` mode")
+
+redis_ttl_config = srv.parse_redis_ttl_config(redis_ttl_config[mode])
+app.config["REDIS_TTL"] = redis_ttl_config
 
 # Setup the API Manager
 app.config["ADE_API_CREDENTIALS"] = {
@@ -83,6 +110,7 @@ manager = mng.Manager(
     ade.Client(app.config["ADE_API_CREDENTIALS"]),
     srv.Server(host="localhost", port=6379),
     md.db,
+    redis_ttl_config,
 )
 app.config["MANAGER"] = manager
 
@@ -94,6 +122,35 @@ app.config["MAIL_USERNAME"] = os.environ["MAIL_USERNAME"]
 app.config["MAIL_PASSWORD"] = os.getenv("MAIL_PASSWORD", None)
 app.config["MAIL_DEFAULT_SENDER"] = os.environ["MAIL_USERNAME"]
 app.config["ADMINS"] = [os.environ["MAIL_ADMIN"]]
+
+# Allows compression of text assets
+# Production server has integrated compression support
+if app.env == "development":
+    compress = Compress(app)
+
+for optional, default in [("MAIL_DISABLE", False), ("MAIL_SEND_ERRORS", True)]:
+    if optional in os.environ:
+        app.config[optional] = bool(distutils.util.strtobool(os.environ[optional]))
+    else:
+        app.config[optional] = default
+
+
+def log_mail_message(message, app):
+    """If mails are disabled, their content will be outputted in the debug output"""
+    app.logger.debug(
+        f"A mail was supposed to be send:\n"
+        f"[SUBJECT]:\n{message.subject}\n"
+        f"[BODY]:\n{message.body}\n"
+        f"[END]"
+    )
+
+
+if app.config["MAIL_DISABLE"]:
+    app.config["MAIL_DEBUG"] = True
+    app.config["MAIL_SUPPRESS_SEND"] = True
+    email_dispatched.connect(log_mail_message)
+
+
 app.config["MAIL_MANAGER"] = Mail(app)
 
 # Setup Flask-SQLAlchemy
@@ -103,6 +160,7 @@ manager.database.init_app(app)
 migrate = Migrate(app, manager.database)
 
 # Setup Flask-Security
+app.config["SECURITY_TRACKABLE"] = True
 app.config["SECURITY_CONFIRMABLE"] = True
 app.config["SECURITY_REGISTERABLE"] = True
 app.config["SECURITY_CHANGEABLE"] = True
@@ -118,7 +176,7 @@ app.config["SECURITY_MANAGER"] = Security(
 # Setup Flask-Session
 app.config["SESSION_TYPE"] = "redis"
 app.config["SESSION_REDIS"] = manager.server
-app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=100)
+app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(**redis_ttl_config["user_session"])
 app.config["SESSION_MANAGER"] = Session(app)
 
 # Setup Flask-TrackUsage
@@ -128,11 +186,6 @@ app.config["TRACK_USAGE_INCLUDE_OR_EXCLUDE_VIEWS"] = "exclude"
 with app.app_context():
     storage = SQLStorage(db=manager.database)
 t = TrackUsage(app, storage)
-
-# Allows compression of text assets
-# If the production server has automatic compression, comment this line,
-# which is the case for the server on which ADE-Scheduler runs.
-# compress = Compress(app)
 
 # Setup Flask-Babel
 app.config["LANGUAGES"] = ["en", "fr"]
@@ -182,6 +235,10 @@ def before_first_request():
 # Reset current schedule on user logout
 @user_logged_out.connect_via(app)
 def when_user_logged_out(sender, user):
+    # When pressing confirmation link, somehow this function is triggered
+    # without an initialised session...
+    utl.init_session()
+
     if session["current_schedule"].id is not None:
         user.set_last_schedule_id(session["current_schedule"].id)
 
@@ -241,7 +298,7 @@ def update_notification(link):
 # Error handlers
 @app.errorhandler(InternalServerError)
 def handle_exception(e):
-    if not app.debug:
+    if not app.debug and app.config["MAIL_SEND_ERRORS"]:
         error = e.original_exception
         error_request = f"{request.path} [{request.method}]"
         error_module = error.__class__.__module__
@@ -281,6 +338,7 @@ def page_not_found(e):
 def make_shell_context():
     return {
         "db": md.db,
+        "Role": md.Role,
         "Property": md.Property,
         "Schedule": md.Schedule,
         "Link": md.Link,
