@@ -223,11 +223,11 @@ class Client(DummyClient):
 
         headers = {"Authorization": "Bearer " + self.token}
 
-        function = kwargs.pop("function")
+        function = kwargs.pop("function", None)
         if function == "projects":
             url = "https://api.sgsi.ucl.ac.be:8243/ade/v0/projects"
         else:
-            project_id = kwargs.pop("projectId")
+            project_id = kwargs.pop("projectId", None)
             args = "&".join("=".join(map(str, _)) for _ in kwargs.items())
             url = f"https://api.sgsi.ucl.ac.be:8243/ade/v0/projects/{project_id}/{function}?{args}"
 
