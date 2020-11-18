@@ -47,10 +47,7 @@ credentials:
 
 .. code-block:: bash
 
-    ADE_SECRET_KEY = <secret key in bytes>
     ADE_URL = <url to get token>
-    ADE_USER = <user>
-    ADE_PASSWORD = <password>
     ADE_DATA = <grant_type>
     ADE_AUTHORIZATION = <authorization access>
 
