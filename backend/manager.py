@@ -1,7 +1,5 @@
-from multiprocessing import Process
 import pandas as pd
-import time
-from typing import List, Iterator, Optional, Union, Dict
+from typing import List, Iterator, Optional, Union, Dict, Tuple
 
 import backend.servers as srv
 import backend.ade_api as ade
@@ -35,12 +33,17 @@ class Manager:
     :type server: server.Server
     :param database: the database
     :type database: md.SQLAlchemy
+    :param ttl: a dictionary mapping keys in server to their default time-to-live value
+    :type ttl: Dict
     """
 
-    def __init__(self, client: ade.Client, server: srv.Server, database: md.SQLAlchemy):
+    def __init__(
+        self, client: ade.Client, server: srv.Server, database: md.SQLAlchemy, ttl: Dict
+    ):
         self.server = server
         self.client = client
         self.database = database
+        self.ttl = ttl
 
     def get_courses(self, *codes: str, project_id: str = None) -> List[crs.Course]:
         """
@@ -72,7 +75,9 @@ class Manager:
                     self.client.get_activities(resource_ids, project_id)
                 )
                 self.server.set_value(
-                    prefix + code_not_found, course_not_found, expire_in={"hours": 3}
+                    prefix + code_not_found,
+                    course_not_found,
+                    expire_in=self.ttl["courses"],
                 )
                 courses += course_not_found
 
@@ -101,7 +106,7 @@ class Manager:
         events = ade.response_to_events(
             self.client.get_activities([classroom_id], project_id), filter_func
         )
-        self.server.set_value(key, events, expire_in={"hours": 3})
+        self.server.set_value(key, events, expire_in=self.ttl["events_in_classroom"])
         return events
 
     def get_resources(self, project_id: str = None) -> pd.DataFrame:
@@ -136,7 +141,7 @@ class Manager:
             key = f"[RESOURCES,project_id={value}]"
 
             resources = ade.response_to_resources(self.client.get_resources(value))
-            self.server.set_value(key, resources, expire_in={"hours": 25})
+            self.server.set_value(key, resources, expire_in=self.ttl["resources"])
 
     def get_course_resources(self, project_id: str = None) -> pd.DataFrame:
         """
@@ -169,7 +174,9 @@ class Manager:
             value = value.decode()
             key = f"[COURSE_RESOURCES,project_id={value}]"
 
-            resources = self.get_resources(project_id=value)
+            resources = ade.response_to_course_resources(
+                self.client.get_course_resources(project_id=value)
+            )
             resource_types = resources[rsrc.INDEX.TYPE]
             index = (resource_types == rsrc.TYPES.COURSE) | (
                 resource_types == rsrc.TYPES.COURSE_COMBO
@@ -177,7 +184,9 @@ class Manager:
             course_resources = resources[index].copy()
             code = rsrc.INDEX.CODE
             course_resources[code] = course_resources[code].apply(str.upper)
-            self.server.set_value(key, course_resources, expire_in={"hours": 25})
+            self.server.set_value(
+                key, course_resources, expire_in=self.ttl["course_resources"]
+            )
 
     def get_codes_matching(self, pattern: str, project_id: str = None) -> List[str]:
         # Actually returns names matchings :)
@@ -238,7 +247,7 @@ class Manager:
 
             classrooms = clrm.prettify_classrooms(classrooms)
 
-            self.server.set_value(key, classrooms, expire_in={"hours": 25})
+            self.server.set_value(key, classrooms, expire_in=self.ttl["classrooms"])
 
     def get_resource_ids(self, *codes: str, project_id: str = None) -> Iterator[str]:
         """
@@ -273,7 +282,9 @@ class Manager:
             resource_ids = ade.response_to_resource_ids(
                 self.client.get_resource_ids(value)
             )
-            self.server.set_value(key, resource_ids, expire_in={"hours": 25}, hmap=True)
+            self.server.set_value(
+                key, resource_ids, expire_in=self.ttl["resource_ids"], hmap=True
+            )
 
     def code_exists(self, code, project_id: str = None) -> bool:
         """
@@ -319,7 +330,9 @@ class Manager:
         """
         key = "[PROJECT_IDs]"
         project_ids = ade.response_to_project_ids(self.client.get_project_ids())
-        self.server.set_value(key, project_ids, expire_in={"hours": 25}, hmap=True)
+        self.server.set_value(
+            key, project_ids, expire_in=self.ttl["project_ids"], hmap=True
+        )
 
     def get_default_project_id(self) -> str:
         """
@@ -378,3 +391,17 @@ class Manager:
             return query.link.link
         else:
             return None
+
+    def get_plots(self) -> List[Tuple[str, dict]]:
+        """
+        Returns all the (key, plot) pairs stored in the server.
+        Plots are json dictionary generated using Plotly.
+
+        :return: the pairs of (key, plot) that were stored in the server
+        :rtype: List[Tuple[str, dict]]
+        """
+        plots = []
+        for key in self.server.scan_iter(match="*PLOT*"):
+            plots.append({"id": key.decode(), "data": self.server.get_value(key)})
+
+        return plots

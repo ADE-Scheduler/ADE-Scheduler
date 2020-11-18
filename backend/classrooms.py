@@ -1,4 +1,4 @@
-from typing import Iterable, Union
+from typing import Iterable, Union, Dict
 import pandas as pd
 import backend.resources as rsrc
 from geopy.geocoders import Nominatim
@@ -45,12 +45,25 @@ class Address:
         return location
 
 
-def get_geo_locations():
+def get_geo_locations() -> Dict:
+    """
+    Returns the dictionary mapping each address to its geo-location.
+
+    :return: the geo-locations
+    :rtype: Dict
+    """
     with open("static/json/geo_locations.json", "r") as f:
         return json.load(f)
 
 
-def save_geo_locations(geo_locations: dict):
+def save_geo_locations(geo_locations: Dict):
+    """
+    Saves the dictionary of geo-locations into a json file with pretty indent.
+    This file can be manually edited without causing any problem.
+
+    :param geo_locations: the geo-locations
+    :type geo_locations: Dict
+    """
     with open("static/json/geo_locations.json", "w") as f:
         json.dump(geo_locations, f, sort_keys=True, indent=4)
 
@@ -59,10 +72,17 @@ def prettify_classrooms(classrooms: pd.DataFrame, sleep: float = 0) -> pd.DataFr
     """
     Returns the classrooms dataframe in a pretty format, useful when need to display.
 
-    The function will request, for every different address, a geo-localisation, so it can take some times.
-    If too many requests are done, Nominatim will not like so prefer to put a time.sleep between each request.
+    The function will request, for every different address, a geo-localisation,
+    so it can take some times.
+    If too many requests are done, Nominatim will not like it so prefer to put a
+    time.sleep between each request.
 
     :param classrooms: the classrooms with fields defined in backend.resources.py
+    :type classrooms: pd.DataFrame
+    :param sleep: the sleep duration between each address request
+    :type sleep: float
+    :return: the classrooms in a prettier format and with geo-location information
+    :rtype: pd.DataFrame
     """
 
     geolocator = Nominatim(user_agent="ADE_SCHEDULER")
@@ -114,7 +134,6 @@ def prettify_classrooms(classrooms: pd.DataFrame, sleep: float = 0) -> pd.DataFr
     return classrooms.apply(__geoloc__, axis=1, result_type="expand")
 
 
-# TODO: fix the fact that activities in Course class cannot be output in a shell (replace('\\', '\\\\') is not defined)
 class Classroom:
     """
     Classroom object containing the address (as string or Address object), the name of the classroom and its id.

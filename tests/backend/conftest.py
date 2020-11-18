@@ -26,11 +26,13 @@ def project_id(ade_client):
     return project_ids.popitem()[1]
 
 
+""" Until further notice, not used
 @pytest.fixture
 def resources(ade_client, project_id):
     resp = ade_client.get_resources(project_id)
 
     return ade.response_to_resources(resp)
+"""
 
 
 @pytest.fixture
