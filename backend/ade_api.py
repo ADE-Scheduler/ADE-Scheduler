@@ -94,7 +94,7 @@ class DummyClient:
         :return: the response
         :rtype: request.Response
         """
-        return self.request(function="getProjects", detail=2)
+        return self.request(function="projects", detail=2)
 
     def get_resources(self, project_id: str) -> requests.Response:
         """
@@ -113,7 +113,7 @@ class DummyClient:
             DeprecationWarning,
         )
         return self.request(
-            projectId=project_id, function="getResources", detail=13, tree="false"
+            projectId=project_id, function="resources", detail=13, tree="false"
         )
 
     def get_course_resources(
@@ -129,14 +129,14 @@ class DummyClient:
         """
         course_resources = self.request(
             projectId=project_id,
-            function="getResources",
+            function="resources",
             detail=11,
             tree="false",
             category=rsrc.TYPES.COURSE,
         )
         course_combo_resources = self.request(
             projectId=project_id,
-            function="getResources",
+            function="resources",
             detail=11,
             tree="false",
             category=rsrc.TYPES.COURSE_COMBO,
@@ -153,7 +153,7 @@ class DummyClient:
         :return: the response
         :rtype: request.Response
         """
-        return self.request(projectId=project_id, function="getResources", detail=2)
+        return self.request(projectId=project_id, function="resources", detail=2)
 
     def get_classrooms(self, project_id: str) -> requests.Response:
         """
@@ -166,7 +166,7 @@ class DummyClient:
         """
         return self.request(
             projectId=project_id,
-            function="getResources",
+            function="resources",
             detail=13,
             tree="false",
             category="classroom",
@@ -187,7 +187,7 @@ class DummyClient:
         """
         return self.request(
             projectId=project_id,
-            function="getActivities",
+            function="activities",
             tree="false",
             detail=17,
             resources="|".join(map(str, resource_ids)),
@@ -224,16 +224,15 @@ class Client(DummyClient):
         headers = {"Authorization": "Bearer " + self.token}
         user = self.credentials["user"]
         password = self.credentials["password"]
-        args = "&".join("=".join(map(str, _)) for _ in kwargs.items())
 
-        url = (
-            "https://api.sgsi.ucl.ac.be:8243/ade/v0/api?login="
-            + user
-            + "&password="
-            + password
-            + "&"
-            + args
-        )
+        function = kwargs.pop("function")
+        if function == "projects":
+            url = "https://api.sgsi.ucl.ac.be:8243/ade/v0/projects"
+        else:
+            project_id = kwargs.pop("projectId")
+            args = "&".join("=".join(map(str, _)) for _ in kwargs.items())
+            url = f"https://api.sgsi.ucl.ac.be:8243/ade/v0/projects/{project_id}/{function}?{args}"
+
         resp = requests.get(url=url, headers=headers)
 
         md.ApiUsage(url, resp)
