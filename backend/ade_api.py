@@ -222,8 +222,6 @@ class Client(DummyClient):
             self.renew_token()
 
         headers = {"Authorization": "Bearer " + self.token}
-        user = self.credentials["user"]
-        password = self.credentials["password"]
 
         function = kwargs.pop("function")
         if function == "projects":
