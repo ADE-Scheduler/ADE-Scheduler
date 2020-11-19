@@ -330,8 +330,6 @@ def get_token(credentials: ClientCredentials) -> Tuple[str, int]:
     header = {"Authorization": authorization}
     resp = requests.post(url=url, headers=header, data=data)
 
-    print(resp.content)
-
     if current_app:  # To prevent error on app initilisation where a token is requested
         md.ApiUsage("token", resp)
     resp.raise_for_status()
