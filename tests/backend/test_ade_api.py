@@ -5,149 +5,155 @@ from strong.core.decorators import assert_correct_typing
 
 class TestDummyClientImplementation:
     @staticmethod
-    def test_is_expired(ade_client):
+    def test_is_expired(ade_client, app):
 
-        func = assert_correct_typing(ade_client.is_expired)
-        got = func()
-        expected = ade_client.expiration < time()
+        with app.app_context():
+            func = assert_correct_typing(ade_client.is_expired)
+            got = func()
+            expected = ade_client.expiration < time()
 
-        assert got == expected
-
-    @staticmethod
-    def test_expire_in(ade_client):
-
-        func = assert_correct_typing(ade_client.expire_in)
-        t1 = time()
-        got = func()
-        expected = max(ade_client.expiration - time(), 0)
-        t2 = time()
-        dt = t2 - t1
-
-        assert abs(got - expected) < dt
+            assert got == expected
 
     @staticmethod
-    def renew_token(ade_client):
+    def test_expire_in(ade_client, app):
 
-        func = assert_correct_typing(ade_client.renew_token)
-        got, _ = func()
+        with app.app_context():
+            func = assert_correct_typing(ade_client.expire_in)
+            t1 = time()
+            got = func()
+            expected = max(ade_client.expiration - time(), 0)
+            t2 = time()
+            dt = t2 - t1
+
+            assert abs(got - expected) < dt
+
+    @staticmethod
+    def renew_token(ade_client, app):
+
+        with app.app_context():
+            func = assert_correct_typing(ade_client.renew_token)
+            got, _ = func()
+
+            assert got is not None
+
+    @staticmethod
+    def test_request(ade_client, app):
+
+        with app.app_context():
+            func = assert_correct_typing(ade_client.request)
+            got = func(function="projects")
+
+            assert got is not None
+
+
+def test_get_token(ade_client, app):
+
+    with app.app_context():
+        func = assert_correct_typing(ade.get_token)
+
+        got, _ = func(ade_client.credentials)
 
         assert got is not None
 
-    @staticmethod
-    def test_request(ade_client):
 
-        func = assert_correct_typing(ade_client.request)
-        got = func()
+def test_all_requests(ade_client, app):
 
-        assert got is not None
+    with app.app_context():
+        # 1. Project ids
 
-
-def test_get_token(ade_client):
-
-    func = assert_correct_typing(ade.get_token)
-
-    got, _ = func(ade_client.credentials)
-
-    assert got is not None
-
-
-def test_all_requests(ade_client):
-
-    # 1. Project ids
-
-    resp = assert_correct_typing(ade_client.get_project_ids)()
-
-    assert resp is not None
-
-    project_ids = assert_correct_typing(ade.response_to_project_ids)(resp)
-
-    assert project_ids is not None
-
-    for value in project_ids.values():
-        project_id = value
-
-    # 2. Resources
-
-    if False:  # We avoid getting all resources if this function is not used
-        resp = assert_correct_typing(ade_client.get_resources)(project_id)
+        resp = assert_correct_typing(ade_client.get_project_ids)()
 
         assert resp is not None
 
-        resources = assert_correct_typing(ade.response_to_resources)(resp)
+        project_ids = assert_correct_typing(ade.response_to_project_ids)(resp)
 
-        assert resources is not None
+        assert project_ids is not None
 
-    # 3. Resource ids
+        for value in project_ids.values():
+            project_id = value
 
-    resp = assert_correct_typing(ade_client.get_resource_ids)(project_id)
+        # 2. Resources
 
-    assert resp is not None
+        if False:  # We avoid getting all resources if this function is not used
+            resp = assert_correct_typing(ade_client.get_resources)(project_id)
 
-    resource_ids = assert_correct_typing(ade.response_to_resource_ids)(resp)
+            assert resp is not None
 
-    assert resource_ids is not None
+            resources = assert_correct_typing(ade.response_to_resources)(resp)
 
-    # 4. Classrooms, root and room to classroom
+            assert resources is not None
 
-    resp = assert_correct_typing(ade_client.get_classrooms)(project_id)
+        # 3. Resource ids
 
-    assert resp is not None
+        resp = assert_correct_typing(ade_client.get_resource_ids)(project_id)
 
-    classrooms = assert_correct_typing(ade.response_to_classrooms)(resp)
+        assert resp is not None
 
-    assert classrooms is not None
+        resource_ids = assert_correct_typing(ade.response_to_resource_ids)(resp)
 
-    root = assert_correct_typing(ade.response_to_root)(resp)
+        assert resource_ids is not None
 
-    assert root is not None
+        # 4. Classrooms, root and room to classroom
 
-    rooms = root.xpath("//room")
+        resp = assert_correct_typing(ade_client.get_classrooms)(project_id)
 
-    classroom = assert_correct_typing(ade.room_to_classroom)(rooms[0])
+        assert resp is not None
 
-    assert classroom is not None
+        classrooms = assert_correct_typing(ade.response_to_classrooms)(resp)
 
-    # 5. Courses, parsing events and activities
+        assert classrooms is not None
 
-    ids = [
-        resource_ids[course]
-        for course in ["LEPL1101", "LEPL1102", "LEPL1103", "LEPL1104"]
-    ]
+        root = assert_correct_typing(ade.response_to_root)(resp)
 
-    resp = assert_correct_typing(ade_client.get_activities)(ids, project_id)
+        assert root is not None
 
-    assert resp is not None
+        rooms = root.xpath("//room")
 
-    courses = assert_correct_typing(ade.response_to_courses)(resp)
+        classroom = assert_correct_typing(ade.room_to_classroom)(rooms[0])
 
-    assert courses is not None
+        assert classroom is not None
 
-    # TODO: test real filtering
+        # 5. Courses, parsing events and activities
 
-    from backend.events import AcademicalEvent
+        ids = [
+            resource_ids[course]
+            for course in ["LEPL1101", "LEPL1102", "LEPL1103", "LEPL1104"]
+        ]
 
-    def filter_func(e: AcademicalEvent) -> bool:
-        return True
+        resp = assert_correct_typing(ade_client.get_activities)(ids, project_id)
 
-    activities = assert_correct_typing(ade.response_to_events)(resp, filter_func)
+        assert resp is not None
 
-    assert activities is not None
+        courses = assert_correct_typing(ade.response_to_courses)(resp)
 
-    root = ade.response_to_root(resp)
+        assert courses is not None
 
-    activities = root.xpath("//activity")
+        # TODO: test real filtering
 
-    activity = assert_correct_typing(ade.parse_activity)(activities[0])
+        from backend.events import AcademicalEvent
 
-    assert activity is not None
+        def filter_func(e: AcademicalEvent) -> bool:
+            return True
 
-    events = list()
+        activities = assert_correct_typing(ade.response_to_events)(resp, filter_func)
 
-    for activity in activities:
-        events.extend(activity.xpath(".//event"))
+        assert activities is not None
 
-    event = assert_correct_typing(ade.parse_event)(
-        events[0], AcademicalEvent, "", "", ""
-    )
+        root = ade.response_to_root(resp)
 
-    assert event is not None
+        activities = root.xpath("//activity")
+
+        activity = assert_correct_typing(ade.parse_activity)(activities[0])
+
+        assert activity is not None
+
+        events = list()
+
+        for activity in activities:
+            events.extend(activity.xpath(".//event"))
+
+        event = assert_correct_typing(ade.parse_event)(
+            events[0], AcademicalEvent, "", "", ""
+        )
+
+        assert event is not None
