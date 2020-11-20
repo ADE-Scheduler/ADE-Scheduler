@@ -1,7 +1,6 @@
 import click
 import backend.models as md
 
-import plotly.graph_objects as go
 import plotly.express as px
 
 from flask import current_app as app
@@ -17,22 +16,20 @@ def api_usage():
 @api_usage.command()
 @with_appcontext
 def plot_requests_hist():
-    colors = px.colors.qualitative.Plotly
-    fig = go.Figure()
 
     click.echo("Reading datase...")
-    df = md.table_to_dataframe(md.ApiUsage)
+    df = md.table_to_dataframe(md.ApiUsage, columns=["status", "datetime"])
 
     click.echo("Generating plot...")
-    figs = df.groupby("status").datetime.hist(bins=100, legend=True, backend="plotly")
 
-    i = 0
-    for figure in figs:
-        for trace in figure.select_traces():
-            trace.marker.color = colors[i]
-            fig.add_trace(trace)
+    md.reformat_status_in_dataframe(df)
 
-            i += 1
+    fig = px.histogram(
+        df,
+        x="datetime",
+        color="status",
+        nbins=100
+    )
 
     fig.update_layout(
         title="ADE Api requests per status",
