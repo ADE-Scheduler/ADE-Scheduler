@@ -30,7 +30,7 @@ def test_get_events(client, manager):
     for item in manager.get_project_ids():
         project_id, year = item.values()
 
-        params = dict(code="ELME2M", year=year, view=False)
+        params = dict(code="ELME2M", year=year, view=True)
         rv = client.get(
             url_for("api.get_events"), query_string=params, follow_redirects=True
         )
@@ -39,7 +39,7 @@ def test_get_events(client, manager):
         assert session["current_schedule"].project_id == project_id
 
     # Test if the "year" param defaults correctly when not specified
-    params = dict(code="ELME2M", view=False)
+    params = dict(code="ELME2M", view=True)
     rv = client.get(
         url_for("api.get_events"), query_string=params, follow_redirects=True
     )
