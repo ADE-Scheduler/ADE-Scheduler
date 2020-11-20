@@ -2,6 +2,7 @@ import click
 import pickle as pkl
 
 from flask.cli import with_appcontext
+from flask import current_app as app
 from sqlalchemy import func
 
 import backend.models as md
