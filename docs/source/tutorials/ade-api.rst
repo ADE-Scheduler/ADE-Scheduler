@@ -61,10 +61,7 @@ To use this fake API, you will need to modify the :code:`<repo>/.flaskenv`
 
 .. code-block:: bash
 
-    ADE_SECRET_KEY = <leave empty>
     ADE_URL = <leave empty>
-    ADE_USER = <leave empty>
-    ADE_PASSWORD = <leave empty>
     ADE_DATA = <leave empty>
     ADE_AUTHORIZATION = <leave empty>
 
