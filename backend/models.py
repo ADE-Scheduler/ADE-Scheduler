@@ -55,6 +55,17 @@ def table_to_dataframe(table: db.Model, *args: Any, **kwargs: Any) -> pd.DataFra
     return pd.read_sql(table.query.statement, table.query.session.bind, *args, **kwargs)
 
 
+def reformat_status_in_dataframe(df: pd.DataFrame):
+    """
+    Modifies in-place a dataframe in order to replace status (int) to
+    status (str) with format 2XX, 4XX, 5XX, etc.
+
+    :param df: the dataframe containing a status column
+    :type df: pd.DataFrame
+    """
+    df.status = df.status.astype(str).str.replace(r"([0-9])[0-9][0-9]", r"\1XX")
+
+
 class GUID(TypeDecorator):
     """
     Platform-independent GUID type.
