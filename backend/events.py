@@ -376,30 +376,34 @@ def extract_type(course_type: str, course_id: str) -> Type[AcademicalEvent]:
     :return: the type of the event
     :rtype: Type[AcademicalEvent]
     """
-    # We first try to detect the type with the ID regex
+    # TODO: handle lab type
 
-    if re.search(COURSE_REGEX + r"\-", course_id, re.IGNORECASE):
+    # We look at the given type (there are some mistakes in the data from ADE,
+    # not always trustworthy)
+    if course_type == "Cours magistral":
         return EventCM
-    elif re.search(COURSE_REGEX + "_", course_id, re.IGNORECASE):
+    elif course_type == "TP" or course_type == "TD":
         return EventTP
+    elif (
+        course_type == "Examen écrit" or
+        course_type == "Test / Interrogation / Partiel" or
+        course_type == "Examen écrit et oral"
+    ):
+        return EventEXAM
+    elif course_type == "Examen oral":
+        return EventORAL
+
+    # Then try regex matching
     elif re.search(COURSE_REGEX + "=E", course_id, re.IGNORECASE) or re.search(
         COURSE_REGEX + "=P", course_id, re.IGNORECASE
     ):
         return EventEXAM
     elif re.search(COURSE_REGEX + "=O", course_id, re.IGNORECASE):
         return EventORAL
-
-    # If it fails, we look at the given type (there are some mistakes in the data from ADE, not always trustworthy)
-    elif course_type == "Cours magistral":
+    elif re.search(COURSE_REGEX + r"\-", course_id, re.IGNORECASE):
         return EventCM
-    elif course_type == "TP" or "TD":
+    elif re.search(COURSE_REGEX + "_", course_id, re.IGNORECASE):
         return EventTP
-    elif (
-        course_type == "Examen écrit" or course_type == "Test / Interrogation / Partiel"
-    ):
-        return EventEXAM
-    elif course_type == "Examen oral":
-        return EventORAL
 
     # The search failed, return the "Other" type
     else:
