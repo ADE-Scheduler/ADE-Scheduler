@@ -99,9 +99,6 @@ app.config["REDIS_TTL"] = redis_ttl_config
 
 # Setup the API Manager
 app.config["ADE_API_CREDENTIALS"] = {
-    "user": os.environ["ADE_USER"],
-    "password": os.environ["ADE_PASSWORD"],
-    "secret_key": os.environ["ADE_SECRET_KEY"],
     "url": os.environ["ADE_URL"],
     "data": os.environ["ADE_DATA"],
     "Authorization": os.environ["ADE_AUTHORIZATION"],

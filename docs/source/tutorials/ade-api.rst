@@ -47,10 +47,7 @@ credentials:
 
 .. code-block:: bash
 
-    ADE_SECRET_KEY = <secret key in bytes>
     ADE_URL = <url to get token>
-    ADE_USER = <user>
-    ADE_PASSWORD = <password>
     ADE_DATA = <grant_type>
     ADE_AUTHORIZATION = <authorization access>
 
@@ -64,10 +61,7 @@ To use this fake API, you will need to modify the :code:`<repo>/.flaskenv`
 
 .. code-block:: bash
 
-    ADE_SECRET_KEY = <leave empty>
     ADE_URL = <leave empty>
-    ADE_USER = <leave empty>
-    ADE_PASSWORD = <leave empty>
     ADE_DATA = <leave empty>
     ADE_AUTHORIZATION = <leave empty>
 
