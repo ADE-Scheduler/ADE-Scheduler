@@ -52,7 +52,7 @@ def table_to_dataframe(table: db.Model, *args: Any, **kwargs: Any) -> pd.DataFra
     :return: a dataframe of table
     :rtype: pd.DataFrame
     """
-    return pd.read_sql(table.query.statement, table.query.session.bind, *args, **kwargs)
+    return pd.read_sql(table.__tablename__, table.query.session.bind, *args, **kwargs)
 
 
 def reformat_status_in_dataframe(df: pd.DataFrame):
