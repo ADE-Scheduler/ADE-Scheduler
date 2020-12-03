@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-11-13 16:06+0100\n"
+"POT-Creation-Date: 2020-12-03 11:11+0100\n"
 "PO-Revision-Date: 2020-07-24 16:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -16,17 +16,17 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.8.0\n"
+"Generated-By: Babel 2.9.0\n"
 
-#: app.py:278
+#: app.py:314
 msgid "An error has occurred"
 msgstr "Il y a eu une erreur"
 
-#: app.py:287
+#: app.py:323
 msgid "Resource not found"
 msgstr "Ressource non trouvée"
 
-#: app.py:291
+#: app.py:327
 msgid "404 Page not found :("
 msgstr "404 Page non trouvée :("
 
@@ -91,9 +91,9 @@ msgstr "Annuler"
 msgid "Continue"
 msgstr "Continuer"
 
-#: templates/account.html:35 templates/calendar.html:544
-#: templates/classroom.html:34 templates/dist/account.html:35
-#: templates/dist/calendar.html:346
+#: templates/account.html:35 templates/admin.html:14
+#: templates/calendar.html:544 templates/classroom.html:34
+#: templates/dist/account.html:35 templates/dist/calendar.html:346
 msgid "A problem has occurred. Please contact us if it happens again."
 msgstr ""
 "Oops, il y a eu un problème ! Veuillez nous contacter si ça se reproduit "
@@ -229,15 +229,15 @@ msgstr "Nouveautés"
 msgid "Contact us"
 msgstr "Contact"
 
-#: templates/base.html:134 templates/dist/base.html:67
+#: templates/base.html:139 templates/dist/base.html:67
 msgid "Logout"
 msgstr "Déconnexion"
 
-#: templates/base.html:138 templates/dist/base.html:71
+#: templates/base.html:143 templates/dist/base.html:71
 msgid "Login"
 msgstr "Connexion"
 
-#: templates/base.html:139 templates/dist/base.html:72
+#: templates/base.html:144 templates/dist/base.html:72
 msgid "Register"
 msgstr "Inscription"
 
@@ -423,20 +423,20 @@ msgstr "Nouveau"
 msgid "Schedule successfuly saved !"
 msgstr "Horaire sauvegardé avec succès !"
 
-#: templates/calendar.html:551 templates/dist/calendar.html:355
+#: templates/calendar.html:551
 msgid ""
-"Disclaimer: this software is not an official UCLouvain tool. It has been "
-"designed with the purpose to help the EPL students with scheduling. This "
-"tool is based on ADE but does not replace standard scheduling rules, nor "
-"the instructions given by university officials and teachers as those may "
-"vary from one course to another."
+"Disclaimer: ADE Scheduler is not an official UCLouvain tool. It has been "
+"designed with the purpose to help the UCLouvain students with scheduling."
+" This tool is based on ADE UCL but does not replace standard scheduling "
+"rules, nor the instructions given by university officials and teachers as"
+" those may vary from one course to another."
 msgstr ""
-"Attention: ce software n'est pas un outil officiel de l'UCLouvain. Il a "
-"été développé dans le but d'aider les étudiants de l'EPL pour la "
-"composition de leur horaire. Cet outil est basé sur ADE mais ne remplace "
-"ni les règles déjà existantes, les instructions données par l'université "
-"et les professeurs, car ces informations peuvent changer d'un cours à un "
-"autre"
+"Attention: ADE Scheduler n'est pas un outil officiel de l'UCLouvain. Il a"
+" été développé dans le but d'aider les étudiants de l'UCLouvain pour la "
+"composition de leur horaire. Cet outil est basé sur ADE UCL mais ne "
+"remplace ni les règles déjà existantes, les instructions données par "
+"l'université et les professeurs, car ces informations peuvent changer "
+"d'un cours à un autre."
 
 #: templates/classroom.html:47
 msgid "Code"
@@ -555,7 +555,17 @@ msgstr "A propos de nous"
 #: templates/dist/help.html:38 templates/dist/help.html:126
 #: templates/help.html:40 templates/help.html:131
 msgid "Who are we ?"
-msgstr "Qui sommes-nous ?"
+msgstr ""
+"ADE Scheduler est un outil visant à fournir les mêmes informations que le"
+"\n"
+"                        <a "
+"href=\"http://horaire.uclouvain.be/direct\">site officiel d'horaires de  "
+"l'UCLouvain</a>\n"
+"mais de manière plus intuitive. Ce site offre en plus plusieurs outils "
+"comme des liens d'abonnement à des calendriers, l'organisation de vos "
+"différents horaires, le filtrage de certains évènements (par exemple CMs "
+"ou TPs), la visualisation des locaux et de leur emplacement, et bien "
+"d'autres choses encore !"
 
 #: templates/dist/help.html:57 templates/help.html:56
 msgid ""
@@ -568,16 +578,6 @@ msgid ""
 "organization, filtering unwanted events, classroom localization and so "
 "on."
 msgstr ""
-"ADE Scheduler est un outil visant à fournir les mêmes informations que le"
-"\n"
-"                        <a "
-"href=\"http://horaire.uclouvain.be/direct\">site officiel d'horaires de  "
-"l'UCLouvain</a>\n"
-"mais de manière plus intuitive. Ce site offre en plus plusieurs outils "
-"comme des liens d'abonnement à des calendriers, l'organisation de vos "
-"différents horaires, le filtrage de certains évènements (par exemple CMs "
-"ou TPs), la visualisation des locaux et de leur emplacement, et bien "
-"d'autres choses encore !"
 
 #: templates/dist/help.html:65 templates/help.html:64
 msgid ""
@@ -956,6 +956,22 @@ msgstr ""
 #: templates/dist/calendar.html:326
 msgid "Clear"
 msgstr ""
+
+#: templates/dist/calendar.html:355
+#, fuzzy
+msgid ""
+"Disclaimer: this software is not an official UCLouvain tool. It has been "
+"designed with the purpose to help the EPL students with scheduling. This "
+"tool is based on ADE but does not replace standard scheduling rules, nor "
+"the instructions given by university officials and teachers as those may "
+"vary from one course to another."
+msgstr ""
+"Attention: ADE Scheduler n'est pas un outil officiel de l'UCLouvain. Il a"
+" été développé dans le but d'aider les étudiants de l'UCLouvain pour la "
+"composition de leur horaire. Cet outil est basé sur ADE UCL mais ne "
+"remplace ni les règles déjà existantes, les instructions données par "
+"l'université et les professeurs, car ces informations peuvent changer "
+"d'un cours à un autre."
 
 #: templates/dist/help.html:74
 msgid ""
