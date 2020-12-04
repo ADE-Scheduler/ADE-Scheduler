@@ -4,7 +4,9 @@ from typing import Any
 from flask import current_app as app
 from flask import Blueprint, render_template, session, request, jsonify
 from flask_security import login_required, current_user
-from flask_babel import gettext
+from flask_babel import LazyString
+from flask._compat import text_type
+
 
 import backend.schedules as schd
 import views.utils as utl
@@ -18,6 +20,8 @@ class AccountEncoder(json.JSONEncoder):
     def default(self, obj: Any) -> Any:
         if isinstance(obj, set):
             return list(obj)
+        elif isinstance(obj, LazyString):
+            return text_type(obj)
         else:
             return json.JSONEncoder.default(self, obj)
 
@@ -62,11 +66,6 @@ def index():
 @login_required
 def get_data():
     mng = app.config["MANAGER"]
-    label = session["current_schedule"].label
-
-    if label == schd.DEFAULT_SCHEDULE_NAME:  # Translates the default schedule name
-        session["current_schedule"].label = gettext(label)
-        # Might exist a better way ...
 
     return (
         jsonify(
