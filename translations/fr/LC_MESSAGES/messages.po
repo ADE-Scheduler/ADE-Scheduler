@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-12-04 08:52+0100\n"
+"POT-Creation-Date: 2020-12-04 09:42+0100\n"
 "PO-Revision-Date: 2020-07-24 16:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -348,7 +348,7 @@ msgstr "Fin de récurrence"
 msgid "Add"
 msgstr "Ajouter"
 
-#: templates/calendar.html:385 views/calendar.py:184
+#: templates/calendar.html:385 views/calendar.py:186
 msgid "The code you added does not exist in our database."
 msgstr "Le code que vous avez entré n'existe pas dans notre base de données."
 
@@ -977,10 +977,11 @@ msgstr ""
 "Si vous ne recevez pas de mail, vérifiez votre dossier de spam. Parfois, "
 "nos mails se perdent là-dedans... :-("
 
-#: views/calendar.py:95 views/calendar.py:115
+#: views/calendar.py:97 views/calendar.py:117
 msgid "current_schedule"
 msgstr "horaire actuel"
 
-#: views/calendar.py:327 views/calendar.py:353
+#: views/calendar.py:329 views/calendar.py:355
 msgid "The schedule you requested does not exist in our database !"
 msgstr "L'horaire que vous avez demandé n'existe pas dans notre base de données !"
+
