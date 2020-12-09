@@ -44,7 +44,7 @@
     "lodash": "^4.17.20",
     "nord": "^0.2.1",
     "overlapping-marker-spiderfier-leaflet": "^0.2.7",
-    "plotly.js-dist": "^1.57.1",
+    "plotly.js-dist": "^1.58.2",
     "popper.js": "^1.16.1",
     "vue": "^2.6.12",
     "vue-swatches": "^2.1.0",
