@@ -61,8 +61,7 @@ def plot_users_hist():
     colors = px.colors.qualitative.Plotly
 
     click.echo("Reading datase...")
-    df = md.table_to_dataframe(md.User,
-                               columns=["confirmed_at"])
+    df = md.table_to_dataframe(md.User, columns=["confirmed_at"])
     df.dropna(subset=["confirmed_at"], inplace=True)
 
     fig = make_subplots(specs=[[{"secondary_y": True}]])
@@ -85,7 +84,7 @@ def plot_users_hist():
     fig.update_layout(
         title="Number of users created per datetime",
         xaxis_title="Datetime",
-        yaxis_title="Number of users"
+        yaxis_title="Number of users",
     )
 
     key = "[PLOT,context=users]users_hist"
@@ -103,8 +102,7 @@ def plot_users_hist():
 def plot_users_emails_pie():
 
     click.echo("Reading datase...")
-    df = md.table_to_dataframe(md.User,
-                               columns=["confirmed_at", "email"])
+    df = md.table_to_dataframe(md.User, columns=["confirmed_at", "email"])
     df.dropna(subset=["confirmed_at"], inplace=True)
 
     df["count"] = 1
@@ -112,9 +110,7 @@ def plot_users_emails_pie():
 
     fig = px.pie(df, values="count", names="email")
 
-    fig.update_layout(
-        title="Repartition of accounts across email domains",
-    )
+    fig.update_layout(title="Repartition of accounts across email domains")
 
     key = "[PLOT,context=users]users_emails_pie"
     server = app.config["MANAGER"].server

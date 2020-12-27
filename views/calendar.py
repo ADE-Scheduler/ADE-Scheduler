@@ -461,7 +461,7 @@ def update_color():
 def reset_color():
     session["current_schedule"].reset_color_palette()
 
-    schedule_number = int(request.args.get("schedule_number"))
+    schedule_number = int(request.json.get("schedule_number"))
     session["current_schedule_modified"] = True
     return (
         jsonify(

@@ -191,4 +191,3 @@ Here are listed some interesting readings about Sphinx's documentation tool:
 * https://sphinx-rtd-tutorial.readthedocs.io/en/latest/docstrings.html
 * https://thomas-cokelaer.info/tutorials/sphinx/docstring_python.html
 * https://thomas-cokelaer.info/tutorials/sphinx/rest_syntax.html
-

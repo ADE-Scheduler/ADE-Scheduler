@@ -984,4 +984,3 @@ msgstr "horaire actuel"
 #: views/calendar.py:329 views/calendar.py:355
 msgid "The schedule you requested does not exist in our database !"
 msgstr "L'horaire que vous avez demandé n'existe pas dans notre base de données !"
-

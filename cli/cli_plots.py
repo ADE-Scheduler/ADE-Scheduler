@@ -7,7 +7,7 @@ F_PLOTS = {
     "api-usage-requests-hist": plot_requests_hist,
     "requests-per-blueprint-hist": plot_requests_per_blueprint_hist,
     "users-hist": plot_users_hist,
-    "users-emails-pie": plot_users_emails_pie
+    "users-emails-pie": plot_users_emails_pie,
 }
 
 
@@ -23,7 +23,7 @@ def plots():
     "--select",
     type=click.Choice(["all"] + list(F_PLOTS.keys()), case_sensitive=False),
     default="all",
-    help="Generate a plot for a given function. By default, will generate all plots."
+    help="Generate a plot for a given function. By default, will generate all plots.",
 )
 @click.pass_context
 def generate(ctx, select):
@@ -34,4 +34,3 @@ def generate(ctx, select):
     else:
         f = F_PLOTS[select]
         ctx.invoke(f)
-
