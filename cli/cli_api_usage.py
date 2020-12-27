@@ -24,12 +24,7 @@ def plot_requests_hist():
 
     md.reformat_status_in_dataframe(df)
 
-    fig = px.histogram(
-        df,
-        x="datetime",
-        color="status",
-        nbins=100
-    )
+    fig = px.histogram(df, x="datetime", color="status", nbins=100)
 
     fig.update_layout(
         title="ADE Api requests per status",

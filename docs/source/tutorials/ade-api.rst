@@ -68,5 +68,3 @@ To use this fake API, you will need to modify the :code:`<repo>/.flaskenv`
     ADE_FAKE_API = true
 
 .. ade-api setup end
-
-

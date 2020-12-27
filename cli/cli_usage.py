@@ -62,47 +62,35 @@ def plot_requests_per_blueprint_hist():
     buttons = []
 
     fig.add_trace(go.Histogram(x=df.datetime))
-    buttons.append(dict(
-        method="restyle",
-        label="all",
-        visible=True,
-        args=[
-            dict(
-                x=[df.datetime],
-                type="histogram"
-            ), [0]
-        ]
-    ))
+    buttons.append(
+        dict(
+            method="restyle",
+            label="all",
+            visible=True,
+            args=[dict(x=[df.datetime], type="histogram"), [0]],
+        )
+    )
     grps = df.groupby("blueprint").datetime
 
     for grp, data in grps:
 
-        buttons.append(dict(
-            method="restyle",
-            label=grp,
-            visible=True,
-            args=[
-                dict(
-                    x=[data],
-                    type="histogram"
-                ), [0]
-            ]
-        ))
-
-    updatemenus = [
-        dict(
-            buttons=buttons,
-            direction="down",
-            showactive=True
+        buttons.append(
+            dict(
+                method="restyle",
+                label=grp,
+                visible=True,
+                args=[dict(x=[data], type="histogram"), [0]],
+            )
         )
-    ]
+
+    updatemenus = [dict(buttons=buttons, direction="down", showactive=True)]
 
     fig.update_layout(
         title="Requests per blueprint",
         xaxis_title="Datetime",
         yaxis_title="Number of requests",
         showlegend=False,
-        updatemenus=updatemenus
+        updatemenus=updatemenus,
     )
 
     key = "[PLOT,context=usage]requests_per_blueprint_hist"
