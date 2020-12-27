@@ -3,7 +3,7 @@ import copy
 import views.utils as utl
 
 from flask import session, url_for
-import backend.models as md
+from flask_babel import gettext
 
 
 def test_init_session(app, manager):
@@ -12,7 +12,7 @@ def test_init_session(app, manager):
     # Test session initialisation
     utl.init_session()
 
-    assert session["current_schedule"].label == "New schedule"
+    assert session["current_schedule"].label == gettext("New schedule")
     assert session["current_schedule"].is_empty()
     assert not session["current_schedule_modified"]
 
