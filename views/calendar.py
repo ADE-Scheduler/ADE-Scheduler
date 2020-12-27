@@ -15,11 +15,11 @@ from flask import (
     g,
 )
 from flask_security import current_user, login_required
-from flask_babel import gettext
+from flask_babel import gettext, LazyString
+from flask._compat import text_type
 
 import backend.schedules as schd
 import backend.events as evt
-import backend.models as md
 import views.utils as utl
 
 
@@ -31,6 +31,8 @@ class CalendarEncoder(json.JSONEncoder):
     def default(self, obj: Any) -> Any:
         if isinstance(obj, set):
             return list(obj)
+        elif isinstance(obj, LazyString):
+            return text_type(obj)
         else:
             return json.JSONEncoder.default(self, obj)
 
