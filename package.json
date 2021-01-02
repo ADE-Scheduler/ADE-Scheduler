@@ -9,7 +9,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --mode production",
-    "linter": "npx eslint static/js/*"
+    "linter": "npx eslint static/js/*.js"
   },
   "husky": {
     "hooks": {
@@ -17,7 +17,7 @@
     }
   },
   "lint-staged": {
-    "**/*.js": [
+    "static/js/*.js": [
       "eslint --fix",
       "git add"
     ]
