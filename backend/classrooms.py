@@ -66,6 +66,7 @@ def save_geo_locations(geo_locations: Dict):
     """
     with open("static/json/geo_locations.json", "w") as f:
         json.dump(geo_locations, f, sort_keys=True, indent=4)
+        f.write("\n")
 
 
 def prettify_classrooms(classrooms: pd.DataFrame, sleep: float = 0) -> pd.DataFrame:
