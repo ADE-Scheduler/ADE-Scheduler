@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "linter": "npx eslint static/js/*"
   },
   "repository": {
     "type": "git",
