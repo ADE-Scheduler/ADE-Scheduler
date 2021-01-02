@@ -80,7 +80,7 @@
                                 [[ eventInfo.location ? eventInfo.location:"{{ _('No location') }}"]]
                             </div>
                         </div>
-                        <div class="col-6 text-right">
+                        <div class="col-6 text-end">
                             <h6>{{ _('Description') }}</h6>
                             <textarea v-if="isEditingCustomEvent" class="form-control" type="text" v-model="eventInfo.description"></textarea>
                             <div v-else v-bind:class="{'text-muted': !eventInfo.description}">
@@ -96,7 +96,7 @@
                                 <h6>{{ _('Start') }}</h6>
                                 [[ eventInfo.rrule.pretty_start ]]
                             </div>
-                            <div class="col-6 text-right">
+                            <div class="col-6 text-end">
                                 <h6>{{ _('End') }}</h6>
                                 [[ eventInfo.rrule.pretty_end ]]
                             </div>
@@ -106,7 +106,7 @@
                                 <h6>{{ _('Time') }}</h6>
                                 [[ eventInfo.pretty_startTime ]] {{ _('to') }} [[ eventInfo.pretty_endTime ]]
                             </div>
-                            <div class="col-6 text-right">
+                            <div class="col-6 text-end">
                                 <h6>{{ _('Days') }}</h6>
                                 [[ eventInfo.rrule.pretty_days ]]
                             </div>
@@ -118,7 +118,7 @@
                             [[ eventInfo.pretty_start ]]
                         </div>
 
-                        <div class="col-6 text-right">
+                        <div class="col-6 text-end">
                             <h6>{{ _('End') }}</h6>
                             [[ eventInfo.pretty_end ]]
                         </div>
@@ -129,12 +129,12 @@
                         <div class="col-6">
                             <h6>{{ _('Color') }}</h6>
                         </div>
-                        <div class="col-6 text-right">
+                        <div class="col-6 text-end">
                             <input type="color"
                                 v-bind:style="{backgroundColor: eventInfo.backgroundColor}"
                                 v-model="eventInfo.backgroundColor"
                                 v-on:change="isEditingCustomEvent = true"
-                                class="swatch-custom-events ml-3"/>
+                                class="swatch-custom-events ms-3"/>
                         </div>
                     </div>
                 </div>
@@ -164,28 +164,28 @@
                     <h6>{{ _('Do not hesitate to create an account... you can:') }}</h6>
                     <ul class="list-group list-group-flush mb-3">
                         <li class="list-group-item">
-                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-check2-square text-success mr-2" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-check2-square text-success me-2" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M15.354 2.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L8 9.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
                                 <path fill-rule="evenodd" d="M1.5 13A1.5 1.5 0 0 0 3 14.5h10a1.5 1.5 0 0 0 1.5-1.5V8a.5.5 0 0 0-1 0v5a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5V3a.5.5 0 0 1 .5-.5h8a.5.5 0 0 0 0-1H3A1.5 1.5 0 0 0 1.5 3v10z"/>
                             </svg>
                             {{ _('Save your schedules') }}
                         </li>
                         <li class="list-group-item">
-                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-check2-square text-success mr-2" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-check2-square text-success me-2" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M15.354 2.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L8 9.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
                                 <path fill-rule="evenodd" d="M1.5 13A1.5 1.5 0 0 0 3 14.5h10a1.5 1.5 0 0 0 1.5-1.5V8a.5.5 0 0 0-1 0v5a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5V3a.5.5 0 0 1 .5-.5h8a.5.5 0 0 0 0-1H3A1.5 1.5 0 0 0 1.5 3v10z"/>
                             </svg>
                             {{ _('Manage several schedules following your needs') }}
                         </li>
                         <li class="list-group-item">
-                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-check2-square text-success mr-2" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-check2-square text-success me-2" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M15.354 2.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L8 9.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
                                 <path fill-rule="evenodd" d="M1.5 13A1.5 1.5 0 0 0 3 14.5h10a1.5 1.5 0 0 0 1.5-1.5V8a.5.5 0 0 0-1 0v5a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5V3a.5.5 0 0 1 .5-.5h8a.5.5 0 0 0 0-1H3A1.5 1.5 0 0 0 1.5 3v10z"/>
                             </svg>
                             {{ _('Modify the color of the events in the calendar') }}
                         </li>
                         <li class="list-group-item">
-                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-check2-square text-success mr-2" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-check2-square text-success me-2" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M15.354 2.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L8 9.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
                                 <path fill-rule="evenodd" d="M1.5 13A1.5 1.5 0 0 0 3 14.5h10a1.5 1.5 0 0 0 1.5-1.5V8a.5.5 0 0 0-1 0v5a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5V3a.5.5 0 0 1 .5-.5h8a.5.5 0 0 0 0-1H3A1.5 1.5 0 0 0 1.5 3v10z"/>
                             </svg>
@@ -261,7 +261,7 @@
                             <input class="form-control" type="text" v-model="eventForm.location"/>
                         </div>
 
-                        <div class="col-6 text-right">
+                        <div class="col-6 text-end">
                             <label>{{_('Description')}}</label>
                             <textarea class="form-control" type="text" rows="4" v-model="eventForm.description"></textarea>
                         </div>
@@ -299,7 +299,7 @@
                                 <input type="time" class="form-control" v-model="eventForm.beginHour" v-on:blur="checkMinHour" required/>
                             </div>
                         </div>
-                        <div class="col-6 text-right">
+                        <div class="col-6 text-end">
                             <label>{{_('To')}}</label>
                             <div class="input-group date mb-2" v-if="!eventForm.recurring">
                                 <input type="date" class="form-control text-truncate" v-model="eventForm.endDay" v-on:blur="checkMaxDay" v-bind:required="!eventForm.recurring"/>
@@ -324,7 +324,7 @@
                     <!-- Recurring inputs -->
                     <div v-show="eventForm.recurring">
                         <div class="row d-flex flex-row-reverse mt-3">
-                            <div class="col-6 text-right">
+                            <div class="col-6 text-end">
                                 <label for="start-repetition">{{_('Days of week')}}</label>
                                 <select class="form-select" multiple v-model="eventForm.freq" v-bind:required="eventForm.recurring">
                                     <option value="1">{{_('Monday')}}</option>
@@ -350,7 +350,7 @@
                                     <input type="date" class="form-control text-truncate" v-model="eventForm.beginRecurrDay" v-on:blur="checkMinRecurrDay" v-bind:required="eventForm.recurring">
                                 </div>
                             </div>
-                            <div class="col-6 text-right">
+                            <div class="col-6 text-end">
                                 <label>{{_('End of recurrence')}}</label>
                                 <div class="input-group date mb-2">
                                     <input type="date" class="form-control text-truncate" v-model="eventForm.endRecurrDay" v-on:blur="checkMaxRecurrDay" v-bind:required="eventForm.recurring">
@@ -412,7 +412,7 @@
                             <a class="d-flex flex-row flex-nowrap justify-content-between text-dark"
                                style="text-decoration: none"
                                data-toggle="dropdown" href="#">
-                                <div class="text-truncate mr-2">
+                                <div class="text-truncate me-2">
                                     <h5>[[ currentSchedule.label ]]</h5>
                                 </div>
                                 <svg width="23px" height="23px" viewBox="0 0 16 16" class="bi bi-chevron-down" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
@@ -437,7 +437,7 @@
                             </div>
                         </div>
                     {% else %}
-                        <div class="text-truncate mr-2">
+                        <div class="text-truncate me-2">
                             <h5>[[ currentSchedule.label ]]</h5>
                         </div>
                     {% endif %}
@@ -496,7 +496,7 @@
                     <div class="mt-3">
                         <div class="d-flex flex-row justify-content-between">
                             <label class="form-label mb-0" for="color-palette">{{ _('Colors') }}</label>
-                            <a class="text-dark mr-2" href="#" v-on:click="resetColorPalette"
+                            <a class="text-dark me-2" href="#" v-on:click="resetColorPalette"
                                data-toggle="tooltip" title="{{ _('Reset colors') }}">
                                 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-counterclockwise" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2v1z"/>
@@ -533,7 +533,7 @@
 
         <!-- Main content -->
         <div class="container-fluid">
-            <div class="col-md-9 ml-sm-auto col-lg-10 p-3">
+            <div class="col-md-9 ms-sm-auto col-lg-10 p-3">
                 {{ render_flash_alert() }}
                 {% if saved %}<div style="display:none" id="scheduleSaved"></div>{% endif %}
                 <div class="alert alert-success alert-dismissible" v-show="saveSuccess">
