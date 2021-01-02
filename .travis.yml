@@ -31,9 +31,11 @@ install:
 before_script:
     - psql -c 'create database travis_ci_test;' -U postgres
     - flask sql init
+    - flask redis update
     - npm run build
 
 # Run tests
 script:
+    - npm run linter
     - pre-commit run --all-files --show-diff-on-failure
     - pytest
