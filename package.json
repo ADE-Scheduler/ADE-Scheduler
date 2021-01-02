@@ -11,6 +11,17 @@
     "build": "webpack --mode production",
     "linter": "npx eslint static/js/*"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*.js": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/SnaKyEyeS/ADE-Scheduler.git"
@@ -29,6 +40,8 @@
     "eslint-plugin-vue": "^7.4.0",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^4.5.0",
+    "husky": "^4.3.6",
+    "lint-staged": "^10.5.3",
     "sass": "^1.29.0",
     "sass-loader": "^10.1.0",
     "style-loader": "^2.0.0",
