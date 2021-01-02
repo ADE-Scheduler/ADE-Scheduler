@@ -3,7 +3,6 @@
 
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-// const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const pages = [
   'errorhandler/404',
@@ -69,9 +68,6 @@ const conf = {
       template: './templates/custom_macros.html',
       filename: './html/custom_macros.html'
     }),
-    // new CleanWebpackPlugin({
-    //     cleanOnceBeforeBuildPatterns: ['**/*', '!jsglue.min.js'],
-    // }),
   ],
   output: {
     path: __dirname + '/static/dist/',
