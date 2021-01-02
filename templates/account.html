@@ -13,14 +13,14 @@
         <div class="modal-content alert-danger">
             <div class="modal-header">
                 <h5 class="modal-title">{{ _('Warning') }}</h5>
-                <button type="button" class="btn-close" data-dismiss="modal"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 {{  _('You have unsaved changes in your current schedule. Continue ?') }}
             </div>
             <div class="modal-footer d-flex justify-content-between">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">{{ _('Cancel') }}</button>
-                <button type="button" class="btn btn-success" data-dismiss="modal" v-on:click="warningContinue">{{ _('Continue') }}</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">{{ _('Cancel') }}</button>
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal" v-on:click="warningContinue">{{ _('Continue') }}</button>
             </div>
         </div>
     </div>
