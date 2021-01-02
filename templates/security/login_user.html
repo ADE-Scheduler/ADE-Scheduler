@@ -26,7 +26,7 @@
             {% endif %}{% endfor %}
         </div>
         <hr class="mb-3">
-        {{ login_user_form.submit(class="btn btn-lg btn-primary btn-block") }}
+        {{ login_user_form.submit(class="btn btn-lg btn-primary w-100") }}
         <div class="mt-2">
             <small>{{_('New to ADE Scheduler ?')}} <a href="{{ url_for('security.register') }}">{{_('Sign up now !')}}</a></small>
         </div>
