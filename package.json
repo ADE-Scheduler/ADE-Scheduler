@@ -34,10 +34,8 @@
   },
   "homepage": "https://github.com/SnaKyEyeS/ADE-Scheduler#readme",
   "devDependencies": {
-    "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^5.0.1",
     "eslint": "^7.17.0",
-    "eslint-plugin-vue": "^7.4.0",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^4.5.0",
     "sass": "^1.32.0",
