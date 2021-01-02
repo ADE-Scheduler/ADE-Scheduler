@@ -12,7 +12,7 @@ Brotli==1.0.9
 CacheControl==0.12.6
 cachelib==0.1.1
 certifi==2020.11.8
-cffi==1.14.3
+cffi==1.14.4
 cfgv==3.2.0
 chardet==3.0.4
 click==7.1.2
