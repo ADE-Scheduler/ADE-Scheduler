@@ -76,7 +76,7 @@
             {% for category, message in messages %}
                 <div class="alert alert-dismissible alert-{{ {'error': 'danger', 'success': 'success'}[category] | default('primary') }}">
                     {{ message }}
-                    <button type="button" class="btn-close" data-dismiss="alert"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             {% endfor %}
         {% endif %}

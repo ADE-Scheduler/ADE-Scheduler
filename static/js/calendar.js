@@ -759,7 +759,7 @@ document.addEventListener('DOMContentLoaded', function() {
     },
   });
 
-  [].slice.call(document.querySelectorAll('[data-toggle="popover"]')).map(function (popoverTriggerEl) {
+  [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]')).map(function (popoverTriggerEl) {
     return new Popover(popoverTriggerEl, {
       container: 'body',
       trigger: 'focus',
