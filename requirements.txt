@@ -63,7 +63,7 @@ msgpack==1.0.0
 mypy-extensions==0.4.3
 nodeenv==1.5.0
 numpy==1.19.4
-packaging==20.4
+packaging==20.8
 pandas==1.1.4
 passlib==1.7.4
 pathspec==0.8.1
