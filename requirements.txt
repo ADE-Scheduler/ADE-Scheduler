@@ -11,7 +11,7 @@ blinker==1.4
 Brotli==1.0.9
 CacheControl==0.12.6
 cachelib==0.1.1
-certifi==2020.11.8
+certifi==2020.12.5
 cffi==1.14.4
 cfgv==3.2.0
 chardet==3.0.4
@@ -45,7 +45,7 @@ geojson==2.5.0
 geopy==2.0.0
 html5lib==1.1
 ics==0.7
-identify==1.5.9
+identify==1.5.11
 idna==2.10
 imagesize==1.2.0
 iniconfig==1.1.1
@@ -63,7 +63,7 @@ msgpack==1.0.0
 mypy-extensions==0.4.3
 nodeenv==1.5.0
 numpy==1.19.4
-packaging==20.4
+packaging==20.8
 pandas==1.1.4
 passlib==1.7.4
 pathspec==0.8.1
@@ -77,7 +77,7 @@ progress==1.5
 psycopg2-binary==2.8.6
 py==1.9.0
 pycparser==2.20
-Pygments==2.7.2
+Pygments==2.7.3
 pyparsing==2.4.7
 pytest==6.1.2
 pytest-flask==1.1.0
