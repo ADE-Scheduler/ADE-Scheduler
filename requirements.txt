@@ -42,7 +42,7 @@ git+https://github.com/SnaKyEyeS/flask-track-usage#egg=Flask-Track-Usage
 Flask-WTF==0.14.3
 geographiclib==1.50
 geojson==2.5.0
-geopy==2.0.0
+geopy==2.1.0
 html5lib==1.1
 ics==0.7
 identify==1.5.11
