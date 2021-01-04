@@ -14,7 +14,7 @@ cachelib==0.1.1
 certifi==2020.12.5
 cffi==1.14.4
 cfgv==3.2.0
-chardet==3.0.4
+chardet==4.0.0
 click==7.1.2
 colorama==0.4.4
 contextlib2==0.6.0.post1
