@@ -9,7 +9,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --mode production",
-    "lint": "eslint static/js/*.js --fix"
+    "lint": "eslint --fix --ignore-path .gitignore '**/*.js'"
   },
   "repository": {
     "type": "git",
