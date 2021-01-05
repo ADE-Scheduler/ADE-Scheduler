@@ -1,3 +1,5 @@
+/* global module */
+
 module.exports = {
   'env': {
     'browser': true,
@@ -6,15 +8,11 @@ module.exports = {
   },
   'extends': [
     'eslint:recommended',
-    'plugin:vue/essential'
   ],
   'parserOptions': {
     'ecmaVersion': 12,
     'sourceType': 'module'
   },
-  'plugins': [
-    'vue'
-  ],
   'rules': {
     'indent': [
       'error',
