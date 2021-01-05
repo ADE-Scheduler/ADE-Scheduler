@@ -15,9 +15,6 @@ document.addEventListener('DOMContentLoaded', function() {
     methods: {
       scroll: function(id, flag) {
         document.getElementById(id).scrollIntoView();
-        if (!((window.innerHeight + window.scrollY) >= document.body.offsetHeight)) {
-          window.scrollBy(0, -70);
-        }
         if (window.innerWidth < 767.98 && !flag) {
           this.toggleNav(false);
         }
