@@ -60,7 +60,7 @@ def plot_users_hist():
 
     colors = px.colors.qualitative.Plotly
 
-    click.echo("Reading datase...")
+    click.echo("Reading database...")
     df = md.table_to_dataframe(md.User, columns=["confirmed_at"])
     df.dropna(subset=["confirmed_at"], inplace=True)
 

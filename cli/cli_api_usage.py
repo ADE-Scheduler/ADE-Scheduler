@@ -17,7 +17,7 @@ def api_usage():
 @with_appcontext
 def plot_requests_hist():
 
-    click.echo("Reading datase...")
+    click.echo("Reading database...")
     df = md.table_to_dataframe(md.ApiUsage, columns=["status", "datetime"])
 
     click.echo("Generating plot...")
