@@ -1,5 +1,6 @@
 import click
 import pandas as pd
+import numpy as np
 import backend.models as md
 
 import plotly.graph_objects as go
@@ -69,6 +70,105 @@ def plot_requests_per_blueprint_hist():
     )
 
     key = "[PLOT,context=usage]requests_per_blueprint_hist"
+    server = app.config["MANAGER"].server
+    value = fig.to_json()
+
+    server.set_value(key, value)
+
+    click.echo(f"Successfully created a plot and saved into server with key={key}")
+
+
+@usage.command()
+@with_appcontext
+def plot_views_per_blueprint_hist():
+
+    click.echo("Reading database...")
+    df = md.table_to_dataframe(md.Usage, columns=["datetime", "blueprint", "path"])
+
+    click.echo("Generating plot...")
+    df.dropna(subset=["datetime", "blueprint"], inplace=True)
+
+    index = np.logical_or.reduce(
+        [df.path.endswith(f"/{blueprint}/") for blueprint in df.blueprint.unique()]
+    )
+
+    df = df[index]
+
+    fig = px.histogram(df, x="datetime", color="blueprint")
+
+    fig.update_layout(
+        title="Views per blueprint",
+        xaxis_title="Datetime",
+        yaxis_title="Number of views",
+    )
+
+    key = "[PLOT,context=usage]views_per_blueprint_hist"
+    server = app.config["MANAGER"].server
+    value = fig.to_json()
+
+    server.set_value(key, value)
+
+    click.echo(f"Successfully created a plot and saved into server with key={key}")
+
+
+@usage.command()
+@with_appcontext
+def plot_ics_requests_hist():
+
+    click.echo("Reading database...")
+    df = md.table_to_dataframe(
+        md.Usage, columns=["datetime", "url", "view_args", "path", "track_var"]
+    )
+
+    click.echo("Generating plot...")
+    df = df[df.path.str.contains("calendar/schedule/link")]
+
+    df["day"] = df.datetime.dt.floor("d")
+    days = df.groupby("day")
+
+    df = days.size()
+
+    fig = go.Figure(
+        go.Histogram(x=df.index, y=df.values, histfunc="sum", nbinsx=int(df.size))
+    )
+    fig.update_layout(
+        title="iCalendar Requests",
+        xaxis_title="Datetime",
+        yaxis_title="Number of requests",
+    )
+
+    key = "[PLOT,context=usage]ics_requests_hist"
+    server = app.config["MANAGER"].server
+    value = fig.to_json()
+
+    server.set_value(key, value)
+
+    click.echo(f"Successfully created a plot and saved into server with key={key}")
+
+
+@usage.command()
+@with_appcontext
+def plot_unique_ip_addresses_per_day():
+
+    click.echo("Reading database...")
+    df = md.table_to_dataframe(md.Usage, columns=["datetime", "remote_addr"])
+
+    click.echo("Generating plot...")
+
+    df["day"] = df.datetime.dt.floor("d")
+    df = df.groupby("day").remote_addr.nunique()
+
+    fig = go.Figure(
+        go.Histogram(x=df.index, y=df.values, histfunc="sum", nbinsx=df.size)
+    )
+
+    fig.update_layout(
+        title="Unique IP Addresses accessing ADE-Scheduler per day",
+        xaxis_title="Datetime",
+        yaxis_title="Number of unique IP addresses",
+    )
+
+    key = "[PLOT,context=usage]unique_ip_addresses_per_day"
     server = app.config["MANAGER"].server
     value = fig.to_json()
 
