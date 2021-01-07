@@ -181,8 +181,8 @@ class Server(Redis):
                 return None
 
     def get_multiple_values(
-        self, *keys, prefix: Optional[str] = "", **kwargs
-    ) -> Tuple[List[Any], List[str]]:
+        self, *keys: str, prefix: Optional[str] = "", **kwargs
+    ) -> Tuple[Dict[str, Any], List[str]]:
         """
         Returns all the values corresponding the given keys. If key does not match any value, the key is returned
         explicitly tell that it is missing. An optional prefix can be added to every key.
@@ -192,18 +192,16 @@ class Server(Redis):
         :param prefix: the prefix to be added to each key
         :type prefix: Optional[str]
         :return: a tuple containing all values found and all keys which did not match
-        :rtype: Tuple[List[Any], List[str]]
+        :rtype: Tuple[Dict[str, Any], List[str]]
         """
-        values = []
+        values = dict()
         keys_not_found = []
 
         for key in keys:
             value = self.get_value(prefix + key, **kwargs)
             if value:
-                if isinstance(value, list):  # For course combo (list of courses)
-                    values.extend(value)
-                else:
-                    values.append(value)
+                # For course combo, a list of courses will be returned
+                values[key] = value
             else:
                 keys_not_found.append(key)
 
