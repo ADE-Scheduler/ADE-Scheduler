@@ -63,6 +63,7 @@ def plot_users_hist():
     click.echo("Reading database...")
     df = md.table_to_dataframe(md.User, columns=["confirmed_at"])
     df.dropna(subset=["confirmed_at"], inplace=True)
+    df.confirmed_at = df.confirmed_at.dt.floor("d")
 
     fig = make_subplots(specs=[[{"secondary_y": True}]])
 
@@ -111,6 +112,8 @@ def plot_users_emails_pie():
     fig = px.pie(df, values="count", names="email")
 
     fig.update_layout(title="Repartition of accounts across email domains")
+    fig.update_traces(textposition="inside")
+    fig.update_layout(uniformtext_minsize=12, uniformtext_mode="hide")
 
     key = "[PLOT,context=users]users_emails_pie"
     server = app.config["MANAGER"].server
