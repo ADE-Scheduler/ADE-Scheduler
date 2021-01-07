@@ -337,7 +337,7 @@ def download():
             + "".join(c for c in schedule.label if c.isalnum() or c in ("_")).rstrip()
             + ".ics"
         )
-        g.track_var["schedule download"] = schedule.id
+        g.track_var["id"] = schedule.id
         return resp
 
 
@@ -356,7 +356,7 @@ def share():
             400,
         )
     else:
-        g.track_var["schedule share"] = schedule.id
+        g.track_var["id"] = schedule.id
         session["current_schedule"] = schedule
         session["current_schedule"].id = None  # "unsave" this schedule
         return redirect(url_for("calendar.index"))
