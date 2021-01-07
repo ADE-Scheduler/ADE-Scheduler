@@ -26,9 +26,7 @@ from flask_mail import Mail, Message, email_dispatched
 from flask_jsglue import JSGlue
 from flask_babel import Babel, gettext
 from flask_migrate import Migrate
-from flask_track_usage import TrackUsage
 from flask_compress import Compress
-from flask_track_usage.storage.sql import SQLStorage
 
 # API imports
 import backend.models as md
