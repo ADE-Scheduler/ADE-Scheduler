@@ -177,14 +177,6 @@ app.config["SESSION_REDIS"] = manager.server
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(**redis_ttl_config["user_session"])
 app.config["SESSION_MANAGER"] = Session(app)
 
-# Setup Flask-TrackUsage
-app.config["TRACK_USAGE_COOKIE"] = True
-app.config["TRACK_USAGE_USE_FREEGEOIP"] = False
-app.config["TRACK_USAGE_INCLUDE_OR_EXCLUDE_VIEWS"] = "exclude"
-with app.app_context():
-    storage = SQLStorage(db=manager.database)
-t = TrackUsage(app, storage)
-
 # Setup Flask-Babel
 app.config["LANGUAGES"] = ["en", "fr"]
 app.config["BABEL_TRANSLATION_DIRECTORIES"] = "translations"
@@ -356,5 +348,4 @@ def make_shell_context():
         "Usage": md.Usage,
         "Api": md.ApiUsage,
         "mng": app.config["MANAGER"],
-        "t": storage,
     }
