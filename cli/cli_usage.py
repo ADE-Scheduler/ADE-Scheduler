@@ -23,7 +23,7 @@ def stats():
     pd.set_option("display.max_rows", None)
     pd.set_option("display.max_columns", None)
 
-    click.echo("Reading datase...")
+    click.echo("Reading database...")
     df = md.table_to_dataframe(md.Usage, columns=["url", "speed", "blueprint"])
 
     with app.test_request_context():
@@ -54,7 +54,7 @@ def stats():
 @with_appcontext
 def plot_requests_per_blueprint_hist():
 
-    click.echo("Reading datase...")
+    click.echo("Reading database...")
     df = md.table_to_dataframe(md.Usage, columns=["datetime", "blueprint"])
 
     click.echo("Generating plot...")
