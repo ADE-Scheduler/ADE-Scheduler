@@ -61,10 +61,11 @@ def plot_requests_per_blueprint_hist():
     click.echo("Generating plot...")
     df.dropna(subset=["datetime", "blueprint"], inplace=True)
 
-    fig = px.histogram(df, x="datetime", color="blueprint")
+    df["day"] = df.datetime.dt.floor("d")
+    fig = px.histogram(df, x="day", color="blueprint")
 
     fig.update_layout(
-        title="Requests per blueprint",
+        title="Requests per page per day",
         xaxis_title="Datetime",
         yaxis_title="Number of requests",
     )
@@ -75,7 +76,9 @@ def plot_requests_per_blueprint_hist():
 
     server.set_value(key, value)
 
-    click.echo(f"Successfully created a plot and saved into server with key={key}")
+    click.secho(
+        f"Successfully created a plot and saved into server with key={key}", fg="green"
+    )
 
 
 @usage.command()
@@ -94,10 +97,11 @@ def plot_views_per_blueprint_hist():
 
     df = df[index]
 
-    fig = px.histogram(df, x="datetime", color="blueprint")
+    df["day"] = df.datetime.dt.floor("d")
+    fig = px.histogram(df, x="day", color="blueprint")
 
     fig.update_layout(
-        title="Views per blueprint",
+        title="Views per page per day",
         xaxis_title="Datetime",
         yaxis_title="Number of views",
     )
@@ -108,7 +112,9 @@ def plot_views_per_blueprint_hist():
 
     server.set_value(key, value)
 
-    click.echo(f"Successfully created a plot and saved into server with key={key}")
+    click.secho(
+        f"Successfully created a plot and saved into server with key={key}", fg="green"
+    )
 
 
 @usage.command()
@@ -116,24 +122,45 @@ def plot_views_per_blueprint_hist():
 def plot_ics_requests_hist():
 
     click.echo("Reading database...")
-    df = md.table_to_dataframe(md.Usage, columns=["datetime", "path"])
+    df = md.table_to_dataframe(md.Usage, columns=["datetime", "view_args"])
 
     click.echo("Generating plot...")
-    df = df[df.path.str.contains("calendar/schedule/link")]
+
+    def view_args_to_link(view_args: dict):
+        if "link" in view_args:
+            return view_args
+        else:
+            return None
+
+    df["link"] = df.view_args.apply(view_args_to_link)
+    df.dropna(axis=0, subset=["link"], inplace=True)
 
     df["day"] = df.datetime.dt.floor("d")
     days = df.groupby("day")
 
     df = days.size()
+    un = days.link.nunique()
 
     fig = go.Figure(
-        go.Histogram(x=df.index, y=df.values, histfunc="sum", nbinsx=int(df.size))
+        go.Histogram(
+            x=df.index, y=df.values, histfunc="sum", nbinsx=int(df.size), name="all"
+        )
+    )
+
+    fig.add_trace(
+        go.Histogram(
+            x=un.index, y=un.values, histfunc="sum", nbinsx=int(un.size), name="unique"
+        )
     )
     fig.update_layout(
         title="iCalendar downloads per day",
         xaxis_title="Datetime",
         yaxis_title="Number of downloads",
     )
+    # Overlay both histograms
+    fig.update_layout(barmode="overlay")
+    # Reduce opacity to see both histograms
+    fig.update_traces(opacity=0.75)
 
     key = "[PLOT,context=usage]ics_requests_hist"
     server = app.config["MANAGER"].server
@@ -141,7 +168,9 @@ def plot_ics_requests_hist():
 
     server.set_value(key, value)
 
-    click.echo(f"Successfully created a plot and saved into server with key={key}")
+    click.secho(
+        f"Successfully created a plot and saved into server with key={key}", fg="green"
+    )
 
 
 @usage.command()
@@ -172,4 +201,6 @@ def plot_unique_ip_addresses_per_day():
 
     server.set_value(key, value)
 
-    click.echo(f"Successfully created a plot and saved into server with key={key}")
+    click.secho(
+        f"Successfully created a plot and saved into server with key={key}", fg="green"
+    )
