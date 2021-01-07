@@ -23,8 +23,8 @@ def after_request(response):
         blueprint=request.blueprint,
         path=request.path,
         endpoint=request.endpoint,
-        args=dict(**request.args, **request.view_args),
-        # Should we save the payload of POST request ? (e.g for calendar.udpate_color)
+        view_args=request.view_args,
+        url_args=dict([(k, request.args[k]) for k in request.args]),
         datetime=end_time,
         speed=speed.total_seconds(),
         remote_addr=request.remote_addr,

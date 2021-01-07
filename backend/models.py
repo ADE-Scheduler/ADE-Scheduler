@@ -310,7 +310,8 @@ class Usage(db.Model):
     blueprint = db.Column(db.String(16))
     path = db.Column(db.String(256))
     endpoint = db.Column(db.String(64))
-    view_args = db.Column(db.String(128))
+    view_args = db.Column(db.String(64))
+    url_args = db.Column(db.String(512))
     status = db.Column(db.Integer)
     remote_addr = db.Column(db.String(24))
     speed = db.Column(db.Float)
@@ -329,7 +330,8 @@ class Usage(db.Model):
         self.blueprint = data["blueprint"]
         self.path = data["path"]
         self.endpoint = data["endpoint"]
-        self.view_args = json.dumps(data["args"], ensure_ascii=False)[:128]
+        self.view_args = json.dumps(data["view_args"], ensure_ascii=False)[:64]
+        self.url_args = json.dumps(data["url_args"], ensure_ascii=False)[:512]
         self.status = data["status"]
         self.remote_addr = data["remote_addr"]
         self.speed = data["speed"]
