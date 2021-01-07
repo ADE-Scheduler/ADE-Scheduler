@@ -17,14 +17,14 @@ def api_usage():
 @with_appcontext
 def plot_requests_hist():
 
-    click.echo("Reading datase...")
+    click.echo("Reading database...")
     df = md.table_to_dataframe(md.ApiUsage, columns=["status", "datetime"])
 
     click.echo("Generating plot...")
 
     md.reformat_status_in_dataframe(df)
-
-    fig = px.histogram(df, x="datetime", color="status", nbins=100)
+    df["day"] = df.datetime.dt.floor("d")
+    fig = px.histogram(df, x="day", color="status", nbins=100)
 
     fig.update_layout(
         title="ADE Api requests per status",
