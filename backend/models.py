@@ -337,7 +337,7 @@ class Usage(db.Model):
         self.speed = data["speed"]
         self.datetime = data["datetime"]
         self.username = data["username"]
-        self.track_var = json.dumps(data["track_var"])
+        self.track_var = json.dumps(data["track_var"], ensure_ascii=False)
 
         db.session.add(self)
         db.session.commit()
