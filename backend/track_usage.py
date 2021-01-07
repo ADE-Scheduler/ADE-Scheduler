@@ -6,6 +6,7 @@ from flask_security import current_user
 
 def before_request():
     g.start_time = datetime.utcnow()
+    g.track_var = dict()
 
 
 def after_request(response):
@@ -19,7 +20,8 @@ def after_request(response):
     time = datetime.utcnow()
     speed = time - g.start_time
     username = current_user.email if current_user.is_authenticated else None
-    status_code = request.status_code
+    status_code = response.status_code
+    track_var = g.track_var
 
     print("\nDoing process before request...")
     print(f"Endpoint   : {endpoint}")
@@ -31,5 +33,6 @@ def after_request(response):
     print(f"Speed      : {speed.total_seconds()}")
     print(f"Username   : {username}")
     print(f"Status code: {status_code}")
+    print(f"Track'd var: {track_var}")
 
     print("Process done !\n")
