@@ -15,7 +15,7 @@ F_PLOTS = {
     "unique-ip-addresses-per-day": plot_unique_ip_addresses_per_day,
     "users-hist": plot_users_hist,
     "users-emails-pie": plot_users_emails_pie,
-    "views-per-blueprint-hist": plot_views_per_blueprint_hist(),
+    "views-per-blueprint-hist": plot_views_per_blueprint_hist,
 }
 
 

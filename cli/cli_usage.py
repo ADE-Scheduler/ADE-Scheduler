@@ -89,7 +89,7 @@ def plot_views_per_blueprint_hist():
     df.dropna(subset=["datetime", "blueprint"], inplace=True)
 
     index = np.logical_or.reduce(
-        [df.path.endswith(f"/{blueprint}/") for blueprint in df.blueprint.unique()]
+        [df.path.str.endswith(f"/{blueprint}/") for blueprint in df.blueprint.unique()]
     )
 
     df = df[index]
@@ -116,9 +116,7 @@ def plot_views_per_blueprint_hist():
 def plot_ics_requests_hist():
 
     click.echo("Reading database...")
-    df = md.table_to_dataframe(
-        md.Usage, columns=["datetime", "url", "view_args", "path", "track_var"]
-    )
+    df = md.table_to_dataframe(md.Usage, columns=["datetime", "path"])
 
     click.echo("Generating plot...")
     df = df[df.path.str.contains("calendar/schedule/link")]
@@ -132,9 +130,9 @@ def plot_ics_requests_hist():
         go.Histogram(x=df.index, y=df.values, histfunc="sum", nbinsx=int(df.size))
     )
     fig.update_layout(
-        title="iCalendar Requests",
+        title="iCalendar downloads per day",
         xaxis_title="Datetime",
-        yaxis_title="Number of requests",
+        yaxis_title="Number of downloads",
     )
 
     key = "[PLOT,context=usage]ics_requests_hist"
@@ -163,7 +161,7 @@ def plot_unique_ip_addresses_per_day():
     )
 
     fig.update_layout(
-        title="Unique IP Addresses accessing ADE-Scheduler per day",
+        title="Unique IP addresses accessing ADE-Scheduler per day",
         xaxis_title="Datetime",
         yaxis_title="Number of unique IP addresses",
     )
