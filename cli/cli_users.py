@@ -112,6 +112,8 @@ def plot_users_emails_pie():
     fig = px.pie(df, values="count", names="email")
 
     fig.update_layout(title="Repartition of accounts across email domains")
+    fig.update_traces(textposition="inside")
+    fig.update_layout(uniformtext_minsize=12, uniformtext_mode="hide")
 
     key = "[PLOT,context=users]users_emails_pie"
     server = app.config["MANAGER"].server
