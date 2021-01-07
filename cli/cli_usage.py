@@ -75,7 +75,9 @@ def plot_requests_per_blueprint_hist():
 
     server.set_value(key, value)
 
-    click.echo(f"Successfully created a plot and saved into server with key={key}")
+    click.secho(
+        f"Successfully created a plot and saved into server with key={key}", fg="green"
+    )
 
 
 @usage.command()
@@ -108,7 +110,9 @@ def plot_views_per_blueprint_hist():
 
     server.set_value(key, value)
 
-    click.echo(f"Successfully created a plot and saved into server with key={key}")
+    click.secho(
+        f"Successfully created a plot and saved into server with key={key}", fg="green"
+    )
 
 
 @usage.command()
@@ -162,7 +166,9 @@ def plot_ics_requests_hist():
 
     server.set_value(key, value)
 
-    click.echo(f"Successfully created a plot and saved into server with key={key}")
+    click.secho(
+        f"Successfully created a plot and saved into server with key={key}", fg="green"
+    )
 
 
 @usage.command()
@@ -193,4 +199,6 @@ def plot_unique_ip_addresses_per_day():
 
     server.set_value(key, value)
 
-    click.echo(f"Successfully created a plot and saved into server with key={key}")
+    click.secho(
+        f"Successfully created a plot and saved into server with key={key}", fg="green"
+    )
