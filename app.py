@@ -227,9 +227,7 @@ def before_request():
 
 @app.after_request
 def after_request(response):
-    tu.after_request(response)
-
-    return response
+    return tu.after_request(response)
 
 
 # Reset current schedule on user logout
