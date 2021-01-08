@@ -340,7 +340,7 @@ class Usage(db.Model):
         self.track_var = json.dumps(data["track_var"], ensure_ascii=False)
 
         db.session.add(self)
-        db.session.commit()
+        # db.session.commit()   # For some obscures reason, this make the tests fail...
 
 
 class ApiUsage(db.Model):
