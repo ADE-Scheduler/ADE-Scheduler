@@ -204,3 +204,31 @@ def plot_unique_ip_addresses_per_day():
     click.secho(
         f"Successfully created a plot and saved into server with key={key}", fg="green"
     )
+
+
+@usage.command()
+@with_appcontext
+def plot_platforms_pie():
+
+    click.echo("Reading database...")
+    df = md.table_to_dataframe(md.Usage, columns=["ua_platform"])
+
+    click.echo("Generating plot...")
+
+    df.dropna(subset=["ua_platform"], inplace=True)
+
+    fig = px.pie(df, names="ua_platform")
+
+    fig.update_traces(textposition="inside", textinfo="percent+label")
+
+    fig.update_layout(title="Distribution of usage per platform")
+
+    key = "[PLOT,context=usage]platforms_pie"
+    server = app.config["MANAGER"].server
+    value = fig.to_json()
+
+    server.set_value(key, value)
+
+    click.secho(
+        f"Successfully created a plot and saved into server with key={key}", fg="green"
+    )
