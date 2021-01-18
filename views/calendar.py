@@ -255,7 +255,7 @@ def delete_custom_event(id):
     return jsonify({}), 200
 
 
-@calendar.route("/custom_event/<id>", methods=["POST"])
+@calendar.route("/custom_event/<id>", methods=["PATCH"])
 def update_custom_event(id):
     title = request.json.get("title")
     color = request.json.get("color")
