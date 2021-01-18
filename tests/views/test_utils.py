@@ -33,14 +33,14 @@ def test_autosave_schedule(client, jyl, db):
 
     # Autosave disabled
     jyl.set_autosave(False)
-    rv = client.patch(url_for("calendar.add_code", code="ELME2M"))
+    rv = client.post(url_for("calendar.add_code", code="ELME2M"))
 
     assert "ELME2M" not in schedules[0].data.codes
     assert session["current_schedule_modified"]
 
     # Auto save enabled
     jyl.set_autosave(True)
-    rv = client.patch(url_for("calendar.add_code", code="ELME2M"))
+    rv = client.post(url_for("calendar.add_code", code="ELME2M"))
 
     assert "ELME2M" in schedules[0].data.codes
     assert not session["current_schedule_modified"]
