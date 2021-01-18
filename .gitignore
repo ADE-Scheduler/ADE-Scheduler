@@ -135,3 +135,5 @@ cache/
 geo_locations.json
 
 plots/
+
+*.swp

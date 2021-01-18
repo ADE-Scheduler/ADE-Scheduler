@@ -152,22 +152,22 @@ class Schedule:
         """
         self.custom_events.append(event)
 
-    def get_custom_event(self, id: str) -> evt.CustomEvent:
+    def get_custom_event(self, uid: str) -> evt.CustomEvent:
         """
         Returns the custom event matching  given id
 
-        :param id: the unique id of the event
-        :type id: str
+        :param uid: the unique id of the event
+        :type uid: str
         :return: the custom event
         :rtype: CustomEvent
         """
         try:
-            return next(e for e in self.custom_events if e.uid == id)
+            return next(e for e in self.custom_events if e.uid == uid)
         except StopIteration:
             raise KeyError("Cannot return non existing custom event")
 
     def remove_custom_event(
-        self, event: Optional[evt.CustomEvent] = None, id: Optional[str] = None
+        self, event: Optional[evt.CustomEvent] = None, uid: Optional[str] = None
     ):
         """
         Removes a custom event from the schedule.
@@ -175,47 +175,47 @@ class Schedule:
 
         :param event: the event to remove
         :type event: Optional[CustomEvent]
-        :param id: the unique id of the event
-        :type id: Optional[str]
+        :param uid: the unique id of the event
+        :type uid: Optional[str]
         """
         if event is not None:
             self.custom_events.remove(event)
-        elif id is not None:
-            event = self.get_custom_event(id)
+        elif uid is not None:
+            event = self.get_custom_event(uid)
 
             self.custom_events.remove(event)
 
-    def set_custom_event_attributes(self, id: str, **kwargs: str):
+    def set_custom_event_attributes(self, uid: str, **kwargs: str):
         """
         Changes the custom event's attributes.
 
-        :param id: the unique id of the event
-        :type id: str
+        :param uid: the unique id of the event
+        :type uid: str
         :param kwargs: the attributes and their value
         :type kwargs: str
         """
-        event = self.get_custom_event(id)
+        event = self.get_custom_event(uid)
 
         for attr, value in kwargs.items():
             setattr(event, attr, value)
 
     def get_custom_event_color(
-        self, event: Optional[evt.CustomEvent] = None, id: Optional[str] = None
+        self, event: Optional[evt.CustomEvent] = None, uid: Optional[str] = None
     ):
         """
         Returns the color of a given custom event
 
         :param event: the event to remove
         :type event: Optional[CustomEvent]
-        :param id: the unique id of the event
-        :type id: Optional[str]
+        :param uid: the unique id of the event
+        :type uid: Optional[str]
         :return: the color
         :rtype: str
         """
         if event is not None:
             return event.color
-        elif id is not None:
-            event = self.get_custom_event(id)
+        elif uid is not None:
+            event = self.get_custom_event(uid)
 
             return event.color
 

@@ -499,7 +499,7 @@ document.addEventListener('DOMContentLoaded', function() {
         this.computing = true;
         axios({
           method: 'POST',
-          url: Flask.url_for('calendar.update_custom_event', {'id': this.eventInfo.id}),
+          url: Flask.url_for('calendar.update_custom_event', {'uid': this.eventInfo.id}),
           data: {
             title: this.eventInfo.title,
             location: this.eventInfo.location,
@@ -615,7 +615,7 @@ document.addEventListener('DOMContentLoaded', function() {
         this.computing = true;
         axios({
           method: 'DELETE',
-          url: Flask.url_for('calendar.delete_custom_event', {'id': event.id}),
+          url: Flask.url_for('calendar.delete_custom_event', {'uid': event.id}),
         })
           .then(resp => {
             this.calendarOptions.events = this.calendarOptions.events.filter(item => item.id !== event.id);
