@@ -6,11 +6,13 @@ from cli.cli_usage import (
     plot_ics_requests_hist,
     plot_views_per_blueprint_hist,
     plot_unique_ip_addresses_per_day,
+    plot_platforms_pie,
 )
 
 F_PLOTS = {
     "api-usage-requests-hist": plot_requests_hist,
     "ics-requests-hist": plot_ics_requests_hist,
+    "platforms-pie": plot_platforms_pie,
     "requests-per-blueprint-hist": plot_requests_per_blueprint_hist,
     "unique-ip-addresses-per-day": plot_unique_ip_addresses_per_day,
     "users-hist": plot_users_hist,
