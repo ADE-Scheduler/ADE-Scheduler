@@ -1,6 +1,6 @@
 # Python version that is used in prod
 language: python
-python: "3.6"
+python: "3.8"
 
 # Cache install data
 cache:
