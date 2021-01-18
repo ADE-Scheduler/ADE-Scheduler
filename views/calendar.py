@@ -312,7 +312,7 @@ def download():
 
     try:
         choice = int(request.args.get("choice")) if request.args.get("choice") else 0
-    except ValueError as e:
+    except ValueError:
         choice = 0
 
     if link:
