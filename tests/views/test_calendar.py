@@ -120,7 +120,7 @@ def test_add_code(client, user):
     """Test the add_code route"""
 
     # Test for "ELME2M"
-    rv = client.patch(url_for("calendar.add_code", code="ELME2M"))
+    rv = client.post(url_for("calendar.add_code", code="ELME2M"))
     data = json.loads(rv.data)
 
     assert rv.status_code == 200
@@ -347,7 +347,7 @@ def test_update_custom_event(client, user):
     param = {**changes, **dict(schedule_number=0, color="Color")}
 
     # Test non-recurring event
-    rv = client.post(
+    rv = client.patch(
         url_for("calendar.add_custom_event"),
         data=json.dumps(CUSTOM_EVENT),
         content_type="application/json",
