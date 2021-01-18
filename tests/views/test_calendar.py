@@ -342,13 +342,8 @@ def test_delete_custom_event(client, user, manager):
     for id in [id_1, id_2]:
         assert id not in ids
 
-    error = None
-    try:
+    with pytest.raises(KeyError):
         client.delete(url_for("calendar.delete_custom_event", uid=id_1))
-    except KeyError as e:
-        error = e
-
-    assert type(error) == KeyError
 
 
 @pytest.mark.parametrize("user", ["jyl"], indirect=True)
