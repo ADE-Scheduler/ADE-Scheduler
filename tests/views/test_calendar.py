@@ -312,7 +312,7 @@ def test_delete_custom_event(client, user, manager):
 
     data = json.loads(rv.data)
     id_1 = data["event"]["id"]
-    rv = client.delete(url_for("calendar.delete_custom_event", uid=id_1))
+    rv = client.delete(url_for("calendar.delete_custom_event", id=id_1))
 
     save_current_calendar(user, manager)
     assert rv.status_code == 200
@@ -328,7 +328,7 @@ def test_delete_custom_event(client, user, manager):
 
     data = json.loads(rv.data)
     id_2 = data["event"]["id"]
-    rv = client.delete(url_for("calendar.delete_custom_event", uid=id_2))
+    rv = client.delete(url_for("calendar.delete_custom_event", id=id_2))
     save_current_calendar(user, manager)
 
     assert rv.status_code == 200
@@ -344,7 +344,7 @@ def test_delete_custom_event(client, user, manager):
 
     try:
         with pytest.raises(KeyError):
-            client.delete(url_for("calendar.delete_custom_event", uid=id_1))
+            client.delete(url_for("calendar.delete_custom_event", id=id_1))
     except ConnectionRefusedError:
         pass
 
@@ -368,7 +368,7 @@ def test_update_custom_event(client, user, manager):
     id_1 = data["event"]["id"]
 
     rv = client.post(
-        url_for("calendar.update_custom_event", uid=id_1),
+        url_for("calendar.update_custom_event", id=id_1),
         data=json.dumps(param),
         content_type="application/json",
     )
@@ -395,7 +395,7 @@ def test_update_custom_event(client, user, manager):
     id_2 = data["event"]["id"]
 
     rv = client.post(
-        url_for("calendar.update_custom_event", uid=id_2),
+        url_for("calendar.update_custom_event", id=id_2),
         data=json.dumps(param),
         content_type="application/json",
     )

@@ -248,22 +248,22 @@ def add_custom_event():
     return (jsonify({"event": event.json()}), 200)
 
 
-@calendar.route("/custom_event/<uid>", methods=["DELETE"])
-def delete_custom_event(uid):
-    session["current_schedule"].remove_custom_event(uid=uid)
+@calendar.route("/custom_event/<id>", methods=["DELETE"])
+def delete_custom_event(id):
+    session["current_schedule"].remove_custom_event(id=id)
     session["current_schedule_modified"] = True
     return jsonify({}), 200
 
 
-@calendar.route("/custom_event/<uid>", methods=["POST"])
-def update_custom_event(uid):
+@calendar.route("/custom_event/<id>", methods=["POST"])
+def update_custom_event(id):
     title = request.json.get("title")
     color = request.json.get("color")
     location = request.json.get("location")
     description = request.json.get("description")
 
     session["current_schedule"].set_custom_event_attributes(
-        uid, name=title, color=color, location=location, description=description
+        id, name=title, color=color, location=location, description=description
     )
 
     session["current_schedule_modified"] = True
