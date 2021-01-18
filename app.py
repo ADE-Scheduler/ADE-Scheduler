@@ -289,7 +289,7 @@ def update_notification(link):
     resp = make_response(str(calendar))
     resp.mimetype = "text/calendar"
     resp.headers["Content-Disposition"] = "attachment; filename=calendar.ics"
-    g.track_var["link"] = link
+    g.track_var["old user link"] = link
     return resp
 
 
