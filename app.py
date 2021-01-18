@@ -26,9 +26,7 @@ from flask_mail import Mail, Message, email_dispatched
 from flask_jsglue import JSGlue
 from flask_babel import Babel, gettext
 from flask_migrate import Migrate
-from flask_track_usage import TrackUsage
 from flask_compress import Compress
-from flask_track_usage.storage.sql import SQLStorage
 
 # API imports
 import backend.models as md
@@ -37,6 +35,7 @@ import backend.ade_api as ade
 import backend.manager as mng
 import backend.schedules as schd
 import backend.events as evt
+import backend.track_usage as tu
 import views.utils as utl
 
 # Views imports
@@ -176,14 +175,6 @@ app.config["SESSION_REDIS"] = manager.server
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(**redis_ttl_config["user_session"])
 app.config["SESSION_MANAGER"] = Session(app)
 
-# Setup Flask-TrackUsage
-app.config["TRACK_USAGE_COOKIE"] = True
-app.config["TRACK_USAGE_USE_FREEGEOIP"] = False
-app.config["TRACK_USAGE_INCLUDE_OR_EXCLUDE_VIEWS"] = "exclude"
-with app.app_context():
-    storage = SQLStorage(db=manager.database)
-t = TrackUsage(app, storage)
-
 # Setup Flask-Babel
 app.config["LANGUAGES"] = ["en", "fr"]
 app.config["BABEL_TRANSLATION_DIRECTORIES"] = "translations"
@@ -227,6 +218,16 @@ def before_first_request():
         os.makedirs("static/dist")
     with open("static/dist/jsglue.min.js", "w") as f:
         f.write(jsmin(jsglue.generate_js()))
+
+
+@app.before_request
+def before_request():
+    tu.before_request()
+
+
+@app.after_request
+def after_request(response):
+    return tu.after_request(response)
 
 
 # Reset current schedule on user logout
@@ -343,5 +344,4 @@ def make_shell_context():
         "Usage": md.Usage,
         "Api": md.ApiUsage,
         "mng": app.config["MANAGER"],
-        "t": storage,
     }

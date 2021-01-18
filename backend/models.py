@@ -1,4 +1,5 @@
 import uuid
+import json
 import secrets
 import datetime
 import sqlalchemy as sa
@@ -307,17 +308,39 @@ class Usage(db.Model):
     ua_platform = db.Column(db.String(16))
     ua_version = db.Column(db.String(16))
     blueprint = db.Column(db.String(16))
+    path = db.Column(db.String(256))
+    endpoint = db.Column(db.String(64))
     view_args = db.Column(db.String(64))
+    url_args = db.Column(db.String(512))
     status = db.Column(db.Integer)
     remote_addr = db.Column(db.String(24))
-    xforwardedfor = db.Column(db.String(64))
-    authorization = db.Column(db.Boolean)
-    ip_info = db.Column(db.String(1024))
-    path = db.Column(db.String(256))
     speed = db.Column(db.Float)
     datetime = db.Column(db.DateTime)
     username = db.Column(db.String(128))
     track_var = db.Column(db.String(256))
+
+    def __init__(self, data):
+        user_agent = data["user_agent"]
+
+        self.url = data["url"]
+        self.ua_browser = user_agent.browser
+        self.ua_language = user_agent.language
+        self.ua_platform = user_agent.platform
+        self.ua_version = user_agent.version
+        self.blueprint = data["blueprint"]
+        self.path = data["path"]
+        self.endpoint = data["endpoint"]
+        self.view_args = json.dumps(data["view_args"], ensure_ascii=False)[:64]
+        self.url_args = json.dumps(data["url_args"], ensure_ascii=False)[:512]
+        self.status = data["status"]
+        self.remote_addr = data["remote_addr"]
+        self.speed = data["speed"]
+        self.datetime = data["datetime"]
+        self.username = data["username"]
+        self.track_var = json.dumps(data["track_var"], ensure_ascii=False)
+
+        db.session.add(self)
+        db.session.commit()  # For some obscures reason, this make the tests fail...
 
 
 class ApiUsage(db.Model):
