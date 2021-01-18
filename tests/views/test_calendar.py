@@ -8,6 +8,12 @@ import backend.models as md
 import backend.schedules as schd
 
 
+def save_current_calendar(user, manager):
+    session["current_schedule"] = manager.save_schedule(
+        user, session["current_schedule"], session.get("uuid")
+    )
+
+
 def test_index(client):
     """Test the index route"""
     rv = client.get(url_for("calendar.index"))
@@ -294,7 +300,7 @@ def test_add_custom_event(client, user):
 
 
 @pytest.mark.parametrize("user", ["jyl"], indirect=True)
-def test_delete_custom_event(client, user):
+def test_delete_custom_event(client, user, manager):
     """Test the delete_custom_event(id) route"""
     # Test non-recurring event
     rv = client.post(
@@ -302,10 +308,13 @@ def test_delete_custom_event(client, user):
         data=json.dumps(CUSTOM_EVENT),
         content_type="application/json",
     )
+    save_current_calendar(user, manager)
+
     data = json.loads(rv.data)
     id_1 = data["event"]["id"]
-    rv = client.delete(url_for("calendar.delete_custom_event", id=id_1))
+    rv = client.delete(url_for("calendar.delete_custom_event", uid=id_1))
 
+    save_current_calendar(user, manager)
     assert rv.status_code == 200
 
     # Test recurring event
@@ -314,13 +323,18 @@ def test_delete_custom_event(client, user):
         data=json.dumps(CUSTOM_RECURRING_EVENT),
         content_type="application/json",
     )
+
+    save_current_calendar(user, manager)
+
     data = json.loads(rv.data)
     id_2 = data["event"]["id"]
-    rv = client.delete(url_for("calendar.delete_custom_event", id=id_2))
+    rv = client.delete(url_for("calendar.delete_custom_event", uid=id_2))
+    save_current_calendar(user, manager)
 
     assert rv.status_code == 200
 
     rv = client.get(url_for("calendar.get_events", schedule_number=0))
+
     data = json.loads(rv.data)
     events = data["events"]
     ids = [event["id"] for event in events]
@@ -328,19 +342,17 @@ def test_delete_custom_event(client, user):
     for id in [id_1, id_2]:
         assert id not in ids
 
-    # TODO: fix below (triggers an error on Travis CI)
-    # Delete non existing event (already deleted)
-    # error = None
-    # try:
-    #     client.delete(url_for("calendar.delete_custom_event", id=id_1))
-    # except KeyError as e:
-    #     error = e
-    #
-    # assert type(error) == KeyError
+    error = None
+    try:
+        client.delete(url_for("calendar.delete_custom_event", uid=id_1))
+    except KeyError as e:
+        error = e
+
+    assert type(error) == KeyError
 
 
 @pytest.mark.parametrize("user", ["jyl"], indirect=True)
-def test_update_custom_event(client, user):
+def test_update_custom_event(client, user, manager):
     """Test the update_custom_event(id) route"""
     changes = dict(title="Changed", description="Changed", location="Changed")
 
@@ -352,14 +364,19 @@ def test_update_custom_event(client, user):
         data=json.dumps(CUSTOM_EVENT),
         content_type="application/json",
     )
+    save_current_calendar(user, manager)
+
     data = json.loads(rv.data)
     id_1 = data["event"]["id"]
 
     rv = client.post(
-        url_for("calendar.update_custom_event", id=id_1),
+        url_for("calendar.update_custom_event", uid=id_1),
         data=json.dumps(param),
         content_type="application/json",
     )
+
+    save_current_calendar(user, manager)
+
     event = session["current_schedule"].get_custom_event(id_1).json()
 
     for key, value in changes.items():
@@ -373,14 +390,20 @@ def test_update_custom_event(client, user):
         data=json.dumps(CUSTOM_RECURRING_EVENT),
         content_type="application/json",
     )
+
+    save_current_calendar(user, manager)
+
     data = json.loads(rv.data)
     id_2 = data["event"]["id"]
 
     rv = client.post(
-        url_for("calendar.update_custom_event", id=id_2),
+        url_for("calendar.update_custom_event", uid=id_2),
         data=json.dumps(param),
         content_type="application/json",
     )
+
+    save_current_calendar(user, manager)
+
     event = session["current_schedule"].get_custom_event(id_2).json()
 
     for key, value in changes.items():
