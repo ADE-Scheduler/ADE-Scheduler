@@ -178,7 +178,7 @@ def search_code(search_key):
     return jsonify({"codes": codes}), 200
 
 
-@calendar.route("/<path:code>", methods=["PATCH"])
+@calendar.route("/<path:code>", methods=["POST"])
 def add_code(code):
     mng = app.config["MANAGER"]
     code = code.upper()
