@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-12-04 09:42+0100\n"
+"POT-Creation-Date: 2021-01-22 15:29+0100\n"
 "PO-Revision-Date: 2020-07-24 16:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -18,15 +18,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.0\n"
 
-#: app.py:314
+#: app.py:315
 msgid "An error has occurred"
 msgstr "Il y a eu une erreur"
 
-#: app.py:323
+#: app.py:324
 msgid "Resource not found"
 msgstr "Ressource non trouvée"
 
-#: app.py:327
+#: app.py:328
 msgid "404 Page not found :("
 msgstr "404 Page non trouvée :("
 
@@ -82,7 +82,7 @@ msgid "Continue"
 msgstr "Continuer"
 
 #: templates/account.html:35 templates/admin.html:14
-#: templates/calendar.html:544 templates/classroom.html:34
+#: templates/calendar.html:556 templates/classroom.html:34
 msgid "A problem has occurred. Please contact us if it happens again."
 msgstr ""
 "Oops, il y a eu un problème ! Veuillez nous contacter si ça se reproduit "
@@ -112,12 +112,12 @@ msgstr "Changer votre mot de passe"
 msgid "Color palette"
 msgstr "Palette de couleur"
 
-#: templates/account.html:90 templates/calendar.html:489
+#: templates/account.html:90 templates/calendar.html:501
 msgid "Academic year"
 msgstr "Année académique"
 
 #: templates/account.html:98 templates/calendar.html:146
-#: templates/calendar.html:401
+#: templates/calendar.html:413
 msgid "Save"
 msgstr "Sauvegarder"
 
@@ -129,20 +129,20 @@ msgstr "Afficher"
 msgid "Delete"
 msgstr "Supprimer"
 
-#: templates/account.html:108 templates/calendar.html:424
-#: templates/calendar.html:433
+#: templates/account.html:108 templates/calendar.html:436
+#: templates/calendar.html:445
 msgid "Schedules"
 msgstr "Horaires"
 
-#: templates/account.html:110 templates/calendar.html:435
+#: templates/account.html:110 templates/calendar.html:447
 msgid "You do not have any saved schedule at the moment"
 msgstr "Vous n'avez aucun horaire sauvegardé pour le moment"
 
-#: templates/account.html:135 templates/calendar.html:528
+#: templates/account.html:135 templates/calendar.html:540
 msgid "Open source software"
 msgstr "Logiciel libre"
 
-#: templates/account.html:135 templates/calendar.html:528
+#: templates/account.html:135 templates/calendar.html:540
 msgid ""
 "designed by Gilles Poncelet, Louis Navarre and Jérome Eertmans, students "
 "at the Ecole polytechnique de Louvain."
@@ -150,78 +150,78 @@ msgstr ""
 "créé par Gilles Poncelet, Louis Navarre et Jérome Eertmans, étudiants à "
 "l'École polytechnique de Louvain"
 
-#: templates/base.html:33
+#: templates/base.html:36
 msgid "You need to create an account to unlock this page"
 msgstr "Vous devez créer un compte pour débloquer cette page"
 
-#: templates/base.html:37 templates/calendar.html:164
+#: templates/base.html:40 templates/calendar.html:164
 msgid "Do not hesitate to create an account... you can:"
 msgstr "N'hésitez pas à créer un compte... avec, vous pouvez:"
 
-#: templates/base.html:44 templates/calendar.html:171
+#: templates/base.html:47 templates/calendar.html:171
 #: templates/security/register_user.html:20
 msgid "Save your schedules"
 msgstr "Sauvegarder vos horaires"
 
-#: templates/base.html:51 templates/calendar.html:178
+#: templates/base.html:54 templates/calendar.html:178
 #: templates/security/register_user.html:27
 msgid "Manage several schedules following your needs"
 msgstr "Gérer plusieurs horaires selon vos besoins"
 
-#: templates/base.html:58 templates/calendar.html:185
+#: templates/base.html:61 templates/calendar.html:185
 #: templates/security/register_user.html:34
 msgid "Modify the color of the events in the calendar"
 msgstr "Modifier la couleur des événements dans le calendrier"
 
-#: templates/base.html:65 templates/calendar.html:192
+#: templates/base.html:68 templates/calendar.html:192
 #: templates/security/register_user.html:41
 msgid "And so much more !"
 msgstr "Et bien plus !"
 
-#: templates/base.html:70 templates/calendar.html:58
+#: templates/base.html:73 templates/calendar.html:58
 #: templates/calendar.html:142 templates/calendar.html:240
 #: templates/calendar.html:369 templates/calendar.html:388
 #: templates/classroom.html:24
 msgid "Close"
 msgstr "Fermer"
 
-#: templates/base.html:71
+#: templates/base.html:74
 msgid "Create an account"
 msgstr "Créer un compte"
 
-#: templates/base.html:91
+#: templates/base.html:94
 msgid "Calendar"
 msgstr "Calendrier"
 
-#: templates/base.html:94
+#: templates/base.html:97
 msgid "Classrooms"
 msgstr "Locaux"
 
-#: templates/base.html:98 templates/base.html:100
+#: templates/base.html:101 templates/base.html:103
 msgid "Account"
 msgstr "Compte"
 
-#: templates/base.html:104
+#: templates/base.html:107
 msgid "Help"
 msgstr "Aide"
 
-#: templates/base.html:107
+#: templates/base.html:110
 msgid "News"
 msgstr "Nouveautés"
 
-#: templates/base.html:110
+#: templates/base.html:113
 msgid "Contact us"
 msgstr "Contact"
 
-#: templates/base.html:139
+#: templates/base.html:142
 msgid "Logout"
 msgstr "Déconnexion"
 
-#: templates/base.html:143
+#: templates/base.html:146
 msgid "Login"
 msgstr "Connexion"
 
-#: templates/base.html:144
+#: templates/base.html:147
 msgid "Register"
 msgstr "Inscription"
 
@@ -277,7 +277,7 @@ msgstr "Couleur"
 msgid "Edit"
 msgstr "Modifier"
 
-#: templates/calendar.html:159 templates/calendar.html:399
+#: templates/calendar.html:159 templates/calendar.html:411
 msgid "Export"
 msgstr "Exporter"
 
@@ -285,7 +285,7 @@ msgstr "Exporter"
 msgid "Subscription Link"
 msgstr "Lien d'abonnement"
 
-#: templates/calendar.html:201 templates/calendar.html:398
+#: templates/calendar.html:201 templates/calendar.html:410
 msgid "Schedule"
 msgstr "Horaire"
 
@@ -352,11 +352,15 @@ msgstr "Ajouter"
 msgid "The code you added does not exist in our database."
 msgstr "Le code que vous avez entré n'existe pas dans notre base de données."
 
-#: templates/calendar.html:400
+#: templates/calendar.html:402
+msgid "Show/Hide"
+msgstr "Étendre/Cacher"
+
+#: templates/calendar.html:412
 msgid "Download"
 msgstr "Télécharger"
 
-#: templates/calendar.html:446
+#: templates/calendar.html:458
 msgid ""
 "To view more info or adapt your schedule, click on a course code. To "
 "change the color palette, go to the account page."
@@ -365,43 +369,43 @@ msgstr ""
 "sur le code d'un cours. Pour changer la palette de couleur, allez sur la "
 "page compte."
 
-#: templates/calendar.html:446
+#: templates/calendar.html:458
 msgid "Note"
 msgstr "Note"
 
-#: templates/calendar.html:468
+#: templates/calendar.html:480
 msgid "Enter code"
 msgstr "Entrez un code"
 
-#: templates/calendar.html:474
+#: templates/calendar.html:486
 msgid "Search results"
 msgstr "Résultats"
 
-#: templates/calendar.html:476
+#: templates/calendar.html:488
 msgid "No results"
 msgstr "Aucun résultat"
 
-#: templates/calendar.html:498
+#: templates/calendar.html:510
 msgid "Colors"
 msgstr "Couleurs"
 
-#: templates/calendar.html:500
+#: templates/calendar.html:512
 msgid "Reset colors"
 msgstr "Réinitialiser les couleurs"
 
-#: templates/calendar.html:520
+#: templates/calendar.html:532
 msgid "Compute"
 msgstr "Calculer"
 
-#: templates/calendar.html:523
+#: templates/calendar.html:535
 msgid "New"
 msgstr "Nouveau"
 
-#: templates/calendar.html:540
+#: templates/calendar.html:552
 msgid "Schedule successfuly saved !"
 msgstr "Horaire sauvegardé avec succès !"
 
-#: templates/calendar.html:551
+#: templates/calendar.html:563
 msgid ""
 "Disclaimer: ADE Scheduler is not an official UCLouvain tool. It has been "
 "designed with the purpose to help the UCLouvain students with scheduling."
@@ -733,15 +737,15 @@ msgstr ""
 "civil. Il a un bachelier en électricité et mécanique. Actuellement, il "
 "suit un master en ingénieur civil mécatronique."
 
-#: templates/welcome.html:31
+#: templates/welcome.html:34
 msgid "ADE Scheduler under new skin, welcome to the version 2.0 !"
 msgstr "ADE Scheduler fait peau neuve, bienvenue sur la version 2.0 !"
 
-#: templates/welcome.html:32
+#: templates/welcome.html:35
 msgid "The same as before. But in better. And in mobile version."
 msgstr "Le même site qu'avant. Mais en mieux. Et disponible en version mobile."
 
-#: templates/welcome.html:34
+#: templates/welcome.html:37
 msgid ""
 "Little information for old members from version 1.0: you now register "
 "using an email address. It means that your old accounts must be created "
@@ -751,7 +755,7 @@ msgstr ""
 "enregistrer avec une adresse email. Cela veut dire que vos anciens "
 "comptes ne fonctionneront plus."
 
-#: templates/welcome.html:37
+#: templates/welcome.html:40
 msgid "Get started"
 msgstr "C'est parti !"
 

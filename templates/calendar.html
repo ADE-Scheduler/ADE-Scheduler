@@ -395,7 +395,19 @@
     <div class="nav-scroller bg-white shadow-sm">
         <nav class="nav nav-underline">
             <a class="nav-link" href="#" v-on:click="getEvents(0)" v-bind:class="{active: selected_schedule==0}">ADE</a>
-            <a class="nav-link" href="#" v-on:click="getEvents(i)" v-bind:class="{active: selected_schedule==i}" v-for="i in n_schedules">{{ _('Schedule') }} #[[ i ]]</a>
+             <button class="btn btn-outline-secondary"
+                     v-on:click="toggleBestSchedules()"
+                     v-if="n_schedules > 0"
+                     data-bs-toggle="tooltip"
+                     title="{{_('Show/Hide')}}">
+                <svg xmlns="http://www.w3.org/2000/svg" v-if="!show_best_schedules" width="16" height="16" fill="currentColor" class="bi bi-caret-right" viewBox="0 0 16 16">
+                    <path d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753l5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"/>
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" v-else width="16" height="16" fill="currentColor" class="bi bi-caret-left" viewBox="0 0 16 16">
+                    <path d="M10 12.796V3.204L4.519 8 10 12.796zm-.659.753l-5.48-4.796a1 1 0 0 1 0-1.506l5.48-4.796A1 1 0 0 1 11 3.204v9.592a1 1 0 0 1-1.659.753z"/>
+                </svg>
+            </button>
+            <a class="nav-link" href="#" v-if="show_best_schedules" v-on:click="getEvents(i)" v-bind:class="{active: selected_schedule==i}" v-for="i in n_schedules">{{ _('Schedule') }} #[[ i ]]</a>
             <a class="nav-link" href="#" v-on:click="getLink">{{ _('Export') }}</a>
             <a class="nav-link" href="{{ url_for('calendar.download') }}">{{_('Download')}}</a>
             <a class="nav-link" href="#" v-on:click="save">{{_('Save')}}</a>

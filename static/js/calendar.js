@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
       currentProjectId: 0,
       codes: [],
       n_schedules: 0,
+      show_best_schedules: false,
       selected_schedule: 0,
       computing: true,
       error: false,
@@ -349,6 +350,7 @@ document.addEventListener('DOMContentLoaded', function() {
             this.selected_schedule = resp.data.selected_schedule;
             this.calendarOptions.events = resp.data.events;
             this.setUnsavedStatus(resp.data.unsaved);
+            this.show_best_schedules = true;
           })
           .catch(() => {
             this.error = true;
@@ -610,6 +612,9 @@ document.addEventListener('DOMContentLoaded', function() {
         this.navBtn = !this.navBtn;
         if (this.navBtn)    { codeMenu.show(); }
         else                { codeMenu.hide(); }
+      },
+      toggleBestSchedules: function() {
+        this.show_best_schedules = !this.show_best_schedules;
       },
       removeEvent: function(event) {
         this.computing = true;
