@@ -438,16 +438,15 @@ def compute():
 
 
 @calendar.route("/schedule/best", methods=["DELETE"])
-def reset_color():
+def reset_best_schedules():
     session["current_schedule"].reset_best_schedules()
 
-    schedule_number = int(request.json.get("schedule_number"))
     session["current_schedule_modified"] = True
     return (
         jsonify(
             {
                 "events": session["current_schedule"].get_events(
-                    json=True, schedule_number=schedule_number
+                    json=True, schedule_number=0
                 )
             }
         ),
