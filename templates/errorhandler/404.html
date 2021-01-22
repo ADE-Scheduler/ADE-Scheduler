@@ -11,6 +11,8 @@
         {{ message }}
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
-    <img src="{{ url_for('static', filename='img/404.jpg') }}" class="img-fluid" alt="Responsive image">
+    <div class="text-center">
+        <img src="{{ url_for('static', filename='img/404.svg') }}" class="w-75 p-3" alt="Responsive image">
+    </div>
 </div>
 {% endblock %}
