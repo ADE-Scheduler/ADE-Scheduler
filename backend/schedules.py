@@ -76,7 +76,7 @@ class Schedule:
         self.options = dict()
 
     def reset_best_schedules(self):
-        self.best_schedules = ()
+        self.best_schedules = list()
 
     def get_option(self, option: str) -> bool:
         if not hasattr(self, "options"):
