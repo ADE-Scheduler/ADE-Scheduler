@@ -99,11 +99,13 @@
 .nav-underline .active {
     font-weight: 500;
     color: #343a40;
+    padding-right: 5px;
 }
 
 .schedule-toggle {
     cursor: pointer;
-    color: #6c757d;
+    color: #343a40;
+    font-weight: 500;
 }
 .schedule-toggle:hover {
     color: #007bff;
