@@ -360,6 +360,26 @@ document.addEventListener('DOMContentLoaded', function() {
             this.computing = false;
           });
       },
+      resetBestSchedules: function() {
+        this.computing = true;
+        axios({
+          method: 'DELETE',
+          url: Flask.url_for('calendar.reset_best_schedules'),
+        })
+          .then(resp => {
+            this.n_schedules = 0;
+            this.selected_schedule = 0;
+            this.calendarOptions.events = resp.data.events;
+            this.setUnsavedStatus(resp.data.unsaved);
+            this.show_best_schedules = false;
+          })
+          .catch(() => {
+            this.error = true;
+          })
+          .then(() => {
+            this.computing = false;
+          });
+      },
       getLink: function() {
         this.computing = true;
         axios({
