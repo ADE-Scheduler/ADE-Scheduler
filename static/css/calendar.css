@@ -101,6 +101,13 @@
     color: #343a40;
 }
 
+.schedule-toggle {
+    cursor: pointer;
+    color: #6c757d;
+}
+.schedule-toggle:hover {
+    color: #007bff;
+}
 
 /*
  * Sidebar
