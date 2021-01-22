@@ -13,3 +13,4 @@ repos:
     rev: v7.17.0
     hooks:
     -   id: eslint
+        args: [--fix]
