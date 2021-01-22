@@ -230,9 +230,31 @@
                             </svg>
                         </button>
                     </div>
-                    <div>
+                    <div class="mb-3">
                         <small class="text-muted">
                             {{ _('You can use this link to share your schedule with your friends.') }}
+                        </small>
+                    </div>
+
+                    <label class="form-label">{{_('Download to iCalendar format')}}</label>
+                    <div class="input-group">
+                        <select class="form-select" style="max-width: 140px;" v-model="exportInfo.downloadType">
+                            <option v-bind:value="0">ADE</option>
+                            <option v-for="j in n_schedules" v-bind:value="j">{{ _('Schedule') }} #[[ j ]]</option>
+                        </select>
+                        <button class="btn btn-outline-secondary"
+                                v-on:click="downloadCalendar()"
+                                data-bs-toggle="tooltip"
+                                title="{{_('Download')}}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+                                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                                <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div>
+                        <small class="text-muted">
+                            {{ _('You can use this file and upload it to your favorite calendar app. Nonetheless, events will not be updated if any change occur on ADE.') }}
                         </small>
                     </div>
                 </div>
@@ -409,7 +431,6 @@
             </button>
             <a class="nav-link" href="#" v-if="show_best_schedules" v-on:click="getEvents(i)" v-bind:class="{active: selected_schedule==i}" v-for="i in n_schedules">{{ _('Schedule') }} #[[ i ]]</a>
             <a class="nav-link" href="#" v-on:click="getLink">{{ _('Export') }}</a>
-            <a class="nav-link" href="{{ url_for('calendar.download') }}">{{_('Download')}}</a>
             <a class="nav-link" href="#" v-on:click="save">{{_('Save')}}</a>
         </nav>
     </div>

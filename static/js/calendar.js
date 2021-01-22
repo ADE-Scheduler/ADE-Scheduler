@@ -228,6 +228,7 @@ document.addEventListener('DOMContentLoaded', function() {
       exportInfo: {
         url: null,
         subscriptionType: 0,
+        downloadType: 0,
       },
       shareLink: '',
     },
@@ -383,6 +384,9 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
           this.unsaved = unsaved;
         }
+      },
+      downloadCalendar: function() {
+        open( Flask.url_for('calendar.download', {'choice': this.exportInfo.downloadType}) );
       },
       save: function() {
         this.computing = true;
