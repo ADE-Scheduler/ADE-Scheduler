@@ -221,6 +221,9 @@ class Client(DummyClient):
         if self.is_expired():
             self.renew_token()
 
+        # Uncomment to this to save request to fake api file
+        # fake_args = "&".join("=".join(map(str, _)) for _ in kwargs.items())
+
         headers = {"Authorization": "Bearer " + self.token}
 
         function = kwargs.pop("function", None)
@@ -230,8 +233,10 @@ class Client(DummyClient):
             project_id = kwargs.pop("projectId", None)
             args = "&".join("=".join(map(str, _)) for _ in kwargs.items())
             url = f"https://api.sgsi.ucl.ac.be:8243/ade/v0/projects/{project_id}/{function}?{args}"
-
         resp = requests.get(url=url, headers=headers)
+
+        # Uncomment to this to save request to fake api file
+        # save_response(resp, fake_args)
 
         md.ApiUsage(url, resp)
         resp.raise_for_status()
