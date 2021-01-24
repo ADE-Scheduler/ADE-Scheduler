@@ -224,7 +224,7 @@ class Client(DummyClient):
             self.renew_token()
 
         # Uncomment to this to save request to fake api file
-        fake_args = "&".join("=".join(map(str, _)) for _ in kwargs.items())
+        # fake_args = "&".join("=".join(map(str, _)) for _ in kwargs.items())
 
         headers = {"Authorization": "Bearer " + self.token}
 
@@ -238,8 +238,7 @@ class Client(DummyClient):
         resp = requests.get(url=url, headers=headers)
 
         # Uncomment to this to save request to fake api file
-        save_response(resp, fake_args)
-        print("Saved request:", fake_args)
+        # save_response(resp, fake_args)
 
         md.ApiUsage(url, resp)
         resp.raise_for_status()
