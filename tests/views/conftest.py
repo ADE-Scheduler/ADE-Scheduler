@@ -8,7 +8,7 @@ import views.utils as utl
 
 from app import app as ade_scheduler
 from flask import session
-from flask_security import hash_password, login_user, logout_user
+from flask_security import hash_password, AnonymousUser
 
 
 @pytest.fixture(scope="session")
@@ -44,10 +44,9 @@ def jyl(app, manager, user_ds, db):
         active=True,
     )
 
-    active_schedule = md.Schedule(
-        schd.Schedule(manager.get_default_project_id(), label="JYL'S SCHEDULE"),
-        user=jyl,
-    )
+    data = schd.Schedule(manager.get_default_project_id(), label="JYL'S SCHEDULE")
+    data.add_course("LEPL1104")
+    active_schedule = md.Schedule(data, user=jyl)
     db.session.add(active_schedule)
 
     old_schedule = md.Schedule(
@@ -119,7 +118,7 @@ def louwi(app, manager):
         )
         return None
 
-    yield None
+    yield AnonymousUser()
 
     @app.login_manager.request_loader
     def load_user_from_request(request):

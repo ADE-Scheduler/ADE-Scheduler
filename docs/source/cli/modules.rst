@@ -13,18 +13,14 @@ Documentation is generated using sphinx-click but does not offer a pretty render
 For a more detailed documentation, please use :code:`flask --help` directly in the
 command shell.
 
-.. click:: cli:client
-    :prog: client
-    :show-nested:
+.. toctree::
+   :maxdepth: 1
 
-.. click:: cli:redis
-   :prog: redis
-   :show-nested:
-
-.. click:: cli:schedules
-   :prog: schedules
-   :show-nested:
-
-.. click:: cli:sql
-   :prog: sql
-   :show-nested:
+   cli_api_usage
+   cli_client
+   cli_plots
+   cli_redis
+   cli_schedules
+   cli_sql
+   cli_usage
+   cli_users

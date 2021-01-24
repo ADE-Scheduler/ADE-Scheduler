@@ -13,5 +13,3 @@ Other tutorials
     database
     email
     redis-server
-
-

@@ -15,11 +15,11 @@ from flask import (
     g,
 )
 from flask_security import current_user, login_required
-from flask_babel import gettext
+from flask_babel import gettext, LazyString
+from flask._compat import text_type
 
 import backend.schedules as schd
 import backend.events as evt
-import backend.models as md
 import views.utils as utl
 
 
@@ -31,6 +31,8 @@ class CalendarEncoder(json.JSONEncoder):
     def default(self, obj: Any) -> Any:
         if isinstance(obj, set):
             return list(obj)
+        elif isinstance(obj, LazyString):
+            return text_type(obj)
         else:
             return json.JSONEncoder.default(self, obj)
 
@@ -310,7 +312,7 @@ def download():
 
     try:
         choice = int(request.args.get("choice")) if request.args.get("choice") else 0
-    except ValueError as e:
+    except ValueError:
         choice = 0
 
     if link:
@@ -435,6 +437,23 @@ def compute():
     )
 
 
+@calendar.route("/schedule/best", methods=["DELETE"])
+def reset_best_schedules():
+    session["current_schedule"].reset_best_schedules()
+
+    session["current_schedule_modified"] = True
+    return (
+        jsonify(
+            {
+                "events": session["current_schedule"].get_events(
+                    json=True, schedule_number=0
+                )
+            }
+        ),
+        200,
+    )
+
+
 @calendar.route("/schedule/color", methods=["POST"])
 def update_color():
     color_palette = request.json.get("color_palette")
@@ -459,7 +478,7 @@ def update_color():
 def reset_color():
     session["current_schedule"].reset_color_palette()
 
-    schedule_number = int(request.args.get("schedule_number"))
+    schedule_number = int(request.json.get("schedule_number"))
     session["current_schedule_modified"] = True
     return (
         jsonify(

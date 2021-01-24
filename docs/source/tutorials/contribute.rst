@@ -112,7 +112,7 @@ Once the code is written, you need to extract the strings to translate:
 
 .. code-block:: console
 
-    $ cd docs
+    $ cd <repo>
     $ pybabel extract -F translations/babel.cfg -k _l -o translations/messages.pot .
     $ pybabel update -i translations/messages.pot -d translations
 
@@ -191,4 +191,3 @@ Here are listed some interesting readings about Sphinx's documentation tool:
 * https://sphinx-rtd-tutorial.readthedocs.io/en/latest/docstrings.html
 * https://thomas-cokelaer.info/tutorials/sphinx/docstring_python.html
 * https://thomas-cokelaer.info/tutorials/sphinx/rest_syntax.html
-

@@ -6,11 +6,11 @@ from typing import Iterable, Union, List, Dict, Set, Optional
 from backend.courses import Course, merge_courses
 from flask import current_app as app
 from ics import Calendar
-from flask_babel import gettext
+from flask_babel import lazy_gettext as _l
 
 import backend.events as evt
 
-DEFAULT_SCHEDULE_NAME = gettext("New schedule")
+DEFAULT_SCHEDULE_NAME = _l("New schedule")
 COLOR_PALETTE = [
     "#bf616a",
     "#2e3440",
@@ -74,6 +74,9 @@ class Schedule:
         self.priorities = dict()
         self.color_palette = list(COLOR_PALETTE)
         self.options = dict()
+
+    def reset_best_schedules(self):
+        self.best_schedules = list()
 
     def get_option(self, option: str) -> bool:
         if not hasattr(self, "options"):
@@ -335,8 +338,8 @@ class Schedule:
         df_main, df_other = df[valid], df[~valid]
 
         max_bests_found = (
-            1
-        )  # Number of best schedules found (will take the maximum value out of all
+            1  # Number of best schedules found (will take the maximum value out of all
+        )
         # weeks)
 
         for week, week_data in df_main.groupby("week"):

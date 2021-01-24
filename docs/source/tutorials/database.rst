@@ -153,6 +153,10 @@ the server to your local machine.
 
 .. code-block:: console
 
+    drop old database
+    $ psql -c 'drop database "ade-database";' -U postgres --host=localhost
+    create new database
+    $ psql -c 'create database "ade-database";' -U postgres --host=localhost
     $ gzip -d {db-backup}.sql.gz
     un-zip database
     $ psql -U postgres --host=localhost --dbname=ade-database < {db-backup}.sql
@@ -180,4 +184,3 @@ interact with the database:
 =================================
 
 .. todo
-

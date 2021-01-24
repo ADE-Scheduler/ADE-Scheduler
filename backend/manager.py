@@ -48,6 +48,7 @@ class Manager:
     def get_courses(self, *codes: str, project_id: str = None) -> List[crs.Course]:
         """
         Returns the courses with given codes as a list.
+        Order of courses is consistent with initial order of the codes.
 
         :param codes: the code(s) of the course(s)
         :type codes: str
@@ -65,7 +66,7 @@ class Manager:
             *codes, prefix=prefix
         )
 
-        # Fetch from the api
+        # Fetch from the api the missing courses
         if codes_not_found:
             for code_not_found in codes_not_found:
                 resource_ids = self.get_resource_ids(
@@ -79,9 +80,18 @@ class Manager:
                     course_not_found,
                     expire_in=self.ttl["courses"],
                 )
-                courses += course_not_found
+                courses[code_not_found] = course_not_found
 
-        return courses
+        ret = list()
+
+        for code in codes:
+            course = courses[code]
+            if isinstance(course, list):  # Happens if course is a course combo
+                ret.extend(course)
+            else:
+                ret.append(course)
+
+        return ret
 
     def get_events_in_classroom(
         self, classroom_id: str, project_id: str = None
@@ -174,7 +184,9 @@ class Manager:
             value = value.decode()
             key = f"[COURSE_RESOURCES,project_id={value}]"
 
-            resources = self.get_resources(project_id=value)
+            resources = ade.response_to_course_resources(
+                self.client.get_course_resources(project_id=value)
+            )
             resource_types = resources[rsrc.INDEX.TYPE]
             index = (resource_types == rsrc.TYPES.COURSE) | (
                 resource_types == rsrc.TYPES.COURSE_COMBO
@@ -400,6 +412,6 @@ class Manager:
         """
         plots = []
         for key in self.server.scan_iter(match="*PLOT*"):
-            plots.append((key, self.server.get_value(key)))
+            plots.append({"id": key.decode(), "data": self.server.get_value(key)})
 
         return plots
