@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+{% from "custom_macros.html" import render_flash_alert %}
+{% block head %}
+<% _.forEach(htmlWebpackPlugin.files.js, function(file) { %>
+<script type="text/javascript" src="<%= file%>"></script>
+<%}); %>
+<script type="text/javascript" src="https://platform.linkedin.com/badges/js/profile.js" async defer></script>
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-3 col-lg-2 d-md-block bg-light navigator collapse" id="faq-navigator">
+            <nav class="nav nav-pills navigator-sticky d-flex flex-column p-3">
+
+                <a class="nav-link main-link mb-0" href="#collab" v-on:click.prevent="scroll('collab', true)">{{ _('Collaborative project') }}</a>
+                <nav class="nav sub-nav flex-column">
+                    <a class="nav-link ms-4" href="#collab-open-source" v-on:click.prevent="scroll('collab-open-source')">{{ _('ADE Scheduler is open source') }}</a>
+                    <a class="nav-link ms-4" href="#collab-help-us" v-on:click.prevent="scroll('collab-help-us')">{{ _('You can help us!') }}</a>
+                </nav>
+
+                <a class="nav-link main-link mb-0" href="#non-prog" v-on:click.prevent="scroll('non-prog', true)">{{ _('For non-programmers') }}</a>
+                <nav class="nav sub-nav flex-column">
+                    <a class="nav-link ms-4" href="#non-prog-bugs" v-on:click.prevent="scroll('non-prog-bugs')">{{ _('Signal bugs') }}</a>
+                    <a class="nav-link ms-4" href="#non-prog-typos" v-on:click.prevent="scroll('non-prog-typos')">{{ _('Typos correction') }}</a>
+                    <a class="nav-link ms-4" href="#non-prog-new-features" v-on:click.prevent="scroll('non-prog-new-features')">{{ _('Request new features') }}</a>
+                </nav>
+
+                <a class="nav-link main-link mb-0" href="#prog" v-on:click.prevent="scroll('prog', true)">{{ _('For programmers') }}</a>
+                <nav class="nav sub-nav flex-column">
+                    <a class="nav-link ms-4" href="#prog-github" v-on:click.prevent="scroll('prog-github')">{{ _('Contribute via') }} <img src="../static/img/GitHub-Logos/GitHub_Logo.png" class="txt-img"/></a>
+                </nav>
+                <nav class="nav sub-nav flex-column">
+                    <a class="nav-link ms-4" href="#prog-ects" v-on:click.prevent="scroll('prog-ects')">{{ _('Earn ECTS at UCLouvain for contributing') }}</a>
+                </nav>
+            </nav>
+        </nav>
+
+        <div class="col-md-9 ms-sm-auto col-lg-10 p-3">
+            <div class="container-lg">
+                {{ render_flash_alert() }}
+                <h3 class="my-5" id="collab">{{ _('Collaborative project') }}</h3>
+                    <h4 id="collab-open-source">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1.1em" height="1.1em" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
+                            <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                            <path fill-rule="evenodd" d="M5.216 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216z"/>
+                            <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>
+                        </svg>
+                        {{ _('ADE Scheduler is open source') }}
+                    </h4>
+                    <hr class="mb-3">
+                    <p>
+                    {{ _('One very important aspect of this project is that it is open source. In short, it means that everybody can access the whole code behind the tool and re-use it. But it also means that you can request changes so that the tool can be further improved.
+                    </br></br>
+
+                    Currently, ADE Scheduler is kindly supported by some academical members at UCLouvain so that we do not have to pay for server hosting fees and we are thankful for that!') }}
+                    </p>
+
+                    <h4 id="collab-help-us">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1.1em" height="1.1em"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm6 5v5h-2v-5c0-4.451 2.644-8.285 6.447-10.016l.828 1.82A9.002 9.002 0 0 0 18 17zM8 17v5H6v-5A9.002 9.002 0 0 0 .725 8.805l.828-1.821A11.002 11.002 0 0 1 8 17z"/></svg>
+                        {{ _('You can help us!') }}
+                    </h4>
+                    <hr class="mb-3">
+                    <p>
+                        {{ _('Even though this tool is functional, it is not perfect. New features, typos in text, missing translations or bugs? There are many things that you can help us improve.
+
+                        </br></br>
+
+                        Down below, we propose multiple ways for you to help us. Nonetheless, any other ideas are welcome!') }}
+                    </p>
+
+                <h3 class="my-5" id="non-prog">{{ _('For non-programmers') }}</h3>
+                    <p>
+                        {{ _('For everything listed below, the best way to contact us is to do it via our email address. This can be found in the contact page. When reaching us, do not hesitate to include screenshots or even your calendar share link so that we can easily reproduce your problem (if applies) locally.') }}
+                    </p>
+                    <h4 id="non-prog-bugs">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1.1em" height="1.1em" fill="currentColor" class="bi bi-bug-fill" viewBox="0 0 16 16">
+                            <path d="M4.978.855a.5.5 0 1 0-.956.29l.41 1.352A4.985 4.985 0 0 0 3 6h10a4.985 4.985 0 0 0-1.432-3.503l.41-1.352a.5.5 0 1 0-.956-.29l-.291.956A4.978 4.978 0 0 0 8 1a4.979 4.979 0 0 0-2.731.811l-.29-.956z"/>
+                            <path d="M13 6v1H8.5v8.975A5 5 0 0 0 13 11h.5a.5.5 0 0 1 .5.5v.5a.5.5 0 1 0 1 0v-.5a1.5 1.5 0 0 0-1.5-1.5H13V9h1.5a.5.5 0 0 0 0-1H13V7h.5A1.5 1.5 0 0 0 15 5.5V5a.5.5 0 0 0-1 0v.5a.5.5 0 0 1-.5.5H13zm-5.5 9.975V7H3V6h-.5a.5.5 0 0 1-.5-.5V5a.5.5 0 0 0-1 0v.5A1.5 1.5 0 0 0 2.5 7H3v1H1.5a.5.5 0 0 0 0 1H3v1h-.5A1.5 1.5 0 0 0 1 11.5v.5a.5.5 0 1 0 1 0v-.5a.5.5 0 0 1 .5-.5H3a5 5 0 0 0 4.5 4.975z"/>
+                        </svg>
+                        {{ _('Signal bugs') }}
+                    </h4>
+                    <hr class="mb-3">
+                    <p>
+                        {{ _('The events are not matching the code you entered? Classrooms are missing or wrongly located on the map? A feature is not working the way you expected?
+                        </br></br>
+
+                        Maybe, you problem is due to a mistake in our code or in the encoding done by people maintening ADE\'s data. Whatever the source of you problem, please contact us and we will do all we can to fix it.') }}
+                    </p>
+
+                    <h4 id="non-prog-typos">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1.1em" height="1.1.1emm" fill="currentColor" class="bi bi-spellcheck" viewBox="0 0 16 16">
+                            <path d="M8.217 11.068c1.216 0 1.948-.869 1.948-2.31v-.702c0-1.44-.727-2.305-1.929-2.305-.742 0-1.328.347-1.499.889h-.063V3.983h-1.29V11h1.27v-.791h.064c.21.532.776.86 1.499.86zm-.43-1.025c-.66 0-1.113-.518-1.113-1.28V8.12c0-.825.42-1.343 1.098-1.343.684 0 1.075.518 1.075 1.416v.45c0 .888-.386 1.401-1.06 1.401zm-5.583 1.035c.767 0 1.201-.356 1.406-.737h.059V11h1.216V7.519c0-1.314-.947-1.783-2.11-1.783C1.355 5.736.75 6.42.69 7.27h1.216c.064-.323.313-.552.84-.552.527 0 .864.249.864.771v.464H2.346C1.145 7.953.5 8.568.5 9.496c0 .977.693 1.582 1.704 1.582zm.42-.947c-.44 0-.845-.235-.845-.718 0-.395.269-.684.84-.684h.991v.538c0 .503-.444.864-.986.864zm8.897.567c-.577-.4-.9-1.088-.9-1.983v-.65c0-1.42.894-2.338 2.305-2.338 1.352 0 2.119.82 2.139 1.806h-1.187c-.04-.351-.283-.776-.918-.776-.674 0-1.045.517-1.045 1.328v.625c0 .468.121.834.343 1.067l-.737.92z"/>
+                             <path d="M14.469 9.414a.75.75 0 0 1 .117 1.055l-4 5a.75.75 0 0 1-1.116.061l-2.5-2.5a.75.75 0 1 1 1.06-1.06l1.908 1.907 3.476-4.346a.75.75 0 0 1 1.055-.117z"/>
+                        </svg>
+                        {{ _('Typos correction') }}
+                    </h4>
+                    <hr class="mb-3">
+                    <p>
+                        {{ _('Writing thousands of lines in both English and French can be error prone, and it becomes hard to spot all the mistakes!
+
+                        </br></br>
+
+                        If you happen to spot one or several typos, please contact us so that we can correct them. This also applies if you think that a formulation is not correct or could be improved.') }}
+                    </p>
+
+                    <h4 id="non-prog-new-features">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1.1em" height="1.1em" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                        </svg>
+                        {{ _('Request new features') }}
+                    </h4>
+                    <hr class="mb-3">
+                    <p>
+                        {{ _('ADE Scheduler is continuously evolving, with the goal to meet the requirements of UCLouvain\'s members in terms of scheduling tools. Therefore, any new feature request is welcome! Please reach us by describing the feature you want us to implement, additionally providing images if you have a clear idea in mind.') }}
+                    </p>
+
+                <h3 class="my-5" id="prog">{{ _('For programmers') }}</h3>
+                <h4 id="prog-github">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1.1em" height="1.1em" fill="currentColor" class="bi bi-code-slash" viewBox="0 0 16 16">
+                        <path d="M10.478 1.647a.5.5 0 1 0-.956-.294l-4 13a.5.5 0 0 0 .956.294l4-13zM4.854 4.146a.5.5 0 0 1 0 .708L1.707 8l3.147 3.146a.5.5 0 0 1-.708.708l-3.5-3.5a.5.5 0 0 1 0-.708l3.5-3.5a.5.5 0 0 1 .708 0zm6.292 0a.5.5 0 0 0 0 .708L14.293 8l-3.147 3.146a.5.5 0 0 0 .708.708l3.5-3.5a.5.5 0 0 0 0-.708l-3.5-3.5a.5.5 0 0 0-.708 0z"/>
+                    </svg>
+                    {{ _('Contribute via') }}
+                    <img src="../static/img/GitHub-Logos/GitHub_Logo.png" class="txt-img"/><img src="../static/img/GitHub-Mark/PNG/GitHub-Mark-120px-plus.png" class="txt-img"/></h4>
+                    <hr class="mb-3">
+                    <p>
+                        {{ _('Our code is publicly available on
+                        <a href="https://github.com/SnaKyEyeS/ADE-Scheduler">GitHub</a>
+                        and we highly recommend programmers to use the git tool when working on projects. If your are new to this tool, never hesitate to ask us questions!
+
+                        </br></br>
+
+                        Everything that was said for non-programmers also applies for programmers. Instead of using emails, use GitHub <a href="https://github.com/SnaKyEyeS/ADE-Scheduler/issues">issues</a> when you want to report a problem or ask for new feature, and <a href="https://github.com/SnaKyEyeS/ADE-Scheduler/pulls">pull requests</a> when you want us to review your code and later include it in the tool. If you want to contribute but you do not have a specific idea in mind, it is good pratice to read the issues other people have written to see if you can help.
+
+                        </br></br>
+
+                        Even if you do not plan to contribute to the code, we highly recommend people who know git or GitHub to reach us via our GitHub repository as it allows us to centralize questions and keep a record of them.
+
+                        </br></br>
+
+                        Last but not least, we have written a complete documentation available <a href="https://ade-scheduler.readthedocs.io/en/latest/">here</a> to help you understand our code and contribute.') }}
+                    </p>
+
+                <h4 id="prog-ects">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1.1em" height="1.1em" fill="currentColor" class="bi bi-bookmark-check-fill" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5zm8.854-9.646a.5.5 0 0 0-.708-.708L7.5 7.793 6.354 6.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z"/>
+                    </svg>
+                    {{ _('Earn ECTS at UCLouvain for contributing') }}
+                </h4>
+                    <hr class="mb-3">
+                    <p>
+                        {{ _('To our knowledge, there are 2 courses at the EPL faculty which grant credits for contributing to an open source project. You can thus contribute to ADE Scheduler while also validating some ECTS for you studies!
+
+                        </br></br>
+
+                       The first one,
+                        <a href="https://uclouvain.be/en-cours-2020-lingi2401">LINGI2401 \"Open Source strategy for software development\"</a>, is given during the first semester and asks for a very small contribution. We highly recommend this course as a good introduction to open source and it is worth 5 ECTS.
+
+                        </br></br>
+
+                       The second one,
+                       <a href="https://uclouvain.be/en-cours-2020-lingi2402">LINGI2402 \"Open Source Project\"</a>, can be taken during either the first or the second semester and asks for a contribution worth 140h of work. This course can be accounted as an internship and it is worth 5 ECTS.
+
+                       </br></br>
+
+                       In the case you cannot, or do not want to, follow these courses, contributing to an open source project is definitely an added value to your CV. Even if it is a vey small contribution, such as typo correction, we will learn a lot from that!
+
+                       ') }}
+                    </p>
+            </div>
+        </div>
+    </div>
+
+    <button class="btn btn-dark btn-nav">
+        <svg v-if="navBtn" v-on:click="toggleNav(false)" width="25px" height="25px" viewBox="0 0 16 16" class="bi bi-chevron-bar-contract" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
+        </svg>
+        <svg v-else        v-on:click="toggleNav(true)" width="25px" height="25px" viewBox="0 0 16 16" class="bi bi-chevron-bar-expand" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+        </svg>
+    </button>
+</div>
+{% endblock %}
