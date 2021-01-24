@@ -26,8 +26,7 @@ from flask_mail import Mail, Message, email_dispatched
 from flask_jsglue import JSGlue
 from flask_babel import Babel, gettext
 from flask_migrate import Migrate
-from flask_track_usage import TrackUsage
-from flask_track_usage.storage.sql import SQLStorage
+from flask_compress import Compress
 
 # API imports
 import backend.models as md
@@ -36,6 +35,7 @@ import backend.ade_api as ade
 import backend.manager as mng
 import backend.schedules as schd
 import backend.events as evt
+import backend.track_usage as tu
 import views.utils as utl
 
 # Views imports
@@ -49,7 +49,14 @@ from views.whatisnew import whatisnew
 from views.admin import admin
 
 # CLI commands
-from cli import cli
+from cli import cli_api_usage
+from cli import cli_client
+from cli import cli_redis
+from cli import cli_schedules
+from cli import cli_sql
+from cli import cli_usage
+from cli import cli_users
+from cli import cli_plots
 
 # Change current working directory to main directory
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
@@ -69,12 +76,14 @@ app.config["SECRET_KEY"] = os.environ["FLASK_SECRET_KEY"]
 jsglue = JSGlue(app)
 
 # Register new commands
-app.cli.add_command(cli.sql)
-app.cli.add_command(cli.redis)
-app.cli.add_command(cli.client)
-app.cli.add_command(cli.schedules)
-app.cli.add_command(cli.usage)
-app.cli.add_command(cli.api_usage)
+app.cli.add_command(cli_sql.sql)
+app.cli.add_command(cli_redis.redis)
+app.cli.add_command(cli_client.client)
+app.cli.add_command(cli_schedules.schedules)
+app.cli.add_command(cli_usage.usage)
+app.cli.add_command(cli_users.users)
+app.cli.add_command(cli_api_usage.api_usage)
+app.cli.add_command(cli_plots.plots)
 
 # Load REDIS TTL config
 redis_ttl_config = configparser.ConfigParser()
@@ -89,9 +98,6 @@ app.config["REDIS_TTL"] = redis_ttl_config
 
 # Setup the API Manager
 app.config["ADE_API_CREDENTIALS"] = {
-    "user": os.environ["ADE_USER"],
-    "password": os.environ["ADE_PASSWORD"],
-    "secret_key": os.environ["ADE_SECRET_KEY"],
     "url": os.environ["ADE_URL"],
     "data": os.environ["ADE_DATA"],
     "Authorization": os.environ["ADE_AUTHORIZATION"],
@@ -113,6 +119,10 @@ app.config["MAIL_PASSWORD"] = os.getenv("MAIL_PASSWORD", None)
 app.config["MAIL_DEFAULT_SENDER"] = os.environ["MAIL_USERNAME"]
 app.config["ADMINS"] = [os.environ["MAIL_ADMIN"]]
 
+# Allows compression of text assets
+# Production server has integrated compression support
+if app.env == "development":
+    compress = Compress(app)
 
 for optional, default in [("MAIL_DISABLE", False), ("MAIL_SEND_ERRORS", True)]:
     if optional in os.environ:
@@ -123,10 +133,12 @@ for optional, default in [("MAIL_DISABLE", False), ("MAIL_SEND_ERRORS", True)]:
 
 def log_mail_message(message, app):
     """If mails are disabled, their content will be outputted in the debug output"""
-    app.logger.debug(f"A mail was supposed to be send:\n"
-                     f"[SUBJECT]:\n{message.subject}\n"
-                     f"[BODY]:\n{message.body}\n"
-                     f"[END]")
+    app.logger.debug(
+        f"A mail was supposed to be send:\n"
+        f"[SUBJECT]:\n{message.subject}\n"
+        f"[BODY]:\n{message.body}\n"
+        f"[END]"
+    )
 
 
 if app.config["MAIL_DISABLE"]:
@@ -144,6 +156,7 @@ manager.database.init_app(app)
 migrate = Migrate(app, manager.database)
 
 # Setup Flask-Security
+app.config["SECURITY_TRACKABLE"] = True
 app.config["SECURITY_CONFIRMABLE"] = True
 app.config["SECURITY_REGISTERABLE"] = True
 app.config["SECURITY_CHANGEABLE"] = True
@@ -161,14 +174,6 @@ app.config["SESSION_TYPE"] = "redis"
 app.config["SESSION_REDIS"] = manager.server
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(**redis_ttl_config["user_session"])
 app.config["SESSION_MANAGER"] = Session(app)
-
-# Setup Flask-TrackUsage
-app.config["TRACK_USAGE_COOKIE"] = True
-app.config["TRACK_USAGE_USE_FREEGEOIP"] = False
-app.config["TRACK_USAGE_INCLUDE_OR_EXCLUDE_VIEWS"] = "exclude"
-with app.app_context():
-    storage = SQLStorage(db=manager.database)
-t = TrackUsage(app, storage)
 
 # Setup Flask-Babel
 app.config["LANGUAGES"] = ["en", "fr"]
@@ -213,6 +218,16 @@ def before_first_request():
         os.makedirs("static/dist")
     with open("static/dist/jsglue.min.js", "w") as f:
         f.write(jsmin(jsglue.generate_js()))
+
+
+@app.before_request
+def before_request():
+    tu.before_request()
+
+
+@app.after_request
+def after_request(response):
+    return tu.after_request(response)
 
 
 # Reset current schedule on user logout
@@ -321,6 +336,7 @@ def page_not_found(e):
 def make_shell_context():
     return {
         "db": md.db,
+        "Role": md.Role,
         "Property": md.Property,
         "Schedule": md.Schedule,
         "Link": md.Link,
@@ -328,6 +344,4 @@ def make_shell_context():
         "Usage": md.Usage,
         "Api": md.ApiUsage,
         "mng": app.config["MANAGER"],
-        "t": storage,
     }
-
