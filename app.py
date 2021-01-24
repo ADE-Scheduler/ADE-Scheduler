@@ -42,10 +42,11 @@ import views.utils as utl
 from views.calendar import calendar
 from views.account import account
 from views.classroom import classroom
-from views.help import help
+from views.help import help as _help
 from views.contact import contact
 from views.api import api
 from views.whatisnew import whatisnew
+from views.contribute import contribute
 from views.admin import admin
 
 # CLI commands
@@ -67,10 +68,11 @@ app = Flask(__name__, template_folder="static/dist/html")
 app.register_blueprint(calendar, url_prefix="/calendar")
 app.register_blueprint(account, url_prefix="/account")
 app.register_blueprint(classroom, url_prefix="/classroom")
-app.register_blueprint(help, url_prefix="/help")
+app.register_blueprint(_help, url_prefix="/help")
 app.register_blueprint(contact, url_prefix="/contact")
 app.register_blueprint(api, url_prefix="/api")
 app.register_blueprint(whatisnew, url_prefix="/whatisnew")
+app.register_blueprint(contribute, url_prefix="/contribute")
 app.register_blueprint(admin, url_prefix="/admin")
 app.config["SECRET_KEY"] = os.environ["FLASK_SECRET_KEY"]
 jsglue = JSGlue(app)
