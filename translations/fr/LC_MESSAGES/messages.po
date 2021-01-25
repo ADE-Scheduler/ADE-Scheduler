@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-01-24 23:59+0100\n"
+"POT-Creation-Date: 2021-01-25 14:11+0100\n"
 "PO-Revision-Date: 2020-07-24 16:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -206,26 +206,22 @@ msgid "Help"
 msgstr "Aide"
 
 #: templates/base.html:110
-msgid "News"
-msgstr "Nouveautés"
-
-#: templates/base.html:113
 msgid "Contact us"
 msgstr "Contact"
 
-#: templates/base.html:117
+#: templates/base.html:114
 msgid "Contribute"
 msgstr "Contribuer"
 
-#: templates/base.html:146
+#: templates/base.html:143
 msgid "Logout"
 msgstr "Déconnexion"
 
-#: templates/base.html:150
+#: templates/base.html:147
 msgid "Login"
 msgstr "Connexion"
 
-#: templates/base.html:151
+#: templates/base.html:148
 msgid "Register"
 msgstr "Inscription"
 
@@ -871,7 +867,7 @@ msgid ""
 " short video shows you how to export your calendar to your favorite app."
 msgstr ""
 "Une fois votre horaire fait, vous n'avez pas besoin de retourner à chaque"
-" fois sur ADE-Scheduler pour voir votre horaire : vous pouvez l'exporter "
+" fois sur ADE Scheduler pour voir votre horaire : vous pouvez l'exporter "
 "! La plupart des applications de calendriers, tel que Gmail, permettent "
 "d'importer un calendrier externe. Une courte vidéo vous montre comme "
 "exporter votre horaire vers votre application favorite."
@@ -919,7 +915,7 @@ msgid ""
 "                        With this, you will also be able to save multiple"
 " schedules, rename them, choose their color palette and so on."
 msgstr ""
-"Sur ADE-Scheduler, il n'est pas requis d'avoir un compte pour utiliser la"
+"Sur ADE Scheduler, il n'est pas requis d'avoir un compte pour utiliser la"
 " plupart des outils proposés. Votre session utilisateur est stockée via "
 "votre navigateur pour une durée de 30 jours. Il vous est donc possible "
 "d'automatiquement récupérer et modifier votre calendrier sur votre "
@@ -1045,51 +1041,103 @@ msgstr ""
 msgid "Get started"
 msgstr "C'est parti !"
 
-#: templates/whatisnew.html:16 templates/whatisnew.html:45
+#: templates/whatisnew.html:16 templates/whatisnew.html:52
+msgid "January"
+msgstr "Janvier"
+
+#: templates/whatisnew.html:18 templates/whatisnew.html:53
+msgid "\"Contribute\" page"
+msgstr "Page \"Contribuer\""
+
+#: templates/whatisnew.html:19 templates/whatisnew.html:59
+msgid "Towards a minimalist interface"
+msgstr "Vers une interface minimaliste"
+
+#: templates/whatisnew.html:23 templates/whatisnew.html:74
 msgid "November"
 msgstr "Novembre"
 
-#: templates/whatisnew.html:18 templates/whatisnew.html:46
+#: templates/whatisnew.html:25 templates/whatisnew.html:75
 msgid "2000 accounts created"
 msgstr "2000 comptes créés"
 
-#: templates/whatisnew.html:22 templates/whatisnew.html:52
+#: templates/whatisnew.html:29 templates/whatisnew.html:81
 msgid "October"
 msgstr "Octobre"
 
-#: templates/whatisnew.html:24 templates/whatisnew.html:53
+#: templates/whatisnew.html:31 templates/whatisnew.html:82
 msgid "Custom events color"
 msgstr "Couleur des évènements personnels"
 
-#: templates/whatisnew.html:25 templates/whatisnew.html:59
+#: templates/whatisnew.html:32 templates/whatisnew.html:88
 msgid "Your changes can be automatically saved"
 msgstr "Vos changements peuvent être sauvegardés automatiquement"
 
-#: templates/whatisnew.html:28 templates/whatisnew.html:66
+#: templates/whatisnew.html:35 templates/whatisnew.html:95
 msgid "September"
 msgstr "Septembre"
 
-#: templates/whatisnew.html:30 templates/whatisnew.html:67
-msgid "Page \"What is new\""
+#: templates/whatisnew.html:37 templates/whatisnew.html:96
+msgid "\"What is new\" page"
 msgstr "Page \"Nouveautés\""
 
-#: templates/whatisnew.html:31 templates/whatisnew.html:73
+#: templates/whatisnew.html:38 templates/whatisnew.html:102
 msgid "Color palette accessible in the calendar"
 msgstr "Palette de couleurs accessibles dans le calendrier"
 
-#: templates/whatisnew.html:32 templates/whatisnew.html:83
+#: templates/whatisnew.html:39 templates/whatisnew.html:112
 msgid "All schedules accessible from the calendar"
 msgstr "Tous les horaires accessibles depuis le calendrier"
 
-#: templates/whatisnew.html:35 templates/whatisnew.html:90
+#: templates/whatisnew.html:42 templates/whatisnew.html:119
 msgid "August"
 msgstr "Août"
 
-#: templates/whatisnew.html:37 templates/whatisnew.html:91
-msgid "Launch of ADE-Scheduler 2.0!"
-msgstr "Lancement d'ADE-Scheduler 2.0!"
+#: templates/whatisnew.html:44 templates/whatisnew.html:120
+msgid "Launch of ADE Scheduler 2.0!"
+msgstr "Lancement d'ADE Scheduler 2.0!"
 
-#: templates/whatisnew.html:49
+#: templates/whatisnew.html:56
+msgid ""
+"One of our goals with this project is to make it last. In an open source "
+"project, contribution from the community is very important as it helps us"
+" keeping the tool improving. To this end, we have created a new page "
+"where we document several ways you can help us with this project. Do not "
+"hesitate to have a look!"
+msgstr ""
+"L'un de nos objectifs avec ce projet est qu'il dure dans le temps. "
+"Dans un projet open source, la contribution de la part de la communauté joue "
+"un rôle important dans l'amélioration constante de l'outil. À cette fin, "
+"nous avons documenté plusieurs manières de nous venir en aide sur ce projet. "
+"N'hésitez surtout pas à aller jeter un coup d'oeil sur la page en question."
+
+#: templates/whatisnew.html:62
+msgid ""
+"As we frequently add new features, we do not want to flood our users with"
+" too many information. We thus decided to operate three major changes:\n"
+"                        </br>\n"
+"                        <ul>\n"
+"                            <li>This page is not referenced is the header"
+" of the website anymore</li>\n"
+"                            <li>You can now hide or delete the results of"
+" the compute tool to gain readability</li>\n"
+"                            <li>To download you calendar, you now need to"
+" go into the export tab</li>\n"
+"                        </ul>\n"
+"                        "
+msgstr ""
+"Comme nous ajoutons régulièrement de nouvelles fonctionnalités, nous voulons "
+"éviter de noyer nos utilisateurs dans trop d'informations. Nous avons donc "
+"décidé d'opérer trois changements majeurs :"
+"                        </br>\n"
+"                        <ul>\n"
+"                            <li>Cette page n'est désormais plus référencée dans l'entête du site</li>\n"
+"                            <li>Vous pouvez maintenant cacher ou supprimer les résultats de l'outil de calcul d'horaire optimal</li>\n"
+"                            <li>Pour télécharger votre calendrier, cela se trouve maintenant dans l'onglet exporter</li>\n"
+"                        </ul>\n"
+"                        "
+
+#: templates/whatisnew.html:78
 msgid ""
 "More than 2000 people have created and confirmed their account on ADE "
 "Scheduler! This is 10 times more than what we did in one year with "
@@ -1101,13 +1149,13 @@ msgstr ""
 " Nous enregistrons également plus de 1000 connections uniques par jour.  "
 "On vous remercie énormément d'utiliser cet outil !"
 
-#: templates/whatisnew.html:56
+#: templates/whatisnew.html:85
 msgid "You can now modify the color of each individual custom event."
 msgstr ""
 "Vous pouvez maintenant modifier la couleur de chacun de vos évènements "
 "personnels."
 
-#: templates/whatisnew.html:62
+#: templates/whatisnew.html:91
 msgid ""
 "Sometimes, you make changes on your schedule, your forget to saved them, "
 "and, when you change device, your schedule is not up to date with your "
@@ -1121,17 +1169,17 @@ msgstr ""
 "Pour éviter ce problème, vous pouvez maintenant activer la sauvegarde "
 "automatique dans les paramètres de votre compte."
 
-#: templates/whatisnew.html:70
+#: templates/whatisnew.html:99
 msgid ""
-"The \"What is new\" page shows all important modifications to ADE-"
+"The \"What is new\" page shows all important modifications to ADE "
 "Scheduler. Do not hesitate to take a look from time to time to be aware "
 "of the new features !"
 msgstr ""
 "La nouvelle page \"Nouveauté\" répertorie toutes les modifications "
-"notables sur l'outil ADE-Scheduler. N'hésitez pas à jeter un coup d'oeil "
+"notables sur l'outil ADE Scheduler. N'hésitez pas à jeter un coup d'oeil "
 "de temps en temps pour voir les nouvelles fonctionnalités !"
 
-#: templates/whatisnew.html:76
+#: templates/whatisnew.html:105
 msgid ""
 "We must admit that modifying the events color in the \"Account\" menu is "
 "counter-intuitive... That is why you can now directly choose your own "
@@ -1147,7 +1195,7 @@ msgstr ""
 "posséder un compte. De plus, nous avons aussi changé le thème couleur "
 "initial, afin d'accentuer la différence entre deux cours."
 
-#: templates/whatisnew.html:80
+#: templates/whatisnew.html:109
 msgid ""
 "Please note that if you use a non traditional browser, it may happen that"
 " the color palette does not show up. We cannot do anything about it."
@@ -1156,7 +1204,7 @@ msgstr ""
 " possible que la palette permettant de modifier les couleurs à votre "
 "guise ne soit pas disponible... Cela est du au navigateur."
 
-#: templates/whatisnew.html:86
+#: templates/whatisnew.html:115
 msgid ""
 "You can now consult and edit all your saved schedules without having to "
 "select them from the \"Account\" menu. If you have several saved "
@@ -1171,12 +1219,12 @@ msgstr ""
 "l'horaire affiché actuellement pour voir défiler le nom de tous vos "
 "horaires; il suffit ensuite de sélectionner celui de votre choix."
 
-#: templates/whatisnew.html:94
+#: templates/whatisnew.html:123
 msgid ""
-"Launch of the new ADE-Scheduler ! This version brings a new design, new "
+"Launch of the new ADE Scheduler ! This version brings a new design, new "
 "features, and is more efficient. Moreover, it is mobile-friendly."
 msgstr ""
-"Lancement de la nouvelle version d'ADE-Scheduler ! Cette version, en plus"
+"Lancement de la nouvelle version d'ADE Scheduler ! Cette version, en plus"
 " d'un changement de design, de l'ajout de nouvelles fonctionnaliés, est "
 "plus efficace, et surtout adaptée aux mobiles."
 
@@ -1294,3 +1342,6 @@ msgstr "horaire actuel"
 #: views/calendar.py:329 views/calendar.py:355
 msgid "The schedule you requested does not exist in our database !"
 msgstr "L'horaire que vous avez demandé n'existe pas dans notre base de données !"
+
+#~ msgid "News"
+#~ msgstr "Nouveautés"
