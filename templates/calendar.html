@@ -583,10 +583,18 @@
                         </div>
                     </div>
                     <div class="btn-group btn-compute-clear mt-3">
-                        <button class="btn btn-outline-dark btn-sm w-50" type="button" v-on:click="compute(); toggleNav(false)">
+                        <button class="btn btn-outline-dark btn-sm w-50"
+                            type="button"
+                            data-bs-toggle="tooltip"
+                            title="{{_('Compute the best schedules with no conflict!\nSee help page for more details on how it works')}}"
+                            v-on:click="compute(); toggleNav(false)">
                             {{_('Compute')}}
                         </button>
-                        <button class="btn btn-outline-dark btn-sm w-50" type="button" v-on:click="clear(); toggleNav(false)">
+                        <button class="btn btn-outline-dark btn-sm w-50"
+                            type="button"
+                            data-bs-toggle="tooltip"
+                            title="{{_('Start a new schedule from zero\nYou can have multiple schedules with an account')}}"
+                            v-on:click="clear(); toggleNav(false)">
                             {{_('New') }}
                         </button>
                     </div>
