@@ -1045,49 +1045,69 @@ msgstr ""
 msgid "Get started"
 msgstr "C'est parti !"
 
-#: templates/whatisnew.html:16 templates/whatisnew.html:39
-msgid "October 2020"
-msgstr "Octobre 2020"
+#: templates/whatisnew.html:16 templates/whatisnew.html:45
+msgid "November"
+msgstr "Novembre"
 
-#: templates/whatisnew.html:18 templates/whatisnew.html:40
+#: templates/whatisnew.html:18 templates/whatisnew.html:46
+msgid "2000 accounts created"
+msgstr "2000 comptes créés"
+
+#: templates/whatisnew.html:22 templates/whatisnew.html:52
+msgid "October"
+msgstr "Octobre"
+
+#: templates/whatisnew.html:24 templates/whatisnew.html:53
 msgid "Custom events color"
 msgstr "Couleur des évènements personnels"
 
-#: templates/whatisnew.html:19 templates/whatisnew.html:46
+#: templates/whatisnew.html:25 templates/whatisnew.html:59
 msgid "Your changes can be automatically saved"
 msgstr "Vos changements peuvent être sauvegardés automatiquement"
 
-#: templates/whatisnew.html:22 templates/whatisnew.html:53
-msgid "September 2020"
-msgstr "Septembre 2020"
+#: templates/whatisnew.html:28 templates/whatisnew.html:66
+msgid "September"
+msgstr "Septembre"
 
-#: templates/whatisnew.html:24 templates/whatisnew.html:54
+#: templates/whatisnew.html:30 templates/whatisnew.html:67
 msgid "Page \"What is new\""
 msgstr "Page \"Nouveautés\""
 
-#: templates/whatisnew.html:25 templates/whatisnew.html:60
+#: templates/whatisnew.html:31 templates/whatisnew.html:73
 msgid "Color palette accessible in the calendar"
 msgstr "Palette de couleurs accessibles dans le calendrier"
 
-#: templates/whatisnew.html:26 templates/whatisnew.html:70
+#: templates/whatisnew.html:32 templates/whatisnew.html:83
 msgid "All schedules accessible from the calendar"
 msgstr "Tous les horaires accessibles depuis le calendrier"
 
-#: templates/whatisnew.html:29 templates/whatisnew.html:77
-msgid "August 2020"
-msgstr "Août 2020"
+#: templates/whatisnew.html:35 templates/whatisnew.html:90
+msgid "August"
+msgstr "Août"
 
-#: templates/whatisnew.html:31 templates/whatisnew.html:78
+#: templates/whatisnew.html:37 templates/whatisnew.html:91
 msgid "Launch of ADE-Scheduler 2.0!"
 msgstr "Lancement d'ADE-Scheduler 2.0!"
 
-#: templates/whatisnew.html:43
+#: templates/whatisnew.html:49
+msgid ""
+"More than 2000 people have created and confirmed their account on ADE "
+"Scheduler! This is 10 times more than what we did in one year with "
+"version 1. We are also recording more than 1000 different connections "
+"everyday. Thank you so much for using this tool!"
+msgstr ""
+"Plus de 2000 personnes ont créé et validé leur compte sur ADE Scheduler !"
+" C'est plus de 10 fois ce qu'on avait atteint en un an avec la version 1."
+" Nous enregistrons également plus de 1000 connections uniques par jour.  "
+"On vous remercie énormément d'utiliser cet outil !"
+
+#: templates/whatisnew.html:56
 msgid "You can now modify the color of each individual custom event."
 msgstr ""
 "Vous pouvez maintenant modifier la couleur de chacun de vos évènements "
 "personnels."
 
-#: templates/whatisnew.html:49
+#: templates/whatisnew.html:62
 msgid ""
 "Sometimes, you make changes on your schedule, your forget to saved them, "
 "and, when you change device, your schedule is not up to date with your "
@@ -1101,7 +1121,7 @@ msgstr ""
 "Pour éviter ce problème, vous pouvez maintenant activer la sauvegarde "
 "automatique dans les paramètres de votre compte."
 
-#: templates/whatisnew.html:57
+#: templates/whatisnew.html:70
 msgid ""
 "The \"What is new\" page shows all important modifications to ADE-"
 "Scheduler. Do not hesitate to take a look from time to time to be aware "
@@ -1111,10 +1131,10 @@ msgstr ""
 "notables sur l'outil ADE-Scheduler. N'hésitez pas à jeter un coup d'oeil "
 "de temps en temps pour voir les nouvelles fonctionnalités !"
 
-#: templates/whatisnew.html:63
+#: templates/whatisnew.html:76
 msgid ""
 "We must admit that modifying the events color in the \"Account\" menu is "
-"conter-intuitive... That is why you can now directly choose your own "
+"counter-intuitive... That is why you can now directly choose your own "
 "colors for your schedules directly in the \"Calendar\" menu.\n"
 "                        You can also do so without requiring an account. "
 "Moreover, we changed the initial color theme, in order to stress the "
@@ -1127,7 +1147,7 @@ msgstr ""
 "posséder un compte. De plus, nous avons aussi changé le thème couleur "
 "initial, afin d'accentuer la différence entre deux cours."
 
-#: templates/whatisnew.html:67
+#: templates/whatisnew.html:80
 msgid ""
 "Please note that if you use a non traditional browser, it may happen that"
 " the color palette does not show up. We cannot do anything about it."
@@ -1136,7 +1156,7 @@ msgstr ""
 " possible que la palette permettant de modifier les couleurs à votre "
 "guise ne soit pas disponible... Cela est du au navigateur."
 
-#: templates/whatisnew.html:73
+#: templates/whatisnew.html:86
 msgid ""
 "You can now consult and edit all your saved schedules without having to "
 "select them from the \"Account\" menu. If you have several saved "
@@ -1151,14 +1171,14 @@ msgstr ""
 "l'horaire affiché actuellement pour voir défiler le nom de tous vos "
 "horaires; il suffit ensuite de sélectionner celui de votre choix."
 
-#: templates/whatisnew.html:81
+#: templates/whatisnew.html:94
 msgid ""
 "Launch of the new ADE-Scheduler ! This version brings a new design, new "
 "features, and is more efficient. Moreover, it is mobile-friendly."
 msgstr ""
 "Lancement de la nouvelle version d'ADE-Scheduler ! Cette version, en plus"
 " d'un changement de design, de l'ajout de nouvelles fonctionnaliés, est "
-"plus efficace, et surtout adapté aux mobiles."
+"plus efficace, et surtout adaptée aux mobiles."
 
 #: templates/errorhandler/500.html:11
 msgid "Ooops... looks like the website is temporarily unusable."
