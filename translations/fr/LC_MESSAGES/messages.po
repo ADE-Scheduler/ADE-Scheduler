@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-01-25 14:11+0100\n"
+"POT-Creation-Date: 2021-01-25 19:44+0100\n"
 "PO-Revision-Date: 2020-07-24 16:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -743,60 +743,68 @@ msgstr "Adresse mail"
 msgid "Password"
 msgstr "Mot de passe"
 
-#: templates/help.html:18 templates/help.html:53
+#: templates/help.html:18 templates/help.html:58
 msgid "What is ADE Scheduler ?"
 msgstr "Qu'est-ce qu'ADE Scheduler ?"
 
-#: templates/help.html:19 templates/help.html:61
+#: templates/help.html:19 templates/help.html:66
 msgid "Getting started"
 msgstr "Pour débuter"
 
-#: templates/help.html:20 templates/help.html:72
+#: templates/help.html:20 templates/help.html:77
 msgid "Computing your optimal schedule"
 msgstr "Calculer votre horaire optimal"
 
-#: templates/help.html:23 templates/help.html:81
+#: templates/help.html:23 templates/help.html:86
 msgid "Export and load"
 msgstr "Importer et exporter"
 
-#: templates/help.html:25 templates/help.html:32 templates/help.html:82
-#: templates/help.html:104
+#: templates/help.html:25 templates/help.html:32 templates/help.html:87
+#: templates/help.html:109
 msgid "What are the possibilities ?"
 msgstr "Quelles sont les possibilités ?"
 
-#: templates/help.html:26 templates/help.html:91
+#: templates/help.html:26 templates/help.html:96
 msgid "Download an iCal file"
 msgstr "Télécharger un fichier iCal"
 
-#: templates/help.html:27 templates/help.html:97
+#: templates/help.html:27 templates/help.html:102
 msgid "Subscription links"
 msgstr "Liens d'abonnement"
 
-#: templates/help.html:30 templates/help.html:103
+#: templates/help.html:30 templates/help.html:108
 msgid "Account & Settings"
 msgstr "Compte & Paramètres"
 
-#: templates/help.html:33 templates/help.html:112
+#: templates/help.html:33 templates/help.html:117
 msgid "Custom events"
 msgstr "Evènements personnels"
 
-#: templates/help.html:34 templates/help.html:118
+#: templates/help.html:34 templates/help.html:123
 msgid "Event selection"
 msgstr "Sélection d'un évènement"
 
-#: templates/help.html:35 templates/help.html:124
+#: templates/help.html:35 templates/help.html:129
 msgid "Accounts"
 msgstr "Comptes"
 
-#: templates/help.html:38 templates/help.html:130
+#: templates/help.html:38 templates/help.html:135
+msgid "Stay informed"
+msgstr "Restez informés"
+
+#: templates/help.html:40
+msgid "The change log page"
+msgstr "La page des nouveautés"
+
+#: templates/help.html:43 templates/help.html:142
 msgid "About us"
 msgstr "A propos de nous"
 
-#: templates/help.html:40 templates/help.html:131
+#: templates/help.html:45 templates/help.html:143
 msgid "Who are we ?"
 msgstr "Qui sommes-nous ?"
 
-#: templates/help.html:56
+#: templates/help.html:61
 msgid ""
 "ADE Scheduler is a tool aiming to provide the same information as the\n"
 "                        <a "
@@ -818,7 +826,7 @@ msgstr ""
 "ou TPs), la visualisation des locaux et de leur emplacement, et bien "
 "d'autres choses encore !"
 
-#: templates/help.html:64
+#: templates/help.html:69
 msgid ""
 "The main purpose of this website is the calendar page. If you're new to "
 "this site, make sure to go to\n"
@@ -831,7 +839,7 @@ msgstr ""
 "et testez toutes les fonctionnalités. Vous êtes aussi encouragés à "
 "regarder notre guide de prise en main rapide."
 
-#: templates/help.html:75
+#: templates/help.html:80
 msgid ""
 "Sometimes, you may choose between multiple events such as CMs or TPs but "
 "only need to attend to one. The tool named compute tries all the possible"
@@ -859,7 +867,7 @@ msgstr ""
 "choisir, après calcul, la semaine qui vous plait le plus et de "
 "manuellement sélectionner les évènements dans votre horaire principal."
 
-#: templates/help.html:85
+#: templates/help.html:90
 msgid ""
 "Once your schedule is complete, you don't need to go back to ADE-"
 "Scheduler each time you want to check your schedule: you can export it ! "
@@ -872,7 +880,7 @@ msgstr ""
 "d'importer un calendrier externe. Une courte vidéo vous montre comme "
 "exporter votre horaire vers votre application favorite."
 
-#: templates/help.html:94
+#: templates/help.html:99
 msgid ""
 "One solution to export your schedule is to download it as an iCalendar "
 "file. Then, this file can easily be imported into your main calendar. The"
@@ -887,7 +895,7 @@ msgstr ""
 "pris en compte dans votre calendrier. Si vous préférez avoir un "
 "calendrier à jour, choisissez alors la prochaine solution."
 
-#: templates/help.html:100
+#: templates/help.html:105
 msgid ""
 "Maybe the best solution ADE Scheduler can offer is a subscription link. "
 "With this link, your calendar app will frequently download the latest "
@@ -904,7 +912,7 @@ msgstr ""
 "en compte lors de la prochaine mise-à-jour de votre calendrier de la part"
 " de votre application."
 
-#: templates/help.html:107
+#: templates/help.html:112
 msgid ""
 "On this website, no account is required to use most of the tools. Your "
 "session is stored during 30 days so you can easily leave this webpage, "
@@ -927,7 +935,7 @@ msgstr ""
 "Avec cela, vous pouvez créer et sauvegarder plusieurs calendriers, les "
 "renommer, choisir la palette de couleur, et bien d'autres choses encore."
 
-#: templates/help.html:115
+#: templates/help.html:120
 msgid ""
 "Academical life is important but your private life is important too ! "
 "This is why you can also add custom events to your schedule. They will "
@@ -943,7 +951,7 @@ msgstr ""
 "minimiser les conflits entre les horaires de cours, et vos évènements "
 "personnels."
 
-#: templates/help.html:121
+#: templates/help.html:126
 msgid ""
 "If you click on a course's code, on the left of the calendar page, you "
 "will see appearing all the events that are contained in this course, per "
@@ -955,7 +963,7 @@ msgstr ""
 "type. Vous pouvez (dé-)sélectionner des évènements spécifiques afin de "
 "construire l'horaire qui vous plaît."
 
-#: templates/help.html:127
+#: templates/help.html:132
 msgid ""
 "Creating an account requires two things: an email address and a password."
 " Your email address will only be used for password resetting and any "
@@ -973,7 +981,26 @@ msgstr ""
 "notre service l'année depuis laquelle vous souhaitez obtenir les "
 "évènements (la plupart du temps, seule une année est disponible)."
 
-#: templates/help.html:134
+#: templates/help.html:136
+msgid "The change log"
+msgstr "Les nouveautés"
+
+#: templates/help.html:139
+msgid ""
+"ADE Scheduler is always under developement as we try to propose the best "
+"tool for students and teachers at UCLouvain. It may then be possible that"
+" new features or changes have been made to the tool since your last use. "
+"To stay informed of all modifications of ADE Scheduler, do not hesitate "
+"to take a look at our <a href=\"/whatisnew\">change log page</a>."
+msgstr ""
+"Afin de fournir le meilleur outil possible aux étudiants et professeurs"
+"de l'UCLouvain, ADE Scheduler est continuellement en développement. Il "
+"est donc possible que de nouvelles fonctionnalités soient ajoutées depuis "
+"votre dernière utilisation. Pour rester informé de toutes les modifications "
+"d'ADE Scheduler, n'hésitez pas à aller consulter notre page "
+"<a href=\"/whatisnew\">des nouveautés</a>."
+
+#: templates/help.html:146
 msgid ""
 "We are three students from UCLouvain. By the time we started this "
 "project, we were finishing our bachelor's degree in engineering "
@@ -985,7 +1012,7 @@ msgstr ""
 "(électricité et mécanique pour Jérome et Gilles; sciences informatiques "
 "et mathématiques appliquées pour Louis)."
 
-#: templates/help.html:147
+#: templates/help.html:159
 msgid ""
 "Jérome is a student in the Ecole Polytechnique de Louvain, in "
 "engineering. He completed his bachelor degree in Electricity and "
@@ -996,7 +1023,7 @@ msgstr ""
 "civil. Il a un bachelier en électricité et mécanique. Actuellement, il "
 "suit un master en ingénieur civil mécatronique."
 
-#: templates/help.html:163
+#: templates/help.html:175
 msgid ""
 "Louis is a student at the Ecole Polytechnique de Louvain, in engineering."
 " He completed his bachelor degree in Applied Mathematics and Computing "
@@ -1008,7 +1035,7 @@ msgstr ""
 "appliquées. Actuellement, il suit un master en ingénieur civil "
 "informatique."
 
-#: templates/help.html:179
+#: templates/help.html:191
 msgid ""
 "Gilles is a student in the Ecole Polytechnique de Louvain, in "
 "engineering. He completed his bachelor degree in Electricity and "
@@ -1105,11 +1132,12 @@ msgid ""
 "where we document several ways you can help us with this project. Do not "
 "hesitate to have a look!"
 msgstr ""
-"L'un de nos objectifs avec ce projet est qu'il dure dans le temps. "
-"Dans un projet open source, la contribution de la part de la communauté joue "
+"L'un de nos objectifs avec ce projet est qu'il dure dans le temps. Dans "
+"un projet open source, la contribution de la part de la communauté joue "
 "un rôle important dans l'amélioration constante de l'outil. À cette fin, "
-"nous avons documenté plusieurs manières de nous venir en aide sur ce projet. "
-"N'hésitez surtout pas à aller jeter un coup d'oeil sur la page en question."
+"nous avons documenté plusieurs manières de nous venir en aide sur ce "
+"projet. N'hésitez surtout pas à aller jeter un coup d'oeil sur la page en"
+" question."
 
 #: templates/whatisnew.html:62
 msgid ""
@@ -1126,14 +1154,17 @@ msgid ""
 "                        </ul>\n"
 "                        "
 msgstr ""
-"Comme nous ajoutons régulièrement de nouvelles fonctionnalités, nous voulons "
-"éviter de noyer nos utilisateurs dans trop d'informations. Nous avons donc "
-"décidé d'opérer trois changements majeurs :"
+"Comme nous ajoutons régulièrement de nouvelles fonctionnalités, nous "
+"voulons éviter de noyer nos utilisateurs dans trop d'informations. Nous "
+"avons donc décidé d'opérer trois changements majeurs :"
 "                        </br>\n"
 "                        <ul>\n"
-"                            <li>Cette page n'est désormais plus référencée dans l'entête du site</li>\n"
-"                            <li>Vous pouvez maintenant cacher ou supprimer les résultats de l'outil de calcul d'horaire optimal</li>\n"
-"                            <li>Pour télécharger votre calendrier, cela se trouve maintenant dans l'onglet exporter</li>\n"
+"                            <li>Cette page n'est désormais plus "
+"référencée dans l'entête du site</li>\n"
+"                            <li>Vous pouvez maintenant cacher ou "
+"supprimer les résultats de l'outil de calcul d'horaire optimal</li>\n"
+"                            <li>Pour télécharger votre calendrier, cela "
+"se trouve maintenant dans l'onglet exporter</li>\n"
 "                        </ul>\n"
 "                        "
 
@@ -1345,3 +1376,4 @@ msgstr "L'horaire que vous avez demandé n'existe pas dans notre base de donnée
 
 #~ msgid "News"
 #~ msgstr "Nouveautés"
+
