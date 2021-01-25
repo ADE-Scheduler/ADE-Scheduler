@@ -41,6 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
       unsaved: false,
       currentSchedule: {},
       currentEventColor: '',
+      color_mode: 1,
       codeSearchDisplay: false,
       eventForm: {
         name: '',
@@ -744,6 +745,44 @@ document.addEventListener('DOMContentLoaded', function() {
         axios({
           method: 'DELETE',
           url: Flask.url_for('calendar.reset_color'),
+          data: {schedule_number: this.selected_schedule},
+        })
+          .then(resp => {
+            this.calendarOptions.events = resp.data.events;
+            this.currentSchedule.color_palette = resp.data.color_palette;
+            this.setUnsavedStatus(resp.data.unsaved);
+          })
+          .catch(() => {
+            this.error = true;
+          })
+          .then(() => {
+            this.computing = false;
+          });
+      },
+      addRandomColor: function () {
+        this.computing = true;
+        axios({
+          method: 'POST',
+          url: Flask.url_for('calendar.add_random_color'),
+          data: {schedule_number: this.selected_schedule},
+        })
+          .then(resp => {
+            this.calendarOptions.events = resp.data.events;
+            this.currentSchedule.color_palette = resp.data.color_palette;
+            this.setUnsavedStatus(resp.data.unsaved);
+          })
+          .catch(() => {
+            this.error = true;
+          })
+          .then(() => {
+            this.computing = false;
+          });
+      },
+      removeLastColor: function () {
+        this.computing = true;
+        axios({
+          method: 'DELETE',
+          url: Flask.url_for('calendar.delete_last_color'),
           data: {schedule_number: this.selected_schedule},
         })
           .then(resp => {

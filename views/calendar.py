@@ -491,3 +491,41 @@ def reset_color():
         ),
         200,
     )
+
+
+@calendar.route("/schedule/color/last", methods=["POST"])
+def add_random_color():
+    session["current_schedule"].add_random_color_to_palette()
+
+    schedule_number = int(request.json.get("schedule_number"))
+    session["current_schedule_modified"] = True
+    return (
+        jsonify(
+            {
+                "color_palette": session["current_schedule"].color_palette,
+                "events": session["current_schedule"].get_events(
+                    json=True, schedule_number=schedule_number
+                ),
+            }
+        ),
+        200,
+    )
+
+
+@calendar.route("/schedule/color/last", methods=["DELETE"])
+def delete_last_color():
+    session["current_schedule"].remove_last_color()
+
+    schedule_number = int(request.json.get("schedule_number"))
+    session["current_schedule_modified"] = True
+    return (
+        jsonify(
+            {
+                "color_palette": session["current_schedule"].color_palette,
+                "events": session["current_schedule"].get_events(
+                    json=True, schedule_number=schedule_number
+                ),
+            }
+        ),
+        200,
+    )

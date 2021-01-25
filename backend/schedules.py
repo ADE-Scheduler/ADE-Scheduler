@@ -1,4 +1,5 @@
 from itertools import product, chain, starmap, repeat
+import random
 from collections import deque, defaultdict
 from heapq import nsmallest
 import operator
@@ -50,6 +51,18 @@ def default_options() -> defaultdict:
     return defaultdict(false)
 
 
+def random_color() -> str:
+    """
+    Generates a random color in #RGB hex format.
+
+    :return: a random color
+    :rtype: str
+    """
+    seq = random.getrandbits(24)
+    color = "#" + hex(seq)[2:]
+    return color
+
+
 class Schedule:
     """
     A schedule is essentially a combination of courses stored as a master course, from which some events can be removed.
@@ -96,6 +109,14 @@ class Schedule:
     def reset_color_palette(self):
         self.color_palette = list(COLOR_PALETTE)
         return self.color_palette
+
+    def add_random_color_to_palette(self):
+        if len(self.color_palette) < 20:
+            self.color_palette.append(random_color())
+
+    def remove_last_color(self):
+        if len(self.color_palette) > 10:
+            self.color_palette.pop(-1)
 
     def add_filter(self, code: str, filter: Union[Iterable[str], str]):
         if isinstance(filter, str):

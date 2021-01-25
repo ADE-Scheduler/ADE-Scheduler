@@ -4,6 +4,12 @@
 <% _.forEach(htmlWebpackPlugin.files.js, function(file) { %>
 <script type="text/javascript" src="<%= file%>"></script>
 <%}); %>
+    <script>
+            $(function() {
+                        $("#sortable").sortable();
+                        $("#sortable").disableSelection();
+                    });
+    </script>
 {% endblock %}
 
 {% block body %}
@@ -571,8 +577,18 @@
                                 </svg>
                             </a>
                         </div>
-                        <div class="d-flex flex-row flex-wrap justify-content-around" id="color-palette">
-                            <div class="d-flex justify-content-center swatch-wrapper mt-2"
+                        <label class="form-label" for="color-mode-range">{{ _('Mode ') }} [[ color_mode ]]</label>
+                        <div class="range mt-2">
+                            <input type="range"
+                                   class="form-range"
+                                   min="1"
+                                   max="3"
+                                   data-slider-ticks="[1, 2, 3]"
+                                   v-model="color_mode"
+                                   id="color-mode-range" />
+                        </div>
+                        <div class="d-flex flex-row flex-wrap justify-content-around" id="color-palette" id="sortable" data-sortable-id="0" aria-dropeffect="move">
+                            <div class="d-flex justify-content-center swatch-wrapper mt-2" data-item-sortable-id="0" draggable="true" role="option" aria-grapped="false"
                                  v-for="(color, i) in currentSchedule.color_palette">
                                 <input type="color" class="swatch"
                                      v-on:change="updateColor"
@@ -581,6 +597,20 @@
                                 </input>
                             </div>
                         </div>
+                    </div>
+                    <div class="d-flex justify-content-center mt3">
+                        <button class="btn btn-success badge rounded-pill btn-code-validation"
+                            data-bs-toggle="tooltip"
+                            v-on:click="addRandomColor()"
+                            title="{{ _('Add a new color') }}">+
+                        </button>
+
+                        <button class="btn btn-danger badge rounded-pill btn-code-validation"
+                            data-bs-toggle="tooltip"
+                            v-on:click="removeLastColor()"
+                            title="{{ _('Remove last color') }}">-
+                        </button>
+
                     </div>
                     <div class="btn-group btn-compute-clear mt-3">
                         <button class="btn btn-outline-dark btn-sm w-50" type="button" v-on:click="compute(); toggleNav(false)">
