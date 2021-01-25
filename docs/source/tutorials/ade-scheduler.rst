@@ -78,7 +78,7 @@ you can fix this by running:
 .. code-block:: console
     :caption: from https://stackoverflow.com/questions/53930305/nodemon-error-system-limit-for-number-of-file-watchers-reached
 
-    $ console echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf \
+    $ echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf \
     && sudo sysctl -p
 
 III. Install Python
