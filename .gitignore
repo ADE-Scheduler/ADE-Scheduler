@@ -137,3 +137,5 @@ geo_locations.json
 plots/
 
 *.swp
+
+static/img/GitHub-Logos/.DS_Store
