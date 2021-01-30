@@ -58,6 +58,7 @@ from cli import cli_sql
 from cli import cli_usage
 from cli import cli_users
 from cli import cli_plots
+from cli import cli_mails
 
 # Change current working directory to main directory
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
@@ -86,6 +87,7 @@ app.cli.add_command(cli_usage.usage)
 app.cli.add_command(cli_users.users)
 app.cli.add_command(cli_api_usage.api_usage)
 app.cli.add_command(cli_plots.plots)
+app.cli.add_command(cli_mails.mails)
 
 # Load REDIS TTL config
 redis_ttl_config = configparser.ConfigParser()
