@@ -106,8 +106,18 @@ app.config["ADE_API_CREDENTIALS"] = {
     "data": os.environ["ADE_DATA"],
     "Authorization": os.environ["ADE_AUTHORIZATION"],
 }
+
+
+app.config["ADE_FAKE_API"] = (
+    bool(distutils.util.strtobool(os.environ["ADE_FAKE_API"]))
+    if "ADE_FAKE_API" in os.environ
+    else False
+)
+
 manager = mng.Manager(
-    ade.Client(app.config["ADE_API_CREDENTIALS"]),
+    ade.Client(app.config["ADE_API_CREDENTIALS"])
+    if not app.config["ADE_FAKE_API"]
+    else ade.FakeClient(app.config["ADE_API_CREDENTIALS"]),
     srv.Server(host="localhost", port=6379),
     md.db,
     redis_ttl_config,
