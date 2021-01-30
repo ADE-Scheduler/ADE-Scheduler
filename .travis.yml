@@ -29,6 +29,8 @@ install:
 
 # Before tests
 before_script:
+    - wget --no-check-certificate "https://docs.google.com/uc?export=download&id=1E8zboqLDRdufXnXZJUrLnSLih_ATaekO" -O api.zip
+    - unzip api.zip
     - psql -c 'create database travis_ci_test;' -U postgres
     - flask sql init
     - flask redis update

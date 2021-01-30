@@ -58,6 +58,7 @@ from cli import cli_sql
 from cli import cli_usage
 from cli import cli_users
 from cli import cli_plots
+from cli import cli_mails
 
 # Change current working directory to main directory
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
@@ -86,6 +87,7 @@ app.cli.add_command(cli_usage.usage)
 app.cli.add_command(cli_users.users)
 app.cli.add_command(cli_api_usage.api_usage)
 app.cli.add_command(cli_plots.plots)
+app.cli.add_command(cli_mails.mails)
 
 # Load REDIS TTL config
 redis_ttl_config = configparser.ConfigParser()
@@ -104,8 +106,18 @@ app.config["ADE_API_CREDENTIALS"] = {
     "data": os.environ["ADE_DATA"],
     "Authorization": os.environ["ADE_AUTHORIZATION"],
 }
+
+
+app.config["ADE_FAKE_API"] = (
+    bool(distutils.util.strtobool(os.environ["ADE_FAKE_API"]))
+    if "ADE_FAKE_API" in os.environ
+    else False
+)
+
 manager = mng.Manager(
-    ade.Client(app.config["ADE_API_CREDENTIALS"]),
+    ade.Client(app.config["ADE_API_CREDENTIALS"])
+    if not app.config["ADE_FAKE_API"]
+    else ade.FakeClient(app.config["ADE_API_CREDENTIALS"]),
     srv.Server(host="localhost", port=6379),
     md.db,
     redis_ttl_config,
