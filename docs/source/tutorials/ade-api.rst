@@ -67,4 +67,9 @@ To use this fake API, you will need to modify the :code:`<repo>/.flaskenv`
 
     ADE_FAKE_API = true
 
+Next, you need to `download a compressed folder <https://drive.google.com/file/d/1E8zboqLDRdufXnXZJUrLnSLih_ATaekO/view?usp=sharing>`_ containing the fake api as a folder containing pickled requests and a README file explaining everything that you can request with this API. The :code:`fake_api` folder should be placed in the :code:`<repo>` folder. Please contact us if something isn't working as expected.
+
+.. note::
+    We know it is not the best way to provide you an access to the ADE API but we are still working on this and propositions are more than welcome!
+
 .. ade-api setup end
