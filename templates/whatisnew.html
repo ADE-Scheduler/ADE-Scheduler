@@ -13,22 +13,35 @@
         <nav class="col-md-3 col-lg-2 d-md-block bg-light navigator collapse" id="faq-navigator">
             <nav class="nav nav-pills navigator-sticky d-flex flex-column p-3">
 
-                <a class="nav-link main-link mb-0" href="#oct2020" v-on:click.prevent="scroll('oct2020', true)">{{ _('October 2020') }}</a>
+                <a class="nav-link main-link mb-0" href="#jan2021" v-on:click.prevent="scroll('jan2021-min-ui', true)">{{ _('January') }} 2021</a>
+                <nav class="nav sub-nav flex-column">
+                    <a class="nav-link ms-4" href="#jan2021-contribute" v-on:click.prevent="scroll('jan2021-contribute')">{{ _('"Contribute" page') }}</a>
+                    <a class="nav-link ms-4" href="#jan2021-min-ui" v-on:click.prevent="scroll('jan2021-min-ui')">{{ _('Towards a minimalist interface') }}</a>
+                </nav>
+
+
+                <a class="nav-link main-link mb-0" href="#nov2020" v-on:click.prevent="scroll('nov2020', true)">{{ _('November') }} 2020</a>
+                <nav class="nav sub-nav flex-column">
+                    <a class="nav-link ms-4" href="#nov2020-2k-users" v-on:click.prevent="scroll('nov2020-2k-users')">{{ _('2000 accounts created') }}</a>
+                </nav>
+
+
+                <a class="nav-link main-link mb-0" href="#oct2020" v-on:click.prevent="scroll('oct2020', true)">{{ _('October') }} 2020</a>
                 <nav class="nav sub-nav flex-column">
                     <a class="nav-link ms-4" href="#oct2020-custom-events-color" v-on:click.prevent="scroll('oct2020-custom-events-color')">{{ _('Custom events color') }}</a>
                     <a class="nav-link ms-4" href="#oct2020-auto-save" v-on:click.prevent="scroll('oct2020-auto-save')">{{ _('Your changes can be automatically saved') }}</a>
                 </nav>
 
-                <a class="nav-link main-link mb-0" href="#sep2020" v-on:click.prevent="scroll('sep2020', true)">{{ _('September 2020') }}</a>
+                <a class="nav-link main-link mb-0" href="#sep2020" v-on:click.prevent="scroll('sep2020', true)">{{ _('September') }} 2020</a>
                 <nav class="nav sub-nav flex-column">
-                    <a class="nav-link ms-4" href="#sep2020-whatisnew" v-on:click.prevent="scroll('sep2020-whatisnew')">{{ _('Page "What is new"') }}</a>
+                    <a class="nav-link ms-4" href="#sep2020-whatisnew" v-on:click.prevent="scroll('sep2020-whatisnew')">{{ _('"What is new" page') }}</a>
                     <a class="nav-link ms-4" href="#sep2020-colors" v-on:click.prevent="scroll('sep2020-colors')">{{ _('Color palette accessible in the calendar') }}</a>
                     <a class="nav-link ms-4" href="#sep2020-allsched" v-on:click.prevent="scroll('sep2020-allsched')">{{ _('All schedules accessible from the calendar') }}</a>
                 </nav>
 
-                <a class="nav-link main-link mb-0" href="#aug2020" v-on:click.prevent="scroll('aug2020', true)">{{ _('August 2020') }}</a>
+                <a class="nav-link main-link mb-0" href="#aug2020" v-on:click.prevent="scroll('aug2020', true)">{{ _('August') }} 2020</a>
                 <nav class="nav sub-nav flex-column">
-                    <a class="nav-link ms-4" href="#aug2020-v2" v-on:click.prevent="scroll('aug2020-v2')">{{ _('Launch of ADE-Scheduler 2.0!') }}</a>
+                    <a class="nav-link ms-4" href="#aug2020-v2" v-on:click.prevent="scroll('aug2020-v2')">{{ _('Launch of ADE Scheduler 2.0!') }}</a>
                 </nav>
             </nav>
         </nav>
@@ -36,7 +49,36 @@
         <div class="col-md-9 ms-sm-auto col-lg-10 p-3">
             <div class="container-lg">
                 {{ render_flash_alert() }}
-                <h3 class="my-5" id="oct2020">{{ _('October 2020') }}</h3>
+                <h3 class="my-5" id="jan2021">{{ _('January') }} 2021</h3>
+                    <h4 id="jan2021-contribute">{{ _('"Contribute" page') }}</h4>
+                    <hr class="mb-3">
+                    <p>
+                        {{ _('One of our goals with this project is to make it last. In an open source project, contribution from the community is very important as it helps us keeping the tool improving. To this end, we have created a new page where we document several ways you can help us with this project. Do not hesitate to have a look!') }}
+                    </p>
+
+                    <h4 id="jan2021-min-ui">{{ _('Towards a minimalist interface') }}</h4>
+                    <hr class="mb-3">
+                    <p>
+                        {{ _('As we frequently add new features, we do not want to flood our users with too many information. We thus decided to operate three major changes:
+                        </br>
+                        <ul>
+                            <li>This page is not referenced is the header of the website anymore</li>
+                            <li>You can now hide or delete the results of the compute tool to gain readability</li>
+                            <li>To download you calendar, you now need to go into the export tab</li>
+                        </ul>
+                        ') }}
+                    </p>
+
+
+
+                <h3 class="my-5" id="nov2020">{{ _('November') }} 2020</h3>
+                    <h4 id="nov2020-2k-users">{{ _('2000 accounts created') }}</h4>
+                    <hr class="mb-3">
+                    <p>
+                        {{ _('More than 2000 people have created and confirmed their account on ADE Scheduler! This is 10 times more than what we did in one year with version 1. We are also recording more than 1000 different connections everyday. Thank you so much for using this tool!') }}
+                    </p>
+
+                <h3 class="my-5" id="oct2020">{{ _('October') }} 2020</h3>
                     <h4 id="oct2020-custom-events-color">{{ _('Custom events color') }}</h4>
                     <hr class="mb-3">
                     <p>
@@ -50,17 +92,17 @@
                         To avoid this problem, you can now toggle the automatic saving of your schedule on your account page.') }}
                     </p>
 
-                <h3 class="my-5" id="sep2020">{{ _('September 2020') }}</h3>
-                    <h4 id="sep2020-whatisnew">{{ _('Page "What is new"') }}</h4>
+                <h3 class="my-5" id="sep2020">{{ _('September') }} 2020</h3>
+                    <h4 id="sep2020-whatisnew">{{ _('"What is new" page') }}</h4>
                     <hr class="mb-3">
                     <p>
-                        {{ _('The "What is new" page shows all important modifications to ADE-Scheduler. Do not hesitate to take a look from time to time to be aware of the new features !') }}
+                        {{ _('The "What is new" page shows all important modifications to ADE Scheduler. Do not hesitate to take a look from time to time to be aware of the new features !') }}
                     </p>
 
                     <h4 id="sep2020-colors">{{ _('Color palette accessible in the calendar') }}</h4>
                     <hr class="mb-3">
                     <p>
-                        {{ _('We must admit that modifying the events color in the "Account" menu is conter-intuitive... That is why you can now directly choose your own colors for your schedules directly in the "Calendar" menu.
+                        {{ _('We must admit that modifying the events color in the "Account" menu is counter-intuitive... That is why you can now directly choose your own colors for your schedules directly in the "Calendar" menu.
                         You can also do so without requiring an account. Moreover, we changed the initial color theme, in order to stress the difference between two different courses in the schedule.') }}
                     </p>
                     <p>
@@ -74,11 +116,11 @@
                         of the currently selected schedule. You should see a list of the names of all of them; Selecting one of them will display it on the calendar.') }}
                     </p>
 
-                <h3 class="my-5" id="aug2020">{{ _('August 2020') }}</h3>
-                    <h4 id="aug2020-v2">{{ _('Launch of ADE-Scheduler 2.0!') }}</h4>
+                <h3 class="my-5" id="aug2020">{{ _('August') }} 2020</h3>
+                    <h4 id="aug2020-v2">{{ _('Launch of ADE Scheduler 2.0!') }}</h4>
                     <hr class="mb-3">
                     <p>
-                        {{ _('Launch of the new ADE-Scheduler ! This version brings a new design, new features, and is more efficient. Moreover, it is mobile-friendly.') }}
+                        {{ _('Launch of the new ADE Scheduler ! This version brings a new design, new features, and is more efficient. Moreover, it is mobile-friendly.') }}
                     </p>
             </div>
         </div>
