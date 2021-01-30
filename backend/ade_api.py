@@ -1,4 +1,6 @@
 import requests
+import hashlib
+import os
 import time
 import pickle
 import json
@@ -221,6 +223,9 @@ class Client(DummyClient):
         if self.is_expired():
             self.renew_token()
 
+        # Uncomment to this to save request to fake api file
+        # fake_args = "&".join("=".join(map(str, _)) for _ in kwargs.items())
+
         headers = {"Authorization": "Bearer " + self.token}
 
         function = kwargs.pop("function", None)
@@ -230,23 +235,27 @@ class Client(DummyClient):
             project_id = kwargs.pop("projectId", None)
             args = "&".join("=".join(map(str, _)) for _ in kwargs.items())
             url = f"https://api.sgsi.ucl.ac.be:8243/ade/v0/projects/{project_id}/{function}?{args}"
-
         resp = requests.get(url=url, headers=headers)
+
+        # Uncomment to this to save request to fake api file
+        # save_response(resp, fake_args)
 
         md.ApiUsage(url, resp)
         resp.raise_for_status()
         return resp
 
 
-def load_responses() -> Dict[str, List[int]]:
+def get_response_path(request_name: str) -> str:
     """
-    Loads the responses stored in the json file
+    Returns the path where the response should be located if using the fake ade api.
 
-    :return: the dictionary of all the responses
-    :rtype: Dict[str, List[int]]
+    :param request_name: the parameters used in the request, concatenated as in :func:`FakeClient.request`
+    :type request_name: str
+    :returns: the path
+    :rtype: str
     """
-    with open(FakeClient.FILENAME, "r") as f:
-        return json.load(f)
+    fixed_length_name = hashlib.sha256(request_name.encode()).hexdigest()
+    return os.path.join(FakeClient.FOLDER, fixed_length_name + ".pickle")
 
 
 def load_response(request_name: str) -> requests.Response:
@@ -259,9 +268,11 @@ def load_response(request_name: str) -> requests.Response:
     :rtype: requests.Response
     :raises HTTPError: if the response to the request could not be found in the file
     """
+    filename = get_response_path((request_name))
     try:
-        return pickle.loads(bytes(load_responses()[request_name]))
-    except KeyError:
+        with open(filename, "rb") as f:
+            return pickle.load(f)
+    except FileNotFoundError:
         raise requests.exceptions.HTTPError(
             f"key [{request_name}] for request was not found"
         )
@@ -276,11 +287,9 @@ def save_response(response: requests.Response, request_name: str):
     :param request_name: the parameters used in the request, concatenated as in :func:`FakeClient.request`
     :type request_name: str
     """
-    responses = load_responses()
-    responses[request_name] = list(pickle.dumps(response))
-
-    with open(FakeClient.FILENAME, "w") as f:
-        json.dump(responses, f)
+    filename = get_response_path((request_name))
+    with open(filename, "wb") as f:
+        pickle.dump(response, f)
 
 
 class FakeClient(DummyClient):
@@ -289,7 +298,7 @@ class FakeClient(DummyClient):
     All the API responses you can cannot are stored in json file, which you can change if you want to.
     """
 
-    FILENAME = "fake_api.json"
+    FOLDER = "fake_api"
 
     def __init__(self, credentials: ClientCredentials):
         self.credentials = credentials
