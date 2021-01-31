@@ -1,4 +1,5 @@
 import click
+import time
 import backend.models as md
 
 from flask import current_app as app
@@ -23,28 +24,45 @@ def mails():
     "-f",
     "--filename",
     default="",
-    type=click.Path(),
+    type=click.Path(exists=True),
     help="If present, will retrieve message information from JSON file",
+)
+@click.option(
+    "-h",
+    "--html",
+    default="",
+    type=click.Path(exists=True),
+    help="If present, will retrieve html information from HTML file",
 )
 @click.option("-u", "--all-users", is_flag=True)
 @with_appcontext
-def send(subject, body, recipients, filename, all_users):
+def send(subject, body, recipients, filename, html, all_users):
 
     if filename:
         with open(filename) as f:
             content = json.load(f)
-            subject = content["subject"]
-            body = content["body"]
-            recipients = content["recipients"]
+            msg = Message(**content)
+    else:
+        msg = Message(subject=subject, body=body, recipients=recipients)
 
-    msg = Message(subject=subject, body=body, recipients=recipients)
+    if html:
+        with open(html) as f:
+            msg.html = f.read()
 
     if all_users:
-        df = md.table_to_dataframe(md.User, columns=["confirmed_at", "email"])
-        df.dropna(subset=["confirmed_at"], inplace=True)
+        emails = md.User.get_emails()
 
-        # We do not want tu publicly share email adresses so we use BCC
-        msg.recipients = []
-        msg.bcc = df.email.values.tolist()
+        click.confirm(
+            f"Are you sure to send an email to {len(emails)} email addresses?",
+            abort=True,
+        )
 
-    app.config["MAIL_MANAGER"].send(msg)
+        with app.config["MAIL_MANAGER"].connect() as conn, click.progressbar(
+            emails
+        ) as bar:
+            for email in bar:
+                time.sleep(2.5)  # Required for no-reply@uclouvain.be
+                msg.recipients = [email]
+                conn.send(msg)
+    else:
+        app.config["MAIL_MANAGER"].send(msg)
