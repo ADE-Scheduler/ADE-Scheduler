@@ -131,6 +131,9 @@ app.config["MAIL_USE_TLS"] = True
 app.config["MAIL_USERNAME"] = os.environ["MAIL_USERNAME"]
 app.config["MAIL_PASSWORD"] = os.getenv("MAIL_PASSWORD", None)
 app.config["MAIL_DEFAULT_SENDER"] = os.environ["MAIL_USERNAME"]
+app.config[
+    "MAIL_MAX_EMAILS"
+] = 30  # Better for avoiding errors from no-reply@uclouvain.be
 app.config["ADMINS"] = [os.environ["MAIL_ADMIN"]]
 
 # Allows compression of text assets
