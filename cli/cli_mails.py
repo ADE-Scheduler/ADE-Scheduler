@@ -1,4 +1,5 @@
 import click
+import time
 import backend.models as md
 
 from flask import current_app as app
@@ -52,13 +53,15 @@ def send(subject, body, recipients, filename, html, all_users):
         emails = md.User.get_emails()
 
         click.confirm(
-            f"Are you sure to send an email to {len(emails)} email addresses?"
+            f"Are you sure to send an email to {len(emails)} email addresses?",
+            abort=True,
         )
 
         with app.config["MAIL_MANAGER"].connect() as conn, click.progressbar(
             emails
         ) as bar:
             for email in bar:
+                time.sleep(2.5)  # Required for no-reply@uclouvain.be
                 msg.recipients = [email]
                 conn.send(msg)
     else:
