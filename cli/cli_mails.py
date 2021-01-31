@@ -50,7 +50,6 @@ def send(subject, body, recipients, filename, html, all_users):
 
     if all_users:
         emails = md.User.get_emails()
-        emails = msg.recipients
 
         click.confirm(
             f"Are you sure to send an email to {len(emails)} email addresses?"
