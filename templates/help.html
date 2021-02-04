@@ -4,7 +4,6 @@
 <% _.forEach(htmlWebpackPlugin.files.js, function(file) { %>
 <script type="text/javascript" src="<%= file%>"></script>
 <%}); %>
-<script type="text/javascript" src="https://platform.linkedin.com/badges/js/profile.js" async defer></script>
 {% endblock %}
 
 {% block body %}
@@ -38,14 +37,6 @@
                 <a class="nav-link main-link mb-0" href="#faq-4" v-on:click.prevent="scroll('faq-4', true)">{{ _('Stay informed') }}</a>
                 <nav class="nav sub-nav flex-column">
                     <a class="nav-link ms-4" href="#faq-41" v-on:click.prevent="scroll('faq-41')">{{  _('The change log page') }}</a>
-                </nav>
-
-                <a class="nav-link main-link mb-0" href="#faq-5" v-on:click.prevent="scroll('faq-5', true)">{{ _('About us') }}</a>
-                <nav class="nav sub-nav flex-column">
-                    <a class="nav-link ms-4" href="#faq-51" v-on:click.prevent="scroll('faq-51')">{{ _('Who are we ?') }}</a>
-                    <a class="nav-link ms-4" href="#faq-52" v-on:click.prevent="scroll('faq-52')">Jérome</a>
-                    <a class="nav-link ms-4" href="#faq-53" v-on:click.prevent="scroll('faq-53')">Louis</a>
-                    <a class="nav-link ms-4" href="#faq-54" v-on:click.prevent="scroll('faq-54')">Gilles</a>
                 </nav>
             </nav>
         </nav>
@@ -138,61 +129,6 @@
                     <p>
                         {{ _('ADE Scheduler is always under developement as we try to propose the best tool for students and teachers at UCLouvain. It may then be possible that new features or changes have been made to the tool since your last use. To stay informed of all modifications of ADE Scheduler, do not hesitate to take a look at our <a href="/whatisnew">change log page</a>.')}}
                     </p>
-
-                <h3 class="my-5" id="faq-5">{{ _('About us') }}</h3>
-                    <h4 id="faq-51">{{ _('Who are we ?') }}</h4>
-                    <hr class="mb-3">
-                    <p>
-                        {{ _('We are three students from UCLouvain. By the time we started this project, we were finishing our bachelor\'s degree in engineering (Electricity and Mechanics for Jérome and Gilles; Computer Science and Applied Mathematics for Louis).') }}
-                    </p>
-
-                    <h4 id="faq-52">
-                        <a class="link-dark" href="mailto:jerome.eertmans@student.uclouvain.be">
-                            <svg style="font-size:20px; vertical-align: middle;" width="2em" height="1.4em" viewBox="0 0 16 16" class="bi bi-envelope" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path style="vertical-align: middle" fill-rule="evenodd" d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383l-4.758 2.855L15 11.114v-5.73zm-.034 6.878L9.271 8.82 8 9.583 6.728 8.82l-5.694 3.44A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.739zM1 11.114l4.758-2.876L1 5.383v5.73z"/>
-                            </svg>
-                        </a>
-                        Jérome <small class="text-muted font-weight-light ms-2">jerome.eertmans@student.uclouvain.be</small>
-                    </h4>
-                    <hr class="mb-3">
-                    <p>
-                        {{ _('Jérome is a student in the Ecole Polytechnique de Louvain, in engineering. He completed his bachelor degree in Electricity and Mechanics. He is now pursuing a master degree in Electromechanical Engineering.') }}
-                    </p>
-                    <div class="LI-profile-badge d-flex justify-content-center mb-3"  data-version="v1" data-size="medium" data-locale="en_US" data-type="horizontal" data-theme="light" data-vanity="jérome-eertmans-130ab1130">
-                        <a class="LI-simple-link" href='https://be.linkedin.com/in/j%C3%A9rome-eertmans-130ab1130?trk=profile-badge'>Jérome Eertmans</a>
-                    </div>
-
-                    <h4 id="faq-53">
-                        <a class="link-dark" href="mailto:navarre.louis@student.uclouvain.be">
-                            <svg style="font-size:20px; vertical-align: middle;" width="2em" height="1.4em" viewBox="0 0 16 16" class="bi bi-envelope" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path style="vertical-align: middle" fill-rule="evenodd" d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383l-4.758 2.855L15 11.114v-5.73zm-.034 6.878L9.271 8.82 8 9.583 6.728 8.82l-5.694 3.44A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.739zM1 11.114l4.758-2.876L1 5.383v5.73z"/>
-                            </svg>
-                        </a>
-                        Louis <small class="text-muted font-weight-light ms-2">navarre.louis@student.uclouvain.be</small>
-                    </h4>
-                    <hr class="mb-3">
-                    <p>
-                        {{ _('Louis is a student at the Ecole Polytechnique de Louvain, in engineering. He completed his bachelor degree in Applied Mathematics and Computing Science. He is now pursuing a master degree in Computer Sciences Engineering.') }}
-                    </p>
-                    <div class="LI-profile-badge d-flex justify-content-center mb-3"  data-version="v1" data-size="medium" data-locale="en_US" data-type="horizontal" data-theme="light" data-vanity="louis-navarre-36b78b143">
-                        <a class="LI-simple-link" href='https://be.linkedin.com/in/louis-navarre-36b78b143?trk=profile-badge'>Louis Navarre</a>
-                    </div>
-
-                    <h4 id="faq-54">
-                        <a class="link-dark" href="mailto:gilles.poncelets@student.uclouvain.be">
-                            <svg style="font-size:20px; vertical-align: middle;" width="2em" height="1.4em" viewBox="0 0 16 16" class="bi bi-envelope" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path style="vertical-align: middle" fill-rule="evenodd" d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383l-4.758 2.855L15 11.114v-5.73zm-.034 6.878L9.271 8.82 8 9.583 6.728 8.82l-5.694 3.44A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.739zM1 11.114l4.758-2.876L1 5.383v5.73z"/>
-                            </svg>
-                        </a>
-                        Gilles <small class="text-muted font-weight-light ms-2">gilles.poncelet@student.uclouvain.be</small>
-                    </h4>
-                    <hr class="mb-3">
-                    <p>
-                        {{ _('Gilles is a student in the Ecole Polytechnique de Louvain, in engineering. He completed his bachelor degree in Electricity and Mechanics. He is now pursuing a master degree in Electromechanical Engineering.') }}
-                    </p>
-                    <div class="LI-profile-badge d-flex justify-content-center mb-3"  data-version="v1" data-size="medium" data-locale="en_US" data-type="horizontal" data-theme="light" data-vanity="gilles-poncelet-020442195">
-                        <a class="LI-simple-link" href='https://be.linkedin.com/in/gilles-poncelet-020442195?trk=profile-badge'>Gilles Poncelet</a>
-                    </div>
             </div>
         </div>
     </div>

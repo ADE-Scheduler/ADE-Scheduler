@@ -4,7 +4,6 @@
 <% _.forEach(htmlWebpackPlugin.files.js, function(file) { %>
 <script type="text/javascript" src="<%= file%>"></script>
 <%}); %>
-<script type="text/javascript" src="https://platform.linkedin.com/badges/js/profile.js" async defer></script>
 {% endblock %}
 
 {% block body %}
@@ -29,9 +28,14 @@
                 <a class="nav-link main-link mb-0" href="#prog" v-on:click.prevent="scroll('prog', true)">{{ _('For programmers') }}</a>
                 <nav class="nav sub-nav flex-column">
                     <a class="nav-link ms-4" href="#prog-github" v-on:click.prevent="scroll('prog-github')">{{ _('Contribute via') }} <img src="../static/img/GitHub-Logos/GitHub_Logo.png" class="txt-img"/></a>
-                </nav>
-                <nav class="nav sub-nav flex-column">
                     <a class="nav-link ms-4" href="#prog-ects" v-on:click.prevent="scroll('prog-ects')">{{ _('Earn ECTS at UCLouvain for contributing') }}</a>
+                </nav>
+
+                <a class="nav-link main-link mb-0" href="#credits" v-on:click.prevent="scroll('credits', true)">{{ _('Credits') }}</a>
+                <nav class="nav sub-nav flex-column">
+                    <a class="nav-link ms-4" href="#credits-creators" v-on:click.prevent="scroll('credits-creators')">{{ _('Project creators') }}</a>
+                    <a class="nav-link ms-4" href="#credits-uclouvain" v-on:click.prevent="scroll('credits-uclouvain')">{{ _('UCLouvain') }}</a>
+                    <a class="nav-link ms-4" href="#credits-contributor" v-on:click.prevent="scroll('credits-contributors')">{{ _('Contributors') }}</a>
                 </nav>
             </nav>
         </nav>
@@ -167,6 +171,31 @@
 
                        ') }}
                     </p>
+
+                  <h3 class="my-5" id="credits">{{ _('Credits') }}</h3>
+                  <h4 id="credits-creators">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                          <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                      </svg>
+                      {{ _('Project creators') }}
+                  </h4>
+                  <hr class="mb-3">
+                  <p>{{ _('Text goes here') }}</p>
+
+                  <h4 id="credits-uclouvain">
+                      <img src="../static/img/logo_UCL.png" class="txt-img"/>
+                  </h4>
+                  <hr class="mb-3">
+                  <p>{{ _('Text goes here') }}</p>
+
+                  <h4 id="credits-contributors">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                          <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                      </svg>
+                      {{ _('Contributors') }}
+                  </h4>
+                  <hr class="mb-3">
+                  <p>{{ _('Text goes here') }}</p>
             </div>
         </div>
     </div>
