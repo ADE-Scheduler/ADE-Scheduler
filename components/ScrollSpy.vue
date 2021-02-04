@@ -47,9 +47,9 @@
     </div>
 
     <!-- Toggle button  -->
-    <button class="btn btn-dark btn-nav">
-      <span style="font-size: 32px" class="bi bi-chevron-up"   v-on:click="toggleNav(false)" v-if="navBtn"></span>
-      <span style="font-size: 32px" class="bi bi-chevron-down" v-on:click="toggleNav(true)"  v-else></span>
+    <button class="btn btn-dark btn-nav" v-on:click="toggleNav">
+      <i style="font-size: 32px" class="bi bi-chevron-up" v-if="navBtn"/>
+      <i style="font-size: 32px" class="bi bi-chevron-down" v-else/>
     </button>
   </div>
 </template>
@@ -72,13 +72,13 @@
       scroll(id, flag) {
         document.getElementById(id).scrollIntoView();
         if (window.innerWidth < 767.98 && !flag) {
-          this.toggleNav(false);
+          this.toggleNav();
         }
       },
-      toggleNav(show) {
-        this.navBtn = show;
-        if (show)   { this.nav.show(); }
-        else        { this.nav.hide(); }
+      toggleNav() {
+        this.navBtn = !this.navBtn;
+        if (this.navBtn)  { this.nav.show(); }
+        else              { this.nav.hide(); }
       },
     },
     mounted() {
