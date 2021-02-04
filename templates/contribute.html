@@ -8,39 +8,93 @@
 
 {% block body %}
 <div class="container-fluid">
-    <div class="row">
-        <nav class="col-md-3 col-lg-2 d-md-block bg-light navigator collapse" id="faq-navigator">
-            <nav class="nav nav-pills navigator-sticky d-flex flex-column p-3">
 
-                <a class="nav-link main-link mb-0" href="#collab" v-on:click.prevent="scroll('collab', true)">{{ _('Collaborative project') }}</a>
-                <nav class="nav sub-nav flex-column">
-                    <a class="nav-link ms-4" href="#collab-open-source" v-on:click.prevent="scroll('collab-open-source')">{{ _('ADE Scheduler is open source') }}</a>
-                    <a class="nav-link ms-4" href="#collab-help-us" v-on:click.prevent="scroll('collab-help-us')">{{ _('You can help us!') }}</a>
-                </nav>
+    <scrollspy
+      v-bind:content="[
+        {
+          id:'collab',
+          title: '{{ _('Collaborative project') }}',
+          subtitles: [
+            {
+              id: 'collab-os',
+              title: '{{ _('ADE Scheduler is open source') }}',
+              content: '{{ _('One very important aspect of this project is that it is open source. In short, it means that everybody can access the whole code behind the tool and re-use it. But it also means that you can request changes so that the tool can be further improved. </br></br> Currently, ADE Scheduler is kindly supported by some academical members at UCLouvain so that we do not have to pay for server hosting fees and we are thankful for that!') }}',
+            },
+            {
+              id: 'collabd-help-us',
+              title: '{{ _('You can help us!') }}',
+              content: '{{ _('Even though this tool is functional, it is not perfect. New features, typos in text, missing translations or bugs? There are many things that you can help us improve. </br></br> Down below, we propose multiple ways for you to help us. Nonetheless, any other ideas are welcome!') }}',
+            },
+          ],
+        },
+        {
+          id: 'non-prog',
+          title: '{{ _('For non-programmers') }}',
+          subtitles: [
+            {
+              id: 'non-progs-bugs',
+              title: '{{ _('Signal bugs') }}',
+              content: 'Lorem ipsum dores alamet',
+            },
+            {
+              id: 'non-progs-typo',
+              title: '{{ _('Typos correction') }}',
+              content: 'Lorem ipsum dores alamet',
+            },
+            {
+              id: 'non-prog-request',
+              title: '{{ _('Request new features') }}',
+              content: 'Lorem ipsum dores alamet',
+            },
+          ],
+        },
+        {
+          id: 'prog',
+          title: '{{ _('For programmers') }}',
+          subtitles: [
+            {
+              id: 'progs-contribute',
+              title: '{{ _('Contribute via GitHub') }}',
+              content: 'Lorem ipsum dores alamet',
+            },
+            {
+              id: 'progs-ects',
+              title: '{{ _('Earn ECTS at UCLouvain for contributing ' )}}',
+              content: 'Lorem ipsum dores alamet',
+            },
+          ],
+        },
+        {
+          id: 'credits',
+          title: '{{ _('Credits') }}',
+          subtitles: [
+            {
+              id: 'credits-creators',
+              title: '{{ _('Project creators') }}',
+              content: 'Lorem ipsum dores alamet',
+            },
+            {
+              id: 'credits-uclouvain',
+              title: '{{ _('UCLouvain') }}',
+              content: 'Lorem ipsum dores alamet',
+            },
+            {
+              id: 'credits-contributors',
+              title: '{{ _('Contributors') }}',
+              content: 'Lorem ipsum dores alamet',
+            },
+          ],
+        },
+      ]"
+    ></scrollspy>
 
-                <a class="nav-link main-link mb-0" href="#non-prog" v-on:click.prevent="scroll('non-prog', true)">{{ _('For non-programmers') }}</a>
-                <nav class="nav sub-nav flex-column">
-                    <a class="nav-link ms-4" href="#non-prog-bugs" v-on:click.prevent="scroll('non-prog-bugs')">{{ _('Signal bugs') }}</a>
-                    <a class="nav-link ms-4" href="#non-prog-typos" v-on:click.prevent="scroll('non-prog-typos')">{{ _('Typos correction') }}</a>
-                    <a class="nav-link ms-4" href="#non-prog-new-features" v-on:click.prevent="scroll('non-prog-new-features')">{{ _('Request new features') }}</a>
-                </nav>
+</div>
+{% endblock %}
 
-                <a class="nav-link main-link mb-0" href="#prog" v-on:click.prevent="scroll('prog', true)">{{ _('For programmers') }}</a>
-                <nav class="nav sub-nav flex-column">
-                    <a class="nav-link ms-4" href="#prog-github" v-on:click.prevent="scroll('prog-github')">{{ _('Contribute via') }} <img src="../static/img/GitHub-Logos/GitHub_Logo.png" class="txt-img"/></a>
-                    <a class="nav-link ms-4" href="#prog-ects" v-on:click.prevent="scroll('prog-ects')">{{ _('Earn ECTS at UCLouvain for contributing') }}</a>
-                </nav>
+    <!-- <img src="../static/img/GitHub-Logos/GitHub_Logo.png" class="txt-img"/> -->
 
-                <a class="nav-link main-link mb-0" href="#credits" v-on:click.prevent="scroll('credits', true)">{{ _('Credits') }}</a>
-                <nav class="nav sub-nav flex-column">
-                    <a class="nav-link ms-4" href="#credits-creators" v-on:click.prevent="scroll('credits-creators')">{{ _('Project creators') }}</a>
-                    <a class="nav-link ms-4" href="#credits-uclouvain" v-on:click.prevent="scroll('credits-uclouvain')">{{ _('UCLouvain') }}</a>
-                    <a class="nav-link ms-4" href="#credits-contributor" v-on:click.prevent="scroll('credits-contributors')">{{ _('Contributors') }}</a>
-                </nav>
-            </nav>
-        </nav>
 
-        <div class="col-md-9 ms-sm-auto col-lg-10 p-3">
+        <!-- <div class="col-md-9 ms-sm-auto col-lg-10 p-3">
             <div class="container-lg">
                 {{ render_flash_alert() }}
                 <h3 class="my-5" id="collab">{{ _('Collaborative project') }}</h3>
@@ -197,16 +251,4 @@
                   <hr class="mb-3">
                   <p>{{ _('Text goes here') }}</p>
             </div>
-        </div>
-    </div>
-
-    <button class="btn btn-dark btn-nav">
-        <svg v-if="navBtn" v-on:click="toggleNav(false)" width="25px" height="25px" viewBox="0 0 16 16" class="bi bi-chevron-bar-contract" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
-        </svg>
-        <svg v-else        v-on:click="toggleNav(true)" width="25px" height="25px" viewBox="0 0 16 16" class="bi bi-chevron-bar-expand" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
-        </svg>
-    </button>
-</div>
-{% endblock %}
+        </div> -->
