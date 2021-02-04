@@ -8,16 +8,16 @@
             <a class="nav-link main-link mb-0 active"
                v-bind:href="'#' + item.id"
                v-on:click.prevent="scroll(item.id, true)"
+               v-html="item.title"
             >
-              {{ item.title }}
             </a>
             <nav class="nav sub-nav flex-column">
               <a class="nav-link ms-4"
                  v-for="subitem in item.subtitles"
                  v-bind:href="'#' + subitem.id"
                  v-on:click="scroll(subitem.id, false)"
+                 v-html="subitem.title"
               >
-                {{ subitem.title }}
               </a>
             </nav>
           </div>
@@ -28,16 +28,16 @@
       <div class="col-md-9 ms-sm-auto col-lg-10 p-3">
         <div class="container-lg">
           <div v-for="item in content">
-            <h3 class="my-5" v-bind:id="item.id">
-              <i v-bind:class="item.icon"></i>
-              {{ item.title }}
-            </h3>
+            <div class="d-flex flex-row my-5">
+              <h3 class="align-item-center me-2" v-bind:class="item.icon" v-show="item.icon"></h3>
+              <h3 v-bind:id="item.id" v-html="item.title"></h3>
+            </div>
             <p v-html="item.content"></p>
             <div v-for="subitem in item.subtitles">
-              <h4 v-bind:id="subitem.id">
-                <i v-bind:class="subitem.icon"></i>
-                {{ subitem.title }}
-              </h4>
+              <div class="d-flex flex-row">
+                <h4 class="align-item-center me-2" v-bind:class="subitem.icon" v-show="subitem.icon"></h4>
+                <h4 v-bind:id="subitem.id" v-html="subitem.title"></h4>
+              </div>
               <hr class="mb-3">
               <p v-html="subitem.content"></p>
             </div>
@@ -48,18 +48,8 @@
 
     <!-- Toggle button  -->
     <button class="btn btn-dark btn-nav">
-      <svg width="25px" height="25px" viewBox="0 0 16 16" class="bi bi-chevron-bar-contract" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
-           v-on:click="toggleNav(false)"
-           v-if="navBtn"
-      >
-          <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
-      </svg>
-      <svg width="25px" height="25px" viewBox="0 0 16 16" class="bi bi-chevron-bar-expand" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
-           v-on:click="toggleNav(true)"
-           v-else
-      >
-        <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
-      </svg>
+      <span style="font-size: 32px" class="bi bi-chevron-up"   v-on:click="toggleNav(false)" v-if="navBtn"></span>
+      <span style="font-size: 32px" class="bi bi-chevron-down" v-on:click="toggleNav(true)"  v-else></span>
     </button>
   </div>
 </template>
