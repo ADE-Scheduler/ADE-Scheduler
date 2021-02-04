@@ -47,7 +47,7 @@ const conf = {
       },
       {
         test: /\.(sa|sc|c)ss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader']
+        use: ['vue-style-loader', 'style-loader', 'css-loader', 'sass-loader']
       },
       {
         test: /\.vue$/,
