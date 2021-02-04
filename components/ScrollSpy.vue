@@ -29,6 +29,7 @@
         <div class="container-lg">
           <div v-for="item in content">
             <h3 class="my-5" v-bind:id="item.id">{{ item.title }}</h3>
+            <p v-html="item.content"></p>
             <div v-for="subitem in item.subtitles">
               <h4 v-bind:id="subitem.id">{{ subitem.title }}</h4>
               <hr class="mb-3">
@@ -60,13 +61,15 @@
 
 <script>
   import { Collapse, ScrollSpy } from 'bootstrap';
+  const axios = require('axios');
 
   export default {
-    props: ['content'],
+    props: ['path'],
     data() {
       return {
         nav: {},
         navBtn: false,
+        content: {},
       }
     },
     methods: {
@@ -83,13 +86,24 @@
       },
     },
     mounted() {
-      new ScrollSpy(document.body, {
-        target: '#navigator',
-        offset: 70,
-      });
-      this.nav = new Collapse(document.getElementById('navigator'), {
-        toggle: false,
-      });
+      axios({
+        method: 'GET',
+        url: `/static/text/${this.path}/${this.path}-${document.getElementById('current-locale').textContent.trim().toLowerCase()}.json`
+      })
+        .then(resp => {
+          this.content = resp.data;
+          this.$nextTick(() => {
+            new ScrollSpy(document.body, {
+              target: '#navigator',
+              offset: 70,
+            });
+            this.nav = new Collapse(document.getElementById('navigator'), {
+              toggle: false,
+            });
+          });
+        })
+        .catch(() => {})
+        .then(() => {});  // TODO
     }
   }
 </script>

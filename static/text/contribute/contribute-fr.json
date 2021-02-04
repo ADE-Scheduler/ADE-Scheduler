@@ -1,0 +1,77 @@
+[
+  {
+    "id": "collab",
+    "title": "Projet collaboratif",
+    "subtitles": [
+      {
+        "id": "collab-os",
+        "title": "ADE Scheduler est open source",
+        "content": "Un aspect très important de ce projet est qu'il est open source. Pour faire court, cela veut dire que tout le monde peut avoir un accès total au code et le ré-utiliser. Mais cela veut aussi dire que vous pouvez faire des demandes pour que l'outil soit amélioré. <br><br> Pour le moment, ADE Scheduler est supporté par quelques membres académiques de l'UCLouvain ce qui nous évite de devoir payer pour les frais liés au serveur et nous leur en sommes reconnaissants pour cela ! "
+      },
+      {
+        "id": "collabd-help-us",
+        "title": "Vous pouvez nous aider !",
+        "content": "Même si l'outil est fonctionnel, il n'est pas parfait. Des nouvelles fonctionnalités, des typos dans du texte ou des bugs ? Il y a plein de choses que vous pouvez nous aider à améliorer. <br><br> Ci-dessous, nous proposons plusieurs façons de nous aider. Cependant, toute autre idée est la bienvenue !"
+      }
+    ]
+  },
+  {
+    "id": "non-prog",
+    "title": "Pour les non-programmeurs",
+    "content": "Pour tout ce qui est listé plus bas, la meilleure manière pour nous contacter est de le faire via mail. Notre addresse se trouve sur la page de contact. Quand vous nous contactez, n'hésitez pas à inclure des captures d'écran ou même un lien de partage vers votre calendrier comme ça on peut aisément reproduire votre problème (si ça s'applique) localement. ",
+    "subtitles": [
+      {
+        "id": "non-progs-bugs",
+        "title": "Signal bugs",
+        "content": "Les évènements ne correspondent pas à ceux que vous avez encodés ? Des locaux sont manquant ou sont mal localisés sur la carte ? Une fonctionnalité ne marche pas comme vous le pensiez <br><br> Peut-être que le problème est du à une erreur dans notre code, ou peut-être est-ce dû à une faute dans l'encodage des cours de la part des personnes en charge des données de ADE. Quoi qu'il en soit, contactez-nous et nous ferons tout notre problème pour régler votre problème. "
+      },
+      {
+        "id": "non-progs-typo",
+        "title": " Corriger de typos ",
+        "content": " Écrire des milliers de lignes de texte en anglais et en français devient rapidement sujet aux erreurs et cela devient difficile de toutes les trouver! <br><br> Si il vous arriver d'en trouver, contactez-nous comme ça on peut les corriger. Cela s'applique aussi si vous pensez qu'une formulation n'est pas correcte ou pourrait être améliorée. "
+      },
+      {
+        "id": "non-prog-request",
+        "title": "Proposer de nouvelles fonctionnalités ",
+        "content": " ADE Scheduler évolue constamment, avec l'objectif de satisfaire les besoins des membres de l'UCLouvain en termes d'outils horaire. De ce fait, toute idée est la bienvenue ! N'hésitez pas à nous contacter en décrivant la nouvelle fonctionnalité que vous souhaiteriez voir, en ajoutant éventuellement des images si vous avez une idée claire en tête. "
+      }
+    ]
+  },
+  {
+    "id": "prog",
+    "title": "Pour les programmeurs",
+    "subtitles": [
+      {
+        "id": "progs-contribute",
+        "title": "Contribute via GitHub",
+        "content": "Lorem ipsum dores alamet"
+      },
+      {
+        "id": "progs-ects",
+        "title": "Earn ECTS at UCLouvain for contributing",
+        "content": "Lorem ipsum dores alamet"
+      }
+    ]
+  },
+  {
+    "id": "credits",
+    "title": "Credits",
+    "subtitles": [
+      {
+        "id": "credits-creators",
+        "title": "Project creators",
+        "content": "Lorem ipsum dores alamet"
+      },
+      {
+        "id": "credits-uclouvain",
+        "title": "UCLouvain",
+        "content": "Lorem ipsum dores alamet"
+      },
+      {
+        "id": "credits-contributors",
+        "title": "Contributors",
+        "content": "Lorem ipsum dores alamet"
+      }
+    ]
+  }
+]

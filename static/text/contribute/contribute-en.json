@@ -1,0 +1,77 @@
+[
+  {
+    "id": "collab",
+    "title": "Collaborative project",
+    "subtitles": [
+      {
+        "id": "collab-os",
+        "title": "ADE Scheduler is open source",
+        "content": "One very important aspect of this project is that it is open source. In short, it means that everybody can access the whole code behind the tool and re-use it. But it also means that you can request changes so that the tool can be further improved. </br></br> Currently, ADE Scheduler is kindly supported by some academical members at UCLouvain so that we do not have to pay for server hosting fees and we are thankful for that!"
+      },
+      {
+        "id": "collabd-help-us",
+        "title": "You can help us!",
+        "content": "Even though this tool is functional, it is not perfect. New features, typos in text, missing translations or bugs? There are many things that you can help us improve. </br></br> Down below, we propose multiple ways for you to help us. Nonetheless, any other ideas are welcome!"
+      }
+    ]
+  },
+  {
+    "id": "non-prog",
+    "title": "For non-programmers",
+    "content": "For everything listed below, the best way to contact us is to do it via our email address. This can be found in the contact page. When reaching us, do not hesitate to include screenshots or even your calendar share link so that we can easily reproduce your problem (if applies) locally. ",
+    "subtitles": [
+      {
+        "id": "non-progs-bugs",
+        "title": "Signal bugs",
+        "content": "The events are not matching the code you entered? Classrooms are missing or wrongly located on the map? A feature is not working the way you expected? <br><br> Maybe, you problem is due to a mistake in our code or in the encoding done by people maintening ADE's data. Whatever the source of you problem, please contact us and we will do all we can to fix it. "
+      },
+      {
+        "id": "non-progs-typo",
+        "title": "Typos correction",
+        "content": "Writing thousands of lines in both English and French can be error prone, and it becomes hard to spot all the mistakes! <br><br> If you happen to spot one or several typos, please contact us so that we can correct them. This also applies if you think that a formulation is not correct or could be improved. "
+      },
+      {
+        "id": "non-prog-request",
+        "title": "Request new features",
+        "content": "ADE Scheduler is continuously evolving, with the goal to meet the requirements of UCLouvain's members in terms of scheduling tools. Therefore, any new feature request is welcome! Please reach us by describing the feature you want us to implement, additionally providing images if you have a clear idea in mind. "
+      }
+    ]
+  },
+  {
+    "id": "prog",
+    "title": "For programmers",
+    "subtitles": [
+      {
+        "id": "progs-contribute",
+        "title": "Contribute via GitHub",
+        "content": "Lorem ipsum dores alamet"
+      },
+      {
+        "id": "progs-ects",
+        "title": "Earn ECTS at UCLouvain for contributing",
+        "content": "Lorem ipsum dores alamet"
+      }
+    ]
+  },
+  {
+    "id": "credits",
+    "title": "Credits",
+    "subtitles": [
+      {
+        "id": "credits-creators",
+        "title": "Project creators",
+        "content": "Lorem ipsum dores alamet"
+      },
+      {
+        "id": "credits-uclouvain",
+        "title": "UCLouvain",
+        "content": "Lorem ipsum dores alamet"
+      },
+      {
+        "id": "credits-contributors",
+        "title": "Contributors",
+        "content": "Lorem ipsum dores alamet"
+      }
+    ]
+  }
+]
