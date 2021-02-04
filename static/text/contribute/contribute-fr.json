@@ -49,13 +49,13 @@
         "id": "progs-contribute",
         "icon": "bi bi-github",
         "title": "Contribute via GitHub",
-        "content": "Lorem ipsum dores alamet"
+        "content": "Notre code est disponible pour tous sur <a href='https://github.com/SnaKyEyeS/ADE-Scheduler'>GitHub</a> et nous recommandons fortement aux programmeurs d'utiliser l'outil git quand ils travaillent sur leurs projets. Si cet outil est nouveau pour vous, n'hésitez jamais à nous poser des questions ! <br><br> Tout ce qui a été dit pour les non-programmeurs s'applique aussi pour les programmeurs. À la place d'utiliser des mails, utilisez les <a href='https://github.com/SnaKyEyeS/ADE-Scheduler/issues'>issues</a> GitHub quand vous voulez rapporter un problème ou faire une demande de nouvelle fonctionnalité, et les <a href='https://github.com/SnaKyEyeS/ADE-Scheduler/pulls'>pull requests</a> quand vous voulez qu'on vérifie votre code pour éventuellement l'inclure dans l'outil. Si vous voulez contribuer mais que vous n'avez pas une idée spécifique en tête, c'est toujours une bonne idée d'aller lire les issues que d'autres personnes ont écrites afin de voir si vous pouvez aider. <br>br> Même si vous ne comptez pas contribuer au code, nous recommandons fortement aux personnes qui connaissent git ou GitHub de nous contacter via notre répertoire GitHub, cela nous permet de centraliser les questions et de garder un historique de ces dernières. <br><br> Dernière chose, mais pas des moindres, nous avons écrit une documentation complète disponible <a href='https://ade-scheduler.readthedocs.io/en/latest/'>ici</a> pour vous aider à comprendre notre code afin d'y contribuer. "
       },
       {
         "id": "progs-ects",
         "icon": "bi bi-bookmark-check-fill",
         "title": "Earn ECTS at UCLouvain for contributing",
-        "content": "Lorem ipsum dores alamet"
+        "content": "À notre connaissance, il y a 2 cours à l'EPL qui offrent des crédits si vous contibruez à un projet open source. Vous pouvez donc contribuer à ADE Scheduler et, en même temps, valider des crédits pour vos études ! <br><br> Le premier, <a href='https://uclouvain.be/en-cours-2020-lingi2401'>LINGI2401 \"Open Source strategy for software development\"</a>, est donné pendant le Q1 est demande de votre part de faire une contribution très petite. Nous le recommandons fortement comme étant une bonne introduction à l'open source et il vaut 5 crédits. <br><br> Le second, <a href='https://uclouvain.be/en-cours-2020-lingi2402'>LINGI2402 \"Open Source Project\"</a>, peut être pris, au choix, au Q1 ou au Q2 et demande une contribution pour un total de 140h de travail. Ce dernier peut compter comme un stage et vaut 5 crédits. <br><br> Dans le cas où vous ne pouvez pas, ou ne voulez pas, suivre ces cours, contribuer à un projet open source reste une plus value très intéressante pour votre CV. Même si c'est une très petite contribution, comme une correction de typo, vous en apprendrez beaucoup ! "
       }
     ]
   },
@@ -65,17 +65,18 @@
     "subtitles": [
       {
         "id": "credits-creators",
-        "title": "Project creators",
+        "title": "Créateurs du projet",
         "content": "Lorem ipsum dores alamet"
       },
       {
         "id": "credits-uclouvain",
-        "title": "UCLouvain",
+        "title": "<img class='txt-img' src='/static/img/logo_UCL.png'></img>",
         "content": "Lorem ipsum dores alamet"
       },
       {
         "id": "credits-contributors",
-        "title": "Contributors",
+        "icon": "bi bi-star-fill",
+        "title": "Contributeurs",
         "content": "Lorem ipsum dores alamet"
       }
     ]
