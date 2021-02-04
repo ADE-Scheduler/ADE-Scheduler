@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
       currentProjectId: 0,
       codes: [],
       n_schedules: 0,
+      show_best_schedules: false,
       selected_schedule: 0,
       computing: true,
       error: false,
@@ -227,6 +228,7 @@ document.addEventListener('DOMContentLoaded', function() {
       exportInfo: {
         url: null,
         subscriptionType: 0,
+        downloadType: 0,
       },
       shareLink: '',
     },
@@ -349,6 +351,27 @@ document.addEventListener('DOMContentLoaded', function() {
             this.selected_schedule = resp.data.selected_schedule;
             this.calendarOptions.events = resp.data.events;
             this.setUnsavedStatus(resp.data.unsaved);
+            this.show_best_schedules = true;
+          })
+          .catch(() => {
+            this.error = true;
+          })
+          .then(() => {
+            this.computing = false;
+          });
+      },
+      resetBestSchedules: function() {
+        this.computing = true;
+        axios({
+          method: 'DELETE',
+          url: Flask.url_for('calendar.reset_best_schedules'),
+        })
+          .then(resp => {
+            this.n_schedules = 0;
+            this.selected_schedule = 0;
+            this.calendarOptions.events = resp.data.events;
+            this.setUnsavedStatus(resp.data.unsaved);
+            this.show_best_schedules = false;
           })
           .catch(() => {
             this.error = true;
@@ -381,6 +404,9 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
           this.unsaved = unsaved;
         }
+      },
+      downloadCalendar: function() {
+        open( Flask.url_for('calendar.download', {'choice': this.exportInfo.downloadType}) );
       },
       save: function() {
         this.computing = true;
@@ -610,6 +636,9 @@ document.addEventListener('DOMContentLoaded', function() {
         this.navBtn = !this.navBtn;
         if (this.navBtn)    { codeMenu.show(); }
         else                { codeMenu.hide(); }
+      },
+      toggleBestSchedules: function() {
+        this.show_best_schedules = !this.show_best_schedules;
       },
       removeEvent: function(event) {
         this.computing = true;

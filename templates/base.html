@@ -107,10 +107,11 @@
                             <a class="nav-link" v-bind:class="{'active-page': currentPath === '{{ url_for('help.index') }}'}" href="{{ url_for('help.index') }}">{{_('Help')}}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" v-bind:class="{'active-page': currentPath === '{{ url_for('whatisnew.index') }}'}" href="{{ url_for('whatisnew.index') }}">{{ _('News') }}</a>
+                            <a class="nav-link" v-bind:class="{'active-page': currentPath === '{{ url_for('contact.index') }}'}" href="{{ url_for('contact.index') }}">{{_('Contact us')}}</a>
+                        </li>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" v-bind:class="{'active-page': currentPath === '{{ url_for('contact.index') }}'}" href="{{ url_for('contact.index') }}">{{_('Contact us')}}</a>
+                            <a class="nav-link" v-bind:class="{'active-page': currentPath === '{{ url_for('contribute.index') }}'}" href="{{ url_for('contribute.index') }}">{{_('Contribute')}}</a>
                         </li>
                         {% if current_user.has_role("admin") %}
                         <li class="nav-item">

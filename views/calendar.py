@@ -437,6 +437,23 @@ def compute():
     )
 
 
+@calendar.route("/schedule/best", methods=["DELETE"])
+def reset_best_schedules():
+    session["current_schedule"].reset_best_schedules()
+
+    session["current_schedule_modified"] = True
+    return (
+        jsonify(
+            {
+                "events": session["current_schedule"].get_events(
+                    json=True, schedule_number=0
+                )
+            }
+        ),
+        200,
+    )
+
+
 @calendar.route("/schedule/color", methods=["POST"])
 def update_color():
     color_palette = request.json.get("color_palette")

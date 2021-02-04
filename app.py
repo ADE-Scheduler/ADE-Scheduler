@@ -42,10 +42,11 @@ import views.utils as utl
 from views.calendar import calendar
 from views.account import account
 from views.classroom import classroom
-from views.help import help
+from views.help import help as _help
 from views.contact import contact
 from views.api import api
 from views.whatisnew import whatisnew
+from views.contribute import contribute
 from views.admin import admin
 
 # CLI commands
@@ -57,6 +58,7 @@ from cli import cli_sql
 from cli import cli_usage
 from cli import cli_users
 from cli import cli_plots
+from cli import cli_mails
 
 # Change current working directory to main directory
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
@@ -67,10 +69,11 @@ app = Flask(__name__, template_folder="static/dist/html")
 app.register_blueprint(calendar, url_prefix="/calendar")
 app.register_blueprint(account, url_prefix="/account")
 app.register_blueprint(classroom, url_prefix="/classroom")
-app.register_blueprint(help, url_prefix="/help")
+app.register_blueprint(_help, url_prefix="/help")
 app.register_blueprint(contact, url_prefix="/contact")
 app.register_blueprint(api, url_prefix="/api")
 app.register_blueprint(whatisnew, url_prefix="/whatisnew")
+app.register_blueprint(contribute, url_prefix="/contribute")
 app.register_blueprint(admin, url_prefix="/admin")
 app.config["SECRET_KEY"] = os.environ["FLASK_SECRET_KEY"]
 jsglue = JSGlue(app)
@@ -84,6 +87,7 @@ app.cli.add_command(cli_usage.usage)
 app.cli.add_command(cli_users.users)
 app.cli.add_command(cli_api_usage.api_usage)
 app.cli.add_command(cli_plots.plots)
+app.cli.add_command(cli_mails.mails)
 
 # Load REDIS TTL config
 redis_ttl_config = configparser.ConfigParser()
@@ -102,8 +106,18 @@ app.config["ADE_API_CREDENTIALS"] = {
     "data": os.environ["ADE_DATA"],
     "Authorization": os.environ["ADE_AUTHORIZATION"],
 }
+
+
+app.config["ADE_FAKE_API"] = (
+    bool(distutils.util.strtobool(os.environ["ADE_FAKE_API"]))
+    if "ADE_FAKE_API" in os.environ
+    else False
+)
+
 manager = mng.Manager(
-    ade.Client(app.config["ADE_API_CREDENTIALS"]),
+    ade.Client(app.config["ADE_API_CREDENTIALS"])
+    if not app.config["ADE_FAKE_API"]
+    else ade.FakeClient(app.config["ADE_API_CREDENTIALS"]),
     srv.Server(host="localhost", port=6379),
     md.db,
     redis_ttl_config,
@@ -117,6 +131,9 @@ app.config["MAIL_USE_TLS"] = True
 app.config["MAIL_USERNAME"] = os.environ["MAIL_USERNAME"]
 app.config["MAIL_PASSWORD"] = os.getenv("MAIL_PASSWORD", None)
 app.config["MAIL_DEFAULT_SENDER"] = os.environ["MAIL_USERNAME"]
+app.config[
+    "MAIL_MAX_EMAILS"
+] = 30  # Better for avoiding errors from no-reply@uclouvain.be
 app.config["ADMINS"] = [os.environ["MAIL_ADMIN"]]
 
 # Allows compression of text assets

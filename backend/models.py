@@ -200,6 +200,13 @@ class User(db.Model, fsqla.FsUserMixin):
         self.last_schedule_id = schedule_id
         db.session.commit()
 
+    @classmethod
+    def get_emails(cls):
+        df = table_to_dataframe(cls, columns=["confirmed_at", "email"])
+        df.dropna(subset=["confirmed_at"], inplace=True)
+
+        return df.email.values.tolist()
+
 
 class Schedule(db.Model):
     """

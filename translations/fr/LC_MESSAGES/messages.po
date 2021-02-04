@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-12-04 09:42+0100\n"
+"POT-Creation-Date: 2021-01-25 14:47+0100\n"
 "PO-Revision-Date: 2020-07-24 16:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -18,43 +18,43 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.0\n"
 
-#: app.py:314
+#: app.py:317
 msgid "An error has occurred"
 msgstr "Il y a eu une erreur"
 
-#: app.py:323
+#: app.py:326
 msgid "Resource not found"
 msgstr "Ressource non trouvée"
 
-#: app.py:327
+#: app.py:330
 msgid "404 Page not found :("
 msgstr "404 Page non trouvée :("
 
-#: backend/events.py:167 templates/calendar.html:336
+#: backend/events.py:167 templates/calendar.html:358
 msgid "Sunday"
 msgstr "Dimanche"
 
-#: backend/events.py:168 templates/calendar.html:330
+#: backend/events.py:168 templates/calendar.html:352
 msgid "Monday"
 msgstr "Lundi"
 
-#: backend/events.py:169 templates/calendar.html:331
+#: backend/events.py:169 templates/calendar.html:353
 msgid "Tuesday"
 msgstr "Mardi"
 
-#: backend/events.py:170 templates/calendar.html:332
+#: backend/events.py:170 templates/calendar.html:354
 msgid "Wednesday"
 msgstr "Mercredi"
 
-#: backend/events.py:171 templates/calendar.html:333
+#: backend/events.py:171 templates/calendar.html:355
 msgid "Thursday"
 msgstr "Jeudi"
 
-#: backend/events.py:172 templates/calendar.html:334
+#: backend/events.py:172 templates/calendar.html:356
 msgid "Friday"
 msgstr "Vendredi"
 
-#: backend/events.py:173 templates/calendar.html:335
+#: backend/events.py:173 templates/calendar.html:357
 msgid "Saturday"
 msgstr "Samedi"
 
@@ -63,7 +63,7 @@ msgid "New schedule"
 msgstr "Nouvel horaire"
 
 #: templates/account.html:15 templates/calendar.html:15
-#: templates/calendar.html:381
+#: templates/calendar.html:403
 msgid "Warning"
 msgstr "Attention"
 
@@ -82,7 +82,7 @@ msgid "Continue"
 msgstr "Continuer"
 
 #: templates/account.html:35 templates/admin.html:14
-#: templates/calendar.html:544 templates/classroom.html:34
+#: templates/calendar.html:619 templates/classroom.html:34
 msgid "A problem has occurred. Please contact us if it happens again."
 msgstr ""
 "Oops, il y a eu un problème ! Veuillez nous contacter si ça se reproduit "
@@ -112,12 +112,12 @@ msgstr "Changer votre mot de passe"
 msgid "Color palette"
 msgstr "Palette de couleur"
 
-#: templates/account.html:90 templates/calendar.html:489
+#: templates/account.html:90 templates/calendar.html:556
 msgid "Academic year"
 msgstr "Année académique"
 
 #: templates/account.html:98 templates/calendar.html:146
-#: templates/calendar.html:401
+#: templates/calendar.html:468
 msgid "Save"
 msgstr "Sauvegarder"
 
@@ -129,20 +129,20 @@ msgstr "Afficher"
 msgid "Delete"
 msgstr "Supprimer"
 
-#: templates/account.html:108 templates/calendar.html:424
-#: templates/calendar.html:433
+#: templates/account.html:108 templates/calendar.html:491
+#: templates/calendar.html:500
 msgid "Schedules"
 msgstr "Horaires"
 
-#: templates/account.html:110 templates/calendar.html:435
+#: templates/account.html:110 templates/calendar.html:502
 msgid "You do not have any saved schedule at the moment"
 msgstr "Vous n'avez aucun horaire sauvegardé pour le moment"
 
-#: templates/account.html:135 templates/calendar.html:528
+#: templates/account.html:135 templates/calendar.html:603
 msgid "Open source software"
 msgstr "Logiciel libre"
 
-#: templates/account.html:135 templates/calendar.html:528
+#: templates/account.html:135 templates/calendar.html:603
 msgid ""
 "designed by Gilles Poncelet, Louis Navarre and Jérome Eertmans, students "
 "at the Ecole polytechnique de Louvain."
@@ -150,78 +150,78 @@ msgstr ""
 "créé par Gilles Poncelet, Louis Navarre et Jérome Eertmans, étudiants à "
 "l'École polytechnique de Louvain"
 
-#: templates/base.html:33
+#: templates/base.html:36
 msgid "You need to create an account to unlock this page"
 msgstr "Vous devez créer un compte pour débloquer cette page"
 
-#: templates/base.html:37 templates/calendar.html:164
+#: templates/base.html:40 templates/calendar.html:164
 msgid "Do not hesitate to create an account... you can:"
 msgstr "N'hésitez pas à créer un compte... avec, vous pouvez:"
 
-#: templates/base.html:44 templates/calendar.html:171
+#: templates/base.html:47 templates/calendar.html:171
 #: templates/security/register_user.html:20
 msgid "Save your schedules"
 msgstr "Sauvegarder vos horaires"
 
-#: templates/base.html:51 templates/calendar.html:178
+#: templates/base.html:54 templates/calendar.html:178
 #: templates/security/register_user.html:27
 msgid "Manage several schedules following your needs"
 msgstr "Gérer plusieurs horaires selon vos besoins"
 
-#: templates/base.html:58 templates/calendar.html:185
+#: templates/base.html:61 templates/calendar.html:185
 #: templates/security/register_user.html:34
 msgid "Modify the color of the events in the calendar"
 msgstr "Modifier la couleur des événements dans le calendrier"
 
-#: templates/base.html:65 templates/calendar.html:192
+#: templates/base.html:68 templates/calendar.html:192
 #: templates/security/register_user.html:41
 msgid "And so much more !"
 msgstr "Et bien plus !"
 
-#: templates/base.html:70 templates/calendar.html:58
-#: templates/calendar.html:142 templates/calendar.html:240
-#: templates/calendar.html:369 templates/calendar.html:388
+#: templates/base.html:73 templates/calendar.html:58
+#: templates/calendar.html:142 templates/calendar.html:262
+#: templates/calendar.html:391 templates/calendar.html:410
 #: templates/classroom.html:24
 msgid "Close"
 msgstr "Fermer"
 
-#: templates/base.html:71
+#: templates/base.html:74
 msgid "Create an account"
 msgstr "Créer un compte"
 
-#: templates/base.html:91
+#: templates/base.html:94
 msgid "Calendar"
 msgstr "Calendrier"
 
-#: templates/base.html:94
+#: templates/base.html:97
 msgid "Classrooms"
 msgstr "Locaux"
 
-#: templates/base.html:98 templates/base.html:100
+#: templates/base.html:101 templates/base.html:103
 msgid "Account"
 msgstr "Compte"
 
-#: templates/base.html:104
+#: templates/base.html:107
 msgid "Help"
 msgstr "Aide"
-
-#: templates/base.html:107
-msgid "News"
-msgstr "Nouveautés"
 
 #: templates/base.html:110
 msgid "Contact us"
 msgstr "Contact"
 
-#: templates/base.html:139
+#: templates/base.html:114
+msgid "Contribute"
+msgstr "Contribuer"
+
+#: templates/base.html:143
 msgid "Logout"
 msgstr "Déconnexion"
 
-#: templates/base.html:143
+#: templates/base.html:147
 msgid "Login"
 msgstr "Connexion"
 
-#: templates/base.html:144
+#: templates/base.html:148
 msgid "Register"
 msgstr "Inscription"
 
@@ -233,7 +233,7 @@ msgstr "Programme de cours"
 msgid "Apply"
 msgstr "Appliquer"
 
-#: templates/calendar.html:77 templates/calendar.html:260
+#: templates/calendar.html:77 templates/calendar.html:282
 msgid "Location"
 msgstr "Localisation"
 
@@ -241,7 +241,7 @@ msgstr "Localisation"
 msgid "No location"
 msgstr "Pas de lieu"
 
-#: templates/calendar.html:84 templates/calendar.html:265
+#: templates/calendar.html:84 templates/calendar.html:287
 msgid "Description"
 msgstr "Description"
 
@@ -277,7 +277,7 @@ msgstr "Couleur"
 msgid "Edit"
 msgstr "Modifier"
 
-#: templates/calendar.html:159 templates/calendar.html:399
+#: templates/calendar.html:159 templates/calendar.html:467
 msgid "Export"
 msgstr "Exporter"
 
@@ -285,7 +285,9 @@ msgstr "Exporter"
 msgid "Subscription Link"
 msgstr "Lien d'abonnement"
 
-#: templates/calendar.html:201 templates/calendar.html:398
+#: templates/calendar.html:201 templates/calendar.html:243
+#: templates/calendar.html:427 templates/calendar.html:452
+#: templates/calendar.html:466
 msgid "Schedule"
 msgstr "Horaire"
 
@@ -312,51 +314,72 @@ msgstr "Lien de partage"
 msgid "You can use this link to share your schedule with your friends."
 msgstr "Vous pouvez utiliser ce lien pour partager votre horaire avec vos amis."
 
-#: templates/calendar.html:251
-msgid "Add an event"
-msgstr "Ajouter un événement"
+#: templates/calendar.html:239
+msgid "Download to iCalendar format"
+msgstr "Télécharger au format iCalendar"
 
-#: templates/calendar.html:257 templates/classroom.html:46
-msgid "Name"
-msgstr "Nom"
-
-#: templates/calendar.html:275
-msgid "Recurring event"
-msgstr "Événement récurrent"
-
-#: templates/calendar.html:283
-msgid "From"
-msgstr "De"
-
-#: templates/calendar.html:303
-msgid "To"
-msgstr "À"
-
-#: templates/calendar.html:328
-msgid "Days of week"
-msgstr "Jours de la semaine"
-
-#: templates/calendar.html:342
-msgid "Start of recurrence"
-msgstr "Début de récurrence"
-
-#: templates/calendar.html:354
-msgid "End of recurrence"
-msgstr "Fin de récurrence"
-
-#: templates/calendar.html:370
-msgid "Add"
-msgstr "Ajouter"
-
-#: templates/calendar.html:385 views/calendar.py:186
-msgid "The code you added does not exist in our database."
-msgstr "Le code que vous avez entré n'existe pas dans notre base de données."
-
-#: templates/calendar.html:400
+#: templates/calendar.html:248
 msgid "Download"
 msgstr "Télécharger"
 
-#: templates/calendar.html:446
+#: templates/calendar.html:257
+msgid ""
+"You can use this file and upload it to your favorite calendar app. "
+"Nonetheless, events will not be updated if any change occur on ADE."
+msgstr ""
+"Vous pouvez utilisez ce fichier and l'importer dans votre application "
+"calendrier. Cependant, les évènements contenus dans ce dernier ne seront "
+"pas mis à jour si un changement a lieu sur ADE."
+
+#: templates/calendar.html:273
+msgid "Add an event"
+msgstr "Ajouter un événement"
+
+#: templates/calendar.html:279 templates/classroom.html:46
+msgid "Name"
+msgstr "Nom"
+
+#: templates/calendar.html:297
+msgid "Recurring event"
+msgstr "Événement récurrent"
+
+#: templates/calendar.html:305
+msgid "From"
+msgstr "De"
+
+#: templates/calendar.html:325
+msgid "To"
+msgstr "À"
+
+#: templates/calendar.html:350
+msgid "Days of week"
+msgstr "Jours de la semaine"
+
+#: templates/calendar.html:364
+msgid "Start of recurrence"
+msgstr "Début de récurrence"
+
+#: templates/calendar.html:376
+msgid "End of recurrence"
+msgstr "Fin de récurrence"
+
+#: templates/calendar.html:392
+msgid "Add"
+msgstr "Ajouter"
+
+#: templates/calendar.html:407 views/calendar.py:186
+msgid "The code you added does not exist in our database."
+msgstr "Le code que vous avez entré n'existe pas dans notre base de données."
+
+#: templates/calendar.html:433
+msgid "Show/Hide"
+msgstr "Étendre/Cacher"
+
+#: templates/calendar.html:458
+msgid "Delete best schedules"
+msgstr "Supprimer les horaires calculés"
+
+#: templates/calendar.html:513
 msgid ""
 "To view more info or adapt your schedule, click on a course code. To "
 "change the color palette, go to the account page."
@@ -365,43 +388,59 @@ msgstr ""
 "sur le code d'un cours. Pour changer la palette de couleur, allez sur la "
 "page compte."
 
-#: templates/calendar.html:446
+#: templates/calendar.html:513
 msgid "Note"
 msgstr "Note"
 
-#: templates/calendar.html:468
+#: templates/calendar.html:535
 msgid "Enter code"
 msgstr "Entrez un code"
 
-#: templates/calendar.html:474
+#: templates/calendar.html:541
 msgid "Search results"
 msgstr "Résultats"
 
-#: templates/calendar.html:476
+#: templates/calendar.html:543
 msgid "No results"
 msgstr "Aucun résultat"
 
-#: templates/calendar.html:498
+#: templates/calendar.html:565
 msgid "Colors"
 msgstr "Couleurs"
 
-#: templates/calendar.html:500
+#: templates/calendar.html:567
 msgid "Reset colors"
 msgstr "Réinitialiser les couleurs"
 
-#: templates/calendar.html:520
+#: templates/calendar.html:589
+msgid ""
+"Compute the best schedules with no conflict!\n"
+"See help page for more details on how it works"
+msgstr ""
+"Calculer les meilleurs horaires sans conflit !\n"
+"Voir la page d'aide pour plus de détails sur comment ça marche"
+
+#: templates/calendar.html:591
 msgid "Compute"
 msgstr "Calculer"
 
-#: templates/calendar.html:523
+#: templates/calendar.html:596
+msgid ""
+"Start a new schedule from zero\n"
+"You can have multiple schedules with an account"
+msgstr ""
+"Démarre un nouvel horaire de zéro\n"
+"Vous pouvez cumuler plusieurs horaires avec un compte"
+
+#: templates/calendar.html:598
 msgid "New"
 msgstr "Nouveau"
 
-#: templates/calendar.html:540
+#: templates/calendar.html:615
 msgid "Schedule successfuly saved !"
 msgstr "Horaire sauvegardé avec succès !"
 
-#: templates/calendar.html:551
+#: templates/calendar.html:626
 msgid ""
 "Disclaimer: ADE Scheduler is not an official UCLouvain tool. It has been "
 "designed with the purpose to help the UCLouvain students with scheduling."
@@ -440,6 +479,269 @@ msgstr "Rechercher une adresse"
 msgid "Do not hesitate to contact us in case of problem !"
 msgstr "N'hésitez pas à nous contacter en cas de problème !"
 
+#: templates/contribute.html:16 templates/contribute.html:42
+msgid "Collaborative project"
+msgstr "Projet collaboratif"
+
+#: templates/contribute.html:18 templates/contribute.html:49
+msgid "ADE Scheduler is open source"
+msgstr "ADE Scheduler est open source"
+
+#: templates/contribute.html:19 templates/contribute.html:61
+msgid "You can help us!"
+msgstr "Vous pouvez nous aider !"
+
+#: templates/contribute.html:22 templates/contribute.html:72
+msgid "For non-programmers"
+msgstr "Pour les non-programmeurs"
+
+#: templates/contribute.html:24 templates/contribute.html:81
+msgid "Signal bugs"
+msgstr "Signaler des bugs"
+
+#: templates/contribute.html:25 templates/contribute.html:96
+msgid "Typos correction"
+msgstr "Corriger de typos"
+
+#: templates/contribute.html:26 templates/contribute.html:111
+msgid "Request new features"
+msgstr "Proposer de nouvelles fonctionnalités"
+
+#: templates/contribute.html:29 templates/contribute.html:118
+msgid "For programmers"
+msgstr "Pour les programmeurs"
+
+#: templates/contribute.html:31 templates/contribute.html:123
+msgid "Contribute via"
+msgstr "Contribuer via"
+
+#: templates/contribute.html:34 templates/contribute.html:148
+msgid "Earn ECTS at UCLouvain for contributing"
+msgstr "Valider des crédits à l'UCLouvain en contribuant"
+
+#: templates/contribute.html:53
+msgid ""
+"One very important aspect of this project is that it is open source. In "
+"short, it means that everybody can access the whole code behind the tool "
+"and re-use it. But it also means that you can request changes so that the"
+" tool can be further improved.\n"
+"                    </br></br>\n"
+"\n"
+"                    Currently, ADE Scheduler is kindly supported by some "
+"academical members at UCLouvain so that we do not have to pay for server "
+"hosting fees and we are thankful for that!"
+msgstr ""
+"Un aspect très important de ce projet est qu'il est open source. Pour "
+"faire court, cela veut dire que tout le monde peut avoir un accès total "
+"au code et le ré-utiliser. Mais cela veut aussi dire que vous pouvez "
+"faire des demandes pour que l'outil soit amélioré.                    "
+"</br></br>\n"
+"Pour le moment, ADE Scheduler est supporté par quelques membres "
+"académiques de l'UCLouvain ce qui nous évite de devoir payer pour les "
+"frais liés au serveur et nous leur en sommes reconnaissants pour cela !"
+
+#: templates/contribute.html:65
+msgid ""
+"Even though this tool is functional, it is not perfect. New features, "
+"typos in text, missing translations or bugs? There are many things that "
+"you can help us improve.\n"
+"\n"
+"                        </br></br>\n"
+"\n"
+"                        Down below, we propose multiple ways for you to "
+"help us. Nonetheless, any other ideas are welcome!"
+msgstr ""
+"Même si l'outil est fonctionnel, il n'est pas parfait. Des nouvelles "
+"fonctionnalités, des typos dans du texte ou des bugs ? Il y a plein de "
+"choses que vous pouvez nous aider à améliorer.                        "
+"</br></br>\n"
+"Ci-dessous, nous proposons plusieurs façons de nous aider. Cependant, "
+"toute autre idée est la bienvenue !"
+
+#: templates/contribute.html:74
+msgid ""
+"For everything listed below, the best way to contact us is to do it via "
+"our email address. This can be found in the contact page. When reaching "
+"us, do not hesitate to include screenshots or even your calendar share "
+"link so that we can easily reproduce your problem (if applies) locally."
+msgstr ""
+"Pour tout ce qui est listé plus bas, la meilleure manière pour nous "
+"contacter est de le faire via mail. Notre addresse se trouve sur la page "
+"de contact. Quand vous nous contactez, n'hésitez pas à inclure des "
+"captures d'écran ou même un lien de partage vers votre calendrier comme "
+"ça on peut aisément reproduire votre problème (si ça s'applique) "
+"localement."
+
+#: templates/contribute.html:85
+msgid ""
+"The events are not matching the code you entered? Classrooms are missing "
+"or wrongly located on the map? A feature is not working the way you "
+"expected?\n"
+"                        </br></br>\n"
+"\n"
+"                        Maybe, you problem is due to a mistake in our "
+"code or in the encoding done by people maintening ADE's data. Whatever "
+"the source of you problem, please contact us and we will do all we can to"
+" fix it."
+msgstr ""
+"Les évènements ne correspondent pas à ceux que vous avez encodés ? Des "
+"locaux sont manquant ou sont mal localisés sur la carte ? Une "
+"fonctionnalité ne marche pas comme vous le pensiez"
+"                         </br></br>\n"
+"Peut-être que le problème est du à une erreur dans notre code, ou peut-"
+"être est-ce dû à une faute dans l'encodage des cours de la part des "
+"personnes en charge des données de ADE. Quoi qu'il en soit, contactez-"
+"nous et nous ferons tout notre problème pour régler votre problème."
+
+#: templates/contribute.html:100
+msgid ""
+"Writing thousands of lines in both English and French can be error prone,"
+" and it becomes hard to spot all the mistakes!\n"
+"\n"
+"                        </br></br>\n"
+"\n"
+"                        If you happen to spot one or several typos, "
+"please contact us so that we can correct them. This also applies if you "
+"think that a formulation is not correct or could be improved."
+msgstr ""
+"Écrire des milliers de lignes de texte en anglais et en français devient "
+"rapidement sujet aux erreurs et cela devient difficile de toutes les "
+"trouver!                        </br></br>\n"
+"Si il vous arriver d'en trouver, contactez-nous comme ça on peut les "
+"corriger. Cela s'applique aussi si vous pensez qu'une formulation n'est "
+"pas correcte ou pourrait être améliorée."
+
+#: templates/contribute.html:115
+msgid ""
+"ADE Scheduler is continuously evolving, with the goal to meet the "
+"requirements of UCLouvain's members in terms of scheduling tools. "
+"Therefore, any new feature request is welcome! Please reach us by "
+"describing the feature you want us to implement, additionally providing "
+"images if you have a clear idea in mind."
+msgstr ""
+"ADE Scheduler évolue constamment, avec l'objectif de satisfaire les "
+"besoins des membres de l'UCLouvain en termes d'outils horaire. De ce "
+"fait, toute idée est la bienvenue ! N'hésitez pas à nous contacter en "
+"décrivant la nouvelle fonctionnalité que vous souhaiteriez voir, en "
+"ajoutant éventuellement des images si vous avez une idée claire en tête."
+
+#: templates/contribute.html:127
+msgid ""
+"Our code is publicly available on\n"
+"                        <a href=\"https://github.com/SnaKyEyeS/ADE-"
+"Scheduler\">GitHub</a>\n"
+"                        and we highly recommend programmers to use the "
+"git tool when working on projects. If your are new to this tool, never "
+"hesitate to ask us questions!\n"
+"\n"
+"                        </br></br>\n"
+"\n"
+"                        Everything that was said for non-programmers also"
+" applies for programmers. Instead of using emails, use GitHub <a "
+"href=\"https://github.com/SnaKyEyeS/ADE-Scheduler/issues\">issues</a> "
+"when you want to report a problem or ask for new feature, and <a "
+"href=\"https://github.com/SnaKyEyeS/ADE-Scheduler/pulls\">pull "
+"requests</a> when you want us to review your code and later include it in"
+" the tool. If you want to contribute but you do not have a specific idea "
+"in mind, it is good pratice to read the issues other people have written "
+"to see if you can help.\n"
+"\n"
+"                        </br></br>\n"
+"\n"
+"                        Even if you do not plan to contribute to the "
+"code, we highly recommend people who know git or GitHub to reach us via "
+"our GitHub repository as it allows us to centralize questions and keep a "
+"record of them.\n"
+"\n"
+"                        </br></br>\n"
+"\n"
+"                        Last but not least, we have written a complete "
+"documentation available <a href=\"https://ade-"
+"scheduler.readthedocs.io/en/latest/\">here</a> to help you understand our"
+" code and contribute."
+msgstr ""
+"Notre code est disponible pour tous sur                         <a "
+"href=\"https://github.com/SnaKyEyeS/ADE-Scheduler\">GitHub</a>\n"
+"et nous recommandons fortement aux programmeurs d'utiliser l'outil git "
+"quand ils travaillent sur leurs projets. Si cet outil est nouveau pour "
+"vous, n'hésitez jamais à nous poser des questions !"
+"                        </br></br>\n"
+"Tout ce qui a été dit pour les non-programmeurs s'applique aussi pour les"
+" programmeurs. À la place d'utiliser des mails, utilisez les <a "
+"href=\"https://github.com/SnaKyEyeS/ADE-Scheduler/issues\">issues</a> "
+"GitHub quand vous voulez rapporter un problème ou faire une demande de "
+"nouvelle fonctionnalité, et les <a href=\"https://github.com/SnaKyEyeS"
+"/ADE-Scheduler/pulls\">pull requests</a> quand vous voulez qu'on vérifie "
+"votre code pour éventuellement l'inclure dans l'outil. Si vous voulez "
+"contribuer mais que vous n'avez pas une idée spécifique en tête, c'est "
+"toujours une bonne idée d'aller lire les issues que d'autres personnes "
+"ont écrites afin de voir si vous pouvez aider.                        "
+"</br></br>\n"
+"Même si vous ne comptez pas contribuer au code, nous recommandons "
+"fortement aux personnes qui connaissent git ou GitHub de nous contacter "
+"via notre répertoire GitHub, cela nous permet de centraliser les "
+"questions et de garder un historique de ces dernières."
+"                        </br></br>\n"
+"Dernière chose, mais pas des moindres, nous avons écrit une documentation"
+" complète disponible <a href=\"https://ade-"
+"scheduler.readthedocs.io/en/latest/\">ici</a> pour vous aider à "
+"comprendre notre code afin d'y contribuer."
+
+#: templates/contribute.html:152
+msgid ""
+"To our knowledge, there are 2 courses at the EPL faculty which grant "
+"credits for contributing to an open source project. You can thus "
+"contribute to ADE Scheduler while also validating some ECTS for you "
+"studies!\n"
+"\n"
+"                        </br></br>\n"
+"\n"
+"                       The first one,\n"
+"                        <a href=\"https://uclouvain.be/en-"
+"cours-2020-lingi2401\">LINGI2401 \"Open Source strategy for software "
+"development\"</a>, is given during the first semester and asks for a very"
+" small contribution. We highly recommend this course as a good "
+"introduction to open source and it is worth 5 ECTS.\n"
+"\n"
+"                        </br></br>\n"
+"\n"
+"                       The second one,\n"
+"                       <a href=\"https://uclouvain.be/en-"
+"cours-2020-lingi2402\">LINGI2402 \"Open Source Project\"</a>, can be "
+"taken during either the first or the second semester and asks for a "
+"contribution worth 140h of work. This course can be accounted as an "
+"internship and it is worth 5 ECTS.\n"
+"\n"
+"                       </br></br>\n"
+"\n"
+"                       In the case you cannot, or do not want to, follow "
+"these courses, contributing to an open source project is definitely an "
+"added value to your CV. Even if it is a vey small contribution, such as "
+"typo correction, we will learn a lot from that!\n"
+"\n"
+"                       "
+msgstr ""
+"À notre connaissance, il y a 2 cours à l'EPL qui offrent des crédits si "
+"vous contibruez à un projet open source. Vous pouvez donc contribuer à "
+"ADE Scheduler et, en même temps, valider des crédits pour vos études !"
+"                        </br></br>\n"
+"Le premier,                         <a "
+"href=\"https://uclouvain.be/cours-2020-lingi2401\">LINGI2401 \"Open "
+"Source strategy for software development\"</a>, est donné pendant le Q1 "
+"est demande de votre part de faire une contribution très petite. Nous le "
+"recommandons fortement comme étant une bonne introduction à l'open source"
+" et il vaut 5 crédits.                        </br></br>\n"
+" Le second,                        <a "
+"href=\"https://uclouvain.be/cours-2020-lingi2402\">LINGI2402 \"Open "
+"Source Project\"</a>, peut être pris, au choix, au Q1 ou au Q2 et demande"
+" une contribution pour un total de 140h de travail. Ce dernier peut "
+"compter comme un stage et vaut 5 crédits.                       "
+"</br></br>\n"
+"Dans le cas où vous ne pouvez pas, ou ne voulez pas, suivre ces cours, "
+"contribuer à un projet open source reste une plus value très intéressante"
+" pour votre CV. Même si c'est une très petite contribution, comme une "
+"correction de typo, vous en apprendrez beaucoup !"
+
 #: templates/custom_macros.html:20 templates/custom_macros.html:33
 msgid "Email address"
 msgstr "Adresse mail"
@@ -457,60 +759,68 @@ msgstr "Adresse mail"
 msgid "Password"
 msgstr "Mot de passe"
 
-#: templates/help.html:18 templates/help.html:53
+#: templates/help.html:18 templates/help.html:58
 msgid "What is ADE Scheduler ?"
 msgstr "Qu'est-ce qu'ADE Scheduler ?"
 
-#: templates/help.html:19 templates/help.html:61
+#: templates/help.html:19 templates/help.html:66
 msgid "Getting started"
 msgstr "Pour débuter"
 
-#: templates/help.html:20 templates/help.html:72
+#: templates/help.html:20 templates/help.html:77
 msgid "Computing your optimal schedule"
 msgstr "Calculer votre horaire optimal"
 
-#: templates/help.html:23 templates/help.html:81
+#: templates/help.html:23 templates/help.html:86
 msgid "Export and load"
 msgstr "Importer et exporter"
 
-#: templates/help.html:25 templates/help.html:32 templates/help.html:82
-#: templates/help.html:104
+#: templates/help.html:25 templates/help.html:32 templates/help.html:87
+#: templates/help.html:109
 msgid "What are the possibilities ?"
 msgstr "Quelles sont les possibilités ?"
 
-#: templates/help.html:26 templates/help.html:91
+#: templates/help.html:26 templates/help.html:96
 msgid "Download an iCal file"
 msgstr "Télécharger un fichier iCal"
 
-#: templates/help.html:27 templates/help.html:97
+#: templates/help.html:27 templates/help.html:102
 msgid "Subscription links"
 msgstr "Liens d'abonnement"
 
-#: templates/help.html:30 templates/help.html:103
+#: templates/help.html:30 templates/help.html:108
 msgid "Account & Settings"
 msgstr "Compte & Paramètres"
 
-#: templates/help.html:33 templates/help.html:112
+#: templates/help.html:33 templates/help.html:117
 msgid "Custom events"
 msgstr "Evènements personnels"
 
-#: templates/help.html:34 templates/help.html:118
+#: templates/help.html:34 templates/help.html:123
 msgid "Event selection"
 msgstr "Sélection d'un évènement"
 
-#: templates/help.html:35 templates/help.html:124
+#: templates/help.html:35 templates/help.html:129
 msgid "Accounts"
 msgstr "Comptes"
 
-#: templates/help.html:38 templates/help.html:130
+#: templates/help.html:38 templates/help.html:135
+msgid "Stay informed"
+msgstr "Restez informés"
+
+#: templates/help.html:40
+msgid "The change log page"
+msgstr "La page des nouveautés"
+
+#: templates/help.html:43 templates/help.html:142
 msgid "About us"
 msgstr "A propos de nous"
 
-#: templates/help.html:40 templates/help.html:131
+#: templates/help.html:45 templates/help.html:143
 msgid "Who are we ?"
 msgstr "Qui sommes-nous ?"
 
-#: templates/help.html:56
+#: templates/help.html:61
 msgid ""
 "ADE Scheduler is a tool aiming to provide the same information as the\n"
 "                        <a "
@@ -532,7 +842,7 @@ msgstr ""
 "ou TPs), la visualisation des locaux et de leur emplacement, et bien "
 "d'autres choses encore !"
 
-#: templates/help.html:64
+#: templates/help.html:69
 msgid ""
 "The main purpose of this website is the calendar page. If you're new to "
 "this site, make sure to go to\n"
@@ -545,7 +855,7 @@ msgstr ""
 "et testez toutes les fonctionnalités. Vous êtes aussi encouragés à "
 "regarder notre guide de prise en main rapide."
 
-#: templates/help.html:75
+#: templates/help.html:80
 msgid ""
 "Sometimes, you may choose between multiple events such as CMs or TPs but "
 "only need to attend to one. The tool named compute tries all the possible"
@@ -573,7 +883,7 @@ msgstr ""
 "choisir, après calcul, la semaine qui vous plait le plus et de "
 "manuellement sélectionner les évènements dans votre horaire principal."
 
-#: templates/help.html:85
+#: templates/help.html:90
 msgid ""
 "Once your schedule is complete, you don't need to go back to ADE-"
 "Scheduler each time you want to check your schedule: you can export it ! "
@@ -581,12 +891,12 @@ msgid ""
 " short video shows you how to export your calendar to your favorite app."
 msgstr ""
 "Une fois votre horaire fait, vous n'avez pas besoin de retourner à chaque"
-" fois sur ADE-Scheduler pour voir votre horaire : vous pouvez l'exporter "
+" fois sur ADE Scheduler pour voir votre horaire : vous pouvez l'exporter "
 "! La plupart des applications de calendriers, tel que Gmail, permettent "
 "d'importer un calendrier externe. Une courte vidéo vous montre comme "
 "exporter votre horaire vers votre application favorite."
 
-#: templates/help.html:94
+#: templates/help.html:99
 msgid ""
 "One solution to export your schedule is to download it as an iCalendar "
 "file. Then, this file can easily be imported into your main calendar. The"
@@ -601,7 +911,7 @@ msgstr ""
 "pris en compte dans votre calendrier. Si vous préférez avoir un "
 "calendrier à jour, choisissez alors la prochaine solution."
 
-#: templates/help.html:100
+#: templates/help.html:105
 msgid ""
 "Maybe the best solution ADE Scheduler can offer is a subscription link. "
 "With this link, your calendar app will frequently download the latest "
@@ -618,7 +928,7 @@ msgstr ""
 "en compte lors de la prochaine mise-à-jour de votre calendrier de la part"
 " de votre application."
 
-#: templates/help.html:107
+#: templates/help.html:112
 msgid ""
 "On this website, no account is required to use most of the tools. Your "
 "session is stored during 30 days so you can easily leave this webpage, "
@@ -629,7 +939,7 @@ msgid ""
 "                        With this, you will also be able to save multiple"
 " schedules, rename them, choose their color palette and so on."
 msgstr ""
-"Sur ADE-Scheduler, il n'est pas requis d'avoir un compte pour utiliser la"
+"Sur ADE Scheduler, il n'est pas requis d'avoir un compte pour utiliser la"
 " plupart des outils proposés. Votre session utilisateur est stockée via "
 "votre navigateur pour une durée de 30 jours. Il vous est donc possible "
 "d'automatiquement récupérer et modifier votre calendrier sur votre "
@@ -641,7 +951,7 @@ msgstr ""
 "Avec cela, vous pouvez créer et sauvegarder plusieurs calendriers, les "
 "renommer, choisir la palette de couleur, et bien d'autres choses encore."
 
-#: templates/help.html:115
+#: templates/help.html:120
 msgid ""
 "Academical life is important but your private life is important too ! "
 "This is why you can also add custom events to your schedule. They will "
@@ -657,7 +967,7 @@ msgstr ""
 "minimiser les conflits entre les horaires de cours, et vos évènements "
 "personnels."
 
-#: templates/help.html:121
+#: templates/help.html:126
 msgid ""
 "If you click on a course's code, on the left of the calendar page, you "
 "will see appearing all the events that are contained in this course, per "
@@ -669,7 +979,7 @@ msgstr ""
 "type. Vous pouvez (dé-)sélectionner des évènements spécifiques afin de "
 "construire l'horaire qui vous plaît."
 
-#: templates/help.html:127
+#: templates/help.html:132
 msgid ""
 "Creating an account requires two things: an email address and a password."
 " Your email address will only be used for password resetting and any "
@@ -687,7 +997,26 @@ msgstr ""
 "notre service l'année depuis laquelle vous souhaitez obtenir les "
 "évènements (la plupart du temps, seule une année est disponible)."
 
-#: templates/help.html:134
+#: templates/help.html:136
+msgid "The change log"
+msgstr "Les nouveautés"
+
+#: templates/help.html:139
+msgid ""
+"ADE Scheduler is always under developement as we try to propose the best "
+"tool for students and teachers at UCLouvain. It may then be possible that"
+" new features or changes have been made to the tool since your last use. "
+"To stay informed of all modifications of ADE Scheduler, do not hesitate "
+"to take a look at our <a href=\"/whatisnew\">change log page</a>."
+msgstr ""
+"Afin de fournir le meilleur outil possible aux étudiants et professeurs"
+"de l'UCLouvain, ADE Scheduler est continuellement en développement. Il "
+"est donc possible que de nouvelles fonctionnalités soient ajoutées depuis "
+"votre dernière utilisation. Pour rester informé de toutes les modifications "
+"d'ADE Scheduler, n'hésitez pas à aller consulter notre page "
+"<a href=\"/whatisnew\">des nouveautés</a>."
+
+#: templates/help.html:146
 msgid ""
 "We are three students from UCLouvain. By the time we started this "
 "project, we were finishing our bachelor's degree in engineering "
@@ -699,7 +1028,7 @@ msgstr ""
 "(électricité et mécanique pour Jérome et Gilles; sciences informatiques "
 "et mathématiques appliquées pour Louis)."
 
-#: templates/help.html:147
+#: templates/help.html:159
 msgid ""
 "Jérome is a student in the Ecole Polytechnique de Louvain, in "
 "engineering. He completed his bachelor degree in Electricity and "
@@ -710,7 +1039,7 @@ msgstr ""
 "civil. Il a un bachelier en électricité et mécanique. Actuellement, il "
 "suit un master en ingénieur civil mécatronique."
 
-#: templates/help.html:163
+#: templates/help.html:175
 msgid ""
 "Louis is a student at the Ecole Polytechnique de Louvain, in engineering."
 " He completed his bachelor degree in Applied Mathematics and Computing "
@@ -722,7 +1051,7 @@ msgstr ""
 "appliquées. Actuellement, il suit un master en ingénieur civil "
 "informatique."
 
-#: templates/help.html:179
+#: templates/help.html:191
 msgid ""
 "Gilles is a student in the Ecole Polytechnique de Louvain, in "
 "engineering. He completed his bachelor degree in Electricity and "
@@ -733,15 +1062,15 @@ msgstr ""
 "civil. Il a un bachelier en électricité et mécanique. Actuellement, il "
 "suit un master en ingénieur civil mécatronique."
 
-#: templates/welcome.html:31
+#: templates/welcome.html:34
 msgid "ADE Scheduler under new skin, welcome to the version 2.0 !"
 msgstr "ADE Scheduler fait peau neuve, bienvenue sur la version 2.0 !"
 
-#: templates/welcome.html:32
+#: templates/welcome.html:35
 msgid "The same as before. But in better. And in mobile version."
 msgstr "Le même site qu'avant. Mais en mieux. Et disponible en version mobile."
 
-#: templates/welcome.html:34
+#: templates/welcome.html:37
 msgid ""
 "Little information for old members from version 1.0: you now register "
 "using an email address. It means that your old accounts must be created "
@@ -751,53 +1080,129 @@ msgstr ""
 "enregistrer avec une adresse email. Cela veut dire que vos anciens "
 "comptes ne fonctionneront plus."
 
-#: templates/welcome.html:37
+#: templates/welcome.html:40
 msgid "Get started"
 msgstr "C'est parti !"
 
-#: templates/whatisnew.html:16 templates/whatisnew.html:39
-msgid "October 2020"
-msgstr "Octobre 2020"
+#: templates/whatisnew.html:16 templates/whatisnew.html:52
+msgid "January"
+msgstr "Janvier"
 
-#: templates/whatisnew.html:18 templates/whatisnew.html:40
+#: templates/whatisnew.html:18 templates/whatisnew.html:53
+msgid "\"Contribute\" page"
+msgstr "Page \"Contribuer\""
+
+#: templates/whatisnew.html:19 templates/whatisnew.html:59
+msgid "Towards a minimalist interface"
+msgstr "Vers une interface minimaliste"
+
+#: templates/whatisnew.html:23 templates/whatisnew.html:74
+msgid "November"
+msgstr "Novembre"
+
+#: templates/whatisnew.html:25 templates/whatisnew.html:75
+msgid "2000 accounts created"
+msgstr "2000 comptes créés"
+
+#: templates/whatisnew.html:29 templates/whatisnew.html:81
+msgid "October"
+msgstr "Octobre"
+
+#: templates/whatisnew.html:31 templates/whatisnew.html:82
 msgid "Custom events color"
 msgstr "Couleur des évènements personnels"
 
-#: templates/whatisnew.html:19 templates/whatisnew.html:46
+#: templates/whatisnew.html:32 templates/whatisnew.html:88
 msgid "Your changes can be automatically saved"
 msgstr "Vos changements peuvent être sauvegardés automatiquement"
 
-#: templates/whatisnew.html:22 templates/whatisnew.html:53
-msgid "September 2020"
-msgstr "Septembre 2020"
+#: templates/whatisnew.html:35 templates/whatisnew.html:95
+msgid "September"
+msgstr "Septembre"
 
-#: templates/whatisnew.html:24 templates/whatisnew.html:54
-msgid "Page \"What is new\""
+#: templates/whatisnew.html:37 templates/whatisnew.html:96
+msgid "\"What is new\" page"
 msgstr "Page \"Nouveautés\""
 
-#: templates/whatisnew.html:25 templates/whatisnew.html:60
+#: templates/whatisnew.html:38 templates/whatisnew.html:102
 msgid "Color palette accessible in the calendar"
 msgstr "Palette de couleurs accessibles dans le calendrier"
 
-#: templates/whatisnew.html:26 templates/whatisnew.html:70
+#: templates/whatisnew.html:39 templates/whatisnew.html:112
 msgid "All schedules accessible from the calendar"
 msgstr "Tous les horaires accessibles depuis le calendrier"
 
-#: templates/whatisnew.html:29 templates/whatisnew.html:77
-msgid "August 2020"
-msgstr "Août 2020"
+#: templates/whatisnew.html:42 templates/whatisnew.html:119
+msgid "August"
+msgstr "Août"
 
-#: templates/whatisnew.html:31 templates/whatisnew.html:78
-msgid "Launch of ADE-Scheduler 2.0!"
-msgstr "Lancement d'ADE-Scheduler 2.0!"
+#: templates/whatisnew.html:44 templates/whatisnew.html:120
+msgid "Launch of ADE Scheduler 2.0!"
+msgstr "Lancement d'ADE Scheduler 2.0!"
 
-#: templates/whatisnew.html:43
+#: templates/whatisnew.html:56
+msgid ""
+"One of our goals with this project is to make it last. In an open source "
+"project, contribution from the community is very important as it helps us"
+" keeping the tool improving. To this end, we have created a new page "
+"where we document several ways you can help us with this project. Do not "
+"hesitate to have a look!"
+msgstr ""
+"L'un de nos objectifs avec ce projet est qu'il dure dans le temps. Dans "
+"un projet open source, la contribution de la part de la communauté joue "
+"un rôle important dans l'amélioration constante de l'outil. À cette fin, "
+"nous avons documenté plusieurs manières de nous venir en aide sur ce "
+"projet. N'hésitez surtout pas à aller jeter un coup d'oeil sur la page en"
+" question."
+
+#: templates/whatisnew.html:62
+msgid ""
+"As we frequently add new features, we do not want to flood our users with"
+" too many information. We thus decided to operate three major changes:\n"
+"                        </br>\n"
+"                        <ul>\n"
+"                            <li>This page is not referenced is the header"
+" of the website anymore</li>\n"
+"                            <li>You can now hide or delete the results of"
+" the compute tool to gain readability</li>\n"
+"                            <li>To download you calendar, you now need to"
+" go into the export tab</li>\n"
+"                        </ul>\n"
+"                        "
+msgstr ""
+"Comme nous ajoutons régulièrement de nouvelles fonctionnalités, nous "
+"voulons éviter de noyer nos utilisateurs dans trop d'informations. Nous "
+"avons donc décidé d'opérer trois changements majeurs :"
+"                        </br>\n"
+"                        <ul>\n"
+"                            <li>Cette page n'est désormais plus "
+"référencée dans l'entête du site</li>\n"
+"                            <li>Vous pouvez maintenant cacher ou "
+"supprimer les résultats de l'outil de calcul d'horaire optimal</li>\n"
+"                            <li>Pour télécharger votre calendrier, cela "
+"se trouve maintenant dans l'onglet exporter</li>\n"
+"                        </ul>\n"
+"                        "
+
+#: templates/whatisnew.html:78
+msgid ""
+"More than 2000 people have created and confirmed their account on ADE "
+"Scheduler! This is 10 times more than what we did in one year with "
+"version 1. We are also recording more than 1000 different connections "
+"everyday. Thank you so much for using this tool!"
+msgstr ""
+"Plus de 2000 personnes ont créé et validé leur compte sur ADE Scheduler !"
+" C'est plus de 10 fois ce qu'on avait atteint en un an avec la version 1."
+" Nous enregistrons également plus de 1000 connections uniques par jour.  "
+"On vous remercie énormément d'utiliser cet outil !"
+
+#: templates/whatisnew.html:85
 msgid "You can now modify the color of each individual custom event."
 msgstr ""
 "Vous pouvez maintenant modifier la couleur de chacun de vos évènements "
 "personnels."
 
-#: templates/whatisnew.html:49
+#: templates/whatisnew.html:91
 msgid ""
 "Sometimes, you make changes on your schedule, your forget to saved them, "
 "and, when you change device, your schedule is not up to date with your "
@@ -811,20 +1216,20 @@ msgstr ""
 "Pour éviter ce problème, vous pouvez maintenant activer la sauvegarde "
 "automatique dans les paramètres de votre compte."
 
-#: templates/whatisnew.html:57
+#: templates/whatisnew.html:99
 msgid ""
-"The \"What is new\" page shows all important modifications to ADE-"
+"The \"What is new\" page shows all important modifications to ADE "
 "Scheduler. Do not hesitate to take a look from time to time to be aware "
 "of the new features !"
 msgstr ""
 "La nouvelle page \"Nouveauté\" répertorie toutes les modifications "
-"notables sur l'outil ADE-Scheduler. N'hésitez pas à jeter un coup d'oeil "
+"notables sur l'outil ADE Scheduler. N'hésitez pas à jeter un coup d'oeil "
 "de temps en temps pour voir les nouvelles fonctionnalités !"
 
-#: templates/whatisnew.html:63
+#: templates/whatisnew.html:105
 msgid ""
 "We must admit that modifying the events color in the \"Account\" menu is "
-"conter-intuitive... That is why you can now directly choose your own "
+"counter-intuitive... That is why you can now directly choose your own "
 "colors for your schedules directly in the \"Calendar\" menu.\n"
 "                        You can also do so without requiring an account. "
 "Moreover, we changed the initial color theme, in order to stress the "
@@ -837,7 +1242,7 @@ msgstr ""
 "posséder un compte. De plus, nous avons aussi changé le thème couleur "
 "initial, afin d'accentuer la différence entre deux cours."
 
-#: templates/whatisnew.html:67
+#: templates/whatisnew.html:109
 msgid ""
 "Please note that if you use a non traditional browser, it may happen that"
 " the color palette does not show up. We cannot do anything about it."
@@ -846,7 +1251,7 @@ msgstr ""
 " possible que la palette permettant de modifier les couleurs à votre "
 "guise ne soit pas disponible... Cela est du au navigateur."
 
-#: templates/whatisnew.html:73
+#: templates/whatisnew.html:115
 msgid ""
 "You can now consult and edit all your saved schedules without having to "
 "select them from the \"Account\" menu. If you have several saved "
@@ -861,14 +1266,14 @@ msgstr ""
 "l'horaire affiché actuellement pour voir défiler le nom de tous vos "
 "horaires; il suffit ensuite de sélectionner celui de votre choix."
 
-#: templates/whatisnew.html:81
+#: templates/whatisnew.html:123
 msgid ""
-"Launch of the new ADE-Scheduler ! This version brings a new design, new "
+"Launch of the new ADE Scheduler ! This version brings a new design, new "
 "features, and is more efficient. Moreover, it is mobile-friendly."
 msgstr ""
-"Lancement de la nouvelle version d'ADE-Scheduler ! Cette version, en plus"
+"Lancement de la nouvelle version d'ADE Scheduler ! Cette version, en plus"
 " d'un changement de design, de l'ajout de nouvelles fonctionnaliés, est "
-"plus efficace, et surtout adapté aux mobiles."
+"plus efficace, et surtout adaptée aux mobiles."
 
 #: templates/errorhandler/500.html:11
 msgid "Ooops... looks like the website is temporarily unusable."
@@ -984,3 +1389,6 @@ msgstr "horaire actuel"
 #: views/calendar.py:329 views/calendar.py:355
 msgid "The schedule you requested does not exist in our database !"
 msgstr "L'horaire que vous avez demandé n'existe pas dans notre base de données !"
+
+#~ msgid "News"
+#~ msgstr "Nouveautés"

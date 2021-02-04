@@ -20,6 +20,7 @@ const pages = [
   'welcome',
   'contact',
   'whatisnew',
+  'contribute',
   'admin',
 ];
 

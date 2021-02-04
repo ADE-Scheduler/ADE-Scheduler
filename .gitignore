@@ -137,3 +137,13 @@ geo_locations.json
 plots/
 
 *.swp
+
+static/img/GitHub-Logos/.DS_Store
+
+fake_api.json
+
+FAKE_API_README.md
+
+ade_fake_api_January_2021.zip
+
+fake_api/
