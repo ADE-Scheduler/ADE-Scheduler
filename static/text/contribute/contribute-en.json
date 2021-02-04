@@ -5,6 +5,7 @@
     "subtitles": [
       {
         "id": "collab-os",
+        "icon": "bi bi-people-fill",
         "title": "ADE Scheduler is open source",
         "content": "One very important aspect of this project is that it is open source. In short, it means that everybody can access the whole code behind the tool and re-use it. But it also means that you can request changes so that the tool can be further improved. </br></br> Currently, ADE Scheduler is kindly supported by some academical members at UCLouvain so that we do not have to pay for server hosting fees and we are thankful for that!"
       },
@@ -22,16 +23,19 @@
     "subtitles": [
       {
         "id": "non-progs-bugs",
+        "icon": "bi bi-bug-fill",
         "title": "Signal bugs",
         "content": "The events are not matching the code you entered? Classrooms are missing or wrongly located on the map? A feature is not working the way you expected? <br><br> Maybe, you problem is due to a mistake in our code or in the encoding done by people maintening ADE's data. Whatever the source of you problem, please contact us and we will do all we can to fix it. "
       },
       {
         "id": "non-progs-typo",
+        "icon": "bi bi-spellcheck",
         "title": "Typos correction",
         "content": "Writing thousands of lines in both English and French can be error prone, and it becomes hard to spot all the mistakes! <br><br> If you happen to spot one or several typos, please contact us so that we can correct them. This also applies if you think that a formulation is not correct or could be improved. "
       },
       {
         "id": "non-prog-request",
+        "icon": "bi bi-plus-circle-fill",
         "title": "Request new features",
         "content": "ADE Scheduler is continuously evolving, with the goal to meet the requirements of UCLouvain's members in terms of scheduling tools. Therefore, any new feature request is welcome! Please reach us by describing the feature you want us to implement, additionally providing images if you have a clear idea in mind. "
       }
@@ -43,11 +47,13 @@
     "subtitles": [
       {
         "id": "progs-contribute",
+        "icon": "bi bi-github",
         "title": "Contribute via GitHub",
         "content": "Lorem ipsum dores alamet"
       },
       {
         "id": "progs-ects",
+        "icon": "bi bi-bookmark-check-fill",
         "title": "Earn ECTS at UCLouvain for contributing",
         "content": "Lorem ipsum dores alamet"
       }

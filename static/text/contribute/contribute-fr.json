@@ -5,6 +5,7 @@
     "subtitles": [
       {
         "id": "collab-os",
+        "icon": "bi bi-people-fill",
         "title": "ADE Scheduler est open source",
         "content": "Un aspect très important de ce projet est qu'il est open source. Pour faire court, cela veut dire que tout le monde peut avoir un accès total au code et le ré-utiliser. Mais cela veut aussi dire que vous pouvez faire des demandes pour que l'outil soit amélioré. <br><br> Pour le moment, ADE Scheduler est supporté par quelques membres académiques de l'UCLouvain ce qui nous évite de devoir payer pour les frais liés au serveur et nous leur en sommes reconnaissants pour cela ! "
       },
@@ -22,16 +23,19 @@
     "subtitles": [
       {
         "id": "non-progs-bugs",
+        "icon": "bi bi-bug-fill",
         "title": "Signal bugs",
         "content": "Les évènements ne correspondent pas à ceux que vous avez encodés ? Des locaux sont manquant ou sont mal localisés sur la carte ? Une fonctionnalité ne marche pas comme vous le pensiez <br><br> Peut-être que le problème est du à une erreur dans notre code, ou peut-être est-ce dû à une faute dans l'encodage des cours de la part des personnes en charge des données de ADE. Quoi qu'il en soit, contactez-nous et nous ferons tout notre problème pour régler votre problème. "
       },
       {
         "id": "non-progs-typo",
+        "icon": "bi bi-spellcheck",
         "title": " Corriger de typos ",
         "content": " Écrire des milliers de lignes de texte en anglais et en français devient rapidement sujet aux erreurs et cela devient difficile de toutes les trouver! <br><br> Si il vous arriver d'en trouver, contactez-nous comme ça on peut les corriger. Cela s'applique aussi si vous pensez qu'une formulation n'est pas correcte ou pourrait être améliorée. "
       },
       {
         "id": "non-prog-request",
+        "icon": "bi bi-plus-circle-fill",
         "title": "Proposer de nouvelles fonctionnalités ",
         "content": " ADE Scheduler évolue constamment, avec l'objectif de satisfaire les besoins des membres de l'UCLouvain en termes d'outils horaire. De ce fait, toute idée est la bienvenue ! N'hésitez pas à nous contacter en décrivant la nouvelle fonctionnalité que vous souhaiteriez voir, en ajoutant éventuellement des images si vous avez une idée claire en tête. "
       }
@@ -43,11 +47,13 @@
     "subtitles": [
       {
         "id": "progs-contribute",
+        "icon": "bi bi-github",
         "title": "Contribute via GitHub",
         "content": "Lorem ipsum dores alamet"
       },
       {
         "id": "progs-ects",
+        "icon": "bi bi-bookmark-check-fill",
         "title": "Earn ECTS at UCLouvain for contributing",
         "content": "Lorem ipsum dores alamet"
       }
