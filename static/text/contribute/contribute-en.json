@@ -7,12 +7,12 @@
         "id": "collab-os",
         "icon": "bi bi-people-fill",
         "title": "ADE Scheduler is open source",
-        "content": "One very important aspect of this project is that it is open source. In short, it means that everybody can access the whole code behind the tool and re-use it. But it also means that you can request changes so that the tool can be further improved. </br></br> Currently, ADE Scheduler is kindly supported by some academical members at UCLouvain so that we do not have to pay for server hosting fees and we are thankful for that!"
+        "content": "One very important aspect of this project is that it is open source. In short, it means that everybody can access the whole code behind the tool and re-use it. But it also means that you can request changes so that the tool can be further improved. <br><br> Currently, ADE Scheduler is kindly supported by some academical members at UCLouvain so that we do not have to pay for server hosting fees and we are thankful for that!"
       },
       {
         "id": "collabd-help-us",
         "title": "You can help us!",
-        "content": "Even though this tool is functional, it is not perfect. New features, typos in text, missing translations or bugs? There are many things that you can help us improve. </br></br> Down below, we propose multiple ways for you to help us. Nonetheless, any other ideas are welcome!"
+        "content": "Even though this tool is functional, it is not perfect. New features, typos in text, missing translations or bugs? There are many things that you can help us improve. <br><br> Down below, we propose multiple ways for you to help us. Nonetheless, any other ideas are welcome!"
       }
     ]
   },
@@ -25,13 +25,13 @@
         "id": "non-progs-bugs",
         "icon": "bi bi-bug-fill",
         "title": "Signal bugs",
-        "content": "The events are not matching the code you entered? Classrooms are missing or wrongly located on the map? A feature is not working the way you expected? </br></br> Maybe, you problem is due to a mistake in our code or in the encoding done by people maintening ADE's data. Whatever the source of you problem, please contact us and we will do all we can to fix it. "
+        "content": "The events are not matching the code you entered? Classrooms are missing or wrongly located on the map? A feature is not working the way you expected? <br><br> Maybe, you problem is due to a mistake in our code or in the encoding done by people maintening ADE's data. Whatever the source of you problem, please contact us and we will do all we can to fix it. "
       },
       {
         "id": "non-progs-typo",
         "icon": "bi bi-spellcheck",
         "title": "Typos correction",
-        "content": "Writing thousands of lines in both English and French can be error prone, and it becomes hard to spot all the mistakes! </br></br> If you happen to spot one or several typos, please contact us so that we can correct them. This also applies if you think that a formulation is not correct or could be improved. "
+        "content": "Writing thousands of lines in both English and French can be error prone, and it becomes hard to spot all the mistakes! <br><br> If you happen to spot one or several typos, please contact us so that we can correct them. This also applies if you think that a formulation is not correct or could be improved. "
       },
       {
         "id": "non-prog-request",
@@ -49,13 +49,13 @@
         "id": "progs-contribute",
         "icon": "bi bi-github",
         "title": "Contribute via GitHub",
-        "content": " Our code is publicly available on  <a href='https://github.com/SnaKyEyeS/ADE-Scheduler'>GitHub</a> and we highly recommend programmers to use the git tool when working on projects. If your are new to this tool, never hesitate to ask us questions! </br></br> Everything that was said for non-programmers also applies for programmers. Instead of using emails, use GitHub <a href='https://github.com/SnaKyEyeS/ADE-Scheduler/issues'>issues</a> when you want to report a problem or ask for new feature, and <a href='https://github.com/SnaKyEyeS/ADE-Scheduler/pulls'>pull requests</a> when you want us to review your code and later include it in the tool. If you want to contribute but you do not have a specific idea in mind, it is good pratice to read the issues other people have written to see if you can help. </br></br> Even if you do not plan to contribute to the code, we highly recommend people who know git or GitHub to reach us via our GitHub repository as it allows us to centralize questions and keep a record of them. </br></br> Last but not least, we have written a complete documentation available <a href='https://ade-scheduler.readthedocs.io/en/latest/'>ici</a> to help you understand our code and contribute. "
+        "content": " Our code is publicly available on  <a href='https://github.com/SnaKyEyeS/ADE-Scheduler'>GitHub</a> and we highly recommend programmers to use the git tool when working on projects. If your are new to this tool, never hesitate to ask us questions! <br><br> Everything that was said for non-programmers also applies for programmers. Instead of using emails, use GitHub <a href='https://github.com/SnaKyEyeS/ADE-Scheduler/issues'>issues</a> when you want to report a problem or ask for new feature, and <a href='https://github.com/SnaKyEyeS/ADE-Scheduler/pulls'>pull requests</a> when you want us to review your code and later include it in the tool. If you want to contribute but you do not have a specific idea in mind, it is good pratice to read the issues other people have written to see if you can help. <br><br> Even if you do not plan to contribute to the code, we highly recommend people who know git or GitHub to reach us via our GitHub repository as it allows us to centralize questions and keep a record of them. <br><br> Last but not least, we have written a complete documentation available <a href='https://ade-scheduler.readthedocs.io/en/latest/'>ici</a> to help you understand our code and contribute. "
       },
       {
         "id": "progs-ects",
         "icon": "bi bi-bookmark-check-fill",
         "title": "Earn ECTS at UCLouvain for contributing",
-        "content": "To our knowledge, there are 2 courses at the EPL faculty which grant credits for contributing to an open source project. You can thus contribute to ADE Scheduler while also validating some ECTS for you studies!</br></br> The first one, <a href='https://uclouvain.be/en-cours-2020-lingi2401'>LINGI2401 \"Open Source strategy for software development\"</a>, is given during the first semester and asks for a very small contribution. We highly recommend this course as a good introduction to open source and it is worth 5 ECTS.</br></br> The second one, <a href='https://uclouvain.be/en-cours-2020-lingi2402'>LINGI2402 \"Open Source Project\"</a>, can be taken during either the first or the second semester and asks for a contribution worth 140h of work. This course can be accounted as an internship and it is worth 5 ECTS.</br></br> In the case you cannot, or do not want to, follow these courses, contributing to an open source project is definitely an added value to your CV. Even if it is a vey small contribution, such as typo correction, we will learn a lot from that! "
+        "content": "To our knowledge, there are 2 courses at the EPL faculty which grant credits for contributing to an open source project. You can thus contribute to ADE Scheduler while also validating some ECTS for you studies!<br><br> The first one, <a href='https://uclouvain.be/en-cours-2020-lingi2401'>LINGI2401 \"Open Source strategy for software development\"</a>, is given during the first semester and asks for a very small contribution. We highly recommend this course as a good introduction to open source and it is worth 5 ECTS.<br><br> The second one, <a href='https://uclouvain.be/en-cours-2020-lingi2402'>LINGI2402 \"Open Source Project\"</a>, can be taken during either the first or the second semester and asks for a contribution worth 140h of work. This course can be accounted as an internship and it is worth 5 ECTS.<br><br> In the case you cannot, or do not want to, follow these courses, contributing to an open source project is definitely an added value to your CV. Even if it is a vey small contribution, such as typo correction, we will learn a lot from that! "
       }
     ]
   },
