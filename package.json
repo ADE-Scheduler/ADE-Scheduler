@@ -9,7 +9,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --mode production",
-    "lint": "eslint --fix --ignore-path .gitignore '**/*.js'"
+    "lint": "eslint --fix --ignore-path .gitignore '**/*.{js,vue}'"
   },
   "repository": {
     "type": "git",
@@ -24,7 +24,8 @@
   "homepage": "https://github.com/SnaKyEyeS/ADE-Scheduler#readme",
   "devDependencies": {
     "css-loader": "^5.0.1",
-    "eslint": "^7.18.0",
+    "eslint": "^7.19.0",
+    "eslint-plugin-vue": "^7.5.0",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^4.5.0",
     "sass": "^1.32.0",

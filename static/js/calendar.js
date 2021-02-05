@@ -22,217 +22,246 @@ document.addEventListener('DOMContentLoaded', function() {
   var isTouchDevice = !!('ontouchstart' in window || navigator.maxTouchPoints);
   var vm = new Vue({
     el: '#app',
+    delimiters: ['[[',']]'],
     components: { FullCalendar },
-    data: {
-      projectId: [],
-      schedules: [],
-      currentProjectId: 0,
-      codes: [],
-      n_schedules: 0,
-      show_best_schedules: false,
-      selected_schedule: 0,
-      computing: true,
-      error: false,
-      saveSuccess: !!document.getElementById('scheduleSaved'),
-      mustResetAddEventForm: true,
-      code: '',
-      codeSearch: [],
-      autoSave: false,
-      unsaved: false,
-      currentSchedule: {},
-      currentEventColor: '',
-      codeSearchDisplay: false,
-      eventForm: {
-        name: '',
-        location: '',
-        description: '',
-        beginDay: '',
-        endDay: '',
-        beginHour: '',
-        endHour: '',
-        freq: [],
-        beginRecurrDay: '',
-        endRecurrDay: '',
-        recurring: false,
-      },
-      courseInfo: {
+    data: function() {
+      return {
+        projectId: [],
+        schedules: [],
+        currentProjectId: 0,
+        codes: [],
+        n_schedules: 0,
+        show_best_schedules: false,
+        selected_schedule: 0,
+        computing: true,
+        error: false,
+        saveSuccess: !!document.getElementById('scheduleSaved'),
+        mustResetAddEventForm: true,
         code: '',
-        title: '',
-        summary: {},
-        filtered: {},
-      },
-      eventInfo: {
-        event: {},
-        rrule: {},
-      },
-      isEditingCustomEvent: false,
-      navBtn: false,
-      calendarOptions: {
-        plugins: [ dayGridPlugin, timeGridPlugin ],
-        locales: [ frLocale ],
-        locale: document.getElementById('current-locale').innerText.trim(),
+        codeSearch: [],
+        autoSave: false,
+        unsaved: false,
+        currentSchedule: {},
+        currentEventColor: '',
+        codeSearchDisplay: false,
+        eventForm: {
+          name: '',
+          location: '',
+          description: '',
+          beginDay: '',
+          endDay: '',
+          beginHour: '',
+          endHour: '',
+          freq: [],
+          beginRecurrDay: '',
+          endRecurrDay: '',
+          recurring: false,
+        },
+        courseInfo: {
+          code: '',
+          title: '',
+          summary: {},
+          filtered: {},
+        },
+        eventInfo: {
+          event: {},
+          rrule: {},
+        },
+        isEditingCustomEvent: false,
+        navBtn: false,
+        calendarOptions: {
+          plugins: [ dayGridPlugin, timeGridPlugin ],
+          locales: [ frLocale ],
+          locale: document.getElementById('current-locale').innerText.trim(),
 
-        height: 'auto',
-        slotMinTime: '08:00:00',
-        slotMaxTime: '21:00:00',
-        navLinks: true, // can click day/week names to navigate views
-        editable: false,
-        droppable: false,
-        dayMaxEventRows: false, // allow "more" link when too many events
-        allDaySlot: false,
+          height: 'auto',
+          slotMinTime: '08:00:00',
+          slotMaxTime: '21:00:00',
+          navLinks: true, // can click day/week names to navigate views
+          editable: false,
+          droppable: false,
+          dayMaxEventRows: false, // allow "more" link when too many events
+          allDaySlot: false,
 
-        // Week display
-        firstDay: 1,
-        weekNumbers: true,
-        weekNumberContent: function (arg) {
+          // Week display
+          firstDay: 1,
+          weekNumbers: true,
+          weekNumberContent: function (arg) {
           // Get week number & year
           // From: https://stackoverflow.com/a/6117889
-          let d = new Date(Date.UTC(arg.date.getFullYear(), arg.date.getMonth(), arg.date.getDate()));
-          d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
-          let yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
-          let weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
-          let year = d.getUTCFullYear();
-          let num;
-          try {
-            num = uclWeeksNo[year][weekNo-1];
-          } catch(e) {
-            num = 0;
-          }
-
-          let span = document.createElement('span');
-          if (num > 0) {
-            span.innerText = `S${num}`;
-          } else {
-            switch (num) {
-            case -1:
-              span.innerText = document.getElementById('current-locale').innerText.trim() === 'EN' ? 'Easter':'Pâques';
-              break;
-            case -2:
-              span.innerText = document.getElementById('current-locale').innerText.trim() === 'EN' ? 'Break':'Congé';
-              break;
-            case -3:
-              span.innerText = 'Blocus';
-              break;
-            default:
-              span.innerText = '-';
+            let d = new Date(Date.UTC(arg.date.getFullYear(), arg.date.getMonth(), arg.date.getDate()));
+            d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
+            let yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+            let weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
+            let year = d.getUTCFullYear();
+            let num;
+            try {
+              num = uclWeeksNo[year][weekNo-1];
+            } catch(e) {
+              num = 0;
             }
-          }
-          return {domNodes: [span]};
-        },
 
-        // Header bar
-        customButtons: {
-          addEvent: {
-            text: '+',
-            click: () => {
-              vm.beforeAddEvent();
-              addEventModal.show(); }
-          }
-        },
-        headerToolbar: {
-          left: 'prev,next today addEvent',
-          center: document.body.clientWidth > 550 ? 'title':'',
-          right: document.body.clientWidth > 550 ? 'dayGridMonth,timeGridWeek':'dayGridMonth,timeGridDay'
-        },
+            let span = document.createElement('span');
+            if (num > 0) {
+              span.innerText = `S${num}`;
+            } else {
+              switch (num) {
+              case -1:
+                span.innerText = document.getElementById('current-locale').innerText.trim() === 'EN' ? 'Easter':'Pâques';
+                break;
+              case -2:
+                span.innerText = document.getElementById('current-locale').innerText.trim() === 'EN' ? 'Break':'Congé';
+                break;
+              case -3:
+                span.innerText = 'Blocus';
+                break;
+              default:
+                span.innerText = '-';
+              }
+            }
+            return {domNodes: [span]};
+          },
 
-        // Remember where the user left the calendar
-        initialView: (localStorage.getItem('fcInitialView') !== null ? localStorage.getItem('fcInitialView') : 'timeGridWeek'),
-        initialDate: (localStorage.getItem('fcInitialDate') !== null ? parseInt(localStorage.getItem('fcInitialDate')) : Date.now()),
-        datesSet: function (arg) {
-          localStorage.setItem('fcInitialView', arg.view.type);
-          localStorage.setItem('fcInitialDate', arg.view.currentStart.getTime());
-        },
-        windowResize: function (arg) {
-          if (document.body.clientWidth > 550) {
-            vm.calendarOptions.headerToolbar.right = 'dayGridMonth,timeGridWeek';
-            vm.calendarOptions.headerToolbar.center = 'title';
-            if (arg.view.type === 'timeGridDay') { this.changeView('timeGridWeek'); }
-          } else {
-            vm.calendarOptions.headerToolbar.right = 'dayGridMonth,timeGridDay';
-            vm.calendarOptions.headerToolbar.center = '';
-            if (arg.view.type === 'timeGridWeek') { this.changeView('timeGridDay'); }
-          }
-        },
+          // Header bar
+          customButtons: {
+            addEvent: {
+              text: '+',
+              click: () => {
+                vm.beforeAddEvent();
+                addEventModal.show(); }
+            }
+          },
+          headerToolbar: {
+            left: 'prev,next today addEvent',
+            center: document.body.clientWidth > 550 ? 'title':'',
+            right: document.body.clientWidth > 550 ? 'dayGridMonth,timeGridWeek':'dayGridMonth,timeGridDay'
+          },
 
-        // Events
-        events: [],
-        eventContent: function(arg) {
-          let evt = arg.event.toPlainObject({collapseExtendedProps: true});
-          let italicEl = document.createElement('t');
-          italicEl.innerHTML = `<b>${evt.title}</b><br/><i>${evt.location}</i>`;
+          // Remember where the user left the calendar
+          initialView: (localStorage.getItem('fcInitialView') !== null ? localStorage.getItem('fcInitialView') : 'timeGridWeek'),
+          initialDate: (localStorage.getItem('fcInitialDate') !== null ? parseInt(localStorage.getItem('fcInitialDate')) : Date.now()),
+          datesSet: function (arg) {
+            localStorage.setItem('fcInitialView', arg.view.type);
+            localStorage.setItem('fcInitialDate', arg.view.currentStart.getTime());
+          },
+          windowResize: function (arg) {
+            if (document.body.clientWidth > 550) {
+              vm.calendarOptions.headerToolbar.right = 'dayGridMonth,timeGridWeek';
+              vm.calendarOptions.headerToolbar.center = 'title';
+              if (arg.view.type === 'timeGridDay') { this.changeView('timeGridWeek'); }
+            } else {
+              vm.calendarOptions.headerToolbar.right = 'dayGridMonth,timeGridDay';
+              vm.calendarOptions.headerToolbar.center = '';
+              if (arg.view.type === 'timeGridWeek') { this.changeView('timeGridDay'); }
+            }
+          },
 
-          let arrayOfDomNodes = [ italicEl ];
-          return { domNodes: arrayOfDomNodes };
-        },
-        eventTextColor: 'white',
-        eventDisplay: 'block',
-        eventDidMount: function(arg) {
+          // Events
+          events: [],
+          eventContent: function(arg) {
+            let evt = arg.event.toPlainObject({collapseExtendedProps: true});
+            let italicEl = document.createElement('t');
+            italicEl.innerHTML = `<b>${evt.title}</b><br/><i>${evt.location}</i>`;
+
+            let arrayOfDomNodes = [ italicEl ];
+            return { domNodes: arrayOfDomNodes };
+          },
+          eventTextColor: 'white',
+          eventDisplay: 'block',
+          eventDidMount: function(arg) {
           // Change text color based on background
-          let rgb = arg.el.style.backgroundColor.match(/\d+/g);
-          let brightness = Math.round(((parseInt(rgb[0]) * 299) +
+            let rgb = arg.el.style.backgroundColor.match(/\d+/g);
+            let brightness = Math.round(((parseInt(rgb[0]) * 299) +
                                                  (parseInt(rgb[1]) * 587) +
                                                  (parseInt(rgb[2]) * 114)) / 1000);
-          let color = brightness > 170 ? '#4c566a' : '#e5e9f0';
-          arg.el.childNodes[0].style.color = color;
+            let color = brightness > 170 ? '#4c566a' : '#e5e9f0';
+            arg.el.childNodes[0].style.color = color;
 
-          // Activate tooltip
-          let evt = arg.event.toPlainObject({collapseExtendedProps: true});
-          if (!!evt.code || !isTouchDevice) {
+            // Activate tooltip
+            let evt = arg.event.toPlainObject({collapseExtendedProps: true});
+            if (!!evt.code || !isTouchDevice) {
 
-            let description, location, title;
-            if (!evt.title)         title = 'No title';
-            else                    title = evt.title;
-            if (!evt.description)   description = 'No description';
-            else                    description = evt.description;
-            if (!evt.location)      location = 'No location';
-            else                    location = evt.location;
-            arg.el.tooltip = new Tooltip(arg.el, {
-              container: 'body',
-              trigger: 'manual',
-              title: `<b>${title}</b><br/>${description}<br/><i>${location}</i>`,
-              sanitize: false,
-              html: true,
-              template: `
+              let description, location, title;
+              if (!evt.title)         title = 'No title';
+              else                    title = evt.title;
+              if (!evt.description)   description = 'No description';
+              else                    description = evt.description;
+              if (!evt.location)      location = 'No location';
+              else                    location = evt.location;
+              arg.el.tooltip = new Tooltip(arg.el, {
+                container: 'body',
+                trigger: 'manual',
+                title: `<b>${title}</b><br/>${description}<br/><i>${location}</i>`,
+                sanitize: false,
+                html: true,
+                template: `
                                 <div class="tooltip" role="tooltip">
                                     <div class="tooltip-arrow"></div>
                                     <div class="tooltip-inner" style="background-color:${evt.backgroundColor}; color:${color}"></div>
                                 </div>`,
-              placement: 'auto',
-            });
+                placement: 'auto',
+              });
+            }
+          },
+          eventMouseEnter: function(arg) {
+            if (!vm.computing && !!arg.el.tooltip) {
+              arg.el.tooltip.show();
+            }
+          },
+          eventMouseLeave: function(arg) {
+            if (arg.el.tooltip) {
+              arg.el.tooltip.hide();
+            }
+          },
+          eventClick: function(arg) {
+            let evt = arg.event.toPlainObject({collapseExtendedProps: true});
+            if (!evt.code) {
+              vm.eventInfo = evt;
+              vm.eventInfo.event = arg.event;
+              vm.isEditingCustomEvent = false;    // a better way would be to define
+              // an event handler on hidden.bs.modal
+              // to set isEditingCustomEvent to false
+              eventModal.show();
+            } else if (!isTouchDevice) {
+              vm.getDetails(evt.code);
+            }
           }
         },
-        eventMouseEnter: function(arg) {
-          if (!vm.computing && !!arg.el.tooltip) {
-            arg.el.tooltip.show();
-          }
+        exportInfo: {
+          url: null,
+          subscriptionType: 0,
+          downloadType: 0,
         },
-        eventMouseLeave: function(arg) {
-          if (arg.el.tooltip) {
-            arg.el.tooltip.hide();
-          }
-        },
-        eventClick: function(arg) {
-          let evt = arg.event.toPlainObject({collapseExtendedProps: true});
-          if (!evt.code) {
-            vm.eventInfo = evt;
-            vm.eventInfo.event = arg.event;
-            vm.isEditingCustomEvent = false;    // a better way would be to define
-            // an event handler on hidden.bs.modal
-            // to set isEditingCustomEvent to false
-            eventModal.show();
-          } else if (!isTouchDevice) {
-            vm.getDetails(evt.code);
-          }
+        shareLink: '',
+      };
+    },
+    computed: {
+      calendarOpacity: function() {
+        return {'opacity': this.computing ? '0.2':'1'};
+      },
+      subscriptionLink: function() {
+        return this.exportInfo.url + '&choice=' + this.exportInfo.subscriptionType;
+      },
+    },
+    watch: {
+      codeSearchDisplay: function () {
+        if (this.codeSearchDisplay) {
+          codeDropdown.show();
+        } else {
+          codeDropdown.hide();
         }
       },
-      exportInfo: {
-        url: null,
-        subscriptionType: 0,
-        downloadType: 0,
+      code: function(newCode) {
+        if (newCode === '') {
+          this.codeSearch = [];
+        }
+        this.debouncedCodeSearchResults();
       },
-      shareLink: '',
     },
-    delimiters: ['[[',']]'],
+    created:  function () {
+      this.fetchData();
+      this.debouncedCodeSearchResults = debounce(this.getCodeSearchResults, 200);
+    },
 
     methods: {
       fetchData: function() {
@@ -758,33 +787,6 @@ document.addEventListener('DOMContentLoaded', function() {
             this.computing = false;
           });
       },
-    },
-    computed: {
-      calendarOpacity: function() {
-        return {'opacity': this.computing ? '0.2':'1'};
-      },
-      subscriptionLink: function() {
-        return this.exportInfo.url + '&choice=' + this.exportInfo.subscriptionType;
-      },
-    },
-    watch: {
-      codeSearchDisplay: function () {
-        if (this.codeSearchDisplay) {
-          codeDropdown.show();
-        } else {
-          codeDropdown.hide();
-        }
-      },
-      code: function(newCode) {
-        if (newCode === '') {
-          this.codeSearch = [];
-        }
-        this.debouncedCodeSearchResults();
-      },
-    },
-    created:  function () {
-      this.fetchData();
-      this.debouncedCodeSearchResults = debounce(this.getCodeSearchResults, 200);
     },
   });
 

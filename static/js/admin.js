@@ -14,10 +14,20 @@ document.addEventListener('DOMContentLoaded', function() {
   new Vue({
     el: '#app',
     delimiters: ['[[',']]'],
-    data: {
-      error: false,
-      computing: false,
-      plots: [],
+    data: function() {
+      return {
+        error: false,
+        computing: false,
+        plots: [],
+      };
+    },
+    computed: {
+      opacity: function() {
+        return {'opacity': this.computing ? '0.2':'1'};
+      },
+    },
+    created:  function () {
+      this.fetchData();
     },
     methods: {
       fetchData: function() {
@@ -43,14 +53,6 @@ document.addEventListener('DOMContentLoaded', function() {
           .then(() => {
             this.computing = false;
           });
-      },
-    },
-    created:  function () {
-      this.fetchData();
-    },
-    computed: {
-      opacity: function() {
-        return {'opacity': this.computing ? '0.2':'1'};
       },
     },
   });

@@ -8,8 +8,6 @@
 
 {% block body %}
 <div class="container-fluid">
-
-    <scrollspy path="contribute"></scrollspy>
-
+    <scrollspy v-bind:content="content"></scrollspy>
 </div>
 {% endblock %}
