@@ -28,6 +28,7 @@
       <!-- Content -->
       <div class="col-md-9 ms-sm-auto col-lg-10 p-3">
         <div class="container-lg">
+          <img class="mx-auto d-block mt-5" v-bind:src="logo" v-if="logo" width="10%"/>
           <div v-for="item in content" v-bind:key="item.id">
             <div class="d-flex flex-row my-5">
               <h3 class="align-item-center me-2" v-bind:class="item.icon" v-show="item.icon"></h3>
@@ -41,6 +42,13 @@
               </div>
               <hr class="mb-3">
               <p v-html="subitem.content"></p>
+              <div class="embed-responsive embed-responsive-16by9 my-3 d-flex justify-content-center"
+                   v-if="subitem.video"
+              >
+                <iframe width="560" height="315" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen
+                        v-bind:src="subitem.video"
+                ></iframe>
+              </div>
             </div>
           </div>
         </div>
@@ -60,7 +68,7 @@
   import { Collapse, ScrollSpy } from 'bootstrap';
 
   export default {
-  props: ['content'],
+  props: ['content', 'logo'],
     data() {
       return {
         nav: {},
@@ -81,7 +89,6 @@
       },
     },
     mounted() {
-      console.log(document.getElementById('navigator').classList)
       this.nav = new Collapse(document.getElementById('navigator'), {
         toggle: false,
       });
