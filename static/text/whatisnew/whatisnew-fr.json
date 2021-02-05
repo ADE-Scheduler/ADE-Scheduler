@@ -1,0 +1,25 @@
+[
+  {
+    "id": "ade-scheduler",
+    "title": "ADE Scheduler",
+    "subtitles": [
+      {
+        "id": "what-is",
+        "title": "What is ADE Scheduler ?",
+        "content": "ADE Scheduler is a tool aiming to provide the same information as the <a href='http://horaire.uclouvain.be/direct/'>UCLouvain's official schedule website</a> but with in a more intuitive way, while also offering many more tools such as subscription links, schedule organization, filtering unwanted events, classroom localization and so on. "
+      },
+      {
+        "id": "getting-started",
+        "title": "Getting started",
+        "content": "The main purpose of this website is the calendar page. If you're new to this site, make sure to go to <a href='https://ade-scheduler.info.ucl.ac.be/calendar'>this page</a> and try out some of the functionalities. You are also encouraged to watch our quick guide hereunder.",
+        "video": "https://www.youtube.com/embed/u82x-eysurU"
+      },
+      {
+        "id": "computing",
+        "title": "Computing your optimal schedule",
+        "content": " Sometimes, you may choose between multiple events such as CMs or TPs but only need to attend to one. The tool named compute tries all the possible combinations of picking one event of each type, every week, in order to find the 5 bests schedules which minimize the conflicts. If you want to be free during a given period, make sure to create a custom event to block this period of time. You can also remove some events before calling the compute function, to not take them into account. Because the compute function optimizes week per week, not all weeks must be the same. If you need to need to attend the same events every week, we encourage you to pick the week that suits your need from the results given by the compute tool and then manually select the events in your main schedule. ",
+        "video": "https://www.youtube.com/embed/l87bsDuCJmg"
+      }
+    ]
+  }
+]
