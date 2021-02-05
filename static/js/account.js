@@ -12,18 +12,28 @@ const axios = require('axios');
 document.addEventListener('DOMContentLoaded', function() {
   new Vue({
     el: '#app',
-    components: { VSwatches },
-    data: {
-      projectId: [],
-      schedules: [],
-      currentSchedule: {},
-      computing: true,
-      unsaved: true,
-      autoSave: false,
-      error: false,
-      isEditing: false,
-    },
     delimiters: ['[[',']]'],
+    components: { VSwatches },
+    data: function() {
+      return {
+        projectId: [],
+        schedules: [],
+        currentSchedule: {},
+        computing: true,
+        unsaved: true,
+        autoSave: false,
+        error: false,
+        isEditing: false,
+      };
+    },
+    computed: {
+      opacity: function() {
+        return {'opacity': this.computing ? '0.2':'1'};
+      },
+    },
+    created: function() {
+      this.fetchData();
+    },
     methods: {
       fetchData: function() {
         this.computing = true;
@@ -181,14 +191,6 @@ document.addEventListener('DOMContentLoaded', function() {
       },
       warningContinue: function() {this.request();},
       request: function() {},
-    },
-    computed: {
-      opacity: function() {
-        return {'opacity': this.computing ? '0.2':'1'};
-      },
-    },
-    created: function() {
-      this.fetchData();
     },
   });
 

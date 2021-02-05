@@ -7,10 +7,12 @@ import '../css/help.css';
 document.addEventListener('DOMContentLoaded', function() {
   new Vue({
     el: '#app',
-    data: {
-      navBtn: false,
-    },
     delimiters: ['[[',']]'],
+    data: function() {
+      return {
+        navBtn: false,
+      };
+    },
 
     methods: {
       scroll: function(id, flag) {
