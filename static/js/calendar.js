@@ -1,7 +1,8 @@
 /* global Flask */
 
 import Vue from 'vue';
-import { Modal, Popover, Tooltip, Collapse, Dropdown } from 'bootstrap';
+import SidebarMenu from '../../components/SidebarMenu.vue';
+import { Modal, Popover, Tooltip, Dropdown } from 'bootstrap';
 import FullCalendar from '@fullcalendar/vue';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -23,7 +24,10 @@ document.addEventListener('DOMContentLoaded', function() {
   var vm = new Vue({
     el: '#app',
     delimiters: ['[[',']]'],
-    components: { FullCalendar },
+    components: {
+      FullCalendar,
+      'sidebar-menu': SidebarMenu
+    },
     data: function() {
       return {
         projectId: [],
@@ -68,7 +72,6 @@ document.addEventListener('DOMContentLoaded', function() {
           rrule: {},
         },
         isEditingCustomEvent: false,
-        navBtn: false,
         calendarOptions: {
           plugins: [ dayGridPlugin, timeGridPlugin ],
           locales: [ frLocale ],
@@ -661,10 +664,8 @@ document.addEventListener('DOMContentLoaded', function() {
             this.computing = false;
           });
       },
-      toggleNav: function() {
-        this.navBtn = !this.navBtn;
-        if (this.navBtn)    { codeMenu.show(); }
-        else                { codeMenu.hide(); }
+      closeSidebar: function() {
+        this.$refs.sidebar.close();
       },
       toggleBestSchedules: function() {
         this.show_best_schedules = !this.show_best_schedules;
@@ -802,7 +803,4 @@ document.addEventListener('DOMContentLoaded', function() {
   var exportModal = new Modal(document.getElementById('exportModal'));
   var courseModal = new Modal(document.getElementById('courseModal'));
   var warningModal = new Modal(document.getElementById('warningModal'));
-  var codeMenu = new Collapse(document.getElementById('sidebarMenu'), {
-    toggle: false,
-  });
 });
