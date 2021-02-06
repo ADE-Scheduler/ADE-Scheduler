@@ -174,7 +174,7 @@ dispatcher.add_handler(CommandHandler("flask", flask_command))
 dispatcher.add_handler(CommandHandler("top", top_command))
 
 # Repeating tasks
-# job_queue.run_repeating(health_check, interval=60, first=10)
+job_queue.run_repeating(health_check, interval=60, first=10)
 
 # Start bot
 updater.start_polling()
