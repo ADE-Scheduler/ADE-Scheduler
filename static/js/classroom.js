@@ -5,6 +5,7 @@ import L from 'leaflet';
 import { LMap, LTileLayer } from 'vue2-leaflet';
 import 'overlapping-marker-spiderfier-leaflet/dist/oms';
 import { Modal, Tooltip } from 'bootstrap';
+import Spinner from '../../components/Spinner.vue';
 import FullCalendar from '@fullcalendar/vue';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -34,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var vm = new Vue({
     el: '#app',
     delimiters: ['[[',']]'],
-    components: { LMap, LTileLayer, FullCalendar },
+    components: { LMap, LTileLayer, FullCalendar, 'spinner': Spinner },
     data: function() {
       return {
         computing: false,
@@ -147,9 +148,6 @@ document.addEventListener('DOMContentLoaded', function() {
       };
     },
     computed: {
-      opacity: function() {
-        return {'opacity': this.computing ? '0.2':'1'};
-      },
       classroomsFiltered: function () {
         return this.classrooms
           .filter(c => !(c.name.toLowerCase().replace(/[^a-z0-9]/gi, '').indexOf(this.nameSearch.toLowerCase().replace(/[^a-z0-9]/gi, '')) === -1))

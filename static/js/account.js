@@ -1,6 +1,7 @@
 /* global Flask */
 
 import Vue from 'vue';
+import Spinner from '../../components/Spinner.vue';
 import VSwatches from 'vue-swatches';
 import { Modal } from 'bootstrap';
 import './base.js';
@@ -13,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
   new Vue({
     el: '#app',
     delimiters: ['[[',']]'],
-    components: { VSwatches },
+    components: { VSwatches, 'spinner': Spinner },
     data: function() {
       return {
         projectId: [],
@@ -25,11 +26,6 @@ document.addEventListener('DOMContentLoaded', function() {
         error: false,
         isEditing: false,
       };
-    },
-    computed: {
-      opacity: function() {
-        return {'opacity': this.computing ? '0.2':'1'};
-      },
     },
     created: function() {
       this.fetchData();

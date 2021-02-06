@@ -36,71 +36,72 @@
                 <button type="button" class="btn-close" v-on:click="error = false"></button>
             </div>
 
-            <div class="card mb-3">
-                <div class="card-header">
-                    <div class="h5 mb-0 text-muted">
-                        {{ _('User settings') }}
+            <spinner v-bind:computing="computing">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <div class="h5 mb-0 text-muted">
+                            {{ _('User settings') }}
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex flex-row justify-content-between">
+                            <h6>{{ _('Automatically save your changes') }}</h6>
+                            <button class="btn btn-sm" v-on:click="autoSave = !autoSave; changeAutoSave()"
+                                    v-bind:class="[[ autoSave ? 'btn-outline-danger':'btn-outline-success' ]]"
+                            >
+                                [[ autoSave ? "{{ _('Deactivate') }}":"{{ _('Activate') }}" ]]
+                            </button>
+                        </div>
+                        <div class="mt-3">
+                            <a class="link-primary" href="{{ url_for('security.change_password') }}">{{ _('Change your password') }}</a>
+                        </div>
                     </div>
                 </div>
-                <div class="card-body" v-bind:style="opacity">
-                    <div class="d-flex flex-row justify-content-between">
-                        <h6>{{ _('Automatically save your changes') }}</h6>
-                        <button class="btn btn-sm" v-on:click="autoSave = !autoSave; changeAutoSave()"
-                                v-bind:class="[[ autoSave ? 'btn-outline-danger':'btn-outline-success' ]]"
-                        >
-                            [[ autoSave ? "{{ _('Deactivate') }}":"{{ _('Activate') }}" ]]
-                        </button>
-                    </div>
-                    <div class="mt-3">
-                        <a class="link-primary" href="{{ url_for('security.change_password') }}">{{ _('Change your password') }}</a>
-                    </div>
-                </div>
-            </div>
 
-            <div class="card">
-                <div class="spinner-border text-primary spinner-compute" v-show="computing"></div>
-                <div class="card-header d-flex justify-content-between align-items-center" id="form-update-label" v-bind:style="opacity">
-                    <input class="form-control me-3" type="text" v-model="currentSchedule.label" v-if="isEditing"
-                        v-on:keyup.enter="updateLabel(currentSchedule.id)"
-                        v-on:blur="isEditing = false"
-                        v-on:keyup.esc="isEditing = false"
-                        v-focus
-                    />
-                    <div class="h5 mb-0 text-muted" id="schedule-label" v-else v-on:click="isEditing = true">
-                        [[ currentSchedule.label ]]
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center" id="form-update-label">
+                        <input class="form-control me-3" type="text" v-model="currentSchedule.label" v-if="isEditing"
+                            v-on:keyup.enter="updateLabel(currentSchedule.id)"
+                            v-on:blur="isEditing = false"
+                            v-on:keyup.esc="isEditing = false"
+                            v-focus
+                        />
+                        <div class="h5 mb-0 text-muted" id="schedule-label" v-else v-on:click="isEditing = true">
+                            [[ currentSchedule.label ]]
+                        </div>
+                        <a class="text-success me-3" href="#" v-on:mousedown="updateLabel(currentSchedule.id)" v-show="isEditing">
+                            <svg width="30px" height="30px" viewBox="0 0 16 16" class="bi bi-check" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.236.236 0 0 1 .02-.022z"/>
+                            </svg>
+                        </a>
+                        <a class="text-dark" href="#" v-on:click="isEditing = true">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M11.293 1.293a1 1 0 0 1 1.414 0l2 2a1 1 0 0 1 0 1.414l-9 9a1 1 0 0 1-.39.242l-3 1a1 1 0 0 1-1.266-1.265l1-3a1 1 0 0 1 .242-.391l9-9zM12 2l2 2-9 9-3 1 1-3 9-9z"/>
+                                <path fill-rule="evenodd" d="M12.146 6.354l-2.5-2.5.708-.708 2.5 2.5-.707.708zM3 10v.5a.5.5 0 0 0 .5.5H4v.5a.5.5 0 0 0 .5.5H5v.5a.5.5 0 0 0 .5.5H6v-1.5a.5.5 0 0 0-.5-.5H5v-.5a.5.5 0 0 0-.5-.5H3z"/>
+                            </svg>
+                        </a>
                     </div>
-                    <a class="text-success me-3" href="#" v-on:mousedown="updateLabel(currentSchedule.id)" v-show="isEditing">
-                        <svg width="30px" height="30px" viewBox="0 0 16 16" class="bi bi-check" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.236.236 0 0 1 .02-.022z"/>
-                        </svg>
-                    </a>
-                    <a class="text-dark" href="#" v-on:click="isEditing = true">
-                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" d="M11.293 1.293a1 1 0 0 1 1.414 0l2 2a1 1 0 0 1 0 1.414l-9 9a1 1 0 0 1-.39.242l-3 1a1 1 0 0 1-1.266-1.265l1-3a1 1 0 0 1 .242-.391l9-9zM12 2l2 2-9 9-3 1 1-3 9-9z"/>
-                            <path fill-rule="evenodd" d="M12.146 6.354l-2.5-2.5.708-.708 2.5 2.5-.707.708zM3 10v.5a.5.5 0 0 0 .5.5H4v.5a.5.5 0 0 0 .5.5H5v.5a.5.5 0 0 0 .5.5H6v-1.5a.5.5 0 0 0-.5-.5H5v-.5a.5.5 0 0 0-.5-.5H3z"/>
-                        </svg>
-                    </a>
+                    <div class="card-body">
+                        <label class="form-label" for="color-palette">{{ _('Color palette') }}</label>
+                        <div class="d-flex flex-row flex-wrap justify-content-around mb-3" id="color-palette">
+                            <v-swatches class="mx-1" show-fallback fallback-input-type="color" v-for="(color, i) in currentSchedule.color_palette" v-model="currentSchedule.color_palette[i]"></v-swatches>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="select-project-id">{{ _('Academic year') }}</label>
+                            <select class="form-select" style="max-width: 180px;" v-model="currentSchedule.project_id" id="select-project-id">
+                                <option v-for="pid in projectId" v-bind:value="pid.id">
+                                    [[ pid.year ]]
+                                </option>
+                            </select>
+                        </div>
+                        <div class="btn-group d-flex">
+                            <button class="btn btn-outline-secondary text-truncate" v-on:click="save">{{ _('Save') }}</button>
+                            <button class="btn btn-outline-secondary text-truncate" v-on:click="viewSchedule($event, currentSchedule.id)">{{ _('View') }}</button>
+                            <button class="btn btn-danger text-truncate" v-on:click="deleteSchedule($event, currentSchedule.id)">{{  _('Delete') }}</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body" v-bind:style="opacity">
-                    <label class="form-label" for="color-palette">{{ _('Color palette') }}</label>
-                    <div class="d-flex flex-row flex-wrap justify-content-around mb-3" id="color-palette">
-                        <v-swatches class="mx-1" show-fallback fallback-input-type="color" v-for="(color, i) in currentSchedule.color_palette" v-model="currentSchedule.color_palette[i]"></v-swatches>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label" for="select-project-id">{{ _('Academic year') }}</label>
-                        <select class="form-select" style="max-width: 180px;" v-model="currentSchedule.project_id" id="select-project-id">
-                            <option v-for="pid in projectId" v-bind:value="pid.id">
-                                [[ pid.year ]]
-                            </option>
-                        </select>
-                    </div>
-                    <div class="btn-group d-flex">
-                        <button class="btn btn-outline-secondary text-truncate" v-on:click="save">{{ _('Save') }}</button>
-                        <button class="btn btn-outline-secondary text-truncate" v-on:click="viewSchedule($event, currentSchedule.id)">{{ _('View') }}</button>
-                        <button class="btn btn-danger text-truncate" v-on:click="deleteSchedule($event, currentSchedule.id)">{{  _('Delete') }}</button>
-                    </div>
-                </div>
-            </div>
+            </spinner>
         </div>
 
         <div class="col-md-4 col-lg-3 p-3">

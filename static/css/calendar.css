@@ -11,13 +11,6 @@
     white-space: pre-wrap;
 }
 
-.spinner-compute {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    z-index: 100;
-}
-
 .fc-toolbar-chunk > button, .fc-toolbar-chunk > .fc-button-group > button {
     font-size: min(3vw, 1em)!important;
     padding: 3px 6px !important;
