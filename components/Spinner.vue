@@ -13,11 +13,7 @@
 
 <script>
 export default {
-  props: {
-    computing: {
-      default: true
-    },
-  },
+  props: ['computing'],
   computed: {
     opacity() {
       return {'opacity': this.computing ? '0.2':'1'};
