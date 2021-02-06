@@ -2,6 +2,7 @@
 
 import Vue from 'vue';
 import SidebarMenu from '../../components/SidebarMenu.vue';
+import Spinner from '../../components/Spinner.vue';
 import { Modal, Popover, Tooltip, Dropdown } from 'bootstrap';
 import FullCalendar from '@fullcalendar/vue';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -26,7 +27,8 @@ document.addEventListener('DOMContentLoaded', function() {
     delimiters: ['[[',']]'],
     components: {
       FullCalendar,
-      'sidebar-menu': SidebarMenu
+      'sidebar-menu': SidebarMenu,
+      'spinner': Spinner,
     },
     data: function() {
       return {
@@ -239,9 +241,6 @@ document.addEventListener('DOMContentLoaded', function() {
       };
     },
     computed: {
-      calendarOpacity: function() {
-        return {'opacity': this.computing ? '0.2':'1'};
-      },
       subscriptionLink: function() {
         return this.exportInfo.url + '&choice=' + this.exportInfo.subscriptionType;
       },

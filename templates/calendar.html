@@ -617,8 +617,9 @@
                     {{_('A problem has occurred. Please contact us if it happens again.')}}
                     <button type="button" class="btn-close" v-on:click="error = false"></button>
                 </div>
-                <div class="spinner-border text-primary spinner-compute" v-show="computing"></div>
-                <full-calendar ref="calendar" v-bind:options="calendarOptions" v-bind:style="calendarOpacity"></full-calendar>
+                <spinner v-bind:computing="computing">
+                  <full-calendar ref="calendar" v-bind:options="calendarOptions"></full-calendar>
+                </spinner>
                 <div class="mt-4">
                     <small class="text-danger font-weight-light">
                         {{_('Disclaimer: ADE Scheduler is not an official UCLouvain tool. It has been designed with the purpose to help the UCLouvain students with scheduling. This tool is based on ADE UCL but does not replace standard scheduling rules, nor the instructions given by university officials and teachers as those may vary from one course to another.')}}
