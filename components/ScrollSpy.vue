@@ -97,12 +97,21 @@ export default {
   props: ['content', 'logo'],
   data() {
     return {
-      nav: {},
-      navBtn: false,
+      scrollspy: {},
     };
   },
+  watch: {
+    content() {
+      this.$nextTick(() => {
+        [].slice.call(document.querySelectorAll('[data-bs-spy="scroll"]'))
+          .forEach(function (dataSpyEl) {
+            this.scrollspy.getInstance(dataSpyEl).refresh();
+          });
+      });
+    }
+  },
   mounted() {
-    new ScrollSpy(document.body, {
+    this.scrollspy = new ScrollSpy(document.body, {
       target: this.$refs.navigator.$el,
       offset: 70,
     });
