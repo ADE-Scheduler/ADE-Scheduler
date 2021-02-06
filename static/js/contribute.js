@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
     data: function() {
       return {
         navBtn: false,
-        content: {},
+        content: [],
       };
     },
     mounted() {
