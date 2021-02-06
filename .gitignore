@@ -132,6 +132,7 @@ dump.rdb
 cache/
 
 .flaskenv
+.botenv
 geo_locations.json
 
 plots/
