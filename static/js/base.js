@@ -16,8 +16,10 @@ export default document.addEventListener('DOMContentLoaded', function() {
   new Vue({
     el: '#app-base',
     delimiters: ['[[',']]'],
-    data: {
-      currentPath: window.location.pathname,
+    data: function() {
+      return {
+        currentPath: window.location.pathname,
+      };
     },
     methods: {
       localeSelector: function(e, locale) {
