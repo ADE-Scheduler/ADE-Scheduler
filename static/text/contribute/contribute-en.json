@@ -66,18 +66,18 @@
       {
         "id": "credits-creators",
         "title": "Project creators",
-        "content": "Lorem ipsum dores alamet"
+        "content": "ADE Scheduler was originally created, during the summer of 2019, by three EPL students: Jérome Eertmans, Louis Navarre and Gilles Poncelet. At that time, they were finishing their Bachelor in Civil Engineering. Since then, they have been the main mainteners of the project and continue on contributing to improve the tool day by day."
       },
       {
         "id": "credits-uclouvain",
         "title": "<img class='txt-img' src='/static/img/logo_UCL.png'></img>",
-        "content": "Lorem ipsum dores alamet"
+        "content": "Very rapidly, the project received support from some UCLouvain academical members. Thanks to them, the project has been granted an access to the official ADE API and is hoster on the UCLouvain's servers. We would like to give special thanks to: <ul> <li>Pr. Yves Deville, for his long-time support through the years on many aspects: server hosting, API access, open source development, etc.</li><li>Mr. Anthony Gego, for his help maintening our first server (until late 2020)</li><li>Mr. Rémi Rossi, for his help maintening our new server (since late 2020)</li><li>And all the other UCLouvain academical members or students who shared this tools!</ul>"
       },
       {
         "id": "credits-contributors",
         "icon": "bi bi-star-fill",
         "title": "Contributors",
-        "content": "Lorem ipsum dores alamet"
+        "content": "As this project is open source, we would like to thank all the people that helped with this project. From signaling a bug to sharing the tool to friends, every little bit is important to us. If you ever want to help this project, never hesitate to reach us!"
       }
     ]
   }
