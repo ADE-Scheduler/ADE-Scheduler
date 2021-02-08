@@ -1,6 +1,7 @@
 /* global Flask */
 
 import Vue from 'vue';
+import Spinner from '../../components/Spinner.vue';
 import { Carousel } from 'bootstrap';   // eslint-disable-line no-unused-vars
 
 import './base.js';
@@ -14,10 +15,16 @@ document.addEventListener('DOMContentLoaded', function() {
   new Vue({
     el: '#app',
     delimiters: ['[[',']]'],
-    data: {
-      error: false,
-      computing: false,
-      plots: [],
+    components: {'spinner': Spinner},
+    data: function() {
+      return {
+        error: false,
+        computing: false,
+        plots: [],
+      };
+    },
+    created:  function () {
+      this.fetchData();
     },
     methods: {
       fetchData: function() {
@@ -43,14 +50,6 @@ document.addEventListener('DOMContentLoaded', function() {
           .then(() => {
             this.computing = false;
           });
-      },
-    },
-    created:  function () {
-      this.fetchData();
-    },
-    computed: {
-      opacity: function() {
-        return {'opacity': this.computing ? '0.2':'1'};
       },
     },
   });

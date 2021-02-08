@@ -27,8 +27,8 @@
         </div>
     </div>
 
-    <div class="spinner-border text-primary spinner-compute" v-show="computing"></div>
-    <div class="container-lg d-flex flex-column justify-content-center pt-3" v-bind:style="opacity">
+    <spinner v-bind:computing="computing">
+      <div class="container-lg d-flex flex-column justify-content-center pt-3">
         {{ render_flash_alert() }}
         <div class="alert alert-danger alert-dismissible" v-show="error">
             {{  _('A problem has occurred. Please contact us if it happens again.') }}
@@ -79,5 +79,6 @@
         <div class="text-center" v-show="!classroomsFiltered.length">
             Empty :(
         </div>
+    </spinner>
     </div>
 {% endblock %}

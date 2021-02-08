@@ -1,6 +1,7 @@
 /* global Flask */
 
 import Vue from 'vue';
+import Spinner from '../../components/Spinner.vue';
 import VSwatches from 'vue-swatches';
 import { Modal } from 'bootstrap';
 import './base.js';
@@ -12,18 +13,23 @@ const axios = require('axios');
 document.addEventListener('DOMContentLoaded', function() {
   new Vue({
     el: '#app',
-    components: { VSwatches },
-    data: {
-      projectId: [],
-      schedules: [],
-      currentSchedule: {},
-      computing: true,
-      unsaved: true,
-      autoSave: false,
-      error: false,
-      isEditing: false,
-    },
     delimiters: ['[[',']]'],
+    components: { VSwatches, 'spinner': Spinner },
+    data: function() {
+      return {
+        projectId: [],
+        schedules: [],
+        currentSchedule: {},
+        computing: true,
+        unsaved: true,
+        autoSave: false,
+        error: false,
+        isEditing: false,
+      };
+    },
+    created: function() {
+      this.fetchData();
+    },
     methods: {
       fetchData: function() {
         this.computing = true;
@@ -181,14 +187,6 @@ document.addEventListener('DOMContentLoaded', function() {
       },
       warningContinue: function() {this.request();},
       request: function() {},
-    },
-    computed: {
-      opacity: function() {
-        return {'opacity': this.computing ? '0.2':'1'};
-      },
-    },
-    created: function() {
-      this.fetchData();
     },
   });
 
