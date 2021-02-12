@@ -6,6 +6,7 @@ from datetime import datetime
 from backend.classrooms import merge_classrooms, Classroom
 from backend.professors import Professor
 from typing import Type, Tuple, Iterable, Optional, Union, Any, Dict
+import unicodedata
 
 from flask_babel import gettext
 
@@ -27,6 +28,15 @@ def pretty_date_formatter(arrow) -> str:
 
 def pretty_formatter(arrow) -> str:
     return f"{pretty_hour_formatter(arrow)} - {pretty_date_formatter(arrow)}"
+
+
+def remove_accents(input_str: str) -> str:
+    nfkd_form = unicodedata.normalize("NFKD", input_str)
+    return "".join([c for c in nfkd_form if not unicodedata.combining(c)])
+
+
+def sanitize_string(input_str: str) -> str:
+    return remove_accents(input_str).lower()
 
 
 class CustomEvent(Event):
@@ -237,6 +247,8 @@ class AcademicalEvent(CustomEvent):
     :type prefix: Optional[str]
     """
 
+    KEYWORDS = ()
+
     def __init__(
         self,
         name: str,
@@ -292,6 +304,10 @@ class AcademicalEvent(CustomEvent):
     def __ne__(self, other: "AcademicalEvent") -> bool:
         return not self.__eq__(other)
 
+    @classmethod
+    def matches(cls, string):
+        return any(kw in string for kw in cls.KEYWORDS)
+
     def get_id(self) -> str:
         """
         Returns the id of this event.
@@ -315,6 +331,7 @@ class AcademicalEvent(CustomEvent):
 
 class EventCM(AcademicalEvent):
     PREFIX = "CM: "
+    KEYWORDS = ("cm", "cours", "magistral")
 
     def __init__(self, **kwargs):
         super().__init__(prefix=EventCM.PREFIX, **kwargs)
@@ -322,6 +339,7 @@ class EventCM(AcademicalEvent):
 
 class EventTP(AcademicalEvent):
     PREFIX = "TP: "
+    KEYWORDS = ("tp", "td", "ape", "app")
 
     def __init__(self, **kwargs):
         super().__init__(prefix=EventTP.PREFIX, **kwargs)
@@ -329,6 +347,7 @@ class EventTP(AcademicalEvent):
 
 class EventEXAM(AcademicalEvent):
     PREFIX = "EXAM: "
+    KEYWORDS = ("partiel", "ecrit", "oral", "interro", "test")
 
     def __init__(self, **kwargs):
         super().__init__(prefix=EventEXAM.PREFIX, **kwargs)
@@ -336,13 +355,23 @@ class EventEXAM(AcademicalEvent):
 
 class EventORAL(AcademicalEvent):
     PREFIX = "ORAL: "
+    KEYWORDS = ("oral",)
 
     def __init__(self, **kwargs):
         super().__init__(prefix=EventORAL.PREFIX, **kwargs)
 
 
+class EventLABO(AcademicalEvent):
+    PREFIX = "LABO: "
+    KEYWORDS = "labo"
+
+    def __init__(self, **kwargs):
+        super().__init__(prefix=EventLABO.PREFIX, **kwargs)
+
+
 class EventOTHER(AcademicalEvent):
     PREFIX = "OTHER: "
+    KEYWORDS = ("autre", "info", "monitorat", "consult", "copie")
 
     def __init__(self, **kwargs):
         super().__init__(prefix=EventOTHER.PREFIX, **kwargs)
@@ -380,21 +409,17 @@ def extract_type(course_type: str, course_id: str) -> Type[AcademicalEvent]:
 
     # We look at the given type (there are some mistakes in the data from ADE,
     # not always trustworthy)
-    if course_type == "Cours magistral":
-        return EventCM
-    elif course_type == "TP" or course_type == "TD":
-        return EventTP
-    elif (
-        course_type == "Examen écrit"
-        or course_type == "Test / Interrogation / Partiel"
-        or course_type == "Examen écrit et oral"
-    ):
-        return EventEXAM
-    elif course_type == "Examen oral":
-        return EventORAL
+
+    course_type = sanitize_string(course_type)
+
+    classes = (EventCM, EventTP, EventEXAM, EventORAL, EventOTHER, EventLABO)
+
+    for cls in classes:
+        if cls.matches(course_type):
+            return cls
 
     # Then try regex matching
-    elif re.search(COURSE_REGEX + "=E", course_id, re.IGNORECASE) or re.search(
+    if re.search(COURSE_REGEX + "=E", course_id, re.IGNORECASE) or re.search(
         COURSE_REGEX + "=P", course_id, re.IGNORECASE
     ):
         return EventEXAM
