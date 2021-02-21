@@ -15,7 +15,7 @@ services:
 # Don't build on branch commits; only on master + PRs
 branches:
     only:
-        - master
+        - main
 
 # Nodejs/npm version that is used in prod
 before_install:
