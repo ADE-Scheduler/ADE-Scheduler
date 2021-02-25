@@ -54,7 +54,7 @@
       {
         "id": "progs-ects",
         "icon": "bi bi-bookmark-check-fill",
-        "title": "Earn ECTS at UCLouvain for contributing",
+        "title": "Valider des crédits à l'UCLouvain tout en contribuant",
         "content": "À notre connaissance, il y a 2 cours à l'EPL qui offrent des crédits si vous contibruez à un projet open source. Vous pouvez donc contribuer à ADE Scheduler et, en même temps, valider des crédits pour vos études ! <br><br> Le premier, <a href='https://uclouvain.be/en-cours-2020-lingi2401'>LINGI2401 \"Open Source strategy for software development\"</a>, est donné pendant le Q1 est demande de votre part de faire une contribution très petite. Nous le recommandons fortement comme étant une bonne introduction à l'open source et il vaut 5 crédits. <br><br> Le second, <a href='https://uclouvain.be/en-cours-2020-lingi2402'>LINGI2402 \"Open Source Project\"</a>, peut être pris, au choix, au Q1 ou au Q2 et demande une contribution pour un total de 140h de travail. Ce dernier peut compter comme un stage et vaut 5 crédits. <br><br> Dans le cas où vous ne pouvez pas, ou ne voulez pas, suivre ces cours, contribuer à un projet open source reste une plus value très intéressante pour votre CV. Même si c'est une très petite contribution, comme une correction de typo, vous en apprendrez beaucoup ! "
       }
     ]
