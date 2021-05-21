@@ -69,7 +69,7 @@ pathspec==0.8.1
 pbr==5.5.1
 pep517==0.9.1
 Pillow==8.1.1
-plotly==4.14.1
+plotly==4.14.3
 pluggy==0.13.1
 pre-commit==2.9.3
 progress==1.5
