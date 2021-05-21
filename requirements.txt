@@ -27,7 +27,7 @@ docutils==0.16
 email-validator==1.1.2
 execnet==1.7.1
 filelock==3.0.12
-Flask==1.1.2
+Flask==2.0.0
 Flask-Babel==2.0.0
 Flask-Compress==1.8.0
 Flask-JSGlue==0.3.1
