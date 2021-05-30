@@ -279,26 +279,34 @@ def welcome():
 
 
 # Error handlers
+
+@app.errorhandler(HTTPError)
+@app.errorhandler(ConnectionError)
+def ade_request_failed(e):
+    try:
+        code = e.response.status_code
+    except AttributeError: # For bebugging purposes
+        code = 500
+
+    return gettext("Oops, the ADE server seems to have some troubles! Please try again later and contact us if the error persits."), code
+
 @app.errorhandler(InternalServerError)
 def handle_exception(e):
     if not app.debug and app.config["MAIL_SEND_ERRORS"]:
-        if isinstance(e, HTTPError) or isinstance(e, ConnectionError):
-            pass  # Don't send any mail for those; it gets spam-ish...
+        error = e.original_exception
+        error_request = f"{request.path} [{request.method}]"
+        error_module = error.__class__.__module__
+        if error_module is None:
+            error_name = error.__class__.__name__
         else:
-            error = e.original_exception
-            error_request = f"{request.path} [{request.method}]"
-            error_module = error.__class__.__module__
-            if error_module is None:
-                error_name = error.__class__.__name__
-            else:
-                error_name = f"{error_module}.{error.__class__.__name__}"
-            error_details = str(traceback.format_exc())
-            msg = Message(
-                subject=f"ADE Scheduler Failure: {error_name}",
-                body=f"Exception on {error_request}: {str(error)}\n\n{error_details}",
-                recipients=app.config["ADMINS"],
-            )
-            app.config["MAIL_MANAGER"].send(msg)
+            error_name = f"{error_module}.{error.__class__.__name__}"
+        error_details = str(traceback.format_exc())
+        msg = Message(
+            subject=f"ADE Scheduler Failure: {error_name}",
+            body=f"Exception on {error_request}: {str(error)}\n\n{error_details}",
+            recipients=app.config["ADMINS"],
+        )
+        app.config["MAIL_MANAGER"].send(msg)
     if request.is_json:
         return gettext("An error has occurred"), 500
     else:
