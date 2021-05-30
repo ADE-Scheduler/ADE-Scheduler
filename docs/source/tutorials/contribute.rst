@@ -221,4 +221,3 @@ Interpreting :code:`.prof` files can be hard and we recommend you to use a graph
 
     $ cd <repo>
     $ tuna profile/<path_to_file.prof>
-

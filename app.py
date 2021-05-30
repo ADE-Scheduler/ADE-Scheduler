@@ -77,10 +77,13 @@ app.config["PROFILE"] = (
 
 if app.config["PROFILE"]:
     from werkzeug.middleware.profiler import ProfilerMiddleware
+
     profile_dir = "profile"
     if os.path.exists(profile_dir):
         if not os.path.isdir(profile_dir):
-            warnings.warn(f"You cannot save the profiling to {profile_dir} since it is a file. It must be a directory.")
+            warnings.warn(
+                f"You cannot save the profiling to {profile_dir} since it is a file. It must be a directory."
+            )
             profile_dir = None
     else:
         os.mkdir(profile_dir)
@@ -383,5 +386,3 @@ def make_shell_context():
         "Api": md.ApiUsage,
         "mng": app.config["MANAGER"],
     }
-
-
