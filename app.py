@@ -3,22 +3,13 @@ import os
 import traceback
 from datetime import timedelta
 from jsmin import jsmin
-from ics import Calendar
 import distutils
 import configparser
+from requests.exceptions import HTTPError, ConnectionError
 
 # Flask imports
 from werkzeug.exceptions import InternalServerError
-from flask import (
-    Flask,
-    session,
-    request,
-    redirect,
-    url_for,
-    render_template,
-    make_response,
-    g,
-)
+from flask import Flask, session, request, redirect, url_for, render_template, g
 from flask_session import Session
 from flask_security import Security, SQLAlchemyUserDatastore
 from flask_login import user_logged_out, user_logged_in
@@ -34,7 +25,6 @@ import backend.servers as srv
 import backend.ade_api as ade
 import backend.manager as mng
 import backend.schedules as schd
-import backend.events as evt
 import backend.track_usage as tu
 import views.utils as utl
 
@@ -288,29 +278,23 @@ def welcome():
         return render_template("welcome.html")
 
 
-# Alert v1 users they need to update their schedule
-@app.route("/getcalendar/<link>", methods=["GET"])
-def update_notification(link):
-    event = evt.RecurringCustomEvent(
-        **{
-            "name": "There is a new ADE Scheduler version -- go check it now !",
-            "location": "https://ade-scheduler.info.ucl.ac.be",
-            "description": "The new version is GREAT !",
-            "begin": "2020-01-01 08:00",
-            "end": "2020-01-01 18:00",
-            "freq": [0, 1, 2, 3, 4, 5, 6],
-            "end_recurrence": "2021-12-31 18:00",
-        }
-    )
-    calendar = Calendar(events=[event])
-    resp = make_response(str(calendar))
-    resp.mimetype = "text/calendar"
-    resp.headers["Content-Disposition"] = "attachment; filename=calendar.ics"
-    g.track_var["old user link"] = link
-    return resp
-
-
 # Error handlers
+@app.errorhandler(HTTPError)
+@app.errorhandler(ConnectionError)
+def ade_request_failed(e):
+    try:
+        code = e.response.status_code
+    except AttributeError:  # For debugging purposes
+        code = 500
+
+    return (
+        gettext(
+            "Oops, the ADE server seems to have some troubles! Please try again later and contact us if the error persits."
+        ),
+        code,
+    )
+
+
 @app.errorhandler(InternalServerError)
 def handle_exception(e):
     if not app.debug and app.config["MAIL_SEND_ERRORS"]:
