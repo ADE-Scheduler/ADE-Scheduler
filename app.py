@@ -279,16 +279,21 @@ def welcome():
 
 
 # Error handlers
-
 @app.errorhandler(HTTPError)
 @app.errorhandler(ConnectionError)
 def ade_request_failed(e):
     try:
         code = e.response.status_code
-    except AttributeError: # For bebugging purposes
+    except AttributeError:  # For debugging purposes
         code = 500
 
-    return gettext("Oops, the ADE server seems to have some troubles! Please try again later and contact us if the error persits."), code
+    return (
+        gettext(
+            "Oops, the ADE server seems to have some troubles! Please try again later and contact us if the error persits."
+        ),
+        code,
+    )
+
 
 @app.errorhandler(InternalServerError)
 def handle_exception(e):

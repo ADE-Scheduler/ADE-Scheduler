@@ -1672,4 +1672,3 @@ msgstr "L'horaire que vous avez demandé n'existe pas dans notre base de donnée
 #~ "l'ajout de nouvelles fonctionnaliés, est "
 #~ "plus efficace, et surtout adaptée aux"
 #~ " mobiles."
-
