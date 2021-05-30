@@ -208,7 +208,7 @@ Profiling is straighforward: you just need to add one line to your :code:`.flask
 
     PROFILE = True
 
-And voilà! When the application is (re-)started, it will not output the time taken by each request. It will also write the profile stats into files under the :code:`profile` folder.
+And voilà! Once the application is (re-)started, it will now output the time taken by each request. It will also write the profile stats into files under the :code:`profile` folder.
 
 If you wish the tweak the profiling settings, you can modify the :code:`app.py` file. More information can be found `here <https://werkzeug.palletsprojects.com/en/2.0.x/middleware/profiler/>`_.
 
