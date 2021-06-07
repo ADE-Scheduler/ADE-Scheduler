@@ -44,7 +44,7 @@ geojson==2.5.0
 geopy==2.1.0
 html5lib==1.1
 ics==0.7
-identify==1.5.11
+identify==2.2.9
 idna==2.5
 imagesize==1.2.0
 iniconfig==1.1.1
