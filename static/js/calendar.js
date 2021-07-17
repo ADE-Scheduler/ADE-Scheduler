@@ -737,6 +737,7 @@ document.addEventListener('DOMContentLoaded', function() {
           })
             .then(resp => {
               this.codeSearch = resp.data.codes;
+              codeDropdown.update();
             })
             .catch(() => {})
             .then(  () => {});

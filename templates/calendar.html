@@ -534,6 +534,7 @@
                                   placeholder="{{_('Enter code')}}"
                                   v-on:focus="codeSearchDisplay=true"
                                   v-on:blur="codeSearchDisplay=false"
+                                  v-on:mousedown.prevent
                                   v-model="code" v-focus>
                           <button class="btn btn-success badge rounded-pill" type="submit">+</button>
                           <ul class="dropdown-menu scrollable-menu" v-on:mousedown.prevent v-show="!(codeSearch.length==0 && code=='')">
