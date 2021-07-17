@@ -4,7 +4,7 @@ apipkg==1.5
 appdirs==1.4.4
 arrow==0.14.0
 attrs==20.3.0
-Babel==2.9.0
+Babel==2.9.1
 bcrypt==3.2.0
 beautifulsoup4==4.9.3
 blinker==1.4
