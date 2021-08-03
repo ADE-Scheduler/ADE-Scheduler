@@ -87,6 +87,12 @@ III. Install Python
 The project can work with a variety of Python versions, but we recommend Python 3.8.
 It can be downloaded from the official site: https://www.python.org/
 
+**Before installing Python packages**:
+Some external packages require external dependencies, and missing them will cause errors during the installation process.
+Here are a few:
+- OpenSSL: https://www.poftut.com/install-use-openssl-library-python-applications/
+- OpenLDAP: https://stackoverflow.com/questions/4768446/i-cant-install-python-ldap
+
 IV. Create a virtual environment
 --------------------------------
 
@@ -100,7 +106,7 @@ to create a Python virtual environment. This can be done in a few lines:
     or equivalent command if you are not on ubuntu
     $ virtualenv venv
     $ source venv/bin/activate
-    $ pip3 install -r requirements.txt
+    $ pip3 install -r dev-requirements.txt
 
 .. warning::
 
