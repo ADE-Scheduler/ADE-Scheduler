@@ -31,7 +31,7 @@ class CalendarEncoder(json.JSONEncoder):
         if isinstance(obj, set):
             return list(obj)
         elif isinstance(obj, LazyString):
-            return flask(obj)
+            return str(obj)
         else:
             return json.JSONEncoder.default(self, obj)
 
