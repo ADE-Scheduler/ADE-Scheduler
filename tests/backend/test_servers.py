@@ -1,16 +1,13 @@
-from strong.core.decorators import assert_correct_typing
-
-
 class TestServer:
     @staticmethod
     def test_is_running(server):
-        func = assert_correct_typing(server.is_running)
+        func = server.is_running
 
         assert func(), "Did you forget to run redis ? Or did you get the port wrong ?"
 
     @staticmethod
     def test_set_value(server):
-        func = assert_correct_typing(server.set_value)
+        func = server.set_value
 
         prefix = "[__useless_key__]"
 
