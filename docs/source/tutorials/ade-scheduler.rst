@@ -84,7 +84,7 @@ you can fix this by running:
 III. Install Python
 -------------------
 
-The project can work with a variety of Python versions, but we recommend Python 3.8.
+The project can work with a variety of Python versions, but we recommend Python 3.9.X as this is the version that is currently used in production.
 It can be downloaded from the official site: https://www.python.org/
 
 **Before installing Python packages**:
@@ -106,7 +106,8 @@ to create a Python virtual environment. This can be done in a few lines:
     or equivalent command if you are not on ubuntu
     $ virtualenv venv
     $ source venv/bin/activate
-    $ pip3 install -r dev-requirements.txt
+    $ pip install -r prod-requirement.txt # For production  (if you do not plan on modifying code)
+    $ pip install -r dev-requirements.txt # For development (else)
 
 .. warning::
 
