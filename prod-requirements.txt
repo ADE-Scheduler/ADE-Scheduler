@@ -24,5 +24,5 @@ redis==3.5.3
 SQLAlchemy==1.4.22
 telegram==0.0.1
 Werkzeug==2.0.1
-Flask-Security-Too==4.0.0
+Flask-Security-Too==4.1.0
 psycopg2-binary==2.9.1
