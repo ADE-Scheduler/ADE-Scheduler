@@ -737,6 +737,7 @@ document.addEventListener('DOMContentLoaded', function() {
           })
             .then(resp => {
               this.codeSearch = resp.data.codes;
+              codeDropdown.update();
             })
             .catch(() => {})
             .then(  () => {});
@@ -796,7 +797,7 @@ document.addEventListener('DOMContentLoaded', function() {
       trigger: 'focus',
     });
   });
-  var codeDropdown = new Dropdown(document.getElementById('input-enter-code'));
+  var codeDropdown = new Dropdown(document.getElementById('codeInputDropdown'));
   var addEventModal = new Modal(document.getElementById('addEventModal'));
   var eventModal = new Modal(document.getElementById('eventModal'));
   var exportModal = new Modal(document.getElementById('exportModal'));
