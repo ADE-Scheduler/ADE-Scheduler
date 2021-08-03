@@ -1,4 +1,4 @@
--r ../dev-requirements.txt
+-r ../prod-requirements.txt
 
 Sphinx==3.4.1
 sphinx_click==2.5.0
