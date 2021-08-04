@@ -177,19 +177,23 @@ It is a great tool for debugging purposes!
 3. Adding new Python package
 ============================
 
-Whenever you add a package to your Python environment, you will need to add it to the
-list of requirements so that other developers will now it. This can be done pretty
-easily:
+Whenever you add a package to your Python environment that is required for the project, you will need to add it to the list of requirements so that other developers will know it. This can be done pretty easily with `pipreqs` utility:
 
 .. code-block::
 
     $ pip3 install some_package
-    $ pip3 freeze > requirements.txt
+    # Include this packages in one or multiple Python files
+    $ pipreqs --save-path prod-requirements.txt # For anything in app.py / backend / views
+    # or
+    $ pipreqs --save-path docs/requirements.txt # For anything related for automated docs
+    # or
+    $ pipreqs --save-path dev-requirements.txt  # For anything else: tests, linting, etc.
+
+
 
 .. warning::
 
-    When you freeze some packages, you will see some other packages might have
-    changed in the :code:`<repo>/requirements.txt` file. You must undo these change!
+    For the moment, `pipreqs` is not the best solution and might not detect every package that is required. To this end, please always manually check changes in the requirement files.
     Only keep changes related to your new package.
 
 4. Adding new Javascript package
