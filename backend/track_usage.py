@@ -25,10 +25,11 @@ class ParsedUserAgent(UserAgent):
 
     @property
     def version(self):
+        ua = self._details["user_agent"]
         return '.'.join(
-            part
+            ua[key]
             for key in ('major', 'minor', 'patch')
-            if (part := self._details['user_agent'][key]) is not None
+            if ua[key] is not None
         )
 
 
