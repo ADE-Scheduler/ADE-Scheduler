@@ -17,19 +17,17 @@ class ParsedUserAgent(UserAgent):
 
     @property
     def platform(self):
-        return self._details['os']['family']
+        return self._details["os"]["family"]
 
     @property
     def browser(self):
-        return self._details['user_agent']['family']
+        return self._details["user_agent"]["family"]
 
     @property
     def version(self):
         ua = self._details["user_agent"]
-        return '.'.join(
-            ua[key]
-            for key in ('major', 'minor', 'patch')
-            if ua[key] is not None
+        return ".".join(
+            ua[key] for key in ("major", "minor", "patch") if ua[key] is not None
         )
 
 
@@ -41,7 +39,6 @@ def before_request():
 def after_request(response):
     end_time = datetime.utcnow()
     speed = end_time - g.start_time
-
 
     md.Usage(
         dict(
