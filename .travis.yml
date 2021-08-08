@@ -1,6 +1,6 @@
 # Python version that is used in prod
 language: python
-python: "3.6"
+python: "3.9"
 
 # Cache install data
 cache:
@@ -24,7 +24,7 @@ before_install:
 
 # Dependencies
 install:
-    - pip install -r requirements.txt
+    - pip install -r dev-requirements.txt
     - npm install
 
 # Before tests
