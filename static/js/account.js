@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
         projectId: [],
         schedules: [],
         currentSchedule: {},
+        labelBackup: '',
         computing: true,
         unsaved: true,
         autoSave: false,
@@ -42,6 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
             this.unsaved = resp.data.unsaved;
             this.schedules = resp.data.schedules;
             this.currentSchedule = resp.data.current_schedule;
+            this.labelBackup = this.currentSchedule.label;
             this.autoSave = resp.data.autosave;
           })
           .catch(() => {
@@ -77,6 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(resp => {
               this.unsaved = resp.data.unsaved;
               this.currentSchedule = resp.data.current_schedule;
+              this.labelBackup = this.currentSchedule.label;
             })
             .catch(() => {
               this.error = true;
@@ -131,6 +134,7 @@ document.addEventListener('DOMContentLoaded', function() {
               this.schedules.splice(index, 1);
             }
             this.currentSchedule = resp.data.current_schedule;
+            this.labelBackup = this.currentSchedule.label;
           })
           .catch(() => {
             this.error = true;
@@ -154,6 +158,7 @@ document.addEventListener('DOMContentLoaded', function() {
             let schedule = this.schedules.find(s => s.id === id);
             if (schedule) {
               schedule.label = this.currentSchedule.label;
+              this.labelBackup = schedule.label;
             }
           })
           .catch(() => {

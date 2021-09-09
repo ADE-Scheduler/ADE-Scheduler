@@ -245,7 +245,10 @@ def when_user_logged_out(sender, user):
     utl.init_session()
 
     if session["current_schedule"].id is not None:
-        user.set_last_schedule_id(session["current_schedule"].id)
+        if (
+            not user.is_anonymous
+        ):  # Fixes problem whem confirmation link logs out but not account was actually logged in
+            user.set_last_schedule_id(session["current_schedule"].id)
 
         session["current_schedule"] = schd.Schedule(manager.get_default_project_id())
         session["current_schedule_modified"] = False

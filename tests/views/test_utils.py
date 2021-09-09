@@ -10,7 +10,8 @@ def test_init_session(app, manager):
     """Test the session initialisation"""
 
     # Test session initialisation
-    utl.init_session()
+    with app.app_context():
+        utl.init_session()
 
     assert session["current_schedule"].label == gettext("New schedule")
     assert session["current_schedule"].is_empty()

@@ -1,0 +1,6 @@
+-r prod-requirements.txt
+
+mypy==0.910
+pytest-flask==1.2.0
+pre-commit==2.13.0
+black==21.7b0

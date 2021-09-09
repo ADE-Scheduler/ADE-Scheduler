@@ -176,6 +176,7 @@ making a pull request.
 .. code-block:: console
 
     $ cd <repo>/docs
+    $ pip install -r requirements.txt # Only run this once
     $ sphinx-apidoc -o source/backend ../backend -f
     $ sphinx-apidoc -o source/views ../views -f
     $ make html
