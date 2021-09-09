@@ -236,7 +236,7 @@ class AcademicalEvent(CustomEvent):
     :param professor: the professor(s) in charge of this event
     :type professor: Professor
     :param classrooms: all the classrooms were this event takes place
-    :type classrooms: Optional[List[Classroom]]
+    :type classrooms: list[Classroom]
     :param id: the id of the event
     :type id: Optional[str]
     :param weight: the weight attributed to the event
@@ -247,7 +247,7 @@ class AcademicalEvent(CustomEvent):
     :type prefix: Optional[str]
     """
 
-    KEYWORDS = ()
+    KEYWORDS: tuple[str, ...] = ()
 
     def __init__(
         self,
@@ -255,7 +255,7 @@ class AcademicalEvent(CustomEvent):
         begin: datetime,
         end: datetime,
         professor: Professor,
-        classrooms: Optional[Iterable[Classroom]] = None,
+        classrooms: list[Classroom] = [],
         id: Optional[str] = None,
         weight: Union[int, float] = 5,
         code: Optional[str] = None,
@@ -273,14 +273,18 @@ class AcademicalEvent(CustomEvent):
         self.id = f"{prefix}{id}"
         self.code = code
         self.classrooms = classrooms
-        self.description = (
+        self.description: str = (
             f"{self.name}\n" f"{str(self.duration)}\n" f"{self.description}"
         )
 
-        if name is None or len(name) == 0:  # Fix for special events with no name
-            self.name = id
+        self.name: str
+
+        if not isinstance(name, str) or len(name) == 0:  # Fix for special events with no name
+            self.name = id if id else ""
         else:
             self.name = f"{prefix}{self.name}"
+
+
 
     def __hash__(self) -> int:
         return super().__hash__()
@@ -294,18 +298,20 @@ class AcademicalEvent(CustomEvent):
             + self.end.strftime("%Hh%M")
         )
 
-    def __eq__(self, other: "AcademicalEvent") -> bool:
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, AcademicalEvent):
+            raise TypeError
         return (
             self.get_id() == other.get_id()
             and self.begin == other.begin
             and self.duration == other.duration
         )
 
-    def __ne__(self, other: "AcademicalEvent") -> bool:
+    def __ne__(self, other: object) -> bool:
         return not self.__eq__(other)
 
     @classmethod
-    def matches(cls, string):
+    def matches(cls, string: str):
         return any(kw in string for kw in cls.KEYWORDS)
 
     def get_id(self) -> str:
@@ -363,7 +369,7 @@ class EventORAL(AcademicalEvent):
 
 class EventLABO(AcademicalEvent):
     PREFIX = "LABO: "
-    KEYWORDS = "labo"
+    KEYWORDS = ("labo",)
 
     def __init__(self, **kwargs):
         super().__init__(prefix=EventLABO.PREFIX, **kwargs)
@@ -412,7 +418,7 @@ def extract_type(course_type: str, course_id: str) -> Type[AcademicalEvent]:
 
     course_type = sanitize_string(course_type)
 
-    classes = (EventCM, EventTP, EventEXAM, EventORAL, EventOTHER, EventLABO)
+    classes: tuple[type[AcademicalEvent], ...] = (EventCM, EventTP, EventEXAM, EventORAL, EventOTHER, EventLABO)
 
     for cls in classes:
         if cls.matches(course_type):

@@ -6,6 +6,8 @@ import sqlalchemy as sa
 
 from sqlalchemy.types import TypeDecorator, CHAR
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.orm.decl_api import DeclarativeMeta
+from sqlalchemy.orm import declarative_base
 
 from copy import copy
 from flask_sqlalchemy import SQLAlchemy
@@ -22,8 +24,13 @@ VIEWER_LEVEL = 2
 
 db = SQLAlchemy()
 fsqla.FsModels.set_db_info(db)
+BaseModel = declarative_base()
 
+"""
+class BaseModel(metaclass=DeclarativeMeta):
+    __abstract__ = True
 
+"""
 def query_to_dataframe(query: BaseQuery, *args: Any, **kwargs: Any) -> pd.DataFrame:
     """
     Parses a SQL query from the database into a dataframe.
@@ -40,12 +47,12 @@ def query_to_dataframe(query: BaseQuery, *args: Any, **kwargs: Any) -> pd.DataFr
     return pd.read_sql(query.statement, query.session.bind, *args, **kwargs)
 
 
-def table_to_dataframe(table: db.Model, *args: Any, **kwargs: Any) -> pd.DataFrame:
+def table_to_dataframe(table: BaseModel, *args: Any, **kwargs: Any) -> pd.DataFrame:
     """
     Parses a table from the database into a dataframe.
 
     :param table: the table to be parsed
-    :type table: db.Model
+    :type table: BaseModel
     :param args: positional arguments to be passed to :func:`pandas.read_sql`
     :type args: Any
     :param kwargs: keyword arguments to be passed to :func:`pandas.read_sql`
@@ -125,11 +132,11 @@ class ScheduleDoNotMatchError(Exception):
         return f"The schedule ID's do not match: database ID is {self.database_id} and given data ID is {self.data_id}."
 
 
-class Role(db.Model, fsqla.FsRoleMixin):
+class Role(BaseModel, fsqla.FsRoleMixin):
     pass
 
 
-class User(db.Model, fsqla.FsUserMixin):
+class User(BaseModel, fsqla.FsUserMixin):
     autosave = db.Column(
         db.Boolean(),
         nullable=False,
@@ -159,15 +166,13 @@ class User(db.Model, fsqla.FsUserMixin):
             self.schedules.remove(schedule)
             db.session.commit()
 
-    def share_schedule_with_emails(self, schedule, *emails: str, level=EDITOR_LEVEL):
+    def share_schedule_with_emails(self, schedule, emails: list[str], level=EDITOR_LEVEL):
 
         if level == OWNER_LEVEL:
             raise LevelAccessDenied
 
-        emails = [
-            email for email in emails if email != self.email
-        ]  # You should not add yourself as editor or viewer
-        users = User.query.filter(User.email.in_(emails)).all()
+        f_emails = filter(self.email.__ne__, emails)  # You should not add yourself as editor or viewer
+        users = User.query.filter(User.email.in_(f_emails)).all()
 
         for user in users:
             user.add_schedule(schedule, level=level)
@@ -208,7 +213,7 @@ class User(db.Model, fsqla.FsUserMixin):
         return df.email.values.tolist()
 
 
-class Schedule(db.Model):
+class Schedule(BaseModel):
     """
     Table used to store Schedules in the database.
     """
@@ -269,7 +274,7 @@ class Schedule(db.Model):
         db.session.commit()
 
 
-class Link(db.Model):
+class Link(BaseModel):
     __tablename__ = "link"
     id = db.Column(db.Integer(), primary_key=True)
     schedule_id = db.Column(db.Integer(), db.ForeignKey("schedule.id"))
@@ -289,7 +294,7 @@ class Link(db.Model):
         db.session.commit()
 
 
-class Property(db.Model):
+class Property(BaseModel):
     __tablename__ = "property"
     __mapper_args__ = {"confirm_deleted_rows": False}
 
@@ -306,7 +311,7 @@ class Property(db.Model):
     )
 
 
-class Usage(db.Model):
+class Usage(BaseModel):
     __tablename__ = "flask_usage"
     id = db.Column(db.Integer, primary_key=True)
     url = db.Column(db.String(512))
@@ -350,7 +355,7 @@ class Usage(db.Model):
         db.session.commit()  # For some obscures reason, this make the tests fail...
 
 
-class ApiUsage(db.Model):
+class ApiUsage(BaseModel):
     __tablename__ = "api_usage"
     id = db.Column(db.Integer, primary_key=True)
     url = db.Column(db.String(256))

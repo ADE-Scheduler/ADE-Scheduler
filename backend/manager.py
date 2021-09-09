@@ -1,5 +1,5 @@
 import pandas as pd
-from typing import List, Iterator, Optional, Union, Dict, Tuple
+from typing import List, Iterable, Optional, Union, Dict, Tuple
 
 import backend.servers as srv
 import backend.ade_api as ade
@@ -259,7 +259,7 @@ class Manager:
 
             self.server.set_value(key, classrooms, expire_in=self.ttl["classrooms"])
 
-    def get_resource_ids(self, *codes: str, project_id: str = None) -> Iterator[str]:
+    def get_resource_ids(self, *codes: str, project_id: str = None) -> Iterable[str]:
         """
         Returns the resource ids of each code.
 
@@ -268,7 +268,7 @@ class Manager:
         :param project_id: the project id
         :type project_id: str
         :return: the resource ids
-        :rtype: Iterator[str]
+        :rtype: Iterable[str]
         """
         if project_id is None:
             project_id = self.get_default_project_id()
@@ -276,7 +276,11 @@ class Manager:
         key = f"[RESOURCE_IDs,project_id={project_id}]"
         if not self.server.exists(key):
             self.update_resource_ids()
-        return map(lambda x: x.decode(), filter(None, self.server.hmget(key, codes)))
+
+        for id in self.server.hmget(key, codes):
+            if isinstance(id, bytes):
+                yield id.decode()
+        #return map(lambda x: x.decode(), filter(None, self.server.hmget(key, codes)))
 
     def update_resource_ids(self):
         """
