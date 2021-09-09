@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
         projectId: [],
         schedules: [],
         currentSchedule: {},
-        labelBackup: "",
+        labelBackup: '',
         computing: true,
         unsaved: true,
         autoSave: false,
