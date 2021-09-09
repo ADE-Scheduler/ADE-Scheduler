@@ -17,7 +17,7 @@ import backend.models as md
 import backend.resources as rsrc
 
 
-from typing import Dict, Union, List, Tuple, Callable, Type, Iterator
+from typing import Dict, Union, List, Tuple, Callable, Type
 from flask import current_app
 
 
@@ -175,7 +175,7 @@ class DummyClient:
         )
 
     def get_activities(
-        self, resource_ids: Iterator[str], project_id: str
+        self, resource_ids: List[str], project_id: str
     ) -> requests.Response:
         """
         Requests all activities (set of events)  for a specific project.
@@ -204,8 +204,8 @@ class Client(DummyClient):
 
     def __init__(self, credentials: ClientCredentials):
         self.credentials = credentials
-        self.token = ""
-        self.expiration = time.time()
+        self.token = None
+        self.expiration = None
         self.renew_token()
 
     def is_expired(self) -> bool:
@@ -302,15 +302,15 @@ class FakeClient(DummyClient):
 
     def __init__(self, credentials: ClientCredentials):
         self.credentials = credentials
-        self.delay = 150.0  # Delay in seconds
-        self.expiration = 0.0
+        self.delay = 150  # Delay in seconds
+        self.expiration = 0
         self.renew_token()
 
     def is_expired(self) -> bool:
         return self.expiration < time.time()
 
     def expire_in(self) -> float:
-        return max(self.expiration - time.time(), 0.0)
+        return max(self.expiration - time.time(), 0)
 
     def renew_token(self) -> None:
         self.expiration = time.time() + self.delay
@@ -329,16 +329,12 @@ def get_token(credentials: ClientCredentials) -> Tuple[str, int]:
     Requests a new token to the API.
 
     :param credentials: all information needed to make requests to API
-    :type credentials: ClientCredentials
+    :param credentials: ClientCredentials
     :return: the token and its time to expiration in seconds
     :rtype: Tuple[str, int]
     """
     url = credentials["url"]
-    assert isinstance(url, str)
-
     data = credentials["data"]
-    assert isinstance(data, str)
-
     authorization = credentials["Authorization"]
     header = {"Authorization": authorization}
     resp = requests.post(url=url, headers=header, data=data)
@@ -534,7 +530,7 @@ def response_to_classrooms(classrooms_response: requests.Response) -> List[Class
 
 def parse_event(
     event: etree._Element,
-    event_type: type[backend.events.AcademicalEvent],
+    event_type: backend.events.AcademicalEvent,
     activity_name: str,
     activity_id: str,
     activity_code: str,
@@ -546,7 +542,7 @@ def parse_event(
     :param event: the event element
     :type event: etree._Element
     :param event_type: the constructor used to initiate to event object
-    :type event_type: type[backend.events.AcademicalEvent]
+    :type event_type: Type[backend.events.AcademicalEvent]
     :param activity_name: the name of the activity
     :type activity_name: str
     :param activity_id: the id of the activity
@@ -631,7 +627,7 @@ def response_to_courses(activities_response: requests.Response) -> List[Course]:
     """
     root = response_to_root(activities_response)
 
-    courses = dict()
+    courses = defaultdict(Course)
 
     # Each activity has its unique event type
     for activity in root.xpath("//activity"):
@@ -669,7 +665,7 @@ def response_to_events(
     """
     root = response_to_root(activities_response)
 
-    events: list[backend.events.AcademicalEvent] = list()
+    events = list()
 
     # Each activity has its unique event type
     for activity in root.xpath("//activity"):

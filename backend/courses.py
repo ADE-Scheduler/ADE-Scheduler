@@ -54,7 +54,7 @@ class Course:
         else:
             self.activities = generate_empty_dataframe()
 
-    def __eq__(self, other: object) -> bool:
+    def __eq__(self, other: Union["Course", str]) -> bool:
         if isinstance(other, Course):
             return self.code == other.code
         elif isinstance(other, str):
@@ -62,7 +62,7 @@ class Course:
         else:
             raise TypeError
 
-    def __ne__(self, other: object) -> bool:
+    def __ne__(self, other: Union["Course", str]) -> bool:
         return not self.__eq__(other)
 
     def __str__(self) -> str:

@@ -67,13 +67,13 @@ class Schedule:
         self.id = schedule_id
         self.project_id = project_id
         self.label = label
-        self.codes: list[str] = list()
+        self.codes = list()
         self.filtered_subcodes = default_dict_any_to_set()
-        # Maps [schedule rank] -> [course code] -> [week number] -> {event id, ...}
-        self.best_schedules: list[dict[str, dict[int, set[str]]]] = list()
-        self.custom_events: list[evt.CustomEvent] = list()
+        self.best_schedules = list()
+        self.custom_events = list()
+        self.priorities = dict()
         self.color_palette = list(COLOR_PALETTE)
-        self.options: dict[str, bool] = dict()
+        self.options = dict()
 
     def reset_best_schedules(self):
         self.best_schedules = list()
@@ -298,7 +298,7 @@ class Schedule:
 
     def compute_best(
         self, n_best: int = 5, safe_compute: bool = True
-    ) -> list[list[evt.CustomEvent]]:
+    ) -> List[Iterable[evt.CustomEvent]]:
         """
         Computes best schedules trying to minimize conflicts selecting, for each type of event, one event.
 
@@ -307,19 +307,19 @@ class Schedule:
         :param safe_compute: if True, ignore all redundant events at same time period
         :type safe_compute: bool
         :return: the n_best schedules, but maybe less if cannot find n_best different schedules
-        :rtype: list[list[evt.CustomEvent]]
+        :rtype: List[Iterable[evt.CustomEvent]]
         """
         courses = self.get_courses()
 
         if len(courses) == 0:
-            return []
+            return None
 
         # Reset the best schedules
         # TODO: pas sûr que c'est la meilleure manière de faire...
         self.best_schedules = [
             defaultdict(default_dict_any_to_set) for _ in range(n_best)
         ]
-        best: list[list[evt.CustomEvent]] = [
+        best = [
             [] for _ in range(n_best)
         ]  # We create an empty list which will contain best schedules
 
@@ -347,7 +347,7 @@ class Schedule:
                 safe_compute
             ):  # We remove events from same course that happen at the same time
                 for _, data in week_data.groupby(level=["code", "type"]):
-                    tmp: deque[evt.CustomEvent]  = deque()  # Better for appending
+                    tmp = deque()  # Better for appending
                     # For each event in a given course, for a given type...
                     for index, row in data.iterrows():
                         e = row["event"]
@@ -406,9 +406,8 @@ class Schedule:
         del self.best_schedules[max_bests_found:]
 
         other = df_other["event"].values.flatten().tolist()
-        if other:  # We add 'other' events to each best config.
-            for schedule in best:
-                schedule.extend(other)
+        if other:
+            [schedule.extend(other) for schedule in best]
 
         return best
 

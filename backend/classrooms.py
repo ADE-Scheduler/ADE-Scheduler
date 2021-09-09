@@ -175,12 +175,12 @@ class Classroom:
         return "\n".join(filter(None, str(self).split("\n")))  # Removes blank lines
 
 
-def merge_classrooms(classrooms: list[Classroom]) -> Classroom:
+def merge_classrooms(classrooms: Iterable[Classroom]) -> Classroom:
     """
     Merges multiple classrooms into one.
 
     :param classrooms: multiple classrooms
-    :type classrooms: list[Classroom]
+    :type classrooms: Iterable[Classroom]
     :return: the new classroom
     :rtype: Classroom
 
@@ -191,10 +191,10 @@ def merge_classrooms(classrooms: list[Classroom]) -> Classroom:
     >>> c3 = merge_classrooms((c1, c2))
     """
     names = " | ".join(
-        str(classroom.infos["name"]) for classroom in classrooms if classroom.infos["name"]
+        classroom.infos["name"] for classroom in classrooms if classroom.infos["name"]
     )
     addresses = "\n".join(str(classroom.infos["address"]) for classroom in classrooms)
     id = "|".join(
-        str(classroom.infos["id"]) for classroom in classrooms if classroom.infos["id"]
+        classroom.infos["id"] for classroom in classrooms if classroom.infos["id"]
     )
     return Classroom(name=names, address=addresses, id=id)
