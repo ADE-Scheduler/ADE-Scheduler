@@ -16,7 +16,6 @@ from flask import (
 )
 from flask_security import current_user, login_required
 from flask_babel import gettext, LazyString
-from flask._compat import text_type
 
 import backend.schedules as schd
 import backend.events as evt
@@ -32,7 +31,7 @@ class CalendarEncoder(json.JSONEncoder):
         if isinstance(obj, set):
             return list(obj)
         elif isinstance(obj, LazyString):
-            return text_type(obj)
+            return str(obj)
         else:
             return json.JSONEncoder.default(self, obj)
 

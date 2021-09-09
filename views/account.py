@@ -5,7 +5,6 @@ from flask import current_app as app
 from flask import Blueprint, render_template, session, request, jsonify
 from flask_security import login_required, current_user
 from flask_babel import LazyString
-from flask._compat import text_type
 
 
 import backend.schedules as schd
@@ -21,7 +20,7 @@ class AccountEncoder(json.JSONEncoder):
         if isinstance(obj, set):
             return list(obj)
         elif isinstance(obj, LazyString):
-            return text_type(obj)
+            return str(obj)
         else:
             return json.JSONEncoder.default(self, obj)
 

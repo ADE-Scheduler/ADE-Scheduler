@@ -63,7 +63,7 @@
                         <input class="form-control me-3" type="text" v-model="currentSchedule.label" v-if="isEditing"
                             v-on:keyup.enter="updateLabel(currentSchedule.id)"
                             v-on:blur="isEditing = false"
-                            v-on:keyup.esc="isEditing = false"
+                            v-on:keyup.esc="isEditing = false; currentSchedule.label = labelBackup;"
                             v-focus
                         />
                         <div class="h5 mb-0 text-muted" id="schedule-label" v-else v-on:click="isEditing = true">

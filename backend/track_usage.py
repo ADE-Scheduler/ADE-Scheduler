@@ -5,6 +5,31 @@ from flask_security import current_user
 
 import backend.models as md
 
+from ua_parser import user_agent_parser
+from werkzeug.user_agent import UserAgent
+from werkzeug.utils import cached_property
+
+
+class ParsedUserAgent(UserAgent):
+    @cached_property
+    def _details(self):
+        return user_agent_parser.Parse(self.string)
+
+    @property
+    def platform(self):
+        return self._details["os"]["family"]
+
+    @property
+    def browser(self):
+        return self._details["user_agent"]["family"]
+
+    @property
+    def version(self):
+        ua = self._details["user_agent"]
+        return ".".join(
+            ua[key] for key in ("major", "minor", "patch") if ua[key] is not None
+        )
+
 
 def before_request():
     g.start_time = datetime.utcnow()
@@ -20,7 +45,7 @@ def after_request(response):
             url=request.url,
             status=response.status_code,
             username=current_user.email if current_user.is_authenticated else None,
-            user_agent=request.user_agent,
+            user_agent=ParsedUserAgent(request.user_agent.string),
             blueprint=request.blueprint,
             path=request.path,
             endpoint=request.endpoint,
