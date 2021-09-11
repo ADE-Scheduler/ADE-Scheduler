@@ -281,7 +281,7 @@ class AcademicalEvent(CustomEvent):
         self.note = note
 
         if self.note:
-            self.description = f"{self.duration}\n{self.note}"
+            self.description = f"{self.description}\n{self.note}"
 
         if name is None or len(name) == 0:  # Fix for special events with no name
             self.name = id
