@@ -245,6 +245,8 @@ class AcademicalEvent(CustomEvent):
     :type code: Optional[str]
     :param prefix: the prefix used for to describe the type of event
     :type prefix: Optional[str]
+    :param note: a note to be added to the event description
+    :type str: Optional[str]
     """
 
     KEYWORDS = ()
@@ -260,6 +262,7 @@ class AcademicalEvent(CustomEvent):
         weight: Union[int, float] = 5,
         code: Optional[str] = None,
         prefix: Optional[str] = None,
+        note: Optional[str] = None,
     ):
         super().__init__(
             name=name,
@@ -269,13 +272,16 @@ class AcademicalEvent(CustomEvent):
             end=end,
             weight=weight,
         )
-        # TODO: merge_classrooms fait du gros caca ici
         self.id = f"{prefix}{id}"
         self.code = code
         self.classrooms = classrooms
         self.description = (
             f"{self.name}\n" f"{str(self.duration)}\n" f"{self.description}"
         )
+        self.note = note
+
+        if self.note:
+            self.description = f"{self.duration}\n{self.note}"
 
         if name is None or len(name) == 0:  # Fix for special events with no name
             self.name = id
