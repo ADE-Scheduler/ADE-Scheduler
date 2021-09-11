@@ -788,6 +788,20 @@ document.addEventListener('DOMContentLoaded', function() {
             this.computing = false;
           });
       },
+      toggleAll: function(toggle) {
+        let summary = this.courseInfo.summary;
+        let filtered = this.courseInfo.filtered;
+        Object.keys(summary).forEach(name => {
+          let course = summary[name];
+          Object.keys(course).forEach(eventType => {
+            let codes = course[eventType];
+            Object.keys(codes).forEach(idx => {
+              let code = codes[idx];
+              filtered[name][eventType][code] = toggle;
+            });
+          });
+        });
+      },
     },
   });
 
