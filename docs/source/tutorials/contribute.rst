@@ -192,3 +192,33 @@ Here are listed some interesting readings about Sphinx's documentation tool:
 * https://sphinx-rtd-tutorial.readthedocs.io/en/latest/docstrings.html
 * https://thomas-cokelaer.info/tutorials/sphinx/docstring_python.html
 * https://thomas-cokelaer.info/tutorials/sphinx/rest_syntax.html
+
+
+6. Profiling the Flask Application
+==================================
+
+Performance is a crucial aspect in ADE Scheduler as it will impact users' experience. This section discusses how to profile the Flask Application to better understand some performance issues you might encounter.
+
+6.1 Setup
+---------
+
+Profiling is straighforward: you just need to add one line to your :code:`.flaskenv` file.
+
+.. code-block:: bash
+    :caption: :code:`<repo>/.flaskenv`
+
+    PROFILE = True
+
+And voilà! Once the application is (re-)started, it will now output the time taken by each request. It will also write the profile stats into files under the :code:`profile` folder.
+
+If you wish the tweak the profiling settings, you can modify the :code:`app.py` file. More information can be found `here <https://werkzeug.palletsprojects.com/en/2.0.x/middleware/profiler/>`_.
+
+6.2 Reading stats files
+-----------------------
+
+Interpreting :code:`.prof` files can be hard and we recommend you to use a graphical tool to do so. There are plenty available for free and we use `tuna <https://github.com/nschloe/tuna>`_. With this tool, it is straighforward to analyse the profiling stats.
+
+.. code-block:: console
+
+    $ cd <repo>
+    $ tuna profile/<path_to_file.prof>

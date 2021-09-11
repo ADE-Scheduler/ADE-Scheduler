@@ -5,6 +5,7 @@ from datetime import timedelta
 from jsmin import jsmin
 import distutils
 import configparser
+import warnings
 from requests.exceptions import HTTPError, ConnectionError
 
 # Flask imports
@@ -56,6 +57,29 @@ os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
 # Setup app
 app = Flask(__name__, template_folder="static/dist/html")
+
+## Optionally enable profiling
+app.config["PROFILE"] = (
+    bool(distutils.util.strtobool(os.environ["PROFILE"]))
+    if "PROFILE" in os.environ
+    else False
+)
+
+if app.config["PROFILE"]:
+    from werkzeug.middleware.profiler import ProfilerMiddleware
+
+    profile_dir = "profile"
+    if os.path.exists(profile_dir):
+        if not os.path.isdir(profile_dir):
+            warnings.warn(
+                f"You cannot save the profiling to {profile_dir} since it is a file. It must be a directory."
+            )
+            profile_dir = None
+    else:
+        os.mkdir(profile_dir)
+    app.wsgi_app = ProfilerMiddleware(app.wsgi_app, profile_dir=profile_dir)
+
+## Register blueprints
 app.register_blueprint(calendar, url_prefix="/calendar")
 app.register_blueprint(account, url_prefix="/account")
 app.register_blueprint(classroom, url_prefix="/classroom")
