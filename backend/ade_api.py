@@ -557,6 +557,7 @@ def parse_event(
     event_end = event.attrib["endHour"]
     rooms = event.xpath('.//eventParticipant[@category="classroom"]')
     classrooms = [room_to_classroom(room) for room in rooms]
+    note = event.attrib["note"]
 
     instructors = list()
     for instructor in event.xpath('.//eventParticipant[@category="instructor"]'):
@@ -573,6 +574,7 @@ def parse_event(
         classrooms=classrooms,
         id=activity_id,
         code=activity_code,
+        note=note,
     )
 
 

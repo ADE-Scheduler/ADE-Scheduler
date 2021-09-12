@@ -1,5 +1,16 @@
 [
   {
+    "id": "september-2021",
+    "title": "September 2021",
+    "subtitles": [
+      {
+        "id": "minor-improvements",
+        "title": "New features",
+        "content": "In addition to a lot of work on ADE Scheduler's CI, you can now enjoy some new features, some of which were directly inspired from you personal requests: <ul class='mt-2'><li>It is now possible to (un-)select all the event from a course with only one mouse click</li><li>For every course, you can access its UCLouvain webpage with the description of the course via the small `globe` icon</li><li>Events now contain more details if present (e.g.: information about TP)</li></ul>"
+      }
+    ]
+  },
+  {
     "id": "january",
     "title": "January 2021",
     "subtitles": [

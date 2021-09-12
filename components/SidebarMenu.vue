@@ -76,7 +76,7 @@ export default {
       top: 0;
       bottom: 0;
       left: 0;
-      z-index: 3; /* Behind the navbar */
+      z-index: 4; /* Behind the navbar */
       padding: 56px 0 0; /* Height of navbar */
       box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
   }
@@ -104,7 +104,7 @@ export default {
 
   .btn-nav {
       position: fixed;
-      z-index: 4;
+      z-index: 5;
       bottom: 20px;
       right: 20px;
       width: 60px;
