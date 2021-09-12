@@ -33,6 +33,10 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
         cache: 'pip'
+    - run: |
+        python -m pip install --upgrade pip
+        python -m pip install -r dev-requirements
+    - name: Set up Node
     - uses: actions/setup-node@v2
       with:
         node-version: '14'
@@ -41,8 +45,6 @@ jobs:
       run: |
         nvm install 10.23.0
         nvm use 10.23.0
-        python -m pip install --upgrade pip
-        python -m pip install -r dev-requirements
         npm install
     - name: Before script
       run: |
