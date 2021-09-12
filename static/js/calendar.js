@@ -244,6 +244,14 @@ document.addEventListener('DOMContentLoaded', function() {
       subscriptionLink: function() {
         return this.exportInfo.url + '&choice=' + this.exportInfo.subscriptionType;
       },
+      selectAllToggle: {
+        get() {
+          return true;
+        },
+        set(value) {
+          this.toggleAll(value);
+        },
+      },
     },
     watch: {
       codeSearchDisplay: function () {
@@ -264,7 +272,6 @@ document.addEventListener('DOMContentLoaded', function() {
       this.fetchData();
       this.debouncedCodeSearchResults = debounce(this.getCodeSearchResults, 200);
     },
-
     methods: {
       fetchData: function() {
         this.computing = true;
@@ -787,6 +794,20 @@ document.addEventListener('DOMContentLoaded', function() {
           .then(() => {
             this.computing = false;
           });
+      },
+      toggleAll: function(toggle) {
+        let summary = this.courseInfo.summary;
+        let filtered = this.courseInfo.filtered;
+        Object.keys(summary).forEach(name => {
+          let course = summary[name];
+          Object.keys(course).forEach(eventType => {
+            let codes = course[eventType];
+            Object.keys(codes).forEach(idx => {
+              let code = codes[idx];
+              filtered[name][eventType][code] = toggle;
+            });
+          });
+        });
       },
       getCourseURL: function(code) {
         let yearShort = '2021'; // Default value
