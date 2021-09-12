@@ -802,6 +802,21 @@ document.addEventListener('DOMContentLoaded', function() {
           });
         });
       },
+      getCourseURL: function(code) {
+        let yearShort = '2021'; // Default value
+        this.projectId.forEach(
+          project => {
+            if (project.id == this.currentProjectId) {
+              yearShort = project.year.slice(0, 4);
+            }
+          });
+
+        if (document.getElementById('current-locale').innerText.trim() === 'FR') {
+          return `https://www.uclouvain.be/cours-${yearShort}-${code}`;
+        } else {
+          return `https://www.uclouvain.be/en-cours-${yearShort}-${code}`;
+        }
+      },
     },
   });
 
