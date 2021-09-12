@@ -1,0 +1,53 @@
+# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Python package
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [3.9]
+    services:
+      redis:
+        # Docker Hub image
+        image: redis
+        # Set health checks to wait until redis has started
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        nvm install 10.23.0
+        nvm use 10.23.0
+        python -m pip install --upgrade pip
+        python -m pip install -r dev-requirements
+        npm install
+    - name: Before script
+      run: |
+        wget --no-check-certificate "https://docs.google.com/uc?export=download&id=1E8zboqLDRdufXnXZJUrLnSLih_ATaekO" -O api.zip
+        unzip api.zip
+        psql -c 'create database travis_ci_test;' -U postgres
+        flask sql init
+        flask redis update
+        npm run build
+    - name: Test with pytest
+      run: |
+        pytest
