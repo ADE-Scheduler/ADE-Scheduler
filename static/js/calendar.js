@@ -244,6 +244,14 @@ document.addEventListener('DOMContentLoaded', function() {
       subscriptionLink: function() {
         return this.exportInfo.url + '&choice=' + this.exportInfo.subscriptionType;
       },
+      selectAllToggle: {
+        get() {
+          return true;
+        },
+        set(value) {
+          this.toggleAll(value);
+        },
+      },
     },
     watch: {
       codeSearchDisplay: function () {
@@ -264,7 +272,6 @@ document.addEventListener('DOMContentLoaded', function() {
       this.fetchData();
       this.debouncedCodeSearchResults = debounce(this.getCodeSearchResults, 200);
     },
-
     methods: {
       fetchData: function() {
         this.computing = true;
