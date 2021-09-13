@@ -6,6 +6,7 @@ module.exports = {
     'es2021': true,
     'amd': true,
   },
+
   'extends': [
     'eslint:recommended',
     'plugin:vue/recommended',
