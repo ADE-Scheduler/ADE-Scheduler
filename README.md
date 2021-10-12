@@ -12,7 +12,7 @@
 
 # ADE Scheduler: a scheduling tool made for humans
 
-[ADE-Scheduler](https://ade-scheduler.info.ucl.ac.be/) is a web-application made by students which is destined to be used by UCLouvain members (students, academics,...).
+[ADE-Scheduler](https://ade-scheduler.info.ucl.ac.be/) is a web-application made by (former) students which is destined to be used by UCLouvain members (students, academics,...).
 
 ### Project creators
 
@@ -20,7 +20,7 @@
 - [Navarre Louis](https://www.linkedin.com/in/louis-navarre-36b78b143/)
 - [Poncelet Gilles](https://www.linkedin.com/in/gilles-poncelet-020442195/)
 
-We are three students from the Ecole Polytechnique de Louvain (EPL) and were starting our first master year at the start of the project.
+We are three former students from the Ecole Polytechnique de Louvain (EPL) and were starting our first master year at the start of the project.
 
 ### Why such a tool ?
 
@@ -34,6 +34,7 @@ Before that, we were using the excellent [ADE2ICS](https://github.com/cdamman/UC
 - **September 2019** : access to the API of ADE and release of the first version of the tool
 - **Summer 2020**: complete overhaul of the tool to make it more attractive, intuitive and mobile-friendly.
 - **September 2020**: release of the second version of the tool
+- **September 2021**: 2 years of service, Python 3.9 upgrade and 3500+ users
 
 ### How does it work ?
 
@@ -45,7 +46,7 @@ Thanks to the access to the API of ADE, we obtain all the information in a `XML`
  - Event list sorted by course
  - Location of every UCLouvain classroom, auditorium, etc.
 
-#### Data treatmeant
+#### Data treatment
 
 The backend of ADE-Scheduler is written in Python using the [Flask](https://flask.palletsprojects.com/en/1.1.x/) micro-framework. Other packages are also used to supply many useful functions to enhance the overall user experience.\
 Among those, we use [pandas](https://pandas.pydata.org/) pandas to optimise the performances, [ics](https://pypi.org/project/ics/) to convert the schedules in the iCal format, [Flask-Security](https://pypi.org/project/Flask-Security-Too/) to handle user registrations and security aspects - and many more.
