@@ -25,7 +25,7 @@
   "devDependencies": {
     "css-loader": "^5.2.7",
     "eslint": "^8.0.1",
-    "eslint-plugin-vue": "^7.18.0",
+    "eslint-plugin-vue": "^7.19.1",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^4.5.0",
     "postcss": "^8.3.0",
