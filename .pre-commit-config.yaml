@@ -10,7 +10,7 @@ repos:
     hooks:
     -   id: black
 -   repo: https://github.com/pre-commit/mirrors-eslint
-    rev: 'v8.0.0-1'  # Use the sha / tag you want to point at
+    rev: 'v8.0.1'  # Use the sha / tag you want to point at
     hooks:
     -   id: eslint
         additional_dependencies:
