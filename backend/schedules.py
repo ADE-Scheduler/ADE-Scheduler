@@ -16,7 +16,7 @@ COLOR_PALETTE = [
     "#2e3440",
     "#a3be8c",
     "#5e81ac",
-    "#ebcb8b",
+    "#faf08c ",
     "#88c0d0",
     "#d08770",
     "#b48ead",
