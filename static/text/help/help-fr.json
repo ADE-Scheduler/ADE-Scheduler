@@ -11,7 +11,7 @@
       {
         "id": "getting-started",
         "title": "Pour débuter",
-        "content": "L'objectif premier de ce site est son calendrier. Si vous êtes nouveaux ici, faites un tour sur <a href='https://ade-scheduler.info.ucl.ac.be/calendar'>cette page</a> et testez toutes les fonctionnalités. Vous êtes aussi encouragés à regarder notre guide de prise en main rapide. ",
+        "content": "L'objectif premier de ce site est son calendrier. Si vous êtes nouveau ici, faites un tour sur <a href='https://ade-scheduler.info.ucl.ac.be/calendar'>cette page</a> et testez toutes les fonctionnalités. Vous êtes aussi encouragé à regarder notre guide de prise en main rapide. ",
         "video": "https://www.youtube.com/embed/u82x-eysurU"
       },
       {
@@ -29,7 +29,7 @@
       {
         "id": "possibilities",
         "title": "Quelles sont les possibilités ?",
-        "content": "Une fois votre horaire fait, vous n'avez pas besoin de retourner à chaque fois sur ADE Scheduler pour voir votre horaire : vous pouvez l'exporter ! La plupart des applications de calendriers, telles que Gmail, permettent d'importer un calendrier externe. Une courte vidéo vous montre comme exporter votre horaire vers votre application favorite. ",
+        "content": "Une fois votre horaire fait, vous n'avez pas besoin de retourner à chaque fois sur ADE Scheduler pour voir votre horaire : vous pouvez l'exporter ! La plupart des applications de calendriers, telles que Gmail, permettent d'importer un calendrier externe. Une courte vidéo vous montre comment exporter votre horaire vers votre application favorite. ",
         "video": "https://www.youtube.com/embed/4IiNB3J1Dm0"
       },
       {
@@ -51,7 +51,7 @@
       {
         "id": "possibilities-2",
         "title": "Quelles sont les possibilités ?",
-        "content": "Sur ADE Scheduler, il n'est pas requis d'avoir un compte pour utiliser la plupart des outils proposés. Votre session utilisateur est stockée via votre navigateur pour une durée de 30 jours. Il vous est donc possible d'automatiquement récupérer et modifier votre calendrier sur votre navigateur dans un délai de 30 jours après votre dernière connexion. Néanmoins, si vous désirez garder de manière persistante votre calendrier, ou si vous voulez pouvoir le consulter sur notre site depuis d'autres appareils, il est requis de vous <a href='https://ade-scheduler.info.ucl.ac.be/account'>créer un compte</a>. Avec cela, vous pouvez créer et sauvegarder plusieurs calendriers, les renommer, choisir la palette de couleur, et bien d'autres choses encore. "
+        "content": "Sur ADE Scheduler, il n'est pas requis d'avoir un compte pour utiliser la plupart des outils proposés. Votre session utilisateur est stockée par votre navigateur pour une durée de 30 jours. Il vous est donc possible d'automatiquement récupérer et modifier votre calendrier sur votre navigateur dans un délai de 30 jours après votre dernière connexion. Néanmoins, si vous désirez garder de manière persistante votre calendrier, ou si vous voulez pouvoir le consulter sur notre site depuis d'autres appareils, il est requis de vous <a href='https://ade-scheduler.info.ucl.ac.be/account'>créer un compte</a>. Avec ce dernier, vous pouvez créer et sauvegarder plusieurs calendriers, les renommer, choisir la palette de couleur, et bien d'autres choses encore. "
       },
       {
         "id": "custom-events",
@@ -61,7 +61,7 @@
       {
         "id": "event-selection",
         "title": "Sélection d'un évènement",
-        "content": "Si vous cliquez sur le code d'un cours, sur la gauche de la page calendrier, vous verrez apparaitre tous les évènements contenus dans ce cours, par type. Vous pouvez (dé-)sélectionner des évènements spécifiques afin de construire l'horaire qui vous plait. "
+        "content": "Si vous cliquez sur le code d'un cours, sur la gauche de la page calendrier, vous verrez apparaitre tous les évènements contenus dans ce cours, par type. Vous pouvez (dé)sélectionner des évènements spécifiques afin de construire l'horaire qui vous plait. "
       },
       {
         "id": "accounts",

@@ -6,7 +6,7 @@
     {
       "id": "minor-improvements",
       "title": "Nouvelles fonctionnalités",
-      "content": "En plus d'un gros travail de CI réalisé sur ADE Scheduler, vous pouvez maintenant découvrir quelques nouvelles fonctionnalités, dont certaines sont directement issues de vos demandes personnelles : <ul class='mt-2'><li>Il est maintenant possible de (dé-)sélectionner tous les événements d'un cours en un seul clique</li><li>Pour chaque cours, vous pouvez accéder à sa page descriptive sur le site UCLouvain via le petit icône `globe`</li><li>Les évènements contiennent maintenant plus de détails si présents (ex.: type de TP)</li></ul>"
+      "content": "En plus d'un gros travail de CI réalisé sur ADE Scheduler, vous pouvez maintenant découvrir quelques nouvelles fonctionnalités, dont certaines sont directement issues de vos demandes personnelles : <ul class='mt-2'><li>Il est maintenant possible de (dé)sélectionner tous les évènements d'un cours en un seul clic</li><li>Pour chaque cours, vous pouvez accéder à sa page descriptive sur le site UCLouvain via la petite icône `globe`</li><li>Les évènements contiennent maintenant plus de détails si présents (ex.: type de TP)</li></ul>"
     }
   ]
 },
@@ -33,7 +33,7 @@
     {
       "id": "milestone",
       "title": "2000 comptes créés",
-      "content": " Plus de 2000 personnes ont créé et validé leur compte sur ADE Scheduler ! C'est plus de 10 fois ce qu'on avait atteint en un an avec la version 1. Nous enregistrons également plus de 1000 connections uniques par jour. On vous remercie énormément d'utiliser cet outil ! "
+      "content": " Plus de 2000 personnes ont créé et validé leur compte sur ADE Scheduler ! C'est plus de 10 fois ce qu'on avait atteint en un an avec la version 1. Nous enregistrons également plus de 1000 connexions uniques par jour. On vous remercie énormément d'utiliser cet outil ! "
     }
   ]
 },
@@ -49,7 +49,7 @@
     {
       "id": "autosave",
       "title": "Vos changements peuvent être sauvegardés automatiquement",
-      "content": " Parfois, vous faites des modifications sur votre horaire, vous oubliez de les sauvergarder, et, quand vous changez d'appareil, votre horaire n'est pas à jour avec vos derniers changements. Pour éviter ce problème, vous pouvez maintenant activer la sauvegarde automatique dans les paramètres de votre compte. "
+      "content": " Parfois, vous faites des modifications sur votre horaire, vous oubliez de les sauvegarder, et, quand vous changez d'appareil, votre horaire n'est pas à jour avec vos derniers changements. Pour éviter ce problème, vous pouvez maintenant activer la sauvegarde automatique dans les paramètres de votre compte. "
     }
   ]
 },
@@ -65,12 +65,12 @@
     {
       "id": "color-palette",
       "title": "Palette de couleurs accessibles dans le calendrier",
-      "content": "Nous devons admettre que modifier la couleur des évènements du calendrier depuis la page \"Compte\" n'était pas très intuitif... C'est pourquoi, il est désormais possible de choisir vos propres couleurs pour les cours/TPs/autres depuis la page \"Calendrier\"! Et ce, même sans devoir posséder un compte. De plus, nous avons aussi changé le thème couleur initial, afin d'accentuer la différence entre deux cours.  <br> Notez tout de même que si vous utilisez un navigateur particulier, il est possible que la palette permettant de modifier les couleurs à votre guise ne soit pas disponible... Cela est du au navigateur. "
+      "content": "Nous devons admettre que modifier la couleur des évènements du calendrier depuis la page \"Compte\" n'était pas très intuitif... C'est pourquoi, il est désormais possible de choisir vos propres couleurs pour les cours/TPs/autres depuis la page \"Calendrier\"! Et ce, même sans devoir posséder un compte. De plus, nous avons aussi changé le thème initial de couleur, afin d'accentuer la différence entre deux cours.  <br> Notez tout de même que si vous utilisez un navigateur particulier, il est possible que la palette permettant de modifier les couleurs à votre guise ne soit pas disponible... Cela est dû au navigateur. "
     },
     {
       "id": "calendar-access",
       "title": "Tous les horaires accessibles depuis le calendrier",
-      "content": "Vous pouvez désormais consulter et modifier tous vos différents horaires sauvegardés sans devoir passer par le menu \"Compte\". Si vous possédez plusieurs calendrier, il suffit pour cela de cliquer sur le nom de l'horaire affiché actuellement pour voir défiler le nom de tous vos horaires; il suffit ensuite de sélectionner celui de votre choix. "
+      "content": "Vous pouvez désormais consulter et modifier tous vos différents horaires sauvegardés sans devoir passer par le menu \"Compte\". Si vous possédez plusieurs calendriers, il suffit pour cela de cliquer sur le nom de l'horaire affiché actuellement pour voir défiler le nom de tous vos horaires; il suffit ensuite de sélectionner celui de votre choix. "
     }
   ]
 },
@@ -81,7 +81,7 @@
     {
       "id": "launch",
       "title": "Lancement d'ADE Scheduler 2.0",
-      "content": "Lancement de la nouvelle version d'ADE Scheduler ! Cette version, en plus d'un changement de design, de l'ajout de nouvelles fonctionnaliés, est plus efficace, et surtout adaptée aux mobiles. "
+      "content": "Lancement de la nouvelle version d'ADE Scheduler ! Cette version, en plus d'un changement de design, de l'ajout de nouvelles fonctionnalités, est plus efficace, et surtout adaptée aux mobiles. "
     }
   ]
 }
