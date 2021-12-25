@@ -35,6 +35,7 @@ Before that, we were using the excellent [ADE2ICS](https://github.com/cdamman/UC
 - **Summer 2020**: complete overhaul of the tool to make it more attractive, intuitive and mobile-friendly.
 - **September 2020**: release of the second version of the tool
 - **September 2021**: 2 years of service, Python 3.9 upgrade and 3500+ users
+- **December 2021**: 7000+ users
 
 ### How does it work ?
 
