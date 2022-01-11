@@ -314,12 +314,7 @@ def ade_request_failed(e):
     except AttributeError:  # For debugging purposes
         code = 500
 
-    return (
-        gettext(
-            "Oops, the ADE server seems to have some troubles! Please try again later and contact us if the error persits."
-        ),
-        code,
-    )
+    return render_template("errorhandler/500.html", ade=True), 500
 
 
 @app.errorhandler(InternalServerError)
