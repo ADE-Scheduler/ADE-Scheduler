@@ -230,12 +230,12 @@ class Client(DummyClient):
 
         function = kwargs.pop("function", None)
         if function == "projects":
-            url = "https://api.sgsi.ucl.ac.be:8243/ade/v0/projects"
+            url = "https://gw.api.uclouvain.be/ade/v0/projects"
         else:
             project_id = kwargs.pop("projectId", None)
             args = "&".join("=".join(map(str, _)) for _ in kwargs.items())
-            url = f"https://api.sgsi.ucl.ac.be:8243/ade/v0/projects/{project_id}/{function}?{args}"
-        resp = requests.get(url=url, headers=headers, verify=False)
+            url = f"https://gw.api.uclouvain.be/ade/v0/projects/{project_id}/{function}?{args}"
+        resp = requests.get(url=url, headers=headers)
 
         # Uncomment to this to save request to fake api file
         # save_response(resp, fake_args)
@@ -337,7 +337,7 @@ def get_token(credentials: ClientCredentials) -> Tuple[str, int]:
     data = credentials["data"]
     authorization = credentials["Authorization"]
     header = {"Authorization": authorization}
-    resp = requests.post(url=url, headers=header, data=data, verify=False)
+    resp = requests.post(url=url, headers=header, data=data)
 
     if current_app:  # To prevent error on app initilisation where a token is requested
         md.ApiUsage("token", resp)
