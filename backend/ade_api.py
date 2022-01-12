@@ -235,7 +235,7 @@ class Client(DummyClient):
             project_id = kwargs.pop("projectId", None)
             args = "&".join("=".join(map(str, _)) for _ in kwargs.items())
             url = f"https://api.sgsi.ucl.ac.be:8243/ade/v0/projects/{project_id}/{function}?{args}"
-        resp = requests.get(url=url, headers=headers)
+        resp = requests.get(url=url, headers=headers, verify=False)
 
         # Uncomment to this to save request to fake api file
         # save_response(resp, fake_args)
