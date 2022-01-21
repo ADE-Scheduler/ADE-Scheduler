@@ -1,5 +1,6 @@
 import uuid
 import json
+import time
 import secrets
 import datetime
 import sqlalchemy as sa
@@ -11,6 +12,7 @@ from copy import copy
 from flask_sqlalchemy import SQLAlchemy
 from flask_security.models import fsqla_v2 as fsqla
 from flask_sqlalchemy import BaseQuery
+from flask_login import UserMixin
 
 import pandas as pd
 
@@ -129,7 +131,16 @@ class Role(db.Model, fsqla.FsRoleMixin):
     pass
 
 
-class User(db.Model, fsqla.FsUserMixin):
+class User(UserMixin, db.Model):
+    # Basic user info
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(255), unique=True, nullable=False)
+    first_name = db.Column(db.String(40))
+    last_name = db.Column(db.String(40))
+
+    # OAuth2 token
+    token = db.relationship("OAuth2Token", backref="user", uselist=False)
+
     autosave = db.Column(
         db.Boolean(),
         nullable=False,
@@ -206,6 +217,48 @@ class User(db.Model, fsqla.FsUserMixin):
         df.dropna(subset=["confirmed_at"], inplace=True)
 
         return df.email.values.tolist()
+
+
+class OAuth2Token(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(40))
+    token_type = db.Column(db.String(40))
+    access_token = db.Column(db.String(200))
+    refresh_token = db.Column(db.String(200))
+    expires_at = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+
+    def __init__(self, name, token, **kwargs):
+        self.name = name
+        self.token_type = token["token_type"]
+        self.access_token = token["access_token"]
+        self.refresh_token = token["refresh_token"]
+        self.expires_at = token["expires_at"]
+
+    def __str__(self):
+        return f"{self.name} - access token: {self.access_token}, expires in: {self.expires_in:.0f}s"
+
+    def update(self, token):
+        self.access_token = token["access_token"]
+        self.refresh_token = token["refresh_token"]
+        self.expires_at = token["expires_at"]
+        db.session.commit()
+
+    @property
+    def expired(self):
+        return self.expires_at < time.time()
+
+    @property
+    def expires_in(self):
+        return self.expires_at - time.time()
+
+    def to_token(self):
+        return dict(
+            access_token=self.access_token,
+            token_type=self.token_type,
+            refresh_token=self.refresh_token,
+            expires_at=self.expires_at,
+        )
 
 
 class Schedule(db.Model):

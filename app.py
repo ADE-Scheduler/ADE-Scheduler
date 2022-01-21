@@ -12,13 +12,14 @@ from requests.exceptions import HTTPError, ConnectionError
 from werkzeug.exceptions import InternalServerError
 from flask import Flask, session, request, redirect, url_for, render_template, g
 from flask_session import Session
-from flask_security import Security, SQLAlchemyUserDatastore
-from flask_login import user_logged_out, user_logged_in
+from flask_login import LoginManager, user_logged_out, user_logged_in
 from flask_mail import Mail, Message, email_dispatched
 from flask_jsglue import JSGlue
 from flask_babel import Babel, gettext
 from flask_migrate import Migrate
 from flask_compress import Compress
+from flask_login import current_user, login_user
+from authlib.integrations.flask_client import OAuth
 
 # API imports
 import backend.models as md
@@ -186,19 +187,112 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 manager.database.init_app(app)
 migrate = Migrate(app, manager.database)
 
-# Setup Flask-Security
-app.config["SECURITY_TRACKABLE"] = True
-app.config["SECURITY_CONFIRMABLE"] = True
-app.config["SECURITY_REGISTERABLE"] = True
-app.config["SECURITY_CHANGEABLE"] = True
-app.config["SECURITY_RECOVERABLE"] = True
-app.config["SECURITY_PASSWORD_SALT"] = os.environ["FLASK_SALT"]
-app.config["SECURITY_CONFIRM_URL"] = "/confirm"
-app.config["SECURITY_REQUIRES_CONFIRMATION_ERROR_VIEW"] = "/confirm"
-app.config["SECURITY_POST_REGISTER_VIEW"] = app.config["SECURITY_CONFIRM_URL"]
-app.config["SECURITY_MANAGER"] = Security(
-    app, SQLAlchemyUserDatastore(manager.database, md.User, md.Role)
+# Setup Flask-Login
+login = LoginManager(app)
+app.config["LOGIN_MANAGER"] = login
+
+
+@login.user_loader
+def load_user(id):
+    return md.User.query.get(id)
+
+
+# Setup UCLouvain OAuth2
+def fetch_token(name):
+    return current_user.token.to_token()
+
+
+def update_token(name, token, refresh_token=None, access_token=None):
+    if refresh_token:
+        item = md.OAuth2Token.query.filter_by(
+            name=name, refresh_token=refresh_token
+        ).first()
+    elif access_token:
+        item = md.OAuth2Token.query.filter_by(
+            name=name, access_token=access_token
+        ).first()
+    else:
+        return
+    item.update(token)
+
+
+oauth = OAuth(app, fetch_token=fetch_token, update_token=update_token)
+oauth.register(  # TODO: utiliser app.config
+    # Client identification
+    name="uclouvain",
+    client_id=os.environ["UCLOUVAIN_CLIENT_ID"],
+    client_secret=os.environ["UCLOUVAIN_CLIENT_SECRET"],
+    api_base_url="https://gw.api.uclouvain.be",
+    # Access token
+    access_token_url="https://gw.api.uclouvain.be/token",
+    access_token_params=None,
+    # Authorization
+    authorize_url="https://gw.api.uclouvain.be/authorize",
+    authorize_params=None,
 )
+app.config["UCLOUVAIN_MANAGER"] = oauth.create_client("uclouvain")
+
+
+@app.route("/login")
+def login():
+    uclouvain = app.config["UCLOUVAIN_MANAGER"]
+
+    # Request code
+    if request.args.get("code") is None:
+        redirect_uri = url_for("login", _external=True)
+        return uclouvain.authorize_redirect(redirect_uri)
+
+    # Code received
+    else:
+        # Fetch token
+        token = uclouvain.authorize_access_token()
+
+        # Fetch user role & ID
+        my_id = None
+        role = None
+        data = uclouvain.get("my/v0/digit/roles", token=token).json()
+        for business_role in data["businessRoles"]["businessRole"]:
+            if business_role["businessRoleCode"] == 1:
+                role = "student"
+                my_id = int(business_role["identityId"])
+            elif business_role["businessRoleCode"] == 2:
+                role = "employee"
+                my_id = int(business_role["identityId"])
+
+        # Create user if does not exist
+        user = md.User.query.get(my_id)
+        if user is None:
+            data = uclouvain.get(f"my/v0/{role}", token=token).json()
+            email = data["person"]["email"]
+            first_name = (
+                data["person"]["firstname"]
+                if role == "employee"
+                else data["person"]["prenom"]
+            )
+            last_name = (
+                data["person"]["lastname"]
+                if role == "employee"
+                else data["person"]["nom"]
+            )
+            # TODO: vérifier que c'est bon pour le role student...
+            user = md.User(
+                id=my_id,
+                email=email,
+                first_name=first_name,
+                last_name=last_name,
+                token=md.OAuth2Token("uclouvain", token),
+            )
+            md.db.session.add(user)
+            md.db.session.commit()
+
+        # User already exists, update token
+        else:
+            user.token.update(token)
+
+        # Login user
+        login_user(user)
+        return redirect("/")
+
 
 # Setup Flask-Session
 app.config["SESSION_TYPE"] = "redis"
