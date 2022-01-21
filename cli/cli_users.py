@@ -4,12 +4,16 @@ from datetime import datetime
 
 from flask import current_app as app
 from flask.cli import with_appcontext
-from flask_security.cli import users
 
 import plotly.express as px
 from plotly.subplots import make_subplots
 
 import backend.models as md
+
+
+@click.group()
+def users():
+    """Performs actions on users."""
 
 
 @users.command()

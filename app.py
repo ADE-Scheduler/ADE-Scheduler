@@ -28,7 +28,7 @@ import backend.ade_api as ade
 import backend.manager as mng
 import backend.schedules as schd
 import backend.track_usage as tu
-import backend.oauth as oauth
+import backend.security as scty
 import views.utils as utl
 
 # Views imports
@@ -195,7 +195,7 @@ login = LoginManager(app)
 app.config["LOGIN_MANAGER"] = login
 
 # Setup UCLouvain OAuth2
-oauth = OAuth(app, fetch_token=oauth.fetch_token, update_token=oauth.update_token)
+oauth = OAuth(app, fetch_token=scty.fetch_token, update_token=scty.update_token)
 oauth.register(  # TODO: utiliser app.config
     # Client identification
     name="uclouvain",

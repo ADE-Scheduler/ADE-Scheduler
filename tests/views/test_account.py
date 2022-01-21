@@ -1,5 +1,5 @@
 from flask import url_for, session
-from flask_security import current_user
+from flask_login import current_user
 
 
 def test_index(client, jyl):

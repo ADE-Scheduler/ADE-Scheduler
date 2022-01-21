@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from flask import request, g
-from flask_security import current_user
+from flask_login import current_user
 
 import backend.models as md
 

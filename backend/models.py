@@ -10,7 +10,6 @@ from sqlalchemy.dialects.postgresql import UUID
 
 from copy import copy
 from flask_sqlalchemy import SQLAlchemy
-from flask_security.models import fsqla_v2 as fsqla
 from flask_sqlalchemy import BaseQuery
 from flask_login import UserMixin
 
@@ -23,7 +22,6 @@ EDITOR_LEVEL = 1
 VIEWER_LEVEL = 2
 
 db = SQLAlchemy()
-fsqla.FsModels.set_db_info(db)
 
 
 def query_to_dataframe(query: BaseQuery, *args: Any, **kwargs: Any) -> pd.DataFrame:
@@ -127,7 +125,9 @@ class ScheduleDoNotMatchError(Exception):
         return f"The schedule ID's do not match: database ID is {self.database_id} and given data ID is {self.data_id}."
 
 
-class Role(db.Model, fsqla.FsRoleMixin):
+# TODO: roles ?
+# TODO: if added - do a @role_required decorator (cfr Flask-Security)
+class Role(db.Model):
     pass
 
 

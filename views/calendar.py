@@ -14,7 +14,7 @@ from flask import (
     url_for,
     g,
 )
-from flask_security import current_user, login_required
+from flask_login import current_user, login_required
 from flask_babel import gettext, LazyString
 
 import backend.schedules as schd
