@@ -127,8 +127,8 @@ class ScheduleDoNotMatchError(Exception):
 
 # TODO: roles ?
 # TODO: if added - do a @role_required decorator (cfr Flask-Security)
-class Role(db.Model):
-    pass
+# class Role(db.Model):
+#     pass
 
 
 class User(UserMixin, db.Model):
@@ -141,6 +141,7 @@ class User(UserMixin, db.Model):
     # OAuth2 token
     token = db.relationship("OAuth2Token", backref="user", uselist=False)
 
+    # Schedules
     autosave = db.Column(
         db.Boolean(),
         nullable=False,

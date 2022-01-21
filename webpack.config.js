@@ -5,14 +5,15 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const pages = [
+  // Security pages are no longer required; we keep them just in case...
+  // 'security/change_password',
+  // 'security/forgot_password',
+  // 'security/login_user',
+  // 'security/register_user',
+  // 'security/reset_password',
+  // 'security/send_confirmation',
   'errorhandler/404',
   'errorhandler/500',
-  'security/change_password',
-  'security/forgot_password',
-  'security/login_user',
-  'security/register_user',
-  'security/reset_password',
-  'security/send_confirmation',
   'account',
   'calendar',
   'classroom',

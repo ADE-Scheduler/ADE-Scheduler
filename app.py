@@ -376,7 +376,6 @@ def page_not_found(e):
 def make_shell_context():
     return {
         "db": md.db,
-        "Role": md.Role,
         "Property": md.Property,
         "Schedule": md.Schedule,
         "Link": md.Link,
