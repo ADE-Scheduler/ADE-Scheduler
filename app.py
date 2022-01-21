@@ -28,9 +28,11 @@ import backend.ade_api as ade
 import backend.manager as mng
 import backend.schedules as schd
 import backend.track_usage as tu
+import backend.oauth as oauth
 import views.utils as utl
 
 # Views imports
+from views.security import security
 from views.calendar import calendar
 from views.account import account
 from views.classroom import classroom
@@ -81,6 +83,7 @@ if app.config["PROFILE"]:
     app.wsgi_app = ProfilerMiddleware(app.wsgi_app, profile_dir=profile_dir)
 
 ## Register blueprints
+app.register_blueprint(security)
 app.register_blueprint(calendar, url_prefix="/calendar")
 app.register_blueprint(account, url_prefix="/account")
 app.register_blueprint(classroom, url_prefix="/classroom")
@@ -191,32 +194,8 @@ migrate = Migrate(app, manager.database)
 login = LoginManager(app)
 app.config["LOGIN_MANAGER"] = login
 
-
-@login.user_loader
-def load_user(id):
-    return md.User.query.get(id)
-
-
 # Setup UCLouvain OAuth2
-def fetch_token(name):
-    return current_user.token.to_token()
-
-
-def update_token(name, token, refresh_token=None, access_token=None):
-    if refresh_token:
-        item = md.OAuth2Token.query.filter_by(
-            name=name, refresh_token=refresh_token
-        ).first()
-    elif access_token:
-        item = md.OAuth2Token.query.filter_by(
-            name=name, access_token=access_token
-        ).first()
-    else:
-        return
-    item.update(token)
-
-
-oauth = OAuth(app, fetch_token=fetch_token, update_token=update_token)
+oauth = OAuth(app, fetch_token=oauth.fetch_token, update_token=oauth.update_token)
 oauth.register(  # TODO: utiliser app.config
     # Client identification
     name="uclouvain",
@@ -231,68 +210,6 @@ oauth.register(  # TODO: utiliser app.config
     authorize_params=None,
 )
 app.config["UCLOUVAIN_MANAGER"] = oauth.create_client("uclouvain")
-
-
-@app.route("/login")
-def login():
-    uclouvain = app.config["UCLOUVAIN_MANAGER"]
-
-    # Request code
-    if request.args.get("code") is None:
-        redirect_uri = url_for("login", _external=True)
-        return uclouvain.authorize_redirect(redirect_uri)
-
-    # Code received
-    else:
-        # Fetch token
-        token = uclouvain.authorize_access_token()
-
-        # Fetch user role & ID
-        my_id = None
-        role = None
-        data = uclouvain.get("my/v0/digit/roles", token=token).json()
-        for business_role in data["businessRoles"]["businessRole"]:
-            if business_role["businessRoleCode"] == 1:
-                role = "student"
-                my_id = int(business_role["identityId"])
-            elif business_role["businessRoleCode"] == 2:
-                role = "employee"
-                my_id = int(business_role["identityId"])
-
-        # Create user if does not exist
-        user = md.User.query.get(my_id)
-        if user is None:
-            data = uclouvain.get(f"my/v0/{role}", token=token).json()
-            email = data["person"]["email"]
-            first_name = (
-                data["person"]["firstname"]
-                if role == "employee"
-                else data["person"]["prenom"]
-            )
-            last_name = (
-                data["person"]["lastname"]
-                if role == "employee"
-                else data["person"]["nom"]
-            )
-            # TODO: vérifier que c'est bon pour le role student...
-            user = md.User(
-                id=my_id,
-                email=email,
-                first_name=first_name,
-                last_name=last_name,
-                token=md.OAuth2Token("uclouvain", token),
-            )
-            md.db.session.add(user)
-            md.db.session.commit()
-
-        # User already exists, update token
-        else:
-            user.token.update(token)
-
-        # Login user
-        login_user(user)
-        return redirect("/")
-
 
 # Setup Flask-Session
 app.config["SESSION_TYPE"] = "redis"
@@ -353,6 +270,12 @@ def before_request():
 @app.after_request
 def after_request(response):
     return tu.after_request(response)
+
+
+# Flask-Login's user loader
+@login.user_loader
+def load_user(id):
+    return md.User.query.get(int(id))
 
 
 # Reset current schedule on user logout
