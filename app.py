@@ -29,6 +29,7 @@ import backend.manager as mng
 import backend.schedules as schd
 import backend.track_usage as tu
 import backend.security as scty
+from backend.uclouvain_apis import API
 import views.utils as utl
 
 # Views imports
@@ -201,12 +202,12 @@ oauth.register(  # TODO: utiliser app.config
     name="uclouvain",
     client_id=os.environ["UCLOUVAIN_CLIENT_ID"],
     client_secret=os.environ["UCLOUVAIN_CLIENT_SECRET"],
-    api_base_url="https://gw.api.uclouvain.be",
+    api_base_url=API.BASE_URL,
     # Access token
-    access_token_url="https://gw.api.uclouvain.be/token",
+    access_token_url=API.TOKEN_URL,
     access_token_params=None,
     # Authorization
-    authorize_url="https://gw.api.uclouvain.be/authorize",
+    authorize_url=API.AUTHORIZE_URL,
     authorize_params=None,
 )
 app.config["UCLOUVAIN_MANAGER"] = oauth.create_client("uclouvain")

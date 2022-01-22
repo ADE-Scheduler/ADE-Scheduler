@@ -1,17 +1,36 @@
 import requests
+import os
 
 
 class API(object):
     BASE_URL = "https://gw.api.uclouvain.be"
     ENDPOINT = ""
 
+    # Combined @classmethod and @property requires Python >= 3.9
     @classmethod
+    @property
     def url(cls):
-        return f"{cls.BASE_URL}/{cls.ENDPOINT}"
+        return os.path.join(cls.BASE_URL, cls.ENDPOINT)
 
     @classmethod
     def get(cls, url, **kwargs):
-        return requests.get(url=f"{cls.url()}/{url}", **kwargs)
+        url = os.path.join(cls.url, url)
+        print(url)
+        return requests.get(url=url, **kwargs)
+
+    @classmethod
+    @property
+    def token(cls):
+        return os.path.join(cls.url, "token")
+
+    TOKEN_URL = token
+
+    @classmethod
+    @property
+    def authorize(cls):
+        return os.path.join(cls.url, "authorize")
+
+    AUTHORIZE_URL = authorize
 
 
 class ADE(API):
