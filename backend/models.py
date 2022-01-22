@@ -379,7 +379,7 @@ class Usage(db.Model):
     __tablename__ = "flask_usage"
     id = db.Column(db.Integer, primary_key=True)
     url = db.Column(db.String(512))
-    ua_browser = db.Column(db.String(16))
+    ua_browser = db.Column(db.String(32))
     ua_language = db.Column(db.String(16))
     ua_platform = db.Column(db.String(16))
     ua_version = db.Column(db.String(16))
