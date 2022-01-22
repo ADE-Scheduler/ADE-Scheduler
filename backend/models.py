@@ -125,10 +125,18 @@ class ScheduleDoNotMatchError(Exception):
         return f"The schedule ID's do not match: database ID is {self.database_id} and given data ID is {self.data_id}."
 
 
-# TODO: roles ?
 # TODO: if added - do a @role_required decorator (cfr Flask-Security)
-# class Role(db.Model):
-#     pass
+class Role(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    name = db.Column(db.String(80), unique=True, nullable=False)
+    description = db.Column(db.String(255))
+
+
+roles_users = db.Table(
+    "roles_users",
+    db.Column("user_id", db.Integer(), db.ForeignKey("user.id")),
+    db.Column("role_id", db.Integer(), db.ForeignKey("role.id")),
+)
 
 
 class User(UserMixin, db.Model):
@@ -151,6 +159,13 @@ class User(UserMixin, db.Model):
     last_schedule_id = db.Column(db.Integer(), nullable=True)
     schedules = db.relationship(
         "Schedule", secondary="property", back_populates="users"
+    )
+
+    # Roles
+    roles = db.relationship(
+        "Role",
+        secondary=roles_users,
+        backref=db.backref("users"),
     )
 
     def add_schedule(self, schedule, level=OWNER_LEVEL):
