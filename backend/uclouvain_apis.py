@@ -10,7 +10,8 @@ class API(object):
         return f"{cls.BASE_URL}/{cls.ENDPOINT}"
 
     @classmethod
-    def get(url, **kwargs):
+    def get(cls, url, **kwargs):
+        print("REQUEST: ", url)
         return requests.get(url=f"{cls.url()}/{url}", **kwargs)
 
 
