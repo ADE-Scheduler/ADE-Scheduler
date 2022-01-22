@@ -142,6 +142,7 @@ roles_users = db.Table(
 class User(UserMixin, db.Model):
     # Basic user info
     id = db.Column(db.Integer, primary_key=True)
+    fgs = db.Column(db.String(8), unique=True, nullable=False)  # The user identifier
     email = db.Column(db.String(255), unique=True, nullable=False)
     first_name = db.Column(db.String(40))
     last_name = db.Column(db.String(40))

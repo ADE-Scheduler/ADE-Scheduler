@@ -23,19 +23,19 @@ def login():
         token = uclouvain.authorize_access_token()
 
         # Fetch user role & ID
-        my_id = None
+        my_fgs = None
         role = None
         data = uclouvain.get("my/v0/digit/roles", token=token).json()
         for business_role in data["businessRoles"]["businessRole"]:
             if business_role["businessRoleCode"] == 1:
                 role = "student"
-                my_id = int(business_role["identityId"])
+                my_fgs = business_role["identityId"]
             elif business_role["businessRoleCode"] == 2:
                 role = "employee"
-                my_id = int(business_role["identityId"])
+                my_fgs = business_role["identityId"]
 
         # Create user if does not exist
-        user = md.User.query.get(my_id)
+        user = md.User.query.filter_by(fgs=my_fgs).first()
         if user is None:
             data = uclouvain.get(f"my/v0/{role}", token=token).json()
             email = data["person"]["email"]
@@ -51,7 +51,7 @@ def login():
             )
             # TODO: vérifier que c'est bon pour le role student...
             user = md.User(
-                id=my_id,
+                fgs=my_fgs,
                 email=email,
                 first_name=first_name,
                 last_name=last_name,
