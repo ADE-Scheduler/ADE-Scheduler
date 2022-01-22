@@ -275,7 +275,7 @@ def after_request(response):
 # Flask-Login's user loader
 @login.user_loader
 def load_user(id):
-    return md.User.query.get(int(id))
+    return md.User.query.get(id)
 
 
 # Reset current schedule on user logout
