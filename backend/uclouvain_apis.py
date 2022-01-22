@@ -11,7 +11,6 @@ class API(object):
 
     @classmethod
     def get(cls, url, **kwargs):
-        print("REQUEST: ", url)
         return requests.get(url=f"{cls.url()}/{url}", **kwargs)
 
 
