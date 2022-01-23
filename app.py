@@ -360,7 +360,6 @@ def make_shell_context():
     return {
         "db": md.db,
         "Role": md.Role,
-        "Property": md.Property,
         "Schedule": md.Schedule,
         "Link": md.Link,
         "User": md.User,
