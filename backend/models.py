@@ -5,6 +5,7 @@ import secrets
 import datetime
 import sqlalchemy as sa
 
+from sqlalchemy.orm import validates
 from sqlalchemy.types import TypeDecorator, CHAR
 from sqlalchemy.dialects.postgresql import UUID
 
@@ -125,18 +126,27 @@ class ScheduleDoNotMatchError(Exception):
         return f"The schedule ID's do not match: database ID is {self.database_id} and given data ID is {self.data_id}."
 
 
-# TODO: if added - do a @role_required decorator (cfr Flask-Security)
-class Role(db.Model):
-    id = db.Column(db.Integer(), primary_key=True)
-    name = db.Column(db.String(80), unique=True, nullable=False)
-    description = db.Column(db.String(255))
-
-
+# Roles <-> Users m2m relationship
 roles_users = db.Table(
     "roles_users",
     db.Column("user_id", db.Integer(), db.ForeignKey("user.id")),
     db.Column("role_id", db.Integer(), db.ForeignKey("role.id")),
 )
+
+
+# Schedules <-> Users m2m relationship
+schedules_users = db.Table(
+    "schedules_users",
+    db.Column("user_id", db.Integer(), db.ForeignKey("user.id")),
+    db.Column("schedule_id", db.Integer(), db.ForeignKey("schedule.id")),
+)
+
+
+# TODO: if added - do a @role_required decorator (cfr Flask-Security)
+class Role(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    name = db.Column(db.String(80), unique=True, nullable=False)
+    description = db.Column(db.String(255))
 
 
 class User(UserMixin, db.Model):
@@ -160,7 +170,9 @@ class User(UserMixin, db.Model):
     )
     last_schedule_id = db.Column(db.Integer(), nullable=True)
     schedules = db.relationship(
-        "Schedule", secondary="property", back_populates="users"
+        "Schedule",
+        secondary=schedules_users,
+        backref=db.backref("users"),
     )
 
     # Roles
@@ -288,7 +300,6 @@ class Schedule(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     last_modified_by = db.Column(GUID(), nullable=True)
     data = db.Column(db.PickleType())
-    users = db.relationship("User", secondary="property", back_populates="schedules")
     link = db.relationship("Link", uselist=False, backref="schedule")
 
     def __init__(self, data, user=None):
@@ -360,28 +371,11 @@ class Link(db.Model):
         db.session.commit()
 
 
-class Property(db.Model):
-    __tablename__ = "property"
-    __mapper_args__ = {"confirm_deleted_rows": False}
-
-    id = db.Column(db.Integer(), primary_key=True)
-    user_id = db.Column(db.Integer(), db.ForeignKey("user.id"))
-    schedule_id = db.Column(db.Integer(), db.ForeignKey("schedule.id"))
-    level = db.Column(db.Integer(), default=OWNER_LEVEL)
-
-    user = db.relationship(
-        "User", backref=db.backref("property", cascade="all, delete-orphan")
-    )
-    schedule = db.relationship(
-        "Schedule", backref=db.backref("property", cascade="all, delete-orphan")
-    )
-
-
 class Usage(db.Model):
     __tablename__ = "flask_usage"
     id = db.Column(db.Integer, primary_key=True)
     url = db.Column(db.String(512))
-    ua_browser = db.Column(db.String(32))
+    ua_browser = db.Column(db.String(16))
     ua_language = db.Column(db.String(16))
     ua_platform = db.Column(db.String(16))
     ua_version = db.Column(db.String(16))
@@ -419,6 +413,13 @@ class Usage(db.Model):
 
         db.session.add(self)
         db.session.commit()  # For some obscures reason, this make the tests fail...
+
+    @validates("url", "ua_browser", "ua_language", "ua_platform", "ua_version")
+    def truncate_string(self, key, value):
+        max_len = getattr(self.__class__, key).prop.columns[0].type.length
+        if value and len(value) > max_len:
+            return value[:max_len]
+        return value
 
 
 class ApiUsage(db.Model):
