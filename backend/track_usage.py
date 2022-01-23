@@ -37,6 +37,11 @@ def before_request():
 
 
 def after_request(response):
+    if current_user.is_authenticated:
+        current_user.last_seen_at = datetime.now()
+        # Session will be commited after the new usage line is added,
+        # no need to do it here.
+
     end_time = datetime.utcnow()
     speed = end_time - g.start_time
 

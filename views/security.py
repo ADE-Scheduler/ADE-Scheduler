@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask import current_app as app
 from flask import Blueprint, url_for, request, redirect
 from flask_login import login_user, logout_user
@@ -68,12 +70,15 @@ def login():
             else:
                 raise NotImplementedError(f"Role {role} is not implemented yet !")
 
+            now = datetime.now()
             user = md.User(
                 fgs=my_fgs,
                 email=email,
                 first_name=first_name,
                 last_name=last_name,
                 token=md.OAuth2Token("uclouvain", token),
+                created_at=now,
+                last_seen_at=now,
             )
             md.db.session.add(user)
             md.db.session.commit()

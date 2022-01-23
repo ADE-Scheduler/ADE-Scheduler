@@ -158,6 +158,10 @@ class User(UserMixin, db.Model):
     first_name = db.Column(db.String(40))
     last_name = db.Column(db.String(40))
 
+    # Track login
+    created_at = db.Column(db.DateTime())
+    last_seen_at = db.Column(db.DateTime())
+
     # OAuth2 token
     token = db.relationship("OAuth2Token", backref="user", uselist=False)
 
@@ -258,7 +262,7 @@ class OAuth2Token(db.Model):
     expires_at = db.Column(db.Integer)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
 
-    def __init__(self, name, token, **kwargs):
+    def __init__(self, name, token):
         self.name = name
         self.token_type = token["token_type"]
         self.access_token = token["access_token"]
