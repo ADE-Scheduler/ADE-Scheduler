@@ -449,9 +449,15 @@ class ApiUsage(db.Model):
 This old user class is just there to handle migration from the old login system
 to the new one, ensuring old account data can be trasnferred to the new accounts.
 """
+old_schedules_users = db.Table(
+    "old_schedules_users",
+    db.Column("user_id", db.Integer(), db.ForeignKey("old_user.id")),
+    db.Column("schedule_id", db.Integer(), db.ForeignKey("schedule.id")),
+)
 
 
 class OldUser(UserMixin, db.Model):
+    __tablename__ = "old_user"
     # FLASK-SECUIRTY'S ATTRIBUTES (we only need those, the others can be dropped)
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(255), unique=True, nullable=False)
@@ -467,6 +473,6 @@ class OldUser(UserMixin, db.Model):
     last_schedule_id = db.Column(db.Integer(), nullable=True)
     schedules = db.relationship(
         "Schedule",
-        secondary=schedules_users,
+        secondary=old_schedules_users,
         backref=db.backref("users"),
     )
