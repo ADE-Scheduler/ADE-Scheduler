@@ -4,6 +4,7 @@ import secrets
 import datetime
 import sqlalchemy as sa
 
+from sqlalchemy.orm import validates
 from sqlalchemy.types import TypeDecorator, CHAR
 from sqlalchemy.dialects.postgresql import UUID
 
@@ -301,7 +302,7 @@ class Usage(db.Model):
     __tablename__ = "flask_usage"
     id = db.Column(db.Integer, primary_key=True)
     url = db.Column(db.String(512))
-    ua_browser = db.Column(db.String(32))
+    ua_browser = db.Column(db.String(16))
     ua_language = db.Column(db.String(16))
     ua_platform = db.Column(db.String(16))
     ua_version = db.Column(db.String(16))
@@ -339,6 +340,13 @@ class Usage(db.Model):
 
         db.session.add(self)
         db.session.commit()  # For some obscures reason, this make the tests fail...
+
+    @validates("url", "ua_browser", "ua_language", "ua_platform", "ua_version")
+    def validate_code(self, key, value):
+        max_len = getattr(self.__class__, key).prop.columns[0].type.length
+        if value and len(value) > max_len:
+            return value[:max_len]
+        return value
 
 
 class ApiUsage(db.Model):
