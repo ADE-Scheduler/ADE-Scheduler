@@ -443,3 +443,30 @@ class ApiUsage(db.Model):
         self.status = response.status_code
         db.session.add(self)
         db.session.commit()
+
+
+"""
+This old user class is just there to handle migration from the old login system
+to the new one, ensuring old account data can be trasnferred to the new accounts.
+"""
+
+
+class OldUser(UserMixin, db.Model):
+    # FLASK-SECUIRTY'S ATTRIBUTES (we only need those, the others can be dropped)
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(255), unique=True, nullable=False)
+    password = db.Column(db.String(255), nullable=False)
+
+    # ADE-SCHEDULER ATTRIBUTES
+    autosave = db.Column(
+        db.Boolean(),
+        nullable=False,
+        default=False,
+        server_default=sa.sql.expression.literal(False),
+    )
+    last_schedule_id = db.Column(db.Integer(), nullable=True)
+    schedules = db.relationship(
+        "Schedule",
+        secondary=schedules_users,
+        backref=db.backref("users"),
+    )
