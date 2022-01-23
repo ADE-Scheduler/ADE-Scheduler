@@ -342,7 +342,7 @@ class Usage(db.Model):
         db.session.commit()  # For some obscures reason, this make the tests fail...
 
     @validates("url", "ua_browser", "ua_language", "ua_platform", "ua_version")
-    def validate_code(self, key, value):
+    def truncate_string(self, key, value):
         max_len = getattr(self.__class__, key).prop.columns[0].type.length
         if value and len(value) > max_len:
             return value[:max_len]
