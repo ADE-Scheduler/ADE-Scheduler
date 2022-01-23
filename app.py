@@ -18,7 +18,6 @@ from flask_jsglue import JSGlue
 from flask_babel import Babel, gettext
 from flask_migrate import Migrate
 from flask_compress import Compress
-from flask_login import current_user, login_user
 from authlib.integrations.flask_client import OAuth
 
 # API imports
