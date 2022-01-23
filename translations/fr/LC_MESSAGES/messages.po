@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-09-12 17:14+0200\n"
+"POT-Creation-Date: 2022-01-23 17:17+0100\n"
 "PO-Revision-Date: 2020-07-24 16:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -16,25 +16,17 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.6.0\n"
+"Generated-By: Babel 2.9.0\n"
 
-#: app.py:318
-msgid ""
-"Oops, the ADE server seems to have some troubles! Please try again later "
-"and contact us if the error persits."
-msgstr ""
-"Oups, il semblerait que le serveur ADE aie quelques soucis ! Veuillez "
-"réessayer plus tard et nous contacter si l'erreur persiste."
-
-#: app.py:343
+#: app.py:355
 msgid "An error has occurred"
 msgstr "Il y a eu une erreur"
 
-#: app.py:352
+#: app.py:364
 msgid "Resource not found"
 msgstr "Ressource non trouvée"
 
-#: app.py:356
+#: app.py:368
 msgid "404 Page not found :("
 msgstr "404 Page non trouvée :("
 
@@ -112,45 +104,41 @@ msgstr "Désactiver"
 msgid "Activate"
 msgstr "Activer"
 
-#: templates/account.html:56
-msgid "Change your password"
-msgstr "Changer votre mot de passe"
-
-#: templates/account.html:85
+#: templates/account.html:82
 msgid "Color palette"
 msgstr "Palette de couleur"
 
-#: templates/account.html:90 templates/calendar.html:566
+#: templates/account.html:87 templates/calendar.html:566
 msgid "Academic year"
 msgstr "Année académique"
 
-#: templates/account.html:98 templates/calendar.html:159
+#: templates/account.html:95 templates/calendar.html:159
 #: templates/calendar.html:479
 msgid "Save"
 msgstr "Sauvegarder"
 
-#: templates/account.html:99
+#: templates/account.html:96
 msgid "View"
 msgstr "Afficher"
 
-#: templates/account.html:100 templates/calendar.html:161
+#: templates/account.html:97 templates/calendar.html:161
 msgid "Delete"
 msgstr "Supprimer"
 
-#: templates/account.html:109 templates/calendar.html:501
+#: templates/account.html:106 templates/calendar.html:501
 #: templates/calendar.html:510
 msgid "Schedules"
 msgstr "Horaires"
 
-#: templates/account.html:111 templates/calendar.html:512
+#: templates/account.html:108 templates/calendar.html:512
 msgid "You do not have any saved schedule at the moment"
 msgstr "Vous n'avez aucun horaire sauvegardé pour le moment"
 
-#: templates/account.html:136 templates/calendar.html:613
+#: templates/account.html:133 templates/calendar.html:613
 msgid "Open source software"
 msgstr "Logiciel libre"
 
-#: templates/account.html:136 templates/calendar.html:613
+#: templates/account.html:133 templates/calendar.html:613
 msgid ""
 "designed by Gilles Poncelet, Louis Navarre and Jérome Eertmans, students "
 "at the Ecole polytechnique de Louvain."
@@ -159,12 +147,12 @@ msgstr ""
 "l'École polytechnique de Louvain"
 
 #: templates/base.html:36
-msgid "You need to create an account to unlock this page"
-msgstr "Vous devez créer un compte pour débloquer cette page"
+msgid "You need to login with your UCLouvain account to access this page"
+msgstr "Vous devez vous connecter à votre compte UCLouvain pour débloquer cette page"
 
-#: templates/base.html:40 templates/calendar.html:177
-msgid "Do not hesitate to create an account... you can:"
-msgstr "N'hésitez pas à créer un compte... avec, vous pouvez:"
+#: templates/base.html:40
+msgid "Do not hesitate to login... you can:"
+msgstr "N'hésitez pas à vous connecter... avec, vous pouvez :"
 
 #: templates/base.html:47 templates/calendar.html:184
 #: templates/security/register_user.html:20
@@ -176,14 +164,12 @@ msgstr "Sauvegarder vos horaires"
 msgid "Manage several schedules following your needs"
 msgstr "Gérer plusieurs horaires selon vos besoins"
 
-#: templates/base.html:61 templates/calendar.html:198
-#: templates/security/register_user.html:34
-msgid "Modify the color of the events in the calendar"
-msgstr "Modifier la couleur des événements dans le calendrier"
+#: templates/base.html:61
+msgid "Rename your schedules"
+msgstr "Renommer vos horaires"
 
-#: templates/base.html:68 templates/calendar.html:205
-#: templates/security/register_user.html:41
-msgid "And so much more !"
+#: templates/base.html:68
+msgid "And so much more!"
 msgstr "Et bien plus !"
 
 #: templates/base.html:73 templates/calendar.html:71
@@ -193,9 +179,9 @@ msgstr "Et bien plus !"
 msgid "Close"
 msgstr "Fermer"
 
-#: templates/base.html:74
-msgid "Create an account"
-msgstr "Créer un compte"
+#: templates/base.html:74 templates/base.html:146
+msgid "Login"
+msgstr "Connexion"
 
 #: templates/base.html:94
 msgid "Calendar"
@@ -221,17 +207,9 @@ msgstr "Contact"
 msgid "Contribute"
 msgstr "Contribuer"
 
-#: templates/base.html:143
+#: templates/base.html:142
 msgid "Logout"
 msgstr "Déconnexion"
-
-#: templates/base.html:147
-msgid "Login"
-msgstr "Connexion"
-
-#: templates/base.html:148
-msgid "Register"
-msgstr "Inscription"
 
 #: templates/calendar.html:34
 msgid "Course program"
@@ -292,6 +270,18 @@ msgstr "Modifier"
 #: templates/calendar.html:172 templates/calendar.html:478
 msgid "Export"
 msgstr "Exporter"
+
+#: templates/calendar.html:177
+msgid "Do not hesitate to create an account... you can:"
+msgstr "N'hésitez pas à créer un compte... avec, vous pouvez:"
+
+#: templates/calendar.html:198 templates/security/register_user.html:34
+msgid "Modify the color of the events in the calendar"
+msgstr "Modifier la couleur des événements dans le calendrier"
+
+#: templates/calendar.html:205 templates/security/register_user.html:41
+msgid "And so much more !"
+msgstr "Et bien plus !"
 
 #: templates/calendar.html:210
 msgid "Subscription Link"
@@ -653,3 +643,24 @@ msgstr "L'horaire que vous avez demandé n'existe pas dans notre base de donnée
 
 #~ msgid "None"
 #~ msgstr "Aucun"
+
+#~ msgid ""
+#~ "Oops, the ADE server seems to have"
+#~ " some troubles! Please try again "
+#~ "later and contact us if the error"
+#~ " persits."
+#~ msgstr ""
+#~ "Oups, il semblerait que le serveur "
+#~ "ADE aie quelques soucis ! Veuillez "
+#~ "réessayer plus tard et nous contacter"
+#~ " si l'erreur persiste."
+
+#~ msgid "Change your password"
+#~ msgstr "Changer votre mot de passe"
+
+#~ msgid "Create an account"
+#~ msgstr "Créer un compte"
+
+#~ msgid "Register"
+#~ msgstr "Inscription"
+
