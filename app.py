@@ -7,12 +7,19 @@ import distutils
 import configparser
 import warnings
 from requests.exceptions import HTTPError, ConnectionError
+from authlib.jose import jwt
 
 # Flask imports
 from werkzeug.exceptions import InternalServerError
 from flask import Flask, session, request, redirect, url_for, render_template, g
 from flask_session import Session
-from flask_login import LoginManager, user_logged_out, user_logged_in
+from flask_login import (
+    LoginManager,
+    current_user,
+    login_required,
+    user_logged_out,
+    user_logged_in,
+)
 from flask_mail import Mail, Message, email_dispatched
 from flask_jsglue import JSGlue
 from flask_babel import Babel, gettext
@@ -320,6 +327,27 @@ def welcome():
         g.track_var["new user"] = "+1"
         session["previous_user"] = True
         return render_template("welcome.html")
+
+
+# Migration route
+@app.route("/migrate/<token>")
+@login_required
+def migrate(token):
+    # Decode token, fetch corresponding old user
+    claims = jwt.decode(token, app.config["SECRET_KEY"])
+    email = claims["email"]
+    old_user = md.OldUser.query.filter_by(email=email).first()
+    if old_user is None:
+        return "This user does not exist, sneaky sneaky lil' rat !", 401
+
+    # Add old user's schedules to current_user
+    for s in old_user.schedules:
+        current_user.schedules.append(s)
+
+    # All done, delete old user
+    md.db.session.delete(old_user)
+    md.db.session.commit()
+    return redirect(url_for("calendar.index"))
 
 
 # Error handlers

@@ -1,6 +1,7 @@
 import click
 import pandas as pd
 from datetime import datetime
+from authlib.jose import jwt
 
 from flask import current_app as app
 from flask.cli import with_appcontext
@@ -14,6 +15,21 @@ import backend.models as md
 @click.group()
 def users():
     """Performs actions on users."""
+
+
+@users.command()
+@with_appcontext
+def migrate():
+    """Migrate accounts by sending an email to all users."""
+
+    email = "gillesponcelet98@gmail.com"
+
+    # Encrypt JWT
+    payload = {"email": email}
+    header = {"alg": "HS256"}
+    token = jwt.encode(header, payload, app.config["SECRET_KEY"])
+
+    print(f"Your token is: {token.decode()}")
 
 
 @users.command()
