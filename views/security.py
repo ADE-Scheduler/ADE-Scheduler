@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from flask import current_app as app
-from flask import Blueprint, url_for, request, redirect
+from flask import Blueprint, url_for, request, redirect, session
 from flask_login import login_user, logout_user
 
 import backend.models as md
@@ -89,6 +89,9 @@ def login():
 
         # Login user
         login_user(user)
+        next = session.pop("next", None)
+        if next is not None:
+            return redirect(next)
         return redirect(url_for("calendar.index"))
 
 

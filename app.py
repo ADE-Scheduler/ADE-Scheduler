@@ -198,7 +198,9 @@ manager.database.init_app(app)
 migrate = Migrate(app, manager.database)
 
 # Setup Flask-Login
+app.config["USE_SESSION_FOR_NEXT"] = True
 login = LoginManager(app)
+login.login_view = "security.login"
 app.config["LOGIN_MANAGER"] = login
 
 # Setup UCLouvain OAuth2
