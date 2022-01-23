@@ -11,7 +11,7 @@ from authlib.jose import jwt
 
 # Flask imports
 from werkzeug.exceptions import InternalServerError
-from flask import Flask, session, request, redirect, url_for, render_template, g
+from flask import Flask, session, request, redirect, url_for, render_template, g, flash
 from flask_session import Session
 from flask_login import (
     LoginManager,
@@ -349,6 +349,7 @@ def migrate(token):
     # All done, delete old user
     md.db.session.delete(old_user)
     md.db.session.commit()
+    flash("Success: your data has been migrated to your new account !", "success")
     return redirect(url_for("calendar.index"))
 
 
