@@ -42,21 +42,6 @@ def upgrade():
     op.rename_table("user", "old_user")
     op.rename_table("schedules_users", "old_schedules_users")
 
-    # Create new schedules_users table
-    op.create_table(
-        "old_schedules_users",
-        sa.Column("user_id", sa.Integer(), nullable=True),
-        sa.Column("schedule_id", sa.Integer(), nullable=True),
-        sa.ForeignKeyConstraint(
-            ["schedule_id"],
-            ["schedule.id"],
-        ),
-        sa.ForeignKeyConstraint(
-            ["user_id"],
-            ["user.id"],
-        ),
-    )
-
     # Create new User table
     op.create_table(
         "user",
@@ -68,7 +53,10 @@ def upgrade():
         sa.Column("created_at", sa.DateTime(), nullable=True),
         sa.Column("last_seen_at", sa.DateTime(), nullable=True),
         sa.Column(
-            "autosave", sa.Boolean(), server_default=sa.text("0"), nullable=False
+            "autosave",
+            sa.Boolean(),
+            server_default=sa.sql.expression.literal(False),
+            nullable=False,
         ),
         sa.Column("last_schedule_id", sa.Integer(), nullable=True),
         sa.PrimaryKeyConstraint("id"),
@@ -91,6 +79,21 @@ def upgrade():
             ["user.id"],
         ),
         sa.PrimaryKeyConstraint("id"),
+    )
+
+    # Create new schedules_users table
+    op.create_table(
+        "schedules_users",
+        sa.Column("user_id", sa.Integer(), nullable=True),
+        sa.Column("schedule_id", sa.Integer(), nullable=True),
+        sa.ForeignKeyConstraint(
+            ["schedule_id"],
+            ["schedule.id"],
+        ),
+        sa.ForeignKeyConstraint(
+            ["user_id"],
+            ["user.id"],
+        ),
     )
     # ### end Alembic commands ###
 

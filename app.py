@@ -380,6 +380,7 @@ def make_shell_context():
         "Schedule": md.Schedule,
         "Link": md.Link,
         "User": md.User,
+        "oUser": md.OldUser,
         "Role": md.Role,
         "Usage": md.Usage,
         "Api": md.ApiUsage,

@@ -474,5 +474,5 @@ class OldUser(UserMixin, db.Model):
     schedules = db.relationship(
         "Schedule",
         secondary=old_schedules_users,
-        backref=db.backref("users"),
+        backref=db.backref("old_users"),
     )
