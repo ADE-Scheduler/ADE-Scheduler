@@ -462,6 +462,7 @@ class OldUser(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(255), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
+    confirmed_at = Column(DateTime())
 
     # ADE-SCHEDULER ATTRIBUTES
     autosave = db.Column(
@@ -476,3 +477,11 @@ class OldUser(UserMixin, db.Model):
         secondary=old_schedules_users,
         backref=db.backref("old_users"),
     )
+
+    @classmethod
+    def get_emails(cls):
+        df = table_to_dataframe(cls, columns=["confirmed_at", "email"])
+        df.dropna(subset=["confirmed_at"], inplace=True)
+
+        return df.email.values.tolist()
+

@@ -28,7 +28,6 @@ def upgrade():
     op.drop_column("user", "last_login_at")
     op.drop_column("user", "tf_totp_secret")
     op.drop_column("user", "fs_uniquifier")
-    op.drop_column("user", "confirmed_at")
     op.drop_column("user", "username")
     op.drop_column("user", "tf_primary_method")
     op.drop_column("user", "tf_phone_number")

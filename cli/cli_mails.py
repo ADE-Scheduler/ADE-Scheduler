@@ -91,6 +91,8 @@ Cette transition vers le login UCLouvain nous permettra, dans un futur proche, d
 Pour ceux qui ne le savent pas, nous avons tous les trois finis nos études et maintenir ADE Scheduler prend du temps. D'ailleurs, après plusieurs années de travail, Louis a décidé de quitter l'aventure pour se consacrer à d'autres projets, merci à lui !
 Nous sommes donc à la recherche d'étudiants motivés ou curieux de nous aider à améliorer notre service, n'hésitez donc pas à nous contacter ;-)
 
+Votre lien de récupération : {lien}.
+
 Pour les étudiants, on espère que votre session s'est bien passée et on vous souhaite de bonnes vacances !
 
 Cordialement,
@@ -109,13 +111,17 @@ L'équipe ADE Scheduler.
     with app.config["MAIL_MANAGER"].connect() as conn, click.progressbar(emails) as bar:
         for email in bar:
             time.sleep(2.5)  # Required for no-reply@uclouvain.be
+            
             msg.recipients = [email]
 
             payload = {"email": email}
             header = {"alg": "HS256"}
             token = jwt.encode(header, payload, app.config["SECRET_KEY"])
+            msg.body = body.format(lien=f"https://www.ade-scheduler.info.ucl.ac.be/migrate/{token}")
             if dry_run:
                 click.echo(f"Sending message to {email}")
             else:
+                if "jerome" in email:
+                    print(msg.body)
                 # conn.send(msg)
                 pass
