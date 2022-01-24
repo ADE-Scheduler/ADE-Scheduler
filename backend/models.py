@@ -4,6 +4,7 @@ import secrets
 import datetime
 import sqlalchemy as sa
 
+from sqlalchemy.orm import validates
 from sqlalchemy.types import TypeDecorator, CHAR
 from sqlalchemy.dialects.postgresql import UUID
 
@@ -129,6 +130,13 @@ class Role(db.Model, fsqla.FsRoleMixin):
     pass
 
 
+schedules_users = db.Table(
+    "schedules_users",
+    db.Column("user_id", db.Integer(), db.ForeignKey("user.id")),
+    db.Column("schedule_id", db.Integer(), db.ForeignKey("schedule.id")),
+)
+
+
 class User(db.Model, fsqla.FsUserMixin):
     autosave = db.Column(
         db.Boolean(),
@@ -138,7 +146,9 @@ class User(db.Model, fsqla.FsUserMixin):
     )
     last_schedule_id = db.Column(db.Integer(), nullable=True)
     schedules = db.relationship(
-        "Schedule", secondary="property", back_populates="users"
+        "Schedule",
+        secondary=schedules_users,
+        backref=db.backref("users"),
     )
 
     def add_schedule(self, schedule, level=OWNER_LEVEL):
@@ -217,7 +227,6 @@ class Schedule(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     last_modified_by = db.Column(GUID(), nullable=True)
     data = db.Column(db.PickleType())
-    users = db.relationship("User", secondary="property", back_populates="schedules")
     link = db.relationship("Link", uselist=False, backref="schedule")
 
     def __init__(self, data, user=None):
@@ -289,23 +298,6 @@ class Link(db.Model):
         db.session.commit()
 
 
-class Property(db.Model):
-    __tablename__ = "property"
-    __mapper_args__ = {"confirm_deleted_rows": False}
-
-    id = db.Column(db.Integer(), primary_key=True)
-    user_id = db.Column(db.Integer(), db.ForeignKey("user.id"))
-    schedule_id = db.Column(db.Integer(), db.ForeignKey("schedule.id"))
-    level = db.Column(db.Integer(), default=OWNER_LEVEL)
-
-    user = db.relationship(
-        "User", backref=db.backref("property", cascade="all, delete-orphan")
-    )
-    schedule = db.relationship(
-        "Schedule", backref=db.backref("property", cascade="all, delete-orphan")
-    )
-
-
 class Usage(db.Model):
     __tablename__ = "flask_usage"
     id = db.Column(db.Integer, primary_key=True)
@@ -348,6 +340,13 @@ class Usage(db.Model):
 
         db.session.add(self)
         db.session.commit()  # For some obscures reason, this make the tests fail...
+
+    @validates("url", "ua_browser", "ua_language", "ua_platform", "ua_version")
+    def truncate_string(self, key, value):
+        max_len = getattr(self.__class__, key).prop.columns[0].type.length
+        if value and len(value) > max_len:
+            return value[:max_len]
+        return value
 
 
 class ApiUsage(db.Model):
