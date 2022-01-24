@@ -54,7 +54,7 @@ def upgrade():
         sa.Column(
             "autosave",
             sa.Boolean(),
-            server_default=sa.sql.expression.literal(False),
+            server_default=sa.sql.expression.literal(True),
             nullable=False,
         ),
         sa.Column("last_schedule_id", sa.Integer(), nullable=True),

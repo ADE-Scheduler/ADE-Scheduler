@@ -169,8 +169,8 @@ class User(UserMixin, db.Model):
     autosave = db.Column(
         db.Boolean(),
         nullable=False,
-        default=False,
-        server_default=sa.sql.expression.literal(False),
+        default=True,
+        server_default=sa.sql.expression.literal(True),
     )
     last_schedule_id = db.Column(db.Integer(), nullable=True)
     schedules = db.relationship(
@@ -462,7 +462,7 @@ class OldUser(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(255), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
-    confirmed_at = Column(DateTime())
+    confirmed_at = db.Column(db.DateTime())
 
     # ADE-SCHEDULER ATTRIBUTES
     autosave = db.Column(

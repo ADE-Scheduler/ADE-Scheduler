@@ -82,9 +82,7 @@ Bonjour à tous,
 En moins d'un quadrimestre, le nombre d'utilisateurs inscrits sur notre site a plus de doublé, passant de 3000 à plus de 7000 ! Un énorme merci à vous ;-)
 Au vu de ce succès, cela nous pousse encore plus à améliorer notre service.
 
-Dès aujourd'hui, la connexion se fera via votre identifiant UCLouvain global. Tous les anciens comptes ont été désactivés. Cependant, vos abonnements iCal fonctionneront toujours et il vous sera possible de récupérer tous les calendriers associés à votre ancien compte.
-
-Si vous utilisiez déjà une adresse mail uclouvain, cela sera automatique. Si ce n'est pas le cas, il vous suffit de cliquer sur le lien en fin de mail.
+Dès aujourd'hui, la connexion se fera via votre identifiant UCLouvain global. Tous les anciens comptes ont été désactivés. Cependant, vos abonnements iCal fonctionneront toujours et il vous sera possible de récupérer tous les calendriers associés à votre ancien compte. Pour cela, il vous suffit de cliquer sur le lien en fin de mail.
 
 Cette transition vers le login UCLouvain nous permettra, dans un futur proche, d'automatiquement créer un horaire sur base de vos inscriptions aux cours, ainsi que d'avoir une synchronisation avec l'application UCLouvain (actuellement en développement). Pour les professeurs, un équivalent sera proposé avec les cours que vous donnez. Nous sommes d'ailleurs en discussion active pour améliorer d'autres services du site web, comme la carte des locaux.
 
@@ -110,18 +108,18 @@ L'équipe ADE Scheduler.
 
     with app.config["MAIL_MANAGER"].connect() as conn, click.progressbar(emails) as bar:
         for email in bar:
-            time.sleep(2.5)  # Required for no-reply@uclouvain.be
+            #time.sleep(2.5)  # Required for no-reply@uclouvain.be
             
             msg.recipients = [email]
 
             payload = {"email": email}
             header = {"alg": "HS256"}
-            token = jwt.encode(header, payload, app.config["SECRET_KEY"])
-            msg.body = body.format(lien=f"https://www.ade-scheduler.info.ucl.ac.be/migrate/{token}")
+            token = jwt.encode(header, payload, app.config["SECRET_KEY"]).decode()
+            msg.body = body.format(lien=f"https://ade-scheduler.info.ucl.ac.be/migrate/{token}")
             if dry_run:
                 click.echo(f"Sending message to {email}")
             else:
-                if "jerome" in email:
+                if "jeertmans" in email:
                     print(msg.body)
                 # conn.send(msg)
                 pass
