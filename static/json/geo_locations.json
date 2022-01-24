@@ -37,6 +37,24 @@
         "place_id": 120099008,
         "type": "pedestrian"
     },
+    "Croix du Sud, 2, 1348, Louvain-la-Neuve": {
+        "boundingbox": [
+            "50.6666545",
+            "50.6671609",
+            "4.6199097",
+            "4.6206073"
+        ],
+        "class": "highway",
+        "display_name": "Croix du Sud, Bi\u00e9reau, Louvain-la-Neuve, Ottignies-Louvain-la-Neuve, Nivelles, Brabant wallon, Wallonie, 1348, Belgi\u00eb / Belgique / Belgien",
+        "importance": 0.8099999999999999,
+        "lat": "50.666902750000006",
+        "licence": "Data \u00a9 OpenStreetMap contributors, ODbL 1.0. https://osm.org/copyright",
+        "lon": "4.620390364926289",
+        "osm_id": 149263990,
+        "osm_type": "way",
+        "place_id": 136672667,
+        "type": "pedestrian"
+    },
     "Croix du Sud, 3, 1348, Louvain-la-Neuve": {
         "boundingbox": [
             "50.6666545",
