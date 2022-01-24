@@ -484,4 +484,3 @@ class OldUser(UserMixin, db.Model):
         df.dropna(subset=["confirmed_at"], inplace=True)
 
         return df.email.values.tolist()
-
