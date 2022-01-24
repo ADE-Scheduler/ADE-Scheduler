@@ -106,9 +106,7 @@ L'équipe ADE Scheduler.
         abort=True,
     )
 
-    with app.config["MAIL_MANAGER"].connect() as conn, click.progressbar(
-        emails
-    ) as bar:
+    with app.config["MAIL_MANAGER"].connect() as conn, click.progressbar(emails) as bar:
         for email in bar:
             time.sleep(2.5)  # Required for no-reply@uclouvain.be
             msg.recipients = [email]
@@ -119,5 +117,5 @@ L'équipe ADE Scheduler.
             if dry_run:
                 click.echo(f"Sending message to {email}")
             else:
-                #conn.send(msg)
+                # conn.send(msg)
                 pass
