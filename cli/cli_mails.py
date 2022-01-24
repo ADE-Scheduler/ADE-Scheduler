@@ -6,6 +6,7 @@ from flask import current_app as app
 from flask_mail import Message
 from flask.cli import with_appcontext
 import flask
+from authlib.jose import jwt
 
 import json
 
@@ -111,6 +112,10 @@ L'équipe ADE Scheduler.
         for email in bar:
             time.sleep(2.5)  # Required for no-reply@uclouvain.be
             msg.recipients = [email]
+
+            payload = {"email": email}
+            header = {"alg": "HS256"}
+            token = jwt.encode(header, payload, app.config["SECRET_KEY"])
             if dry_run:
                 click.echo(f"Sending message to {email}")
             else:
