@@ -1,4 +1,5 @@
 from flask_login import current_user
+from flask import make_response
 import requests
 import json
 
@@ -18,5 +19,7 @@ def update_token(name, token, refresh_token=None, access_token=None):
         old_token["access_token"] = token
     else:
         return
+    resp = make_response()
+    resp = redirect(url_for("calendar.index"))
+    resp.set_cookie("uclouvain-token", json.dumps(old_token))
     
-    return 
