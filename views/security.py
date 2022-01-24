@@ -1,4 +1,5 @@
 from datetime import datetime
+import json
 
 from flask import current_app as app
 from flask import Blueprint, url_for, request, redirect, session
@@ -23,6 +24,8 @@ def login():
     else:
         # Fetch token
         token = uclouvain.authorize_access_token()
+        resp = redirect(url_for("calendar.index"))
+        resp.set_cookie("uclouvain-token", json.dumps(token))
 
         # Fetch user role & ID
         my_fgs = None
@@ -76,23 +79,24 @@ def login():
                 email=email,
                 first_name=first_name,
                 last_name=last_name,
-                token=md.OAuth2Token("uclouvain", token),
                 created_at=now,
                 last_seen_at=now,
             )
             md.db.session.add(user)
             md.db.session.commit()
 
-        # User already exists, update token
+        # User already exists, nothing to do
         else:
-            user.token.update(token)
+            pass
 
         # Login user
         login_user(user)
         next = session.pop("next", None)
         if next is not None:
             return redirect(next)
-        return redirect(url_for("calendar.index"))
+
+
+        return resp
 
 
 @security.route("/logout")
