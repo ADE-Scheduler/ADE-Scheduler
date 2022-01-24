@@ -108,14 +108,16 @@ L'équipe ADE Scheduler.
 
     with app.config["MAIL_MANAGER"].connect() as conn, click.progressbar(emails) as bar:
         for email in bar:
-            #time.sleep(2.5)  # Required for no-reply@uclouvain.be
-            
+            # time.sleep(2.5)  # Required for no-reply@uclouvain.be
+
             msg.recipients = [email]
 
             payload = {"email": email}
             header = {"alg": "HS256"}
             token = jwt.encode(header, payload, app.config["SECRET_KEY"]).decode()
-            msg.body = body.format(lien=f"https://ade-scheduler.info.ucl.ac.be/migrate/{token}")
+            msg.body = body.format(
+                lien=f"https://ade-scheduler.info.ucl.ac.be/migrate/{token}"
+            )
             if dry_run:
                 click.echo(f"Sending message to {email}")
             else:

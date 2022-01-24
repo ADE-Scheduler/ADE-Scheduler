@@ -347,7 +347,7 @@ def migrate(token):
         current_user.schedules.append(s)
 
     # All done, delete old user
-    #md.db.session.delete(old_user)
+    # md.db.session.delete(old_user)
     md.db.session.commit()
     flash("Success: your data has been migrated to your new account !", "success")
     return redirect(url_for("calendar.index"))
