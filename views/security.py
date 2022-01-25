@@ -1,11 +1,11 @@
 from datetime import datetime
-import json
 
 from flask import current_app as app
 from flask import Blueprint, url_for, request, redirect, session
 from flask_login import login_user, logout_user
 
 import backend.models as md
+import backends.cookies as cookies
 
 
 security = Blueprint("security", __name__, static_folder="../static")
@@ -25,7 +25,7 @@ def login():
         # Fetch token
         token = uclouvain.authorize_access_token()
         resp = redirect(url_for("calendar.index"))
-        resp.set_cookie("uclouvain-token", json.dumps(token))
+        resp = cookies.set_oauth_token(token, resp)
 
         # Fetch user role & ID
         my_fgs = None

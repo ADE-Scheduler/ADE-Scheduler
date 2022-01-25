@@ -101,6 +101,7 @@ app.register_blueprint(whatisnew, url_prefix="/whatisnew")
 app.register_blueprint(contribute, url_prefix="/contribute")
 app.register_blueprint(admin, url_prefix="/admin")
 app.config["SECRET_KEY"] = os.environ["FLASK_SECRET_KEY"]
+app.config["SALT"] = os.environ["FLASK_SALT"]
 jsglue = JSGlue(app)
 
 # Register new commands
