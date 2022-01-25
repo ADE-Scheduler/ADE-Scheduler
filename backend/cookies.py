@@ -4,11 +4,10 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 import json
 import requests
-from flask import current_app as app
+import os
 
-
-password = app.config["SECRET_KEY"] 
-salt = app.config["SALT"]
+password = os.environ["FLASK_SECRET_KEY"].encode()
+salt = os.environ["FLASK_SALT"].encode()
 kdf = PBKDF2HMAC(
     algorithm=hashes.SHA256(),
     length=32,
@@ -24,13 +23,16 @@ def set_cookie(key, value, resp, **kwargs):
     resp.set_cookie(key, value, secure=True, **kwargs)
     return resp
 
+
 def set_oauth_token(token, resp):
     cookie = f.encrypt(json.dumps(token).encode())
     return set_cookie("oauth-token", cookie, resp)
 
+
 def get_cookie(key):
     cookie = requests.cookies.get(key, None)
     return cookie
+
 
 def get_oauth_token():
     cookie = get_cookie("oauth-token")

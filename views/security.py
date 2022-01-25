@@ -95,7 +95,6 @@ def login():
         if next is not None:
             return redirect(next)
 
-
         return resp
 
 
