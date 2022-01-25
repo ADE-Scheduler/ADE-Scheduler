@@ -8,6 +8,10 @@ import configparser
 import warnings
 from requests.exceptions import HTTPError, ConnectionError
 from authlib.jose import jwt
+import base64
+from cryptography.fernet import Fernet
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
 # Flask imports
 from werkzeug.exceptions import InternalServerError
@@ -101,6 +105,7 @@ app.register_blueprint(whatisnew, url_prefix="/whatisnew")
 app.register_blueprint(contribute, url_prefix="/contribute")
 app.register_blueprint(admin, url_prefix="/admin")
 app.config["SECRET_KEY"] = os.environ["FLASK_SECRET_KEY"]
+app.config["SALT"] = os.environ["FLASK_SALT"]
 jsglue = JSGlue(app)
 
 # Register new commands
@@ -230,6 +235,19 @@ app.config["SESSION_MANAGER"] = Session(app)
 app.config["LANGUAGES"] = ["en", "fr"]
 app.config["BABEL_TRANSLATION_DIRECTORIES"] = "translations"
 babel = Babel(app)
+
+
+# Setup Fernet encryption / decryption
+password = app.config["SECRET_KEY"].encode()
+salt = app.config["SALT"].encode()
+kdf = PBKDF2HMAC(
+    algorithm=hashes.SHA256(),
+    length=32,
+    salt=salt,
+    iterations=390000,
+)
+key = base64.urlsafe_b64encode(kdf.derive(password))
+app.config["FERNET"] = Fernet(key)
 
 
 # Jinja filter for autoversionning
