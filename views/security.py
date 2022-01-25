@@ -5,7 +5,7 @@ from flask import Blueprint, url_for, request, redirect, session
 from flask_login import login_user, logout_user
 
 import backend.models as md
-import backends.cookies as cookies
+import backend.cookies as cookies
 
 
 security = Blueprint("security", __name__, static_folder="../static")
