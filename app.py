@@ -204,6 +204,7 @@ migrate = Migrate(app, manager.database)
 app.config["USE_SESSION_FOR_NEXT"] = True
 login = LoginManager(app)
 login.login_view = "security.login"
+login.login_message = None
 login.anonymous_user = mxn.AnonymousUser
 app.config["LOGIN_MANAGER"] = login
 
