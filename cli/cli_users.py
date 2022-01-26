@@ -1,7 +1,5 @@
 import click
 import pandas as pd
-from datetime import datetime
-from authlib.jose import jwt
 
 from flask import current_app as app
 from flask.cli import with_appcontext
@@ -22,7 +20,7 @@ def users():
 def count():
     """Count the number of current users."""
     click.echo(
-        f"There are currently {md.User.query.filter(None != md.User.confirmed_at).count()} "
+        f"There are currently {md.User.query.count()} "
         f"(confirmed) users on ADE-Scheduler."
     )
 
