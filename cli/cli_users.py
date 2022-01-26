@@ -19,21 +19,6 @@ def users():
 
 @users.command()
 @with_appcontext
-def migrate():
-    """Migrate accounts by sending an email to all users."""
-
-    email = "gillesponcelet98@gmail.com"
-
-    # Encrypt JWT
-    payload = {"email": email}
-    header = {"alg": "HS256"}
-    token = jwt.encode(header, payload, app.config["SECRET_KEY"])
-
-    print(f"Your token is: {token.decode()}")
-
-
-@users.command()
-@with_appcontext
 def count():
     """Count the number of current users."""
     click.echo(
