@@ -29,6 +29,7 @@ from authlib.integrations.flask_client import OAuth
 
 # API imports
 import backend.models as md
+import backend.mixins as mxn
 import backend.servers as srv
 import backend.ade_api as ade
 import backend.manager as mng
@@ -203,6 +204,7 @@ migrate = Migrate(app, manager.database)
 app.config["USE_SESSION_FOR_NEXT"] = True
 login = LoginManager(app)
 login.login_view = "security.login"
+login.anonymous_user = mxn.AnonymousUser
 app.config["LOGIN_MANAGER"] = login
 
 # Setup UCLouvain OAuth2
