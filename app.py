@@ -54,6 +54,7 @@ from views.admin import admin
 from cli import cli_api_usage
 from cli import cli_client
 from cli import cli_redis
+from cli import cli_roles
 from cli import cli_schedules
 from cli import cli_sql
 from cli import cli_usage
@@ -106,6 +107,7 @@ jsglue = JSGlue(app)
 # Register new commands
 app.cli.add_command(cli_sql.sql)
 app.cli.add_command(cli_redis.redis)
+app.cli.add_command(cli_roles.roles)
 app.cli.add_command(cli_client.client)
 app.cli.add_command(cli_schedules.schedules)
 app.cli.add_command(cli_usage.usage)
@@ -388,17 +390,30 @@ def handle_exception(e):
         return render_template("errorhandler/500.html"), 500
 
 
+@app.errorhandler(403)  # FORBIDDEN
+def forbidden(e):
+    if request.is_json:
+        return gettext("Access to this resource is forbidden."), e.code
+    else:
+        return (
+            render_template(
+                "errorhandler/403.html", message="403 Forbidden access ヽ(ಠ_ಠ) ノ"
+            ),
+            e.code,
+        )
+
+
 @app.errorhandler(404)  # URL NOT FOUND
 @app.errorhandler(405)  # METHOD NOT ALLOWED
 def page_not_found(e):
     if request.is_json:
-        return gettext("Resource not found"), 500
+        return gettext("Resource not found"), e.code
     else:
         return (
             render_template(
                 "errorhandler/404.html", message=gettext("404 Page not found :(")
             ),
-            404,
+            e.code,
         )
 
 

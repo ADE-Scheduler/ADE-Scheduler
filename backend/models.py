@@ -186,6 +186,18 @@ class User(UserMixin, db.Model):
         backref=db.backref("users"),
     )
 
+    def has_role(self, role):
+        for r in self.roles:
+            if r.name == role:
+                return True
+        return False
+
+    def add_role(self, role_name):
+        role = Role.query.filter_by(name=role_name).first()
+        if role is not None:
+            self.roles.append(role)
+        db.session.commit()
+
     def add_schedule(self, schedule, level=OWNER_LEVEL):
         if schedule not in self.schedules:
             self.schedules.append(schedule)

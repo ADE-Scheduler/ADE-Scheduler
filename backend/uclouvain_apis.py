@@ -15,7 +15,6 @@ class API(object):
     @classmethod
     def get(cls, url, **kwargs):
         url = os.path.join(cls.url, url)
-        print(url)
         return requests.get(url=url, **kwargs)
 
     @classmethod
