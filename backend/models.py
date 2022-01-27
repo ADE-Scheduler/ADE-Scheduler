@@ -478,6 +478,10 @@ class OldUser(mxn.UserMixin, db.Model):
         backref=db.backref("old_users"),
     )
 
+    @property
+    def is_active(self):
+        return self.confirmed_at is None
+
     @classmethod
     def get_emails(cls):
         df = table_to_dataframe(cls, columns=["confirmed_at", "email"])
