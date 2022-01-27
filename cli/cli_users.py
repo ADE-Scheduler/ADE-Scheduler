@@ -1,7 +1,5 @@
 import click
 import pandas as pd
-from datetime import datetime
-from authlib.jose import jwt
 
 from flask import current_app as app
 from flask.cli import with_appcontext
@@ -19,25 +17,10 @@ def users():
 
 @users.command()
 @with_appcontext
-def migrate():
-    """Migrate accounts by sending an email to all users."""
-
-    email = "gillesponcelet98@gmail.com"
-
-    # Encrypt JWT
-    payload = {"email": email}
-    header = {"alg": "HS256"}
-    token = jwt.encode(header, payload, app.config["SECRET_KEY"])
-
-    print(f"Your token is: {token.decode()}")
-
-
-@users.command()
-@with_appcontext
 def count():
     """Count the number of current users."""
     click.echo(
-        f"There are currently {md.User.query.filter(None != md.User.confirmed_at).count()} "
+        f"There are currently {md.User.query.count()} "
         f"(confirmed) users on ADE-Scheduler."
     )
 

@@ -12,6 +12,7 @@ const pages = [
   // 'security/register_user',
   // 'security/reset_password',
   // 'security/send_confirmation',
+  'errorhandler/403',
   'errorhandler/404',
   'errorhandler/500',
   'account',

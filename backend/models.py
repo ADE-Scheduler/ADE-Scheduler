@@ -12,8 +12,8 @@ from sqlalchemy.dialects.postgresql import UUID
 from copy import copy
 from flask_sqlalchemy import SQLAlchemy
 from flask_sqlalchemy import BaseQuery
-from flask_login import UserMixin
 
+import backend.mixins as mxn
 import pandas as pd
 
 from typing import Union, Any
@@ -149,7 +149,7 @@ class Role(db.Model):
     description = db.Column(db.String(255))
 
 
-class User(UserMixin, db.Model):
+class User(mxn.UserMixin, db.Model):
     __tablename__ = "user"
     # Basic user info
     id = db.Column(db.Integer, primary_key=True)
@@ -411,7 +411,7 @@ old_schedules_users = db.Table(
 )
 
 
-class OldUser(UserMixin, db.Model):
+class OldUser(mxn.UserMixin, db.Model):
     __tablename__ = "old_user"
     # FLASK-SECUIRTY'S ATTRIBUTES (we only need those, the others can be dropped)
     id = db.Column(db.Integer, primary_key=True)

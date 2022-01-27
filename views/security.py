@@ -35,13 +35,10 @@ def login():
         roles = list()
         for business_role in data["businessRoles"]["businessRole"]:
             roles.append(business_role["businessRoleCode"])
-            # The FGS *should* be the unique identifier TODO: check this ?
             my_fgs = business_role["identityId"]
 
         # Determine which role, priority on employee, then student.
-        if 1 in roles or 13 in roles:  # TODO: check what does the 13 correspond to
-            # I think it is the "Boursier UCL" role
-            # We shoud also ask a list of existing roles...
+        if 1 in roles:
             role = "employee"
         elif 2 in roles:
             role = "student"

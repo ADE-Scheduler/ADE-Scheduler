@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, jsonify
 from flask import current_app as app
-from flask_security import roles_required
+
+from backend.security import roles_required
 
 
 admin = Blueprint("admin", __name__, static_folder="../static")
