@@ -480,7 +480,7 @@ class OldUser(mxn.UserMixin, db.Model):
 
     @property
     def is_active(self):
-        return self.confirmed_at is None
+        return self.confirmed_at is not None
 
     @classmethod
     def get_emails(cls):
