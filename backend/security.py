@@ -1,19 +1,21 @@
 import backend.cookies as cookies
+from flask import make_response, render_template
 
 
 def fetch_token(name):
+    print("Fetching token")
     return cookies.get_oauth_token()
     # return current_user.token.to_token()
 
 
-def update_token(name, token, refresh_token=None, access_token=None, resp=None):
-    old_token = fetch_token(name)
-    if refresh_token:
-        old_token["refresh_token"] = token
-    elif access_token:
-        old_token["access_token"] = token
-    else:
-        return
+def update_token(name, token, resp=None, **kwargs):
+    print("CALLING UPDATE", name, token, kwargs)
+    token = {**token, **kwargs}
 
-    if resp:
-        return cookies.set_oauth_token(old_token, resp)
+    if resp is None:
+        resp = make_response()
+        
+        resp = cookies.set_cookie("test", "value", resp)
+        return render_template("contact.html")
+    resp = cookies.set_oauth_token(token, resp)
+    return resp
