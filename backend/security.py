@@ -20,6 +20,9 @@ def fetch_token(name):
 
 
 def update_token(name, token, refresh_token=None, access_token=None):
+    # The token update is handled in the `after_request` hook
+    # (since we do not have access to the response here).
+    # Thus, the token is temporarily stored in Flask's app context `g`.
     g.token = token
 
 
