@@ -1,27 +1,29 @@
 from functools import wraps
 
-from flask import abort
+from flask import abort, g, make_response, session, request, redirect, url_for
 from flask_login import current_user
 
 import backend.models as md
+import backend.cookies as cookies
 
 
 def fetch_token(name):
-    return current_user.token.to_token()
+    # Fetch token
+    token = cookies.get_oauth_token()
+
+    # If None (e.g. user has cleared his cookies), ask for a re-login
+    if token is None:
+        session["next"] = request.full_path
+        abort(make_response(redirect(url_for("security.login"))))
+
+    return token
 
 
 def update_token(name, token, refresh_token=None, access_token=None):
-    if refresh_token:
-        item = md.OAuth2Token.query.filter_by(
-            name=name, refresh_token=refresh_token
-        ).first()
-    elif access_token:
-        item = md.OAuth2Token.query.filter_by(
-            name=name, access_token=access_token
-        ).first()
-    else:
-        return
-    item.update(token)
+    # The token update is handled in the `after_request` hook
+    # (since we do not have access to the response here).
+    # Thus, the token is temporarily stored in Flask's app context `g`.
+    g.token = token
 
 
 def roles_required(*roles):

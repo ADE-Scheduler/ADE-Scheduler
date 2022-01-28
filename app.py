@@ -8,6 +8,10 @@ import configparser
 import warnings
 from requests.exceptions import HTTPError, ConnectionError
 from authlib.jose import jwt
+import base64
+from cryptography.fernet import Fernet
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
 # Flask imports
 from werkzeug.exceptions import InternalServerError
@@ -36,7 +40,8 @@ import backend.manager as mng
 import backend.schedules as schd
 import backend.track_usage as tu
 import backend.security as scty
-from backend.uclouvain_apis import API
+import backend.cookies as cookies
+import backend.uclouvain_apis as ucl
 import views.utils as utl
 
 # Views imports
@@ -103,6 +108,7 @@ app.register_blueprint(whatisnew, url_prefix="/whatisnew")
 app.register_blueprint(contribute, url_prefix="/contribute")
 app.register_blueprint(admin, url_prefix="/admin")
 app.config["SECRET_KEY"] = os.environ["FLASK_SECRET_KEY"]
+app.config["SALT"] = os.environ["FLASK_SALT"]
 jsglue = JSGlue(app)
 
 # Register new commands
@@ -215,12 +221,12 @@ oauth.register(  # TODO: utiliser app.config
     name="uclouvain",
     client_id=os.environ["UCLOUVAIN_CLIENT_ID"],
     client_secret=os.environ["UCLOUVAIN_CLIENT_SECRET"],
-    api_base_url=API.BASE_URL,
+    api_base_url=ucl.API.BASE_URL,
     # Access token
-    access_token_url=API.TOKEN_URL,
+    access_token_url=ucl.API.TOKEN_URL,
     access_token_params=None,
     # Authorization
-    authorize_url=API.AUTHORIZE_URL,
+    authorize_url=ucl.API.AUTHORIZE_URL,
     authorize_params=None,
 )
 app.config["UCLOUVAIN_MANAGER"] = oauth.create_client("uclouvain")
@@ -235,6 +241,19 @@ app.config["SESSION_MANAGER"] = Session(app)
 app.config["LANGUAGES"] = ["en", "fr"]
 app.config["BABEL_TRANSLATION_DIRECTORIES"] = "translations"
 babel = Babel(app)
+
+
+# Setup Fernet encryption / decryption
+password = app.config["SECRET_KEY"].encode()
+salt = app.config["SALT"].encode()
+kdf = PBKDF2HMAC(
+    algorithm=hashes.SHA256(),
+    length=32,
+    salt=salt,
+    iterations=390000,
+)
+key = base64.urlsafe_b64encode(kdf.derive(password))
+app.config["FERNET"] = Fernet(key)
 
 
 # Jinja filter for autoversionning
@@ -283,6 +302,10 @@ def before_request():
 
 @app.after_request
 def after_request(response):
+    # Check if a token has been refreshed
+    token = g.pop("token", None)
+    if token is not None:
+        response = cookies.set_oauth_token(token, response)
     return tu.after_request(response)
 
 

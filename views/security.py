@@ -5,6 +5,7 @@ from flask import Blueprint, url_for, request, redirect, session
 from flask_login import login_user, logout_user
 
 import backend.models as md
+import backend.cookies as cookies
 
 
 security = Blueprint("security", __name__, static_folder="../static")
@@ -73,23 +74,22 @@ def login():
                 email=email,
                 first_name=first_name,
                 last_name=last_name,
-                token=md.OAuth2Token("uclouvain", token),
                 created_at=now,
                 last_seen_at=now,
             )
             md.db.session.add(user)
             md.db.session.commit()
 
-        # User already exists, update token
-        else:
-            user.token.update(token)
-
         # Login user
-        login_user(user)
+        login_user(user, remember=True)
+
+        # Create response, redirect if next param is found
         next = session.pop("next", None)
         if next is not None:
-            return redirect(next)
-        return redirect(url_for("calendar.index"))
+            resp = redirect(next)
+        else:
+            resp = redirect(url_for("calendar.index"))
+        return cookies.set_oauth_token(token, resp)
 
 
 @security.route("/logout")
