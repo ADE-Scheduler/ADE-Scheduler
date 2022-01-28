@@ -1,6 +1,6 @@
 from functools import wraps
 
-from flask import abort, make_response, render_template, g
+from flask import abort, g, make_response, session, request, redirect, url_for
 from flask_login import current_user
 
 import backend.models as md
@@ -12,9 +12,10 @@ def fetch_token(name):
     token = cookies.get_oauth_token()
 
     # If None (e.g. user has cleared his cookies), ask for a re-login
-    # How to manage this ?
     if token is None:
-        pass
+        session["next"] = request.full_path
+        abort(make_response(redirect(url_for("security.login"))))
+
     return token
 
 

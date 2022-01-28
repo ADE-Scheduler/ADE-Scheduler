@@ -24,8 +24,6 @@ def login():
     else:
         # Fetch token
         token = uclouvain.authorize_access_token()
-        resp = redirect(url_for("calendar.index"))
-        resp = cookies.set_oauth_token(token, resp)
 
         # Fetch user role & ID
         my_fgs = None
@@ -82,17 +80,16 @@ def login():
             md.db.session.add(user)
             md.db.session.commit()
 
-        # User already exists, nothing to do
-        else:
-            pass
-
         # Login user
-        login_user(user)
+        login_user(user, remember=True)
+
+        # Create response, redirect if next param is found
         next = session.pop("next", None)
         if next is not None:
-            return redirect(next)
-
-        return resp
+            resp = redirect(next)
+        else:
+            resp = redirect(url_for("calendar.index"))
+        return cookies.set_oauth_token(token, resp)
 
 
 @security.route("/logout")

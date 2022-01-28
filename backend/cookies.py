@@ -13,27 +13,18 @@ def set_cookie(key: str, value: str, resp, **kwargs: Any):
 
 
 def set_oauth_token(token: dict, resp):
+    token = json.dumps(token).encode()
+    cookie = app.config["FERNET"].encrypt(token).decode()
 
-    with app.app_context():
-
-        token = json.dumps(token).encode()
-        cookie = app.config["FERNET"].encrypt(token).decode()
-
-        return set_cookie("uclouvain-token", cookie, resp)
-
-
-def get_cookie(key: str) -> str:
-    cookie = request.cookies.get(key)
-    return cookie
+    return set_cookie("uclouvain-token", cookie, resp)
 
 
 def get_oauth_token() -> Optional[dict]:
-    cookie = get_cookie("uclouvain-token")
+    cookie = request.cookies.get("uclouvain-token")
     if cookie:
         try:
-            with app.app_context():
-                token = app.config["FERNET"].decrypt(cookie.encode()).decode()
-                return json.loads(token)
+            token = app.config["FERNET"].decrypt(cookie.encode()).decode()
+            return json.loads(token)
         except:
             return None
     return None
