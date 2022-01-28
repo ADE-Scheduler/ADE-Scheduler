@@ -1,6 +1,6 @@
 from functools import wraps
 
-from flask import abort, make_response, render_template
+from flask import abort, make_response, render_template, g
 from flask_login import current_user
 
 import backend.models as md
@@ -8,22 +8,18 @@ import backend.cookies as cookies
 
 
 def fetch_token(name):
-    print("Fetching token")
-    return cookies.get_oauth_token()
-    # return current_user.token.to_token()
+    # Fetch token
+    token = cookies.get_oauth_token()
+
+    # If None (e.g. user has cleared his cookies), ask for a re-login
+    # How to manage this ?
+    if token is None:
+        pass
+    return token
 
 
-def update_token(name, token, resp=None, **kwargs):
-    print("CALLING UPDATE", name, token, kwargs)
-    token = {**token, **kwargs}
-
-    if resp is None:
-        resp = make_response()
-
-        resp = cookies.set_cookie("test", "value", resp)
-        return render_template("contact.html")
-    resp = cookies.set_oauth_token(token, resp)
-    return resp
+def update_token(name, token, refresh_token=None, access_token=None):
+    g.token = token
 
 
 def roles_required(*roles):

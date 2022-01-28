@@ -19,7 +19,7 @@ def set_oauth_token(token: dict, resp):
         token = json.dumps(token).encode()
         cookie = app.config["FERNET"].encrypt(token).decode()
 
-        return set_cookie("oauth-token", cookie, resp)
+        return set_cookie("uclouvain-token", cookie, resp)
 
 
 def get_cookie(key: str) -> str:
@@ -28,7 +28,7 @@ def get_cookie(key: str) -> str:
 
 
 def get_oauth_token() -> Optional[dict]:
-    cookie = get_cookie("oauth-token")
+    cookie = get_cookie("uclouvain-token")
     if cookie:
         try:
             with app.app_context():

@@ -40,7 +40,8 @@ import backend.manager as mng
 import backend.schedules as schd
 import backend.track_usage as tu
 import backend.security as scty
-from backend.uclouvain_apis import API
+import backend.cookies as cookies
+import backend.uclouvain_apis as ucl
 import views.utils as utl
 
 # Views imports
@@ -220,12 +221,12 @@ oauth.register(  # TODO: utiliser app.config
     name="uclouvain",
     client_id=os.environ["UCLOUVAIN_CLIENT_ID"],
     client_secret=os.environ["UCLOUVAIN_CLIENT_SECRET"],
-    api_base_url=API.BASE_URL,
+    api_base_url=ucl.API.BASE_URL,
     # Access token
-    access_token_url=API.TOKEN_URL,
+    access_token_url=ucl.API.TOKEN_URL,
     access_token_params=None,
     # Authorization
-    authorize_url=API.AUTHORIZE_URL,
+    authorize_url=ucl.API.AUTHORIZE_URL,
     authorize_params=None,
 )
 app.config["UCLOUVAIN_MANAGER"] = oauth.create_client("uclouvain")
@@ -301,6 +302,10 @@ def before_request():
 
 @app.after_request
 def after_request(response):
+    # Check if a token has been refreshed
+    token = g.pop("token", None)
+    if token is not None:
+        response = cookies.set_oauth_token(token, response)
     return tu.after_request(response)
 
 
