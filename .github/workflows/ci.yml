@@ -25,6 +25,8 @@ jobs:
       MAIL_ADMIN: admin@localhost
       MAIL_SERVER: localhost
       MAIL_USERNAME: no-reply@localhost
+      UCLOUVAIN_CLIENT_ID: ${{ secrets.UCLOUVAIN_CLIENT_ID }}
+      UCLOUVAIN_CLIENT_SECRET: ${{ secrets.UCLOUVAIN_CLIENT_SECRET }}
     strategy:
       fail-fast: false
       matrix:

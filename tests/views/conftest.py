@@ -8,7 +8,7 @@ import views.utils as utl
 
 from app import app as ade_scheduler
 from flask import session
-from flask_security import hash_password, AnonymousUser
+from backend.mixins import AnonymousUser
 
 
 @pytest.fixture(scope="session")
@@ -26,22 +26,15 @@ def db(manager):
     return manager.database
 
 
-@pytest.fixture(scope="session")
-def user_ds(app):
-    return app.config["SECURITY_MANAGER"].datastore
-
-
 @pytest.fixture
-def jyl(app, manager, user_ds, db):
+def jyl(app, manager, db):
     """
     Create a test user.
     JYL has a confirmed account and is logged in.
     """
-    jyl = user_ds.create_user(
+    jyl = md.User(
+        fgs="00000000",
         email="jyl@scheduler.ade",
-        password=hash_password("password"),
-        confirmed_at=datetime.datetime.now(),
-        active=True,
     )
 
     data = schd.Schedule(manager.get_default_project_id(), label="JYL'S SCHEDULE")
@@ -76,17 +69,15 @@ def jyl(app, manager, user_ds, db):
 
 
 @pytest.fixture
-def gerom(app, manager, user_ds, db):
+def gerom(app, manager, db):
 
     """
     Create a test user.
     Gerom has a confirmed account, but is not logged in.
     """
-    gerom = user_ds.create_user(
+    gerom = md.User(
+        fgs="00000001",
         email="gerom@scheduler.ade",
-        password=hash_password("password"),
-        confirmed_at=datetime.datetime.now(),
-        active=True,
     )
 
     schedule = md.Schedule(

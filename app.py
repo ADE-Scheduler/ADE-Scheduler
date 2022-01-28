@@ -362,15 +362,18 @@ def migrate(token):
     claims = jwt.decode(token, app.config["SECRET_KEY"])
     email = claims["email"]
     old_user = md.OldUser.query.filter_by(email=email).first()
-    if old_user is None:
-        return "This user does not exist, sneaky sneaky lil' rat !", 401
+    if old_user is None or not old_user.is_active:
+        return (
+            "Either this account does not exist or the data has already been migrated.",
+            401,
+        )
 
     # Add old user's schedules to current_user
     for s in old_user.schedules:
         current_user.schedules.append(s)
 
-    # All done, delete old user
-    # md.db.session.delete(old_user)
+    # All done, deactivate old user
+    old_user.confirmed_at = None
     md.db.session.commit()
     flash("Success: your data has been migrated to your new account !", "success")
     return redirect(url_for("calendar.index"))
