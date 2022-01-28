@@ -94,5 +94,10 @@ def login():
 
 @security.route("/logout")
 def logout():
+    # Logout user
     logout_user()
-    return redirect(url_for("calendar.index"))
+
+    # Clear uclouvain token cookie
+    resp = redirect(url_for("calendar.index"))
+    resp.delete_cookie("uclouvain-token")
+    return resp
