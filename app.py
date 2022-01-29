@@ -369,7 +369,9 @@ def migrate(token):
     old_user = md.OldUser.query.filter_by(email=email).first()
     if old_user is None or not old_user.is_active:
         return (
-            gettext("Either this account does not exist or the data has already been migrated."),
+            gettext(
+                "Either this account does not exist or the data has already been migrated."
+            ),
             401,
         )
 
@@ -380,7 +382,9 @@ def migrate(token):
     # All done, deactivate old user
     old_user.confirmed_at = None
     md.db.session.commit()
-    flash(gettext("Success: your data has been migrated to your new account !"), "success")
+    flash(
+        gettext("Success: your data has been migrated to your new account !"), "success"
+    )
     return redirect(url_for("calendar.index"))
 
 
