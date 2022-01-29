@@ -71,8 +71,9 @@ def send(subject, body, recipients, filename, html, all_users):
 
 @mails.command()
 @click.option("-d", "--dry-run", is_flag=True)
+@click.option("-t", "--to-jyl-and-gerom", is_flag=True)
 @with_appcontext
-def send_jwt_token(dry_run):
+def send_jwt_token(dry_run, to_jyl_and_gerom):
 
     subject = "ADE Scheduler - Connexion avec l'identifiant UCLouvain"
 
@@ -91,15 +92,18 @@ Nous sommes donc à la recherche d'étudiants motivés ou curieux de nous aider 
 
 Votre lien de récupération : {lien}.
 
-Pour les étudiants, on espère que votre session s'est bien passée et on vous souhaite de bonnes vacances !
+Pour les étudiants, on espère que votre session et vos vacances se sont bien passées, et on vous souhaite une bonne rentrée !
 
 Cordialement,
 
-L'équipe ADE Scheduler.
+Gilles et Jérome.
     """
     msg = Message(subject=subject, body=body, recipients=[])
 
     emails = md.OldUser.get_emails()
+
+    if to_jyl_and_gerom:
+        emails = ["jeertmans@icloud.com", "gillesponcelet@skynet.be"]
 
     click.confirm(
         f"Are you sure to send an email to {len(emails)} email addresses?",
@@ -107,8 +111,8 @@ L'équipe ADE Scheduler.
     )
 
     with app.config["MAIL_MANAGER"].connect() as conn, click.progressbar(emails) as bar:
-        for email in bar:
-            # time.sleep(2.5)  # Required for no-reply@uclouvain.be
+        for i, email in enumerate(bar):
+            time.sleep(1.5)  # Required for no-reply@uclouvain.be
 
             msg.recipients = [email]
 
@@ -121,7 +125,5 @@ L'équipe ADE Scheduler.
             if dry_run:
                 click.echo(f"Sending message to {email}")
             else:
-                if "jeertmans" in email:
-                    print(msg.body)
-                # conn.send(msg)
-                pass
+                conn.send(msg)
+                click.echo(f"{i} - Sent a message to {email}")
