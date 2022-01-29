@@ -342,12 +342,6 @@ def test_delete_custom_event(client, user, manager):
     for id in [id_1, id_2]:
         assert id not in ids
 
-    try:
-        with pytest.raises(KeyError):
-            client.delete(url_for("calendar.delete_custom_event", id=id_1))
-    except ConnectionRefusedError:
-        pass
-
 
 @pytest.mark.parametrize("user", ["jyl"], indirect=True)
 def test_update_custom_event(client, user, manager):

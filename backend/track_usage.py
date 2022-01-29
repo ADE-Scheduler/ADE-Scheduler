@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from flask import request, g
-from flask_security import current_user
+from flask_login import current_user
 
 import backend.models as md
 
@@ -37,6 +37,11 @@ def before_request():
 
 
 def after_request(response):
+    if current_user.is_authenticated:
+        current_user.last_seen_at = datetime.now()
+        # Session will be commited after the new usage line is added,
+        # no need to do it here.
+
     end_time = datetime.utcnow()
     speed = end_time - g.start_time
 

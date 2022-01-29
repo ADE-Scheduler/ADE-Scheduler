@@ -3,7 +3,7 @@ import uuid
 
 from flask import current_app as app
 from flask import session
-from flask_security import current_user
+from flask_login import current_user
 
 import backend.schedules as schd
 

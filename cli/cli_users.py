@@ -1,10 +1,8 @@
 import click
 import pandas as pd
-from datetime import datetime
 
 from flask import current_app as app
 from flask.cli import with_appcontext
-from flask_security.cli import users
 
 import plotly.express as px
 from plotly.subplots import make_subplots
@@ -12,12 +10,17 @@ from plotly.subplots import make_subplots
 import backend.models as md
 
 
+@click.group()
+def users():
+    """Performs actions on users."""
+
+
 @users.command()
 @with_appcontext
 def count():
     """Count the number of current users."""
     click.echo(
-        f"There are currently {md.User.query.filter(None != md.User.confirmed_at).count()} "
+        f"There are currently {md.User.query.count()} "
         f"(confirmed) users on ADE-Scheduler."
     )
 

@@ -1,5 +1,6 @@
 import uuid
 import json
+import time
 import secrets
 import datetime
 import sqlalchemy as sa
@@ -10,9 +11,9 @@ from sqlalchemy.dialects.postgresql import UUID
 
 from copy import copy
 from flask_sqlalchemy import SQLAlchemy
-from flask_security.models import fsqla_v2 as fsqla
 from flask_sqlalchemy import BaseQuery
 
+import backend.mixins as mxn
 import pandas as pd
 
 from typing import Union, Any
@@ -22,7 +23,6 @@ EDITOR_LEVEL = 1
 VIEWER_LEVEL = 2
 
 db = SQLAlchemy()
-fsqla.FsModels.set_db_info(db)
 
 
 def query_to_dataframe(query: BaseQuery, *args: Any, **kwargs: Any) -> pd.DataFrame:
@@ -126,10 +126,15 @@ class ScheduleDoNotMatchError(Exception):
         return f"The schedule ID's do not match: database ID is {self.database_id} and given data ID is {self.data_id}."
 
 
-class Role(db.Model, fsqla.FsRoleMixin):
-    pass
+# Roles <-> Users m2m relationship
+roles_users = db.Table(
+    "roles_users",
+    db.Column("user_id", db.Integer(), db.ForeignKey("user.id")),
+    db.Column("role_id", db.Integer(), db.ForeignKey("role.id")),
+)
 
 
+# Schedules <-> Users m2m relationship
 schedules_users = db.Table(
     "schedules_users",
     db.Column("user_id", db.Integer(), db.ForeignKey("user.id")),
@@ -137,12 +142,31 @@ schedules_users = db.Table(
 )
 
 
-class User(db.Model, fsqla.FsUserMixin):
+class Role(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    name = db.Column(db.String(80), unique=True, nullable=False)
+    description = db.Column(db.String(255))
+
+
+class User(mxn.UserMixin, db.Model):
+    __tablename__ = "user"
+    # Basic user info
+    id = db.Column(db.Integer, primary_key=True)
+    fgs = db.Column(db.String(8), unique=True, nullable=False)  # The user identifier
+    email = db.Column(db.String(255), unique=True, nullable=False)
+    first_name = db.Column(db.String(40))
+    last_name = db.Column(db.String(40))
+
+    # Track login
+    created_at = db.Column(db.DateTime())
+    last_seen_at = db.Column(db.DateTime())
+
+    # Schedules
     autosave = db.Column(
         db.Boolean(),
         nullable=False,
-        default=False,
-        server_default=sa.sql.expression.literal(False),
+        default=True,
+        server_default=sa.sql.expression.literal(True),
     )
     last_schedule_id = db.Column(db.Integer(), nullable=True)
     schedules = db.relationship(
@@ -150,6 +174,17 @@ class User(db.Model, fsqla.FsUserMixin):
         secondary=schedules_users,
         backref=db.backref("users"),
     )
+
+    # Roles
+    roles = db.relationship(
+        "Role",
+        secondary=roles_users,
+        backref=db.backref("users"),
+    )
+
+    def get_id(self):
+        """Returns the user's identification attribute"""
+        return self.fgs
 
     def add_schedule(self, schedule, level=OWNER_LEVEL):
         if schedule not in self.schedules:
@@ -212,10 +247,7 @@ class User(db.Model, fsqla.FsUserMixin):
 
     @classmethod
     def get_emails(cls):
-        df = table_to_dataframe(cls, columns=["confirmed_at", "email"])
-        df.dropna(subset=["confirmed_at"], inplace=True)
-
-        return df.email.values.tolist()
+        return table_to_dataframe(cls, columns=["email"]).tolist()
 
 
 class Schedule(db.Model):
@@ -366,3 +398,48 @@ class ApiUsage(db.Model):
         self.status = response.status_code
         db.session.add(self)
         db.session.commit()
+
+
+"""
+This old user class is just there to handle migration from the old login system
+to the new one, ensuring old account data can be trasnferred to the new accounts.
+"""
+old_schedules_users = db.Table(
+    "old_schedules_users",
+    db.Column("user_id", db.Integer(), db.ForeignKey("old_user.id")),
+    db.Column("schedule_id", db.Integer(), db.ForeignKey("schedule.id")),
+)
+
+
+class OldUser(mxn.UserMixin, db.Model):
+    __tablename__ = "old_user"
+    # FLASK-SECUIRTY'S ATTRIBUTES (we only need those, the others can be dropped)
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(255), unique=True, nullable=False)
+    password = db.Column(db.String(255), nullable=False)
+    confirmed_at = db.Column(db.DateTime())
+
+    # ADE-SCHEDULER ATTRIBUTES
+    autosave = db.Column(
+        db.Boolean(),
+        nullable=False,
+        default=False,
+        server_default=sa.sql.expression.literal(False),
+    )
+    last_schedule_id = db.Column(db.Integer(), nullable=True)
+    schedules = db.relationship(
+        "Schedule",
+        secondary=old_schedules_users,
+        backref=db.backref("old_users"),
+    )
+
+    @property
+    def is_active(self):
+        return self.confirmed_at is not None
+
+    @classmethod
+    def get_emails(cls):
+        df = table_to_dataframe(cls, columns=["confirmed_at", "email"])
+        df.dropna(subset=["confirmed_at"], inplace=True)
+
+        return df.email.values.tolist()

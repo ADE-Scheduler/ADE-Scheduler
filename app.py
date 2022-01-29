@@ -7,29 +7,45 @@ import distutils
 import configparser
 import warnings
 from requests.exceptions import HTTPError, ConnectionError
+from authlib.jose import jwt
+import base64
+from cryptography.fernet import Fernet
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
 # Flask imports
 from werkzeug.exceptions import InternalServerError
-from flask import Flask, session, request, redirect, url_for, render_template, g
+from flask import Flask, session, request, redirect, url_for, render_template, g, flash
 from flask_session import Session
-from flask_security import Security, SQLAlchemyUserDatastore
-from flask_login import user_logged_out, user_logged_in
+from flask_login import (
+    LoginManager,
+    current_user,
+    login_required,
+    user_logged_out,
+    user_logged_in,
+)
 from flask_mail import Mail, Message, email_dispatched
 from flask_jsglue import JSGlue
 from flask_babel import Babel, gettext
 from flask_migrate import Migrate
 from flask_compress import Compress
+from authlib.integrations.flask_client import OAuth
 
 # API imports
 import backend.models as md
+import backend.mixins as mxn
 import backend.servers as srv
 import backend.ade_api as ade
 import backend.manager as mng
 import backend.schedules as schd
 import backend.track_usage as tu
+import backend.security as scty
+import backend.cookies as cookies
+import backend.uclouvain_apis as ucl
 import views.utils as utl
 
 # Views imports
+from views.security import security
 from views.calendar import calendar
 from views.account import account
 from views.classroom import classroom
@@ -44,6 +60,7 @@ from views.admin import admin
 from cli import cli_api_usage
 from cli import cli_client
 from cli import cli_redis
+from cli import cli_roles
 from cli import cli_schedules
 from cli import cli_sql
 from cli import cli_usage
@@ -80,6 +97,7 @@ if app.config["PROFILE"]:
     app.wsgi_app = ProfilerMiddleware(app.wsgi_app, profile_dir=profile_dir)
 
 ## Register blueprints
+app.register_blueprint(security)
 app.register_blueprint(calendar, url_prefix="/calendar")
 app.register_blueprint(account, url_prefix="/account")
 app.register_blueprint(classroom, url_prefix="/classroom")
@@ -90,11 +108,13 @@ app.register_blueprint(whatisnew, url_prefix="/whatisnew")
 app.register_blueprint(contribute, url_prefix="/contribute")
 app.register_blueprint(admin, url_prefix="/admin")
 app.config["SECRET_KEY"] = os.environ["FLASK_SECRET_KEY"]
+app.config["SALT"] = os.environ["FLASK_SALT"]
 jsglue = JSGlue(app)
 
 # Register new commands
 app.cli.add_command(cli_sql.sql)
 app.cli.add_command(cli_redis.redis)
+app.cli.add_command(cli_roles.roles)
 app.cli.add_command(cli_client.client)
 app.cli.add_command(cli_schedules.schedules)
 app.cli.add_command(cli_usage.usage)
@@ -186,19 +206,30 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 manager.database.init_app(app)
 migrate = Migrate(app, manager.database)
 
-# Setup Flask-Security
-app.config["SECURITY_TRACKABLE"] = True
-app.config["SECURITY_CONFIRMABLE"] = True
-app.config["SECURITY_REGISTERABLE"] = True
-app.config["SECURITY_CHANGEABLE"] = True
-app.config["SECURITY_RECOVERABLE"] = True
-app.config["SECURITY_PASSWORD_SALT"] = os.environ["FLASK_SALT"]
-app.config["SECURITY_CONFIRM_URL"] = "/confirm"
-app.config["SECURITY_REQUIRES_CONFIRMATION_ERROR_VIEW"] = "/confirm"
-app.config["SECURITY_POST_REGISTER_VIEW"] = app.config["SECURITY_CONFIRM_URL"]
-app.config["SECURITY_MANAGER"] = Security(
-    app, SQLAlchemyUserDatastore(manager.database, md.User, md.Role)
+# Setup Flask-Login
+app.config["USE_SESSION_FOR_NEXT"] = True
+login = LoginManager(app)
+login.login_view = "security.login"
+login.login_message = None
+login.anonymous_user = mxn.AnonymousUser
+app.config["LOGIN_MANAGER"] = login
+
+# Setup UCLouvain OAuth2
+oauth = OAuth(app, fetch_token=scty.fetch_token, update_token=scty.update_token)
+oauth.register(
+    # Client identification
+    name="uclouvain",
+    client_id=os.environ["UCLOUVAIN_CLIENT_ID"],
+    client_secret=os.environ["UCLOUVAIN_CLIENT_SECRET"],
+    api_base_url=ucl.API.BASE_URL,
+    # Access token
+    access_token_url=ucl.API.TOKEN_URL,
+    access_token_params=None,
+    # Authorization
+    authorize_url=ucl.API.AUTHORIZE_URL,
+    authorize_params=None,
 )
+app.config["UCLOUVAIN_MANAGER"] = oauth.create_client("uclouvain")
 
 # Setup Flask-Session
 app.config["SESSION_TYPE"] = "redis"
@@ -210,6 +241,19 @@ app.config["SESSION_MANAGER"] = Session(app)
 app.config["LANGUAGES"] = ["en", "fr"]
 app.config["BABEL_TRANSLATION_DIRECTORIES"] = "translations"
 babel = Babel(app)
+
+
+# Setup Fernet encryption / decryption
+password = app.config["SECRET_KEY"].encode()
+salt = app.config["SALT"].encode()
+kdf = PBKDF2HMAC(
+    algorithm=hashes.SHA256(),
+    length=32,
+    salt=salt,
+    iterations=390000,
+)
+key = base64.urlsafe_b64encode(kdf.derive(password))
+app.config["FERNET"] = Fernet(key)
 
 
 # Jinja filter for autoversionning
@@ -258,7 +302,17 @@ def before_request():
 
 @app.after_request
 def after_request(response):
+    # Check if a token has been refreshed
+    token = g.pop("token", None)
+    if token:
+        response = cookies.set_oauth_token(token, response)
     return tu.after_request(response)
+
+
+# Flask-Login's user loader
+@login.user_loader
+def load_user(fgs):
+    return md.User.query.filter_by(fgs=fgs).first()
 
 
 # Reset current schedule on user logout
@@ -305,6 +359,35 @@ def welcome():
         return render_template("welcome.html")
 
 
+# Migration route
+@app.route("/migrate/<token>")
+@login_required
+def migrate(token):
+    # Decode token, fetch corresponding old user
+    claims = jwt.decode(token, app.config["SECRET_KEY"])
+    email = claims["email"]
+    old_user = md.OldUser.query.filter_by(email=email).first()
+    if old_user is None or not old_user.is_active:
+        return (
+            gettext(
+                "Either this account does not exist or the data has already been migrated."
+            ),
+            401,
+        )
+
+    # Add old user's schedules to current_user
+    for s in old_user.schedules:
+        current_user.schedules.append(s)
+
+    # All done, deactivate old user
+    old_user.confirmed_at = None
+    md.db.session.commit()
+    flash(
+        gettext("Success: your data has been migrated to your new account !"), "success"
+    )
+    return redirect(url_for("calendar.index"))
+
+
 # Error handlers
 @app.errorhandler(HTTPError)
 @app.errorhandler(ConnectionError)
@@ -340,17 +423,30 @@ def handle_exception(e):
         return render_template("errorhandler/500.html"), 500
 
 
+@app.errorhandler(403)  # FORBIDDEN
+def forbidden(e):
+    if request.is_json:
+        return gettext("Access to this resource is forbidden."), e.code
+    else:
+        return (
+            render_template(
+                "errorhandler/403.html", message="403 Forbidden access ヽ(ಠ_ಠ) ノ"
+            ),
+            e.code,
+        )
+
+
 @app.errorhandler(404)  # URL NOT FOUND
 @app.errorhandler(405)  # METHOD NOT ALLOWED
 def page_not_found(e):
     if request.is_json:
-        return gettext("Resource not found"), 500
+        return gettext("Resource not found"), e.code
     else:
         return (
             render_template(
                 "errorhandler/404.html", message=gettext("404 Page not found :(")
             ),
-            404,
+            e.code,
         )
 
 
@@ -363,6 +459,8 @@ def make_shell_context():
         "Schedule": md.Schedule,
         "Link": md.Link,
         "User": md.User,
+        "oUser": md.OldUser,
+        "Role": md.Role,
         "Usage": md.Usage,
         "Api": md.ApiUsage,
         "mng": app.config["MANAGER"],
