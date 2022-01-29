@@ -183,6 +183,10 @@ class User(mxn.UserMixin, db.Model):
         backref=db.backref("users"),
     )
 
+    def get_id(self):
+        """Returns the user's identification attribute"""
+        return self.fgs
+
     def add_schedule(self, schedule, level=OWNER_LEVEL):
         if schedule not in self.schedules:
             self.schedules.append(schedule)
