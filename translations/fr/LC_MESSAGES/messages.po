@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-01-29 12:28+0100\n"
+"POT-Creation-Date: 2022-01-29 15:34+0100\n"
 "PO-Revision-Date: 2020-07-24 16:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -16,29 +16,35 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.0\n"
+"Generated-By: Babel 2.9.1\n"
 
-#: app.py:372
+#: app.py:371
+msgid "Oops, it looks like you provided an invalid migration token."
+msgstr "Oops, on dirait que le token de migration fourni est invalide."
+
+#: app.py:381
 msgid "Either this account does not exist or the data has already been migrated."
-msgstr "Le compte dont vous souhaitez importer les données n'existe pas ou a déjà été migré."
+msgstr ""
+"Le compte dont vous souhaitez importer les données n'existe pas ou a déjà"
+" été migré."
 
-#: app.py:383
+#: app.py:396
 msgid "Success: your data has been migrated to your new account !"
 msgstr "Bravo : vos données ont bien été migrées sur ce compte !"
 
-#: app.py:417
+#: app.py:431
 msgid "An error has occurred"
 msgstr "Il y a eu une erreur"
 
-#: app.py:425
+#: app.py:439
 msgid "Access to this resource is forbidden."
 msgstr "L'accès à cette page vous est interdit."
 
-#: app.py:439
+#: app.py:453
 msgid "Resource not found"
 msgstr "Ressource non trouvée"
 
-#: app.py:443
+#: app.py:457
 msgid "404 Page not found :("
 msgstr "404 Page non trouvée :("
 

@@ -7,7 +7,7 @@ import distutils
 import configparser
 import warnings
 from requests.exceptions import HTTPError, ConnectionError
-from authlib.jose import jwt
+import authlib.jose as jose
 import base64
 from cryptography.fernet import Fernet
 from cryptography.hazmat.primitives import hashes
@@ -364,7 +364,14 @@ def welcome():
 @login_required
 def migrate(token):
     # Decode token, fetch corresponding old user
-    claims = jwt.decode(token, app.config["SECRET_KEY"])
+    try:
+        claims = jose.jwt.decode(token, app.config["SECRET_KEY"])
+    except jose.errors.DecodeError:
+        flash(
+            gettext("Oops, it looks like you provided an invalid migration token."),
+            "error",
+        )
+        return redirect(url_for("calendar.index"))
     email = claims["email"]
     old_user = md.OldUser.query.filter_by(email=email).first()
     if old_user is None or not old_user.is_active:

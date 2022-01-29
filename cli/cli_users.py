@@ -29,10 +29,10 @@ def count():
 @with_appcontext
 def stats():
     """Returns some statistics about users."""
-    confirmed_users = md.User.query.filter(None != md.User.confirmed_at).all()
+    confirmed_users = md.User.query.all()
     df = pd.DataFrame(
         [
-            [user.confirmed_at.strftime("%Y/%m/%d"), user.email, len(user.schedules)]
+            [user.created_at.strftime("%Y/%m/%d"), user.email, len(user.schedules)]
             for user in confirmed_users
         ],
         columns=["date", "email", "n_schedules"],
@@ -64,15 +64,14 @@ def plot_users_hist():
     colors = px.colors.qualitative.Plotly
 
     click.echo("Reading database...")
-    df = md.table_to_dataframe(md.User, columns=["confirmed_at"])
-    df.dropna(subset=["confirmed_at"], inplace=True)
-    df.confirmed_at = df.confirmed_at.dt.floor("d")
+    df = md.table_to_dataframe(md.User, columns=["created_at"])
+    df.created_at = df.created_at.dt.floor("d")
 
     fig = make_subplots(specs=[[{"secondary_y": True}]])
 
     click.echo("Generating plot...")
-    fig_1 = df.confirmed_at.hist(bins=100, backend="plotly")
-    fig_2 = df.confirmed_at.hist(bins=100, cumulative=True, backend="plotly")
+    fig_1 = df.created_at.hist(bins=100, backend="plotly")
+    fig_2 = df.created_at.hist(bins=100, cumulative=True, backend="plotly")
 
     trace_1 = next(fig_1.select_traces())
     trace_1.name = "per datetime"
@@ -106,8 +105,7 @@ def plot_users_hist():
 def plot_users_emails_pie():
 
     click.echo("Reading datase...")
-    df = md.table_to_dataframe(md.User, columns=["confirmed_at", "email"])
-    df.dropna(subset=["confirmed_at"], inplace=True)
+    df = md.table_to_dataframe(md.User, columns=["email"])
 
     df["count"] = 1
     df["email"] = df["email"].apply(lambda s: s.split("@")[1])

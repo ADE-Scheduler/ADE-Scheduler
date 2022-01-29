@@ -106,7 +106,7 @@ def user_shield():
         {
             "schemaVersion": 1,
             "label": "Users",
-            "message": f"{md.User.query.filter(None != md.User.confirmed_at).count()}",
+            "message": f"{md.User.query.count()}",
             "color": "blue",
         }
     )
