@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-01-23 17:17+0100\n"
+"POT-Creation-Date: 2022-01-29 12:28+0100\n"
 "PO-Revision-Date: 2020-07-24 16:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -18,15 +18,27 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.0\n"
 
-#: app.py:355
+#: app.py:372
+msgid "Either this account does not exist or the data has already been migrated."
+msgstr "Le compte dont vous souhaitez importer les données n'existe pas ou a déjà été migré."
+
+#: app.py:383
+msgid "Success: your data has been migrated to your new account !"
+msgstr "Bravo : vos données ont bien été migrées sur ce compte !"
+
+#: app.py:417
 msgid "An error has occurred"
 msgstr "Il y a eu une erreur"
 
-#: app.py:364
+#: app.py:425
+msgid "Access to this resource is forbidden."
+msgstr "L'accès à cette page vous est interdit."
+
+#: app.py:439
 msgid "Resource not found"
 msgstr "Ressource non trouvée"
 
-#: app.py:368
+#: app.py:443
 msgid "404 Page not found :("
 msgstr "404 Page non trouvée :("
 
@@ -148,7 +160,9 @@ msgstr ""
 
 #: templates/base.html:36
 msgid "You need to login with your UCLouvain account to access this page"
-msgstr "Vous devez vous connecter à votre compte UCLouvain pour débloquer cette page"
+msgstr ""
+"Vous devez vous connecter à votre compte UCLouvain pour débloquer cette "
+"page"
 
 #: templates/base.html:40
 msgid "Do not hesitate to login... you can:"
@@ -179,7 +193,7 @@ msgstr "Et bien plus !"
 msgid "Close"
 msgstr "Fermer"
 
-#: templates/base.html:74 templates/base.html:146
+#: templates/base.html:74 templates/base.html:148
 msgid "Login"
 msgstr "Connexion"
 
@@ -207,7 +221,7 @@ msgstr "Contact"
 msgid "Contribute"
 msgstr "Contribuer"
 
-#: templates/base.html:142
+#: templates/base.html:144
 msgid "Logout"
 msgstr "Déconnexion"
 
@@ -634,32 +648,3 @@ msgstr "horaire actuel"
 #: views/calendar.py:328 views/calendar.py:354
 msgid "The schedule you requested does not exist in our database !"
 msgstr "L'horaire que vous avez demandé n'existe pas dans notre base de données !"
-
-#~ msgid "Select:"
-#~ msgstr "Sélectionner :"
-
-#~ msgid "All"
-#~ msgstr "Tous"
-
-#~ msgid "None"
-#~ msgstr "Aucun"
-
-#~ msgid ""
-#~ "Oops, the ADE server seems to have"
-#~ " some troubles! Please try again "
-#~ "later and contact us if the error"
-#~ " persits."
-#~ msgstr ""
-#~ "Oups, il semblerait que le serveur "
-#~ "ADE aie quelques soucis ! Veuillez "
-#~ "réessayer plus tard et nous contacter"
-#~ " si l'erreur persiste."
-
-#~ msgid "Change your password"
-#~ msgstr "Changer votre mot de passe"
-
-#~ msgid "Create an account"
-#~ msgstr "Créer un compte"
-
-#~ msgid "Register"
-#~ msgstr "Inscription"

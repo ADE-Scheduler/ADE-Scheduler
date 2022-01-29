@@ -304,7 +304,7 @@ def before_request():
 def after_request(response):
     # Check if a token has been refreshed
     token = g.pop("token", None)
-    if token is not None:
+    if token:
         response = cookies.set_oauth_token(token, response)
     return tu.after_request(response)
 
@@ -369,7 +369,7 @@ def migrate(token):
     old_user = md.OldUser.query.filter_by(email=email).first()
     if old_user is None or not old_user.is_active:
         return (
-            "Either this account does not exist or the data has already been migrated.",
+            gettext("Either this account does not exist or the data has already been migrated."),
             401,
         )
 
@@ -380,7 +380,7 @@ def migrate(token):
     # All done, deactivate old user
     old_user.confirmed_at = None
     md.db.session.commit()
-    flash("Success: your data has been migrated to your new account !", "success")
+    flash(gettext("Success: your data has been migrated to your new account !"), "success")
     return redirect(url_for("calendar.index"))
 
 
