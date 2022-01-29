@@ -368,12 +368,13 @@ def migrate(token):
     email = claims["email"]
     old_user = md.OldUser.query.filter_by(email=email).first()
     if old_user is None or not old_user.is_active:
-        return (
+        flash(
             gettext(
                 "Either this account does not exist or the data has already been migrated."
             ),
-            401,
+            "error",
         )
+        return redirect(url_for("calendar.index"))
 
     # Add old user's schedules to current_user
     for s in old_user.schedules:
