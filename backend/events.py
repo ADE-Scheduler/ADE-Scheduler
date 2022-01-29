@@ -411,8 +411,6 @@ def extract_type(course_type: str, course_id: str) -> Type[AcademicalEvent]:
     :return: the type of the event
     :rtype: Type[AcademicalEvent]
     """
-    # TODO: handle lab type
-
     # We look at the given type (there are some mistakes in the data from ADE,
     # not always trustworthy)
 

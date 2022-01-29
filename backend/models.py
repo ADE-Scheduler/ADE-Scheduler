@@ -142,7 +142,6 @@ schedules_users = db.Table(
 )
 
 
-# TODO: if added - do a @role_required decorator (cfr Flask-Security)
 class Role(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
@@ -248,10 +247,7 @@ class User(mxn.UserMixin, db.Model):
 
     @classmethod
     def get_emails(cls):
-        df = table_to_dataframe(cls, columns=["confirmed_at", "email"])
-        df.dropna(subset=["confirmed_at"], inplace=True)
-
-        return df.email.values.tolist()
+        return table_to_dataframe(cls, columns=["email"]).tolist()
 
 
 class Schedule(db.Model):

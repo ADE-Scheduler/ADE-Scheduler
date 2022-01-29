@@ -216,7 +216,7 @@ app.config["LOGIN_MANAGER"] = login
 
 # Setup UCLouvain OAuth2
 oauth = OAuth(app, fetch_token=scty.fetch_token, update_token=scty.update_token)
-oauth.register(  # TODO: utiliser app.config
+oauth.register(
     # Client identification
     name="uclouvain",
     client_id=os.environ["UCLOUVAIN_CLIENT_ID"],
