@@ -16,9 +16,9 @@
 
 ### Project creators
 
-- [Eertmans Jérome](https://www.linkedin.com/in/j%C3%A9rome-eertmans-130ab1130/)
+- [Eertmans Jérome](https://www.linkedin.com/in/j%C3%A9rome-eertmans-130ab1130/) (active maintainer)
 - [Navarre Louis](https://www.linkedin.com/in/louis-navarre-36b78b143/)
-- [Poncelet Gilles](https://www.linkedin.com/in/gilles-poncelet-020442195/)
+- [Poncelet Gilles](https://www.linkedin.com/in/gilles-poncelet-020442195/) (active maintainer)
 
 We are three former students from the Ecole Polytechnique de Louvain (EPL) and were starting our first master year at the start of the project.
 
@@ -36,6 +36,7 @@ Before that, we were using the excellent [ADE2ICS](https://github.com/cdamman/UC
 - **September 2020**: release of the second version of the tool
 - **September 2021**: 2 years of service, Python 3.9 upgrade and 3500+ users
 - **December 2021**: 7000+ users
+- **January 2022**: Moving auth. system to UCLouvain OAuth, thereby resetting the number of users to 0 on January 29nth, 2022
 
 ### How does it work ?
 
@@ -50,7 +51,7 @@ Thanks to the access to the API of ADE, we obtain all the information in a `XML`
 #### Data treatment
 
 The backend of ADE-Scheduler is written in Python using the [Flask](https://flask.palletsprojects.com/en/1.1.x/) micro-framework. Other packages are also used to supply many useful functions to enhance the overall user experience.\
-Among those, we use [pandas](https://pandas.pydata.org/) pandas to optimise the performances, [ics](https://pypi.org/project/ics/) to convert the schedules in the iCal format, [Flask-Security](https://pypi.org/project/Flask-Security-Too/) to handle user registrations and security aspects - and many more.
+Among those, we use [pandas](https://pandas.pydata.org/) pandas to optimise the performances, [ics](https://pypi.org/project/ics/) to convert the schedules in the iCal format - and many more.
 
 We also use a [Redis](https://redis.io) server to store user sessions and buffer data, as well as a [PostgreSQL](https://www.postgresql.org/) database to store user accounts and schedules.
 
