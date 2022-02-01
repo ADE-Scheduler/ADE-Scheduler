@@ -423,7 +423,7 @@ def handle_empty_ade_responses(e):
         return err_text, 500
     else:
         flash(err_text)
-        return render_template(url_for("calendar.index")), 500
+        return redirect(url_for("calendar.index")), 500
 
 
 @app.errorhandler(InternalServerError)
