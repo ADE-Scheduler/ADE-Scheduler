@@ -9,6 +9,7 @@ import warnings
 from requests.exceptions import HTTPError, ConnectionError
 import authlib.jose as jose
 import base64
+from lxml.etree import XMLSyntaxError
 from cryptography.fernet import Fernet
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
@@ -406,6 +407,23 @@ def ade_request_failed(e):
         code = 500
 
     return render_template("errorhandler/500.html", ade=True), 500
+
+
+@app.errorhandler(XMLSyntaxError)
+def handle_empty_ade_responses(e):
+    """
+    Sometimes (actually pretty often...) the API returns an empty response. Sigh.
+    However, it does seem to resolve itself by trying again...
+    In the meanwhile, flash an error message asking the user to try again.
+    """
+    err_text = gettext(
+        "Hum... it looks like there's been a bug with the ADE API. Please try again and if the problem persists, do not hesitate to contact us !"
+    )
+    if request.is_json:
+        return err_text, 500
+    else:
+        flash(err_text)
+        return render_template(url_for("calendar.index")), 500
 
 
 @app.errorhandler(InternalServerError)
