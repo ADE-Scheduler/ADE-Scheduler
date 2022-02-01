@@ -1,8 +1,10 @@
 from datetime import datetime
+from multiprocessing.sharedctypes import Value
 
 from flask import current_app as app
-from flask import Blueprint, url_for, request, redirect, session
+from flask import Blueprint, url_for, request, redirect, session, flash
 from flask_login import login_user, logout_user
+from flask_babel import gettext
 
 import backend.models as md
 import backend.cookies as cookies
@@ -28,7 +30,15 @@ def login():
         # Fetch user role & ID
         my_fgs = None
         role = None
-        data = uclouvain.get("my/v0/digit/roles", token=token).json()
+        resp = uclouvain.get("my/v0/digit/roles", token=token)
+        if resp is None:
+            flash(
+                gettext(
+                    "Hum... it looks like there is an issue with your UCLouvain account. Please contact directly so we can look into it and fix it for you ! Issue: base request"
+                )
+            )
+            return redirect(url_for("calendar.index"))
+        data = resp.json()
 
         roles = list()
         for business_role in data["businessRoles"]["businessRole"]:
@@ -41,14 +51,25 @@ def login():
         elif 2 in roles:
             role = "student"
         else:
-            raise NotImplementedError(
-                f"This dude is neither a student or an employee: {roles}"
+            flash(
+                gettext(
+                    "Hum... it looks like there is an issue with your UCLouvain account. Please contact directly so we can look into it and fix it for you ! Issue: role list"
+                )
             )
+            return redirect(url_for("calendar.index"))
 
         # Create user if does not exist
         user = md.User.query.filter_by(fgs=my_fgs).first()
         if user is None:
-            data = uclouvain.get(f"my/v0/{role}", token=token).json()
+            resp = uclouvain.get(f"my/v0/{role}", token=token)
+            if resp is None:
+                flash(
+                    gettext(
+                        "Hum... it looks like there is an issue with your UCLouvain account. Please contact directly so we can look into it and fix it for you ! Issue: empty role"
+                    )
+                )
+                return redirect(url_for("calendar.index"))
+            data = resp.json()
 
             # Student
             if role == "student":
