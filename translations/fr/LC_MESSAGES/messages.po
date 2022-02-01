@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-01-29 15:34+0100\n"
+"POT-Creation-Date: 2022-02-01 22:59+0100\n"
 "PO-Revision-Date: 2020-07-24 16:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -18,33 +18,41 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
 
-#: app.py:371
+#: app.py:372
 msgid "Oops, it looks like you provided an invalid migration token."
-msgstr "Oops, on dirait que le token de migration fourni est invalide."
+msgstr "Oups, on dirait que le token de migration fourni est invalide."
 
-#: app.py:381
+#: app.py:380
 msgid "Either this account does not exist or the data has already been migrated."
 msgstr ""
 "Le compte dont vous souhaitez importer les données n'existe pas ou a déjà"
 " été migré."
 
-#: app.py:396
+#: app.py:395
 msgid "Success: your data has been migrated to your new account !"
 msgstr "Bravo : vos données ont bien été migrées sur ce compte !"
 
-#: app.py:431
+#: app.py:420
+msgid ""
+"Hum... it looks like there's been a bug with the ADE API. Please try "
+"again and if the problem persists, do not hesitate to contact us !"
+msgstr ""
+"Hum... on dirait qu'il y a eu un bug avec l'API d'ADE. Essayez encore un "
+"coup et, si le problème persiste, n'hésitez pas à nous contacter !"
+
+#: app.py:425 app.py:448
 msgid "An error has occurred"
 msgstr "Il y a eu une erreur"
 
-#: app.py:439
+#: app.py:456
 msgid "Access to this resource is forbidden."
 msgstr "L'accès à cette page vous est interdit."
 
-#: app.py:453
+#: app.py:470
 msgid "Resource not found"
 msgstr "Ressource non trouvée"
 
-#: app.py:457
+#: app.py:474
 msgid "404 Page not found :("
 msgstr "404 Page non trouvée :("
 
@@ -654,3 +662,12 @@ msgstr "horaire actuel"
 #: views/calendar.py:328 views/calendar.py:354
 msgid "The schedule you requested does not exist in our database !"
 msgstr "L'horaire que vous avez demandé n'existe pas dans notre base de données !"
+
+#: views/security.py:36 views/security.py:55 views/security.py:67
+msgid ""
+"Hum... it looks like there is an issue with your UCLouvain account. "
+"Please contact directly so we can look into it and fix it for you !"
+msgstr ""
+"Hum... on dirait qu'il y eu un souci avec le login UCLouvain. Contactez-"
+"nous directement pour qu'on puisse regarder ça plus en détails et essayer"
+" de régler ça."

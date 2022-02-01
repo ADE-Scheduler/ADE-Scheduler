@@ -34,8 +34,9 @@ def login():
         if resp is None:
             flash(
                 gettext(
-                    "Hum... it looks like there is an issue with your UCLouvain account. Please contact directly so we can look into it and fix it for you ! Issue: base request"
+                    "Hum... it looks like there is an issue with your UCLouvain account. Please contact directly so we can look into it and fix it for you !"
                 )
+                + "\nIssue: base request"
             )
             return redirect(url_for("calendar.index"))
         data = resp.json()
@@ -53,8 +54,9 @@ def login():
         else:
             flash(
                 gettext(
-                    "Hum... it looks like there is an issue with your UCLouvain account. Please contact directly so we can look into it and fix it for you ! Issue: role list"
+                    "Hum... it looks like there is an issue with your UCLouvain account. Please contact directly so we can look into it and fix it for you !"
                 )
+                + "\nIssue: role list"
             )
             return redirect(url_for("calendar.index"))
 
@@ -65,8 +67,9 @@ def login():
             if resp is None:
                 flash(
                     gettext(
-                        "Hum... it looks like there is an issue with your UCLouvain account. Please contact directly so we can look into it and fix it for you ! Issue: empty role"
+                        "Hum... it looks like there is an issue with your UCLouvain account. Please contact directly so we can look into it and fix it for you !"
                     )
+                    + "\nIssue: empty role"
                 )
                 return redirect(url_for("calendar.index"))
             data = resp.json()
