@@ -416,14 +416,13 @@ def handle_empty_ade_responses(e):
     However, it does seem to resolve itself by trying again...
     In the meanwhile, flash an error message asking the user to try again.
     """
-    flash(
-        gettext(
-            "Hum... it looks like there's been a bug with the ADE API. Please try again and if the problem persists, do not hesitate to contact us !"
-        )
+    err_text = gettext(
+        "Hum... it looks like there's been a bug with the ADE API. Please try again and if the problem persists, do not hesitate to contact us !"
     )
     if request.is_json:
-        return gettext("An error has occurred"), 500
+        return err_text, 500
     else:
+        flash(err_text)
         return render_template(url_for("calendar.index")), 500
 
 
