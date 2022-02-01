@@ -36,7 +36,8 @@ def login():
                 gettext(
                     "Hum... it looks like there is an issue with your UCLouvain account. Please contact directly so we can look into it and fix it for you !"
                 )
-                + "\nIssue: base request"
+                + "<br>Code: base request",
+                "error",
             )
             return redirect(url_for("calendar.index"))
         data = resp.json()
@@ -56,7 +57,8 @@ def login():
                 gettext(
                     "Hum... it looks like there is an issue with your UCLouvain account. Please contact directly so we can look into it and fix it for you !"
                 )
-                + "\nIssue: role list"
+                + "<br>Code: role list",
+                "error",
             )
             return redirect(url_for("calendar.index"))
 
@@ -69,7 +71,8 @@ def login():
                     gettext(
                         "Hum... it looks like there is an issue with your UCLouvain account. Please contact directly so we can look into it and fix it for you !"
                     )
-                    + "\nIssue: empty role"
+                    + "<br>Code: empty role",
+                    "error",
                 )
                 return redirect(url_for("calendar.index"))
             data = resp.json()
