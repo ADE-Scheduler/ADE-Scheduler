@@ -19,7 +19,6 @@ const pages = [
   'calendar',
   'classroom',
   'help',
-  'welcome',
   'contact',
   'whatisnew',
   'contribute',

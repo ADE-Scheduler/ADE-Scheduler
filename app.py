@@ -351,13 +351,11 @@ def when_user_logged_in(sender, user):
 # Main page
 @app.route("/")
 def welcome():
-    if session.get("previous_user"):
-        return redirect(url_for("calendar.index"))
-    else:
+    if not session.get("previous_user"):
         utl.init_session()
         g.track_var["new user"] = "+1"
         session["previous_user"] = True
-        return render_template("welcome.html")
+    return redirect(url_for("calendar.index"))
 
 
 # Migration route
