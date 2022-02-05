@@ -1,6 +1,7 @@
 /* global Flask */
 
 import Vue from 'vue';
+import store from './store.js';
 import Spinner from '../../components/Spinner.vue';
 import VSwatches from 'vue-swatches';
 import { Modal } from 'bootstrap';
@@ -24,7 +25,6 @@ document.addEventListener('DOMContentLoaded', function() {
         computing: true,
         unsaved: true,
         autoSave: false,
-        error: false,
         isEditing: false,
       };
     },
@@ -46,8 +46,8 @@ document.addEventListener('DOMContentLoaded', function() {
             this.labelBackup = this.currentSchedule.label;
             this.autoSave = resp.data.autosave;
           })
-          .catch(() => {
-            this.error = true;
+          .catch(err => {
+            store.error(err.response.data);
           })
           .then(() => {
             this.computing = false;
@@ -62,8 +62,8 @@ document.addEventListener('DOMContentLoaded', function() {
           data: { autosave: this.autoSave },
         })
           .then(() => {})
-          .catch(() => {
-            this.error = true;
+          .catch(err => {
+            store.error(err.response.data);
           })
           .then(() => {
             this.computing = false;
@@ -81,8 +81,8 @@ document.addEventListener('DOMContentLoaded', function() {
               this.currentSchedule = resp.data.current_schedule;
               this.labelBackup = this.currentSchedule.label;
             })
-            .catch(() => {
-              this.error = true;
+            .catch(err => {
+              store.error(err.response.data);
             })
             .then(() => {
               this.computing = false;
@@ -107,8 +107,8 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(() => {
               window.location.href = Flask.url_for('calendar.index');
             })
-            .catch(() => {
-              this.error = true;
+            .catch(err => {
+              store.error(err.response.data);
             })
             .then(() => {
               this.computing = false;
@@ -136,8 +136,8 @@ document.addEventListener('DOMContentLoaded', function() {
             this.currentSchedule = resp.data.current_schedule;
             this.labelBackup = this.currentSchedule.label;
           })
-          .catch(() => {
-            this.error = true;
+          .catch(err => {
+            store.error(err.response.data);
           })
           .then(() => {
             this.computing = false;
@@ -161,8 +161,8 @@ document.addEventListener('DOMContentLoaded', function() {
               this.labelBackup = schedule.label;
             }
           })
-          .catch(() => {
-            this.error = true;
+          .catch(err => {
+            store.error(err.response.data);
           })
           .then(() => {
             this.computing = false;
@@ -183,8 +183,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             this.unsaved = resp.data.unsaved;
           })
-          .catch(() => {
-            this.error = true;
+          .catch(err => {
+            store.error(err.response.data);
           })
           .then(() => {
             this.computing = false;

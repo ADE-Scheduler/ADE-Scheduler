@@ -29,11 +29,6 @@
 <div class="container-lg">
     <div class="row">
         <div class="col-md-8 col-lg-9 p-3">
-            <div class="alert alert-danger alert-dismissible" v-show="error">
-                {{  _('A problem has occurred. Please contact us if it happens again.') }}
-                <button type="button" class="btn-close" v-on:click="error = false"></button>
-            </div>
-
             <spinner v-bind:computing="computing">
                 <div class="card mb-3">
                     <div class="card-header">
