@@ -16,6 +16,8 @@ def init_session():
 
     if not session.get("current_schedule"):
         session["current_schedule"] = schd.Schedule(mng.get_default_project_id())
+
+    if session.get("current_schedule_modified", None) is None:
         session["current_schedule_modified"] = False
 
     project_ids = [int(year["id"]) for year in mng.get_project_ids()]

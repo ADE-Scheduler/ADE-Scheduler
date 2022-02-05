@@ -1,3 +1,5 @@
+import json
+
 from datetime import datetime
 from multiprocessing.sharedctypes import Value
 
@@ -30,8 +32,9 @@ def login():
         # Fetch user role & ID
         my_fgs = None
         role = None
-        resp = uclouvain.get("my/v0/digit/roles", token=token)
-        if resp is None:
+        try:
+            data = uclouvain.get("my/v0/digit/roles", token=token).json()
+        except json.decoder.JSONDecodeError:
             flash(
                 gettext(
                     "Hum... it looks like there is an issue with your UCLouvain account. Please contact directly so we can look into it and fix it for you !"
@@ -40,7 +43,6 @@ def login():
                 "error",
             )
             return redirect(url_for("calendar.index"))
-        data = resp.json()
 
         roles = list()
         for business_role in data["businessRoles"]["businessRole"]:
@@ -65,8 +67,9 @@ def login():
         # Create user if does not exist
         user = md.User.query.filter_by(fgs=my_fgs).first()
         if user is None:
-            resp = uclouvain.get(f"my/v0/{role}", token=token)
-            if resp is None:
+            try:
+                data = uclouvain.get(f"my/v0/{role}", token=token)
+            except json.decoder.JSONDecodeError:
                 flash(
                     gettext(
                         "Hum... it looks like there is an issue with your UCLouvain account. Please contact directly so we can look into it and fix it for you !"
@@ -75,7 +78,6 @@ def login():
                     "error",
                 )
                 return redirect(url_for("calendar.index"))
-            data = resp.json()
 
             # Student
             if role == "student":
