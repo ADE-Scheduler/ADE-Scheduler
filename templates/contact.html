@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% from "custom_macros.html" import render_flash_alert %}
 {% block head %}
 <% _.forEach(htmlWebpackPlugin.files.js, function(file) { %>
 <script type="text/javascript" src="<%= file%>"></script>
@@ -9,7 +8,6 @@
 
 {% block body %}
 <div class="container-lg pt-3">
-    {{ render_flash_alert() }}
     <h3 class="d-flex flex-column justify-content-center text-center my-5">
         {{ _('Do not hesitate to contact us in case of problem !') }}
         <div>

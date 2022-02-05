@@ -153,6 +153,31 @@
             <main role="main" id="app" v-pre>
             {% block body %}{% endblock %}
             </main>
+
+            <!-- Display error/warning/else messages -->
+            <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1111">
+                <AlertToast type="success"
+                    v-bind:message="successMessage"
+                    v-on:toast-hidden="successMessage = ''"
+                ></AlertToast>
+                <AlertToast type="warning"
+                    v-bind:message="warningMessage"
+                    v-on:toast-hidden="warningMessage = ''"
+                ></AlertToast>
+                <AlertToast type="danger"
+                    v-bind:message="errorMessage"
+                    v-on:toast-hidden="errorMessage = ''"
+                ></AlertToast>
+                <AlertToast type="primary"
+                    v-bind:message="infoMessage"
+                    v-on:toast-hidden="infoMessage = ''"
+                ></AlertToast>
+            </div>
+
+            {% from "custom_macros.html" import render_flash_toast %}
+            {{ render_flash_toast() }}
         </div>
+
+
     </body>
 </html>

@@ -417,7 +417,7 @@ def handle_empty_ade_responses(e):
     err_text = gettext(
         "Hum... it looks like there's been a bug with the ADE API. Please try again and if the problem persists, do not hesitate to contact us !"
     )
-    if request.is_json:
+    if request.accept_mimetypes.best == "application/json":
         return err_text, 500
     else:
         flash(err_text)
@@ -441,15 +441,16 @@ def handle_exception(e):
             recipients=app.config["ADMINS"],
         )
         app.config["MAIL_MANAGER"].send(msg)
-    if request.is_json:
-        return gettext("An error has occurred"), 500
+
+    if request.accept_mimetypes.best == "application/json":
+        return gettext("An unknown error has occurred"), 500
     else:
         return render_template("errorhandler/500.html"), 500
 
 
 @app.errorhandler(403)  # FORBIDDEN
 def forbidden(e):
-    if request.is_json:
+    if request.accept_mimetypes.best == "application/json":
         return gettext("Access to this resource is forbidden."), e.code
     else:
         return (
@@ -463,7 +464,7 @@ def forbidden(e):
 @app.errorhandler(404)  # URL NOT FOUND
 @app.errorhandler(405)  # METHOD NOT ALLOWED
 def page_not_found(e):
-    if request.is_json:
+    if request.accept_mimetypes.best == "application/json":
         return gettext("Resource not found"), e.code
     else:
         return (

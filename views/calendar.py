@@ -73,13 +73,6 @@ def after_calendar_request(response):
 
 @calendar.route("/")
 def index():
-    if bool(request.args.get("save")) and current_user.is_authenticated:
-        mng = app.config["MANAGER"]
-        session["current_schedule"] = mng.save_schedule(
-            current_user, session["current_schedule"], session.get("uuid")
-        )
-        session["current_schedule_modified"] = False
-        return render_template("calendar.html", saved=True)
     return render_template("calendar.html")
 
 
@@ -165,7 +158,7 @@ def load_schedule(id):
             ),
             200,
         )
-    return "", 403  # Requested id is not in this user's schedule list.
+    return gettext("Schedule n°%d is not in your schedule list.") % int(id), 403
 
 
 @calendar.route("/<path:search_key>", methods=["GET"])
@@ -282,8 +275,7 @@ def update_custom_event(id):
 @calendar.route("/schedule", methods=["POST"])
 def save():
     if not current_user.is_authenticated:
-        return "Login is required", 401
-
+        return gettext("To save your schedule, you need to be logged in."), 401
     mng = app.config["MANAGER"]
     session["current_schedule"] = mng.save_schedule(
         current_user, session["current_schedule"], session.get("uuid")
@@ -395,7 +387,7 @@ def export():
 
     link = mng.get_link(session["current_schedule"].id)
     if link is None:
-        return "KO", 401
+        return gettext("Hum... this schedule does not have an associated link."), 401
     else:
         return jsonify({"link": link})
 
