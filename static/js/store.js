@@ -6,7 +6,7 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   // For debugging purposes (ensures store state can only be mutated using
   // mutation handlers, should be off for production !)
-  strict: process.env.NODE_ENV !== 'production',
+  strict: process.env.NODE_ENV !== 'production',  // eslint-disable-line no-undef
   state() {
     return {
       infoMessage: '',

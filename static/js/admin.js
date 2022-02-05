@@ -1,12 +1,12 @@
 /* global Flask */
 
 import Vue from 'vue';
+import store from './store.js';
 import Spinner from '../../components/Spinner.vue';
 import { Carousel } from 'bootstrap';   // eslint-disable-line no-unused-vars
 
 import './base.js';
 import '../css/admin.css';
-import store from './store';
 
 const Plotly = require('plotly.js-dist');
 const axios = require('axios');

@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import store from './store.js';
 import ScrollSpy from '../../components/ScrollSpy.vue';
 import './base.js';
 import '../css/help.css';

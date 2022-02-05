@@ -1,6 +1,7 @@
 /* global Flask */
 
 import Vue from 'vue';
+import store from './store.js';
 import L from 'leaflet';
 import { LMap, LTileLayer } from 'vue2-leaflet';
 import 'overlapping-marker-spiderfier-leaflet/dist/oms';
@@ -13,7 +14,6 @@ import frLocale from '@fullcalendar/core/locales/fr';
 import './base.js';
 import '../css/classroom.css';
 import 'leaflet/dist/leaflet.css';
-import store from './store';
 const axios = require('axios');
 
 const uclWeeksNo = {
