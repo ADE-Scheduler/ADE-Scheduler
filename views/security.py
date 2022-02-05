@@ -39,7 +39,7 @@ def login():
                 gettext(
                     "Hum... it looks like there is an issue with your UCLouvain account. Please contact directly so we can look into it and fix it for you !"
                 )
-                + "<br>Code: base request",
+                + "<br><br><b>Code: base request</b>",
                 "error",
             )
             return redirect(url_for("calendar.index"))
@@ -59,7 +59,7 @@ def login():
                 gettext(
                     "Hum... it looks like there is an issue with your UCLouvain account. Please contact directly so we can look into it and fix it for you !"
                 )
-                + "<br>Code: role list",
+                + "<br><br><b>Code: role list</b>",
                 "error",
             )
             return redirect(url_for("calendar.index"))
@@ -74,7 +74,7 @@ def login():
                     gettext(
                         "Hum... it looks like there is an issue with your UCLouvain account. Please contact directly so we can look into it and fix it for you !"
                     )
-                    + "<br>Code: empty role",
+                    + "<br><br><b>Code: empty role</b>",
                     "error",
                 )
                 return redirect(url_for("calendar.index"))

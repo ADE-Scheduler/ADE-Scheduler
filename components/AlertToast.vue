@@ -13,7 +13,7 @@
         <button class="btn-close" data-bs-dismiss="toast"></button>
       </div>
       <div class="toast-body">
-        <div>{{ message }}</div>
+        <div v-html="message"></div>
         <!-- <small v-if="type === 'danger'">
           If this happens again, don't hesitate to contact us !
         </small> -->

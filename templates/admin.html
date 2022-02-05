@@ -7,11 +7,6 @@
 
 {% block body %}
 <div class="container-lg pt-4">
-    <div class="alert alert-danger alert-dismissible" v-show="error">
-        {{  _('A problem has occurred. Please contact us if it happens again.') }}
-        <button type="button" class="btn-close" v-on:click="error = false"></button>
-    </div>
-
     <spinner v-bind:computing="computing">
         <div class="carousel carousel-dark slide"
              data-bs-interval="false"

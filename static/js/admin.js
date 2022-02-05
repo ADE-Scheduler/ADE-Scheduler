@@ -6,6 +6,7 @@ import { Carousel } from 'bootstrap';   // eslint-disable-line no-unused-vars
 
 import './base.js';
 import '../css/admin.css';
+import store from './store';
 
 const Plotly = require('plotly.js-dist');
 const axios = require('axios');
@@ -18,7 +19,6 @@ document.addEventListener('DOMContentLoaded', function() {
     components: {'spinner': Spinner},
     data: function() {
       return {
-        error: false,
         computing: false,
         plots: [],
       };
@@ -44,8 +44,8 @@ document.addEventListener('DOMContentLoaded', function() {
               });
             });
           })
-          .catch(() => {
-            this.error = true;
+          .catch(err => {
+            store.error(err.response.data);
           })
           .then(() => {
             this.computing = false;

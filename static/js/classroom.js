@@ -13,6 +13,7 @@ import frLocale from '@fullcalendar/core/locales/fr';
 import './base.js';
 import '../css/classroom.css';
 import 'leaflet/dist/leaflet.css';
+import store from './store';
 const axios = require('axios');
 
 const uclWeeksNo = {
@@ -39,7 +40,6 @@ document.addEventListener('DOMContentLoaded', function() {
     data: function() {
       return {
         computing: false,
-        error: false,
         url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         // url: 'https://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.png',
         center: L.latLng(50.6681, 4.6118),
@@ -214,8 +214,8 @@ document.addEventListener('DOMContentLoaded', function() {
           .then(resp => {
             this.classrooms = resp.data.classrooms;
           })
-          .catch(() => {
-            this.error = true;
+          .catch(err => {
+            store.error(err.response.data);
           })
           .then(() => {
             this.computing = false;
@@ -237,8 +237,8 @@ document.addEventListener('DOMContentLoaded', function() {
               api.prev();
             });
           })
-          .catch(() => {
-            this.error = true;
+          .catch(err => {
+            store.error(err.response.data);
           })
           .then(() => {
             this.computing = false;

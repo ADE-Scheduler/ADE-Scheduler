@@ -25,7 +25,9 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(resp => {
           this.content = resp.data;
         })
-        .catch(() => {})
+        .catch(err => {
+          store.error(err.response.data);
+        })
         .then(() => {});  // TODO
     },
   });

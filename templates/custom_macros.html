@@ -74,7 +74,7 @@
 {% macro render_flash_toast() %}
     {% with messages = get_flashed_messages(with_categories=True) %}
         {% for category, message in messages %}
-            <div v-flash:{{ category }}="'{{ message }}'"></div>
+            <div v-flash:{{ category }}="`{{ message }}`"></div>
         {% endfor %}
     {% endwith %}
 {% endmacro %}
