@@ -1,7 +1,7 @@
 import json
 
 from datetime import datetime
-from multiprocessing.sharedctypes import Value
+from requests.exceptions import HTTPError
 
 from flask import current_app as app
 from flask import Blueprint, url_for, request, redirect, session, flash
@@ -32,18 +32,18 @@ def login():
         # Fetch user role & ID
         my_fgs = None
         role = None
-        try:
-            data = uclouvain.get("my/v0/digit/roles", token=token).json()
-        except json.decoder.JSONDecodeError:
+        resp = uclouvain.get("my/v0/digit/roles", token=token)
+        try: 
+            resp.raise_for_status()
+        except HTTPError:
             flash(
                 gettext(
-                    "Hum... it looks like there is an issue with your UCLouvain account. Please contact directly so we can look into it and fix it for you !"
-                )
-                + "<br><br><b>Code: base request</b>",
+                    "Hum... it looks like the authentification server is having some issues - please try again. If the problem persists, do contact us directly so we can look into it."
+                ),
                 "error",
             )
             return redirect(url_for("calendar.index"))
-
+        data = resp.json()
         roles = list()
         for business_role in data["businessRoles"]["businessRole"]:
             roles.append(business_role["businessRoleCode"])
@@ -67,17 +67,18 @@ def login():
         # Create user if does not exist
         user = md.User.query.filter_by(fgs=my_fgs).first()
         if user is None:
-            try:
-                data = uclouvain.get(f"my/v0/{role}", token=token)
-            except json.decoder.JSONDecodeError:
+            resp = uclouvain.get(f"my/v0/{role}", token=token)
+            try: 
+                resp.raise_for_status()
+            except HTTPError:
                 flash(
                     gettext(
-                        "Hum... it looks like there is an issue with your UCLouvain account. Please contact directly so we can look into it and fix it for you !"
-                    )
-                    + "<br><br><b>Code: empty role</b>",
+                        "Hum... it looks like the authentification server is having some issues - please try again. If the problem persists, do contact us directly so we can look into it."
+                    ),
                     "error",
                 )
                 return redirect(url_for("calendar.index"))
+            data = resp.json()
 
             # Student
             if role == "student":

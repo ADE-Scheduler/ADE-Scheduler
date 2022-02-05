@@ -398,12 +398,15 @@ def migrate(token):
 # Error handlers
 @app.errorhandler(HTTPError)
 @app.errorhandler(ConnectionError)
-def ade_request_failed(e):
-    try:
-        code = e.response.status_code
-    except AttributeError:  # For debugging purposes
-        code = 500
+def api_request_failed(e):
+    """
+    This catches the HTTPError raised when doing `resp.raise_for_status()`.
+    Typically catches the ADE/UCLouvain API errors. This shouldn't be handled
+    here, but acts as a failsafe in case we fail to do so elsewhere.
 
+    These kind of failures are considered serious, thus we return a "website
+    is down" page. (but could be improved/discussed)
+    """
     return render_template("errorhandler/500.html", ade=True), 500
 
 
