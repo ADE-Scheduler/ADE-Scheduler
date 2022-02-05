@@ -24,17 +24,17 @@ export default document.addEventListener('DOMContentLoaded', function() {
       flash: {
         bind: function(el, binding) {
           switch (binding.arg) {
-            case 'success':
-              store.success(binding.value);
-              break;
-            case 'warning':
-              store.warning(binding.value);
-              break;
-            case 'error':
-              store.error(binding.value);
-              break;
-            default:
-              store.info(binding.value);
+          case 'success':
+            store.success(binding.value);
+            break;
+          case 'warning':
+            store.warning(binding.value);
+            break;
+          case 'error':
+            store.error(binding.value);
+            break;
+          default:
+            store.info(binding.value);
           }
         },
       },
@@ -43,11 +43,6 @@ export default document.addEventListener('DOMContentLoaded', function() {
       return {
         currentPath: window.location.pathname,
       };
-    },
-    methods: {
-      localeSelector: function(e, locale) {
-        window.location.href = Flask.url_for('set_locale', {'locale': locale}) + '?next=' + window.location.pathname;
-      },
     },
     computed: {
       infoMessage: {
@@ -65,6 +60,11 @@ export default document.addEventListener('DOMContentLoaded', function() {
       successMessage: {
         get() { return store.state.successMessage; },
         set(value) { store.commit('setSuccessMessage', value); },
+      },
+    },
+    methods: {
+      localeSelector: function(e, locale) {
+        window.location.href = Flask.url_for('set_locale', {'locale': locale}) + '?next=' + window.location.pathname;
       },
     },
   });
