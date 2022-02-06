@@ -337,15 +337,13 @@ def when_user_logged_out(sender, user):
 @user_logged_in.connect_via(app)
 def when_user_logged_in(sender, user):
     if user.last_schedule_id is not None:
-        if session.get("current_schedule") is None:
-            session["current_schedule"] = user.get_schedule(
-                id=user.last_schedule_id
-            ).data
-
-        elif session["current_schedule"].is_empty():
-            session["current_schedule"] = user.get_schedule(
-                id=user.last_schedule_id
-            ).data
+        if (
+            session.get("current_schedule") is None
+            or session["current_schedule"].is_empty()
+        ):
+            schedule = user.get_schedule(id=user.last_schedule_id)
+            if schedule is not None:
+                session["current_schedule"] = schedule.data
 
 
 # Main page
