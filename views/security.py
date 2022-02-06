@@ -33,7 +33,7 @@ def login():
         my_fgs = None
         role = None
         resp = uclouvain.get("my/v0/digit/roles", token=token)
-        try: 
+        try:
             resp.raise_for_status()
         except HTTPError:
             flash(
@@ -68,7 +68,7 @@ def login():
         user = md.User.query.filter_by(fgs=my_fgs).first()
         if user is None:
             resp = uclouvain.get(f"my/v0/{role}", token=token)
-            try: 
+            try:
                 resp.raise_for_status()
             except HTTPError:
                 flash(
