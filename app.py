@@ -342,7 +342,7 @@ def when_user_logged_in(sender, user):
             or session["current_schedule"].is_empty()
         ):
             schedule = user.get_schedule(id=user.last_schedule_id)
-            if schedule is not None:
+            if schedule:
                 session["current_schedule"] = schedule.data
 
 
