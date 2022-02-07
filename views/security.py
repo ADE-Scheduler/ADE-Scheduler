@@ -1,5 +1,7 @@
+import json
+
 from datetime import datetime
-from multiprocessing.sharedctypes import Value
+from requests.exceptions import HTTPError
 
 from flask import current_app as app
 from flask import Blueprint, url_for, request, redirect, session, flash
@@ -31,17 +33,17 @@ def login():
         my_fgs = None
         role = None
         resp = uclouvain.get("my/v0/digit/roles", token=token)
-        if resp is None:
+        try:
+            resp.raise_for_status()
+        except HTTPError:
             flash(
                 gettext(
-                    "Hum... it looks like there is an issue with your UCLouvain account. Please contact directly so we can look into it and fix it for you !"
-                )
-                + "<br>Code: base request",
+                    "Hum... it looks like the authentification server is having some issues - please try again. If the problem persists, do contact us directly so we can look into it."
+                ),
                 "error",
             )
             return redirect(url_for("calendar.index"))
         data = resp.json()
-
         roles = list()
         for business_role in data["businessRoles"]["businessRole"]:
             roles.append(business_role["businessRoleCode"])
@@ -57,7 +59,7 @@ def login():
                 gettext(
                     "Hum... it looks like there is an issue with your UCLouvain account. Please contact directly so we can look into it and fix it for you !"
                 )
-                + "<br>Code: role list",
+                + "<br><br><b>Code: role list</b>",
                 "error",
             )
             return redirect(url_for("calendar.index"))
@@ -66,12 +68,13 @@ def login():
         user = md.User.query.filter_by(fgs=my_fgs).first()
         if user is None:
             resp = uclouvain.get(f"my/v0/{role}", token=token)
-            if resp is None:
+            try:
+                resp.raise_for_status()
+            except HTTPError:
                 flash(
                     gettext(
-                        "Hum... it looks like there is an issue with your UCLouvain account. Please contact directly so we can look into it and fix it for you !"
-                    )
-                    + "<br>Code: empty role",
+                        "Hum... it looks like the authentification server is having some issues - please try again. If the problem persists, do contact us directly so we can look into it."
+                    ),
                     "error",
                 )
                 return redirect(url_for("calendar.index"))

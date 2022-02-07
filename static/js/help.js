@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import store from './store.js';
 import ScrollSpy from '../../components/ScrollSpy.vue';
 import './base.js';
 import '../css/help.css';
@@ -25,7 +26,9 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(resp => {
           this.content = resp.data;
         })
-        .catch(() => {})
+        .catch(err => {
+          store.error(err.response.data);
+        })
         .then(() => {});  // TODO
     },
   });

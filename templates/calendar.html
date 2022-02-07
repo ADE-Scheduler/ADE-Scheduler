@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% from "custom_macros.html" import render_flash_alert %}
 {% block head %}
 <% _.forEach(htmlWebpackPlugin.files.js, function(file) { %>
 <script type="text/javascript" src="<%= file%>"></script>
@@ -618,16 +617,6 @@
         <!-- Main content -->
         <div class="container-fluid">
             <div class="col-md-9 ms-sm-auto col-lg-10 p-3">
-                {{ render_flash_alert() }}
-                {% if saved %}<div style="display:none" id="scheduleSaved"></div>{% endif %}
-                <div class="alert alert-success alert-dismissible" v-show="saveSuccess">
-                    {{_('Schedule successfuly saved !')}}
-                    <button type="button" class="btn-close"v-on:click="saveSuccess = false"></button>
-                </div>
-                <div class="alert alert-danger alert-dismissible" v-show="error">
-                    {{_('A problem has occurred. Please contact us if it happens again.')}}
-                    <button type="button" class="btn-close" v-on:click="error = false"></button>
-                </div>
                 <spinner v-bind:computing="computing">
                   <full-calendar ref="calendar" v-bind:options="calendarOptions"></full-calendar>
                 </spinner>

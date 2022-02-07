@@ -337,27 +337,23 @@ def when_user_logged_out(sender, user):
 @user_logged_in.connect_via(app)
 def when_user_logged_in(sender, user):
     if user.last_schedule_id is not None:
-        if session.get("current_schedule") is None:
-            session["current_schedule"] = user.get_schedule(
-                id=user.last_schedule_id
-            ).data
-
-        elif session["current_schedule"].is_empty():
-            session["current_schedule"] = user.get_schedule(
-                id=user.last_schedule_id
-            ).data
+        if (
+            session.get("current_schedule") is None
+            or session["current_schedule"].is_empty()
+        ):
+            schedule = user.get_schedule(id=user.last_schedule_id)
+            if schedule:
+                session["current_schedule"] = schedule.data
 
 
 # Main page
 @app.route("/")
 def welcome():
-    if session.get("previous_user"):
-        return redirect(url_for("calendar.index"))
-    else:
+    if not session.get("previous_user"):
         utl.init_session()
         g.track_var["new user"] = "+1"
         session["previous_user"] = True
-        return render_template("welcome.html")
+    return redirect(url_for("calendar.index"))
 
 
 # Migration route
@@ -400,12 +396,15 @@ def migrate(token):
 # Error handlers
 @app.errorhandler(HTTPError)
 @app.errorhandler(ConnectionError)
-def ade_request_failed(e):
-    try:
-        code = e.response.status_code
-    except AttributeError:  # For debugging purposes
-        code = 500
+def api_request_failed(e):
+    """
+    This catches the HTTPError raised when doing `resp.raise_for_status()`.
+    Typically catches the ADE/UCLouvain API errors. This shouldn't be handled
+    here, but acts as a failsafe in case we fail to do so elsewhere.
 
+    These kind of failures are considered serious, thus we return a "website
+    is down" page. (but could be improved/discussed)
+    """
     return render_template("errorhandler/500.html", ade=True), 500
 
 
@@ -419,7 +418,7 @@ def handle_empty_ade_responses(e):
     err_text = gettext(
         "Hum... it looks like there's been a bug with the ADE API. Please try again and if the problem persists, do not hesitate to contact us !"
     )
-    if request.is_json:
+    if request.accept_mimetypes.best == "application/json":
         return err_text, 500
     else:
         flash(err_text)
@@ -443,15 +442,16 @@ def handle_exception(e):
             recipients=app.config["ADMINS"],
         )
         app.config["MAIL_MANAGER"].send(msg)
-    if request.is_json:
-        return gettext("An error has occurred"), 500
+
+    if request.accept_mimetypes.best == "application/json":
+        return gettext("An unknown error has occurred"), 500
     else:
         return render_template("errorhandler/500.html"), 500
 
 
 @app.errorhandler(403)  # FORBIDDEN
 def forbidden(e):
-    if request.is_json:
+    if request.accept_mimetypes.best == "application/json":
         return gettext("Access to this resource is forbidden."), e.code
     else:
         return (
@@ -465,7 +465,7 @@ def forbidden(e):
 @app.errorhandler(404)  # URL NOT FOUND
 @app.errorhandler(405)  # METHOD NOT ALLOWED
 def page_not_found(e):
-    if request.is_json:
+    if request.accept_mimetypes.best == "application/json":
         return gettext("Resource not found"), e.code
     else:
         return (

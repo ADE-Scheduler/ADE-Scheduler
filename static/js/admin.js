@@ -1,6 +1,7 @@
 /* global Flask */
 
 import Vue from 'vue';
+import store from './store.js';
 import Spinner from '../../components/Spinner.vue';
 import { Carousel } from 'bootstrap';   // eslint-disable-line no-unused-vars
 
@@ -18,7 +19,6 @@ document.addEventListener('DOMContentLoaded', function() {
     components: {'spinner': Spinner},
     data: function() {
       return {
-        error: false,
         computing: false,
         plots: [],
       };
@@ -44,8 +44,8 @@ document.addEventListener('DOMContentLoaded', function() {
               });
             });
           })
-          .catch(() => {
-            this.error = true;
+          .catch(err => {
+            store.error(err.response.data);
           })
           .then(() => {
             this.computing = false;

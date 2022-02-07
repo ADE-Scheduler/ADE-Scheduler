@@ -4,7 +4,7 @@ from typing import Any
 from flask import current_app as app
 from flask import Blueprint, render_template, session, request, jsonify
 from flask_login import login_required, current_user
-from flask_babel import LazyString
+from flask_babel import LazyString, gettext
 
 
 import backend.schedules as schd
@@ -114,7 +114,7 @@ def load_schedule(id):
             ),
             200,
         )
-    return "", 403  # Requested id is not in this user's schedule list.
+    return gettext("Schedule n°%d is not in your schedule list.") % int(id), 403
 
 
 @account.route("/schedule/<id>", methods=["DELETE"])
@@ -123,7 +123,7 @@ def delete_schedule(id):
     id = int(id)
     schedule = current_user.get_schedule(id=id)
     if schedule is None and id != -1:
-        return "", 403  # Requested id is not in this user's schedule list.
+        return gettext("Schedule n°%d is not in your schedule list.") % int(id), 403
 
     if schedule is not None:
         current_user.remove_schedule(schedule)
@@ -163,7 +163,7 @@ def update_label(id):
         session["current_schedule"].label = label
         schedule.update_label(label)
         return "OK", 200
-    return "", 403  # Requested id is not in this user's schedule list.
+    return gettext("Schedule n°%d is not in your schedule list.") % int(id), 403
 
 
 @account.route("/schedule", methods=["POST"])
