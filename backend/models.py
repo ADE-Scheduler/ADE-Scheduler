@@ -65,7 +65,7 @@ def reformat_status_in_dataframe(df: pd.DataFrame):
     :param df: the dataframe containing a status column
     :type df: pd.DataFrame
     """
-    df.status = df.status.astype(str).str.replace(r"([0-9])[0-9][0-9]", r"\1XX")
+    df.status = df.status.astype(str).str.replace(r"([0-9])[0-9][0-9]", r"\1XX", regex=True)
 
 
 class GUID(TypeDecorator):
