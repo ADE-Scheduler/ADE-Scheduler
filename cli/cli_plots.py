@@ -1,6 +1,6 @@
 import click
 from cli.cli_api_usage import plot_requests_hist
-from cli.cli_users import plot_users_hist, plot_users_emails_pie
+from cli.cli_users import plot_users_hist, plot_users_emails_pie, plot_users_last_seen
 from cli.cli_usage import (
     plot_requests_per_blueprint_hist,
     plot_ics_requests_hist,
@@ -17,6 +17,7 @@ F_PLOTS = {
     "unique-ip-addresses-per-day": plot_unique_ip_addresses_per_day,
     "users-hist": plot_users_hist,
     "users-emails-pie": plot_users_emails_pie,
+    "users-last-seen": plot_users_last_seen,
     "views-per-blueprint-hist": plot_views_per_blueprint_hist,
 }
 
