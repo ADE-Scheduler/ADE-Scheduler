@@ -135,7 +135,9 @@ def plot_users_last_seen():
 
     click.echo("Reading database...")
     df = md.table_to_dataframe(md.User, columns=["last_seen_at"])
-    df["last_seen"] = (datetime.datetime.now() - df.last_seen_at).astype('timedelta64[h]') / 24
+    df["last_seen"] = (datetime.datetime.now() - df.last_seen_at).astype(
+        "timedelta64[h]"
+    ) / 24
 
     fig = make_subplots(specs=[[{"secondary_y": True}]])
 
@@ -168,5 +170,3 @@ def plot_users_last_seen():
     click.secho(
         f"Successfully created a plot and saved into server with key={key}", fg="green"
     )
-
-
