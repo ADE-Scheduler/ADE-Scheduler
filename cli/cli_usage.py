@@ -1,4 +1,5 @@
 import click
+import json
 import pandas as pd
 import numpy as np
 import backend.models as md
@@ -122,17 +123,18 @@ def plot_views_per_blueprint_hist():
 def plot_ics_requests_hist():
 
     click.echo("Reading database...")
-    df = md.table_to_dataframe(md.Usage, columns=["datetime", "view_args"])
+    df = md.table_to_dataframe(md.Usage, columns=["datetime", "url_args"])
 
     click.echo("Generating plot...")
 
-    def view_args_to_link(view_args: dict):
-        if "link" in view_args:
-            return view_args
+    def url_args_to_link(url_args: str):
+        if url_args:
+            url_args = json.loads(url_args)
+            return url_args.get("link", None)
         else:
             return None
 
-    df["link"] = df.view_args.apply(view_args_to_link)
+    df["link"] = df.url_args.apply(url_args_to_link)
     df.dropna(axis=0, subset=["link"], inplace=True)
 
     df["day"] = df.datetime.dt.floor("d")
