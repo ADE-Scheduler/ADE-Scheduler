@@ -1,5 +1,6 @@
 import click
 import pandas as pd
+import datetime
 
 from flask import current_app as app
 from flask.cli import with_appcontext
@@ -117,6 +118,51 @@ def plot_users_emails_pie():
     fig.update_layout(uniformtext_minsize=12, uniformtext_mode="hide")
 
     key = "[PLOT,context=users]users_emails_pie"
+    server = app.config["MANAGER"].server
+    value = fig.to_json()
+    server.set_value(key, value)
+
+    click.secho(
+        f"Successfully created a plot and saved into server with key={key}", fg="green"
+    )
+
+
+@users.command()
+@with_appcontext
+def plot_users_last_seen():
+
+    colors = px.colors.qualitative.Plotly
+
+    click.echo("Reading database...")
+    df = md.table_to_dataframe(md.User, columns=["last_seen_at"])
+    df["last_seen"] = (datetime.datetime.now() - df.last_seen_at).astype(
+        "timedelta64[h]"
+    ) / 24
+
+    fig = make_subplots(specs=[[{"secondary_y": True}]])
+
+    click.echo("Generating plot...")
+    fig_1 = df.last_seen.hist(bins=100, backend="plotly")
+    fig_2 = df.last_seen.hist(bins=100, cumulative=True, backend="plotly")
+
+    trace_1 = next(fig_1.select_traces())
+    trace_1.name = "last seen in day(s)"
+    trace_1.marker.color = colors[0]
+    fig.add_trace(trace_1, secondary_y=False)
+
+    trace_2 = next(fig_2.select_traces())
+    trace_2.name = "cumulative"
+    trace_2.marker.color = colors[1]
+    trace_2.opacity = 0.5
+    fig.add_trace(trace_2, secondary_y=True)
+
+    fig.update_layout(
+        title="Number of users last seen in (days)",
+        xaxis_title="Days",
+        yaxis_title="Number of users",
+    )
+
+    key = "[PLOT,context=users]users_last_seen"
     server = app.config["MANAGER"].server
     value = fig.to_json()
     server.set_value(key, value)
