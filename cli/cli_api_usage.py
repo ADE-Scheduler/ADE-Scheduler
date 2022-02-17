@@ -1,4 +1,5 @@
 import click
+import datetime
 import backend.models as md
 
 import plotly.express as px
@@ -14,17 +15,30 @@ def api_usage():
 
 
 @api_usage.command()
+@click.option(
+    "--latest", default=30, type=int, help="Only shows data from latest days."
+)
 @with_appcontext
-def plot_requests_hist():
+def plot_requests_hist(latest):
 
     click.echo("Reading database...")
-    df = md.table_to_dataframe(md.ApiUsage, columns=["status", "datetime"])
+
+    table = md.ApiUsage
+    sql_query = table.query.filter(
+        table.datetime >= datetime.datetime.now() - datetime.timedelta(days=latest)
+    ).with_entities(table.datetime, table.status)
+    df = md.query_to_dataframe(sql_query)
 
     click.echo("Generating plot...")
 
     md.reformat_status_in_dataframe(df)
     df["day"] = df.datetime.dt.floor("d")
-    fig = px.histogram(df, x="day", color="status", nbins=100)
+    df = df.groupby(["day", "status"]).size().to_frame()
+    df.columns = ["count"]
+    df.reset_index(level=0, inplace=True)
+    df.reset_index(level=0, inplace=True)  # Do it twice here
+
+    fig = px.histogram(df, x="day", y="count", color="status")
 
     fig.update_layout(
         title="ADE Api requests per status",
