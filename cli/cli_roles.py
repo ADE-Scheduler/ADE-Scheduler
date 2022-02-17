@@ -1,5 +1,4 @@
 import click
-
 from flask.cli import with_appcontext
 
 import backend.models as md

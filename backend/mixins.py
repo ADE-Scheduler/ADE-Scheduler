@@ -1,5 +1,5 @@
-from flask_login import UserMixin as BaseUserMixin
 from flask_login import AnonymousUserMixin
+from flask_login import UserMixin as BaseUserMixin
 
 import backend.models as md
 

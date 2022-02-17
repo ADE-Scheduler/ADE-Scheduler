@@ -1,14 +1,15 @@
-import pandas as pd
-from typing import List, Iterator, Optional, Union, Dict, Tuple
+from typing import Dict, Iterator, List, Optional, Tuple, Union
 
-import backend.servers as srv
+import pandas as pd
+
 import backend.ade_api as ade
-import backend.models as md
-import backend.courses as crs
-import backend.schedules as schd
-import backend.resources as rsrc
 import backend.classrooms as clrm
+import backend.courses as crs
 import backend.events as evt
+import backend.models as md
+import backend.resources as rsrc
+import backend.schedules as schd
+import backend.servers as srv
 
 
 class ScheduleNotFountError(Exception):

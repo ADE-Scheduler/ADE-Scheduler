@@ -1,13 +1,12 @@
 from datetime import datetime
 
-from flask import request, g
+from flask import g, request
 from flask_login import current_user
-
-import backend.models as md
-
 from ua_parser import user_agent_parser
 from werkzeug.user_agent import UserAgent
 from werkzeug.utils import cached_property
+
+import backend.models as md
 
 
 class ParsedUserAgent(UserAgent):

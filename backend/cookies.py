@@ -2,9 +2,10 @@
 Provides utils to store and retrieve cookies, as well as a secure mechanism to score oauth tokens in cookies.
 """
 import json
-from flask import request, current_app as app
-
 from typing import Any, Optional
+
+from flask import current_app as app
+from flask import request
 
 
 def set_cookie(key: str, value: str, resp, **kwargs: Any):

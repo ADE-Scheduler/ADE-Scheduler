@@ -1,4 +1,4 @@
-from flask import url_for, session
+from flask import session, url_for
 from flask_login import current_user
 
 
