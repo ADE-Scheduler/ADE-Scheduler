@@ -17,3 +17,12 @@ repos:
         -   eslint@7.32.0
         -   eslint-plugin-vue@7.17.0
         args: [--fix]
+-   repo: https://github.com/pycqa/flake8
+    rev: '4.0.1'  # pick a git hash / tag to point to
+    hooks:
+    -   id: flake8
+        exclude: tests/
+        additional_dependencies: [flake8-docstrings]
+        args:
+          - "--max-line-length=88"
+          - "--ignore=E501"
