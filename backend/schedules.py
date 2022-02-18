@@ -1,14 +1,15 @@
-from itertools import product, chain, starmap, repeat
-from collections import deque, defaultdict
-from heapq import nsmallest
 import operator
-from typing import Iterable, Union, List, Dict, Set, Optional
-from backend.courses import Course, merge_courses
+from collections import defaultdict, deque
+from heapq import nsmallest
+from itertools import chain, product, repeat, starmap
+from typing import Dict, Iterable, List, Optional, Set, Union
+
 from flask import current_app as app
-from ics import Calendar
 from flask_babel import lazy_gettext as _l
+from ics import Calendar
 
 import backend.events as evt
+from backend.courses import Course, merge_courses
 
 DEFAULT_SCHEDULE_NAME = _l("New schedule")
 COLOR_PALETTE = [

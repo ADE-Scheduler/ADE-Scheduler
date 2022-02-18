@@ -1,11 +1,11 @@
 import json
 from typing import Any
 
+from flask import Blueprint
 from flask import current_app as app
-from flask import Blueprint, render_template, session, request, jsonify
-from flask_login import login_required, current_user
+from flask import jsonify, render_template, request, session
 from flask_babel import LazyString, gettext
-
+from flask_login import current_user, login_required
 
 import backend.schedules as schd
 import views.utils as utl

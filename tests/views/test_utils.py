@@ -1,9 +1,10 @@
-import uuid
 import copy
-import views.utils as utl
+import uuid
 
 from flask import session, url_for
 from flask_babel import gettext
+
+import views.utils as utl
 
 
 def test_init_session(app, manager):

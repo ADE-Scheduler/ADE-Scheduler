@@ -2,23 +2,23 @@ import json
 from datetime import datetime
 from typing import Any
 
+from flask import Blueprint
 from flask import current_app as app
 from flask import (
-    Blueprint,
-    render_template,
-    session,
+    g,
     jsonify,
-    request,
     make_response,
     redirect,
+    render_template,
+    request,
+    session,
     url_for,
-    g,
 )
+from flask_babel import LazyString, gettext
 from flask_login import current_user, login_required
-from flask_babel import gettext, LazyString
 
-import backend.schedules as schd
 import backend.events as evt
+import backend.schedules as schd
 import views.utils as utl
 
 

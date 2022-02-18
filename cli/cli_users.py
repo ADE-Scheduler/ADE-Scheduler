@@ -1,11 +1,10 @@
-import click
-import pandas as pd
 import datetime
 
+import click
+import pandas as pd
+import plotly.express as px
 from flask import current_app as app
 from flask.cli import with_appcontext
-
-import plotly.express as px
 from plotly.subplots import make_subplots
 
 import backend.models as md

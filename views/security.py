@@ -1,16 +1,15 @@
 import json
-
 from datetime import datetime
+
+from flask import Blueprint
+from flask import current_app as app
+from flask import flash, redirect, request, session, url_for
+from flask_babel import gettext
+from flask_login import login_user, logout_user
 from requests.exceptions import HTTPError
 
-from flask import current_app as app
-from flask import Blueprint, url_for, request, redirect, session, flash
-from flask_login import login_user, logout_user
-from flask_babel import gettext
-
-import backend.models as md
 import backend.cookies as cookies
-
+import backend.models as md
 
 security = Blueprint("security", __name__, static_folder="../static")
 

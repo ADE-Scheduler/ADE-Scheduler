@@ -1,14 +1,14 @@
-import click
+import json
 import time
-import backend.models as md
 
-from flask import current_app as app
-from flask_mail import Message
-from flask.cli import with_appcontext
+import click
 import flask
 from authlib.jose import jwt
+from flask import current_app as app
+from flask.cli import with_appcontext
+from flask_mail import Message
 
-import json
+import backend.models as md
 
 
 @click.group()

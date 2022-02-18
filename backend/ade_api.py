@@ -1,26 +1,24 @@
-import requests
-
 import hashlib
-import os
-import time
-import pickle
 import json
-from lxml import etree
-import pandas as pd
-from collections import defaultdict, Counter
+import os
+import pickle
+import time
 import warnings
+from collections import Counter, defaultdict
+from typing import Callable, Dict, List, Tuple, Type, Union
 
-from backend.classrooms import Classroom, Address
-from backend.courses import Course
-from backend import professors
+import pandas as pd
+import requests
+from flask import current_app
+from lxml import etree
+
 import backend.events
 import backend.models as md
 import backend.resources as rsrc
+from backend import professors
+from backend.classrooms import Address, Classroom
+from backend.courses import Course
 from backend.uclouvain_apis import ADE
-
-
-from typing import Dict, Union, List, Tuple, Callable, Type
-from flask import current_app
 
 
 class ExpiredTokenError(Exception):

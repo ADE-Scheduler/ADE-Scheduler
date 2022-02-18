@@ -1,13 +1,13 @@
 import copy
-import pytest
 import datetime
+
+import pytest
+from flask import session
 
 import backend.models as md
 import backend.schedules as schd
 import views.utils as utl
-
 from app import app as ade_scheduler
-from flask import session
 from backend.mixins import AnonymousUser
 
 

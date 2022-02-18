@@ -1,9 +1,10 @@
-from itertools import repeat
-import pandas as pd
-from backend.events import AcademicalEvent
-from typing import List, Union, Dict, Iterable, Optional, Any, Set
 from collections import defaultdict
+from itertools import repeat
+from typing import Any, Dict, Iterable, List, Optional, Set, Union
 
+import pandas as pd
+
+from backend.events import AcademicalEvent
 
 View = Union[List[str], Set[str], Dict[int, str]]
 

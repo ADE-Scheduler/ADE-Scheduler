@@ -1,7 +1,7 @@
-import click
 import random as rnd
 from datetime import datetime
 
+import click
 from flask import current_app as app
 from flask.cli import with_appcontext
 
