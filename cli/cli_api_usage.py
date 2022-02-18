@@ -1,11 +1,10 @@
 import click
 import datetime
-import backend.models as md
-
 import plotly.express as px
-
 from flask import current_app as app
 from flask.cli import with_appcontext
+
+import backend.models as md
 
 
 @click.group()

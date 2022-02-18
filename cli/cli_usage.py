@@ -1,16 +1,15 @@
-import click
 import json
 import datetime
-import pandas as pd
+import click
+import flask
 import numpy as np
-import backend.models as md
-
-import plotly.graph_objects as go
+import pandas as pd
 import plotly.express as px
-
+import plotly.graph_objects as go
 from flask import current_app as app
 from flask.cli import with_appcontext
-import flask
+
+import backend.models as md
 
 
 @click.group()

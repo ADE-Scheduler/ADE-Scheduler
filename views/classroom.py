@@ -1,8 +1,8 @@
+from flask import Blueprint
 from flask import current_app as app
-from flask import Blueprint, render_template, jsonify
+from flask import jsonify, render_template
 
 import views.utils as utl
-
 
 classroom = Blueprint("classroom", __name__, static_folder="../static")
 

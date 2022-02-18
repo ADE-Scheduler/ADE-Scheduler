@@ -1,6 +1,5 @@
 from flask import Blueprint, render_template
 
-
 whatisnew = Blueprint("whatisnew", __name__, static_folder="../static")
 
 

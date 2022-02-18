@@ -1,11 +1,10 @@
-import os
 import json
-import dotenv
+import os
 import subprocess
 
-from telegram import Update, ParseMode
-from telegram.ext import Updater, CallbackContext, CommandHandler
-
+import dotenv
+from telegram import ParseMode, Update
+from telegram.ext import CallbackContext, CommandHandler, Updater
 
 # Relevant IDs
 dotenv.load_dotenv(".botenv")

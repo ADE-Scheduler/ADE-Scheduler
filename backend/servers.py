@@ -1,8 +1,9 @@
+from datetime import timedelta
+from pickle import dumps, loads
+from typing import Any, Dict, List, Mapping, Optional, Tuple
+
 from redis import Redis
 from redis.exceptions import ConnectionError
-from datetime import timedelta
-from typing import Optional, Dict, Any, Tuple, List, Mapping
-from pickle import dumps, loads
 
 VALID_TTL_KEYS = [
     "days",
