@@ -1,5 +1,6 @@
-import json
 import datetime
+import json
+
 import click
 import flask
 import numpy as np
