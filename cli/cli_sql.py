@@ -1,8 +1,8 @@
-import click
 import pickle as pkl
 
-from flask.cli import with_appcontext
+import click
 from flask import current_app as app
+from flask.cli import with_appcontext
 from sqlalchemy import func
 
 import backend.models as md

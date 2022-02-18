@@ -1,10 +1,10 @@
 from functools import wraps
 
-from flask import abort, g, make_response, session, request, redirect, url_for
+from flask import abort, g, make_response, redirect, request, session, url_for
 from flask_login import current_user
 
-import backend.models as md
 import backend.cookies as cookies
+import backend.models as md
 
 
 def fetch_token(name):

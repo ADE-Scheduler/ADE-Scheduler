@@ -1,6 +1,5 @@
 import click
 import numpy as np
-
 from flask.cli import with_appcontext
 
 import backend.models as md
@@ -19,8 +18,8 @@ def schedules():
 def stats(n):
     """Returns some statistics about schedules."""
     schedules = md.Schedule.query.all()
-    from collections import Counter
     import re
+    from collections import Counter
 
     c = Counter()
     prefixes = Counter()

@@ -1,9 +1,11 @@
-from typing import Iterable, Union, Dict
-import pandas as pd
-import backend.resources as rsrc
-from geopy.geocoders import Nominatim
-import time
 import json
+import time
+from typing import Dict, Iterable, Union
+
+import pandas as pd
+from geopy.geocoders import Nominatim
+
+import backend.resources as rsrc
 
 
 class Address:

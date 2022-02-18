@@ -1,7 +1,7 @@
 import json
-import pytest
 
-from flask import url_for, session
+import pytest
+from flask import session, url_for
 from flask_babel import gettext
 
 import backend.models as md

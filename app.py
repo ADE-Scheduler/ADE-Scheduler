@@ -1,73 +1,79 @@
 # Python imports
+import base64
+import configparser
+import distutils
 import os
 import traceback
-from datetime import timedelta
-from jsmin import jsmin
-import distutils
-import configparser
 import warnings
-from requests.exceptions import HTTPError, ConnectionError
+from datetime import timedelta
+
+# External imports
 import authlib.jose as jose
-import base64
-from lxml.etree import XMLSyntaxError
+from authlib.integrations.flask_client import OAuth
 from cryptography.fernet import Fernet
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
 # Flask imports
-from werkzeug.exceptions import InternalServerError
-from flask import Flask, session, request, redirect, url_for, render_template, g, flash
-from flask_session import Session
+from flask import Flask, flash, g, redirect, render_template, request, session, url_for
+from flask_babel import Babel, gettext
+from flask_compress import Compress
+from flask_jsglue import JSGlue
 from flask_login import (
     LoginManager,
     current_user,
     login_required,
-    user_logged_out,
     user_logged_in,
+    user_logged_out,
 )
 from flask_mail import Mail, Message, email_dispatched
-from flask_jsglue import JSGlue
-from flask_babel import Babel, gettext
 from flask_migrate import Migrate
-from flask_compress import Compress
-from authlib.integrations.flask_client import OAuth
+from flask_session import Session
 
-# API imports
-import backend.models as md
-import backend.mixins as mxn
-import backend.servers as srv
+# External imports
+from jsmin import jsmin
+from lxml.etree import XMLSyntaxError
+from requests.exceptions import ConnectionError, HTTPError
+from werkzeug.exceptions import InternalServerError
+
+# Backend imports
 import backend.ade_api as ade
-import backend.manager as mng
-import backend.schedules as schd
-import backend.track_usage as tu
-import backend.security as scty
 import backend.cookies as cookies
+import backend.manager as mng
+import backend.mixins as mxn
+import backend.models as md
+import backend.schedules as schd
+import backend.security as scty
+import backend.servers as srv
+import backend.track_usage as tu
 import backend.uclouvain_apis as ucl
-import views.utils as utl
-
-# Views imports
-from views.security import security
-from views.calendar import calendar
-from views.account import account
-from views.classroom import classroom
-from views.help import help as _help
-from views.contact import contact
-from views.api import api
-from views.whatisnew import whatisnew
-from views.contribute import contribute
-from views.admin import admin
 
 # CLI commands
-from cli import cli_api_usage
-from cli import cli_client
-from cli import cli_redis
-from cli import cli_roles
-from cli import cli_schedules
-from cli import cli_sql
-from cli import cli_usage
-from cli import cli_users
-from cli import cli_plots
-from cli import cli_mails
+from cli import (
+    cli_api_usage,
+    cli_client,
+    cli_mails,
+    cli_plots,
+    cli_redis,
+    cli_roles,
+    cli_schedules,
+    cli_sql,
+    cli_usage,
+    cli_users,
+)
+
+# Views imports
+from views import utils as utl
+from views.account import account
+from views.admin import admin
+from views.api import api
+from views.calendar import calendar
+from views.classroom import classroom
+from views.contact import contact
+from views.contribute import contribute
+from views.help import help as _help
+from views.security import security
+from views.whatisnew import whatisnew
 
 # Change current working directory to main directory
 os.chdir(os.path.dirname(os.path.realpath(__file__)))

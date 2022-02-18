@@ -1,14 +1,15 @@
 import re
-from pytz import timezone
-from ics import Event
-from ics.utils import arrow_to_iso, get_arrow
-from datetime import datetime
-from backend.classrooms import merge_classrooms, Classroom
-from backend.professors import Professor
-from typing import Type, Tuple, Iterable, Optional, Union, Any, Dict
 import unicodedata
+from datetime import datetime
+from typing import Any, Dict, Iterable, Optional, Tuple, Type, Union
 
 from flask_babel import gettext
+from ics import Event
+from ics.utils import arrow_to_iso, get_arrow
+from pytz import timezone
+
+from backend.classrooms import Classroom, merge_classrooms
+from backend.professors import Professor
 
 # We need to set the timezone
 TZ = timezone("Europe/Brussels")
