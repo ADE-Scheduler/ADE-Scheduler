@@ -55,7 +55,7 @@ def stats():
 
 @usage.command()
 @click.option(
-    "--latest", default=30, type=int, help="Only shows data from latest days."
+    "--latest", default=-1, type=int, help="Only shows data from latest days."
 )
 @with_appcontext
 def plot_requests_per_blueprint_hist(latest):
@@ -63,9 +63,15 @@ def plot_requests_per_blueprint_hist(latest):
     click.echo("Reading database...")
 
     table = md.Usage
-    sql_query = table.query.filter(
-        table.datetime >= datetime.datetime.now() - datetime.timedelta(days=latest)
-    ).with_entities(table.datetime, table.blueprint)
+
+    sql_query = table.query
+
+    if latest >= 0:
+        sql_query = sql_query.filter(
+            table.datetime >= datetime.datetime.now() - datetime.timedelta(days=latest)
+        )
+
+    sql_query = sql_query.with_entities(table.datetime, table.blueprint)
     df = md.query_to_dataframe(sql_query)
 
     click.echo("Generating plot...")
@@ -98,16 +104,22 @@ def plot_requests_per_blueprint_hist(latest):
 
 @usage.command()
 @click.option(
-    "--latest", default=30, type=int, help="Only shows data from latest days."
+    "--latest", default=-1, type=int, help="Only shows data from latest days."
 )
 @with_appcontext
 def plot_views_per_blueprint_hist(latest):
 
     click.echo("Reading database...")
     table = md.Usage
-    sql_query = table.query.filter(
-        table.datetime >= datetime.datetime.now() - datetime.timedelta(days=latest)
-    ).with_entities(table.datetime, table.blueprint, table.path)
+
+    sql_query = table.query
+
+    if latest >= 0:
+        sql_query = sql_query.filter(
+            table.datetime >= datetime.datetime.now() - datetime.timedelta(days=latest)
+        )
+
+    sql_query = sql_query.with_entities(table.datetime, table.blueprint, table.path)
     df = md.query_to_dataframe(sql_query)
 
     click.echo("Generating plot...")

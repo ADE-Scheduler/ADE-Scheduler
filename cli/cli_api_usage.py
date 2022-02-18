@@ -16,7 +16,7 @@ def api_usage():
 
 @api_usage.command()
 @click.option(
-    "--latest", default=30, type=int, help="Only shows data from latest days."
+    "--latest", default=-1, type=int, help="Only shows data from latest days."
 )
 @with_appcontext
 def plot_requests_hist(latest):
@@ -24,9 +24,15 @@ def plot_requests_hist(latest):
     click.echo("Reading database...")
 
     table = md.ApiUsage
-    sql_query = table.query.filter(
-        table.datetime >= datetime.datetime.now() - datetime.timedelta(days=latest)
-    ).with_entities(table.datetime, table.status)
+
+    sql_query = table.query
+
+    if latest >= 0:
+        sql_query = sql_query.filter(
+            table.datetime >= datetime.datetime.now() - datetime.timedelta(days=latest)
+        )
+
+    sql_query = sql_query.with_entities(table.datetime, table.status)
     df = md.query_to_dataframe(sql_query)
 
     click.echo("Generating plot...")
