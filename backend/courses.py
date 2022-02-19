@@ -87,7 +87,7 @@ class Course:
         tuples = list(repeat((self.code, event_type, id), len(data)))
         index = pd.MultiIndex.from_tuples(tuples, names=self.activities.index.name)
         df = pd.DataFrame(data=data, columns=self.activities.columns, index=index)
-        self.activities = self.activities.append(df)
+        self.activities = pd.concat([self.activities, df])
 
     def set_weights(
         self, percentage: float = 50, event_type: Optional[AcademicalEvent] = None
