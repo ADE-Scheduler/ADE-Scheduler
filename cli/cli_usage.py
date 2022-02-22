@@ -1,3 +1,4 @@
+import datetime
 import json
 
 import click
@@ -53,17 +54,36 @@ def stats():
 
 
 @usage.command()
+@click.option(
+    "--latest", default=-1, type=int, help="Only shows data from latest days."
+)
 @with_appcontext
-def plot_requests_per_blueprint_hist():
+def plot_requests_per_blueprint_hist(latest):
 
     click.echo("Reading database...")
-    df = md.table_to_dataframe(md.Usage, columns=["datetime", "blueprint"])
+
+    table = md.Usage
+
+    sql_query = table.query
+
+    if latest >= 0:
+        sql_query = sql_query.filter(
+            table.datetime >= datetime.datetime.now() - datetime.timedelta(days=latest)
+        )
+
+    sql_query = sql_query.with_entities(table.datetime, table.blueprint)
+    df = md.query_to_dataframe(sql_query)
 
     click.echo("Generating plot...")
     df.dropna(subset=["datetime", "blueprint"], inplace=True)
 
     df["day"] = df.datetime.dt.floor("d")
-    fig = px.histogram(df, x="day", color="blueprint")
+    df = df.groupby(["day", "blueprint"]).size().to_frame()
+    df.columns = ["count"]
+    df.reset_index(level=0, inplace=True)
+    df.reset_index(level=0, inplace=True)
+
+    fig = px.histogram(df, x="day", y="count", color="blueprint")
 
     fig.update_layout(
         title="Requests per page per day",
@@ -83,11 +103,24 @@ def plot_requests_per_blueprint_hist():
 
 
 @usage.command()
+@click.option(
+    "--latest", default=-1, type=int, help="Only shows data from latest days."
+)
 @with_appcontext
-def plot_views_per_blueprint_hist():
+def plot_views_per_blueprint_hist(latest):
 
     click.echo("Reading database...")
-    df = md.table_to_dataframe(md.Usage, columns=["datetime", "blueprint", "path"])
+    table = md.Usage
+
+    sql_query = table.query
+
+    if latest >= 0:
+        sql_query = sql_query.filter(
+            table.datetime >= datetime.datetime.now() - datetime.timedelta(days=latest)
+        )
+
+    sql_query = sql_query.with_entities(table.datetime, table.blueprint, table.path)
+    df = md.query_to_dataframe(sql_query)
 
     click.echo("Generating plot...")
     df.dropna(subset=["datetime", "blueprint"], inplace=True)
@@ -99,7 +132,12 @@ def plot_views_per_blueprint_hist():
     df = df[index]
 
     df["day"] = df.datetime.dt.floor("d")
-    fig = px.histogram(df, x="day", color="blueprint")
+    df = df.groupby(["day", "blueprint"]).size().to_frame()
+    df.columns = ["count"]
+    df.reset_index(level=0, inplace=True)
+    df.reset_index(level=0, inplace=True)
+
+    fig = px.histogram(df, x="day", y="count", color="blueprint")
 
     fig.update_layout(
         title="Views per page per day",
@@ -213,13 +251,17 @@ def plot_unique_ip_addresses_per_day():
 def plot_platforms_pie():
 
     click.echo("Reading database...")
-    df = md.table_to_dataframe(md.Usage, columns=["ua_platform"])
+    sql_query = md.Usage.query.with_entities(md.Usage.ua_platform)
+    df = md.query_to_dataframe(sql_query)
 
     click.echo("Generating plot...")
 
-    df.dropna(subset=["ua_platform"], inplace=True)
+    df["ua_platform"] = df["ua_platform"].str.lower()
+    df = df.groupby("ua_platform").size().to_frame()
+    df.columns = ["count"]
+    df.reset_index(level=0, inplace=True)
 
-    fig = px.pie(df, names="ua_platform")
+    fig = px.pie(df, values="count", names="ua_platform")
 
     fig.update_traces(textposition="inside", textinfo="percent+label")
 
