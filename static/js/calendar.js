@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function() {
           plugins: [ dayGridPlugin, timeGridPlugin ],
           locales: [ frLocale ],
           locale: document.getElementById('current-locale').innerText.trim(),
-
+          timeZone: 'Europe/Brussels', // Show schedule in the same TZ where classes are given
           height: 'auto',
           slotMinTime: '08:00:00',
           slotMaxTime: '21:00:00',

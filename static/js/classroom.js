@@ -20,7 +20,23 @@ const uclWeeksNo = {
   '2019': [0, 0, 0, 0, -2, 1, 2, 3, 4, 5, 6, 7, 8, 9, -1, -1, 10, 11, 12, 13, -3, -3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, -3, -3],
   '2020': [-3, 0, 0, 0, -2, 1, 2, 3, 4, 5, 6, 7, 8, 9, -1, -1, 10, 11, 12, 13, -3, -3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, -3, -3],
   '2021': [0, 0, 0, -2, 1, 2, 3, 4, 5, 6, 7, 8, 9, -1, -1, 10, 11, 12, 13, -3, -3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, -3, -3, 0],
+  '2022': [0, 0, 0, -2, 1, 2, 3, 4, 5, 6, 7, 8, 9, -1, -1, 10, 11, 12, 13, -3, -3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, -3, -3, 0],
 };
+
+Date.prototype.getWeekNumber = function(){
+  var d = new Date(Date.UTC(this.getFullYear(), this.getMonth(), this.getDate()));
+  var dayNum = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+  var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+  return Math.ceil((((d - yearStart) / 86400000) + 1)/7);
+};
+
+Date.prototype.addDays = function(days) {
+  var date = new Date(this.valueOf());
+  date.setDate(date.getDate() + days);
+  return date;
+};
+
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -53,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
           plugins: [ dayGridPlugin, timeGridPlugin ],
           locales: [ frLocale ],
           locale: document.getElementById('current-locale').innerText.trim(),
-
+          timeZone: 'Europe/Brussels', // Show schedule in the same TZ where classes are given
           height: 'auto',
           slotMinTime: '08:00:00',
           slotMaxTime: '21:00:00',
@@ -78,13 +94,11 @@ document.addEventListener('DOMContentLoaded', function() {
           firstDay: 1,
           weekNumbers: true,
           weekNumberContent: function (arg) {
-          // Get week number & year
-          // From: https://stackoverflow.com/a/6117889
-            let d = new Date(Date.UTC(arg.date.getFullYear(), arg.date.getMonth(), arg.date.getDate()));
-            d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
-            let yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
-            let weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
-            let year = d.getUTCFullYear();
+            // Get week number & year
+            // From: https://stackoverflow.com/a/6117889
+            // Since FC set first day to be Sunday in some places, we shift the current day by one to be at least Monday, otherwise we get previous week number.
+            let weekNo = arg.date.addDays(1).getWeekNumber();
+            let year = arg.date.getUTCFullYear();
             let num;
             try {
               num = uclWeeksNo[year][weekNo-1];
