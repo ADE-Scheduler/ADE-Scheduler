@@ -1,5 +1,5 @@
 -r ../prod-requirements.txt
 
 Sphinx==4.4.0
-sphinx_click==3.0.2
+sphinx_click==4.0.1
 sphinx_rtd_theme==1.0.0
