@@ -20,7 +20,7 @@ plotly==5.5.0
 pyOpenSSL==21.0.0
 python-dotenv==0.19.2
 pytz==2021.3
-redis==3.5.3
+redis==4.3.1
 SQLAlchemy==1.4.22
 telegram==0.0.1
 Werkzeug==2.0.2
