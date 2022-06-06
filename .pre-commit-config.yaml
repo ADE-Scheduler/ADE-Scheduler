@@ -1,12 +1,12 @@
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.1.0
+    rev: v4.2.0
     hooks:
     -   id: check-yaml
     -   id: end-of-file-fixer
     -   id: trailing-whitespace
 -   repo: https://github.com/pre-commit/mirrors-eslint
-    rev: 'v8.12.0'  # Use the sha / tag you want to point at
+    rev: 'v8.17.0'  # Use the sha / tag you want to point at
     hooks:
     -   id: eslint
         additional_dependencies:
