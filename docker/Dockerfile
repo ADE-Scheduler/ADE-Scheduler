@@ -6,7 +6,7 @@ RUN yum -y update
 # Install needed deps for python install
 RUN yum -y groupinstall "Development Tools"
 RUN yum -y install openssl-devel \
-                   libffi-devel \ 
+                   libffi-devel \
                    bzip2-devel \
                    sqlite-devel \
                    ncurses-devel \
