@@ -13,6 +13,7 @@ flask_sqlalchemy==2.5.1
 geopy==2.2.0
 ics==0.7
 jsmin==3.0.1
+jinja2==3.0.2
 lxml==4.6.5
 numpy==1.22.1
 pandas==1.4.0

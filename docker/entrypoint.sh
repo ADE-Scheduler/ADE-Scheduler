@@ -9,7 +9,7 @@ echo "Running Webpack..."
 npx webpack --progress --watch --no-stats &
 
 # Update & install Python deps
-if [ -d "venv" ]; then
+if [ ! -d "venv" ]; then
     echo "Installing virtualenv..."
     python3.9 -m venv venv
 fi
