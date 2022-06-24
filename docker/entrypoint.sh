@@ -21,6 +21,7 @@ redis-server &
 
 # Run postgresql
 # this is complicated, use sqlite for dev instead lol
+flask sql init
 
 # Run Flask !
 echo "Running Flask..."

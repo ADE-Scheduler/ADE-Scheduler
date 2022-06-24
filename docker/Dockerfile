@@ -35,13 +35,9 @@ RUN yum -y --enablerepo=remi install redis
 RUN curl -sL https://rpm.nodesource.com/setup_16.x | bash -
 RUN yum -y install nodejs
 
-# Install ZSH & Oh-My-Zsh (cuz it's WAY better...)
-RUN yum -y install zsh
-
 # Add dev user
 RUN useradd -ms /bin/bash dev
 USER dev
-RUN sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
 
 # Entrypoint
 COPY entrypoint.sh /run/entrypoint.sh
