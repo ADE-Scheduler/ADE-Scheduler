@@ -17,7 +17,7 @@ security = Blueprint("security", __name__, static_folder="../static")
 @security.route("/login")
 def login():
     # The UCLouvain login API does not work in dev
-    # (unless you run the derver under ade-scheduler.info.ucl.ac.be on port 443
+    # (unless you run the server under ade-scheduler.info.ucl.ac.be on port 443
     #  which can be achieved by editing /etc/hosts should you need to dev stuff
     #  related to the login.)
     # WARNING: this won't work the day where we want to add features requiring
