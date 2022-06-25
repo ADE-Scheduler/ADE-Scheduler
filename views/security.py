@@ -16,6 +16,32 @@ security = Blueprint("security", __name__, static_folder="../static")
 
 @security.route("/login")
 def login():
+    # The UCLouvain login API does not work in dev
+    # (unless you run the derver under ade-scheduler.info.ucl.ac.be on port 443
+    #  which can be achieved by editing /etc/hosts should you need to dev stuff
+    #  related to the login.)
+    # WARNING: this won't work the day where we want to add features requiring
+    #          a OAuth token... (currently, we do not use it at all.)
+    if app.env == "development":
+        user = md.User.query.filter_by(fgs="dev").first()
+        # If dev user doesn't exist, create it
+        if user is None:
+            now = datetime.now()
+            user = md.User(
+                fgs="dev",
+                email="dev@ade-scheduler",
+                first_name="Super",
+                last_name="Dev",
+                created_at=now,
+                last_seen_at=now,
+            )
+            md.db.session.add(user)
+            md.db.session.commit()
+        # Automatically login the dev-user
+        login_user(user)
+        return redirect(url_for("calendar.index"))
+
+    # Proceed with the normal login procedure
     uclouvain = app.config["UCLOUVAIN_MANAGER"]
 
     # Request code
