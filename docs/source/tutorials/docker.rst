@@ -54,5 +54,3 @@ Run the following in :code:`<repo>`:
     This tutorial is still under development! Any problem you might encounter is important for us, so please contact use whenever you need help :-)
 
 .. docker setup end
-
-
