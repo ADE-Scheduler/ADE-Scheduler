@@ -1,0 +1,30 @@
+# FLASK
+FLASK_APP = "app.py"
+FLASK_ENV = development
+FLASK_RUN_HOST = localhost
+FLASK_RUN_PORT = 5000
+FLASK_SECRET_KEY= ABCDEF
+FLASK_SALT= GHIJKL
+TEMPLATE_AUTO_RELOAD = True
+
+# DEV
+ADE_URL=https://gw.api.uclouvain.be/token
+ADE_DATA = grant_type=client_credentials
+ADE_AUTHORIZATION = Basic some_secret_key
+
+# UCLOUVAIN OAUTH2 API
+UCLOUVAIN_CLIENT_ID = some_secret_id
+UCLOUVAIN_CLIENT_SECRET = some_secret_secret
+
+# DB
+ADE_DB_PATH = sqlite:///adescheduler.db
+
+# LOGGING
+MAIL_SERVER = smtp.gmail.com
+MAIL_USERNAME = no-email@gmail.com
+MAIL_PASSWORD = some-password
+MAIL_ADMIN = no-email@gmail.com
+MAIL_DISABLE = true
+
+# USE FAKE API
+ADE_FAKE_API = false
