@@ -19,6 +19,21 @@ with more details on how to use particular tools.
     It is important to follow this setup guide in the correct order of sections!
 
 
+(*New*) Docker setup
+====================
+
+A new setup alternative is the Docker setup. This setup is a lot more simple as it will install most of the requirements for you.
+
+
+.. include:: docker.rst
+    :start-after: docker info begin
+    :end-before: docker info end
+
+
+.. include:: docker.rst
+    :start-after: docker setup begin
+    :end-before: docker setup end
+
 1. Redis server
 ===============
 

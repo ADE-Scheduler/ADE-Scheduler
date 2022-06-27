@@ -39,7 +39,7 @@ I. Clone the repository
 -----------------------
 
 If you are not one of the official maintainers of this project, you should first fork
-this repository: https://github.com/SnaKyEyeS/ADE-Scheduler/fork
+this repository: https://github.com/ADE-Scheduler/ADE-Scheduler/fork
 
 Then, clone the forked repository somewhere on your machine. We will always refer to
 the location of the project directory as :code:`<repo>`.
