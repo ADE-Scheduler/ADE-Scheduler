@@ -1,5 +1,4 @@
-#!/bin/sh
-
+#!/bin/bash
 # Go to folder
 cd /ADE-Scheduler
 
