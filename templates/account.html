@@ -121,6 +121,26 @@
                 </li>
             </ul>
 
+            <h4 class="d-flex justify-content-between align-items-center">
+                <span class="text-muted">{{ _('Your custom external activities') }}</span>
+            </h4>
+            <h6 v-if="externalActivities.length == 0">{{ _('You do not have any custom external activity at the moment') }}</h6>
+            <ul class="list-group list-courses">
+                <li class="list-group-item d-flex justify-content-between align-items-center" v-for="ec in externalActivities" v-bind:key="ec.id">
+                    <h6 class="text-truncate my-0">
+                        [[ ec.code ]]
+                    </h6>
+                    <div class="d-flex flex-nowrap">
+                        <a class="text-danger" href="#" v-on:click="deleteExternalActivity($event, ec.id)">
+                            <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-x" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M11.854 4.146a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708-.708l7-7a.5.5 0 0 1 .708 0z"/>
+                                <path fill-rule="evenodd" d="M4.146 4.146a.5.5 0 0 0 0 .708l7 7a.5.5 0 0 0 .708-.708l-7-7a.5.5 0 0 0-.708 0z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+
             <div class="mt-4 text-center">
                 <small class="font-weight-light">
                     <a target="_blank" rel="noopener noreferrer" class="text-dark" href="https://github.com/SnaKyEyeS/ADE-Scheduler">{{_('Open source software')}}</a> {{_('designed by Gilles Poncelet, Louis Navarre and Jérome Eertmans, students at the Ecole polytechnique de Louvain.')}}
