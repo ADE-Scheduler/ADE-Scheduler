@@ -113,6 +113,9 @@
                         <li class="nav-item">
                             <a class="nav-link" v-bind:class="{'active-page': currentPath === '{{ url_for('contribute.index') }}'}" href="{{ url_for('contribute.index') }}">{{_('Contribute')}}</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" v-bind:class="{'active-page': currentPath === '{{ url_for('custom_course.index') }}'}" href="{{ url_for('custom_course.index') }}">{{_('Custom course')}}</a>
+                        </li>
                         {% if current_user.has_role("admin") %}
                         <li class="nav-item">
                             <a class="nav-link" v-bind:class="{'active-page': currentPath === '{{ url_for('admin.index') }}'}" href="{{ url_for('admin.index') }}">Admin</a>

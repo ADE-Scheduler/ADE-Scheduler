@@ -7,32 +7,32 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-02-07 20:16+0100\n"
+"POT-Creation-Date: 2022-06-30 08:45+0000\n"
 "PO-Revision-Date: 2020-07-24 16:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
 "Language-Team: fr <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.6.0\n"
+"Generated-By: Babel 2.10.3\n"
 
-#: app.py:368
+#: app.py:380
 msgid "Oops, it looks like you provided an invalid migration token."
 msgstr "Oups, on dirait que le token de migration fourni est invalide."
 
-#: app.py:376
+#: app.py:388
 msgid "Either this account does not exist or the data has already been migrated."
 msgstr ""
 "Le compte dont vous souhaitez importer les données n'existe pas ou a déjà"
 " été migré."
 
-#: app.py:391
+#: app.py:403
 msgid "Success: your data has been migrated to your new account !"
 msgstr "Bravo : vos données ont bien été migrées sur ce compte !"
 
-#: app.py:418
+#: app.py:430
 msgid ""
 "Hum... it looks like there's been a bug with the ADE API. Please try "
 "again and if the problem persists, do not hesitate to contact us !"
@@ -40,51 +40,51 @@ msgstr ""
 "Hum... on dirait qu'il y a eu un bug avec l'API d'ADE. Essayez encore un "
 "coup et, si le problème persiste, n'hésitez pas à nous contacter !"
 
-#: app.py:447
+#: app.py:459
 msgid "An unknown error has occurred"
 msgstr "Il y a eu une erreur inconnue..."
 
-#: app.py:455
+#: app.py:467
 msgid "Access to this resource is forbidden."
 msgstr "L'accès à cette page vous est interdit."
 
-#: app.py:469
+#: app.py:481
 msgid "Resource not found"
 msgstr "Ressource non trouvée"
 
-#: app.py:473
+#: app.py:485
 msgid "404 Page not found :("
 msgstr "404 Page non trouvée :("
 
-#: backend/events.py:177 templates/calendar.html:370
+#: backend/events.py:178 templates/calendar.html:370
 msgid "Sunday"
 msgstr "Dimanche"
 
-#: backend/events.py:178 templates/calendar.html:364
+#: backend/events.py:179 templates/calendar.html:364
 msgid "Monday"
 msgstr "Lundi"
 
-#: backend/events.py:179 templates/calendar.html:365
+#: backend/events.py:180 templates/calendar.html:365
 msgid "Tuesday"
 msgstr "Mardi"
 
-#: backend/events.py:180 templates/calendar.html:366
+#: backend/events.py:181 templates/calendar.html:366
 msgid "Wednesday"
 msgstr "Mercredi"
 
-#: backend/events.py:181 templates/calendar.html:367
+#: backend/events.py:182 templates/calendar.html:367
 msgid "Thursday"
 msgstr "Jeudi"
 
-#: backend/events.py:182 templates/calendar.html:368
+#: backend/events.py:183 templates/calendar.html:368
 msgid "Friday"
 msgstr "Vendredi"
 
-#: backend/events.py:183 templates/calendar.html:369
+#: backend/events.py:184 templates/calendar.html:369
 msgid "Saturday"
 msgstr "Samedi"
 
-#: backend/schedules.py:13
+#: backend/schedules.py:14
 msgid "New schedule"
 msgstr "Nouvel horaire"
 
@@ -200,7 +200,7 @@ msgstr "Et bien plus !"
 msgid "Close"
 msgstr "Fermer"
 
-#: templates/base.html:74 templates/base.html:148
+#: templates/base.html:74 templates/base.html:151
 msgid "Login"
 msgstr "Connexion"
 
@@ -228,7 +228,11 @@ msgstr "Contact"
 msgid "Contribute"
 msgstr "Contribuer"
 
-#: templates/base.html:144
+#: templates/base.html:117
+msgid "Custom course"
+msgstr "Cours personnalisé"
+
+#: templates/base.html:147
 msgid "Logout"
 msgstr "Déconnexion"
 
@@ -390,7 +394,7 @@ msgstr "Fin de récurrence"
 msgid "Add"
 msgstr "Ajouter"
 
-#: templates/calendar.html:419 views/calendar.py:178
+#: templates/calendar.html:419 views/calendar.py:179
 msgid "The code you added does not exist in our database."
 msgstr "Le code que vous avez entré n'existe pas dans notre base de données."
 
@@ -497,6 +501,22 @@ msgstr "Rechercher une adresse"
 #: templates/contact.html:12
 msgid "Do not hesitate to contact us in case of problem !"
 msgstr "N'hésitez pas à nous contacter en cas de problème !"
+
+#: templates/custom_course.html:11
+msgid "Create a new course"
+msgstr "Créer un nouveau cours"
+
+#: templates/custom_course.html:14
+msgid "Course name"
+msgstr "Nom du cours"
+
+#: templates/custom_course.html:19
+msgid "Course url"
+msgstr "Url du cours"
+
+#: templates/custom_course.html:23
+msgid "Create the course"
+msgstr "Créer le cours"
 
 #: templates/custom_macros.html:20 templates/custom_macros.html:33
 msgid "Email address"
@@ -623,35 +643,38 @@ msgstr ""
 "nos mails se perdent là-dedans... :-("
 
 #: views/account.py:117 views/account.py:126 views/account.py:166
-#: views/calendar.py:161
+#: views/calendar.py:162
 #, python-format
 msgid "Schedule n°%d is not in your schedule list."
 msgstr "L'horaire n°%d n'est pas dans votre liste"
 
-#: views/calendar.py:89 views/calendar.py:109
+#: views/calendar.py:90 views/calendar.py:110
 msgid "current_schedule"
 msgstr "horaire actuel"
 
-#: views/calendar.py:278
+#: views/calendar.py:289
 msgid "To save your schedule, you need to be logged in."
 msgstr "Vous avez besoin de vous connecter pour sauvegarder votre horaire."
 
-#: views/calendar.py:320 views/calendar.py:346
+#: views/calendar.py:331 views/calendar.py:357
 msgid "The schedule you requested does not exist in our database !"
 msgstr "L'horaire que vous avez demandé n'existe pas dans notre base de données !"
 
-#: views/calendar.py:390
+#: views/calendar.py:401
 msgid "Hum... this schedule does not have an associated link."
 msgstr "Hum... cet horaire n'a pas de lien associé."
 
-#: views/security.py:40 views/security.py:75
+#: views/security.py:65 views/security.py:100
 msgid ""
 "Hum... it looks like the authentification server is having some issues - "
 "please try again. If the problem persists, do contact us directly so we "
 "can look into it."
-msgstr "Hum... on dirait que le serveur d'authentification a des soucis - essayez encore svp. Si le problème persiste, contactez-nous directement pour qu'on puisse étudier le problème plus en détail !"
+msgstr ""
+"Hum... on dirait que le serveur d'authentification a des soucis - essayez"
+" encore svp. Si le problème persiste, contactez-nous directement pour "
+"qu'on puisse étudier le problème plus en détail !"
 
-#: views/security.py:59
+#: views/security.py:84
 msgid ""
 "Hum... it looks like there is an issue with your UCLouvain account. "
 "Please contact directly so we can look into it and fix it for you !"
@@ -659,3 +682,7 @@ msgstr ""
 "Hum... on dirait qu'il y eu un souci avec le login UCLouvain. Contactez-"
 "nous directement pour qu'on puisse regarder ça plus en détails et essayer"
 " de régler ça."
+
+#~ msgid "NewCourse"
+#~ msgstr ""
+

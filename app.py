@@ -71,6 +71,7 @@ from views.calendar import calendar
 from views.classroom import classroom
 from views.contact import contact
 from views.contribute import contribute
+from views.custom_course import custom_course
 from views.help import help as _help
 from views.security import security
 from views.whatisnew import whatisnew
@@ -113,6 +114,7 @@ app.register_blueprint(contact, url_prefix="/contact")
 app.register_blueprint(api, url_prefix="/api")
 app.register_blueprint(whatisnew, url_prefix="/whatisnew")
 app.register_blueprint(contribute, url_prefix="/contribute")
+app.register_blueprint(custom_course, url_prefix="/custom_course")
 app.register_blueprint(admin, url_prefix="/admin")
 app.config["SECRET_KEY"] = os.environ["FLASK_SECRET_KEY"]
 app.config["SALT"] = os.environ["FLASK_SALT"]
