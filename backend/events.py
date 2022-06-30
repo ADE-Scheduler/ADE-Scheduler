@@ -267,7 +267,7 @@ class AcademicalEvent(CustomEvent):
     ):
         super().__init__(
             name=name,
-            location=merge_classrooms(classrooms).location(),
+            location=merge_classrooms(classrooms).location() if classrooms else "",
             description=str(professor),
             begin=begin,
             end=end,
@@ -382,6 +382,29 @@ class EventOTHER(AcademicalEvent):
 
     def __init__(self, **kwargs):
         super().__init__(prefix=EventOTHER.PREFIX, **kwargs)
+
+
+class EventEXTERN(AcademicalEvent):
+    PREFIX = "EXTERN: "
+    KEYWORDS = ("extern",)
+
+    def __init__(self, **kwargs):
+        super().__init__(prefix=EventEXTERN.PREFIX, **kwargs)
+
+    @classmethod
+    def from_event(cls, event: Event) -> "EventEXTERN":
+        e = cls(
+            name=event.name,
+            begin=event.begin,
+            end=event.end,
+            professor=event.description,
+        )
+        e.name = event.name or ""
+        e.location = event.location or ""
+        e.description = event.description or ""
+        e.id = e.name
+        return e
+
 
 
 def extract_code(course_id: str) -> str:
