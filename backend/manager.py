@@ -473,3 +473,7 @@ class Manager:
         return md.ExternalCalendar.query.filter(
             md.ExternalCalendar.user_id == user.id
         ).all()
+
+    def delete_extenal_activity(self, id: int):
+        md.ExternalCalendar.query.filter_by(id = id).delete()
+        self.database.session.commit()
