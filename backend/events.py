@@ -406,7 +406,6 @@ class EventEXTERN(AcademicalEvent):
         return e
 
 
-
 def extract_code(course_id: str) -> str:
     """
     Extracts a code from a course id.
