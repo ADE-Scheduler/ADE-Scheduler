@@ -1,5 +1,8 @@
 from typing import Dict, Iterator, List, Optional, Tuple, Union
+from jinja2 import pass_eval_context
+from ics import Calendar
 
+import requests
 import pandas as pd
 
 import backend.ade_api as ade
@@ -70,12 +73,20 @@ class Manager:
         # Fetch from the api the missing courses
         if codes_not_found:
             for code_not_found in codes_not_found:
-                resource_ids = self.get_resource_ids(
-                    code_not_found, project_id=project_id
-                )
-                course_not_found = ade.response_to_courses(
-                    self.client.get_activities(resource_ids, project_id)
-                )
+                if "EXTERN" in code_not_found:
+                    url = "https://ade-scheduler.info.ucl.ac.be/calendar/schedule?link=zN9ExB8mLORjrOlgc96ECy_aPFk1wdp54TsSS-HdqbE&choice=0"
+                    events = Calendar(requests.get(url).text).events
+                    events = [evt.EventEXTERN.from_event(event) for event in events]
+                    course_not_found = crs.Course(code_not_found, code_not_found)
+                    course_not_found.add_activity(events)
+
+                else:
+                    resource_ids = self.get_resource_ids(
+                        code_not_found, project_id=project_id
+                    )
+                    course_not_found = ade.response_to_courses(
+                        self.client.get_activities(resource_ids, project_id)
+                    )
                 self.server.set_value(
                     prefix + code_not_found,
                     course_not_found,
