@@ -1,11 +1,10 @@
 import json
-import csv
 from datetime import datetime
 from typing import Any
 
-from flask import Blueprint
 from flask import current_app as app
 from flask import (
+    Blueprint,
     g,
     jsonify,
     make_response,
@@ -239,17 +238,6 @@ def add_custom_event():
     session["current_schedule"].add_custom_event(event)
     session["current_schedule_modified"] = True
     return (jsonify({"event": event.json()}), 200)
-
-
-@calendar.route("/custom_course", methods=["POST"])
-def add_custom_course():
-    course = request.json
-    print(course)
-    # TODO: Instead of saving to a csv, call some other backend function.
-    with open('custom_courses.csv', 'a') as f:
-        write = csv.writer(f)
-        write.writerow([course["name"], course["url"]])
-    return (jsonify(course), 200)
 
 
 @calendar.route("/custom_event/<id>", methods=["DELETE"])
