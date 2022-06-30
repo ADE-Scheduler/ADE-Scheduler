@@ -1,5 +1,4 @@
 from typing import Dict, Iterator, List, Optional, Tuple, Union
-from jinja2 import pass_eval_context
 from ics import Calendar
 
 import requests
@@ -22,6 +21,15 @@ class ScheduleNotFountError(Exception):
 
     def __str__(self):
         return "The given schedule is somehow not saved in our database..."
+
+
+class ExternalActivityAlreadyExistsError(Exception):
+    """
+    Exception that will occur if someone tries to create an activity with a code already taken.
+    """
+
+    def __str__(self):
+        return "The given activity code is already taken."
 
 
 class Manager:
@@ -73,8 +81,11 @@ class Manager:
         # Fetch from the api the missing courses
         if codes_not_found:
             for code_not_found in codes_not_found:
-                if "EXTERN" in code_not_found:
-                    url = "https://ade-scheduler.info.ucl.ac.be/calendar/schedule?link=zN9ExB8mLORjrOlgc96ECy_aPFk1wdp54TsSS-HdqbE&choice=0"
+                if code_not_found.startswith("EXT:"):
+                    extCal = md.ExternalCalendar.query.filter(
+                        md.ExternalCalendar.code == code_not_found
+                    ).first()
+                    url = extCal.url
                     events = Calendar(requests.get(url).text).events
                     events = [evt.EventEXTERN.from_event(event) for event in events]
                     course_not_found = crs.Course(code_not_found, code_not_found)
@@ -216,7 +227,16 @@ class Manager:
         matching_code = course_resources[rsrc.INDEX.NAME].str.contains(
             pattern, case=False, regex=False
         )
-        return course_resources[matching_code][rsrc.INDEX.NAME].to_list()
+        courses_matching = course_resources[matching_code][rsrc.INDEX.NAME].to_list()
+        courses_matching.extend(
+            map(
+                lambda ec: ec.code,
+                md.ExternalCalendar.query.filter(
+                    md.ExternalCalendar.code.contains(pattern)
+                ).all(),
+            )
+        )
+        return courses_matching
 
     def get_classrooms(
         self,
@@ -312,6 +332,13 @@ class Manager:
         """
         Checks if a given code exists in the database for a given project id
         """
+        if code.startswith("EXT:"):
+            return (
+                md.ExternalCalendar.query.filter(
+                    md.ExternalCalendar.code == code
+                ).first()
+                is not None
+            )
         if project_id is None:
             project_id = self.get_default_project_id()
 
@@ -427,3 +454,26 @@ class Manager:
             plots.append({"id": key.decode(), "data": self.server.get_value(key)})
 
         return plots
+
+    def save_ics_url(self, code: str, url: str, user: md.User, approved: bool):
+
+        if not code.startswith("EXT:"):
+            code = "EXT:" + code
+
+        extCal = md.ExternalCalendar.query.filter(
+            md.ExternalCalendar.code == code
+        ).first()
+        if extCal is None:  # this external calendar code is not yet saved
+            md.ExternalCalendar(code, url, user, approved)
+        else:  # this external calendar code is already in DB
+            raise ExternalActivityAlreadyExistsError
+            # extCal.update_url(url)
+
+    def get_external_activities(self, user: md.User) -> List[md.ExternalCalendar]:
+        return md.ExternalCalendar.query.filter(
+            md.ExternalCalendar.user_id == user.id
+        ).all()
+
+    def delete_extenal_activity(self, id: int):
+        md.ExternalCalendar.query.filter_by(id = id).delete()
+        self.database.session.commit()

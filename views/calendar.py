@@ -240,6 +240,19 @@ def add_custom_event():
     return (jsonify({"event": event.json()}), 200)
 
 
+@calendar.route("/custom_course", methods=["POST"])
+def add_custom_course():
+    course = request.json
+
+    if not current_user.is_authenticated:
+        return gettext("To save your schedule, you need to be logged in."), 401
+    mng = app.config["MANAGER"]
+    mng.save_ics_url(
+        course["name"].upper(), course["url"], current_user, True
+    )  # Automatically approved
+    return (jsonify(course), 200)
+
+
 @calendar.route("/custom_event/<id>", methods=["DELETE"])
 def delete_custom_event(id):
     session["current_schedule"].remove_custom_event(id=id)
