@@ -249,7 +249,7 @@ def add_custom_course():
         return gettext("To save your schedule, you need to be logged in."), 401
     mng = app.config["MANAGER"]
     mng.save_ics_url(
-        course["name"], course["url"], current_user, True
+        course["name"].upper(), course["url"], current_user, True
     )  # Automatically approved
     return (jsonify(course), 200)
 

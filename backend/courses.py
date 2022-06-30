@@ -118,6 +118,7 @@ class Course:
         :return: dict of activity codes, ordered by activity type (CM, TP, etc.)
         :rtype: Dict[str, Set[str]]
         """
+        # TODO: Fix summary for external calendar
         summary = defaultdict(set)
         ids = self.activities.index.get_level_values("id").sort_values().unique()
         for id in ids:
