@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
       return {
         projectId: [],
         schedules: [],
+        externalActivities: [],
         currentSchedule: {},
         labelBackup: '',
         computing: true,
@@ -39,6 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
           url: Flask.url_for('account.get_data'),
         })
           .then(resp => {
+            this.externalActivities = resp.data.external_activities; 
             this.projectId = resp.data.project_id;
             this.unsaved = resp.data.unsaved;
             this.schedules = resp.data.schedules;
@@ -129,6 +131,29 @@ document.addEventListener('DOMContentLoaded', function() {
           url: Flask.url_for('account.delete_schedule', {'id': id}),
         })
           .then(resp => {
+            let index = this.schedules.findIndex(s => s.id === id);
+            if (index > -1) {
+              this.schedules.splice(index, 1);
+            }
+            this.currentSchedule = resp.data.current_schedule;
+            this.labelBackup = this.currentSchedule.label;
+          })
+          .catch(err => {
+            store.error(err.response.data);
+          })
+          .then(() => {
+            this.computing = false;
+          });
+      },
+      deleteExternalActivity: function(e, id) {
+        if (id == null) { id = -1; }
+        this.computing = true;
+        axios({
+          method: 'DELETE',
+          url: Flask.url_for('account.delete_external_activity', {'id': id}),
+        })
+          .then(resp => {
+            //TODO : delete external activity
             let index = this.schedules.findIndex(s => s.id === id);
             if (index > -1) {
               this.schedules.splice(index, 1);

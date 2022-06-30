@@ -69,6 +69,12 @@ def get_data():
     return (
         jsonify(
             {
+                "external_activities":list(
+                    map(
+                        lambda ec: {"id": ec.id, "code": ec.code, "approved": ec.approved, "url":ec.url},
+                        mng.get_external_activities(current_user),
+                    )
+                ),
                 "project_id": mng.get_project_ids(),
                 "unsaved": session["current_schedule_modified"],
                 "autosave": current_user.autosave,
