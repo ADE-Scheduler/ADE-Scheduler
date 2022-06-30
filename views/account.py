@@ -154,6 +154,14 @@ def delete_schedule(id):
         200,
     )
 
+@account.route("/external_activity/<id>", methods=["DELETE"])
+@login_required
+def delete_external_activity(id):
+    id = int(id)
+    mng = app.config["MANAGER"]
+    mng.delete_extenal_activity(id)
+
+    return "External Activity Deleted", 200
 
 @account.route("/label/<id>", methods=["PATCH"])
 @login_required
