@@ -22,6 +22,7 @@ const pages = [
   'contact',
   'whatisnew',
   'contribute',
+  'custom_course',
   'admin',
 ];
 

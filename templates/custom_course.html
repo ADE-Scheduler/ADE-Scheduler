@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block head %}
+<% _.forEach(htmlWebpackPlugin.files.js, function(file) { %>
+    <script type="text/javascript" src="<%= file%>"></script>
+    <%}); %>
+        {% endblock %}
+
+        {% block body %}
+        <div class="container-lg pt-3">
+            <form class="needs-validation col-6 mx-auto" id="form-add-event" v-on:submit.prevent="addCustomCourse">
+                <h3>{{_('Create a new course')}}</h3>
+
+                <div class="mb-3">
+                    <label for="coursename" class="form-label">{{_('Course name')}}</label>
+                    <input type="text" class="form-control" id="coursename" required v-model="courseForm.name">
+                </div>
+
+                <div class="mb-3">
+                    <label for="courseurl" class="form-label">{{_('Course url')}}</label>
+                    <input type="text" class="form-control" id="courseurl" required v-model="courseForm.url">
+                </div>
+
+                <button type="submit" class="btn btn-success">{{_('Create the course')}}</button>
+            </form>
+        </div>
+        {% endblock %}
