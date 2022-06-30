@@ -1,4 +1,5 @@
 import Vue from "vue";
+import store from "./store.js";
 import "./base.js";
 import "../css/custom_course.css";
 const axios = require("axios");
