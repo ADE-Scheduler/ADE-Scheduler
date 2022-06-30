@@ -442,3 +442,26 @@ class OldUser(mxn.UserMixin, db.Model):
         df.dropna(subset=["confirmed_at"], inplace=True)
 
         return df.email.values.tolist()
+
+
+class ExternalCalendar(db.Model):
+    __tablename__ = "external_calendar"
+    id = db.Column(db.Integer, primary_key=True)
+    code = db.Column(db.String(128))
+    url = db.Column(db.String(512))
+    user_id = db.Column(db.Integer())
+    approved = db.Column(db.Boolean())
+
+    def __init__(self, code, url, user, approved):
+        self.code = code
+        self.url = url
+        self.user_id = user.id
+        self.approved = approved
+
+        db.session.add(self)
+        db.session.commit()
+
+    def update_url(self, url):
+        raise NotImplementedError
+        # self.url = url
+        # db.session.commit()

@@ -244,11 +244,13 @@ def add_custom_event():
 @calendar.route("/custom_course", methods=["POST"])
 def add_custom_course():
     course = request.json
-    print(course)
-    # TODO: Instead of saving to a csv, call some other backend function.
-    with open('custom_courses.csv', 'a') as f:
-        write = csv.writer(f)
-        write.writerow([course["name"], course["url"]])
+
+    if not current_user.is_authenticated:
+        return gettext("To save your schedule, you need to be logged in."), 401
+    mng = app.config["MANAGER"]
+    mng.save_ics_url(
+        course["name"], course["url"], current_user, True
+    )  # Automatically approved
     return (jsonify(course), 200)
 
 
