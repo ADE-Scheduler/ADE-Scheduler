@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function() {
           timeZone: 'Europe/Brussels', // Show schedule in the same TZ where classes are given
           height: 'auto',
           // slotMinTime: '08:00:00',
-          // slotMaxTime: '21:00:00',
+          // slotMaxTime: '20:00:00',
           navLinks: true, // can click day/week names to navigate views
           editable: false,
           droppable: false,
