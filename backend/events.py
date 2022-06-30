@@ -385,7 +385,7 @@ class EventOTHER(AcademicalEvent):
 
 
 class EventEXTERN(AcademicalEvent):
-    PREFIX = "EXTERN: "
+    PREFIX = "EXT: "
     KEYWORDS = ("extern",)
 
     def __init__(self, **kwargs):
@@ -402,7 +402,7 @@ class EventEXTERN(AcademicalEvent):
         e.name = event.name or ""
         e.location = event.location or ""
         e.description = event.description or ""
-        e.id = e.name
+        e.id = "EXT: "+e.name
         return e
 
 
