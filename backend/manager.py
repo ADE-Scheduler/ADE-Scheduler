@@ -69,6 +69,8 @@ class Manager:
         :return: the list of courses
         :rtype: List[crs.Course]
         """
+        codes = list(codes)
+
         if project_id is None:
             project_id = self.get_default_project_id()
 
@@ -85,6 +87,9 @@ class Manager:
                     extCal = md.ExternalCalendar.query.filter(
                         md.ExternalCalendar.code == code_not_found
                     ).first()
+                    if extCal is None:
+                        codes.remove(code_not_found)
+                        continue
                     url = extCal.url
                     events = Calendar(requests.get(url).text).events
                     events = [evt.EventEXTERN.from_event(event) for event in events]
