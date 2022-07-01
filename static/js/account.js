@@ -3,6 +3,7 @@
 import Vue from "vue";
 import store from "./store.js";
 import Spinner from "../../components/Spinner.vue";
+import AlertToast from "../../components/AlertToast.vue";
 import VSwatches from "vue-swatches";
 import { Modal } from "bootstrap";
 import "./base.js";
@@ -14,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function() {
   new Vue({
     el: "#app",
     delimiters: ["[[", "]]"],
-    components: { VSwatches, spinner: Spinner },
+    components: { VSwatches, spinner: Spinner, alerttoast: AlertToast },
     data: function() {
       return {
         projectId: [],
@@ -25,7 +26,11 @@ document.addEventListener("DOMContentLoaded", function() {
         computing: true,
         unsaved: true,
         autoSave: false,
-        isEditing: false
+        isEditing: false,
+        courseForm: {
+          name: "",
+          url: ""
+        }
       };
     },
     created: function() {
@@ -220,12 +225,43 @@ document.addEventListener("DOMContentLoaded", function() {
             this.computing = false;
           });
       },
+      addCustomCourse: function(e) {
+        let evt = {
+          name: this.courseForm.name,
+          url: this.courseForm.url
+        };
+        this.computing = true;
+        axios({
+          method: "POST",
+          url: Flask.url_for("account.add_custom_course"),
+          data: evt,
+          header: { "Content-Type": "application/json" }
+        })
+          .then(resp => {
+            store.success("Your course has been created.");
+            courseModal.hide();
+            location.reload();
+          })
+          .catch(err => {
+            store.error(err.response.data);
+          })
+          .then(() => {
+            this.computing = false;
+          });
+      },
+      showCourseModal: () => {
+        courseModal.show();
+      },
       warningContinue: function() {
         this.request();
       },
-      request: function() {}
+      cancelSubmit: () => {},
+      request: () => {}
     }
   });
 
   var warningModal = new Modal(document.getElementById("warningModal"));
+  var courseModal = new Modal(
+    document.getElementById("courseModal")
+  );
 });

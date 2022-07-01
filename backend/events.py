@@ -394,7 +394,7 @@ class EventEXTERN(AcademicalEvent):
     @classmethod
     def from_event(cls, event: Event, code: str) -> "EventEXTERN":
         e = cls(
-            id=event.name, 
+            id=event.name,
             code=code,
             name=event.name,
             begin=event.begin,

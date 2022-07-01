@@ -92,7 +92,10 @@ class Manager:
                         continue
                     url = extCal.url
                     events = Calendar(requests.get(url).text).events
-                    events = [evt.EventEXTERN.from_event(event, code_not_found[4:]) for event in events]
+                    events = [
+                        evt.EventEXTERN.from_event(event, code_not_found[4:])
+                        for event in events
+                    ]
                     course_not_found = crs.Course(code_not_found[4:], "")
                     for event in events:
                         course_not_found.add_activity([event])
@@ -481,5 +484,5 @@ class Manager:
         ).all()
 
     def delete_extenal_activity(self, id: int):
-        md.ExternalCalendar.query.filter_by(id = id).delete()
+        md.ExternalCalendar.query.filter_by(id=id).delete()
         self.database.session.commit()
