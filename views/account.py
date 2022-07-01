@@ -1,4 +1,6 @@
 import json
+import requests
+import csv
 from typing import Any
 
 from flask import Blueprint
@@ -6,6 +8,7 @@ from flask import current_app as app
 from flask import jsonify, render_template, request, session
 from flask_babel import LazyString, gettext
 from flask_login import current_user, login_required
+from ics import Calendar
 
 import backend.schedules as schd
 import views.utils as utl
@@ -69,9 +72,14 @@ def get_data():
     return (
         jsonify(
             {
-                "external_activities":list(
+                "external_activities": list(
                     map(
-                        lambda ec: {"id": ec.id, "code": ec.code, "approved": ec.approved, "url":ec.url},
+                        lambda ec: {
+                            "id": ec.id,
+                            "code": ec.code,
+                            "approved": ec.approved,
+                            "url": ec.url,
+                        },
                         mng.get_external_activities(current_user),
                     )
                 ),
@@ -154,6 +162,7 @@ def delete_schedule(id):
         200,
     )
 
+
 @account.route("/external_activity/<id>", methods=["DELETE"])
 @login_required
 def delete_external_activity(id):
@@ -162,6 +171,7 @@ def delete_external_activity(id):
     mng.delete_extenal_activity(id)
 
     return "External Activity Deleted", 200
+
 
 @account.route("/label/<id>", methods=["PATCH"])
 @login_required
@@ -210,3 +220,23 @@ def save():
 def autosave():
     current_user.set_autosave(request.json["autosave"])
     return jsonify({}), 200
+
+
+@account.route("/custom_course", methods=["POST"])
+def add_custom_course():
+    course = request.json
+
+    try:
+        cal = Calendar(requests.get(course["url"]).text)
+    except Exception as e:
+        print(e)
+        return "Verify your url.", 400
+
+    if not current_user.is_authenticated:
+        return gettext("To save your schedule, you need to be logged in."), 401
+    mng = app.config["MANAGER"]
+    mng.save_ics_url(
+        course["name"].upper(), course["url"], current_user, True
+    )  # Automatically approved
+
+    return "Your course has been created."
