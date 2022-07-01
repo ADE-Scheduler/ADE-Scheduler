@@ -392,17 +392,16 @@ class EventEXTERN(AcademicalEvent):
         super().__init__(prefix=EventEXTERN.PREFIX, **kwargs)
 
     @classmethod
-    def from_event(cls, event: Event) -> "EventEXTERN":
+    def from_event(cls, event: Event, code: str) -> "EventEXTERN":
         e = cls(
+            id=event.name, 
+            code=code,
             name=event.name,
             begin=event.begin,
             end=event.end,
             professor=event.description,
         )
-        e.name = event.name or ""
         e.location = event.location or ""
-        e.description = event.description or ""
-        e.id = "EXT: "+e.name
         return e
 
 

@@ -92,9 +92,10 @@ class Manager:
                         continue
                     url = extCal.url
                     events = Calendar(requests.get(url).text).events
-                    events = [evt.EventEXTERN.from_event(event) for event in events]
-                    course_not_found = crs.Course(code_not_found, code_not_found)
-                    course_not_found.add_activity(events)
+                    events = [evt.EventEXTERN.from_event(event, code_not_found[4:]) for event in events]
+                    course_not_found = crs.Course(code_not_found[4:], "")
+                    for event in events:
+                        course_not_found.add_activity([event])
 
                 else:
                     resource_ids = self.get_resource_ids(
