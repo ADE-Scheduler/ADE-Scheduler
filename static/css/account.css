@@ -21,7 +21,3 @@
 .current-schedule:hover {
     background-color: rgba(40,167,69,0.3) !important;
 }
-
-.approved-external-activity {
-    background-color: rgba(40,167,69,0.2);
-}
