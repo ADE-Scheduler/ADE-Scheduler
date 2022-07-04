@@ -225,10 +225,10 @@ def autosave():
 def add_custom_course():
     course = request.json
 
-    try:
-        cal = Calendar(requests.get(course["url"]).text)
+    try:  # Check if URL correctly returns some iCal
+        # TODO: how to prevent attacks? See https://lgtm.com/rules/1514759767119/
+        _ = Calendar(requests.get(course["url"]).text)
     except Exception as e:
-        print(e)
         return "Verify your url.", 400
 
     if not current_user.is_authenticated:
