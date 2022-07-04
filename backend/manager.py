@@ -476,7 +476,6 @@ class Manager:
             md.ExternalCalendar(code, url, user, approved)
         else:  # this external calendar code is already in DB
             raise ExternalActivityAlreadyExistsError
-            # extCal.update_url(url)
 
     def get_external_activities(self, user: md.User) -> List[md.ExternalCalendar]:
         return md.ExternalCalendar.query.filter(
