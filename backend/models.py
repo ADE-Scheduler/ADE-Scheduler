@@ -448,12 +448,14 @@ class ExternalCalendar(db.Model):
     __tablename__ = "external_calendar"
     id = db.Column(db.Integer, primary_key=True)
     code = db.Column(db.String(128))
+    name = db.Column(db.String(128))
     url = db.Column(db.String(512))
     user_id = db.Column(db.Integer())
     approved = db.Column(db.Boolean())
 
-    def __init__(self, code, url, user, approved):
+    def __init__(self, code, name, url, user, approved=False):
         self.code = code
+        self.name = name
         self.url = url
         self.user_id = user.id
         self.approved = approved
@@ -463,5 +465,3 @@ class ExternalCalendar(db.Model):
 
     def update_url(self, url):
         raise NotImplementedError
-        # self.url = url
-        # db.session.commit()

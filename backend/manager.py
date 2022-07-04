@@ -473,7 +473,7 @@ class Manager:
             md.ExternalCalendar.code == code
         ).first()
         if extCal is None:  # this external calendar code is not yet saved
-            md.ExternalCalendar(code, url, user, approved)
+            md.ExternalCalendar(code, "name", url, user, approved)
         else:  # this external calendar code is already in DB
             raise ExternalActivityAlreadyExistsError
 
