@@ -1,20 +1,20 @@
 /* global Flask */
 
-import Vue from "vue";
-import store from "./store.js";
-import Spinner from "../../components/Spinner.vue";
-import AlertToast from "../../components/AlertToast.vue";
-import VSwatches from "vue-swatches";
-import { Modal } from "bootstrap";
-import "./base.js";
-import "vue-swatches/dist/vue-swatches.css";
-import "../css/account.css";
-const axios = require("axios");
+import Vue from 'vue';
+import store from './store.js';
+import Spinner from '../../components/Spinner.vue';
+import AlertToast from '../../components/AlertToast.vue';
+import VSwatches from 'vue-swatches';
+import { Modal } from 'bootstrap';
+import './base.js';
+import 'vue-swatches/dist/vue-swatches.css';
+import '../css/account.css';
+const axios = require('axios');
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener('DOMContentLoaded', function() {
   new Vue({
-    el: "#app",
-    delimiters: ["[[", "]]"],
+    el: '#app',
+    delimiters: ['[[', ']]'],
     components: { VSwatches, spinner: Spinner, alerttoast: AlertToast },
     data: function() {
       return {
@@ -22,14 +22,14 @@ document.addEventListener("DOMContentLoaded", function() {
         schedules: [],
         externalActivities: [],
         currentSchedule: {},
-        labelBackup: "",
+        labelBackup: '',
         computing: true,
         unsaved: true,
         autoSave: false,
         isEditing: false,
         courseForm: {
-          name: "",
-          url: ""
+          name: '',
+          url: ''
         }
       };
     },
@@ -40,8 +40,8 @@ document.addEventListener("DOMContentLoaded", function() {
       fetchData: function() {
         this.computing = true;
         axios({
-          method: "GET",
-          url: Flask.url_for("account.get_data")
+          method: 'GET',
+          url: Flask.url_for('account.get_data')
         })
           .then(resp => {
             this.externalActivities = resp.data.external_activities;
@@ -62,9 +62,9 @@ document.addEventListener("DOMContentLoaded", function() {
       changeAutoSave: function() {
         this.computing = true;
         axios({
-          method: "POST",
-          url: Flask.url_for("account.autosave"),
-          header: { "Content-Type": "application/json" },
+          method: 'POST',
+          url: Flask.url_for('account.autosave'),
+          header: { 'Content-Type': 'application/json' },
           data: { autosave: this.autoSave }
         })
           .then(() => {})
@@ -79,8 +79,8 @@ document.addEventListener("DOMContentLoaded", function() {
         this.request = function() {
           this.computing = true;
           axios({
-            method: "GET",
-            url: Flask.url_for("account.load_schedule", { id: id })
+            method: 'GET',
+            url: Flask.url_for('account.load_schedule', { id: id })
           })
             .then(resp => {
               this.unsaved = resp.data.unsaved;
@@ -109,11 +109,11 @@ document.addEventListener("DOMContentLoaded", function() {
           }
           this.computing = true;
           axios({
-            method: "GET",
-            url: Flask.url_for("account.load_schedule", { id: id })
+            method: 'GET',
+            url: Flask.url_for('account.load_schedule', { id: id })
           })
             .then(() => {
-              window.location.href = Flask.url_for("calendar.index");
+              window.location.href = Flask.url_for('calendar.index');
             })
             .catch(err => {
               store.error(err.response.data);
@@ -135,8 +135,8 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         this.computing = true;
         axios({
-          method: "DELETE",
-          url: Flask.url_for("account.delete_schedule", { id: id })
+          method: 'DELETE',
+          url: Flask.url_for('account.delete_schedule', { id: id })
         })
           .then(resp => {
             let index = this.schedules.findIndex(s => s.id === id);
@@ -159,8 +159,8 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         this.computing = true;
         axios({
-          method: "DELETE",
-          url: Flask.url_for("account.delete_external_activity", { id: id })
+          method: 'DELETE',
+          url: Flask.url_for('account.delete_external_activity', { id: id })
         })
           .then(resp => {
             location.reload();
@@ -179,9 +179,9 @@ document.addEventListener("DOMContentLoaded", function() {
           id = -1;
         }
         axios({
-          method: "PATCH",
-          url: Flask.url_for("account.update_label", { id: id }),
-          header: { "Content-Type": "applacation/json" },
+          method: 'PATCH',
+          url: Flask.url_for('account.update_label', { id: id }),
+          header: { 'Content-Type': 'applacation/json' },
           data: { label: this.currentSchedule.label }
         })
           .then(() => {
@@ -202,9 +202,9 @@ document.addEventListener("DOMContentLoaded", function() {
       save: function() {
         this.computing = true;
         axios({
-          method: "POST",
-          url: Flask.url_for("account.save"),
-          header: { "Content-Type": "applacation/json" },
+          method: 'POST',
+          url: Flask.url_for('account.save'),
+          header: { 'Content-Type': 'applacation/json' },
           data: this.currentSchedule
         })
           .then(resp => {
@@ -232,13 +232,13 @@ document.addEventListener("DOMContentLoaded", function() {
         };
         this.computing = true;
         axios({
-          method: "POST",
-          url: Flask.url_for("account.add_custom_course"),
+          method: 'POST',
+          url: Flask.url_for('account.add_custom_course'),
           data: evt,
-          header: { "Content-Type": "application/json" }
+          header: { 'Content-Type': 'application/json' }
         })
           .then(resp => {
-            store.success("Your course has been created.");
+            store.success('Your course has been created.');
             courseModal.hide();
             location.reload();
           })
@@ -260,8 +260,8 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   });
 
-  var warningModal = new Modal(document.getElementById("warningModal"));
+  var warningModal = new Modal(document.getElementById('warningModal'));
   var courseModal = new Modal(
-    document.getElementById("courseModal")
+    document.getElementById('courseModal')
   );
 });

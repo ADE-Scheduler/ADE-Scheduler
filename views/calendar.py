@@ -2,9 +2,9 @@ import json
 from datetime import datetime
 from typing import Any
 
+from flask import Blueprint
 from flask import current_app as app
 from flask import (
-    Blueprint,
     g,
     jsonify,
     make_response,

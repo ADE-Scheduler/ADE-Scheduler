@@ -1,8 +1,8 @@
 from typing import Dict, Iterator, List, Optional, Tuple, Union
-from ics import Calendar
 
-import requests
 import pandas as pd
+import requests
+from ics import Calendar
 
 import backend.ade_api as ade
 import backend.classrooms as clrm

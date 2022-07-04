@@ -685,4 +685,3 @@ msgstr ""
 
 #~ msgid "NewCourse"
 #~ msgstr ""
-
