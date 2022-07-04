@@ -26,28 +26,35 @@
             </div>
         </div>
 
-        <!-- Custom course modal -->
-        <div class="modal fade" id="courseModal" tabindex="-1">
+        <!-- external calendar modal -->
+        <div class="modal fade" id="externalCalendarModal" tabindex="-1">
             <div class="modal-dialog modal-lg modal-dialog-centered">
-                <form class="needs-validation mx-auto" id="form-add-event" v-on:submit.prevent="addCustomCourse">
+                <form class="needs-validation mx-auto" id="form-add-event" v-on:submit.prevent="addExternalCalendar">
                     <div class="modal-content alert-danger">
                         <div class="modal-header">
-                            <h5 class="modal-title">{{ _('Create a new course') }}</h5>
+                            <h5 class="modal-title">{{ _('Create a new external calendar') }}</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
                         <div class="modal-body">
 
                             <div class="mb-3">
-                                <label for="coursename" class="form-label">{{_('Course name')}}</label>
-                                <input type="text" class="form-control" id="coursename" required
-                                    v-model="courseForm.name">
+                                <label for="calcode" class="form-label">{{_('Calendar code')}}</label>
+                                <input type="text" class="form-control" id="calcode" required
+                                    v-model="externalCalendarForm.code">
                             </div>
 
                             <div class="mb-3">
-                                <label for="courseurl" class="form-label">{{_('Course url')}}</label>
-                                <input type="text" class="form-control" id="courseurl" required
-                                    v-model="courseForm.url">
+                                <label for="calname" class="form-label">{{_('Calendar name')}}</label>
+                                <input type="text" class="form-control" id="calname" required
+                                    v-model="externalCalendarForm.name">
                             </div>
+
+                            <div class="mb-3">
+                                <label for="calurl" class="form-label">{{_('Calendar URL')}}</label>
+                                <input type="text" class="form-control" id="calurl" required
+                                    v-model="externalCalendarForm.url">
+                            </div>
+
                         </div>
                         <div class="modal-footer d-flex justify-content-between">
                             <button type="button" class="btn btn-danger"

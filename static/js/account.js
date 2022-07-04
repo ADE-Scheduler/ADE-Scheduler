@@ -20,14 +20,15 @@ document.addEventListener('DOMContentLoaded', function() {
       return {
         projectId: [],
         schedules: [],
-        externalActivities: [],
+        externalCalendars: [],
         currentSchedule: {},
         labelBackup: '',
         computing: true,
         unsaved: true,
         autoSave: false,
         isEditing: false,
-        courseForm: {
+        externalCalendarForm: {
+          code: '',
           name: '',
           url: ''
         }
@@ -44,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
           url: Flask.url_for('account.get_data')
         })
           .then(resp => {
-            this.externalActivities = resp.data.external_activities;
+            this.externalCalendars = resp.data.external_calendars;
             this.projectId = resp.data.project_id;
             this.unsaved = resp.data.unsaved;
             this.schedules = resp.data.schedules;
@@ -153,16 +154,16 @@ document.addEventListener('DOMContentLoaded', function() {
             this.computing = false;
           });
       },
-      deleteExternalActivity: function(e, id) {
+      deleteExternalCalendar: function(e, id) {
         if (id == null) {
           id = -1;
         }
         this.computing = true;
         axios({
           method: 'DELETE',
-          url: Flask.url_for('account.delete_external_activity', { id: id })
+          url: Flask.url_for('account.delete_external_calendar', { id: id })
         })
-          .then(resp => {
+          .then(() => {
             location.reload();
           })
           .catch(err => {
@@ -225,20 +226,22 @@ document.addEventListener('DOMContentLoaded', function() {
             this.computing = false;
           });
       },
-      addCustomCourse: function(e) {
-        let evt = {
-          name: this.courseForm.name,
-          url: this.courseForm.url
+      addExternalCalendar: function() {
+        let form = {
+          code: this.externalCalendarForm.code,
+          name: this.externalCalendarForm.name,
+          url: this.externalCalendarForm.url
         };
+        console.log("form: ", form);
         this.computing = true;
         axios({
           method: 'POST',
-          url: Flask.url_for('account.add_custom_course'),
-          data: evt,
+          url: Flask.url_for('account.add_external_calendar'),
+          data: form,
           header: { 'Content-Type': 'application/json' }
         })
           .then(resp => {
-            store.success('Your course has been created.');
+            store.success(resp.data);
             courseModal.hide();
             location.reload();
           })

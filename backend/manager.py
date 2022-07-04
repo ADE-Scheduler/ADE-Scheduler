@@ -96,7 +96,7 @@ class Manager:
                         evt.EventEXTERN.from_event(event, code_not_found[4:])
                         for event in events
                     ]
-                    course_not_found = crs.Course(code_not_found[4:], "")
+                    course_not_found = crs.Course(code_not_found[4:], extCal.name)
                     for event in events:
                         course_not_found.add_activity([event])
 
@@ -464,7 +464,7 @@ class Manager:
 
         return plots
 
-    def save_ics_url(self, code: str, url: str, user: md.User, approved: bool):
+    def save_ics_url(self, code: str, name: str, url: str, user: md.User, approved: bool):
 
         if not code.startswith("EXT:"):
             code = "EXT:" + code
@@ -473,7 +473,7 @@ class Manager:
             md.ExternalCalendar.code == code
         ).first()
         if extCal is None:  # this external calendar code is not yet saved
-            md.ExternalCalendar(code, "name", url, user, approved)
+            md.ExternalCalendar(code, name, url, user, approved)
         else:  # this external calendar code is already in DB
             raise ExternalActivityAlreadyExistsError
 

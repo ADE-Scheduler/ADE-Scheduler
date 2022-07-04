@@ -71,7 +71,7 @@ def get_data():
     return (
         jsonify(
             {
-                "external_activities": list(
+                "external_calendars": list(
                     map(
                         lambda ec: {
                             "id": ec.id,
@@ -169,7 +169,7 @@ def delete_external_activity(id):
     mng = app.config["MANAGER"]
     mng.delete_extenal_activity(id)
 
-    return "External Activity Deleted", 200
+    return gettext("External Activity Deleted"), 200
 
 
 @account.route("/label/<id>", methods=["PATCH"])
@@ -221,21 +221,22 @@ def autosave():
     return jsonify({}), 200
 
 
-@account.route("/custom_course", methods=["POST"])
-def add_custom_course():
+@account.route("/external_calendar", methods=["POST"])
+def add_external_calendar():
     course = request.json
 
     try:  # Check if URL correctly returns some iCal
         # TODO: how to prevent attacks? See https://lgtm.com/rules/1514759767119/
         _ = Calendar(requests.get(course["url"]).text)
-    except Exception as e:
-        return "Verify your url.", 400
+    except Exception:
+        return gettext("The url you entered does not return a valid .ics file."), 400
 
     if not current_user.is_authenticated:
         return gettext("To save your schedule, you need to be logged in."), 401
+
     mng = app.config["MANAGER"]
     mng.save_ics_url(
-        course["name"].upper(), course["url"], current_user, True
+        course["code"].upper(), course["name"], course["url"], current_user, True
     )  # Automatically approved
 
-    return "Your course has been created."
+    return gettext("Your calendar has been created and is now awaiting for approval."), 200
