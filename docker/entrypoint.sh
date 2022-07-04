@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/bin/sh
+
 # Go to folder
 cd /ADE-Scheduler
 
@@ -14,6 +15,12 @@ if [ ! -d "venv" ]; then
 fi
 source venv/bin/activate
 pip install -r dev-requirements.txt
+
+# Create .flaskenv from default
+if [ ! -f ".flaskenv" ]; then
+    echo "Creating .flaskenv..."
+    cp .flaskenv.default .flaskenv
+fi
 
 #  Run Redis
 redis-server &

@@ -6,11 +6,16 @@ backend
 
    ade_api
    classrooms
+   cookies
    courses
    events
    manager
+   mixins
    models
    professors
    resources
    schedules
+   security
    servers
+   track_usage
+   uclouvain_apis
