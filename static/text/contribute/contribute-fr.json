@@ -66,7 +66,7 @@
       {
         "id": "credits-creators",
         "title": "Créateurs du projet",
-        "content": "ADE Scheduler a été créé pendant l'été 2019 par 3 étudiants de l'EPL: Jérome Eertmans, Louis Navarre et Gilles Poncelet. À l'époque, ils finissaient tout juste leur bachelier en ingénieur civil. Depuis, ils ont été les principaux mainteneurs du projet et continuent d'améliorer l'outil jour après jour."
+        "content": "ADE Scheduler a été créé pendant l'été 2019 par 3 étudiants de l'EPL : Jérome Eertmans, Louis Navarre et Gilles Poncelet. À l'époque, ils finissaient tout juste leur bachelier en ingénieur civil. Depuis, ils ont été les principaux mainteneurs du projet et continuent d'améliorer l'outil jour après jour."
       },
       {
         "id": "credits-uclouvain",
@@ -77,12 +77,12 @@
         "id": "credits-contributors",
         "icon": "bi bi-star-fill",
         "title": "Contributeurs",
-        "content": "Ce projet étant libre d'accès, nous aimerions également remercier tous les gens qui nous ont aidés sur ce projet, tant pour signaler un bug ou pour partager l'outil avec des amis: chaque contribution est extrêmement importante pour nous. Si jamais l'envie vous prend de nous aider sur ce projet, n'hésitez pas à nous contacter !"
+        "content": "Ce projet étant libre d'accès, nous aimerions également remercier tous les gens qui nous ont aidés sur ce projet, tant pour signaler un bug ou pour partager l'outil avec des amis : chaque contribution est extrêmement importante pour nous. Si jamais l'envie vous prend de nous aider sur ce projet, n'hésitez pas à nous contacter !"
       },
       {
         "id": "credits-open-week-2022",
         "title": "<small>Open Week 2022</small>",
-        "content": "L'Open Week est un évènement annuel à L'UCLouvain durant lequel des étudiants apprennent à travailler sur des projets open source. Pour l'édition 2022 de l'Open Week, l'un des projet proposés aux étudiants était ADE-Scheduler. Trois étudiants ont travaillé sur ce projet : <ul class='mt-2'> <li>Corentin Libert</li><li>Paul-Edouard Bertrand Van ouytsel</li><li>Simon Cornelis</ul>"
+        "content": "L'Open Week est un évènement annuel à L'UCLouvain durant lequel des étudiants apprennent à travailler sur des projets open source. Pour l'édition 2022 de l'Open Week, l'un des projet proposés aux étudiants était ADE-Scheduler. Trois étudiants ont travaillé sur l'intégration de calendriers externes (<a href=\"https://github.com/ADE-Scheduler/ADE-Scheduler/pull/850\">#850</a>) : <ul class='mt-2'> <li>Corentin Libert (<a href=\"https://github.com/CorentinLibert\"><code class=\"notranslate\">CorentinLibert</code></a>),</li><li>Paul-Edouard Bertrand Van ouytsel (<a href=\"https://github.com/PaulEdouardBertrandVO\"><code class=\"notranslate\">PaulEdouardBertrandVO</code></a>),</li><li>Simon Cornelis (<a href=\"https://github.com/Simcornelis\"><code class=\"notranslate\">Simcornelis</code></a>).</ul>Un tout grand merci à eux !"
       }
     ]
   }
