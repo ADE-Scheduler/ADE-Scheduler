@@ -2,6 +2,7 @@ from typing import Dict, Iterator, List, Optional, Tuple, Union
 
 import pandas as pd
 import requests
+from flask_babel import gettext
 from ics import Calendar
 
 import backend.ade_api as ade
@@ -12,8 +13,6 @@ import backend.models as md
 import backend.resources as rsrc
 import backend.schedules as schd
 import backend.servers as srv
-
-from flask_babel import gettext
 
 
 class ScheduleNotFountError(Exception):
