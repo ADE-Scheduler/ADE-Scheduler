@@ -167,10 +167,16 @@ def plot_ics_requests_hist():
 
     def url_args_to_link(url_args: str):
         if url_args:
-            url_args = json.loads(url_args)
-            return url_args.get("link", None)
-        else:
-            return None
+            try:
+                url_args: dict = json.loads(url_args)
+                return url_args.get("link", None)
+            except json.JSONDecodeError:
+                # This error is caused by too long `url_args` values
+                # that might have been truncated
+                # After testing, this only seems to by caused by url attacks
+                return None
+
+        return None
 
     df["link"] = df.url_args.apply(url_args_to_link)
     df.dropna(axis=0, subset=["link"], inplace=True)

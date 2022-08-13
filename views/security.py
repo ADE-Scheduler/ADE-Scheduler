@@ -1,4 +1,3 @@
-import json
 from datetime import datetime
 
 from flask import Blueprint
@@ -16,13 +15,20 @@ security = Blueprint("security", __name__, static_folder="../static")
 
 @security.route("/login")
 def login():
-    # The UCLouvain login API does not work in dev
-    # (unless you run the server under ade-scheduler.info.ucl.ac.be on port 443
-    #  which can be achieved by editing /etc/hosts should you need to dev stuff
-    #  related to the login.)
+    # The UCLouvain login API only works on one specific hostname:
+    #   ade-scheduler.info.ucl.ac.be on port 443
+    #
+    # To have it working locally, you need to:
+    # - Set `FLASK_RUN_HOST` and `FLASK_RUN_PORT` environ variables accordingly
+    # - Edit `/etc/hosts` (Linux) and write:
+    #   127.0.0.1 ade-scheduler.info.ucl.ac.be
+    # - Run flask with
+    #   `sudo venv/bin/flask run --cert=adhoc
+    #
+    # If you use another hostname, you will be logged under `Super Dev` name.
     # WARNING: this won't work the day where we want to add features requiring
     #          a OAuth token... (currently, we do not use it at all.)
-    if app.env == "development":
+    if request.base_url != "https://ade-scheduler.info.ucl.ac.be/login":
         user = md.User.query.filter_by(fgs="dev").first()
         # If dev user doesn't exist, create it
         if user is None:
