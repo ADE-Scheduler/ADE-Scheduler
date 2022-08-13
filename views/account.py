@@ -1,5 +1,6 @@
 import json
 from typing import Any
+from urllib.parse import urlparse
 
 import requests
 from flask import Blueprint
@@ -225,6 +226,16 @@ def autosave():
 def add_external_calendar():
     course = request.json
 
+    hostname = urlparse(request.base_url).hostname
+
+    if urlparse(course["url"]).hostname == hostname:
+        return (
+            gettext(
+                "Sorry, but we currently do not accept calendars emitted by ADE Scheduler to avoid circular dependencies."
+            ),
+            400,
+        )
+
     try:  # Check if URL correctly returns some iCal
         # TODO: how to prevent attacks? See https://lgtm.com/rules/1514759767119/
         _ = Calendar(requests.get(course["url"]).text)
@@ -239,4 +250,7 @@ def add_external_calendar():
         course["code"].upper(), course["name"], course["url"], current_user, True
     )  # Automatically approved
 
-    return gettext("Your calendar has been created and is now awaiting for approval."), 200
+    return (
+        gettext("Your calendar has been created and is now awaiting for approval."),
+        200,
+    )

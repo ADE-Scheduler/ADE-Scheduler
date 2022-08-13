@@ -2,6 +2,7 @@ from typing import Dict, Iterator, List, Optional, Tuple, Union
 
 import pandas as pd
 import requests
+from flask_babel import gettext
 from ics import Calendar
 
 import backend.ade_api as ade
@@ -12,8 +13,6 @@ import backend.models as md
 import backend.resources as rsrc
 import backend.schedules as schd
 import backend.servers as srv
-
-from flask_babel import gettext
 
 
 class ScheduleNotFountError(Exception):
@@ -466,7 +465,9 @@ class Manager:
 
         return plots
 
-    def save_ics_url(self, code: str, name: str, url: str, user: md.User, approved: bool):
+    def save_ics_url(
+        self, code: str, name: str, url: str, user: md.User, approved: bool
+    ):
 
         if not code.startswith("EXT:"):
             code = "EXT:" + code

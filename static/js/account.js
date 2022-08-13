@@ -264,6 +264,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   var warningModal = new Modal(document.getElementById('warningModal'));
   var courseModal = new Modal(
-    document.getElementById('courseModal')
+    document.getElementById('externalCalendarModal')
   );
+  courseModal.show();
 });

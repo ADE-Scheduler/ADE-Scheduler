@@ -20,8 +20,7 @@ def users():
 def count():
     """Count the number of current users."""
     click.echo(
-        f"There are currently {md.User.query.count()} "
-        f"(confirmed) users on ADE-Scheduler."
+        f"There are currently {md.User.query.count()} " f"users on ADE-Scheduler."
     )
 
 

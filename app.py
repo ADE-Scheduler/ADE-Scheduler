@@ -52,6 +52,7 @@ import backend.uclouvain_apis as ucl
 from cli import (
     cli_api_usage,
     cli_client,
+    cli_external_calendars,
     cli_mails,
     cli_plots,
     cli_redis,
@@ -129,6 +130,7 @@ app.cli.add_command(cli_users.users)
 app.cli.add_command(cli_api_usage.api_usage)
 app.cli.add_command(cli_plots.plots)
 app.cli.add_command(cli_mails.mails)
+app.cli.add_command(cli_external_calendars.extcals)
 
 # Load REDIS TTL config
 redis_ttl_config = configparser.ConfigParser()
