@@ -477,13 +477,13 @@ class Manager:
         if extCal is None:  # this external calendar code is not yet saved
             md.ExternalCalendar(code, name, url, user, approved)
         else:  # this external calendar code is already in DB
-            raise ExternalActivityAlreadyExistsError
+            raise ExternalCalendarAlreadyExistsError
 
-    def get_external_activities(self, user: md.User) -> List[md.ExternalCalendar]:
+    def get_external_calendars(self, user: md.User) -> List[md.ExternalCalendar]:
         return md.ExternalCalendar.query.filter(
             md.ExternalCalendar.user_id == user.id
         ).all()
 
-    def delete_extenal_activity(self, id: int):
+    def delete_external_calendar(self, id: int):
         md.ExternalCalendar.query.filter_by(id=id).delete()
         self.database.session.commit()

@@ -79,7 +79,7 @@ def get_data():
                             "approved": ec.approved,
                             "url": ec.url,
                         },
-                        mng.get_external_activities(current_user),
+                        mng.get_external_calendars(current_user),
                     )
                 ),
                 "project_id": mng.get_project_ids(),
@@ -162,9 +162,9 @@ def delete_schedule(id):
     )
 
 
-@account.route("/external_activity/<id>", methods=["DELETE"])
+@account.route("/external_calendar/<id>", methods=["DELETE"])
 @login_required
-def delete_external_activity(id):
+def delete_external_calendar(id):
     id = int(id)
     mng = app.config["MANAGER"]
     mng.delete_extenal_activity(id)

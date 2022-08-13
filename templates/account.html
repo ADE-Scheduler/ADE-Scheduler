@@ -184,9 +184,9 @@
             <h4 class="d-flex justify-content-between align-items-center">
                 <span class="text-muted">{{ _('Your custom external activities') }}</span>
             </h4>
-            <h6 v-if="externalActivities.length == 0">{{ _('You do not have any custom external activity at the moment') }}</h6>
+            <h6 v-if="externalCalendars.length == 0">{{ _('You do not have any custom external calendar at the moment') }}</h6>
             <ul class="list-group list-courses">
-                <li class="list-group-item d-flex justify-content-between align-items-center" v-for="ec in externalActivities" v-bind:key="ec.id">
+                <li class="list-group-item d-flex justify-content-between align-items-center" v-for="ec in externalCalendars" v-bind:key="ec.id">
                     <h6 class="text-truncate my-0">
                         [[ ec.code ]]
                     </h6>
