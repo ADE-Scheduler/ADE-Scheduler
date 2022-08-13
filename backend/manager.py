@@ -13,6 +13,8 @@ import backend.resources as rsrc
 import backend.schedules as schd
 import backend.servers as srv
 
+from flask_babel import gettext
+
 
 class ScheduleNotFountError(Exception):
     """
@@ -20,16 +22,16 @@ class ScheduleNotFountError(Exception):
     """
 
     def __str__(self):
-        return "The given schedule is somehow not saved in our database..."
+        return gettext("The given schedule is somehow not saved in our database...")
 
 
-class ExternalActivityAlreadyExistsError(Exception):
+class ExternalCalendarAlreadyExistsError(Exception):
     """
-    Exception that will occur if someone tries to create an activity with a code already taken.
+    Exception that will occur if someone tries to create a calendar with a code already taken.
     """
 
     def __str__(self):
-        return "The given activity code is already taken."
+        return gettext("The given calendar code is already taken.")
 
 
 class Manager:
