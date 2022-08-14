@@ -1,11 +1,6 @@
-
 <template>
   <div>
-    <div
-      ref="toast"
-      class="toast"
-      :class="[`bg-${type}`, textColor]"
-    >
+    <div ref="toast" class="toast" :class="[`bg-${type}`, textColor]">
       <div class="toast-header">
         <i class="bi bi-hand-thumbs-up me-2" v-if="type === 'success'"></i>
         <i class="bi bi-exclamation-triangle me-2" v-else></i>
@@ -33,15 +28,24 @@ export default {
   computed: {
     header() {
       switch (this.type) {
-      case 'primary': return 'Info';
-      case 'danger': return 'Error';
-      case 'warning': return 'Warning';
-      case 'success': return 'Success';
-      default: return '';
+        case 'primary':
+          return 'Info';
+        case 'danger':
+          return 'Error';
+        case 'warning':
+          return 'Warning';
+        case 'success':
+          return 'Success';
+        default:
+          return '';
       }
     },
     textColor() {
-      return this.type === 'danger' || this.type === 'success' || this.type === 'primary' ? 'text-white' : '';
+      return this.type === 'danger' ||
+        this.type === 'success' ||
+        this.type === 'primary'
+        ? 'text-white'
+        : '';
     },
   },
   watch: {

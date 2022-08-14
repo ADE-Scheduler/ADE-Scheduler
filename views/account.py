@@ -168,7 +168,7 @@ def delete_schedule(id):
 def delete_external_calendar(id):
     id = int(id)
     mng = app.config["MANAGER"]
-    mng.delete_extenal_activity(id)
+    mng.delete_external_calendar(id)
 
     return gettext("External Activity Deleted"), 200
 
@@ -227,6 +227,7 @@ def add_external_calendar():
     course = request.json
 
     hostname = urlparse(request.base_url).hostname
+    url = course["url"]
 
     if urlparse(course["url"]).hostname == hostname:
         return (
@@ -235,6 +236,11 @@ def add_external_calendar():
             ),
             400,
         )
+
+    if url.startswith(
+        "webcal://"
+    ):  # Many websites provide ical link with this prefix instead
+        url = "https" + url[6:]
 
     try:  # Check if URL correctly returns some iCal
         # TODO: how to prevent attacks? See https://lgtm.com/rules/1514759767119/
@@ -247,8 +253,8 @@ def add_external_calendar():
 
     mng = app.config["MANAGER"]
     mng.save_ics_url(
-        course["code"].upper(), course["name"], course["url"], current_user, True
-    )  # Automatically approved
+        course["code"].upper(), course["name"], course["url"], current_user, False
+    )  # False: waiting to be approved
 
     return (
         gettext("Your calendar has been created and is now awaiting for approval."),

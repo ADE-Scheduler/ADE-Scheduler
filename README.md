@@ -1,4 +1,3 @@
-
 <p align="center">
   <img src="static/img/ade_scheduler_icon.png" width="200" height="200"> </img>
 </p>
@@ -45,8 +44,9 @@ Before that, we were using the excellent [ADE2ICS](https://github.com/cdamman/UC
 ##### Data source
 
 Thanks to the access to the API of ADE, we obtain all the information in a `XML` format. Those are up-to-date with the infos you will find on the ADE website. We are mainly interested in two type of informations:
- - Event list sorted by course
- - Location of every UCLouvain classroom, auditorium, etc.
+
+- Event list sorted by course
+- Location of every UCLouvain classroom, auditorium, etc.
 
 #### Data treatment
 
@@ -61,19 +61,18 @@ Client-side logic is handled using [Vue](https://vuejs.org/), a JavaScript react
 
 The UI is made mainly with the help of [Bootstrap](https://getbootstrap.com/), which handles all the CSS and makes the website enjoyable and mobile-friendly.
 
-
 ### Functionalities and comparison with ADE
 
 In short, ADE Scheduler offers the same information as ADE, but in a much
- more elegant manner. A side by side comparison of the two sites just
-  speaks for itself:
+more elegant manner. A side by side comparison of the two sites just
+speaks for itself:
 
- ![](static/img/ade_official_side_by_side.png)
+![](static/img/ade_official_side_by_side.png)
 
- ![](static/img/ade_scheduler_side_by_side.png)
+![](static/img/ade_scheduler_side_by_side.png)
 
 But an intuitive design is not the only advantage of ADE Scheduler, it also
- comes with several useful tools which ADE does not have:
+comes with several useful tools which ADE does not have:
 
 - [x] black-listing some events in order to have a clean schedule
 - [x] easily viewing multiple courses
@@ -95,8 +94,9 @@ The website's documentation is available on the [help page](https://ade-schedule
 ### Future improvements
 
 Here are listed a series of issues we would like to implement in the future:
- - Implement a complete testing suite to enable easy and robust CI
- - Complete the help section with more videos, tips, etc.
+
+- Implement a complete testing suite to enable easy and robust CI
+- Complete the help section with more videos, tips, etc.
 
 We are open to any suggestions !
 
