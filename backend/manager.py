@@ -88,7 +88,7 @@ class Manager:
                     extCal = md.ExternalCalendar.query.filter(
                         md.ExternalCalendar.code == code_not_found
                     ).first()
-                    if extCal is None:
+                    if extCal is None:  # In case the owner of extCal deleted it
                         codes.remove(code_not_found)
                         continue
                     url = extCal.url

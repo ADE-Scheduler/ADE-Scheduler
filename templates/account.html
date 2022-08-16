@@ -95,7 +95,7 @@ _.forEach(htmlWebpackPlugin.files.js, function(file) { %>
 
           <div class="mb-3">
             <p>
-            Some text
+            {{ _('You can import an external calendar and attach it to a code. This way, ADE Scheduler users will be able to add this calendar to their schedule, and it will be updated automatically. Read more about this feature on the help page. Once submitted, your calendar must be approved before it becomes available. Send us an email to accelerate the approval process.') }}
             </p>
           </div>
         </div>
@@ -333,11 +333,11 @@ _.forEach(htmlWebpackPlugin.files.js, function(file) { %>
         style="margin-top: 0.5em"
       >
         <span class="text-muted"
-          >{{ _('Your custom external activities') }}</span
+          >{{ _('Your external calendars') }}</span
         >
       </h4>
       <h6 v-if="externalCalendars.length == 0">
-        {{ _('You do not have any custom external calendar at the moment') }}
+        {{ _('You do not have any external calendar at the moment') }}
       </h6>
       <ul class="list-group list-courses">
 
