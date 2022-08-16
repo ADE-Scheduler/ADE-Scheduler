@@ -229,7 +229,12 @@ def add_external_calendar():
     hostname = urlparse(request.base_url).hostname
     url = course["url"]
 
-    if urlparse(course["url"]).hostname == hostname:
+    if url.startswith(
+        "webcal://"
+    ):  # Many websites provide ical link with this prefix instead
+        url = "https" + url[6:]
+
+    if urlparse(url).hostname == hostname:
         return (
             gettext(
                 "Sorry, but we currently do not accept calendars emitted by ADE Scheduler to avoid circular dependencies."
@@ -237,14 +242,9 @@ def add_external_calendar():
             400,
         )
 
-    if url.startswith(
-        "webcal://"
-    ):  # Many websites provide ical link with this prefix instead
-        url = "https" + url[6:]
-
     try:  # Check if URL correctly returns some iCal
         # TODO: how to prevent attacks? See https://lgtm.com/rules/1514759767119/
-        _ = Calendar(requests.get(course["url"]).text)
+        _ = Calendar(requests.get(url).text)
     except Exception:
         return gettext("The url you entered does not return a valid .ics file."), 400
 
@@ -253,7 +253,7 @@ def add_external_calendar():
 
     mng = app.config["MANAGER"]
     mng.save_ics_url(
-        course["code"].upper(), course["name"], course["url"], current_user, False
+        course["code"].upper(), course["name"], url, current_user, False
     )  # False: waiting to be approved
 
     return (
