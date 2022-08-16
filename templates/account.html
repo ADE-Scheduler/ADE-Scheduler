@@ -36,13 +36,12 @@ _.forEach(htmlWebpackPlugin.files.js, function(file) { %>
 
 <!-- external calendar modal -->
 <div class="modal fade" id="externalCalendarModal" tabindex="-1">
-  <div class="modal-dialog modal-lg modal-dialog-centered">
+  <div class="modal-dialog modal-dialog-centered">
     <form
-      class="needs-validation mx-auto"
-      id="form-add-event"
+      class="modal-content needs-validation"
+      id="form-create-external-calendar"
       v-on:submit.prevent="addExternalCalendar"
     >
-      <div class="modal-content alert-danger">
         <div class="modal-header">
           <h5 class="modal-title">{{ _('Create a new external calendar') }}</h5>
           <button
@@ -88,16 +87,30 @@ _.forEach(htmlWebpackPlugin.files.js, function(file) { %>
               v-model="externalCalendarForm.url"
             />
           </div>
+
+          <div class="mb-3">
+            <label for="caldesc" class="form-label">{{_('Calendar description')}}</label>
+            <input
+              type="text"
+              class="form-control"
+              v-model="externalCalendarForm.description"
+            />
+          </div>
+
+          <div class="mb-3">
+            <p>
+            Some text
+            </p>
+          </div>
         </div>
         <div class="modal-footer d-flex justify-content-between">
           <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
             {{_('Cancel')}}
           </button>
           <button type="submit" class="btn btn-success" data-bs-dismiss="modal">
-            {{_('Create the course')}}
+            {{_('Create the calendar')}}
           </button>
         </div>
-      </div>
     </form>
   </div>
 </div>
@@ -167,7 +180,11 @@ _.forEach(htmlWebpackPlugin.files.js, function(file) { %>
                 />
               </svg>
             </a>
-            <a class="text-dark" href="#" v-on:click="isEditing = true">
+            <a class="text-dark"
+               href="#"
+               data-bs-toggle="tooltip"
+               title="{{_('Edit calendar\'s name')}}"
+               v-on:click="isEditing = true">
               <svg
                 width="1em"
                 height="1em"
@@ -267,6 +284,8 @@ _.forEach(htmlWebpackPlugin.files.js, function(file) { %>
             <a
               class="text-secondary mx-2"
               href="#"
+              data-bs-toggle="tooltip"
+              title="{{_('View this schedule')}}"
               v-on:click="viewSchedule($event, s.id)"
             >
               <svg
@@ -287,6 +306,8 @@ _.forEach(htmlWebpackPlugin.files.js, function(file) { %>
             <a
               class="text-danger"
               href="#"
+              data-bs-toggle="tooltip"
+              title="{{_('Delete this schedule')}}"
               v-on:click="deleteSchedule($event, s.id)"
             >
               <svg
@@ -323,7 +344,7 @@ _.forEach(htmlWebpackPlugin.files.js, function(file) { %>
         {{ _('You do not have any custom external calendar at the moment') }}
       </h6>
       <ul class="list-group list-courses">
-        
+
         <li
           class="list-group-item d-flex justify-content-between align-items-center"
           v-for="ec in externalCalendars"
@@ -376,6 +397,8 @@ _.forEach(htmlWebpackPlugin.files.js, function(file) { %>
             <a
               class="text-danger"
               href="#"
+              data-bs-toggle="tooltip"
+              title="{{_('Delete this external calendar')}}"
               v-on:click="deleteExternalCalendar($event, ec.id)"
             >
               <svg
@@ -399,10 +422,15 @@ _.forEach(htmlWebpackPlugin.files.js, function(file) { %>
           </div>
         </li>
         <li
-          class="list-group-item d-flex justify-content-between align-items-center"
+          class="list-group-item d-flex justify-content-between align-items-center create-external-calendar"
         >
           <h6 class="text-truncate my-0">Create a calendar</h6>
-          <button class="btn btn-success badge rounded-pill" type="submit" v-on:click="showExternalCalendarModal">+</button>
+          <button
+              class="btn btn-success badge rounded-pill"
+              type="submit"
+              data-bs-toggle="tooltip"
+              title="{{_('Create a new external calendar')}}"
+              v-on:click="showExternalCalendarModal">+</button>
         </li>
 
       </ul>

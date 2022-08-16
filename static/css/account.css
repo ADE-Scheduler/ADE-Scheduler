@@ -24,3 +24,12 @@
 .current-schedule:hover {
   background-color: rgba(40, 167, 69, 0.3) !important;
 }
+
+
+
+.create-external-calendar {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+.create-external-calendar:hover {
+  background-color: rgba(0, 0, 0, 0.15) !important;
+}

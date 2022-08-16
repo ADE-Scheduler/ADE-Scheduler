@@ -178,6 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
           customButtons: {
             addEvent: {
               text: '+',
+              hint: document.getElementById('current-locale').innerText.trim() === 'FR' ? 'Créer un nouvel évènement' : 'Create a new event',
               click: () => {
                 vm.beforeAddEvent();
                 addEventModal.show();

@@ -12,6 +12,7 @@ from ics import Calendar
 
 import backend.schedules as schd
 import views.utils as utl
+from backend.manager import ExternalCalendarAlreadyExistsError
 
 
 class AccountEncoder(json.JSONEncoder):
@@ -251,10 +252,13 @@ def add_external_calendar():
     if not current_user.is_authenticated:
         return gettext("To save your schedule, you need to be logged in."), 401
 
-    mng = app.config["MANAGER"]
-    mng.save_ics_url(
-        course["code"].upper(), course["name"], url, current_user, False
-    )  # False: waiting to be approved
+    try:
+        mng = app.config["MANAGER"]
+        mng.save_ics_url(
+            course["code"].upper(), course["name"], url, current_user, False
+        )  # False: waiting to be approved
+    except ExternalCalendarAlreadyExistsError as e:
+        return str(e), 400
 
     return (
         gettext("Your calendar has been created and is now awaiting for approval."),
