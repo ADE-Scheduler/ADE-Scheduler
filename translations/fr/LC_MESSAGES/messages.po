@@ -802,4 +802,3 @@ msgstr ""
 "Hum... on dirait qu'il y eu un souci avec le login UCLouvain. Contactez-"
 "nous directement pour qu'on puisse regarder ça plus en détails et essayer"
 " de régler ça."
-
