@@ -242,7 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
           .then((resp) => {
             store.success(resp.data);
-            courseModal.hide();
+            externalCalendarModal.hide();
             location.reload();
           })
           .catch((err) => {
@@ -252,8 +252,8 @@ document.addEventListener('DOMContentLoaded', () => {
             this.computing = false;
           });
       },
-      showCourseModal: () => {
-        courseModal.show();
+      showExternalCalendarModal: () => {
+        externalCalendarModal.show();
       },
       warningContinue() {
         this.request();
@@ -264,6 +264,5 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   var warningModal = new Modal(document.getElementById('warningModal'));
-  var courseModal = new Modal(document.getElementById('externalCalendarModal'));
-  courseModal.show();
+  var externalCalendarModal = new Modal(document.getElementById('externalCalendarModal'));
 });
