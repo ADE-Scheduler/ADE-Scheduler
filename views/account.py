@@ -244,7 +244,7 @@ def add_external_calendar():
 
     try:  # Check if URL correctly returns some iCal
         # TODO: how to prevent attacks? See https://lgtm.com/rules/1514759767119/
-        _ = Calendar(requests.get(url).text)
+        _ = Calendar(requests.get(url).text)  # lgtm [py/full-ssrf]
     except Exception:
         return gettext("The url you entered does not return a valid .ics file."), 400
 

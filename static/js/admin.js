@@ -1,7 +1,7 @@
 /* global Flask */
 
 import Vue from 'vue';
-import { Carousel } from 'bootstrap'; // eslint-disable-line no-unused-vars
+import { Carousel } from 'bootstrap'; // eslint-disable-line no-unused-vars lgtm [js/unused-local-variable]
 import store from './store.js';
 import Spinner from '../../components/Spinner.vue';
 
