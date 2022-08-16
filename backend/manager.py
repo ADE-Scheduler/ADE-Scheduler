@@ -466,7 +466,13 @@ class Manager:
         return plots
 
     def save_ics_url(
-            self, code: str, name: str, url: str, description: str, user: md.User, approved: bool
+        self,
+        code: str,
+        name: str,
+        url: str,
+        description: str,
+        user: md.User,
+        approved: bool,
     ):
 
         if not code.startswith("EXT:"):
