@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-08-16 15:25+0200\n"
+"POT-Creation-Date: 2022-08-16 15:29+0200\n"
 "PO-Revision-Date: 2020-07-24 16:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -154,7 +154,7 @@ msgstr ""
 
 #: templates/account.html:107
 msgid "Create the calendar"
-msgstr "Créer le calendrier"
+msgstr "Créer un calendrier"
 
 #: templates/account.html:120
 msgid "User settings"
@@ -233,6 +233,11 @@ msgstr "En attente d'approbation"
 #: templates/account.html:397
 msgid "Delete this external calendar"
 msgstr "Supprimer ce calendrier externe"
+
+#: templates/account.html:423
+#, fuzzy
+msgid "Create a calendar"
+msgstr "Créer le calendrier"
 
 #: templates/account.html:428
 msgid "Create a new external calendar"
@@ -798,3 +803,4 @@ msgstr ""
 "Hum... on dirait qu'il y eu un souci avec le login UCLouvain. Contactez-"
 "nous directement pour qu'on puisse regarder ça plus en détails et essayer"
 " de régler ça."
+
