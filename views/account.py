@@ -255,7 +255,12 @@ def add_external_calendar():
     try:
         mng = app.config["MANAGER"]
         mng.save_ics_url(
-            course["code"].upper(), course["name"], url, course["description"], current_user, False
+            course["code"].upper(),
+            course["name"],
+            url,
+            course["description"],
+            current_user,
+            False,
         )  # False: waiting to be approved
     except ExternalCalendarAlreadyExistsError as e:
         return str(e), 400
