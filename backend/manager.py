@@ -466,17 +466,15 @@ class Manager:
         return plots
 
     def save_ics_url(
-        self, code: str, name: str, url: str, user: md.User, approved: bool
+            self, code: str, name: str, url: str, description: str, user: md.User, approved: bool
     ):
 
         if not code.startswith("EXT:"):
             code = "EXT:" + code
 
-        extCal = md.ExternalCalendar.query.filter(
-            md.ExternalCalendar.code == code
-        ).first()
+        extCal = md.ExternalCalendar.query.filter_by(code=code).first()
         if extCal is None:  # this external calendar code is not yet saved
-            md.ExternalCalendar(code, name, url, user, approved)
+            md.ExternalCalendar(code, name, url, description, user, approved)
         else:  # this external calendar code is already in DB
             raise ExternalCalendarAlreadyExistsError
 

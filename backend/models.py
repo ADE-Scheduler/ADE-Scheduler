@@ -450,13 +450,15 @@ class ExternalCalendar(db.Model):
     code = db.Column(db.String(128))
     name = db.Column(db.String(128))
     url = db.Column(db.String(512))
+    description = db.Column(db.String(4096))
     user_id = db.Column(db.Integer())
     approved = db.Column(db.Boolean())
 
-    def __init__(self, code, name, url, user, approved=False):
+    def __init__(self, code, name, url, description, user, approved=False):
         self.code = code
         self.name = name
         self.url = url
+        self.description = description
         self.user_id = user.id
         self.approved = approved
 

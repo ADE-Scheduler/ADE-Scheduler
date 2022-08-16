@@ -38,12 +38,12 @@ _.forEach(htmlWebpackPlugin.files.js, function(file) { %>
 <div class="modal fade" id="externalCalendarModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
     <form
-      class="modal-content needs-validation"
+      class="modal-content was-validated"
       id="form-create-external-calendar"
       v-on:submit.prevent="addExternalCalendar"
     >
         <div class="modal-header">
-          <h5 class="modal-title">{{ _('Create a new external calendar') }}</h5>
+          <h5 class="modal-title">{{ _('Create an external calendar') }}</h5>
           <button
             type="button"
             class="btn-close"
@@ -56,43 +56,39 @@ _.forEach(htmlWebpackPlugin.files.js, function(file) { %>
               >{{_('Calendar code')}}</label
             >
             <input
-              type="text"
               class="form-control"
-              id="calcode"
+              type="text"
               required
               v-model="externalCalendarForm.code"
             />
           </div>
 
           <div class="mb-3">
-            <label for="calname" class="form-label"
-              >{{_('Calendar name')}}</label
+            <label>{{_('Calendar name')}}</label
             >
             <input
-              type="text"
               class="form-control"
-              id="calname"
+              type="text"
               required
               v-model="externalCalendarForm.name"
             />
           </div>
 
           <div class="mb-3">
-            <label for="calurl" class="form-label">{{_('Calendar URL')}}</label>
+            <label>{{_('Calendar URL')}}</label>
             <input
-              type="text"
               class="form-control"
-              id="calurl"
+              type="text"
               required
               v-model="externalCalendarForm.url"
             />
           </div>
 
           <div class="mb-3">
-            <label for="caldesc" class="form-label">{{_('Calendar description')}}</label>
+            <label>{{_('Calendar description')}}</label>
             <input
-              type="text"
               class="form-control"
+              type="text"
               v-model="externalCalendarForm.description"
             />
           </div>

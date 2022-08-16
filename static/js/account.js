@@ -232,6 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
           code: this.externalCalendarForm.code,
           name: this.externalCalendarForm.name,
           url: this.externalCalendarForm.url,
+          description: this.externalCalendarForm.description,
         };
         this.computing = true;
         axios({
