@@ -154,7 +154,7 @@ msgstr ""
 
 #: templates/account.html:107
 msgid "Create the calendar"
-msgstr "Créer un calendrier"
+msgstr "Créer le calendrier"
 
 #: templates/account.html:120
 msgid "User settings"
@@ -235,9 +235,8 @@ msgid "Delete this external calendar"
 msgstr "Supprimer ce calendrier externe"
 
 #: templates/account.html:423
-#, fuzzy
 msgid "Create a calendar"
-msgstr "Créer le calendrier"
+msgstr "Créer un calendrier"
 
 #: templates/account.html:428
 msgid "Create a new external calendar"
