@@ -29,13 +29,14 @@ Before that, we were using the excellent [ADE2ICS](https://github.com/cdamman/UC
 
 ### Key dates
 
-- **August 2019** : start of the project
-- **September 2019** : access to the API of ADE and release of the first version of the tool
-- **Summer 2020**: complete overhaul of the tool to make it more attractive, intuitive and mobile-friendly.
-- **September 2020**: release of the second version of the tool
-- **September 2021**: 2 years of service, Python 3.9 upgrade and 3500+ users
-- **December 2021**: 7000+ users
-- **January 2022**: Moving auth. system to UCLouvain OAuth, thereby resetting the number of users to 0 on January 29nth, 2022
+- **2019 - August**: start of the project
+- **2019 - September**: access to the API of ADE and release of the first version of the tool
+- **2020 - Summer**: complete overhaul of the tool to make it more attractive, intuitive and mobile-friendly.
+- **2020 - September**: release of the second version of the tool
+- **2021 - September**: 2 years of service, Python 3.9 upgrade and 3500+ users
+- **2021 - December**: 7000+ users
+- **2022 - January**: moving auth. system to UCLouvain OAuth, thereby resetting the number of users to 0 on January 29nth, 2022
+- **2022 - Summer**: first major contribution from students to the ADE Scheduler repository
 
 ### How does it work ?
 
