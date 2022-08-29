@@ -7,7 +7,8 @@ Launch tutorial
 .. launch info begin
 
 Almost there ! Once you proceeded to the above installation steps, you can now
-run the following command in your terminal to run the project:
+run the following command in your terminal to run the project. Make sure that
+you are still in the virtual environment.
 
 .. code-block:: console
 
