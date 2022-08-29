@@ -99,8 +99,15 @@ A new setup alternative is the Docker setup. This setup is a lot more simple as 
     :end-before: email setup en
 
 
+6. Launch
+=========
 
-6. Contributing
+.. include:: launch.rst
+    :start-after: launch info begin
+    :end-before: launch info end
+
+
+7. Contributing
 ===============
 
 .. include:: contribute.rst
