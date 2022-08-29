@@ -7,7 +7,7 @@ Launch tutorial
 .. launch info begin
 
 Almost there ! Once you proceeded to the above installation steps, you can now
-run the following command in your terminal :
+run the following command in your terminal to run the project:
 
 .. code-block:: console
 
