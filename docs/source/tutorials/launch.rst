@@ -15,7 +15,7 @@ run the following command in your terminal to run the project:
 
 .. note::
 
-    It is recommended to copy the above command lines (i.e. virtual environment activation,
+    It is recommended to copy the above command lines (i.e., virtual environment activation,
     database initialization, redis-server startup, flask launch) in an executable script
     in order to facilitate the project launch for the next times. You can check the
     'docker/entrypoint.sh' file for some inspiration.
