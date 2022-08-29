@@ -26,8 +26,10 @@ Your terminal should now display a page url that you can access with your browse
 is your local version of the app!
 
 
-.. image:: ../../../static/img/tmux_configuration.png
+.. figure:: ../../../static/img/tmux_configuration.png
+   :alt: Terminal configuration
    :align: center
+   :width: 100%
 
    Example of terminal configuration when everything is running properly. Here, you can see four terminal sessions: flask server (upper left), redis server (upper right), flask shell (lower left), and webpack (lower right). The "(venv)" indicates that the virtual environment is activated (required for left terminals only).
 
