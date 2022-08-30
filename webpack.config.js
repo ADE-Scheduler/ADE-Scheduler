@@ -30,29 +30,31 @@ const conf = {
   entry: {},
   resolve: {
     alias: {
-      'vue$': 'vue/dist/vue.esm.js'
-    }
+      vue$: 'vue/dist/vue.esm.js',
+    },
   },
   module: {
     rules: [
       {
         test: /\.(png|jpe?g|gif|svg)$/,
-        use: [{
-          loader: 'file-loader',
-          options: {
-            name: '[contenthash].[ext]',
-            outputPath: 'img',
-            esModule: false
-          }
-        }]
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[contenthash].[ext]',
+              outputPath: 'img',
+              esModule: false,
+            },
+          },
+        ],
       },
       {
         test: /\.(sa|sc|c)ss$/,
-        use: ['vue-style-loader', 'style-loader', 'css-loader', 'sass-loader']
+        use: ['vue-style-loader', 'style-loader', 'css-loader', 'sass-loader'],
       },
       {
         test: /\.vue$/,
-        loader: 'vue-loader'
+        loader: 'vue-loader',
       },
       {
         test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
@@ -61,12 +63,12 @@ const conf = {
             loader: 'file-loader',
             options: {
               name: '[name].[ext]',
-              outputPath: 'fonts/'
-            }
-          }
-        ]
-      }
-    ]
+              outputPath: 'fonts/',
+            },
+          },
+        ],
+      },
+    ],
   },
   plugins: [
     new VueLoaderPlugin(),
@@ -74,34 +76,36 @@ const conf = {
       inject: false,
       minify: false,
       template: './templates/base.html',
-      filename: './html/base.html'
+      filename: './html/base.html',
     }),
     new HtmlWebpackPlugin({
       inject: false,
       minify: false,
       template: './templates/custom_macros.html',
-      filename: './html/custom_macros.html'
+      filename: './html/custom_macros.html',
     }),
   ],
   output: {
-    path: __dirname + '/static/dist/',
+    path: `${__dirname}/static/dist/`,
     filename: '[name].bundle.js',
-    publicPath: '/static/dist/'
+    publicPath: '/static/dist/',
   },
 };
 
-pages.forEach(page => {
-  let entryPath = `./static/js/${page}.js`;
-  let entryName = page.split('/').pop();
+pages.forEach((page) => {
+  const entryPath = `./static/js/${page}.js`;
+  const entryName = page.split('/').pop();
   conf.entry[entryName] = entryPath;
-  conf.plugins.push(new HtmlWebpackPlugin({
-    hash: true,
-    inject: false,
-    minify: false,
-    template: `./templates/${page}.html`,
-    filename: `./html/${page}.html`,
-    chunks: [entryName],
-  }));
+  conf.plugins.push(
+    new HtmlWebpackPlugin({
+      hash: true,
+      inject: false,
+      minify: false,
+      template: `./templates/${page}.html`,
+      filename: `./html/${page}.html`,
+      chunks: [entryName],
+    })
+  );
 });
 
 module.exports = conf;

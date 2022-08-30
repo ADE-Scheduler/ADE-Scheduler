@@ -18,8 +18,11 @@ command shell.
 
    cli_api_usage
    cli_client
+   cli_external_calendars
+   cli_mails
    cli_plots
    cli_redis
+   cli_roles
    cli_schedules
    cli_sql
    cli_usage

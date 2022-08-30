@@ -6,15 +6,19 @@ repos:
     -   id: end-of-file-fixer
     -   id: trailing-whitespace
 -   repo: https://github.com/pre-commit/mirrors-eslint
-    rev: 'v8.22.0'  # Use the sha / tag you want to point at
+    rev: 'v8.23.0'  # Use the sha / tag you want to point at
     hooks:
-    -   id: eslint
+      - id: eslint
         additional_dependencies:
-        -   eslint@7.32.0
-        -   eslint-plugin-vue@7.17.0
+          - eslint@7.32.0
+          - eslint-plugin-vue@7.17.0
         args: [--fix]
--   repo: https://github.com/pycqa/isort
+  - repo: https://github.com/pycqa/isort
     rev: 5.10.1
     hooks:
       - id: isort
-        args: ["--profile", "black", "--filter-files"]
+        args: ['--profile', 'black', '--filter-files']
+  - repo: https://github.com/psf/black
+    rev: '22.6.0'
+    hooks:
+      - id: black

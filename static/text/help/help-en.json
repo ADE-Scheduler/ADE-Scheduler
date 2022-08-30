@@ -61,12 +61,17 @@
       {
         "id": "event-selection",
         "title": "Event selection",
-        "content": " If you click on a course's code, on the left of the calendar page, you will see appearing all the events that are contained in this course, per type. You can select or unselect specific events in order to build you schedule the way you want. "
+        "content": "If you click on a course's code, on the left of the calendar page, you will see appearing all the events that are contained in this course, per type. You can select or unselect specific events in order to build you schedule the way you want. "
       },
       {
         "id": "accounts",
         "title": "Accounts",
-        "content": " Creating an account requires two things: an email address and a password. Your email address will only be used for password resetting and any important information we need to share with our users. On the account page, you can choose between your different schedules and also change their information. The academic year parameter will tell our service which year you want the information from (most of the time, only one possibility). "
+        "content": "Creating an account requires two things: an email address and a password. Your email address will only be used for password resetting and any important information we need to share with our users. On the account page, you can choose between your different schedules and also change their information. The academic year parameter will tell our service which year you want the information from (most of the time, only one possibility). "
+      },
+      {
+        "id": "external-calendars",
+        "title": "External calendars",
+        "content": "Maybe you have an external calendar that you wish to share with others? Use cases can be student events like CASA's events, 24h Vélo, etc. Doing so is possible by going to the account page and creating your own external calendar. For that, you must provide a iCal link to your calendar. Those links can be easily generated, e.g., with Google Calandar agendas. To avoid spamming, your calendar must be first approved by us, which is why we recommend using the description field to communicate the goal of your calendar, as well as sending us an email."
       }
     ]
   },

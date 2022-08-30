@@ -1,6 +1,9 @@
 from typing import Dict, Iterator, List, Optional, Tuple, Union
 
 import pandas as pd
+import requests
+from flask_babel import gettext
+from ics import Calendar
 
 import backend.ade_api as ade
 import backend.classrooms as clrm
@@ -18,7 +21,16 @@ class ScheduleNotFountError(Exception):
     """
 
     def __str__(self):
-        return "The given schedule is somehow not saved in our database..."
+        return gettext("The given schedule is somehow not saved in our database...")
+
+
+class ExternalCalendarAlreadyExistsError(Exception):
+    """
+    Exception that will occur if someone tries to create a calendar with a code already taken.
+    """
+
+    def __str__(self):
+        return gettext("The given calendar code is already taken.")
 
 
 class Manager:
@@ -58,6 +70,8 @@ class Manager:
         :return: the list of courses
         :rtype: List[crs.Course]
         """
+        codes = list(codes)
+
         if project_id is None:
             project_id = self.get_default_project_id()
 
@@ -70,12 +84,30 @@ class Manager:
         # Fetch from the api the missing courses
         if codes_not_found:
             for code_not_found in codes_not_found:
-                resource_ids = self.get_resource_ids(
-                    code_not_found, project_id=project_id
-                )
-                course_not_found = ade.response_to_courses(
-                    self.client.get_activities(resource_ids, project_id)
-                )
+                if code_not_found.startswith("EXT:"):
+                    extCal = md.ExternalCalendar.query.filter_by(approved=True).filter(
+                        md.ExternalCalendar.code == code_not_found
+                    ).first()
+                    if extCal is None:  # In case the owner of extCal deleted it
+                        codes.remove(code_not_found)
+                        continue
+                    url = extCal.url
+                    events = Calendar(requests.get(url).text).events
+                    events = [
+                        evt.EventEXTERN.from_event(event, code_not_found[4:])
+                        for event in events
+                    ]
+                    course_not_found = crs.Course(code_not_found[4:], extCal.name)
+                    for event in events:
+                        course_not_found.add_activity([event])
+
+                else:
+                    resource_ids = self.get_resource_ids(
+                        code_not_found, project_id=project_id
+                    )
+                    course_not_found = ade.response_to_courses(
+                        self.client.get_activities(resource_ids, project_id)
+                    )
                 self.server.set_value(
                     prefix + code_not_found,
                     course_not_found,
@@ -205,7 +237,16 @@ class Manager:
         matching_code = course_resources[rsrc.INDEX.NAME].str.contains(
             pattern, case=False, regex=False
         )
-        return course_resources[matching_code][rsrc.INDEX.NAME].to_list()
+        courses_matching = course_resources[matching_code][rsrc.INDEX.NAME].to_list()
+        courses_matching.extend(
+            map(
+                lambda ec: ec.code,
+                md.ExternalCalendar.query.filter_by(approved=True).filter(
+                    md.ExternalCalendar.code.contains(pattern)
+                ).all(),
+            )
+        )
+        return courses_matching
 
     def get_classrooms(
         self,
@@ -301,6 +342,13 @@ class Manager:
         """
         Checks if a given code exists in the database for a given project id
         """
+        if code.startswith("EXT:"):
+            return (
+                md.ExternalCalendar.query.filter_by(approved=True).filter(
+                    md.ExternalCalendar.code == code
+                ).first()
+                is not None
+            )
         if project_id is None:
             project_id = self.get_default_project_id()
 
@@ -416,3 +464,31 @@ class Manager:
             plots.append({"id": key.decode(), "data": self.server.get_value(key)})
 
         return plots
+
+    def save_ics_url(
+        self,
+        code: str,
+        name: str,
+        url: str,
+        description: str,
+        user: md.User,
+        approved: bool,
+    ):
+
+        if not code.startswith("EXT:"):
+            code = "EXT:" + code
+
+        extCal = md.ExternalCalendar.query.filter_by(code=code).first()
+        if extCal is None:  # this external calendar code is not yet saved
+            md.ExternalCalendar(code, name, url, description, user, approved)
+        else:  # this external calendar code is already in DB
+            raise ExternalCalendarAlreadyExistsError
+
+    def get_external_calendars(self, user: md.User) -> List[md.ExternalCalendar]:
+        return md.ExternalCalendar.query.filter(
+            md.ExternalCalendar.user_id == user.id
+        ).all()
+
+    def delete_external_calendar(self, id: int):
+        md.ExternalCalendar.query.filter_by(id=id).delete()
+        self.database.session.commit()
