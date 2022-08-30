@@ -41,7 +41,7 @@
     "@fullcalendar/daygrid": "^5.10.1",
     "@fullcalendar/timegrid": "^5.10.1",
     "@fullcalendar/vue": "^5.10.1",
-    "@popperjs/core": "^2.9.2",
+    "@popperjs/core": "^2.11.6",
     "@types/leaflet": "^1.7.0",
     "axios": "^0.21.2",
     "bootstrap": "^5.1.3",
