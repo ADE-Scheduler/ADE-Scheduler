@@ -67,7 +67,13 @@
         "id": "accounts",
         "title": "Comptes",
         "content": " Créer un compte requiert deux choses : une adresse email et un mot de passe. Votre adresse email sera uniquement utilisée pour changer votre mot de passe ou vous transmettre des informations importantes. Sur la page compte, vous pouvez choisir parmi vos différents horaires et aussi changer leurs informations. Le paramètre année académique indiquera à notre service l'année depuis laquelle vous souhaitez obtenir les évènements (la plupart du temps, seule une année est disponible). "
+      },
+      {
+        "id": "external-calendars",
+        "title": "Calendriers externes",
+        "content": "Vous avez peut-être un calendrier que vous aimeriez partager avec les utilisateurs d'ADE Scheduler ? Le cas classique serait pour des évènements étudiants comme ceux de la CASA, les 24h Vélom etc. Ceci est possible en allant sur la page compte et en créant votre propre calendrier externe. Pour cela, vous devez fournir un lien iCal vers votre calendrier. Ce type de lien peut facilement être généré, par ex., depuis votre calendrier Google Agenda. Afin d'éviter le spam, votre calendrier doit d'abord etre apprové par nous avant de pouvoir être public, ce pourquoi nous vous recommendons d'utiliser le champ de description afin de nous communiquer l'objectif de votre calendrier, ainsi que de nous envoyer un mail."
       }
+
     ]
   },
   {

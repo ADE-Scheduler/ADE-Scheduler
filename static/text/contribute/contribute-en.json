@@ -78,6 +78,11 @@
         "icon": "bi bi-star-fill",
         "title": "Contributors",
         "content": "As this project is open source, we would like to thank all the people that helped with this project. From signaling a bug to sharing the tool with friends, any help is important to us. If you ever want to help this project, never hesitate to reach us!"
+      },
+      {
+        "id": "credits-open-week-2022",
+        "title": "<small>Open Week 2022</small>",
+        "content": "The Open Week is a yearly event at UCLouvain focused on open source projects and how to contribute to them. During Open Week 2022, one of the projects the participants could contribute to was ADE Scheduler. A group of three students worked on integrating external calendars (<a href=\"https://github.com/ADE-Scheduler/ADE-Scheduler/pull/850\">#850</a>): <ul class='mt-2'> <li>Corentin Libert (<a href=\"https://github.com/CorentinLibert\"><code class=\"notranslate\">CorentinLibert</code></a>),</li><li>Paul-Edouard Bertrand Van ouytsel (<a href=\"https://github.com/PaulEdouardBertrandVO\"><code class=\"notranslate\">PaulEdouardBertrandVO</code></a>),</li><li>Simon Cornelis (<a href=\"https://github.com/Simcornelis\"><code class=\"notranslate\">Simcornelis</code></a>).</ul>Many thanks to them!"
       }
     ]
   }

@@ -6,7 +6,7 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   // For debugging purposes (ensures store state can only be mutated using
   // mutation handlers, should be off for production !)
-  strict: process.env.NODE_ENV !== 'production',  // eslint-disable-line no-undef
+  strict: process.env.NODE_ENV !== 'production', // eslint-disable-line no-undef
   state() {
     return {
       infoMessage: '',
@@ -34,7 +34,7 @@ const store = new Vuex.Store({
 // Some helper functions
 store.success = (msg) => store.commit('setSuccessMessage', msg);
 store.warning = (msg) => store.commit('setWarningMessage', msg);
-store.error   = (msg) => store.commit('setErrorMessage',   msg);
-store.info    = (msg) => store.commit('setInfoMessage',    msg);
+store.error = (msg) => store.commit('setErrorMessage', msg);
+store.info = (msg) => store.commit('setInfoMessage', msg);
 
 export default store;

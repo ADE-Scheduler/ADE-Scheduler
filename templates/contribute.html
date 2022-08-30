@@ -1,12 +1,8 @@
-{% extends "base.html" %}
-{% block head %}
-<% _.forEach(htmlWebpackPlugin.files.js, function(file) { %>
+{% extends "base.html" %} {% block head %} <%
+_.forEach(htmlWebpackPlugin.files.js, function(file) { %>
 <script type="text/javascript" src="<%= file%>"></script>
-<%}); %>
-{% endblock %}
-
-{% block body %}
+<%}); %> {% endblock %} {% block body %}
 <div class="container-fluid">
-    <scrollspy v-bind:content="content"/>
+  <scrollspy v-bind:content="content" />
 </div>
 {% endblock %}

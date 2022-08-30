@@ -7,22 +7,21 @@ import store from './store.js';
 import '../css/base.css';
 import '../css/bootstrap.scss';
 
-
 Vue.directive('focus', {
-  inserted: function (el) {
+  inserted(el) {
     el.focus();
-  }
+  },
 });
 
-export default document.addEventListener('DOMContentLoaded', function() {
+export default document.addEventListener('DOMContentLoaded', () => {
   new Vue({
     el: '#app-base',
-    delimiters: ['[[',']]'],
-    components: { 'alerttoast': AlertToast },
+    delimiters: ['[[', ']]'],
+    components: { alerttoast: AlertToast },
     directives: {
       // To render Flask flash messages
       flash: {
-        bind: function(el, binding) {
+        bind(el, binding) {
           switch (binding.arg) {
           case 'success':
             store.success(binding.value);
@@ -39,37 +38,57 @@ export default document.addEventListener('DOMContentLoaded', function() {
         },
       },
     },
-    data: function() {
+    data() {
       return {
         currentPath: window.location.pathname,
       };
     },
     computed: {
       infoMessage: {
-        get() { return store.state.infoMessage; },
-        set(value) { store.commit('setInfoMessage', value); },
+        get() {
+          return store.state.infoMessage;
+        },
+        set(value) {
+          store.commit('setInfoMessage', value);
+        },
       },
       errorMessage: {
-        get() { return store.state.errorMessage; },
-        set(value) { store.commit('setErrorMessage', value); },
+        get() {
+          return store.state.errorMessage;
+        },
+        set(value) {
+          store.commit('setErrorMessage', value);
+        },
       },
       warningMessage: {
-        get() { return store.state.warningMessage; },
-        set(value) { store.commit('setWarningMessage', value); },
+        get() {
+          return store.state.warningMessage;
+        },
+        set(value) {
+          store.commit('setWarningMessage', value);
+        },
       },
       successMessage: {
-        get() { return store.state.successMessage; },
-        set(value) { store.commit('setSuccessMessage', value); },
+        get() {
+          return store.state.successMessage;
+        },
+        set(value) {
+          store.commit('setSuccessMessage', value);
+        },
       },
     },
     methods: {
-      localeSelector: function(e, locale) {
-        window.location.href = Flask.url_for('set_locale', {'locale': locale}) + '?next=' + window.location.pathname;
+      localeSelector(e, locale) {
+        window.location.href = `${Flask.url_for('set_locale', {
+          locale,
+        })}?next=${window.location.pathname}`;
       },
     },
   });
 
-  document.querySelector('[data-bs-toggle="offcanvas"]').addEventListener('click', function () {
-    document.querySelector('.offcanvas-collapse').classList.toggle('open');
-  });
+  document
+    .querySelector('[data-bs-toggle="offcanvas"]')
+    .addEventListener('click', () => {
+      document.querySelector('.offcanvas-collapse').classList.toggle('open');
+    });
 });

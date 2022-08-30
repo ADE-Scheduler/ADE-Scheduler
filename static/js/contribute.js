@@ -6,13 +6,12 @@ import '../css/contribute.css';
 
 const axios = require('axios');
 
-
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', () => {
   new Vue({
     el: '#app',
-    delimiters: ['[[',']]'],
-    components: { 'scrollspy': ScrollSpy },
-    data: function() {
+    delimiters: ['[[', ']]'],
+    components: { scrollspy: ScrollSpy },
+    data() {
       return {
         navBtn: false,
         content: [],
@@ -21,15 +20,18 @@ document.addEventListener('DOMContentLoaded', function() {
     mounted() {
       axios({
         method: 'GET',
-        url: `/static/text/contribute/contribute-${document.getElementById('current-locale').textContent.trim().toLowerCase()}.json`
+        url: `/static/text/contribute/contribute-${document
+          .getElementById('current-locale')
+          .textContent.trim()
+          .toLowerCase()}.json`,
       })
-        .then(resp => {
+        .then((resp) => {
           this.content = resp.data;
         })
-        .catch(err => {
+        .catch((err) => {
           store.error(err.response.data);
         })
-        .then(() => {});  // TODO
+        .then(() => {}); // TODO
     },
   });
 });

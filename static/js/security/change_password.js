@@ -1,17 +1,16 @@
 import '../base.js';
 import '../../css/security/change_password.css';
 
-
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', () => {
   const valid_pwd = document.getElementById('new_password_confirm');
-  const       pwd = document.getElementById('new_password');
-  const      form = document.getElementById('change_password_form');
+  const pwd = document.getElementById('new_password');
+  const form = document.getElementById('change_password_form');
 
   valid_pwd.addEventListener('input', validityCheck);
   pwd.addEventListener('input', validityCheck);
 
   function validityCheck() {
-    if (valid_pwd.value === pwd.value ) {
+    if (valid_pwd.value === pwd.value) {
       if (form.classList.contains('was-validated')) {
         valid_pwd.classList.add('is-valid');
         valid_pwd.classList.remove('is-invalid');
@@ -27,15 +26,22 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   (function () {
-    'use strict';
-    window.addEventListener('load', function () {
-      form.addEventListener('submit', function (event) {
-        if (form.checkValidity() === false) {
-          event.preventDefault();
-          event.stopPropagation();
-        }
-        form.classList.add('was-validated');
-      }, false);
-    }, false);
-  }());
+    window.addEventListener(
+      'load',
+      () => {
+        form.addEventListener(
+          'submit',
+          (event) => {
+            if (form.checkValidity() === false) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+          },
+          false
+        );
+      },
+      false
+    );
+  })();
 });

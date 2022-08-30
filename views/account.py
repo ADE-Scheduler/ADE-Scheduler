@@ -1,14 +1,18 @@
 import json
 from typing import Any
+from urllib.parse import urlparse
 
+import requests
 from flask import Blueprint
 from flask import current_app as app
 from flask import jsonify, render_template, request, session
 from flask_babel import LazyString, gettext
 from flask_login import current_user, login_required
+from ics import Calendar
 
 import backend.schedules as schd
 import views.utils as utl
+from backend.manager import ExternalCalendarAlreadyExistsError
 
 
 class AccountEncoder(json.JSONEncoder):
@@ -69,6 +73,17 @@ def get_data():
     return (
         jsonify(
             {
+                "external_calendars": list(
+                    map(
+                        lambda ec: {
+                            "id": ec.id,
+                            "code": ec.code,
+                            "approved": ec.approved,
+                            "url": ec.url,
+                        },
+                        mng.get_external_calendars(current_user),
+                    )
+                ),
                 "project_id": mng.get_project_ids(),
                 "unsaved": session["current_schedule_modified"],
                 "autosave": current_user.autosave,
@@ -149,6 +164,16 @@ def delete_schedule(id):
     )
 
 
+@account.route("/external_calendar/<id>", methods=["DELETE"])
+@login_required
+def delete_external_calendar(id):
+    id = int(id)
+    mng = app.config["MANAGER"]
+    mng.delete_external_calendar(id)
+
+    return gettext("External Activity Deleted"), 200
+
+
 @account.route("/label/<id>", methods=["PATCH"])
 @login_required
 def update_label(id):
@@ -196,3 +221,51 @@ def save():
 def autosave():
     current_user.set_autosave(request.json["autosave"])
     return jsonify({}), 200
+
+
+@account.route("/external_calendar", methods=["POST"])
+def add_external_calendar():
+    course = request.json
+
+    hostname = urlparse(request.base_url).hostname
+    url = course["url"]
+
+    if url.startswith(
+        "webcal://"
+    ):  # Many websites provide ical link with this prefix instead
+        url = "https" + url[6:]
+
+    if urlparse(url).hostname == hostname:
+        return (
+            gettext(
+                "Sorry, but we currently do not accept calendars emitted by ADE Scheduler to avoid circular dependencies."
+            ),
+            400,
+        )
+
+    try:  # Check if URL correctly returns some iCal
+        # TODO: how to prevent attacks? See https://lgtm.com/rules/1514759767119/
+        _ = Calendar(requests.get(url).text)  # lgtm [py/full-ssrf]
+    except Exception:
+        return gettext("The url you entered does not return a valid .ics file."), 400
+
+    if not current_user.is_authenticated:
+        return gettext("To save your schedule, you need to be logged in."), 401
+
+    try:
+        mng = app.config["MANAGER"]
+        mng.save_ics_url(
+            course["code"].upper(),
+            course["name"],
+            url,
+            course["description"],
+            current_user,
+            False,
+        )  # False: waiting to be approved
+    except ExternalCalendarAlreadyExistsError as e:
+        return str(e), 400
+
+    return (
+        gettext("Your calendar has been created and is now awaiting for approval."),
+        200,
+    )
