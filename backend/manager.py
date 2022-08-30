@@ -85,7 +85,7 @@ class Manager:
         if codes_not_found:
             for code_not_found in codes_not_found:
                 if code_not_found.startswith("EXT:"):
-                    extCal = md.ExternalCalendar.query.filter(
+                    extCal = md.ExternalCalendar.query.filter_by(approved=True).filter(
                         md.ExternalCalendar.code == code_not_found
                     ).first()
                     if extCal is None:  # In case the owner of extCal deleted it
@@ -241,7 +241,7 @@ class Manager:
         courses_matching.extend(
             map(
                 lambda ec: ec.code,
-                md.ExternalCalendar.query.filter(
+                md.ExternalCalendar.query.filter_by(approved=True).filter(
                     md.ExternalCalendar.code.contains(pattern)
                 ).all(),
             )
@@ -344,7 +344,7 @@ class Manager:
         """
         if code.startswith("EXT:"):
             return (
-                md.ExternalCalendar.query.filter(
+                md.ExternalCalendar.query.filter_by(approved=True).filter(
                     md.ExternalCalendar.code == code
                 ).first()
                 is not None
