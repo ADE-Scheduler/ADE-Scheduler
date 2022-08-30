@@ -38,7 +38,7 @@ _.forEach(htmlWebpackPlugin.files.js, function(file) { %>
 <div class="modal fade" id="externalCalendarModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
     <form
-      class="modal-content was-validated"
+      class="modal-content needs-validation"
       id="form-create-external-calendar"
       v-on:submit.prevent="addExternalCalendar"
     >
@@ -103,7 +103,7 @@ _.forEach(htmlWebpackPlugin.files.js, function(file) { %>
           <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
             {{_('Cancel')}}
           </button>
-          <button type="submit" class="btn btn-success" data-bs-dismiss="modal">
+          <button type="submit" class="btn btn-success">
             {{_('Create the calendar')}}
           </button>
         </div>
