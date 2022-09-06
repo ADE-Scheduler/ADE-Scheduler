@@ -1,5 +1,6 @@
 import operator
 from collections import defaultdict, deque
+from datetime import timedelta
 from heapq import nsmallest
 from itertools import chain, product, repeat, starmap
 from typing import Dict, Iterable, List, Optional, Set, Tuple, Union
@@ -85,7 +86,7 @@ class Schedule:
         for course in courses:
             course_events = course.get_events()
             for event in course_events:
-                if event.all_day:
+                if event.all_day or (event.end - event.begin) == timedelta(hours=24):
                     continue
 
                 for dt in [event.begin, event.end]:
