@@ -99,6 +99,7 @@ def clear():
 @calendar.route("/data", methods=["GET"])
 def get_data():
     mng = app.config["MANAGER"]
+    min_time_slot, max_time_slot = session["current_schedule"].get_min_max_time_slots()
     return (
         jsonify(
             {
@@ -121,6 +122,8 @@ def get_data():
                     )
                 ),
                 "autosave": getattr(current_user, "autosave", False),
+                "min_time_slot": min_time_slot,
+                "max_time_slot": max_time_slot,
             }
         ),
         200,
