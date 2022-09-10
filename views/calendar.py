@@ -138,6 +138,9 @@ def load_schedule(id):
     if schedule:
         session["current_schedule"] = schedule.data
         session["current_schedule_modified"] = False
+        min_time_slot, max_time_slot = session[
+            "current_schedule"
+        ].get_min_max_time_slots()
         return (
             jsonify(
                 {
@@ -157,6 +160,8 @@ def load_schedule(id):
                             current_user.get_schedules(),
                         )
                     ),
+                    "min_time_slot": min_time_slot,
+                    "max_time_slot": max_time_slot,
                 }
             ),
             200,
@@ -181,6 +186,8 @@ def add_code(code):
         return gettext("The code you added does not exist in our database."), 404
 
     codes = session["current_schedule"].add_course(code)
+
+    min_time_slot, max_time_slot = session["current_schedule"].get_min_max_time_slots()
     if codes:
         session["current_schedule_modified"] = True
     return (
@@ -188,6 +195,8 @@ def add_code(code):
             {
                 "codes": codes,
                 "events": session["current_schedule"].get_events(json=True),
+                "min_time_slot": min_time_slot,
+                "max_time_slot": max_time_slot,
             }
         ),
         200,
@@ -198,7 +207,18 @@ def add_code(code):
 def remove_code(code):
     session["current_schedule"].remove_course(code)
     session["current_schedule_modified"] = True
-    return (jsonify({"events": session["current_schedule"].get_events(json=True)}), 200)
+
+    min_time_slot, max_time_slot = session["current_schedule"].get_min_max_time_slots()
+    return (
+        jsonify(
+            {
+                "events": session["current_schedule"].get_events(json=True),
+                "min_time_slot": min_time_slot,
+                "max_time_slot": max_time_slot,
+            }
+        ),
+        200,
+    )
 
 
 @calendar.route("/<path:code>/info", methods=["GET"])
