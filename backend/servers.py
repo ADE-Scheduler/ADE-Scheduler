@@ -20,6 +20,8 @@ REQUIRED_CONFIG_KEYS = [
     "classrooms",
     "course_resources",
     "courses",
+    "courses_notify",
+    "courses_renotify",
     "events_in_classroom",
     "project_ids",
     "resource_ids",
@@ -113,6 +115,7 @@ class Server(Redis):
         key: str,
         value: Any,
         expire_in: Optional[Dict[str, int]] = None,
+        notify_expire_in: Optional[Dict[str, int]] = None,
         hmap: bool = False,
     ):
         """
@@ -143,6 +146,10 @@ class Server(Redis):
                 self.setex(key, timedelta(**expire_in), dumped_value)
             else:
                 self.set(key, dumped_value)
+
+        if notify_expire_in:
+            key = f"{key}_is_alive"
+            self.setex(key, timedelta(**notify_expire_in), "")
 
     def contains(self, *keys: str) -> int:
         """
@@ -182,7 +189,7 @@ class Server(Redis):
                 return None
 
     def get_multiple_values(
-        self, *keys: str, prefix: Optional[str] = "", **kwargs
+        self, *keys: str, prefix: str = "", **kwargs
     ) -> Tuple[Dict[str, Any], List[str]]:
         """
         Returns all the values corresponding the given keys. If key does not match any value, the key is returned
@@ -191,7 +198,7 @@ class Server(Redis):
         :param keys: the keys
         :type keys: str
         :param prefix: the prefix to be added to each key
-        :type prefix: Optional[str]
+        :type prefix: str
         :return: a tuple containing all values found and all keys which did not match
         :rtype: Tuple[Dict[str, Any], List[str]]
         """
@@ -207,3 +214,28 @@ class Server(Redis):
                 keys_not_found.append(key)
 
         return values, keys_not_found
+
+    def get_multiple_values_expired(
+        self, *keys: str, prefix: str = ""
+    ) -> Tuple[Dict[str, Optional[bool]]]:
+        """
+        Returns, for each key, wether a expire notification was issued or not, and None is returned if the case the key does not exist.
+        An optional prefix can be added to every key.
+
+        :param keys: the keys
+        :type keys: str
+        :param prefix: the prefix to be added to each key
+        :type prefix: str
+        :return: a tuple containing all values found and all keys which did not match
+        :rtype: Tuple[Dict[str, Optional[bool]]]
+        """
+        values = dict()
+
+        for key in keys:
+            if self.contains(f"{prefix}{key}"):
+                value = not self.contains(f"{prefix}{key}_is_alive")
+            else:
+                value = None
+            values[key] = value
+
+        return values
