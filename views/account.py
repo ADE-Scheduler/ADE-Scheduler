@@ -258,7 +258,7 @@ def add_external_calendar():
             course["code"].upper(),
             course["name"],
             url,
-            course["description"],
+            course.get("description", None),
             current_user,
             False,
         )  # False: waiting to be approved

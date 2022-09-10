@@ -119,8 +119,8 @@ document.addEventListener('DOMContentLoaded', () => {
           locale: document.getElementById('current-locale').innerText.trim(),
           timeZone: 'Europe/Brussels', // Show schedule in the same TZ where classes are given
           height: 'auto',
-          // slotMinTime: '08:00:00',
-          // slotMaxTime: '21:00:00',
+          slotMinTime: '08:00:00',
+          slotMaxTime: '21:00:00',
           navLinks: true, // can click day/week names to navigate views
           editable: false,
           droppable: false,
@@ -369,6 +369,8 @@ document.addEventListener('DOMContentLoaded', () => {
             this.currentSchedule = resp.data.current_schedule;
             this.setUnsavedStatus(resp.data.unsaved);
             this.autoSave = resp.data.autosave;
+            this.calendarOptions.slotMinTime = resp.data.min_time_slot;
+            this.calendarOptions.slotMaxTime = resp.data.max_time_slot;
           })
           .catch((err) => {
             store.error(err.response.data);
@@ -393,6 +395,8 @@ document.addEventListener('DOMContentLoaded', () => {
               this.calendarOptions.events = resp.data.events;
               this.currentSchedule = resp.data.current_schedule;
               this.setUnsavedStatus(resp.data.unsaved);
+              this.calendarOptions.slotMinTime = resp.data.min_time_slot;
+              this.calendarOptions.slotMaxTime = resp.data.max_time_slot;
             })
             .catch((err) => {
               store.error(err.response.data);
@@ -587,6 +591,8 @@ document.addEventListener('DOMContentLoaded', () => {
               this.code = '';
               this.selected_schedule = 0;
               this.setUnsavedStatus(resp.data.unsaved);
+              this.calendarOptions.slotMinTime = resp.data.min_time_slot;
+              this.calendarOptions.slotMaxTime = resp.data.max_time_slot;
             })
             .catch((err) => {
               if (err.response.status === 404) {
@@ -613,6 +619,8 @@ document.addEventListener('DOMContentLoaded', () => {
             this.calendarOptions.events = resp.data.events;
             this.selected_schedule = 0;
             this.setUnsavedStatus(resp.data.unsaved);
+            this.calendarOptions.slotMinTime = resp.data.min_time_slot;
+            this.calendarOptions.slotMaxTime = resp.data.max_time_slot;
           })
           .catch((err) => {
             store.error(err.response.data);

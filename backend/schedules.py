@@ -1,8 +1,9 @@
 import operator
 from collections import defaultdict, deque
+from datetime import timedelta
 from heapq import nsmallest
 from itertools import chain, product, repeat, starmap
-from typing import Dict, Iterable, List, Optional, Set, Union
+from typing import Dict, Iterable, List, Optional, Set, Tuple, Union
 
 from flask import current_app as app
 from flask_babel import lazy_gettext as _l
@@ -75,6 +76,33 @@ class Schedule:
         self.priorities = dict()
         self.color_palette = list(COLOR_PALETTE)
         self.options = dict()
+
+    def get_min_max_time_slots(self) -> Tuple[str, str]:
+        mng = app.config["MANAGER"]
+        ext_cals = filter(lambda s: "EXT:" in s, self.codes)
+
+        courses = mng.get_courses(*ext_cals, project_id=self.project_id)
+        min_time_slot, max_time_slot = (8, 0, 0), (20, 0, 0)
+        for course in courses:
+            course_events = course.get_events()
+            for event in course_events:
+                if event.all_day or (event.end - event.begin) == timedelta(hours=24):
+                    continue
+
+                for dt in [event.begin, event.end]:
+                    tup = dt.hour, dt.minute, dt.second
+
+                    if tup < min_time_slot:
+                        min_time_slot = tup
+                    elif tup > max_time_slot:
+                        max_time_slot = tup
+
+        # slotMaxTime is exclusive
+        max_time_slot = max_time_slot[0] + 1, max_time_slot[1], max_time_slot[2]
+
+        return "{:02d}:{:02d}:{:02d}".format(
+            *min_time_slot
+        ), "{:02d}:{:02d}:{:02d}".format(*max_time_slot)
 
     def reset_best_schedules(self):
         self.best_schedules = list()
