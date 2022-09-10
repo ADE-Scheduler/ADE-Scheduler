@@ -129,6 +129,7 @@ class Manager:
                 self.server.set_value(
                     prefix + code_not_found,
                     course_not_found,
+                    expire_in=self.ttl["classrooms"],
                     notify_expire_in=self.ttl["courses"],
                 )
                 courses[code_not_found] = course_not_found
@@ -149,6 +150,7 @@ class Manager:
                 self.server.set_value(
                     prefix + code_expired,
                     course_expired,
+                    expire_in=self.ttl["classrooms"],
                     notify_expire_in=self.ttl["courses"],
                 )
             except lxml.etree.XMLSyntaxError as e:
