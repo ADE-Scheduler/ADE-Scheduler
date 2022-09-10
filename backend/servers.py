@@ -1,3 +1,4 @@
+import threading
 from datetime import timedelta
 from pickle import dumps, loads
 from typing import Any, Dict, List, Mapping, Optional, Tuple
@@ -113,6 +114,7 @@ class Server(Redis):
         key: str,
         value: Any,
         expire_in: Optional[Dict[str, int]] = None,
+        notify_expire_in: Optional[Dict[str, int]] = None,
         hmap: bool = False,
     ):
         """
@@ -143,6 +145,18 @@ class Server(Redis):
                 self.setex(key, timedelta(**expire_in), dumped_value)
             else:
                 self.set(key, dumped_value)
+
+        def notify_expired(key, expired=True):
+            key = f"{key}_expired"
+            self.set(key, dumps(expired))
+
+        if notify_expire_in:
+            notify_expired(key, expired=False)
+            delay = timedelta(**notify_expire_in).total_seconds()
+            timer = threading.Timer(
+                delay, notify_expired, args=(key,)
+            )
+            timer.start()
 
     def contains(self, *keys: str) -> int:
         """
@@ -182,7 +196,7 @@ class Server(Redis):
                 return None
 
     def get_multiple_values(
-        self, *keys: str, prefix: Optional[str] = "", **kwargs
+        self, *keys: str, prefix: str = "", **kwargs
     ) -> Tuple[Dict[str, Any], List[str]]:
         """
         Returns all the values corresponding the given keys. If key does not match any value, the key is returned
@@ -191,7 +205,7 @@ class Server(Redis):
         :param keys: the keys
         :type keys: str
         :param prefix: the prefix to be added to each key
-        :type prefix: Optional[str]
+        :type prefix: str
         :return: a tuple containing all values found and all keys which did not match
         :rtype: Tuple[Dict[str, Any], List[str]]
         """
@@ -207,3 +221,25 @@ class Server(Redis):
                 keys_not_found.append(key)
 
         return values, keys_not_found
+
+    def get_multiple_values_expired(
+        self, *keys: str, prefix: str = "", **kwargs
+    ) -> Tuple[Dict[str, Optional[bool]]]:
+        """
+        Returns, for each key, wether a expire notification was issued or not, and None is returned if the case the key does not exist.
+        An optional prefix can be added to every key.
+
+        :param keys: the keys
+        :type keys: str
+        :param prefix: the prefix to be added to each key
+        :type prefix: str
+        :return: a tuple containing all values found and all keys which did not match
+        :rtype: Tuple[Dict[str, Optional[bool]]]
+        """
+        values = dict()
+
+        for key in keys:
+            value = self.get_value(f"{prefix}{key}_expired", **kwargs)
+            values[key] = value
+
+        return values
