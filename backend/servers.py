@@ -20,6 +20,8 @@ REQUIRED_CONFIG_KEYS = [
     "classrooms",
     "course_resources",
     "courses",
+    "courses_notify",
+    "courses_renotify",
     "events_in_classroom",
     "project_ids",
     "resource_ids",
@@ -147,7 +149,7 @@ class Server(Redis):
 
         if notify_expire_in:
             key = f"{key}_is_alive"
-            self.setex(key, timedelta(**notify_expire_in), dumps(True))
+            self.setex(key, timedelta(**notify_expire_in), "")
 
     def contains(self, *keys: str) -> int:
         """
