@@ -1,4 +1,3 @@
-import threading
 from datetime import timedelta
 from pickle import dumps, loads
 from typing import Any, Dict, List, Mapping, Optional, Tuple
@@ -146,17 +145,9 @@ class Server(Redis):
             else:
                 self.set(key, dumped_value)
 
-        def notify_expired(key, expired=True):
-            key = f"{key}_expired"
-            self.set(key, dumps(expired))
-
         if notify_expire_in:
-            notify_expired(key, expired=False)
-            delay = timedelta(**notify_expire_in).total_seconds()
-            timer = threading.Timer(
-                delay, notify_expired, args=(key,)
-            )
-            timer.start()
+            key = f"{key}_is_alive"
+            self.setex(key, timedelta(**notify_expire_in), dumps(True))
 
     def contains(self, *keys: str) -> int:
         """
@@ -223,7 +214,7 @@ class Server(Redis):
         return values, keys_not_found
 
     def get_multiple_values_expired(
-        self, *keys: str, prefix: str = "", **kwargs
+        self, *keys: str, prefix: str = ""
     ) -> Tuple[Dict[str, Optional[bool]]]:
         """
         Returns, for each key, wether a expire notification was issued or not, and None is returned if the case the key does not exist.
@@ -239,7 +230,10 @@ class Server(Redis):
         values = dict()
 
         for key in keys:
-            value = self.get_value(f"{prefix}{key}_expired", **kwargs)
+            if self.contains(f"{prefix}{key}"):
+                value = not self.contains(f"{prefix}{key}_is_alive")
+            else:
+                value = None
             values[key] = value
 
         return values
