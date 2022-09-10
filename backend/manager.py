@@ -1,5 +1,6 @@
 from typing import Dict, Iterator, List, Optional, Tuple, Union
 
+import lxml
 import pandas as pd
 import requests
 from flask_babel import gettext
@@ -77,43 +78,85 @@ class Manager:
 
         # Fetch from the server
         prefix = f"[project_id={project_id}]"
+
+        courses_expired = self.server.get_multiple_values_expired(
+            *codes,
+            prefix=prefix,
+        )
         courses, codes_not_found = self.server.get_multiple_values(
             *codes, prefix=prefix
         )
 
+        def _fetch_code(code_not_found):
+            course_not_found = None
+            if code_not_found.startswith("EXT:"):
+                extCal = (
+                    md.ExternalCalendar.query.filter_by(approved=True)
+                    .filter(md.ExternalCalendar.code == code_not_found)
+                    .first()
+                )
+                if extCal is None:  # In case the owner of extCal deleted it
+                    return None
+                url = extCal.url
+                events = Calendar(requests.get(url).text).events
+                events = [
+                    evt.EventEXTERN.from_event(event, code_not_found[4:])
+                    for event in events
+                ]
+                course_not_found = crs.Course(code_not_found[4:], extCal.name)
+                for event in events:
+                    course_not_found.add_activity([event])
+
+            else:
+                resource_ids = self.get_resource_ids(
+                    code_not_found, project_id=project_id
+                )
+                course_not_found = ade.response_to_courses(
+                    self.client.get_activities(resource_ids, project_id)
+                )
+
+            return course_not_found
+
         # Fetch from the api the missing courses
         if codes_not_found:
             for code_not_found in codes_not_found:
-                if code_not_found.startswith("EXT:"):
-                    extCal = md.ExternalCalendar.query.filter_by(approved=True).filter(
-                        md.ExternalCalendar.code == code_not_found
-                    ).first()
-                    if extCal is None:  # In case the owner of extCal deleted it
-                        codes.remove(code_not_found)
-                        continue
-                    url = extCal.url
-                    events = Calendar(requests.get(url).text).events
-                    events = [
-                        evt.EventEXTERN.from_event(event, code_not_found[4:])
-                        for event in events
-                    ]
-                    course_not_found = crs.Course(code_not_found[4:], extCal.name)
-                    for event in events:
-                        course_not_found.add_activity([event])
+                course_not_found = _fetch_code(code_not_found)
 
-                else:
-                    resource_ids = self.get_resource_ids(
-                        code_not_found, project_id=project_id
-                    )
-                    course_not_found = ade.response_to_courses(
-                        self.client.get_activities(resource_ids, project_id)
-                    )
+                if course_not_found is None:
+                    codes.remove(code_not_found)
+                    continue
+
                 self.server.set_value(
                     prefix + code_not_found,
                     course_not_found,
-                    expire_in=self.ttl["courses"],
+                    notify_expire_in=self.ttl["courses"],
                 )
                 courses[code_not_found] = course_not_found
+
+        # Fetch from the api the courses that have expired
+        # those can have errors, we will fetch them later
+        for code_expired in [
+            key for key, expired in courses_expired.items() if expired is True
+        ]:
+            try:
+                course_expired = _fetch_code(code_expired)
+
+                if course_expired is None:
+                    codes.remove(code_expired)
+                    continue
+
+                courses[code_expired] = course_expired
+                self.server.set_value(
+                    prefix + code_expired,
+                    course_expired,
+                    notify_expire_in=self.ttl["courses"],
+                )
+            except lxml.etree.XMLSyntaxError as e:
+                self.server.set_value(
+                    prefix + code_expired,
+                    courses[code_expired],  # this already exists
+                    notify_expire_in=self.ttl["courses"],
+                )
 
         ret = list()
 
@@ -241,9 +284,9 @@ class Manager:
         courses_matching.extend(
             map(
                 lambda ec: ec.code,
-                md.ExternalCalendar.query.filter_by(approved=True).filter(
-                    md.ExternalCalendar.code.contains(pattern)
-                ).all(),
+                md.ExternalCalendar.query.filter_by(approved=True)
+                .filter(md.ExternalCalendar.code.contains(pattern))
+                .all(),
             )
         )
         return courses_matching
@@ -344,9 +387,9 @@ class Manager:
         """
         if code.startswith("EXT:"):
             return (
-                md.ExternalCalendar.query.filter_by(approved=True).filter(
-                    md.ExternalCalendar.code == code
-                ).first()
+                md.ExternalCalendar.query.filter_by(approved=True)
+                .filter(md.ExternalCalendar.code == code)
+                .first()
                 is not None
             )
         if project_id is None:
