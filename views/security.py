@@ -28,7 +28,7 @@ def login():
     # If you use another hostname, you will be logged under `Super Dev` name.
     # WARNING: this won't work the day where we want to add features requiring
     #          a OAuth token... (currently, we do not use it at all.)
-    if request.base_url != "https://ade-scheduler.info.ucl.ac.be/login":
+    if app.env == "development" and request.base_url != "https://ade-scheduler.info.ucl.ac.be/login":
         user = md.User.query.filter_by(fgs="dev").first()
         # If dev user doesn't exist, create it
         if user is None:
