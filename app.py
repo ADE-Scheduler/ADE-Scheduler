@@ -307,6 +307,10 @@ def before_first_request():
 @app.before_request
 def before_request():
     tu.before_request()
+    # Redirect traffic to the .info.ucl.ac.be domain
+    # as it poses an issue with the login system
+    if ".sipr.ucl.ac.be" in request.url_root:
+        return redirect(f"https://ade-scheduler.info.ucl.ac.be/{request.full_path}")
 
 
 @app.after_request
