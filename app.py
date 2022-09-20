@@ -401,7 +401,9 @@ def migrate(token):
     return redirect(url_for("calendar.index"))
 
 
-def format_error_into_message(e: Exception, request, subject="ADE Scheduler Failure: {}") -> Message:
+def format_error_into_message(
+    e: Exception, request, subject="ADE Scheduler Failure: {}"
+) -> Message:
     """
     Formats the error into a (Email) message.
     """
