@@ -42,7 +42,7 @@ def sanitize_string(input_str: str) -> str:
 
 def remove_prefix(s: str, prefix: str) -> str:
     if s.startswith(prefix):
-        return s[len(prefix):]
+        return s[len(prefix) :]
     return s
 
 
@@ -332,7 +332,9 @@ class AcademicalEvent(CustomEvent):
 
     def json(self, color=""):
         r = super().json(color=color)
-        r.update({"title": self.name, "description": self.description, "code": self.code})
+        r.update(
+            {"title": self.name, "description": self.description, "code": self.code}
+        )
 
         # Remove empty lines
         r["description"] = "\n".join(
