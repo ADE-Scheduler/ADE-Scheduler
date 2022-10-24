@@ -40,6 +40,12 @@ def sanitize_string(input_str: str) -> str:
     return remove_accents(input_str).lower()
 
 
+def remove_prefix(s: str, prefix: str) -> str:
+    if s.startswith(prefix):
+        return s[len(prefix) :]
+    return s
+
+
 class CustomEvent(Event):
     """
     Subclass of ics.Event, implementing more methods useful to know if two events are conflicting.
@@ -326,7 +332,9 @@ class AcademicalEvent(CustomEvent):
 
     def json(self, color=""):
         r = super().json(color=color)
-        r.update({"title": self.id, "description": self.description, "code": self.code})
+        r.update(
+            {"title": self.name, "description": self.description, "code": self.code}
+        )
 
         # Remove empty lines
         r["description"] = "\n".join(
@@ -390,6 +398,7 @@ class EventEXTERN(AcademicalEvent):
 
     def __init__(self, **kwargs):
         super().__init__(prefix=EventEXTERN.PREFIX, **kwargs)
+        self.name = remove_prefix(self.name, self.PREFIX)
 
     @classmethod
     def from_event(cls, event: Event, code: str) -> "EventEXTERN":
