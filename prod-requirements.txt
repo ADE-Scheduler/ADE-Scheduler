@@ -30,5 +30,5 @@ user-agents==2.2.0
 bcrypt==3.2.0
 bleach==4.1.0
 authlib==0.15.5
-cryptography==3.4.7
+cryptography==38.0.3
 jinja2==3.0.2
