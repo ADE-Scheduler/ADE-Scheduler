@@ -3,6 +3,7 @@ from collections import defaultdict, deque
 from datetime import timedelta
 from heapq import nsmallest
 from itertools import chain, product, repeat, starmap
+from random import randint
 from typing import Dict, Iterable, List, Optional, Set, Tuple, Union
 
 from flask import current_app as app
@@ -344,6 +345,8 @@ class Schedule:
         """
         courses = self.get_courses()
 
+        seed = randint(1, 9999)
+
         if len(courses) == 0:
             return None
 
@@ -405,8 +408,15 @@ class Schedule:
             # Events present in the best schedule will be later removed from the filter
 
             events = [
-                [data_id.values for _, data_id in data.groupby(level="id")]
-                for _, data in week_data.groupby(level=["code", "type"])["event"]
+                [
+                    data_id.values
+                    for _, data_id in data.sample(frac=1, random_state=seed).groupby(
+                        level="id", sort=False
+                    )
+                ]
+                for _, data in week_data.groupby(level=["code", "type"], sort=False)[
+                    "event"
+                ]
             ]
 
             # Generate all possible schedules for a given week
