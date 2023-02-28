@@ -204,7 +204,6 @@ class User(mxn.UserMixin, db.Model):
             db.session.commit()
 
     def share_schedule_with_emails(self, schedule, *emails: str, level=EDITOR_LEVEL):
-
         if level == OWNER_LEVEL:
             raise LevelAccessDenied
 

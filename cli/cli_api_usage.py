@@ -20,7 +20,6 @@ def api_usage():
 )
 @with_appcontext
 def plot_requests_hist(latest):
-
     click.echo("Reading database...")
 
     table = md.ApiUsage

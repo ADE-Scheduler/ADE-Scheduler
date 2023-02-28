@@ -175,7 +175,6 @@ class Manager:
     def get_events_in_classroom(
         self, classroom_id: str, project_id: str = None
     ) -> List[evt.AcademicalEvent]:
-
         if project_id is None:
             project_id = self.get_default_project_id()
 
@@ -520,7 +519,6 @@ class Manager:
         user: md.User,
         approved: bool,
     ):
-
         if not code.startswith("EXT:"):
             code = "EXT:" + code
 

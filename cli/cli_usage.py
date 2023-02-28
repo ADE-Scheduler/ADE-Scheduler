@@ -59,7 +59,6 @@ def stats():
 )
 @with_appcontext
 def plot_requests_per_blueprint_hist(latest):
-
     click.echo("Reading database...")
 
     table = md.Usage
@@ -108,7 +107,6 @@ def plot_requests_per_blueprint_hist(latest):
 )
 @with_appcontext
 def plot_views_per_blueprint_hist(latest):
-
     click.echo("Reading database...")
     table = md.Usage
 
@@ -159,7 +157,6 @@ def plot_views_per_blueprint_hist(latest):
 @usage.command()
 @with_appcontext
 def plot_ics_requests_hist():
-
     click.echo("Reading database...")
     df = md.table_to_dataframe(md.Usage, columns=["datetime", "url_args"])
 
@@ -222,7 +219,6 @@ def plot_ics_requests_hist():
 @usage.command()
 @with_appcontext
 def plot_unique_ip_addresses_per_day():
-
     click.echo("Reading database...")
     df = md.table_to_dataframe(md.Usage, columns=["datetime", "remote_addr"])
 
@@ -255,7 +251,6 @@ def plot_unique_ip_addresses_per_day():
 @usage.command()
 @with_appcontext
 def plot_platforms_pie():
-
     click.echo("Reading database...")
     sql_query = md.Usage.query.with_entities(md.Usage.ua_platform)
     df = md.query_to_dataframe(sql_query)

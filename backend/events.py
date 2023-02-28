@@ -173,7 +173,6 @@ class RecurringCustomEvent(CustomEvent):
         self.color = RecurringCustomEvent.DEFAULT_COLOR
 
     def json(self, color=None):
-
         if color is None:
             color = self.color
 
