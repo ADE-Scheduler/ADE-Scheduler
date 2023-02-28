@@ -1,7 +1,7 @@
 # Migrate the database
 
-Base on the Flask Mega-Tutorial: https://blog.miguelgrinberg.com/post/the-flask-mega
--tutorial-part-iv-database
+Base on the Flask Mega-Tutorial:
+https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-iv-database.
 
 ## Generate the migration script
 
@@ -23,4 +23,4 @@ flask db upgrade
 
 There also exists the `flask db downgrade` to revert last migration if needed.
 
-\*Note: the `FLASK_APP` environment variable must be defined in order for it to work.
+> **NOTE:** the `FLASK_APP` environment variable must be defined in order for it to work.
