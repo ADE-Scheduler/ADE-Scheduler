@@ -70,7 +70,6 @@ def jyl(app, manager, db):
 
 @pytest.fixture
 def gerom(app, manager, db):
-
     """
     Create a test user.
     Gerom has a confirmed account, but is not logged in.

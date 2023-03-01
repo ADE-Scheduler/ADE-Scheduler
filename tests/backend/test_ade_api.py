@@ -6,7 +6,6 @@ import backend.ade_api as ade
 class TestDummyClientImplementation:
     @staticmethod
     def test_is_expired(ade_client, app):
-
         with app.app_context():
             func = ade_client.is_expired
             got = func()
@@ -16,7 +15,6 @@ class TestDummyClientImplementation:
 
     @staticmethod
     def test_expire_in(ade_client, app):
-
         with app.app_context():
             func = ade_client.expire_in
             t1 = time()
@@ -29,7 +27,6 @@ class TestDummyClientImplementation:
 
     @staticmethod
     def renew_token(ade_client, app):
-
         with app.apprenew_token():
             func = ade_client.renew_token
             got, _ = func()
@@ -38,7 +35,6 @@ class TestDummyClientImplementation:
 
     @staticmethod
     def test_request(ade_client, app):
-
         with app.app_context():
             func = ade_client.request
             got = func(function="projects")
@@ -47,7 +43,6 @@ class TestDummyClientImplementation:
 
 
 def test_get_token(ade_client, app):
-
     with app.app_context():
         func = ade.get_token
 
@@ -57,7 +52,6 @@ def test_get_token(ade_client, app):
 
 
 def test_all_requests(ade_client, app):
-
     with app.app_context():
         # 1. Project ids
 

@@ -219,7 +219,6 @@ class Client(DummyClient):
         self.expiration += time.time()
 
     def request(self, **kwargs: Request) -> requests.Response:
-
         if self.is_expired():
             self.renew_token()
 
@@ -425,7 +424,6 @@ def response_to_course_resources(
     categories = [rsrc.TYPES.COURSE, rsrc.TYPES.COURSE_COMBO]
 
     for response, category in zip(course_resources_response, categories):
-
         root = response_to_root(response)
 
         resources = root.xpath(f"//{category}/.")
@@ -633,7 +631,6 @@ def response_to_courses(activities_response: requests.Response) -> List[Course]:
 
     # Each activity has its unique event type
     for activity in root.xpath("//activity"):
-
         events_list, activity_name, activity_id, activity_code = parse_activity(
             activity
         )
@@ -671,7 +668,6 @@ def response_to_events(
 
     # Each activity has its unique event type
     for activity in root.xpath("//activity"):
-
         events_list, activity_name, activity_id, activity_code = parse_activity(
             activity
         )

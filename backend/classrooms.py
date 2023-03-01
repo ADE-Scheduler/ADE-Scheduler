@@ -122,9 +122,7 @@ def prettify_classrooms(classrooms: pd.DataFrame, sleep: float = 0) -> pd.DataFr
     classrooms = classrooms.apply(__pretty__, axis=1, result_type="expand")
 
     for address in classrooms["address"].unique():
-
         if address not in geo_locations:
-
             response = geolocator.geocode(address, exactly_one=True)
             time.sleep(sleep)
             if response is not None:

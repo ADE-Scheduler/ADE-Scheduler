@@ -188,7 +188,7 @@ def merge_courses(
     name: str = "merged",
     weight: float = 1,
     views: Optional[Dict[str, View]] = None,
-    **kwargs: Any
+    **kwargs: Any,
 ) -> Course:
     """
     Merges multiple courses into one.

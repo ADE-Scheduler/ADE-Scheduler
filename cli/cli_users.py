@@ -59,7 +59,6 @@ def stats():
 @users.command()
 @with_appcontext
 def plot_users_hist():
-
     colors = px.colors.qualitative.Plotly
 
     click.echo("Reading database...")
@@ -102,7 +101,6 @@ def plot_users_hist():
 @users.command()
 @with_appcontext
 def plot_users_emails_pie():
-
     click.echo("Reading datase...")
     df = md.table_to_dataframe(md.User, columns=["email"])
 
@@ -128,7 +126,6 @@ def plot_users_emails_pie():
 @users.command()
 @with_appcontext
 def plot_users_last_seen():
-
     colors = px.colors.qualitative.Plotly
 
     click.echo("Reading database...")

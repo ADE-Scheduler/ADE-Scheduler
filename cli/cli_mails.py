@@ -38,7 +38,6 @@ def mails():
 @click.option("-u", "--all-users", is_flag=True)
 @with_appcontext
 def send(subject, body, recipients, filename, html, all_users):
-
     if filename:
         with open(filename) as f:
             content = json.load(f)
@@ -74,7 +73,6 @@ def send(subject, body, recipients, filename, html, all_users):
 @click.option("-t", "--to-jyl-and-gerom", is_flag=True)
 @with_appcontext
 def send_jwt_token(dry_run, to_jyl_and_gerom):
-
     subject = "ADE Scheduler - Connexion avec l'identifiant UCLouvain"
 
     body = """

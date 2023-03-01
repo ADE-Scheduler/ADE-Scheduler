@@ -1,12 +1,11 @@
 # https://htmlpreview.github.io/?https://github.com/newren/git-filter-repo/blob/docs/html/git-filter-repo.html#_user_and_email_based_filtering
 # https://htmlpreview.github.io/?https://raw.githubusercontent.com/newren/git-filter-repo/docs/html/git-shortlog.html#_mapping_authors
 #
-# Put simply:
+# In summary:
 # 1 - Fetch all 'user name <user_email>' via `git shortlog -sne --all`
-# 2 - For all line that is to be change (either name and/or email), write one line 'correct name <corret_email> incorrect name <incorrect_email>
+# 2 - For each line that is to be changed (either name and/or email), write one line 'correct name <corret_email> incorrect name <incorrect_email>
 # 3 - If all emails are correct, you can just write 'correct name <correct_email>'
 # 4 - Run `git filter-repo --mailmap .mailmap` to fix all authors
-#
 
 # Jerome Eertmans
 Jerome Eertmans <jeertmans@icloud.com>
