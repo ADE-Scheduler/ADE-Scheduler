@@ -71,7 +71,7 @@
       {
         "id": "external-calendars",
         "title": "Calendriers externes",
-        "content": "Vous avez peut-être un calendrier que vous aimeriez partager avec les utilisateurs d'ADE Scheduler ? Le cas classique serait pour des évènements étudiants comme ceux de la CASA, les 24h Vélom etc. Ceci est possible en allant sur la page compte et en créant votre propre calendrier externe. Pour cela, vous devez fournir un lien iCal vers votre calendrier. Ce type de lien peut facilement être généré, par ex., depuis votre calendrier Google Agenda. Afin d'éviter le spam, votre calendrier doit d'abord etre apprové par nous avant de pouvoir être public, ce pourquoi nous vous recommendons d'utiliser le champ de description afin de nous communiquer l'objectif de votre calendrier, ainsi que de nous envoyer un mail."
+        "content": "Vous avez peut-être un calendrier que vous aimeriez partager avec les utilisateurs d'ADE Scheduler ? Le cas classique serait pour des évènements étudiants comme ceux de la CASA, les 24h Vélo, etc. Ceci est possible en allant sur la page compte et en créant votre propre calendrier externe. Pour cela, vous devez fournir un lien iCal vers votre calendrier. Ce type de lien peut facilement être généré, par ex., depuis votre calendrier Google Agenda. Afin d'éviter le spam, votre calendrier doit d'abord etre apprové par nous avant de pouvoir être public, ce pourquoi nous vous recommendons d'utiliser le champ de description afin de nous communiquer l'objectif de votre calendrier, ainsi que de nous envoyer un mail."
       }
 
     ]
