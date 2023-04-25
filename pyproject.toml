@@ -26,7 +26,7 @@ readme = "README.md"
 version = "0.1.0"
 
 [tool.poetry.dependencies]
-alembic = "1.7.4"
+alembic = "1.10.4"
 authlib = "0.15.5"
 bcrypt = "3.2.0"
 bleach = "4.1.0"
