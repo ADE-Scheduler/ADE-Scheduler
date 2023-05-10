@@ -1,12 +1,12 @@
-[package]
-name = "backend"
-version = "0.1.0"
-edition = "2021"
+[dependencies]
+pyo3 = {version = "0.16.5", features = ["extension-module"]}
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [lib]
-name = "backend"
 crate-type = ["cdylib"]
+name = "backend"
 
-[dependencies]
-pyo3 = { version = "0.16.5", features = ["extension-module"] }
+[package]
+edition = "2021"
+name = "backend"
+version = "0.1.0"
