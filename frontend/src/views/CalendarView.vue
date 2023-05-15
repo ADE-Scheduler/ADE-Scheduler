@@ -1,21 +1,9 @@
 <script setup lang="ts">
-import { useI18n } from "vue-i18n";
-
-const { t } = useI18n({
-  inheritLocale: true,
-  useScope: "local",
-});
+import Calendar from '@/components/MainCalendar.vue';
 </script>
 
 <template>
   <main>
-    <h1>{{ t("calendar") }}</h1>
+    <Calendar />
   </main>
 </template>
-
-<i18n lang="yaml">
-en:
-  calendar: "Calendar"
-fr:
-  calendar: "Calendrier"
-</i18n>

@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { useI18n } from "vue-i18n";
+import { useI18n } from 'vue-i18n';
 
 const { locale } = useI18n({
-  useScope: "global",
+  useScope: 'global',
 });
 </script>
 
 <template>
   <div class="dropdown">
     <button
-      class="dropdown-toggle btn btn-link text-decoration-none text-white"
+      class="dropdown-toggle btn btn-link text-decoration-none link-body-emphasis"
       type="button"
       data-bs-toggle="dropdown"
       aria-expanded="false"
