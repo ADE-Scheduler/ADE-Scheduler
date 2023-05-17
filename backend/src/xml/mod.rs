@@ -57,6 +57,7 @@ use serde::{Deserialize, Deserializer};
 ///
 /// assert_eq!(activities.activities[0].name, "LEPL1104=E");
 /// ```
+#[allow(clippy::tabs_in_doc_comments)]
 #[derive(Debug, Deserialize)]
 pub struct Activities {
     #[serde(rename = "activity")]
@@ -205,6 +206,7 @@ pub enum Category {
 ///
 /// assert_eq!(resources.resources[0].name, "KINE21M_G8-A");
 /// ```
+#[allow(clippy::tabs_in_doc_comments)]
 #[derive(Debug, Deserialize)]
 pub struct Resources {
     #[serde(rename = "resource")]
@@ -236,6 +238,7 @@ pub struct Resource {
 ///
 /// assert_eq!(projects.projects[0].name, "2022-2023");
 /// ```
+#[allow(clippy::tabs_in_doc_comments)]
 #[derive(Debug, Deserialize)]
 pub struct Projects {
     #[serde(rename = "project")]
