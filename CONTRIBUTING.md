@@ -7,7 +7,7 @@ smoothly.
 
 If you have an idea or a bug, please report it first in the
 [Issues](https://github.com/ADE-Scheduler/ADE-Scheduler/issues)
-tab of the repository so we can discuss it and decide of the best strategy to
+tab of the repository, so we can discuss it and decide of the best strategy to
 bring your idea to life. Directly issuing a pull request is generally a bad
 idea: you might end up coding something that has already been done or
 is being done.
