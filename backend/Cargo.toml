@@ -1,6 +1,7 @@
-[[bin]]
-name = "backend"
-path = "src/bin.rs"
+[package.metadata.docs.rs]
+all-features = true
+cargo-args = ["-Zunstable-options", "-Zrustdoc-scrape-examples"]
+rustdoc-args = ["--cfg", "docsrs"]
 
 [dependencies]
 chrono = {version = "0.4.24", features = ["serde"]}
@@ -9,7 +10,6 @@ quick-xml = {version = "0.28.2", features = ["serialize"]}
 roxmltree = "0.18.0"
 serde = {version = "1.0.163", features = ["derive"]}
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [lib]
 crate-type = ["cdylib"]
 name = "backend"

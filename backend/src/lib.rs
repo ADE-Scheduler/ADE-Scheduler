@@ -1,5 +1,6 @@
 use pyo3::prelude::*;
-use roxmltree::Document;
+
+pub mod xml;
 
 /*
 struct Activity {
