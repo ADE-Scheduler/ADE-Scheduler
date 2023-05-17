@@ -10,6 +10,22 @@ on:
     branches: [main]
 
 jobs:
+  backend:
+    defaults:
+      run:
+        working-directory: ./backend
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout sources
+      uses: actions/checkout@v3
+
+    - name: Install stable toolchain
+      uses: dtolnay/rust-toolchain@stable
+
+    - name: Cache dependencies
+      uses: Swatinem/rust-cache@v2
+
+    - run: cargo test
   build:
     runs-on: ubuntu-latest
     env:

@@ -163,7 +163,7 @@ pub enum Category {
     Category5,
     /// A course name.
     ///
-    /// Only a very small percent of course names are in this 
+    /// Only a very small percent of course names are in this
     /// category, and most of the other courses are [`Category::Category6`].
     Category6,
     /// Maintenance activity.

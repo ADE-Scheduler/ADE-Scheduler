@@ -27,7 +27,7 @@ repos:
   - id: pretty-format-yaml
     args: [--autofix]
   - id: pretty-format-toml
-    exclude: poetry.lock
+    exclude: .*.lock
     args: [--autofix]
 - repo: https://github.com/psf/black
   rev: 23.1.0
