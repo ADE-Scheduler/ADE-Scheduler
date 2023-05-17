@@ -1,28 +1,25 @@
 <script setup lang="ts">
-import { RouterLink } from 'vue-router';
-import { useI18n } from 'vue-i18n';
+import { RouterLink } from "vue-router";
+import { useI18n } from "vue-i18n";
 
-import ToggleDark from '@/components/ToggleDark.vue';
-import ToggleLocale from '@/components/ToggleLocale.vue';
+import ToggleDark from "@/components/ToggleDark.vue";
+import ToggleLocale from "@/components/ToggleLocale.vue";
 
 // i18n stuff
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local',
+  useScope: "local",
 });
 </script>
 
 <template>
   <nav
-    class="navbar navbar-expand-lg sticky-top bg-body-tertiary"
+    class="navbar navbar-expand-lg shadow sticky-top bg-body-tertiary"
     data-bs-theme="dark"
   >
     <div class="container-fluid">
       <!-- logo -->
-      <a
-        class="navbar-brand"
-        href="#"
-      >ADE Scheduler</a>
+      <a class="navbar-brand" href="#">ADE Scheduler</a>
       <!-- collapser -->
       <button
         class="navbar-toggler"
@@ -36,28 +33,17 @@ const { t } = useI18n({
         <span class="navbar-toggler-icon" />
       </button>
       <!-- collapsee -->
-      <div
-        id="navbarNav"
-        class="collapse navbar-collapse"
-      >
+      <div id="navbarNav" class="collapse navbar-collapse">
         <!-- nav links -->
         <ul class="navbar-nav">
           <li class="nav-item">
-            <RouterLink
-              class="nav-link"
-              to="/"
-            >
+            <RouterLink class="nav-link" to="/">
               {{ t("calendar") }}
             </RouterLink>
           </li>
           <li class="nav-item">
-            <RouterLink
-              class="nav-link"
-              to="/"
-            >
-              {{
-                t("classrooms")
-              }}
+            <RouterLink class="nav-link" to="/">
+              {{ t("classrooms") }}
             </RouterLink>
           </li>
         </ul>

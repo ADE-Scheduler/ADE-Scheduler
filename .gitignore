@@ -1,2 +1,8 @@
 # Hide secrets stored in environ file
 .flaskenv
+
+# Node.js modules
+node_modules/
+
+# Frontend build files
+dist/

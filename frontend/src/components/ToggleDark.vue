@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n';
-import { UseDark } from '@vueuse/components';
+import { useI18n } from "vue-i18n";
+import { UseDark } from "@vueuse/components";
 
 // i18n stuff
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local',
+  useScope: "local",
 });
 </script>
 
@@ -23,14 +23,8 @@ const { t } = useI18n({
         data-bs-toggle="dropdown"
         aria-expanded="false"
       >
-        <i
-          v-if="isDark"
-          class="bi bi-moon-stars"
-        />
-        <i
-          v-else
-          class="bi bi-sun"
-        />
+        <i v-if="isDark" class="bi bi-moon-stars" />
+        <i v-else class="bi bi-sun" />
       </button>
       <ul
         class="dropdown-menu dropdown-menu-end border p-1"
@@ -45,10 +39,7 @@ const { t } = useI18n({
           >
             <i class="bi bi-sun-fill me-2" />
             {{ t("light") }}
-            <i
-              v-if="!isDark"
-              class="bi bi-check ms-auto"
-            />
+            <i v-if="!isDark" class="bi bi-check ms-auto" />
           </a>
         </li>
         <li class="mt-1">
@@ -60,10 +51,7 @@ const { t } = useI18n({
           >
             <i class="bi bi-moon-stars-fill me-2" />
             {{ t("dark") }}
-            <i
-              v-if="isDark"
-              class="bi bi-check ms-auto"
-            />
+            <i v-if="isDark" class="bi bi-check ms-auto" />
           </a>
         </li>
       </ul>
