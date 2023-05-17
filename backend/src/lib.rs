@@ -1,5 +1,45 @@
-
 use pyo3::prelude::*;
+use roxmltree::Document;
+
+/*
+struct Activity {
+    id: usize,
+    name: String,
+    _type: String,
+    events: Vec<Event>,
+}
+
+struct Event {
+    id: usize,
+    name: String,
+    end_hour: Date,
+    start_hour: Date,
+    date: Date,
+    info: String,
+    note: String,
+    event_participants: Vec<EventParticipant>,
+}
+
+struct EventParticipant {
+    category: Category,
+    name: String,
+}
+
+enum Category {
+    Trainee,
+    Instructor,
+    Classroom,
+    Equipment,
+    Category5,
+    Category6,
+    Category7,
+    Category8,
+}
+
+fn parse_activity(doc: Document<'_>) -> Result<Activity, String> {
+
+}
+*/
 
 /// Formats the sum of two numbers as string.
 #[pyfunction]

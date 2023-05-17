@@ -1,2 +1,4 @@
 # Hide secrets stored in environ file
 .flaskenv
+
+backend/Cargo.lock
