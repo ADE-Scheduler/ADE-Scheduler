@@ -1,9 +1,13 @@
+[[bin]]
+name = "backend"
+path = "src/bin.rs"
+
 [dependencies]
-chrono = { version = "0.4.24", features = ["serde"] }
+chrono = {version = "0.4.24", features = ["serde"]}
 pyo3 = {version = "0.16.5", features = ["extension-module"]}
-quick-xml = { version = "0.28.2", features = ["serialize"] }
+quick-xml = {version = "0.28.2", features = ["serialize"]}
 roxmltree = "0.18.0"
-serde = { version = "1.0.163", features = ["derive"] }
+serde = {version = "1.0.163", features = ["derive"]}
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [lib]
@@ -14,7 +18,3 @@ name = "backend"
 edition = "2021"
 name = "backend"
 version = "0.1.0"
-
-[[bin]]
-name = "backend"
-path = "src/bin.rs"
