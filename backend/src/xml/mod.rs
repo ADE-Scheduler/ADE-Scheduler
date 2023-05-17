@@ -4,8 +4,7 @@
 //! Note that only useful values are kept.
 
 use chrono::{NaiveDate, NaiveTime};
-use serde::de::Error;
-use serde::{Deserialize, Deserializer};
+use serde::{de::Error, Deserialize, Deserializer};
 
 /// Result from a `getActivities` request.
 ///
@@ -70,7 +69,8 @@ pub struct Activities {
 /// the same name.
 ///
 /// For example, under the course named "LEPL1104", the activity
-/// "LEPL1104_Q1" is for all the pratical sessions (`_`) of the 1st session (`Q1`).
+/// "LEPL1104_Q1" is for all the pratical sessions (`_`) of the 1st session
+/// (`Q1`).
 ///
 /// Sometimes, the activity type is also specified by the `_type` field.
 #[derive(Debug, Deserialize)]

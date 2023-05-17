@@ -1,7 +1,6 @@
 use serde::Deserialize;
 
-use super::error::Result;
-use super::xml::Resources;
+use super::{error::Result, xml::Resources};
 
 pub struct Credentials {
     pub url: String,
