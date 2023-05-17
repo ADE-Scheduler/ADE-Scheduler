@@ -8,8 +8,8 @@ on:
 name: Rust lints
 
 defaults:
- run:
-  working-directory: ./backend
+  run:
+    working-directory: ./backend
 
 jobs:
   clippy:
