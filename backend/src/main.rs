@@ -1,6 +1,6 @@
 use rocket::get;
 use rocket_okapi::openapi;
-use rocket_okapi::swagger_ui::*; 
+use rocket_okapi::swagger_ui::*;
 
 use backend::ade::{Client, Credentials};
 
