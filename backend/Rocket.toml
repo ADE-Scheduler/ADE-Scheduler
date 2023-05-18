@@ -1,0 +1,26 @@
+# Read more: https://rocket.rs/v0.5-rc/guide/configuration/
+
+[debug]
+port = 5000
+
+[default]
+
+[default.ade]
+# In .env, you must specify the environ variable
+# ROCKET_ADE={authorization="<you_key>"}
+authorization = "..."
+data = "grant_type=client_credentials"
+endpoints = {token = "token/", api = "ade/v0/"}
+url = "https://gw.api.uclouvain.be/"
+
+[default.oauth.uclouvain]
+# In .env, you must specify the environ variable
+# ROCKET_OAUTH={uclouvain={client_id="<you_id>",client_secret="<your_secret>"}}
+client_id = "..."
+client_secret = "..."
+provider = "uclouvain"  # TODO: check
+redirect_uri = "..."
+
+[release]
+address = "ade-scheduler.info.ucl.ac.be"
+port = 443

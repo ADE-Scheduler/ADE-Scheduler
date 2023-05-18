@@ -1,11 +1,21 @@
-use serde::Deserialize;
+use rocket::serde::Deserialize;
 
 use super::{error::Result, xml::Resources};
 
+#[derive(Debug, Deserialize)]
+#[serde(crate = "rocket::serde")]
+pub struct Endpoints {
+    pub api: String,
+    pub token: String,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(crate = "rocket::serde")]
 pub struct Credentials {
     pub url: String,
     pub data: String,
     pub authorization: String,
+    pub endpoints: Endpoints,
 }
 
 pub struct Client {
@@ -20,12 +30,21 @@ pub struct Token {
 }
 
 impl Client {
+    pub fn new(credentials: Credentials) -> Self {
+        Self {
+            client: reqwest::Client::new(),
+            credentials,
+        }
+    }
     pub async fn get_token(&self) -> Result<Token> {
         let response = self
             .client
-            .get(&self.credentials.url)
+            .post(format!(
+                "{}{}",
+                self.credentials.url, self.credentials.endpoints.token
+            ))
             .header("Authorization", &self.credentials.authorization)
-            .form(&self.credentials.data)
+            .body(self.credentials.data.clone())
             .send()
             .await?;
 
@@ -35,11 +54,12 @@ impl Client {
     }
 
     pub async fn get_resources(&self, token: Token, project_id: u32) -> Result<Resources> {
+        let url = &self.credentials.url;
+        let api = &self.credentials.endpoints.api;
         let response = self
             .client
             .get(format!(
-                "https://gw.api.uclouvain.be/ade/v0/projects/\
-                {project_id}/function=getResources&tree=false&detail=13"
+                "{url}{api}projects/{project_id}/function=getResources&tree=false&detail=13"
             ))
             .bearer_auth(token.access_token)
             .send()
