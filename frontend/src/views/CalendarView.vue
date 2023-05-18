@@ -1,9 +1,20 @@
 <script setup lang="ts">
-import Calendar from "@/components/MainCalendar.vue";
+import MainCalendar from "@/components/MainCalendar.vue";
+import OffcanvasMenu from "@/components/OffcanvasMenu.vue";
 </script>
 
 <template>
   <main>
-    <Calendar />
+    <div class="container-fluid d-flex p-0">
+      <OffcanvasMenu>
+        <template #header>
+          Menu
+        </template>
+        <template #body>
+          Body
+        </template>
+      </OffcanvasMenu>
+      <MainCalendar />
+    </div>
   </main>
 </template>

@@ -21,7 +21,6 @@ const { t } = useI18n({
         class="dropdown-toggle btn btn-link link-body-emphasis"
         type="button"
         data-bs-toggle="dropdown"
-        aria-expanded="false"
       >
         <i v-if="isDark" class="bi bi-moon-stars" />
         <i v-else class="bi bi-sun" />

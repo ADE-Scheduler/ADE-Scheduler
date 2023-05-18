@@ -20,9 +20,9 @@ const calendarOptions = ref({
   timeZone: "UTC",
   themeSystem: "bootstrap5",
   headerToolbar: {
-    left: "prev,next today",
+    left: "",
     center: "title",
-    right: "dayGridMonth,timeGridWeek,timeGridDay",
+    right: "",
   },
   weekNumbers: true,
   dayMaxEvents: true, // allow "more" link when too many events
@@ -31,7 +31,7 @@ const calendarOptions = ref({
 </script>
 
 <template>
-  <div class="container py-4">
+  <div class="container py-3">
     <div
       class="p-lg-5 p-2 bg-body-tertiary rounded-3 border border-light-subtle"
     >

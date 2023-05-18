@@ -12,7 +12,6 @@ const { locale } = useI18n({
       class="dropdown-toggle btn btn-link text-decoration-none link-body-emphasis"
       type="button"
       data-bs-toggle="dropdown"
-      aria-expanded="false"
     >
       {{ locale.toUpperCase() }}
     </button>

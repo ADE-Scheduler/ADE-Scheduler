@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { RouterLink } from "vue-router";
 import { useI18n } from "vue-i18n";
+import { RouterLink } from "vue-router";
 
 import ToggleDark from "@/components/ToggleDark.vue";
 import ToggleLocale from "@/components/ToggleLocale.vue";
@@ -25,15 +25,12 @@ const { t } = useI18n({
         class="navbar-toggler"
         type="button"
         data-bs-toggle="collapse"
-        data-bs-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
+        data-bs-target="#main-navbar"
       >
         <span class="navbar-toggler-icon" />
       </button>
       <!-- collapsee -->
-      <div id="navbarNav" class="collapse navbar-collapse">
+      <div id="main-navbar" class="collapse navbar-collapse">
         <!-- nav links -->
         <ul class="navbar-nav">
           <li class="nav-item">
