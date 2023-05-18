@@ -19,8 +19,8 @@ url = "https://gw.api.uclouvain.be/"
 client_id = "..."
 client_secret = "..."
 provider = "uclouvain"  # TODO: check
-redirect_uri = "..."
+redirect_uri = "..."  # TODO: edit
 
 [release]
-address = "ade-scheduler.info.ucl.ac.be"
+address = "ade-scheduler.info.ucl.ac.be"  # TODO: fix
 port = 443
