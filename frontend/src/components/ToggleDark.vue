@@ -22,8 +22,8 @@ const { t } = useI18n({
       @click="toggleDark()"
     >
       <Transition name="fade" mode="out-in">
-        <i key="1" v-if="isDark" class="bi bi-moon-stars" />
-        <i key="2" v-else class="bi bi-sun" />
+        <i v-if="isDark" class="bi bi-moon-stars" />
+        <i v-else class="bi bi-sun" />
       </Transition>
     </button>
   </UseDark>
