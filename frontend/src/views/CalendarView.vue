@@ -7,12 +7,8 @@ import OffcanvasMenu from "@/components/OffcanvasMenu.vue";
   <main>
     <div class="container-fluid d-flex p-0">
       <OffcanvasMenu>
-        <template #header>
-          Menu
-        </template>
-        <template #body>
-          Body
-        </template>
+        <template #header> Menu </template>
+        <template #body> Body </template>
       </OffcanvasMenu>
       <MainCalendar />
     </div>
