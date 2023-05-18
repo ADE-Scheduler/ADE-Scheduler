@@ -1,6 +1,12 @@
+use rocket::get;
+use rocket_okapi::openapi;
+use rocket_okapi::swagger_ui::*; 
+
 use backend::ade::{Client, Credentials};
 
-#[rocket::get("/")]
+/// Index page.
+#[openapi]
+#[get("/")]
 fn index() -> &'static str {
     "Hello, world!"
 }
@@ -22,14 +28,20 @@ async fn main() -> Result<(), rocket::Error> {
     let token = client.get_token().await.unwrap();
     println!("Token: {token:?}");
 
-    rocket
+    let _ = rocket
         .mount(
             "/",
-            rocket::routes![
+            rocket_okapi::openapi_get_routes![
                 index,
                 backend::routes::calendar,
                 backend::routes::classrooms
             ],
+        ).mount(
+            "/swagger-ui/",
+            make_swagger_ui(&SwaggerUIConfig {
+                url: "../openapi.json".to_owned(),
+                ..Default::default()
+            }),
         )
         .launch()
         .await?;
