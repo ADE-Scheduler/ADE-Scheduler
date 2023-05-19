@@ -15,7 +15,7 @@ pub trait Parameters {
     /// # use backend::ade::Token;
     /// # use backend::error::Result;
     /// use reqwest::Client;
-    /// 
+    ///
     /// async fn get_resources(client: &Client, token: &Token) -> Result<Resources> {
     ///     let response = client
     ///         .get("some/api/url/")
