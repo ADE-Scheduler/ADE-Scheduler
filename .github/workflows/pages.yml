@@ -52,7 +52,7 @@ jobs:
       if: github.event_name != 'pull_request'
       uses: actions/upload-pages-artifact@v1
       with:
-        path: backend/target/doc/backend/
+        path: backend/target/doc/
 
     - name: Deploy to GitHub Pages
       id: deployment
