@@ -43,7 +43,12 @@ jobs:
     - name: Cache dependencies
       uses: Swatinem/rust-cache@v2
 
-    - run: cargo doc --lib --no-deps
+    - name: Build docs
+      run: cargo doc --lib --no-deps
+  
+    - name: Create index.html symlink
+      working-directory: ./backend/target/doc
+      run: ln -s backend/index.html index.html
 
     - name: Setup Pages
       uses: actions/configure-pages@v2
