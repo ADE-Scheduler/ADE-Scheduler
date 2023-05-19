@@ -46,9 +46,12 @@ jobs:
     - name: Build docs
       run: cargo doc --lib --no-deps
   
-    - name: Create index.html symlink
-      working-directory: ./backend/target/doc
-      run: ln -s backend/index.html index.html
+    - name: Fix index.html problem
+      # See: https://dev.to/deciduously/prepare-your-rust-api-docs-for-github-pages-2n5i
+      run: |
+        rm -rf ./docs
+        echo "<meta http-equiv=\"refresh\" content=\"0; url=backend\">" > target/doc/index.html
+        cp -r target/doc ./docs
 
     - name: Setup Pages
       uses: actions/configure-pages@v2
@@ -57,7 +60,7 @@ jobs:
       if: github.event_name != 'pull_request'
       uses: actions/upload-pages-artifact@v1
       with:
-        path: backend/target/doc/
+        path: backend/docs/
 
     - name: Deploy to GitHub Pages
       id: deployment
