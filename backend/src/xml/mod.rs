@@ -6,7 +6,34 @@
 use chrono::{NaiveDate, NaiveTime};
 use serde::{de::Error, Deserialize, Deserializer};
 
+/// Convenience trait for building requests with [`reqwest::RequestBuilder`].
+pub trait Parameters {
+    /// Return the query parameters needed to obtain a valid XML response.
+    ///
+    /// ```
+    /// # use backend::xml::{Parameters, Resources};
+    /// # use backend::ade::Token;
+    /// # use backend::error::Result;
+    /// use reqwest::Client;
+    /// 
+    /// async fn get_resources(client: &Client, token: &Token) -> Result<Resources> {
+    ///     let response = client
+    ///         .get("some/api/url/")
+    ///         .bearer_auth(token.access_token.clone())
+    ///         .query(Resources::parameters())
+    ///         .send()
+    ///         .await?;
+    ///
+    ///     let resources = response.text().await?.parse()?;
+    ///
+    ///     Ok(resources)
+    /// }
+    fn parameters() -> &'static [(&'static str, &'static str)];
+}
+
 /// Result from a `getActivities` request.
+///
+/// Minimal level of details required: 17 (maximum).
 ///
 /// ```
 /// # use backend::xml::Activities;
@@ -61,6 +88,12 @@ use serde::{de::Error, Deserialize, Deserializer};
 pub struct Activities {
     #[serde(rename = "activity")]
     pub activities: Vec<Activity>,
+}
+
+impl Parameters for Activities {
+    fn parameters() -> &'static [(&'static str, &'static str)] {
+        &[("tree", "false"), ("function", "getActivities"), ("detail", "17")]
+    }
 }
 
 /// An activity.
@@ -149,6 +182,7 @@ pub struct EventParticipant {
     pub id: u32,
 }
 
+/// Enumeration of all categories returned by ADE's API.
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub enum Category {
@@ -169,14 +203,16 @@ pub enum Category {
     Category6,
     /// Maintenance activity.
     ///
-    /// Very activities are under this name.
+    /// Very few activities are under this name.
     /// Catering and cleaning are in this category.
     Category7,
     /// Unknown category.
     Category8,
 }
 
-/// Result from a `getResources` request with not filter on category types.
+/// Result from a `getResources` request with no filter on category types.
+///
+/// Minimal level of details required: 3.
 ///
 /// ```
 /// # use backend::xml::Resources;
@@ -213,6 +249,12 @@ pub struct Resources {
     pub resources: Vec<Resource>,
 }
 
+impl Parameters for Resources {
+    fn parameters() -> &'static [(&'static str, &'static str)] {
+        &[("tree", "false"), ("function", "getResources"), ("detail", "3")]
+    }
+}
+
 /// A resource.
 #[derive(Debug, Deserialize)]
 pub struct Resource {
@@ -225,6 +267,8 @@ pub struct Resource {
 }
 
 /// Result from a `getProjects` request.
+///
+/// Minimal level of details required: 2.
 ///
 /// ```
 /// # use backend::xml::Projects;
@@ -243,6 +287,13 @@ pub struct Resource {
 pub struct Projects {
     #[serde(rename = "project")]
     pub projects: Vec<Project>,
+}
+
+
+impl Parameters for Projects {
+    fn parameters() -> &'static [(&'static str, &'static str)] {
+        &[("function", "getProjects"), ("detail", "2")]
+    }
 }
 
 /// A project for a given academic year.

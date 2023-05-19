@@ -4,7 +4,7 @@ name: Deploy static content to Pages
 on:
   # Runs on pushes targeting the default branch
   push:
-    branches: [main]
+    branches: [main, refactor]
 
   pull_request:
 
@@ -29,29 +29,31 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    defaults:
+      run:
+        working-directory: ./backend
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
+    - name: Checkout sources
       uses: actions/checkout@v3
-    - name: Install Poetry
-      run: pipx install poetry
-    - name: Install Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.9'
-        cache: poetry
+
+    - name: Install stable toolchain
+      uses: dtolnay/rust-toolchain@stable
+
+    - name: Cache dependencies
+      uses: Swatinem/rust-cache@v2
+
+    - run: cargo doc --lib --no-deps
+
     - name: Setup Pages
       uses: actions/configure-pages@v2
-    - name: Install local Python package
-      run: poetry install --with docs
-    - name: Build docs
-      run: cd docs && poetry run make html
+
     - name: Upload artifact
       if: github.event_name != 'pull_request'
       uses: actions/upload-pages-artifact@v1
       with:
-        # Upload docs/build/html dir
-        path: docs/build/html/
+        path: backend/target/doc/backend/
+
     - name: Deploy to GitHub Pages
       id: deployment
       if: github.event_name != 'pull_request'

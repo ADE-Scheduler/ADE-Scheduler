@@ -2,7 +2,7 @@
 
 This folder contains Rust code to execute the backend server.
 
-To install Rust, please refer to https://www.rust-lang.org/tools/install.
+To install Rust, please refer to <https://www.rust-lang.org/tools/install>.
 
 ## Running the server
 
@@ -18,7 +18,7 @@ so prefer using `cargo check` to verify that the code compile.
 ## Formatting the code
 
 Rust code can be formatted with its own formatter. Since we used nightly features,
-you need to install the nightly channel with:
+you need to install the nightly toolchain with:
 
 ```bash
 rustup toolchain install nightly

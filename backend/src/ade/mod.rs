@@ -1,3 +1,5 @@
+//! Easily build requests to ADE'S API.
+
 use rocket::serde::Deserialize;
 
 use super::{error::Result, xml::Resources};
@@ -53,7 +55,7 @@ impl Client {
         Ok(token)
     }
 
-    pub async fn get_resources(&self, token: Token, project_id: u32) -> Result<Resources> {
+    pub async fn get_resources(&self, token: &Token, project_id: u32) -> Result<Resources> {
         let url = &self.credentials.url;
         let api = &self.credentials.endpoints.api;
         let response = self
@@ -61,7 +63,7 @@ impl Client {
             .get(format!(
                 "{url}{api}projects/{project_id}/function=getResources&tree=false&detail=13"
             ))
-            .bearer_auth(token.access_token)
+            .bearer_auth(token.access_token.clone())
             .send()
             .await?;
         let resources = response.text().await?.parse()?;

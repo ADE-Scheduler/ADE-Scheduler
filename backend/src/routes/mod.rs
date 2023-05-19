@@ -1,3 +1,5 @@
+//! HTTP routes.
+
 use rocket::get;
 use rocket_okapi::openapi;
 
