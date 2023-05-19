@@ -45,7 +45,7 @@ jobs:
 
     - name: Build docs
       run: cargo doc --lib --no-deps
-  
+
     - name: Fix index.html problem
       # See: https://dev.to/deciduously/prepare-your-rust-api-docs-for-github-pages-2n5i
       run: |
