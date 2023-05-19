@@ -45,7 +45,7 @@ jobs:
 
     - name: Build docs
       run: cargo doc --lib --no-deps
-  
+
     - name: Create index.html symlink
       working-directory: ./backend/target/doc
       run: ln -s backend/index.html index.html
