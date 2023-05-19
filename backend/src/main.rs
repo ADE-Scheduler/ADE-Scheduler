@@ -1,6 +1,5 @@
 use rocket::get;
-use rocket_okapi::openapi;
-use rocket_okapi::swagger_ui::*;
+use rocket_okapi::{openapi, swagger_ui::*};
 
 use backend::ade::{Client, Credentials};
 
@@ -36,7 +35,8 @@ async fn main() -> Result<(), rocket::Error> {
                 backend::routes::calendar,
                 backend::routes::classrooms
             ],
-        ).mount(
+        )
+        .mount(
             "/swagger-ui/",
             make_swagger_ui(&SwaggerUIConfig {
                 url: "../openapi.json".to_owned(),

@@ -10,6 +10,4 @@ pub struct Schedule {
     pub filters: HashMap<String, Vec<String>>,
 }
 
-pub struct Event {
-
-}
+pub struct Event {}

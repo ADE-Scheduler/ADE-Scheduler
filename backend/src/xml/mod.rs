@@ -15,7 +15,7 @@ pub trait Parameters {
     /// # use backend::ade::Token;
     /// # use backend::error::Result;
     /// use reqwest::Client;
-    /// 
+    ///
     /// async fn get_resources(client: &Client, token: &Token) -> Result<Resources> {
     ///     let response = client
     ///         .get("some/api/url/")
@@ -92,7 +92,11 @@ pub struct Activities {
 
 impl Parameters for Activities {
     fn parameters() -> &'static [(&'static str, &'static str)] {
-        &[("tree", "false"), ("function", "getActivities"), ("detail", "17")]
+        &[
+            ("tree", "false"),
+            ("function", "getActivities"),
+            ("detail", "17"),
+        ]
     }
 }
 
@@ -251,7 +255,11 @@ pub struct Resources {
 
 impl Parameters for Resources {
     fn parameters() -> &'static [(&'static str, &'static str)] {
-        &[("tree", "false"), ("function", "getResources"), ("detail", "3")]
+        &[
+            ("tree", "false"),
+            ("function", "getResources"),
+            ("detail", "3"),
+        ]
     }
 }
 
@@ -288,7 +296,6 @@ pub struct Projects {
     #[serde(rename = "project")]
     pub projects: Vec<Project>,
 }
-
 
 impl Parameters for Projects {
     fn parameters() -> &'static [(&'static str, &'static str)] {
