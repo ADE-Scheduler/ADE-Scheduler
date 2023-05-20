@@ -1,5 +1,7 @@
 # Backend
 
+[![Website](https://img.shields.io/website?label=documentation&up_message=online&url=https%3A%2F%2Fade-scheduler.github.io%2FADE-Scheduler)](https://ade-scheduler.github.io/ADE-Scheduler)
+
 This folder contains Rust code to execute the backend server.
 
 To install Rust, please refer to <https://www.rust-lang.org/tools/install>.
