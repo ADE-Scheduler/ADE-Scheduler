@@ -17,6 +17,23 @@ cargo run
 > NOTE: compilation can by quite slow,
 so prefer using `cargo check` to verify that the code compile.
 
+### Hot reloading
+
+If you want to automatically recompile your code on changes, you can use
+`cargo-watch`.
+
+First, you need to install it:
+
+```bash
+cargo install cargo-watch
+```
+
+Then, you can run the server with `cargo-watch`:
+
+```bash
+cargo watch -x run
+```
+
 ## Formatting the code
 
 Rust code can be formatted with its own formatter. Since we used nightly features,
