@@ -14,7 +14,9 @@ const alertStore = useAlertStore();
     <MainNavbar />
 
     <!-- Main content -->
-    <RouterView />
+    <main>
+      <RouterView />
+    </main>
 
     <!-- Alert system -->
     <div class="toast-container position-fixed bottom-0 end-0 p-3">

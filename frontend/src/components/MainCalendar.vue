@@ -20,9 +20,9 @@ const calendarOptions = ref({
   timeZone: "UTC",
   themeSystem: "bootstrap5",
   headerToolbar: {
-    left: "",
+    left: "prev,next today",
     center: "title",
-    right: "",
+    right: "dayGridMonth,timeGridWeek",
   },
   weekNumbers: true,
   dayMaxEvents: true, // allow "more" link when too many events
@@ -33,7 +33,7 @@ const calendarOptions = ref({
 <template>
   <div class="container py-3">
     <div
-      class="p-lg-5 p-2 bg-body-tertiary rounded-3 border border-light-subtle"
+      class="p-lg-4 p-2 pt-3 bg-body-tertiary rounded-3 border border-light-subtle"
     >
       <div class="container-fluid">
         <FullCalendar :options="calendarOptions" />
@@ -44,6 +44,33 @@ const calendarOptions = ref({
     </div>
   </div>
 </template>
+
+<style lang="scss">
+// Only put FullCalendar CSS here, it's not a scoped style block
+// so it will apply website-wide rather than juste on this component.
+@import "bootstrap/scss/bootstrap";
+
+// do stuff to accomodate the fc on mobile (below the md breakpoint)
+@include media-breakpoint-down(md) {
+  .fc-toolbar-chunk > button,
+  .fc-toolbar-chunk > * > button {
+    font-size: min(3vw, 1rem);
+    padding: 3px 6px;
+  }
+  .fc-toolbar-title {
+    display: none;
+  }
+}
+
+// prevent the buttons to wrap & properly center the title
+.fc-toolbar-title {
+  text-align: center;
+}
+.fc-toolbar-chunk {
+  display: flex;
+  flex-wrap: nowrap;
+}
+</style>
 
 <i18n lang="yaml">
 en:
