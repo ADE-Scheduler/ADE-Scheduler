@@ -1,18 +1,16 @@
 //! Easily build requests to ADE'S API.
 
-use rocket::serde::Deserialize;
+use serde::Deserialize;
 
 use super::{error::Result, xml::Resources};
 
 #[derive(Debug, Deserialize)]
-#[serde(crate = "rocket::serde")]
 pub struct Endpoints {
     pub api: String,
     pub token: String,
 }
 
 #[derive(Debug, Deserialize)]
-#[serde(crate = "rocket::serde")]
 pub struct Credentials {
     pub url: String,
     pub data: String,
