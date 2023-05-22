@@ -1,12 +1,5 @@
 <script setup lang="ts">
-import { useI18n } from "vue-i18n";
 import { UseDark } from "@vueuse/components";
-
-// i18n stuff
-const { t } = useI18n({
-  inheritLocale: true,
-  useScope: "local",
-});
 </script>
 
 <template>
@@ -32,7 +25,7 @@ const { t } = useI18n({
 <style scoped>
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.2s ease;
+  transition: opacity 0.1s ease;
 }
 
 .fade-enter-from,
@@ -40,12 +33,3 @@ const { t } = useI18n({
   opacity: 0;
 }
 </style>
-
-<i18n lang="yaml">
-en:
-  dark: Dark
-  light: Light
-fr:
-  dark: Sombre
-  light: Clair
-</i18n>
