@@ -111,7 +111,7 @@ mod test {
         let rocket = rocket().unwrap();
         let client: &State<redis::Client> =
             State::get(&rocket).expect("rocket should manage a redis::Client instance");
-        let mut con = client.get_connection().unwrap();
+        let mut con = client.get_connection().expect("failed to connect to the redis server");
         let ping: redis::RedisResult<String> = redis::cmd("PING").query(&mut con);
 
         assert!(ping.is_ok());
