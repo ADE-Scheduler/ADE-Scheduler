@@ -1,13 +1,27 @@
-use rocket::get;
-use rocket_okapi::{openapi, swagger_ui::*};
+use rocket::{catch, catchers, fs::NamedFile, get, routes, Request};
+use rocket_okapi::swagger_ui::*;
 
 use backend::ade::{Client, Credentials};
 
-/// Index page.
-#[openapi]
+use std::path::{Path, PathBuf};
+
 #[get("/")]
-fn index() -> &'static str {
-    "Hello, world!"
+async fn index() -> Option<NamedFile> {
+    println!("In index");
+    NamedFile::open("../frontend/dist/index.html").await.ok()
+}
+
+#[get("/<file..>")]
+async fn files(file: PathBuf) -> Option<NamedFile> {
+    println!("In files {:?}", file);
+    NamedFile::open(Path::new("../frontend/dist/").join(file))
+        .await
+        .ok()
+}
+
+#[catch(404)]
+async fn catch_all(_req: &Request<'_>) -> Option<NamedFile> {
+    NamedFile::open("../frontend/dist/index.html").await.ok()
 }
 
 #[rocket::main]
@@ -28,16 +42,18 @@ async fn main() -> Result<(), rocket::Error> {
     println!("Token: {token:?}");
 
     let _ = rocket
+        .register("/", catchers![catch_all])
+        .manage(client)
+        .mount("/", routes![index, files])
         .mount(
-            "/",
+            "/api/",
             rocket_okapi::openapi_get_routes![
-                index,
                 backend::routes::calendar,
                 backend::routes::classrooms
             ],
         )
         .mount(
-            "/swagger-ui/",
+            "/api/docs",
             make_swagger_ui(&SwaggerUIConfig {
                 url: "../openapi.json".to_owned(),
                 ..Default::default()
