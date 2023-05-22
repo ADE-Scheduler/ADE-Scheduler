@@ -2,7 +2,7 @@
 import { Toast } from "bootstrap";
 import { useI18n } from "vue-i18n";
 import { ref, onMounted, computed } from "vue";
-import { useAlertStore } from "@/stores/alert";
+import { useAlertStore } from "@/stores";
 
 const { locale, t } = useI18n({
   inheritLocale: true,
