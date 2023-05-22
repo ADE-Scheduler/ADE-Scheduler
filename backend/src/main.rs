@@ -53,12 +53,10 @@ fn rocket() -> Result<rocket::Rocket<rocket::Build>> {
             .expect("redis.url should be a string"),
     )?;
 
-    let redis_connection = redis_client.get_connection()?;
-
     let rocket = rocket
         .register("/", catchers![catch_all])
         .manage(ade_client)
-        .manage(redis_connection)
+        .manage(redis_client)
         .mount("/", routes![index, files])
         .mount(
             "/api/",
@@ -88,7 +86,7 @@ async fn main() -> Result<()> {
 #[cfg(test)]
 mod test {
     use super::rocket;
-    use rocket::{http::Status, local::blocking::Client, uri, State};
+    use rocket::{http::Status, local::blocking::Client, State};
 
     #[test]
     fn docs_route() {
@@ -106,5 +104,17 @@ mod test {
             State::get(&rocket).expect("rocket should manage a backend::ade::Client instance");
         let token = client.get_token().await;
         assert!(token.is_ok());
+    }
+
+    #[test]
+    fn redis_connection_state() {
+        let rocket = rocket().unwrap();
+        let client: &State<redis::Client> =
+            State::get(&rocket).expect("rocket should manage a redis::Client instance");
+        let mut con = client.get_connection().unwrap();
+        let ping: redis::RedisResult<String> = redis::cmd("PING").query(&mut con);
+
+        assert!(ping.is_ok());
+        assert_eq!(ping.unwrap(), "PONG");
     }
 }
