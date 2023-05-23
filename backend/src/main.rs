@@ -106,12 +106,64 @@ mod test {
         assert!(token.is_ok());
     }
 
+    #[rocket::async_test]
+    async fn client_get_projects() {
+        use chrono::Datelike;
+
+        let rocket = rocket().unwrap();
+        let client: &State<backend::ade::Client> =
+            State::get(&rocket).expect("rocket should manage a backend::ade::Client instance");
+        let token = client.get_token().await.expect("token should be valid");
+
+        let projects = client.get_projects(&token).await;
+
+        assert!(projects.is_ok());
+
+        let projects = projects.unwrap();
+
+        let this_year = chrono::Utc::now().year().to_string();
+
+        assert!(!projects.is_empty());
+
+        for project in projects.iter() {
+            assert!(project.name.contains(&this_year));
+        }
+    }
+
+    #[rocket::async_test]
+    async fn client_get_resources() {
+        let rocket = rocket().unwrap();
+        let client: &State<backend::ade::Client> =
+            State::get(&rocket).expect("rocket should manage a backend::ade::Client instance");
+        let token = client.get_token().await.expect("token should be valid");
+        let project = client
+            .get_projects(&token)
+            .await
+            .expect("project should be valid")[0]
+            .clone();
+
+        let resources = client.get_resources(&token, project.id).await;
+
+        assert!(resources.is_ok());
+
+        let resources = resources.unwrap();
+
+        assert!(matches!(
+            resources
+                .iter()
+                .find(|resource| { resource.name.to_uppercase().starts_with("LEPL1101") }),
+            Some(_)
+        ));
+    }
+
     #[test]
     fn redis_connection_state() {
         let rocket = rocket().unwrap();
         let client: &State<redis::Client> =
             State::get(&rocket).expect("rocket should manage a redis::Client instance");
-        let mut con = client.get_connection().expect("failed to connect to the redis server");
+        let mut con = client
+            .get_connection()
+            .expect("failed to connect to the redis server");
         let ping: redis::RedisResult<String> = redis::cmd("PING").query(&mut con);
 
         assert!(ping.is_ok());
