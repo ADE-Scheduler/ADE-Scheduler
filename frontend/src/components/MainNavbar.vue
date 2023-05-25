@@ -34,12 +34,12 @@ const { t } = useI18n({
         <!-- nav links -->
         <ul class="navbar-nav">
           <li class="nav-item">
-            <RouterLink class="nav-link" to="/">
+            <RouterLink class="nav-link" to="Calendar" active-class="active">
               {{ t("calendar") }}
             </RouterLink>
           </li>
           <li class="nav-item">
-            <RouterLink class="nav-link" to="/">
+            <RouterLink class="nav-link" to="Classroom" active-class="active">
               {{ t("classrooms") }}
             </RouterLink>
           </li>

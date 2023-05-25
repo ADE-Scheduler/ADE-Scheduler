@@ -11,6 +11,11 @@ const routes = [
     component: () => import("@/views/CalendarView.vue"),
   },
   {
+    path: "/classroom",
+    name: "Classroom",
+    component: () => import("@/views/ClassroomView.vue"),
+  },
+  {
     // We use history mode instead of hash mode.
     // The production servers must be configured as a "catch-all", as described here:
     // https://router.vuejs.org/guide/essentials/history-mode.html#example-server-configurations

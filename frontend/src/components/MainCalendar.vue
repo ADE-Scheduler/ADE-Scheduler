@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref } from "vue";
 import { useI18n } from "vue-i18n";
+import { ref, watchEffect } from "vue";
+import { useBreakpoints } from "@/utils/breakpoints";
 
 import FullCalendar from "@fullcalendar/vue3";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -8,12 +9,14 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import bootstrap5Plugin from "@fullcalendar/bootstrap5";
 import frLocale from "@fullcalendar/core/locales/fr";
 
+// i18n stuff
 const { locale, t } = useI18n({
   inheritLocale: true,
   useScope: "local",
 });
 
-const calendarOptions = ref({
+// FC options
+const fcOptions = ref({
   plugins: [dayGridPlugin, timeGridPlugin, bootstrap5Plugin],
   locales: [frLocale],
   locale: locale,
@@ -22,11 +25,19 @@ const calendarOptions = ref({
   headerToolbar: {
     left: "prev,next today",
     center: "title",
-    right: "dayGridMonth,timeGridWeek",
+    right: "", // will be set/updated reactively in the watchEffect
   },
   weekNumbers: true,
   dayMaxEvents: true, // allow "more" link when too many events
   events: "https://fullcalendar.io/api/demo-feeds/events.json",
+});
+
+// Make the FC reactive
+const { isSm } = useBreakpoints();
+watchEffect(() => {
+  fcOptions.value.headerToolbar.right = isSm.value
+    ? "dayGridMonth,timeGridDay"
+    : "dayGridMonth,timeGridWeek";
 });
 </script>
 
@@ -35,11 +46,9 @@ const calendarOptions = ref({
     <div
       class="p-lg-4 p-2 pt-3 bg-body-tertiary rounded-3 border border-light-subtle"
     >
-      <div class="container-fluid">
-        <FullCalendar :options="calendarOptions" />
-        <div class="text-warning-emphasis lh-sm fw-light mt-4">
-          {{ t("disclaimer") }}
-        </div>
+      <FullCalendar :options="fcOptions" />
+      <div class="text-warning-emphasis lh-sm fw-light mt-4">
+        {{ t("disclaimer") }}
       </div>
     </div>
   </div>

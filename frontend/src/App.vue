@@ -4,7 +4,7 @@ import { useAlertStore } from "@/stores";
 
 import MainNavbar from "@/components/MainNavbar.vue";
 import AlertToast from "@/components/AlertToast.vue";
-import ProgressBar from "./components/ProgressBar.vue";
+import ProgressBar from "@/components/ProgressBar.vue";
 
 const alertStore = useAlertStore();
 </script>
@@ -17,7 +17,7 @@ const alertStore = useAlertStore();
   <MainNavbar />
 
   <!-- Main content -->
-  <main>
+  <main class="container-fluid">
     <RouterView />
   </main>
 

@@ -3,8 +3,9 @@ import { Toast } from "bootstrap";
 import { useI18n } from "vue-i18n";
 import { ref, onMounted, computed } from "vue";
 import { useAlertStore } from "@/stores";
+import { useEventListener } from "@vueuse/core";
 
-const { locale, t } = useI18n({
+const { t } = useI18n({
   inheritLocale: true,
   useScope: "local",
 });
@@ -46,7 +47,7 @@ onMounted(() => {
   bsToast.show();
   // on close, remove the alert from the queue
   // we want bootstrap to do the closing, so that we have the fancy animation
-  toast.value.addEventListener("hidden.bs.toast", () => {
+  useEventListener(toast.value, "hide.bs.toast", () => {
     alertStore.remove(props.id);
   });
 });

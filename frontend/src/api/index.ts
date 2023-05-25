@@ -1,49 +1,45 @@
-import axios from "axios";
 import i18n from "@/i18n";
-import { useAlertStore } from "@/stores";
+import { ref, watchEffect } from "vue";
+import { createFetch } from "@vueuse/core";
 import { useNProgress } from "@vueuse/integrations/useNProgress";
+import { useAlertStore } from "@/stores";
 
 // Request loading indicator
 const { isLoading, progress } = useNProgress();
 
-// The Axios instance
-const instance = axios.create({
-  timeout: 5000, // TODO: what timeout is the best ?
-  baseURL: "/api",
+// Watch the number of active requests
+const count = ref(0);
+watchEffect(() => {
+  isLoading.value = count.value > 0;
 });
 
-// Interceptors (request)
-instance.interceptors.request.use(
-  (config) => {
-    isLoading.value = true;
-    return config;
+const instance = createFetch({
+  baseUrl: "/api",
+  options: {
+    timeout: 5000, // TODO: what timeout is the best ?
+    beforeFetch: () => {
+      count.value++;
+    },
+    afterFetch: (ctx) => {
+      count.value--;
+      return ctx;
+    },
+    onFetchError: (ctx) => {
+      // this is a timeout error
+      if (ctx.error.name === "AbortError") {
+        const alertStore = useAlertStore();
+        alertStore.append("danger", i18n.global.t("request-timeout"));
+      }
+      count.value--;
+      return ctx;
+    },
   },
-  (error) => {
-    isLoading.value = false;
-    return Promise.reject(error);
-  }
-);
-
-// Interceptors (response)
-instance.interceptors.response.use(
-  (response) => {
-    isLoading.value = false;
-    return response;
-  },
-  (error) => {
-    if (error.code === "ECONNABORTED") {
-      const alertStore = useAlertStore();
-      alertStore.append("danger", i18n.global.t("request-timeout"));
-    }
-    isLoading.value = false;
-    return Promise.reject(error);
-  }
-);
+});
 
 export {
   // req progress variables
   isLoading,
   progress,
   // req methods
-  instance as axios,
+  instance as fetch,
 };
