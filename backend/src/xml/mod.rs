@@ -81,10 +81,10 @@ pub trait Parameters {
 ///
 /// let activities: Activities = xml.parse().unwrap();
 ///
-/// assert_eq!(activities.activities[0].name, "LEPL1104=E");
+/// assert_eq!(activities[0].name, "LEPL1104=E");
 /// ```
 #[allow(clippy::tabs_in_doc_comments)]
-#[derive(Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize)]
 pub struct Activities {
     #[serde(rename = "activity")]
     pub activities: Vec<Activity>,
@@ -92,11 +92,7 @@ pub struct Activities {
 
 impl Parameters for Activities {
     fn parameters() -> &'static [(&'static str, &'static str)] {
-        &[
-            ("tree", "false"),
-            ("function", "getActivities"),
-            ("detail", "17"),
-        ]
+        &[("tree", "false"), ("detail", "17")]
     }
 }
 
@@ -110,7 +106,7 @@ impl Parameters for Activities {
 /// (`Q1`).
 ///
 /// Sometimes, the activity type is also specified by the `_type` field.
-#[derive(Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize)]
 pub struct Activity {
     #[serde(rename = "@id")]
     pub id: u32,
@@ -122,7 +118,7 @@ pub struct Activity {
 }
 
 /// Events containers.
-#[derive(Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize)]
 pub struct Events {
     #[serde(default)]
     #[serde(rename = "event")]
@@ -130,7 +126,7 @@ pub struct Events {
 }
 
 /// A calendar event, with some information.
-#[derive(Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize)]
 pub struct Event {
     #[serde(rename = "@id")]
     pub id: u32,
@@ -164,7 +160,7 @@ fn deserialize_date<'de, D: Deserializer<'de>>(deserializer: D) -> Result<NaiveD
 }
 
 /// Event participants containers.
-#[derive(Debug, Default, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize)]
 pub struct EventParticipants {
     #[serde(default)]
     #[serde(rename = "eventParticipant")]
@@ -176,7 +172,7 @@ pub struct EventParticipants {
 /// This can be any variant of [`Category`], like teacher
 /// ([`Category::Instructor`]), a room ([`Category::Classroom`]),
 /// or a main course name ([`Category::Category5`]).
-#[derive(Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize)]
 pub struct EventParticipant {
     #[serde(rename = "@category")]
     pub category: Category,
@@ -187,7 +183,7 @@ pub struct EventParticipant {
 }
 
 /// Enumeration of all categories returned by ADE's API.
-#[derive(Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub enum Category {
     /// Group of courses, like a course program.
@@ -244,10 +240,10 @@ pub enum Category {
 ///
 /// let resources: Resources = xml.parse().unwrap();
 ///
-/// assert_eq!(resources.resources[0].name, "KINE21M_G8-A");
+/// assert_eq!(resources[0].name, "KINE21M_G8-A");
 /// ```
 #[allow(clippy::tabs_in_doc_comments)]
-#[derive(Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize)]
 pub struct Resources {
     #[serde(rename = "resource")]
     pub resources: Vec<Resource>,
@@ -255,16 +251,12 @@ pub struct Resources {
 
 impl Parameters for Resources {
     fn parameters() -> &'static [(&'static str, &'static str)] {
-        &[
-            ("tree", "false"),
-            ("function", "getResources"),
-            ("detail", "3"),
-        ]
+        &[("tree", "false"), ("detail", "3")]
     }
 }
 
 /// A resource.
-#[derive(Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize)]
 pub struct Resource {
     #[serde(rename = "@id")]
     pub id: u32,
@@ -288,10 +280,10 @@ pub struct Resource {
 ///
 /// let projects: Projects = xml.parse().unwrap();
 ///
-/// assert_eq!(projects.projects[0].name, "2022-2023");
+/// assert_eq!(projects[0].name, "2022-2023");
 /// ```
 #[allow(clippy::tabs_in_doc_comments)]
-#[derive(Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize)]
 pub struct Projects {
     #[serde(rename = "project")]
     pub projects: Vec<Project>,
@@ -299,7 +291,7 @@ pub struct Projects {
 
 impl Parameters for Projects {
     fn parameters() -> &'static [(&'static str, &'static str)] {
-        &[("function", "getProjects"), ("detail", "2")]
+        &[("detail", "2")]
     }
 }
 
@@ -307,7 +299,7 @@ impl Parameters for Projects {
 ///
 /// The name is simply the year (start-end) for this project.
 /// The id is used to request activities from a given year to the API.
-#[derive(Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize)]
 pub struct Project {
     #[serde(rename = "@id")]
     pub id: u32,
@@ -337,4 +329,29 @@ impl_from_str!(
     Projects
     Resource
     Resources
+);
+
+macro_rules! impl_deref_mut {
+    ($($t:ty, $attr:tt, $target:ty)*) => ($(
+            impl std::ops::Deref for $t {
+                type Target = $target;
+                fn deref(&self) -> &Self::Target {
+                    &self.$attr
+                }
+            }
+
+            impl std::ops::DerefMut for $t {
+                fn deref_mut(&mut self) -> &mut Self::Target {
+                    &mut self.$attr
+                }
+            }
+        )*)
+}
+
+impl_deref_mut!(
+    Activities, activities, Vec<Activity>
+    Events, events, Vec<Event>
+    EventParticipants, event_participants, Vec<EventParticipant>
+    Projects, projects, Vec<Project>
+    Resources, resources, Vec<Resource>
 );

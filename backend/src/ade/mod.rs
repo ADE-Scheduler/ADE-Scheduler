@@ -2,7 +2,10 @@
 
 use serde::Deserialize;
 
-use super::{error::Result, xml::Resources};
+use super::{
+    error::Result,
+    xml::{Parameters, Projects, Resources},
+};
 
 #[derive(Debug, Deserialize)]
 pub struct Endpoints {
@@ -37,12 +40,11 @@ impl Client {
         }
     }
     pub async fn get_token(&self) -> Result<Token> {
+        let url = &self.credentials.url;
+        let token = &self.credentials.endpoints.token;
         let response = self
             .client
-            .post(format!(
-                "{}{}",
-                self.credentials.url, self.credentials.endpoints.token
-            ))
+            .post(format!("{url}/{token}",))
             .header("Authorization", &self.credentials.authorization)
             .body(self.credentials.data.clone())
             .send()
@@ -53,17 +55,33 @@ impl Client {
         Ok(token)
     }
 
+    pub async fn get_projects(&self, token: &Token) -> Result<Projects> {
+        let url = &self.credentials.url;
+        let api = &self.credentials.endpoints.api;
+        let response = self
+            .client
+            .get(format!("{url}/{api}/projects"))
+            .query(Projects::parameters())
+            .bearer_auth(token.access_token.clone())
+            .send()
+            .await?;
+
+        let resources = response.text().await?.parse()?;
+
+        Ok(resources)
+    }
+
     pub async fn get_resources(&self, token: &Token, project_id: u32) -> Result<Resources> {
         let url = &self.credentials.url;
         let api = &self.credentials.endpoints.api;
         let response = self
             .client
-            .get(format!(
-                "{url}{api}projects/{project_id}/function=getResources&tree=false&detail=13"
-            ))
+            .get(format!("{url}/{api}/projects/{project_id}/resources"))
+            .query(Resources::parameters())
             .bearer_auth(token.access_token.clone())
             .send()
             .await?;
+
         let resources = response.text().await?.parse()?;
 
         Ok(resources)
