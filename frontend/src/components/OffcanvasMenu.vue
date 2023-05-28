@@ -15,7 +15,7 @@ onMounted(() => {
 });
 
 // close the offcanvas on swipe
-const { isSwiping, direction } = useSwipe(offcanvas, {
+useSwipe(offcanvas, {
   onSwipeEnd(_, direction: UseSwipeDirection) {
     if (direction === "left") {
       bsOffcanvas.hide();
@@ -51,7 +51,7 @@ const { isSwiping, direction } = useSwipe(offcanvas, {
       ></button>
     </div>
     <!-- Body -->
-    <div class="offcanvas-body overflow-y-auto p-3">
+    <div class="offcanvas-body p-3">
       <slot name="body" />
     </div>
   </div>

@@ -25,10 +25,13 @@ const instance = createFetch({
       return ctx;
     },
     onFetchError: (ctx) => {
-      // this is a timeout error
+      const alertStore = useAlertStore();
       if (ctx.error.name === "AbortError") {
-        const alertStore = useAlertStore();
+        // timeout error (abort was called)
         alertStore.append("danger", i18n.global.t("request-timeout"));
+      } else {
+        // generic error message
+        alertStore.append("danger", ctx.error.message);
       }
       count.value--;
       return ctx;

@@ -2,9 +2,6 @@
 import { useI18n } from "vue-i18n";
 import { RouterLink } from "vue-router";
 
-import ToggleDark from "@/components/ToggleDark.vue";
-import ToggleLocale from "@/components/ToggleLocale.vue";
-
 // i18n stuff
 const { t } = useI18n({
   inheritLocale: true,
@@ -34,21 +31,30 @@ const { t } = useI18n({
         <!-- nav links -->
         <ul class="navbar-nav">
           <li class="nav-item">
-            <RouterLink class="nav-link" to="Calendar" active-class="active">
+            <RouterLink
+              class="nav-link"
+              active-class="active"
+              :to="{ name: 'Calendar' }"
+            >
               {{ t("calendar") }}
             </RouterLink>
           </li>
           <li class="nav-item">
-            <RouterLink class="nav-link" to="Classroom" active-class="active">
-              {{ t("classrooms") }}
+            <RouterLink
+              class="nav-link"
+              active-class="active"
+              :to="{ name: 'Classroom' }"
+            >
+              {{ t("classroom") }}
             </RouterLink>
           </li>
         </ul>
         <!-- end of navbar -->
         <div class="d-flex justify-content-center ms-auto mt-lg-0 mt-4">
-          <ToggleLocale />
-          <div class="vr text-light" />
-          <ToggleDark />
+          <!-- TODO: login/logout -->
+          <button type="button" class="btn btn-sm btn-outline-light">
+            {{ t("login") }}
+          </button>
         </div>
       </div>
     </div>
@@ -57,9 +63,11 @@ const { t } = useI18n({
 
 <i18n lang="yaml">
 en:
+  login: "Login"
   calendar: "Calendar"
-  classrooms: "Classrooms"
+  classroom: "Classrooms"
 fr:
+  login: "Connexion"
   calendar: "Calendrier"
-  classrooms: "Locaux"
+  classroom: "Locaux"
 </i18n>
