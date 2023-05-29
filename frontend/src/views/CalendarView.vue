@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { fetch } from "@/api";
-import { onUnmounted } from "vue";
+import { onActivated, onUnmounted } from "vue";
 import CodeList from "@/components/CodeList.vue";
 import ToggleDark from "@/components/ToggleDark.vue";
 import ToggleLocale from "@/components/ToggleLocale.vue";
@@ -10,6 +10,11 @@ import ScheduleSelector from "@/components/ScheduleSelector.vue";
 
 const { data, abort } = fetch("calendar").get();
 onUnmounted(abort);
+
+onActivated(() => {
+  /* TODO: do some checks here (data out-of-date or null in case of failed request,...) */
+  console.log("Retrieving CalendarView from cache...");
+});
 </script>
 
 <template>

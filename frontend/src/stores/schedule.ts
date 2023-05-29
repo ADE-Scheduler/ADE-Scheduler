@@ -32,7 +32,7 @@ export const useScheduleStore = defineStore("schedule", () => {
   // Schedule list
   const currentSchedule = ref<Schedule>({ id: 1, name: "Schedule 1" });
   const schedules = ref<Schedule[]>([
-    { id: 1, name: "Schedule 1" },
+    currentSchedule.value,
     { id: 2, name: "Schedule 2" },
     { id: 3, name: "Schedule 3" },
     { id: 4, name: "Schedule 4 - a very long schedule !" },
