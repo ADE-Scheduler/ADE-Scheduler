@@ -51,7 +51,7 @@ useSwipe(offcanvas, {
       ></button>
     </div>
     <!-- Body -->
-    <div class="offcanvas-body p-3">
+    <div class="offcanvas-body overflow-y-auto p-3">
       <slot name="body" />
     </div>
   </div>

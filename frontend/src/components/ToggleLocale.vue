@@ -21,9 +21,9 @@ const { locale } = useI18n({
     >
       <li>
         <a
+          role="button"
           class="dropdown-item text-center rounded"
           :class="locale === 'fr' ? 'active' : ''"
-          href="#"
           @click="locale = 'fr'"
         >
           FR
@@ -31,9 +31,9 @@ const { locale } = useI18n({
       </li>
       <li class="mt-1">
         <a
+          role="button"
           class="dropdown-item text-center rounded"
           :class="locale === 'en' ? 'active' : ''"
-          href="#"
           @click="locale = 'en'"
         >
           EN

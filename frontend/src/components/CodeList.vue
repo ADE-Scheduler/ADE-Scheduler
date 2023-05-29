@@ -8,6 +8,11 @@ const { t } = useI18n({
   useScope: "local",
 });
 
+// Focus directive
+const vFocus = {
+  mounted: (el: HTMLElement) => el.focus(),
+};
+
 // TODO: get this as a prop or from a store
 // TODO: watcher to fetch events based on this list
 const data = ref([
@@ -17,7 +22,7 @@ const data = ref([
   { id: 4, name: "code 4 - a very long code !" },
 ]);
 
-// delete button
+// delete code
 const showBtnAction = ref<number | null>(null);
 function deleteCode(id: number) {
   // TODO: action to delete the events associated to the code
@@ -28,7 +33,7 @@ function deleteCode(id: number) {
 // add code
 const inputCode = ref("");
 function addCode() {
-  // TODO
+  // TODO: trigger req to backend
   if (inputCode.value) {
     data.value.push({ id: data.value.length + 1, name: inputCode.value });
     inputCode.value = "";
@@ -39,7 +44,7 @@ function addCode() {
 <template>
   <ul class="list-group w-100">
     <a
-      href="#"
+      role="button"
       class="list-group-item list-group-item-action list-group-item-light"
       v-for="code in data"
       :key="code.id"
@@ -60,7 +65,7 @@ function addCode() {
         </button>
       </div>
     </a>
-    <ul class="list-group-item p-0">
+    <li class="list-group-item p-0">
       <div class="bg-transparent">
         <input
           type="text"
@@ -70,6 +75,7 @@ function addCode() {
           :placeholder="t('add-code')"
           @keyup.enter="addCode()"
           v-model="inputCode"
+          v-focus
         />
         <button
           type="button"
@@ -79,7 +85,7 @@ function addCode() {
           <i class="bi bi-plus-lg"></i>
         </button>
       </div>
-    </ul>
+    </li>
   </ul>
 </template>
 

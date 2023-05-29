@@ -16,7 +16,9 @@ const { t } = useI18n({
   >
     <div class="container-fluid">
       <!-- logo -->
-      <a class="navbar-brand" href="#">ADE Scheduler</a>
+      <RouterLink class="navbar-brand" role="button" :to="{ name: 'Calendar' }">
+        ADE Scheduler
+      </RouterLink>
       <!-- collapser -->
       <button
         class="navbar-toggler"

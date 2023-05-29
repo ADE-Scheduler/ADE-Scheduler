@@ -2,10 +2,11 @@
 import { fetch } from "@/api";
 import { onUnmounted } from "vue";
 import CodeList from "@/components/CodeList.vue";
-import MainCalendar from "@/components/MainCalendar.vue";
-import OffcanvasMenu from "@/components/OffcanvasMenu.vue";
 import ToggleDark from "@/components/ToggleDark.vue";
 import ToggleLocale from "@/components/ToggleLocale.vue";
+import MainCalendar from "@/components/MainCalendar.vue";
+import OffcanvasMenu from "@/components/OffcanvasMenu.vue";
+import ScheduleSelector from "@/components/ScheduleSelector.vue";
 
 const { data, abort } = fetch("calendar").get();
 onUnmounted(abort);
@@ -20,8 +21,10 @@ onUnmounted(abort);
         <!-- Offcanvas menu body -->
         <template #body>
           <div class="d-flex flex-column w-100 h-100">
+            <!-- Schedule selector -->
+            <ScheduleSelector />
             <!-- Code list -->
-            <CodeList />
+            <CodeList class="my-3" />
             <!-- Actions & Links -->
             <div class="d-flex justify-content-center mt-auto">
               <ToggleLocale />
