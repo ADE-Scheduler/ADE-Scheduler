@@ -26,7 +26,7 @@ useSwipe(offcanvas, {
 
 <template>
   <button
-    type="button"
+    role="button"
     class="btn btn-sm btn-primary rounded-3 d-md-none position-fixed bottom-0 end-0 z-3 me-2 mb-2"
     @click="bsOffcanvas.show()"
   >
@@ -45,7 +45,7 @@ useSwipe(offcanvas, {
         <slot name="header" />
       </h5>
       <button
-        type="button"
+        role="button"
         class="btn-close"
         @click="bsOffcanvas.hide()"
       ></button>

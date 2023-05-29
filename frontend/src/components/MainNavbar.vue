@@ -22,7 +22,7 @@ const { t } = useI18n({
       <!-- collapser -->
       <button
         class="navbar-toggler"
-        type="button"
+        role="button"
         data-bs-toggle="collapse"
         data-bs-target="#main-navbar"
       >
@@ -54,7 +54,7 @@ const { t } = useI18n({
         <!-- end of navbar -->
         <div class="d-flex justify-content-center ms-auto mt-lg-0 mt-4">
           <!-- TODO: login/logout -->
-          <button type="button" class="btn btn-sm btn-outline-light">
+          <button role="button" class="btn btn-sm btn-outline-light">
             {{ t("login") }}
           </button>
         </div>

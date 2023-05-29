@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
+import { useScheduleStore } from "@/stores";
 
 // i18n stuff
 const { t } = useI18n({
@@ -13,72 +14,71 @@ const vFocus = {
   mounted: (el: HTMLElement) => el.focus(),
 };
 
-// TODO: get this as a prop or from a store
-// TODO: watcher to fetch events based on this list
-const data = ref([
-  { id: 1, name: "code 1" },
-  { id: 2, name: "code 2" },
-  { id: 3, name: "code 3" },
-  { id: 4, name: "code 4 - a very long code !" },
-]);
+// schedule store
+const scheduleStore = useScheduleStore();
 
-// delete code
+// Code action buttons
 const showBtnAction = ref<number | null>(null);
+// TODO: Delete code function
 function deleteCode(id: number) {
-  // TODO: action to delete the events associated to the code
-  // TODO: req to backend to track state
-  data.value = data.value.filter((code) => code.id !== id);
+  scheduleStore.deleteCode(id);
 }
 
-// add code
+// TODO: Add code function
 const inputCode = ref("");
 function addCode() {
-  // TODO: trigger req to backend
   if (inputCode.value) {
-    data.value.push({ id: data.value.length + 1, name: inputCode.value });
+    scheduleStore.addCode(inputCode.value);
     inputCode.value = "";
   }
+}
+
+// TODO: Show code details function
+function showCodeDetails(id: number) {
+  console.log("show code details", id);
 }
 </script>
 
 <template>
   <ul class="list-group w-100">
-    <a
+    <li
       role="button"
       class="list-group-item list-group-item-action list-group-item-light"
-      v-for="code in data"
-      :key="code.id"
-      @mouseover="showBtnAction = code.id"
+      v-for="{ id, code } in scheduleStore.codes"
+      :key="id"
+      @mouseover="showBtnAction = id"
       @mouseleave="showBtnAction = null"
+      @click="showCodeDetails(id)"
     >
       <div class="d-flex justify-content-between">
         <span class="text-truncate">
-          {{ code.name }}
+          {{ code }}
         </span>
         <button
-          type="button"
+          role="button"
           class="btn btn-link link-danger py-0 pe-0"
-          @click="deleteCode(code.id)"
-          v-show="showBtnAction === code.id"
+          @click.stop="deleteCode(id)"
+          v-show="showBtnAction === id"
+          style="max-height: 24px"
         >
           <i class="bi bi-x-lg"></i>
         </button>
       </div>
-    </a>
+    </li>
     <li class="list-group-item p-0">
       <div class="bg-transparent">
         <input
           type="text"
           style="padding-end: 40px"
           class="form-control border-0"
-          :class="{ 'rounded-top-0': data.length > 0 }"
+          :class="{ 'rounded-top-0': scheduleStore.codes.length > 0 }"
           :placeholder="t('add-code')"
           @keyup.enter="addCode()"
           v-model="inputCode"
           v-focus
         />
         <button
-          type="button"
+          role="button"
           class="btn btn-link link-success border-0 position-absolute top-0 end-0"
           @click="addCode()"
         >

@@ -16,7 +16,7 @@ watchEffect(() => {
 const instance = createFetch({
   baseUrl: "/api",
   options: {
-    timeout: 5000, // TODO: what timeout is the best ?
+    timeout: 5000,
     beforeFetch: () => {
       count.value++;
     },

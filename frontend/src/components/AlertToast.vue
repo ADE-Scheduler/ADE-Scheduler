@@ -58,7 +58,7 @@ onMounted(() => {
     <!-- Toast header -->
     <div class="toast-header">
       <span class="me-auto">{{ toastHd }}</span>
-      <button type="button" class="btn-close" data-bs-dismiss="toast" />
+      <button role="button" class="btn-close" data-bs-dismiss="toast" />
     </div>
     <!-- Toast body -->
     <div class="toast-body">

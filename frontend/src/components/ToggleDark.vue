@@ -10,7 +10,7 @@ import { UseDark } from "@vueuse/components";
     storage-key="ade-scheduler-theme"
   >
     <button
-      type="button"
+      role="button"
       class="btn btn-link link-body-emphasis"
       @click="toggleDark()"
     >

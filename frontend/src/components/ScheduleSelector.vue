@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 import { Collapse } from "bootstrap";
-import { useToggle } from "@vueuse/core";
+import { useScheduleStore } from "@/stores";
 import { onMounted, ref, watch } from "vue";
+import { useToggle, useConfirmDialog } from "@vueuse/core";
+
+import ConfirmModal from "@/components/ConfirmModal.vue";
 
 // i18n stuff
 const { t } = useI18n({
@@ -10,28 +13,39 @@ const { t } = useI18n({
   useScope: "local",
 });
 
-// TODO: get this as a prop or from a store
-const selectedSchedule = ref(1);
-const data = ref([
-  { id: 1, name: "Schedule 1" },
-  { id: 2, name: "Schedule 2" },
-  { id: 3, name: "Schedule 3" },
-  { id: 4, name: "Schedule 4 - a very long schedule !" },
-]);
+// schedule store
+const scheduleStore = useScheduleStore();
 
 // TODO: Select schedule function
 function selectSchedule(id: number) {
-  selectedSchedule.value = id;
+  scheduleStore.setCurrentSchedule(id);
   showCollapse.value = false;
 }
 
 // TODO: Create new schedule function
 function newSchedule() {
-  data.value.push({
-    id: data.value.length + 1,
-    name: "Schedule " + (data.value.length + 1),
-  });
-  selectSchedule(data.value.length);
+  scheduleStore.newSchedule();
+}
+
+// Schedule action buttons
+const showBtnAction = ref<number | null>(null);
+
+// TODO: Delete schedule function
+const confirmScheduleDelete = useConfirmDialog();
+const confirmScheduleDeleteName = ref<string | undefined>(undefined);
+async function deleteSchedule(id: number) {
+  // get the name of the schedule
+  confirmScheduleDeleteName.value = scheduleStore.getScheduleName(id);
+  // get user confirmation
+  const res = await confirmScheduleDelete.reveal();
+  if (!res.isCanceled && res.data) {
+    scheduleStore.deleteSchedule(id);
+  }
+}
+
+// TODO: Edit schedule function
+function editSchedule(id: number) {
+  console.log("edit schedule", id);
 }
 
 // Collapse management
@@ -57,13 +71,25 @@ watch(showCollapse, (value) => {
 </script>
 
 <template>
+  <ConfirmModal
+    :reveal="confirmScheduleDelete.isRevealed.value"
+    @cancel="confirmScheduleDelete.cancel()"
+    @confirm="confirmScheduleDelete.confirm(true)"
+  >
+    <template #header>{{ t("confirm-delete-header") }}</template>
+    <template #body>{{
+      t("confirm-delete-body", { s: confirmScheduleDeleteName })
+    }}</template>
+    <template #action>{{ t("confirm-delete-action") }}</template>
+  </ConfirmModal>
+
   <a
-    type="button"
+    role="button"
     class="d-flex justify-content-between flex-nowrap link-body-emphasis text-decoration-none mt-2"
     @click="toggleCollapse()"
   >
     <h5 class="text-truncate fw-medium">
-      {{ data.find((s) => s.id === selectedSchedule)?.name }}
+      {{ scheduleStore.currentSchedule.name }}
     </h5>
     <h5
       style="transition: 0.2s"
@@ -75,16 +101,41 @@ watch(showCollapse, (value) => {
   <div class="collapse" ref="collapse">
     <ul class="list-group list-group-flush">
       <li
-        type="button"
+        role="button"
         class="list-group-item list-group-item-action bg-body-tertiary fs-6"
-        v-for="schedule in data"
-        :key="schedule.id"
-        @click="selectSchedule(schedule.id)"
+        v-for="{ id, name } in scheduleStore.schedules"
+        :key="id"
+        @mouseover="showBtnAction = id"
+        @mouseleave="showBtnAction = null"
+        @click="selectSchedule(id)"
       >
-        {{ schedule.name }}
+        <div
+          style="min-height: 26px"
+          class="d-flex justify-content-between align-items-center"
+        >
+          <span class="text-truncate">
+            {{ name }}
+          </span>
+          <div class="d-flex flex-nowrap" v-if="showBtnAction === id">
+            <button
+              role="button"
+              class="btn btn-link link-primary py-0 pe-0"
+              @click.stop="editSchedule(id)"
+            >
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button
+              role="button"
+              class="btn btn-link link-danger py-0 pe-0"
+              @click.stop="deleteSchedule(id)"
+            >
+              <i class="bi bi-x-lg"></i>
+            </button>
+          </div>
+        </div>
       </li>
       <li
-        type="button"
+        role="button"
         class="list-group-item list-group-item-action bg-body-tertiary"
         @click="newSchedule()"
       >
@@ -92,7 +143,7 @@ watch(showCollapse, (value) => {
           <span>
             {{ t("new-schedule") }}
           </span>
-          <i class="bi bi-plus-lg me-2 text-success" />
+          <i class="bi bi-plus-lg text-success me-0" />
         </div>
       </li>
     </ul>
@@ -102,6 +153,12 @@ watch(showCollapse, (value) => {
 <i18n lang="yaml">
 en:
   new-schedule: New schedule
+  confirm-delete-header: Delete schedule ?
+  confirm-delete-body: The schedule "{s}" will be deleted permanently.
+  confirm-delete-action: Delete
 fr:
   new-schedule: Nouvel horaire
+  confirm-delete-header: Supprimer l'horaire ?
+  confirm-delete-body: L'horaire "{s}" sera supprimé définitivement.
+  confirm-delete-action: Supprimer
 </i18n>
