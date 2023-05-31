@@ -19,9 +19,10 @@ url = "https://gw.api.uclouvain.be"
 # ROCKET_OAUTH={uclouvain={client_id="<you_id>",client_secret="<your_secret>"}}
 client_id = "..."
 client_secret = "..."
-provider = "uclouvain"  # TODO: check
-redirect_uri = "..."  # TODO: edit
+auth_uri = "https://gw.api.uclouvain.be/authorize"
+token_uri = "https://gw.api.uclouvain.be/token"
+redirect_uri = "https://ade-scheduler.info.ucl.ac.be/login"  # TODO: edit
 
 [release]
-address = "ade-scheduler.info.ucl.ac.be"  # TODO: fix
+address = "https://ade-scheduler.info.ucl.ac.be"  # TODO: fix
 port = 443

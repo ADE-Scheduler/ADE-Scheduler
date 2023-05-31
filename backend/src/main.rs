@@ -57,7 +57,15 @@ fn rocket() -> Result<rocket::Rocket<rocket::Build>> {
         .register("/", catchers![catch_all])
         .manage(ade_client)
         .manage(redis_client)
-        .mount("/", routes![index, files])
+        .mount(
+            "/",
+            routes![
+                index,
+                files,
+                backend::routes::uclouvain_callback,
+                backend::routes::uclouvain_login
+            ],
+        )
         .mount(
             "/api/",
             rocket_okapi::openapi_get_routes![
@@ -71,7 +79,8 @@ fn rocket() -> Result<rocket::Rocket<rocket::Build>> {
                 url: "../openapi.json".to_owned(),
                 ..Default::default()
             }),
-        );
+        )
+        .attach(rocket_oauth2::OAuth2::<backend::routes::UCLouvain>::fairing("uclouvain"));
 
     Ok(rocket)
 }
