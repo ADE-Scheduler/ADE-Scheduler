@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 import { ref, watchEffect } from "vue";
-import { useBreakpoints } from "@/utils/breakpoints";
+import { getWeekText } from "@/utils/weeknumbers";
+import { useBreakpoints } from "@/composables/breakpoints";
 
 import FullCalendar from "@fullcalendar/vue3";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -17,18 +18,31 @@ const { locale, t } = useI18n({
 
 // FC options
 const fcOptions = ref({
+  // plugins
   plugins: [dayGridPlugin, timeGridPlugin, bootstrap5Plugin],
+  // locales
   locales: [frLocale],
   locale: locale,
-  timeZone: "UTC",
+  // view params
+  height: "auto",
+  navLinks: true,
+  editable: false,
+  droppable: false,
+  slotMinTime: "08:00:00",
+  slotMaxTime: "21:00:00",
+  timeZone: "Europe/Brussels",
   themeSystem: "bootstrap5",
+  // header
   headerToolbar: {
     left: "prev,next today",
     center: "title",
     right: "", // will be set/updated reactively in the watchEffect
   },
+  // weeks
+  firstDay: 1,
   weekNumbers: true,
-  dayMaxEvents: true, // allow "more" link when too many events
+  weekNumberContent: getWeekText,
+
   events: "https://fullcalendar.io/api/demo-feeds/events.json",
 });
 
@@ -78,6 +92,11 @@ watchEffect(() => {
 .fc-toolbar-chunk {
   display: flex;
   flex-wrap: nowrap;
+}
+
+// Fix bug when using height: auto
+.fc-col-header-cell {
+  color: var(--bs-gray-700);
 }
 </style>
 

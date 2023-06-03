@@ -1,3 +1,6 @@
 {
+  "break": "Congé",
+  "blocus": "Blocus",
+  "easter": "Pâques",
   "request-timeout": "La requête au serveur a expiré. Veuillez réessayer plus tard."
 }

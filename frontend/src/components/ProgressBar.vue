@@ -3,22 +3,25 @@ import { progress, isLoading } from "@/api";
 </script>
 
 <template>
-  <Transition
-    name="fade"
-    role="progressbar"
-    class="progress position-fixed fixed-top"
-    style="height: 2px"
-    data-bs-theme="dark"
-    v-show="isLoading"
-    :style="{ width: ((progress as number) * 100).toFixed(0) + '%' }"
-  >
-    <div class="progress-bar" />
+  <Transition name="fade">
+    <div
+      v-show="isLoading"
+      role="progressbar"
+      style="height: 2px"
+      class="progress position-fixed fixed-top bg-body-tertiary"
+      data-bs-theme="dark"
+    >
+      <div
+        class="progress-bar"
+        :style="{ width: ((progress as number) * 100).toFixed(0) + '%' }"
+      />
+    </div>
   </Transition>
 </template>
 
 <style scoped>
 .fade-leave-active {
-  transition: opacity 0.5s ease;
+  transition: opacity 1s ease;
 }
 
 .fade-enter-from,

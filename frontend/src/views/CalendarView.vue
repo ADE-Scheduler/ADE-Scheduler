@@ -39,7 +39,7 @@ onActivated(() => {
               <a
                 href="https://www.buymeacoffee.com/adescheduler"
                 class="btn btn-link link-warning"
-                target="_blank"
+                et="_blank"
               >
                 <i class="bi bi-cup-hot-fill"></i>
               </a>

@@ -36,11 +36,11 @@ useDark({
   <!-- Alert system -->
   <div class="toast-container position-fixed bottom-0 end-0 p-3">
     <AlertToast
-      v-for="q in alertStore.queue"
-      :id="q.id"
-      :key="q.id"
-      :type="q.type"
-      :message="q.message"
+      v-for="{ id, type, message } in alertStore.queue"
+      :id="id"
+      :key="id"
+      :type="type"
+      :message="message"
     />
   </div>
 </template>

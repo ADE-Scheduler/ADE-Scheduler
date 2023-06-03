@@ -25,6 +25,7 @@ function selectSchedule(id: number) {
 // TODO: Create new schedule function
 function newSchedule() {
   scheduleStore.newSchedule();
+  showCollapse.value = false;
 }
 
 // Schedule action buttons
