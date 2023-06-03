@@ -71,11 +71,11 @@ export function getWeekText(arg: fcContentInjectionArg) {
   else {
     switch (wtype) {
       case -1:
-        return i18n.global.t("easter");
+        return i18n.global.t("calendar.easter");
       case -2:
-        return i18n.global.t("break");
+        return i18n.global.t("calendar.break");
       case -3:
-        return i18n.global.t("blocus");
+        return i18n.global.t("calendar.blocus");
       default:
         return "-";
     }

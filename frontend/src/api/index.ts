@@ -28,7 +28,7 @@ const instance = createFetch({
       const alertStore = useAlertStore();
       if (ctx.error.name === "AbortError") {
         // timeout error (abort was called)
-        alertStore.append("danger", i18n.global.t("request-timeout"));
+        alertStore.append("danger", i18n.global.t("api.request-timeout"));
       } else {
         // generic error message
         alertStore.append("danger", ctx.error.message);
