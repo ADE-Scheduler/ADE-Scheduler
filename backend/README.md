@@ -6,6 +6,44 @@ This folder contains Rust code to execute the backend server.
 
 To install Rust, please refer to <https://www.rust-lang.org/tools/install>.
 
+## Database
+
+ADE Scheduler uses a database to store information about users, schedules,
+and more.
+
+*WIP section based on [this blog post](https://blog.logrocket.com/create-web-app-rust-rocket-diesel/).*
+
+### Setup
+
+*You should only perform this setup once.*
+
+First, you need to install
+[PostgreSQL](https://www.postgresql.org/download/) and the Diesel CLI:
+
+```bash
+cargo install diesel_cli --no-default-features --features postgres
+```
+
+Next, you must define the database URI in a `backend/.env` file, e.g.:
+
+```bash
+DATABASE_URL=postgresql://postgres@localhost/ade-database
+```
+
+Finally, make sure this database exists,
+and is clean (no prior database with the same name).
+Read
+[this article](https://phoenixnap.com/kb/postgresql-drop-database#:~:text=The%20first%20method%20to%20remove,execute%20the%20DROP%20DATABASE%20command.)
+to know how to drop and create a database.
+
+### Migration
+
+You can migration the database to the latest version with:
+
+```bash
+diesel migration run
+```
+
 ## Running the server
 
 To run the server in debug mode, simply execute this command:
@@ -67,3 +105,5 @@ cargo doc --lib --no-deps --open
 
 > NOTE: you can omit the `--open` flag if you don't want to open a new tab on
 each build.
+
+
