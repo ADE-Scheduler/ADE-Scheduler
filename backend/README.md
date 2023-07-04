@@ -105,5 +105,3 @@ cargo doc --lib --no-deps --open
 
 > NOTE: you can omit the `--open` flag if you don't want to open a new tab on
 each build.
-
-
