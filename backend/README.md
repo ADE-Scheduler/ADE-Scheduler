@@ -38,7 +38,7 @@ to know how to drop and create a database.
 
 ### Migration
 
-You can migration the database to the latest version with:
+You can migrate the database to the latest version with:
 
 ```bash
 diesel migration run
