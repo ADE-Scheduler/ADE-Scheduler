@@ -40,9 +40,9 @@ pub trait Parameters {
 /// let xml = r#"
 /// <?xml version="1.0" encoding="UTF-8"?>
 /// <activities>
-/// 	<activity id="19833" name="LEPL1104=E" type="Examen Ã©crit" folderId="10419" url="" size="100" repetition="1" lastUpdate="05/09/2023 09:25" creation="10/03/2019 09:25" lastSlot="14" lastDay="0" lastWeek="39" firstSlot="2" firstDay="0" firstWeek="39" additionalResources="0" durationInMinutes="180" nbEventsPlaced="1" nbEvents="1" duration="180" email="" weight="0" seatsLeft="372 (09-01-2023)" maxSeats="372*3=1116" info="Notes de sÃ©ances pour juin 2023 - RÃ©partition en auditoires" codeZ="" codeY="" codeX="" timezone="" code="MÃ�THODES NUMÃ�RIQUES" color="255,255,255" isActive="true" isNotSameDay="false" isGrouped="false" isAligned="false" isSuccessiveDays="false" ownerId="96" owner="lauwimana">
+/// 	<activity id="19833" name="LEPL1104=E" type="Examen écrit" folderId="10419" url="" size="100" repetition="1" lastUpdate="05/09/2023 09:25" creation="10/03/2019 09:25" lastSlot="14" lastDay="0" lastWeek="39" firstSlot="2" firstDay="0" firstWeek="39" additionalResources="0" durationInMinutes="180" nbEventsPlaced="1" nbEvents="1" duration="180" email="" weight="0" seatsLeft="372 (09-01-2023)" maxSeats="372*3=1116" info="Notes de séances pour juin 2023 - Répartition en auditoires" codeZ="" codeY="" codeX="" timezone="" code="MÉTHODES NUMÉRIQUES" color="255,255,255" isActive="true" isNotSameDay="false" isGrouped="false" isAligned="false" isSuccessiveDays="false" ownerId="96" owner="lauwimana">
 /// 		<events>
-/// 			<event id="111290" activityId="19833" session="0" repetition="0" name="LEPL1104=E" endHour="11:30" startHour="08:30" date="12/06/2023" absoluteSlot="17474" slot="2" day="0" week="39" additionalResources="0" duration="12" info="Notes de sÃ©ances pour juin 2023 - RÃ©partition en auditoires" note="RÃ©partition en auditoires - JUIN 2023 :&#10;- A.01: de Aarab Ã  Crespo Colsa&#10;- A.02: de Crothers Ã  Gaudin&#10;- A.03 : de Gengoux Ã  Lacheron&#10;- A.10 : de Lallemand Ã  Zhabrailov" color="255,255,255" isLockPosition="false" oldDuration="12" oldSlot="2" oldDay="4" oldWeek="39" lastUpdate="05/09/2023 09:25" creation="02/08/2023 17:01" isLockResources="false" isSoftKeepResources="false" isNoteLock="false" isStrongLock="false">
+/// 			<event id="111290" activityId="19833" session="0" repetition="0" name="LEPL1104=E" endHour="11:30" startHour="08:30" date="12/06/2023" absoluteSlot="17474" slot="2" day="0" week="39" additionalResources="0" duration="12" info="Notes de séances pour juin 2023 - Répartition en auditoires" note="Répartition en auditoires - JUIN 2023 :&#10;- A.01: de Aarab à  Crespo Colsa&#10;- A.02: de Crothers à  Gaudin&#10;- A.03 : de Gengoux à  Lacheron&#10;- A.10 : de Lallemand à  Zhabrailov" color="255,255,255" isLockPosition="false" oldDuration="12" oldSlot="2" oldDay="4" oldWeek="39" lastUpdate="05/09/2023 09:25" creation="02/08/2023 17:01" isLockResources="false" isSoftKeepResources="false" isNoteLock="false" isStrongLock="false">
 /// 				<eventParticipants>
 /// 					<eventParticipant fromWorkflow="false" nodeId="141979" nodeOrId="-1" quantity="1" category="trainee" name="fsa11ba" id="7851"/>
 /// 					<eventParticipant fromWorkflow="false" nodeId="258824" nodeOrId="-1" quantity="1" category="trainee" name="Approfondissement STAT12" id="16593"/>
@@ -59,8 +59,8 @@ pub trait Parameters {
 /// 		</events>
 /// 		<resources activityId="19833">
 /// 			<and load="1.0" quantity="1" nodeId="141979" id="7851" name="fsa11ba" path="EPL.EPL Cycle 1.EPL Bacheliers.FSA1BA." category="trainee" isGroup="true"/>
-/// 			<and load="1.0" quantity="1" nodeId="258824" id="16593" name="Approfondissement STAT12" path="SC.SC Cycle 1.SC Mineures.Approfondissement en statistique et science des donnÃ©es." category="trainee" isGroup="false"/>
-/// 			<and load="1.0" quantity="1" nodeId="258825" id="16598" name="Approfondissement STAT13" path="SC.SC Cycle 1.SC Mineures.Approfondissement en statistique et science des donnÃ©es." category="trainee" isGroup="false"/>
+/// 			<and load="1.0" quantity="1" nodeId="258824" id="16593" name="Approfondissement STAT12" path="SC.SC Cycle 1.SC Mineures.Approfondissement en statistique et science des données." category="trainee" isGroup="false"/>
+/// 			<and load="1.0" quantity="1" nodeId="258825" id="16598" name="Approfondissement STAT13" path="SC.SC Cycle 1.SC Mineures.Approfondissement en statistique et science des données." category="trainee" isGroup="false"/>
 /// 			<and load="1.0" quantity="1" nodeId="150877" id="4464" name="LEPL1104" path="SST - EPL.LEPL." category="category5" isGroup="false"/>
 /// 			<or isContinuous="false" category="instructor" quantity="1" id="150880">
 /// 				<and load="1.0" quantity="1" nodeId="150881" id="497" name="Legat Vincent" path="Personnel UCL.L." category="instructor" isGroup="false"/>
@@ -68,7 +68,7 @@ pub trait Parameters {
 /// 			<or isContinuous="false" category="classroom" quantity="1" id="259632">
 /// 				<and load="1.0" quantity="1" nodeId="259905" id="2320" name="A.03 SCES" path="Site de Louvain-la-Neuve.Zone Sciences et Technologies.Auditoires des Sciences (SCES)." category="classroom" isGroup="false"/>
 /// 			</or>
-/// 			<orRequest isContinuous="false" category="classroom" quantity="3" id="171231" senderId="96" copyByMail="false" message="" subject="RequÃªte">
+/// 			<orRequest isContinuous="false" category="classroom" quantity="3" id="171231" senderId="96" copyByMail="false" message="" subject="Requàªte">
 /// 				<recipients managerUsers="true"/>
 /// 				<and load="1.0" quantity="1" nodeId="171232" id="848" name="A.01 SCES" path="Site de Louvain-la-Neuve.Zone Sciences et Technologies.Auditoires des Sciences (SCES)." category="classroom" isGroup="false"/>
 /// 				<and load="1.0" quantity="1" nodeId="171233" id="2318" name="A.02 SCES" path="Site de Louvain-la-Neuve.Zone Sciences et Technologies.Auditoires des Sciences (SCES)." category="classroom" isGroup="false"/>
@@ -224,9 +224,9 @@ pub enum Category {
 /// 		<memberships/>
 /// 		<constraints quality="100" distribution="100">
 /// 			<costs>
-/// 				<cost value="0.0" name="PrioritÃ©Somebody" id="4"/>
-/// 				<cost value="0.0" name="coÃ»t CONFORT" id="19"/>
-/// 				<cost value="0.0" name="CoÃ»t virtuel" id="21"/>
+/// 				<cost value="0.0" name="PrioritéSomebody" id="4"/>
+/// 				<cost value="0.0" name="coût CONFORT" id="19"/>
+/// 				<cost value="0.0" name="Coût virtuel" id="21"/>
 /// 			</costs>
 /// 			<caracteristics/>
 /// 			<counters isUseCounter="false"/>
