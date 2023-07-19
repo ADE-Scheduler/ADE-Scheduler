@@ -1,9 +1,13 @@
-use rocket::{catch, catchers, fs::NamedFile, get, routes, Request};
+use rocket::{catch, catchers, fs::NamedFile, get, routes, Request, State};
 use rocket_okapi::swagger_ui::*;
+use diesel::pg::PgConnection;
+use diesel::{RunQueryDsl, Connection};
+use std::env;
 
 use backend::{
     ade::{Client, Credentials},
     error::Result,
+    models::User,
 };
 
 use std::path::{Path, PathBuf};
@@ -28,6 +32,40 @@ async fn catch_all(req: &Request<'_>) -> Option<NamedFile> {
         req.uri()
     );
     NamedFile::open("../frontend/dist/index.html").await.ok()
+}
+
+pub fn establish_connection_pg() -> PgConnection {
+    dotenv::dotenv().ok();
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    PgConnection::establish(&database_url)
+        .unwrap_or_else(|_| panic!("Error connecting to {}", database_url))
+}
+
+#[get("/users")]
+async fn list_users() -> String {
+    use backend::models::User;
+    let conn = &mut establish_connection_pg();
+    let results = backend::schema::users::dsl::users
+        .load::<User>(conn)
+        .expect("Failed to query users");
+
+    format!("{:#?}", results)
+}
+
+#[get("/user/<id>/<name>")]
+async fn create_user(id: i32, name: String) -> String {
+    use backend::models::User;
+    let conn = &mut establish_connection_pg();
+    let user = User {
+        id,
+        name,
+    };
+    diesel::insert_into(backend::schema::users::dsl::users)
+        .values(&user)
+        .execute(conn)
+        .expect("Error creating user");
+
+    format!("{:#?}", "ok")
 }
 
 fn rocket() -> Result<rocket::Rocket<rocket::Build>> {
@@ -62,6 +100,8 @@ fn rocket() -> Result<rocket::Rocket<rocket::Build>> {
             routes![
                 index,
                 files,
+                list_users,
+                create_user,
                 backend::routes::uclouvain_callback,
                 backend::routes::uclouvain_login
             ],

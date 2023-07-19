@@ -3,6 +3,8 @@
 //!
 //! Note that only useful values are kept.
 
+use std::collections::HashMap;
+
 use chrono::{NaiveDate, NaiveTime};
 use serde::{de::Error, Deserialize, Deserializer};
 
