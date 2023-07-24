@@ -1,6 +1,8 @@
 use rocket::{catch, catchers, fs::NamedFile, get, routes, Request};
-use rocket_db_pools::{Database, Connection};
-use rocket_db_pools::diesel::{PgPool, prelude::*};
+use rocket_db_pools::{
+    diesel::{prelude::*, PgPool},
+    Connection, Database,
+};
 use rocket_okapi::swagger_ui::*;
 use std::env;
 
@@ -45,15 +47,12 @@ async fn list_users(mut db: Connection<Db>) -> String {
         .await
         .expect("Failed to query users");
 
-    format!("{:#?}", results)
+    format!("{results:#?}")
 }
 
 #[get("/user/<id>/<name>")]
 async fn create_user(mut db: Connection<Db>, id: i32, name: String) -> String {
-    let user = User {
-        id,
-        name,
-    };
+    let user = User { id, name };
     diesel::insert_into(backend::schema::users::dsl::users)
         .values(&user)
         .execute(&mut *db)
@@ -118,7 +117,6 @@ fn rocket() -> Result<rocket::Rocket<rocket::Build>> {
         .attach(rocket_oauth2::OAuth2::<backend::routes::UCLouvain>::fairing("uclouvain"))
         .attach(Db::init());
 
-
     Ok(rocket)
 }
 
@@ -132,8 +130,7 @@ async fn main() -> Result<()> {
 #[cfg(test)]
 mod test {
     use super::rocket;
-    use rocket::{http::Status, local::blocking::Client, State};
-    use rocket::tokio::runtime::Runtime;
+    use rocket::{http::Status, local::blocking::Client, tokio::runtime::Runtime, State};
 
     lazy_static::lazy_static! {
         static ref ROCKET: rocket::Rocket<rocket::Build> = rocket().unwrap();
