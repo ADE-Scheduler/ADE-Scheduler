@@ -19,6 +19,9 @@ data = "grant_type=client_credentials"
 endpoints = {token = "token", api = "ade/v0"}
 url = "https://gw.api.uclouvain.be"
 
+[default.databases.ade-database]
+url = "postgresql://postgres@localhost/ade-database"
+
 [default.oauth.uclouvain]
 auth_uri = "https://gw.api.uclouvain.be/authorize"
 # In .env, you must specify the environ variable
