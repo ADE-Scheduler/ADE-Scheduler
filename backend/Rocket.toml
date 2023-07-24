@@ -6,9 +6,6 @@ redis = {url = "redis://127.0.0.1/"}
 
 [default]
 
-[default.databases.ade-database]
-url = "postgresql://postgres@localhost/ade-database"
-
 [default.ade]
 # In .env, you must specify the environ variable
 # ROCKET_ADE={authorization="<you_key>"}
@@ -16,6 +13,9 @@ authorization = "..."
 data = "grant_type=client_credentials"
 endpoints = {token = "token", api = "ade/v0"}
 url = "https://gw.api.uclouvain.be"
+
+[default.databases.ade-database]
+url = "postgresql://postgres@localhost/ade-database"
 
 [default.oauth.uclouvain]
 auth_uri = "https://gw.api.uclouvain.be/authorize"

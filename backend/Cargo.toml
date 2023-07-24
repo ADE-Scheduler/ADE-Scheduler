@@ -17,9 +17,12 @@ serde = {version = "1.0.163", features = ["derive"]}
 thiserror = "1.0.40"
 
 [dependencies.rocket_db_pools]
-git = "https://github.com/jeertmans/Rocket"
 branch = "ade-scheduler"
 features = ["diesel_postgres"]
+git = "https://github.com/jeertmans/Rocket"
+
+[dev-dependencies]
+lazy_static = "1.4.0"
 
 [lib]
 name = "backend"
@@ -29,6 +32,3 @@ path = "src/lib.rs"
 edition = "2021"
 name = "backend"
 version = "0.1.0"
-
-[dev-dependencies]
-lazy_static = "1.4.0"
