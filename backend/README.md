@@ -44,6 +44,27 @@ You can migrate the database to the latest version with:
 diesel migration run
 ```
 
+
+## SSL
+
+This does now work yet, but here are two interesting documents:
+
++ https://connect2id.com/products/server/docs/guides/https-for-localhost-web-client-testing
++ https://www.noip.com/support/knowledgebase/rocket-application-ssl-certificate-ip
+
+To test it locally, you can use the `login` profile with:
+
+```bash
+ROCKET_PROFILE='login' cargo run
+```
+
+If you ever need sudo access, then prefer:
+
+```bash
+cargo build
+ROCKET_PROFILE='login' sudo ./target/debug/backend
+```
+
 ## Running the server
 
 To run the server in debug mode, simply execute this command:

@@ -2,9 +2,11 @@
 
 [debug]
 port = 5000
-redis = {url = "redis://127.0.0.1/"}
 
 [default]
+
+[default.redis]
+url = "redis://127.0.0.1/"
 
 [default.databases.ade-database]
 url = "postgresql://postgres@localhost/ade-database"
@@ -23,8 +25,15 @@ auth_uri = "https://gw.api.uclouvain.be/authorize"
 # ROCKET_OAUTH={uclouvain={client_id="<you_id>",client_secret="<your_secret>"}}
 client_id = "..."
 client_secret = "..."
-redirect_uri = "https://ade-scheduler.info.ucl.ac.be/login"  # TODO: edit
+redirect_uri = "https://ade-scheduler.info.ucl.ac.be/login"
 token_uri = "https://gw.api.uclouvain.be/token"
+
+[login.tls]
+key = "key.pem"     # Path or bytes to DER-encoded ASN.1 PKCS#1/#8 or SEC1 key.
+certs = "cert.crt" # Path or bytes to DER-encoded X.509 TLS cert chain.
+
+[login]
+address = "ade-scheduler.info.ucl.ac.be"
 
 [release]
 address = "https://ade-scheduler.info.ucl.ac.be"  # TODO: fix
