@@ -1,12 +1,10 @@
-use super::schema::posts;
+use super::schema::users;
 use diesel::{prelude::*};
 use serde::{Serialize, Deserialize};
 
-#[derive(Queryable, Insertable, Serialize, Deserialize)]
+#[derive(Debug, Queryable, Insertable, Serialize, Deserialize)]
 #[diesel(table_name = users)]
-pub struct Users {
+pub struct User {
     pub id: i32,
-    pub title: String,
-    pub body: String,
-    pub published: bool,
+    pub name: String,
 }

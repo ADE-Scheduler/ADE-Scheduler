@@ -6,6 +6,9 @@ redis = {url = "redis://127.0.0.1/"}
 
 [default]
 
+[default.databases.ade-database]
+url = "postgresql://postgres@localhost/ade-database"
+
 [default.ade]
 # In .env, you must specify the environ variable
 # ROCKET_ADE={authorization="<you_key>"}

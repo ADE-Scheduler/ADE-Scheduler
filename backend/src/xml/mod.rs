@@ -251,6 +251,19 @@ pub struct Resources {
     pub resources: Vec<Resource>,
 }
 
+impl Resources {
+    /// Consumes self and returns
+    /// a hashmap that maps resource names
+    /// to the full resources.
+    pub fn into_hashmap(self) -> HashMap<String, Resource> {
+        let mut map = HashMap::with_capacity(self.resources.len());
+        self.resources.into_iter().for_each(|resource| {
+            map.insert(resource.name.clone(), resource);
+        });
+        map
+    }
+}
+
 impl Parameters for Resources {
     fn parameters() -> &'static [(&'static str, &'static str)] {
         &[("tree", "false"), ("detail", "3")]

@@ -5,16 +5,21 @@ path = "src/main.rs"
 [dependencies]
 chrono = {version = "0.4.24", features = ["serde"]}
 diesel = {version = "2.1.0", features = ["postgres", "r2d2"]}
-dotenv = "0.15.0"
+dotenvy = "0.15.7"
 log = "0.4.17"
 quick-xml = {version = "0.28.2", features = ["serialize"]}
 redis = "0.23.0"
 reqwest = {version = "0.11.18", features = ["json"]}
-rocket = "=0.5.0-rc.2"
-rocket_oauth2 = "^0.5.0-rc.1"
-rocket_okapi = {version = "=0.8.0-rc.2", features = ["swagger"]}
+rocket = "=0.5.0-rc.3"
+rocket_oauth2 = "=0.5.0-rc.2"
+rocket_okapi = {version = "=0.8.0-rc.3", features = ["swagger"]}
 serde = {version = "1.0.163", features = ["derive"]}
 thiserror = "1.0.40"
+
+[dependencies.rocket_db_pools]
+git = "https://github.com/jeertmans/Rocket"
+branch = "ade-scheduler"
+features = ["diesel_postgres"]
 
 [lib]
 name = "backend"
@@ -24,3 +29,6 @@ path = "src/lib.rs"
 edition = "2021"
 name = "backend"
 version = "0.1.0"
+
+[dev-dependencies]
+lazy_static = "1.4.0"

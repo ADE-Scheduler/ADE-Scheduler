@@ -1,7 +1,7 @@
-use rocket::{catch, catchers, fs::NamedFile, get, routes, Request, State};
+use rocket::{catch, catchers, fs::NamedFile, get, routes, Request};
+use rocket_db_pools::{Database, Connection};
+use rocket_db_pools::diesel::{PgPool, prelude::*};
 use rocket_okapi::swagger_ui::*;
-use diesel::pg::PgConnection;
-use diesel::{RunQueryDsl, Connection};
 use std::env;
 
 use backend::{
@@ -34,35 +34,30 @@ async fn catch_all(req: &Request<'_>) -> Option<NamedFile> {
     NamedFile::open("../frontend/dist/index.html").await.ok()
 }
 
-pub fn establish_connection_pg() -> PgConnection {
-    dotenv::dotenv().ok();
-    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-    PgConnection::establish(&database_url)
-        .unwrap_or_else(|_| panic!("Error connecting to {}", database_url))
-}
+#[derive(Database)]
+#[database("ade-database")]
+struct Db(PgPool);
 
 #[get("/users")]
-async fn list_users() -> String {
-    use backend::models::User;
-    let conn = &mut establish_connection_pg();
+async fn list_users(mut db: Connection<Db>) -> String {
     let results = backend::schema::users::dsl::users
-        .load::<User>(conn)
+        .load::<User>(&mut *db)
+        .await
         .expect("Failed to query users");
 
     format!("{:#?}", results)
 }
 
 #[get("/user/<id>/<name>")]
-async fn create_user(id: i32, name: String) -> String {
-    use backend::models::User;
-    let conn = &mut establish_connection_pg();
+async fn create_user(mut db: Connection<Db>, id: i32, name: String) -> String {
     let user = User {
         id,
         name,
     };
     diesel::insert_into(backend::schema::users::dsl::users)
         .values(&user)
-        .execute(conn)
+        .execute(&mut *db)
+        .await
         .expect("Error creating user");
 
     format!("{:#?}", "ok")
@@ -70,7 +65,7 @@ async fn create_user(id: i32, name: String) -> String {
 
 fn rocket() -> Result<rocket::Rocket<rocket::Build>> {
     // Loading environ variables from .env file
-    dotenv::dotenv().ok();
+    dotenvy::dotenv().ok();
 
     let rocket = rocket::build();
     let figment = rocket.figment();
@@ -120,7 +115,9 @@ fn rocket() -> Result<rocket::Rocket<rocket::Build>> {
                 ..Default::default()
             }),
         )
-        .attach(rocket_oauth2::OAuth2::<backend::routes::UCLouvain>::fairing("uclouvain"));
+        .attach(rocket_oauth2::OAuth2::<backend::routes::UCLouvain>::fairing("uclouvain"))
+        .attach(Db::init());
+
 
     Ok(rocket)
 }
@@ -136,6 +133,14 @@ async fn main() -> Result<()> {
 mod test {
     use super::rocket;
     use rocket::{http::Status, local::blocking::Client, State};
+    use rocket::tokio::runtime::Runtime;
+
+    lazy_static::lazy_static! {
+        static ref ROCKET: rocket::Rocket<rocket::Build> = rocket().unwrap();
+        static ref ADE_CLIENT: &'static State<backend::ade::Client> =
+            State::get(&ROCKET).unwrap();
+        static ref TOKEN: backend::ade::Token = Runtime::new().unwrap().block_on(async {ADE_CLIENT.get_token().await.unwrap()});
+    }
 
     #[test]
     fn docs_route() {
@@ -159,12 +164,7 @@ mod test {
     async fn client_get_projects() {
         use chrono::Datelike;
 
-        let rocket = rocket().unwrap();
-        let client: &State<backend::ade::Client> =
-            State::get(&rocket).expect("rocket should manage a backend::ade::Client instance");
-        let token = client.get_token().await.expect("token should be valid");
-
-        let projects = client.get_projects(&token).await;
+        let projects = ADE_CLIENT.get_projects(&TOKEN).await;
 
         assert!(projects.is_ok());
 
@@ -218,4 +218,41 @@ mod test {
         assert!(ping.is_ok());
         assert_eq!(ping.unwrap(), "PONG");
     }
+
+    /*
+    #[test]
+    fn redis_set_resources_hashmap() {
+        let rocket = rocket().unwrap();
+        let ade_client: &State<backend::ade::Client> =
+            State::get(&rocket).expect("rocket should manage a backend::ade::Client instance");
+        let token =ade_client.get_token().await.expect("token should be valid");
+        let project = ade_client
+            .get_projects(&token)
+            .await
+            .expect("project should be valid")[0]
+            .clone();
+
+        let resources = client.get_resources(&token, project.id).await;
+
+        assert!(resources.is_ok());
+
+        let resources = resources.unwrap();
+
+        assert!(matches!(
+            resources
+                .iter()
+                .find(|resource| { resource.name.to_uppercase().starts_with("LEPL1101") }),
+            Some(_)
+        ));
+        let rocket = rocket().unwrap();
+        let client: &State<redis::Client> =
+            State::get(&rocket).expect("rocket should manage a redis::Client instance");
+        let mut con = client
+            .get_connection()
+            .expect("failed to connect to the redis server");
+        let ping: redis::RedisResult<String> = redis::cmd("PING").query(&mut con);
+
+        assert!(ping.is_ok());
+        assert_eq!(ping.unwrap(), "PONG");
+    }*/
 }
