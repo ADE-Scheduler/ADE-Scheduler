@@ -52,7 +52,7 @@ Fist, edit the `/etc/hosts/` file (requires sudo) to map
 the ADE Scheduler website to your localhost. Note that you will not be able to
 access the online version afterward (you can comment the line for that purpose).
 
-```
+```raw
 127.0.0.1       ade-scheduler.info.ucl.ac.be
 ```
 
