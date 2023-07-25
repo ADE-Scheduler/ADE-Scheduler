@@ -18,7 +18,8 @@ and more.
 *You should only perform this setup once.*
 
 First, you need to install
-[PostgreSQL](https://www.postgresql.org/download/) and the Diesel CLI:
+[PostgreSQL](https://www.postgresql.org/download/),
+`libpq-dev` (sometimes included when installing PostgreSQL) and the Diesel CLI:
 
 ```bash
 cargo install diesel_cli --no-default-features --features postgres
