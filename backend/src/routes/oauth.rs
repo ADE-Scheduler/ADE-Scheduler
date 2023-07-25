@@ -9,7 +9,7 @@ pub struct UCLouvain;
 
 // This route calls `get_redirect`, which sets up a token request and
 // returns a `Redirect` to the authorization endpoint.
-#[get("/login")]
+#[get("/login/uclouvain")]
 pub fn uclouvain_login(oauth2: OAuth2<UCLouvain>, cookies: &CookieJar<'_>) -> Redirect {
     // We want the "user:read" scope. For some providers, scopes may be
     // pre-selected or restricted during application registration. We could
@@ -21,7 +21,7 @@ pub fn uclouvain_login(oauth2: OAuth2<UCLouvain>, cookies: &CookieJar<'_>) -> Re
 // This route, mounted at the application's Redirect URI, uses the
 // `TokenResponse` request guard to complete the token exchange and obtain
 // the token.
-#[get("/auth")]
+#[get("/login")]
 pub fn uclouvain_callback(token: TokenResponse<UCLouvain>, cookies: &CookieJar<'_>) -> Redirect {
     // Set a private cookie with the access token
     cookies.add_private(
