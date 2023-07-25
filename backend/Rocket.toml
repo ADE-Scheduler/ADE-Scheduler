@@ -28,12 +28,12 @@ token_uri = "https://gw.api.uclouvain.be/token"
 [default.redis]
 url = "redis://127.0.0.1/"
 
-[login.tls]
-key = "key.pem"     # Path or bytes to DER-encoded ASN.1 PKCS#1/#8 or SEC1 key.
-certs = "cert.crt" # Path or bytes to DER-encoded X.509 TLS cert chain.
-
 [login]
 address = "ade-scheduler.info.ucl.ac.be"
+
+[login.tls]
+certs = "cert.crt"  # Path or bytes to DER-encoded X.509 TLS cert chain.
+key = "key.pem"  # Path or bytes to DER-encoded ASN.1 PKCS#1/#8 or SEC1 key.
 
 [release]
 address = "https://ade-scheduler.info.ucl.ac.be"  # TODO: fix
