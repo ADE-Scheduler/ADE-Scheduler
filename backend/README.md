@@ -48,10 +48,26 @@ diesel migration run
 
 ## SSL
 
-This does now work yet, but here are two interesting documents:
+Fist, edit the `/etc/hosts/` file (requires sudo) to map
+the ADE Scheduler website to your localhost. Note that you will not be able to
+access the online version afterward (you can comment the line for that purpose).
 
-+ https://connect2id.com/products/server/docs/guides/https-for-localhost-web-client-testing
-+ https://www.noip.com/support/knowledgebase/rocket-application-ssl-certificate-ip
+```
+127.0.0.1       ade-scheduler.info.ucl.ac.be
+```
+
+Next, generate a dummy certificate:
+
+```bash
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+    -keyout /etc/ssl/private/ade-scheduler.info.ucl.ac.be.key \
+    -out /etc/ssl/certs/ade-scheduler.info.ucl.ac.be.crt
+```
+
+You can leave all fields blank, except for `Common Name`, where you need to set
+`ade-scheduler.info.ucl.ac.be`.
+
+And voilà!
 
 To test it locally, you can use the `login` profile with:
 
@@ -63,8 +79,15 @@ If you ever need sudo access, then prefer:
 
 ```bash
 cargo build
-ROCKET_PROFILE='login' sudo ./target/debug/backend
+sudo ROCKET_PROFILE='login' ./target/debug/backend
 ```
+
+> **NOTE**: to test the login, you **must** go to
+> https://ade-scheduler.info.ucl.ac.be/login/uclouvain,
+> not https://127.0.0.1/login/uclouvain! This is because the callback is on
+> https://ade-scheduler.info.ucl.ac.be/login, and cooking are different on each.
+> If you ever login in from the localhost, you will need to manually copy the `GET`
+> request returned from UCLouvain's OAuth, and append it to the localhost url.
 
 ## Running the server
 

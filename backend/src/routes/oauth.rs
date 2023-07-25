@@ -11,11 +11,7 @@ pub struct UCLouvain;
 // returns a `Redirect` to the authorization endpoint.
 #[get("/login/uclouvain")]
 pub fn uclouvain_login(oauth2: OAuth2<UCLouvain>, cookies: &CookieJar<'_>) -> Redirect {
-    // We want the "user:read" scope. For some providers, scopes may be
-    // pre-selected or restricted during application registration. We could
-    // use `&[]` instead to not request any scopes, but usually scopes
-    // should be requested during registation, in the redirect, or both.
-    oauth2.get_redirect(cookies, &[]).unwrap()
+    oauth2.get_redirect(cookies, &["user:read"]).unwrap()
 }
 
 // This route, mounted at the application's Redirect URI, uses the
