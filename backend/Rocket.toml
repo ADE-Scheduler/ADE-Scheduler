@@ -5,12 +5,6 @@ port = 5000
 
 [default]
 
-[default.redis]
-url = "redis://127.0.0.1/"
-
-[default.databases.ade-database]
-url = "postgresql://postgres@localhost/ade-database"
-
 [default.ade]
 # In .env, you must specify the environ variable
 # ROCKET_ADE={authorization="<you_key>"}
@@ -30,6 +24,9 @@ client_id = "..."
 client_secret = "..."
 redirect_uri = "https://ade-scheduler.info.ucl.ac.be/login"
 token_uri = "https://gw.api.uclouvain.be/token"
+
+[default.redis]
+url = "redis://127.0.0.1/"
 
 [login.tls]
 key = "key.pem"     # Path or bytes to DER-encoded ASN.1 PKCS#1/#8 or SEC1 key.
