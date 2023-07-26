@@ -7,6 +7,7 @@
 pub mod ade;
 pub mod core;
 pub mod error;
+pub mod json;
 pub mod models;
 pub mod routes;
 pub mod schema;

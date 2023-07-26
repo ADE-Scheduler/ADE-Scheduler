@@ -2,41 +2,85 @@
 
 use super::schema::users;
 use diesel::prelude::*;
-use serde::{Deserialize, Serialize};
+use serde::{
+    de::{self, Deserializer, Visitor},
+    Deserialize, Serialize,
+};
 use std::fmt;
 
-/// FGS unique identifier for UCLouvain members.
+/// UCLouvainID unique identifier for UCLouvain members,
+/// and can be aliased as FGS, NOMA, etc.
 ///
-/// FGS is usually an 8-digits string, which can contain leading zeros.
-/// `FGS::to_string` solve this problem by appending leading zeros if needed,
-/// but uses one `u32` for storage, which is far better than a string.
+/// UCLouvainID is usually an 8-digits string, which can contain leading zeros.
+/// `UCLouvainID::to_string` solve this problem by appending leading zeros if
+/// needed, but uses one `u32` for storage, which is far better than a string.
 ///
 /// ```rust
-/// # use backend::models::FGS;
-/// let fgs = FGS(12345678);
+/// # use backend::models::UCLouvainID;
+/// let fgs = UCLouvainID(12345678);
 /// assert_eq!("12345678", fgs.to_string());
 ///
 /// // Accepts leading zeros;
-/// let fgs = FGS(00123456);
+/// let fgs = UCLouvainID(00123456);
 /// assert_eq!("00123456", fgs.to_string());
-pub struct FGS(pub u32);
+#[derive(Clone, Debug)]
+pub struct UCLouvainID(pub u32);
 
-impl fmt::Display for FGS {
+pub type FGS = UCLouvainID;
+pub type NOMA = UCLouvainID;
+
+impl fmt::Display for UCLouvainID {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{:08}", self.0)
     }
 }
 
-impl std::ops::Deref for FGS {
+impl std::ops::Deref for UCLouvainID {
     type Target = u32;
     fn deref(&self) -> &Self::Target {
         &self.0
     }
 }
 
-impl std::ops::DerefMut for FGS {
+impl std::ops::DerefMut for UCLouvainID {
     fn deref_mut(&mut self) -> &mut Self::Target {
         &mut self.0
+    }
+}
+
+struct UCLouvainIDVisitor;
+
+impl<'de> Visitor<'de> for UCLouvainIDVisitor {
+    type Value = u32;
+    // TODO: actually forbid values above 99_999_999
+
+    fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        formatter.write_str("an unsigned integer between 0 and 99_999_999 included")
+    }
+
+    fn visit_u64<E>(self, value: u64) -> Result<Self::Value, E>
+    where
+        E: de::Error,
+    {
+        value.try_into().map_err(de::Error::custom)
+    }
+
+    fn visit_str<E>(self, value: &str) -> Result<Self::Value, E>
+    where
+        E: de::Error,
+    {
+        value.parse().map_err(de::Error::custom)
+    }
+}
+
+impl<'de> Deserialize<'de> for UCLouvainID {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        deserializer
+            .deserialize_any(UCLouvainIDVisitor)
+            .map(UCLouvainID)
     }
 }
 

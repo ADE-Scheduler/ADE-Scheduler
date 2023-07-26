@@ -19,6 +19,7 @@ pub fn uclouvain_login(oauth2: OAuth2<UCLouvain>, cookies: &CookieJar<'_>) -> Re
 // the token.
 #[get("/login")]
 pub fn uclouvain_callback(token: TokenResponse<UCLouvain>, cookies: &CookieJar<'_>) -> Redirect {
+    println!("token: {}", token.access_token());
     // Set a private cookie with the access token
     cookies.add_private(
         Cookie::build("token", token.access_token().to_string())

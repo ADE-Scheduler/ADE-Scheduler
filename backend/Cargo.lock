@@ -138,6 +138,7 @@ dependencies = [
  "rocket_oauth2",
  "rocket_okapi",
  "serde",
+ "serde_json",
  "thiserror",
 ]
 

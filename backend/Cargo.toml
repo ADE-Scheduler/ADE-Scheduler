@@ -15,6 +15,7 @@ rocket_oauth2 = "=0.5.0-rc.2"
 rocket_okapi = {version = "=0.8.0-rc.3", features = ["swagger"]}
 serde = {version = "1.0.163", features = ["derive"]}
 thiserror = "1.0.40"
+serde_json = "1.0.103"
 
 [dependencies.rocket_db_pools]
 branch = "ade-scheduler"
