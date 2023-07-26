@@ -83,9 +83,9 @@ sudo ROCKET_PROFILE='login' ./target/debug/backend
 ```
 
 > **NOTE**: to test the login, you **must** go to
-> https://ade-scheduler.info.ucl.ac.be/login/uclouvain,
-> not https://127.0.0.1/login/uclouvain! This is because the callback is on
-> https://ade-scheduler.info.ucl.ac.be/login, and cooking are different on each.
+> <https://ade-scheduler.info.ucl.ac.be/login/uclouvain>,
+> not <https://127.0.0.1/login/uclouvain>! This is because the callback is on
+> <https://ade-scheduler.info.ucl.ac.be/login>, and cooking are different on each.
 > If you ever log in from the localhost, you will need to manually copy the `GET`
 > request returned from UCLouvain's OAuth, and append it to the localhost url.
 
