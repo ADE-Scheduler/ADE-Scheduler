@@ -1,0 +1,44 @@
+# Read more: https://rocket.rs/v0.5-rc/guide/configuration/
+
+[debug]
+port = 5000
+
+[default]
+
+[default.ade]
+# In .env, you must specify the environ variable
+# ROCKET_ADE={authorization="<your_key>"}
+authorization = "..."
+data = "grant_type=client_credentials"
+endpoints = {token = "token", api = "ade/v0"}
+url = "https://gw.api.uclouvain.be"
+
+[default.databases.ade-database]
+url = "postgresql://postgres@localhost/ade-database"
+
+[default.oauth.uclouvain]
+auth_uri = "https://gw.api.uclouvain.be/authorize"
+# In .env, you must specify the environ variable
+# ROCKET_OAUTH={uclouvain={client_id="<your_id>",client_secret="<your_secret>"}}
+client_id = "..."
+client_secret = "..."
+redirect_uri = "https://ade-scheduler.info.ucl.ac.be/login"
+token_uri = "https://gw.api.uclouvain.be/token"
+
+[default.redis]
+url = "redis://127.0.0.1/"
+
+[login]
+port = 443
+# Dummy secret key, should not be used in production!
+secret_key = "aaYkh9m7x4edWwl0Uhem8M70EKv0P+3yUfok7Wae5d1ZVyHRbvAzy9elwgTqZPDkxMRa4L9raGe7+Ge0aHtTdA=="
+
+[login.tls]
+certs = "/etc/ssl/certs/ade-scheduler.info.ucl.ac.be.crt"
+key = "/etc/ssl/private/ade-scheduler.info.ucl.ac.be.key"
+
+[release]
+# In .env, you must specify the environ variable
+# ROCKET_SECRET_KEY="<your_secret_key>
+# e.g. `via: head -c64 /dev/urandom | base64`
+port = 443

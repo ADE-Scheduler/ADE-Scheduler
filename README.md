@@ -15,13 +15,13 @@
 
 ### Project creators
 
-- [Eertmans Jérome](https://www.linkedin.com/in/j%C3%A9rome-eertmans-130ab1130/) (active maintainer)
-- [Navarre Louis](https://www.linkedin.com/in/louis-navarre-36b78b143/)
-- [Poncelet Gilles](https://www.linkedin.com/in/gilles-poncelet-020442195/) (active maintainer)
+- [Eertmans Jérome](https://www.linkedin.com/in/j%C3%A9rome-eertmans-130ab1130/) (active maintainer) - [@jeertmans](https://github.com/jeertmans)
+- [Navarre Louis](https://www.linkedin.com/in/louis-navarre-36b78b143/) - [@louisna](https://github.com/louisna)
+- [Poncelet Gilles](https://www.linkedin.com/in/gilles-poncelet-020442195/) (active maintainer) - [@SnaKyEyeS](https://github.com/SnaKyEyeS)
 
 We are three former students from the Ecole Polytechnique de Louvain (EPL) and were starting our first master year at the start of the project.
 
-### Why such a tool ?
+### Why such a tool?
 
 The currently used scheduling tool used by the UCLouvain, [ADE](http://horaire.uclouvain.be/direct/), lacks an intuitive interface and general usability. Therefore, we decided to create ADE-Scheduler as a "wrapper" around this tool to make it more intuitive, nice and complete.
 
@@ -37,6 +37,7 @@ Before that, we were using the excellent [ADE2ICS](https://github.com/cdamman/UC
 - **2021 - December**: 7000+ users
 - **2022 - January**: moving auth. system to UCLouvain OAuth, thereby resetting the number of users to 0 on January 29nth, 2022
 - **2022 - Summer**: first major contribution from students to the ADE Scheduler repository
+- **2023 - TODO**: refactor TODO
 
 ### How does it work ?
 
