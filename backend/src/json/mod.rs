@@ -94,6 +94,8 @@ pub enum BusinessRoleCode {
 
 /// ```rust
 /// # use backend::json::Employee;
+/// use backend::models::UCLouvainID;
+///
 /// let json = r#"
 /// {
 ///   "person": {
@@ -111,8 +113,9 @@ pub enum BusinessRoleCode {
 /// }"#;
 ///
 /// let employee: Employee = json.parse().unwrap();
+/// let fgs = UCLouvainID::new_unchecked(87654321);
 ///
-/// assert_eq!(employee.person.matric_fgs.0, 87654321);
+/// assert_eq!(employee.person.matric_fgs, fgs);
 /// ```
 #[derive(Clone, Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -127,6 +130,8 @@ pub struct Person {
 
 /// ```rust
 /// # use backend::json::Student;
+/// use backend::models::UCLouvainID;
+///
 /// let json = r#"
 /// {
 ///   "lireDossierEtudiantResponse": {
@@ -149,10 +154,11 @@ pub struct Person {
 /// }"#;
 ///
 /// let student: Student = json.parse().unwrap();
+/// let fgs = UCLouvainID::new_unchecked(123456);
 ///
 /// assert_eq!(
-///     student.lire_dossier_etudiant_response._return.matric_fgs.0,
-///     123456
+///     student.lire_dossier_etudiant_response._return.matric_fgs,
+///     fgs
 /// );
 /// ```
 #[derive(Clone, Debug, Deserialize)]

@@ -17,17 +17,40 @@ use std::fmt;
 ///
 /// ```rust
 /// # use backend::models::UCLouvainID;
-/// let fgs = UCLouvainID(12345678);
+/// let fgs = UCLouvainID::new_unchecked(12345678);
 /// assert_eq!("12345678", fgs.to_string());
 ///
 /// // Accepts leading zeros;
-/// let fgs = UCLouvainID(00123456);
+/// let fgs = UCLouvainID::new_unchecked(00123456);
 /// assert_eq!("00123456", fgs.to_string());
-#[derive(Clone, Debug)]
-pub struct UCLouvainID(pub u32);
+#[derive(Clone, Debug, PartialEq)]
+pub struct UCLouvainID(u32);
 
 pub type FGS = UCLouvainID;
 pub type NOMA = UCLouvainID;
+
+impl UCLouvainID {
+    /// Maximal values, as ids are always 8-digits long strings.
+    pub const MAX: u32 = 99_999_999;
+    
+    /// Creates a new [`UCLouvainID`] from a given id,
+    /// and returns an error if `id` is greater than [`UCLouvainID::MAX`].
+    #[inline(always)]
+    pub fn new(id: u32) -> Result<Self, &'static str> {
+        if id > Self::MAX {
+            Err("id cannot be greater than 99_999_999")
+        } else {
+            Ok(Self(id))
+        }
+    }
+    
+    #[inline(always)]
+    /// Creates a new [`UCLouvainID`] from a given id,
+    /// and never checks if `id` is greater than [`UCLouvainID::MAX`].
+    pub fn new_unchecked(id: u32) -> Self {
+        UCLouvainID(id)
+    }
+}
 
 impl fmt::Display for UCLouvainID {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -80,7 +103,7 @@ impl<'de> Deserialize<'de> for UCLouvainID {
     {
         deserializer
             .deserialize_any(UCLouvainIDVisitor)
-            .map(UCLouvainID)
+            .and_then(|id| UCLouvainID::new(id).map_err(de::Error::custom))
     }
 }
 
