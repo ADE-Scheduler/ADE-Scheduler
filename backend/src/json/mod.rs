@@ -2,7 +2,7 @@
 //! from HTTP responses.
 //!
 //! Note that only useful values are kept.
-use crate::models::UCLouvainID;
+use crate::models::FGS;
 use serde::{Deserialize, Deserializer};
 
 /// ```rust
@@ -66,7 +66,7 @@ pub struct BusinessRole {
 #[derive(Clone, Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct BusinessRoleInner {
-    pub business_role_id: UCLouvainID,
+    pub business_role_id: FGS,
     #[serde(deserialize_with = "deserialize_role_code")]
     pub business_role_code: BusinessRoleCode,
 }
@@ -94,7 +94,7 @@ pub enum BusinessRoleCode {
 
 /// ```rust
 /// # use backend::json::Employee;
-/// use backend::models::UCLouvainID;
+/// use backend::models::FGS;
 ///
 /// let json = r#"
 /// {
@@ -113,7 +113,7 @@ pub enum BusinessRoleCode {
 /// }"#;
 ///
 /// let employee: Employee = json.parse().unwrap();
-/// let fgs = UCLouvainID::new_unchecked(87654321);
+/// let fgs = FGS::new_unchecked(87654321);
 ///
 /// assert_eq!(employee.person.matric_fgs, fgs);
 /// ```
@@ -125,12 +125,15 @@ pub struct Employee {
 
 #[derive(Clone, Debug, Deserialize)]
 pub struct Person {
-    pub matric_fgs: UCLouvainID,
+    pub matric_fgs: FGS,
+    pub firstname: String,
+    pub lastname: String,
+    pub email: String,
 }
 
 /// ```rust
 /// # use backend::json::Student;
-/// use backend::models::UCLouvainID;
+/// use backend::models::FGS;
 ///
 /// let json = r#"
 /// {
@@ -154,7 +157,7 @@ pub struct Person {
 /// }"#;
 ///
 /// let student: Student = json.parse().unwrap();
-/// let fgs = UCLouvainID::new_unchecked(123456);
+/// let fgs = FGS::new_unchecked(123456);
 ///
 /// assert_eq!(
 ///     student.lire_dossier_etudiant_response._return.matric_fgs,
@@ -176,7 +179,12 @@ pub struct LireDossierEtudiantResponse {
 #[derive(Clone, Debug, Deserialize)]
 pub struct Return {
     #[serde(rename = "matricFGS")]
-    pub matric_fgs: UCLouvainID,
+    pub matric_fgs: FGS,
+    #[serde(rename = "prenom")]
+    pub firstname: String,
+    #[serde(rename = "nom")]
+    pub lastname: String,
+    pub email: String,
 }
 
 macro_rules! impl_from_str {

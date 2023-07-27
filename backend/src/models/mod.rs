@@ -11,39 +11,30 @@ use std::fmt;
 /// UCLouvainID unique identifier for UCLouvain members,
 /// and can be aliased as FGS, NOMA, etc.
 ///
-/// UCLouvainID is usually an 8-digits string, which can contain leading zeros.
+/// UCLouvainID is an 8-digits string, which can contain leading zeros.
 /// `UCLouvainID::to_string` solve this problem by appending leading zeros if
 /// needed, but uses one `u32` for storage, which is far better than a string.
 ///
 /// ```rust
 /// # use backend::models::UCLouvainID;
-/// let fgs = UCLouvainID::new_unchecked(12345678);
-/// assert_eq!("12345678", fgs.to_string());
+/// let id = UCLouvainID::new_unchecked(12345678);
+/// assert_eq!("12345678", id.to_string());
 ///
 /// // Accepts leading zeros;
-/// let fgs = UCLouvainID::new_unchecked(00123456);
-/// assert_eq!("00123456", fgs.to_string());
+/// let id = UCLouvainID::new_unchecked(00123456);
+/// assert_eq!("00123456", id.to_string());
 #[derive(Clone, Debug, PartialEq)]
 pub struct UCLouvainID(u32);
 
+/// Identifier for each UCLouvain member (employees and students).
 pub type FGS = UCLouvainID;
+/// Identifier for each UCLouvain student.
 pub type NOMA = UCLouvainID;
 
 impl UCLouvainID {
-    /// Maximal values, as ids are always 8-digits long strings.
+    /// Maximal value, as ids are always 8-digits long strings.
     pub const MAX: u32 = 99_999_999;
-    
-    /// Creates a new [`UCLouvainID`] from a given id,
-    /// and returns an error if `id` is greater than [`UCLouvainID::MAX`].
-    #[inline(always)]
-    pub fn new(id: u32) -> Result<Self, &'static str> {
-        if id > Self::MAX {
-            Err("id cannot be greater than 99_999_999")
-        } else {
-            Ok(Self(id))
-        }
-    }
-    
+
     #[inline(always)]
     /// Creates a new [`UCLouvainID`] from a given id,
     /// and never checks if `id` is greater than [`UCLouvainID::MAX`].
@@ -58,24 +49,23 @@ impl fmt::Display for UCLouvainID {
     }
 }
 
-impl std::ops::Deref for UCLouvainID {
-    type Target = u32;
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+impl std::convert::TryFrom<u64> for UCLouvainID {
+    type Error = &'static str;
 
-impl std::ops::DerefMut for UCLouvainID {
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
+    #[inline(always)]
+    fn try_from(value: u64) -> Result<Self, Self::Error> {
+        if value > (Self::MAX as u64) {
+            Err("id cannot be greater than 99_999_999")
+        } else {
+            Ok(Self(value as u32))
+        }
     }
 }
 
 struct UCLouvainIDVisitor;
 
 impl<'de> Visitor<'de> for UCLouvainIDVisitor {
-    type Value = u32;
-    // TODO: actually forbid values above 99_999_999
+    type Value = UCLouvainID;
 
     fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
         formatter.write_str("an unsigned integer between 0 and 99_999_999 included")
@@ -92,7 +82,10 @@ impl<'de> Visitor<'de> for UCLouvainIDVisitor {
     where
         E: de::Error,
     {
-        value.parse().map_err(de::Error::custom)
+        value
+            .parse()
+            .map_err(de::Error::custom)
+            .and_then(|id: u64| id.try_into().map_err(de::Error::custom))
     }
 }
 
@@ -101,9 +94,7 @@ impl<'de> Deserialize<'de> for UCLouvainID {
     where
         D: Deserializer<'de>,
     {
-        deserializer
-            .deserialize_any(UCLouvainIDVisitor)
-            .and_then(|id| UCLouvainID::new(id).map_err(de::Error::custom))
+        deserializer.deserialize_any(UCLouvainIDVisitor)
     }
 }
 
