@@ -1,12 +1,21 @@
 //! Database models.
 
 use super::schema::users;
-use diesel::prelude::*;
+use crate::json::{Employee, Person, Return, Student};
+use diesel::{
+    backend::RawValue,
+    deserialize::{self, FromSql, FromSqlRow},
+    expression::AsExpression,
+    pg::Pg,
+    prelude::*,
+    serialize::{self, Output, ToSql},
+    sql_types::{Integer, SqlType},
+};
 use serde::{
     de::{self, Deserializer, Visitor},
     Deserialize, Serialize,
 };
-use std::fmt;
+use std::{fmt, time::SystemTime};
 
 /// UCLouvainID unique identifier for UCLouvain members,
 /// and can be aliased as FGS, NOMA, etc.
@@ -23,7 +32,8 @@ use std::fmt;
 /// // Accepts leading zeros;
 /// let id = UCLouvainID::new_unchecked(00123456);
 /// assert_eq!("00123456", id.to_string());
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Eq, FromSqlRow, AsExpression, Serialize)]
+#[diesel(sql_type = Integer)]
 pub struct UCLouvainID(u32);
 
 /// Identifier for each UCLouvain member (employees and students).
@@ -59,6 +69,20 @@ impl std::convert::TryFrom<u64> for UCLouvainID {
         } else {
             Ok(Self(value as u32))
         }
+    }
+}
+
+// From: https://stackoverflow.com/a/72282900.
+impl ToSql<Integer, Pg> for UCLouvainID {
+    fn to_sql<'b>(&'b self, out: &mut Output<'b, '_, Pg>) -> serialize::Result {
+        <i32 as ToSql<Integer, Pg>>::to_sql(&(self.0 as i32), &mut out.reborrow())
+    }
+}
+
+impl FromSql<Integer, Pg> for UCLouvainID {
+    fn from_sql(bytes: RawValue<Pg>) -> deserialize::Result<Self> {
+        <i32 as FromSql<Integer, Pg>>::from_sql(bytes)
+            .map(|id| UCLouvainID::new_unchecked(id as u32))
     }
 }
 
@@ -103,6 +127,43 @@ impl<'de> Deserialize<'de> for UCLouvainID {
 #[diesel(table_name = users)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 pub struct User {
-    pub id: i32,
-    pub name: String,
+    id: i32,
+    pub fgs: FGS,
+    pub firstname: String,
+    pub lastname: String,
+    pub email: String,
+    pub created_at: SystemTime,
+    pub last_seen_at: SystemTime,
+}
+
+impl User {
+    pub fn new(fgs: FGS, firstname: String, lastname: String, email: String) -> Self {
+        todo!()
+    }
+}
+
+impl From<Employee> for User {
+    fn from(employee: Employee) -> Self {
+        let Person {
+            matric_fgs,
+            firstname,
+            lastname,
+            email,
+        } = employee.person;
+
+        Self::new(matric_fgs, firstname, lastname, email)
+    }
+}
+
+impl From<Student> for User {
+    fn from(student: Student) -> Self {
+        let Return {
+            matric_fgs,
+            firstname,
+            lastname,
+            email,
+        } = student.lire_dossier_etudiant_response._return;
+
+        Self::new(matric_fgs, firstname, lastname, email)
+    }
 }

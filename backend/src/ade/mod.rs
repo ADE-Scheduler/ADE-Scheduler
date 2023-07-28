@@ -1,4 +1,4 @@
-//! Easily build requests to ADE'S API.
+//! Easily build requests to ADE's API.
 
 use serde::Deserialize;
 

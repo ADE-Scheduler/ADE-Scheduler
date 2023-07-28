@@ -44,6 +44,23 @@ pub struct BusinessRoles {
     pub business_roles: BusinessRole,
 }
 
+impl BusinessRoles {
+    /// Returns the first, i.e. main, role of a given user.
+    ///
+    /// Roles are ordered according to their code.
+    ///
+    /// If no role is found, returns None.
+    pub fn first_role(&self) -> Option<BusinessRoleInner> {
+        if self.business_roles.business_role.is_empty() {
+            return None;
+        }
+
+        let mut roles = self.business_roles.business_role.clone();
+        roles.sort_by(|role1, role2| role1.business_role_code.cmp(&role2.business_role_code));
+        Some(roles.remove(0))
+    }
+}
+
 impl std::ops::Deref for BusinessRoles {
     type Target = Vec<BusinessRoleInner>;
     fn deref(&self) -> &Self::Target {
@@ -83,7 +100,7 @@ fn deserialize_role_code<'de, D: Deserializer<'de>>(
     }
 }
 
-#[derive(Clone, Debug, Default, PartialEq)]
+#[derive(Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord)]
 #[repr(u8)]
 pub enum BusinessRoleCode {
     Employee = 1,

@@ -9,6 +9,7 @@ pub mod core;
 pub mod error;
 pub mod json;
 pub mod models;
+pub mod my;
 pub mod routes;
 pub mod schema;
 pub mod xml;

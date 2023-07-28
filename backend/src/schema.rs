@@ -3,6 +3,11 @@
 diesel::table! {
     users (id) {
         id -> Int4,
-        name -> Varchar,
+        fgs -> Int4,
+        firstname -> Varchar,
+        lastname -> Varchar,
+        email -> Varchar,
+        created_at -> Timestamp,
+        last_seen_at -> Timestamp,
     }
 }

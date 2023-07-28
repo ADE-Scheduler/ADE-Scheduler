@@ -6,11 +6,7 @@ use rocket_db_pools::{
 use rocket_okapi::swagger_ui::*;
 use std::env;
 
-use backend::{
-    ade::{Client, Credentials},
-    error::Result,
-    models::User,
-};
+use backend::{ade, error::Result, models::User, my};
 
 use std::path::{Path, PathBuf};
 
@@ -50,6 +46,7 @@ async fn list_users(mut db: Connection<Db>) -> String {
     format!("{results:#?}")
 }
 
+/*
 #[get("/user/<id>/<name>")]
 async fn create_user(mut db: Connection<Db>, id: i32, name: String) -> String {
     let user = User { id, name };
@@ -60,7 +57,7 @@ async fn create_user(mut db: Connection<Db>, id: i32, name: String) -> String {
         .expect("Error creating user");
 
     format!("{:#?}", "ok")
-}
+}*/
 
 fn rocket() -> Result<rocket::Rocket<rocket::Build>> {
     // Loading environ variables from .env file
@@ -70,12 +67,20 @@ fn rocket() -> Result<rocket::Rocket<rocket::Build>> {
     let figment = rocket.figment();
 
     log::info!("Reading ADE credentials from config file...");
-    let credentials: Credentials = figment
+    let ade_credentials: ade::Credentials = figment
         .extract_inner("ade")
-        .expect("ade credentials should be present in the config file");
+        .expect("ADE credentials should be present in the config file");
 
-    log::info!("Creating ADE  client with credentials...");
-    let ade_client = Client::new(credentials);
+    log::info!("Creating ADEclient with credentials...");
+    let ade_client = ade::Client::new(ade_credentials);
+
+    log::info!("Reading My credentials from config file...");
+    let my_credentials: my::Credentials = figment
+        .extract_inner("my")
+        .expect("My credentials should be present in the config file");
+
+    log::info!("Creating My client with credentials...");
+    let my_client = my::Client::new(my_credentials);
 
     let redis_client: redis::Client = redis::Client::open(
         figment
@@ -88,6 +93,7 @@ fn rocket() -> Result<rocket::Rocket<rocket::Build>> {
     let rocket = rocket
         .register("/", catchers![catch_all])
         .manage(ade_client)
+        .manage(my_client)
         .manage(redis_client)
         .mount(
             "/",
@@ -95,7 +101,6 @@ fn rocket() -> Result<rocket::Rocket<rocket::Build>> {
                 index,
                 files,
                 list_users,
-                create_user,
                 backend::routes::uclouvain_callback,
                 backend::routes::uclouvain_login
             ],

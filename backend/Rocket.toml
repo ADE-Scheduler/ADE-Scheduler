@@ -16,6 +16,9 @@ url = "https://gw.api.uclouvain.be"
 [default.databases.ade-database]
 url = "postgresql://postgres@localhost/ade-database"
 
+[default.my]
+url = "https://gw.api.uclouvain.be/my/v0"
+
 [default.oauth.uclouvain]
 auth_uri = "https://gw.api.uclouvain.be/authorize"
 # In .env, you must specify the environ variable
