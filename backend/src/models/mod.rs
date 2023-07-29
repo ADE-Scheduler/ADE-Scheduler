@@ -1,7 +1,10 @@
 //! Database models.
 
 use super::schema::users;
-use crate::json::{Employee, Person, Return, Student};
+use crate::{
+    error::{Error, Result},
+    json::{Employee, Person, Return, Student},
+};
 use diesel::{
     backend::RawValue,
     deserialize::{self, FromSql, FromSqlRow},
@@ -16,6 +19,17 @@ use serde::{
     Deserialize, Serialize,
 };
 use std::{fmt, time::SystemTime};
+
+use rocket_db_pools::{
+    diesel::{prelude::*, PgPool, RunQueryDsl},
+    Database,
+};
+
+pub use rocket_db_pools::Connection;
+
+#[derive(Database)]
+#[database("ade-database")]
+pub struct Db(PgPool);
 
 /// UCLouvainID unique identifier for UCLouvain members,
 /// and can be aliased as FGS, NOMA, etc.
@@ -60,12 +74,14 @@ impl fmt::Display for UCLouvainID {
 }
 
 impl std::convert::TryFrom<u64> for UCLouvainID {
-    type Error = &'static str;
+    type Error = Error;
 
     #[inline(always)]
-    fn try_from(value: u64) -> Result<Self, Self::Error> {
+    fn try_from(value: u64) -> Result<Self> {
         if value > (Self::MAX as u64) {
-            Err("id cannot be greater than 99_999_999")
+            Err(Error::InvalidUCLouvainID(format!(
+                "id cannot be greater than 99_999_999, got {value}"
+            )))
         } else {
             Ok(Self(value as u32))
         }
@@ -95,14 +111,14 @@ impl<'de> Visitor<'de> for UCLouvainIDVisitor {
         formatter.write_str("an unsigned integer between 0 and 99_999_999 included")
     }
 
-    fn visit_u64<E>(self, value: u64) -> Result<Self::Value, E>
+    fn visit_u64<E>(self, value: u64) -> std::result::Result<Self::Value, E>
     where
         E: de::Error,
     {
         value.try_into().map_err(de::Error::custom)
     }
 
-    fn visit_str<E>(self, value: &str) -> Result<Self::Value, E>
+    fn visit_str<E>(self, value: &str) -> std::result::Result<Self::Value, E>
     where
         E: de::Error,
     {
@@ -114,7 +130,7 @@ impl<'de> Visitor<'de> for UCLouvainIDVisitor {
 }
 
 impl<'de> Deserialize<'de> for UCLouvainID {
-    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    fn deserialize<D>(deserializer: D) -> std::result::Result<Self, D::Error>
     where
         D: Deserializer<'de>,
     {
@@ -123,7 +139,7 @@ impl<'de> Deserialize<'de> for UCLouvainID {
 }
 
 /// UCLouvain user, with minimal information.
-#[derive(Debug, Queryable, Insertable, Serialize, Deserialize)]
+#[derive(Debug, Queryable, Insertable, Selectable, Serialize, Deserialize)]
 #[diesel(table_name = users)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 pub struct User {
@@ -137,12 +153,57 @@ pub struct User {
 }
 
 impl User {
-    pub fn new(fgs: FGS, firstname: String, lastname: String, email: String) -> Self {
-        todo!()
+    /// Returns the user with given FGS, if present in the database.
+    ///
+    /// If not present, will return [`None`].
+    pub async fn get_user(fgs: FGS, db: &mut Connection<Db>) -> Result<Option<Self>> {
+        use crate::schema::users::dsl;
+        let user = dsl::users
+            .filter(dsl::fgs.eq(fgs)) // TODO: FIXME
+            .select(Self::as_select())
+            .first(&mut *db)
+            .await
+            .optional()?;
+
+        Ok(user)
+    }
+
+    pub async fn create_user(new_user: NewUser, db: &mut Connection<Db>) -> Result<Self> {
+        let user = diesel::insert_into(crate::schema::users::dsl::users)
+            .values(&new_user)
+            .returning(Self::as_returning())
+            .get_result(&mut *db)
+            .await?;
+
+        Ok(user)
     }
 }
 
-impl From<Employee> for User {
+/// Tempory structure that contains everything required to insert a new [`User`]
+/// in the Users table.
+#[derive(Debug, Insertable)]
+#[diesel(table_name = users)]
+#[diesel(check_for_backend(diesel::pg::Pg))]
+pub struct NewUser {
+    fgs: FGS,
+    firstname: String,
+    lastname: String,
+    email: String,
+}
+
+impl NewUser {
+    #[inline(always)]
+    fn new(fgs: FGS, firstname: String, lastname: String, email: String) -> Self {
+        Self {
+            fgs,
+            firstname,
+            lastname,
+            email,
+        }
+    }
+}
+
+impl From<Employee> for NewUser {
     fn from(employee: Employee) -> Self {
         let Person {
             matric_fgs,
@@ -155,7 +216,7 @@ impl From<Employee> for User {
     }
 }
 
-impl From<Student> for User {
+impl From<Student> for NewUser {
     fn from(student: Student) -> Self {
         let Return {
             matric_fgs,

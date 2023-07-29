@@ -32,10 +32,7 @@ async fn catch_all(req: &Request<'_>) -> Option<NamedFile> {
     NamedFile::open("../frontend/dist/index.html").await.ok()
 }
 
-#[derive(Database)]
-#[database("ade-database")]
-struct Db(PgPool);
-
+/*
 #[get("/users")]
 async fn list_users(mut db: Connection<Db>) -> String {
     let results = backend::schema::users::dsl::users
@@ -44,7 +41,7 @@ async fn list_users(mut db: Connection<Db>) -> String {
         .expect("Failed to query users");
 
     format!("{results:#?}")
-}
+}*/
 
 /*
 #[get("/user/<id>/<name>")]
@@ -100,7 +97,6 @@ fn rocket() -> Result<rocket::Rocket<rocket::Build>> {
             routes![
                 index,
                 files,
-                list_users,
                 backend::routes::uclouvain_callback,
                 backend::routes::uclouvain_login
             ],
@@ -120,7 +116,7 @@ fn rocket() -> Result<rocket::Rocket<rocket::Build>> {
             }),
         )
         .attach(rocket_oauth2::OAuth2::<backend::routes::UCLouvain>::fairing("uclouvain"))
-        .attach(Db::init());
+        .attach(backend::models::Db::init());
 
     Ok(rocket)
 }

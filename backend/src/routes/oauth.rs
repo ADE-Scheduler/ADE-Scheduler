@@ -8,6 +8,7 @@ use rocket_oauth2::{OAuth2, TokenResponse};
 
 use crate::{
     error::{Error, Result},
+    models::{Connection, Db},
     my,
 };
 
@@ -28,8 +29,12 @@ pub async fn uclouvain_callback(
     token: TokenResponse<UCLouvain>,
     cookies: &CookieJar<'_>,
     client: &State<my::Client>,
+    mut db: Connection<Db>,
 ) -> Result<Redirect> {
-    use crate::json::BusinessRoleCode::*;
+    use crate::{
+        json::BusinessRoleCode::*,
+        models::{NewUser, User},
+    };
     // Set a private cookie with the access token
     println!("token: {}", token.access_token().to_string());
     cookies.add_private(
@@ -41,18 +46,31 @@ pub async fn uclouvain_callback(
 
     let role = roles.first_role().ok_or(Error::UserHasNoKnownRole)?;
 
-    match role.business_role_code {
-        Employee => {
-            let employee = client.get_employee(token.access_token()).await?;
-            println!("employee: {employee:?}")
+    let id = role.business_role_id;
+
+    let user = match User::get_user(id, &mut db).await? {
+        Some(user) => user,
+        None => {
+            let new_user: NewUser = match role.business_role_code {
+                Employee => {
+                    let employee = client.get_employee(token.access_token()).await?;
+                    println!("employee: {employee:?}");
+                    employee.into()
+                },
+                Student => {
+                    let student = client.get_student(token.access_token()).await?;
+                    println!("student: {student:?}");
+                    student.into()
+                },
+                Unknown => return Err(Error::UserHasNoKnownRole),
+            };
+            println!("Created user!");
+            User::create_user(new_user, &mut db).await?
         },
-        Student => {
-            let student = client.get_student(token.access_token()).await?;
-            println!("student: {student:?}")
-        },
-        Unknown => return Err(Error::UserHasNoKnownRole),
-    }
+    };
+
     println!("roles: {:?}", roles);
+    println!("user: {:?}", user);
 
     Ok(Redirect::to("/"))
 }
