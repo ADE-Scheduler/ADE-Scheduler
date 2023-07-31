@@ -89,7 +89,8 @@ pub trait Parameters {
 #[allow(clippy::tabs_in_doc_comments)]
 #[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]
 pub struct Activities {
-    #[serde(rename(deserialize = "activity"))]
+    #[serde(rename(deserialize = "activity"))
+    #[schemars(rename = "activities")]]
     pub activities: Vec<Activity>,
 }
 
@@ -112,10 +113,13 @@ impl Parameters for Activities {
 #[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]
 pub struct Activity {
     #[serde(rename(deserialize = "@id"))]
+    #[schemars(rename = "id")]
     pub id: u32,
     #[serde(rename(deserialize = "@name"))]
+    #[schemars(rename = "name")]
     pub name: String,
     #[serde(rename(deserialize = "@type"))]
+    #[schemars(rename = "type")]
     pub _type: String,
     pub events: Events,
 }
@@ -125,6 +129,7 @@ pub struct Activity {
 pub struct Events {
     #[serde(default)]
     #[serde(rename(deserialize = "event"))]
+    #[schemars(rename = "events")]
     pub events: Vec<Event>,
 }
 
@@ -132,23 +137,31 @@ pub struct Events {
 #[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]
 pub struct Event {
     #[serde(rename(deserialize = "@id"))]
+    #[schemars(rename = "id")]
     pub id: u32,
     #[serde(rename(deserialize = "@name"))]
+    #[schemars(rename = "name")]
     pub name: String,
     #[serde(rename(deserialize = "@endHour"))]
     #[serde(deserialize_with = "deserialize_time")]
+    #[schemars(rename = "end_hour")]
     pub end_hour: NaiveTime,
     #[serde(rename(deserialize = "@startHour"))]
     #[serde(deserialize_with = "deserialize_time")]
+    #[schemars(rename = "start_hour")]
     pub start_hour: NaiveTime,
     #[serde(rename(deserialize = "@date"))]
     #[serde(deserialize_with = "deserialize_date")]
+    #[schemars(rename = "date")]
     pub date: NaiveDate,
     #[serde(rename(deserialize = "@info"))]
+    #[schemars(rename = "info")]
     pub info: String,
     #[serde(rename(deserialize = "@note"))]
+    #[schemars(rename = "note")]
     pub note: String,
     #[serde(rename(deserialize = "eventParticipants"))]
+    #[schemars(rename = "event_participants")]
     pub event_participants: EventParticipants,
 }
 
@@ -167,6 +180,7 @@ fn deserialize_date<'de, D: Deserializer<'de>>(deserializer: D) -> Result<NaiveD
 pub struct EventParticipants {
     #[serde(default)]
     #[serde(rename(deserialize = "eventParticipant"))]
+    #[schemars(rename = "event_participants")]
     pub event_participants: Vec<EventParticipant>,
 }
 
@@ -178,10 +192,13 @@ pub struct EventParticipants {
 #[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]
 pub struct EventParticipant {
     #[serde(rename(deserialize = "@category"))]
+    #[schemars(rename = "category")]
     pub category: Category,
     #[serde(rename(deserialize = "@name"))]
+    #[schemars(rename = "name")]
     pub name: String,
     #[serde(rename(deserialize = "@id"))]
+    #[schemars(rename = "id")]
     pub id: u32,
 }
 
@@ -249,6 +266,7 @@ pub enum Category {
 #[derive(Clone, Debug, Deserialize)]
 pub struct Resources {
     #[serde(rename(deserialize = "resource"))]
+    #[schemars(rename = "resources")]
     pub resources: Vec<Resource>,
 }
 
@@ -275,10 +293,13 @@ impl Parameters for Resources {
 #[derive(Clone, Debug, Deserialize)]
 pub struct Resource {
     #[serde(rename(deserialize = "@id"))]
+    #[schemars(rename = "id")]
     pub id: u32,
     #[serde(rename(deserialize = "@name"))]
+    #[schemars(rename = "name")]
     pub name: String,
     #[serde(rename(deserialize = "@category"))]
+    #[schemars(rename = "category")]
     pub category: Category,
 }
 
@@ -302,6 +323,7 @@ pub struct Resource {
 #[derive(Clone, Debug, Deserialize)]
 pub struct Projects {
     #[serde(rename(deserialize = "project"))]
+    #[schemars(rename = "projects")]
     pub projects: Vec<Project>,
 }
 
@@ -318,8 +340,10 @@ impl Parameters for Projects {
 #[derive(Clone, Debug, Deserialize)]
 pub struct Project {
     #[serde(rename(deserialize = "@id"))]
+    #[schemars(rename = "id")]
     pub id: u32,
     #[serde(rename(deserialize = "@name"))]
+    #[schemars(rename = "name")]
     pub name: String,
 }
 
