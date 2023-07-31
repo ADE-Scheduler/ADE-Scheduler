@@ -2,8 +2,10 @@
 //! from HTTP responses.
 //!
 //! Note that only useful values are kept.
-use crate::models::FGS;
+
 use serde::{Deserialize, Deserializer};
+
+use crate::models::FGS;
 
 /// ```rust
 /// # use backend::json::{BusinessRoles, BusinessRoleCode};
@@ -83,7 +85,6 @@ pub struct BusinessRole {
 #[derive(Clone, Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct BusinessRoleInner {
-    pub business_role_id: FGS,
     #[serde(deserialize_with = "deserialize_role_code")]
     pub business_role_code: BusinessRoleCode,
 }

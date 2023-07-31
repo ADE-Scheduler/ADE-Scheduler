@@ -1,28 +1,30 @@
 //! Database models.
 
-use super::schema::users;
-use crate::{
-    error::{Error, Result},
-    json::{Employee, Person, Return, Student},
-};
+use std::fmt;
+
+use chrono::NaiveDateTime;
 use diesel::{
-    backend::RawValue,
+    backend::Backend,
     deserialize::{self, FromSql, FromSqlRow},
     expression::AsExpression,
     pg::Pg,
     prelude::*,
     serialize::{self, Output, ToSql},
-    sql_types::{Integer, SqlType},
+    sql_types::Integer,
+};
+use rocket_db_pools::{
+    diesel::{PgPool, RunQueryDsl},
+    Database,
 };
 use serde::{
     de::{self, Deserializer, Visitor},
     Deserialize, Serialize,
 };
-use std::{fmt, time::SystemTime};
 
-use rocket_db_pools::{
-    diesel::{prelude::*, PgPool, RunQueryDsl},
-    Database,
+use crate::{
+    error::{Error, Result},
+    json::{Employee, Person, Return, Student},
+    schema::users,
 };
 
 pub use rocket_db_pools::Connection;
@@ -96,7 +98,7 @@ impl ToSql<Integer, Pg> for UCLouvainID {
 }
 
 impl FromSql<Integer, Pg> for UCLouvainID {
-    fn from_sql(bytes: RawValue<Pg>) -> deserialize::Result<Self> {
+    fn from_sql(bytes: <Pg as Backend>::RawValue<'_>) -> deserialize::Result<Self> {
         <i32 as FromSql<Integer, Pg>>::from_sql(bytes)
             .map(|id| UCLouvainID::new_unchecked(id as u32))
     }
@@ -148,8 +150,8 @@ pub struct User {
     pub firstname: String,
     pub lastname: String,
     pub email: String,
-    pub created_at: SystemTime,
-    pub last_seen_at: SystemTime,
+    pub created_at: NaiveDateTime,
+    pub last_seen_at: NaiveDateTime,
 }
 
 impl User {
@@ -158,8 +160,9 @@ impl User {
     /// If not present, will return [`None`].
     pub async fn get_user(fgs: FGS, db: &mut Connection<Db>) -> Result<Option<Self>> {
         use crate::schema::users::dsl;
+
         let user = dsl::users
-            .filter(dsl::fgs.eq(fgs)) // TODO: FIXME
+            .filter(dsl::fgs.eq(fgs))
             .select(Self::as_select())
             .first(&mut *db)
             .await
@@ -192,14 +195,22 @@ pub struct NewUser {
 }
 
 impl NewUser {
+    /// Create a [`NewUser`] struct, that will later be used to create an
+    /// [`User`] in the database.
     #[inline(always)]
-    fn new(fgs: FGS, firstname: String, lastname: String, email: String) -> Self {
+    pub fn new(fgs: FGS, firstname: String, lastname: String, email: String) -> Self {
         Self {
             fgs,
             firstname,
             lastname,
             email,
         }
+    }
+
+    /// Returns a copy of the FGS unique identifier.
+    #[inline(always)]
+    pub fn fgs(&self) -> FGS {
+        self.fgs.clone()
     }
 }
 

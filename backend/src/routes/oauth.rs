@@ -36,7 +36,7 @@ pub async fn uclouvain_callback(
         models::{NewUser, User},
     };
     // Set a private cookie with the access token
-    println!("token: {}", token.access_token().to_string());
+    println!("token: {}", token.access_token());
     cookies.add_private(
         Cookie::build("token", token.access_token().to_string())
             .same_site(SameSite::Lax)
@@ -44,33 +44,29 @@ pub async fn uclouvain_callback(
     );
     let roles = client.get_roles(token.access_token()).await?;
 
+    println!("roles: {roles:?}");
     let role = roles.first_role().ok_or(Error::UserHasNoKnownRole)?;
 
-    let id = role.business_role_id;
-
-    let user = match User::get_user(id, &mut db).await? {
-        Some(user) => user,
-        None => {
-            let new_user: NewUser = match role.business_role_code {
-                Employee => {
-                    let employee = client.get_employee(token.access_token()).await?;
-                    println!("employee: {employee:?}");
-                    employee.into()
-                },
-                Student => {
-                    let student = client.get_student(token.access_token()).await?;
-                    println!("student: {student:?}");
-                    student.into()
-                },
-                Unknown => return Err(Error::UserHasNoKnownRole),
-            };
-            println!("Created user!");
-            User::create_user(new_user, &mut db).await?
+    let new_user: NewUser = match role.business_role_code {
+        Employee => {
+            let employee = client.get_employee(token.access_token()).await?;
+            println!("employee: {employee:?}");
+            employee.into()
         },
+        Student => {
+            let student = client.get_student(token.access_token()).await?;
+            println!("student: {student:?}");
+            student.into()
+        },
+        Unknown => return Err(Error::UserHasNoKnownRole),
     };
 
-    println!("roles: {:?}", roles);
-    println!("user: {:?}", user);
+    let user = match User::get_user(new_user.fgs(), &mut db).await? {
+        Some(user) => user,
+        None => User::create_user(new_user, &mut db).await?,
+    };
+
+    println!("user: {user:?}");
 
     Ok(Redirect::to("/"))
 }

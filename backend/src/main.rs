@@ -1,14 +1,13 @@
-use rocket::{catch, catchers, fs::NamedFile, get, routes, Request};
-use rocket_db_pools::{
-    diesel::{prelude::*, PgPool},
-    Connection, Database,
+use std::{
+    env,
+    path::{Path, PathBuf},
 };
+
+use rocket::{catch, catchers, fs::NamedFile, get, routes, Request};
+use rocket_db_pools::Database;
 use rocket_okapi::swagger_ui::*;
-use std::env;
 
-use backend::{ade, error::Result, models::User, my};
-
-use std::path::{Path, PathBuf};
+use backend::{ade, error::Result, my};
 
 #[get("/")]
 async fn index() -> Option<NamedFile> {

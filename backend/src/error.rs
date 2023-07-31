@@ -46,7 +46,7 @@ pub type Result<T> = std::result::Result<T, Error>;
 
 impl<'r> Responder<'r, 'static> for Error {
     fn respond_to(self, _: &'r Request<'_>) -> response::Result<'static> {
-        let message = format!("InternalServerError: {}", self);
+        let message = format!("InternalServerError: {self}");
         Response::build()
             .header(ContentType::Plain)
             .status(Status::InternalServerError)

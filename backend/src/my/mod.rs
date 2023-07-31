@@ -36,7 +36,7 @@ impl Client {
         let response = self
             .client
             .get(format!("{url}/digit/roles"))
-            .bearer_auth(access_token.clone())
+            .bearer_auth(access_token)
             .send()
             .await?;
 
@@ -50,7 +50,7 @@ impl Client {
         let response = self
             .client
             .get(format!("{url}/employee"))
-            .bearer_auth(access_token.clone())
+            .bearer_auth(access_token)
             .send()
             .await?;
 
@@ -64,7 +64,7 @@ impl Client {
         let response = self
             .client
             .get(format!("{url}/student"))
-            .bearer_auth(access_token.clone())
+            .bearer_auth(access_token)
             .send()
             .await?;
 
