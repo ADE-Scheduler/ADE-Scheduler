@@ -6,7 +6,8 @@
 use std::collections::HashMap;
 
 use chrono::{NaiveDate, NaiveTime};
-use serde::{de::Error, Deserialize, Deserializer};
+use rocket_okapi::JsonSchema;
+use serde::{de::Error, Deserialize, Deserializer, Serialize};
 
 /// Convenience trait for building requests with [`reqwest::RequestBuilder`].
 pub trait Parameters {
@@ -86,9 +87,9 @@ pub trait Parameters {
 /// assert_eq!(activities[0].name, "LEPL1104=E");
 /// ```
 #[allow(clippy::tabs_in_doc_comments)]
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]
 pub struct Activities {
-    #[serde(rename = "activity")]
+    #[serde(rename(deserialize = "activity"))]
     pub activities: Vec<Activity>,
 }
 
@@ -108,46 +109,46 @@ impl Parameters for Activities {
 /// (`Q1`).
 ///
 /// Sometimes, the activity type is also specified by the `_type` field.
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]
 pub struct Activity {
-    #[serde(rename = "@id")]
+    #[serde(rename(deserialize = "@id"))]
     pub id: u32,
-    #[serde(rename = "@name")]
+    #[serde(rename(deserialize = "@name"))]
     pub name: String,
-    #[serde(rename = "@type")]
+    #[serde(rename(deserialize = "@type"))]
     pub _type: String,
     pub events: Events,
 }
 
 /// Events containers.
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]
 pub struct Events {
     #[serde(default)]
-    #[serde(rename = "event")]
+    #[serde(rename(deserialize = "event"))]
     pub events: Vec<Event>,
 }
 
 /// A calendar event, with some information.
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]
 pub struct Event {
-    #[serde(rename = "@id")]
+    #[serde(rename(deserialize = "@id"))]
     pub id: u32,
-    #[serde(rename = "@name")]
+    #[serde(rename(deserialize = "@name"))]
     pub name: String,
-    #[serde(rename = "@endHour")]
+    #[serde(rename(deserialize = "@endHour"))]
     #[serde(deserialize_with = "deserialize_time")]
     pub end_hour: NaiveTime,
-    #[serde(rename = "@startHour")]
+    #[serde(rename(deserialize = "@startHour"))]
     #[serde(deserialize_with = "deserialize_time")]
     pub start_hour: NaiveTime,
-    #[serde(rename = "@date")]
+    #[serde(rename(deserialize = "@date"))]
     #[serde(deserialize_with = "deserialize_date")]
     pub date: NaiveDate,
-    #[serde(rename = "@info")]
+    #[serde(rename(deserialize = "@info"))]
     pub info: String,
-    #[serde(rename = "@note")]
+    #[serde(rename(deserialize = "@note"))]
     pub note: String,
-    #[serde(rename = "eventParticipants")]
+    #[serde(rename(deserialize = "eventParticipants"))]
     pub event_participants: EventParticipants,
 }
 
@@ -162,10 +163,10 @@ fn deserialize_date<'de, D: Deserializer<'de>>(deserializer: D) -> Result<NaiveD
 }
 
 /// Event participants containers.
-#[derive(Clone, Debug, Default, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize, JsonSchema)]
 pub struct EventParticipants {
     #[serde(default)]
-    #[serde(rename = "eventParticipant")]
+    #[serde(rename(deserialize = "eventParticipant"))]
     pub event_participants: Vec<EventParticipant>,
 }
 
@@ -174,18 +175,18 @@ pub struct EventParticipants {
 /// This can be any variant of [`Category`], like teacher
 /// ([`Category::Instructor`]), a room ([`Category::Classroom`]),
 /// or a main course name ([`Category::Category5`]).
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]
 pub struct EventParticipant {
-    #[serde(rename = "@category")]
+    #[serde(rename(deserialize = "@category"))]
     pub category: Category,
-    #[serde(rename = "@name")]
+    #[serde(rename(deserialize = "@name"))]
     pub name: String,
-    #[serde(rename = "@id")]
+    #[serde(rename(deserialize = "@id"))]
     pub id: u32,
 }
 
 /// Enumeration of all categories returned by ADE's API.
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub enum Category {
     /// Group of courses, like a course program.
@@ -247,7 +248,7 @@ pub enum Category {
 #[allow(clippy::tabs_in_doc_comments)]
 #[derive(Clone, Debug, Deserialize)]
 pub struct Resources {
-    #[serde(rename = "resource")]
+    #[serde(rename(deserialize = "resource"))]
     pub resources: Vec<Resource>,
 }
 
@@ -273,11 +274,11 @@ impl Parameters for Resources {
 /// A resource.
 #[derive(Clone, Debug, Deserialize)]
 pub struct Resource {
-    #[serde(rename = "@id")]
+    #[serde(rename(deserialize = "@id"))]
     pub id: u32,
-    #[serde(rename = "@name")]
+    #[serde(rename(deserialize = "@name"))]
     pub name: String,
-    #[serde(rename = "@category")]
+    #[serde(rename(deserialize = "@category"))]
     pub category: Category,
 }
 
@@ -300,7 +301,7 @@ pub struct Resource {
 #[allow(clippy::tabs_in_doc_comments)]
 #[derive(Clone, Debug, Deserialize)]
 pub struct Projects {
-    #[serde(rename = "project")]
+    #[serde(rename(deserialize = "project"))]
     pub projects: Vec<Project>,
 }
 
@@ -316,9 +317,9 @@ impl Parameters for Projects {
 /// The id is used to request activities from a given year to the API.
 #[derive(Clone, Debug, Deserialize)]
 pub struct Project {
-    #[serde(rename = "@id")]
+    #[serde(rename(deserialize = "@id"))]
     pub id: u32,
-    #[serde(rename = "@name")]
+    #[serde(rename(deserialize = "@name"))]
     pub name: String,
 }
 

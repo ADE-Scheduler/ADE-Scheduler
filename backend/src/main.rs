@@ -103,7 +103,7 @@ fn rocket() -> Result<rocket::Rocket<rocket::Build>> {
         .mount(
             "/api/",
             rocket_okapi::openapi_get_routes![
-                backend::routes::calendar,
+                backend::routes::calendar::calendar,
                 backend::routes::classrooms
             ],
         )

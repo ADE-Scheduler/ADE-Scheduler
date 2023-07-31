@@ -190,17 +190,17 @@ pub struct Student {
 
 #[derive(Clone, Debug, Deserialize)]
 pub struct LireDossierEtudiantResponse {
-    #[serde(rename = "return")]
+    #[serde(rename(deserialize = "return"))]
     pub _return: Return,
 }
 
 #[derive(Clone, Debug, Deserialize)]
 pub struct Return {
-    #[serde(rename = "matricFGS")]
+    #[serde(rename(deserialize = "matricFGS"))]
     pub matric_fgs: FGS,
-    #[serde(rename = "prenom")]
+    #[serde(rename(deserialize = "prenom"))]
     pub firstname: String,
-    #[serde(rename = "nom")]
+    #[serde(rename(deserialize = "nom"))]
     pub lastname: String,
     pub email: String,
 }

@@ -6,6 +6,10 @@ use rocket::{
     request::Request,
     response::{self, Responder, Response},
 };
+use rocket_okapi::{
+    gen::OpenApiGenerator, okapi::openapi3::Responses, response::OpenApiResponderInner,
+    util::ensure_status_code_exists,
+};
 
 /// Enumeration of all possible error types.
 #[derive(Debug, thiserror::Error)]
@@ -52,5 +56,13 @@ impl<'r> Responder<'r, 'static> for Error {
             .status(Status::InternalServerError)
             .sized_body(message.len(), Cursor::new(message))
             .ok()
+    }
+}
+
+impl OpenApiResponderInner for Error {
+    fn responses(_gen: &mut OpenApiGenerator) -> rocket_okapi::Result<Responses> {
+        let mut responses = Responses::default();
+        ensure_status_code_exists(&mut responses, 500);
+        Ok(responses)
     }
 }

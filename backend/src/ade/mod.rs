@@ -4,7 +4,7 @@ use serde::Deserialize;
 
 use super::{
     error::Result,
-    xml::{Parameters, Projects, Resources},
+    xml::{Activities, Parameters, Projects, Resources},
 };
 
 #[derive(Debug, Deserialize)]
@@ -85,5 +85,38 @@ impl Client {
         let resources = response.text().await?.parse()?;
 
         Ok(resources)
+    }
+
+    pub async fn get_activities<I>(
+        &self,
+        token: &Token,
+        project_id: u32,
+        activity_ids: I,
+    ) -> Result<Activities>
+    where
+        I: Iterator<Item = u32>,
+    {
+        let url = &self.credentials.url;
+        let api = &self.credentials.endpoints.api;
+        let mut ids = String::new();
+
+        for id in activity_ids {
+            ids.push_str(&id.to_string());
+            ids.push('|');
+        }
+        ids.pop();
+
+        let response = self
+            .client
+            .get(format!("{url}/{api}/projects/{project_id}/activities"))
+            .query(Activities::parameters())
+            .query(&[("resources", ids)])
+            .bearer_auth(token.access_token.clone())
+            .send()
+            .await?;
+
+        let activities = response.text().await?.parse()?;
+
+        Ok(activities)
     }
 }
