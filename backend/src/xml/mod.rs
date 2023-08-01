@@ -89,8 +89,8 @@ pub trait Parameters {
 #[allow(clippy::tabs_in_doc_comments)]
 #[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]
 pub struct Activities {
-    #[serde(rename(deserialize = "activity"))
-    #[schemars(rename = "activities")]]
+    #[serde(rename(deserialize = "activity"))]
+    #[schemars(rename = "activities")]
     pub activities: Vec<Activity>,
 }
 
@@ -263,7 +263,7 @@ pub enum Category {
 /// assert_eq!(resources[0].name, "KINE21M_G8-A");
 /// ```
 #[allow(clippy::tabs_in_doc_comments)]
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]
 pub struct Resources {
     #[serde(rename(deserialize = "resource"))]
     #[schemars(rename = "resources")]
@@ -290,7 +290,7 @@ impl Parameters for Resources {
 }
 
 /// A resource.
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]
 pub struct Resource {
     #[serde(rename(deserialize = "@id"))]
     #[schemars(rename = "id")]
@@ -320,7 +320,7 @@ pub struct Resource {
 /// assert_eq!(projects[0].name, "2022-2023");
 /// ```
 #[allow(clippy::tabs_in_doc_comments)]
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]
 pub struct Projects {
     #[serde(rename(deserialize = "project"))]
     #[schemars(rename = "projects")]
@@ -337,7 +337,7 @@ impl Parameters for Projects {
 ///
 /// The name is simply the year (start-end) for this project.
 /// The id is used to request activities from a given year to the API.
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]
 pub struct Project {
     #[serde(rename(deserialize = "@id"))]
     #[schemars(rename = "id")]
