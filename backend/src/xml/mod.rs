@@ -118,7 +118,7 @@ pub struct Activity {
     #[serde(rename(deserialize = "@name"))]
     #[schemars(rename = "name")]
     pub name: String,
-    #[serde(rename(deserialize = "@type"))]
+    #[serde(rename(deserialize = "@type", serialize = "type"))]
     #[schemars(rename = "type")]
     pub _type: String,
     pub events: Events,

@@ -16,6 +16,9 @@ url = "https://gw.api.uclouvain.be"
 [default.databases.ade-database]
 url = "postgresql://postgres@localhost/ade-database"
 
+[default.databases.redis]
+url = "redis://127.0.0.1/"
+
 [default.my]
 url = "https://gw.api.uclouvain.be/my/v0"
 
@@ -27,9 +30,6 @@ client_id = "..."
 client_secret = "..."
 redirect_uri = "https://ade-scheduler.info.ucl.ac.be/login"
 token_uri = "https://gw.api.uclouvain.be/token"
-
-[default.redis]
-url = "redis://127.0.0.1/"
 
 [login]
 port = 443

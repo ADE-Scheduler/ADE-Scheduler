@@ -23,7 +23,7 @@ pub enum Error {
     HttpRequest(#[from] reqwest::Error),
 
     /// Error that occurs if a UCLouvainId is invalid (see
-    /// [`backend::models::UCLouvainID`]).
+    /// [`crate::models::UCLouvainID`]).
     #[error("Invalid UCLouvainID: {0}")]
     InvalidUCLouvainID(String),
 
@@ -36,7 +36,7 @@ pub enum Error {
     Rocket(#[from] rocket::Error),
 
     /// Error that occurs if a UCLouvain a not known role (see
-    /// [`backend::json::BusinessRoleCode`]).
+    /// [`crate::json::BusinessRoleCode`]).
     #[error("This user has no employee or student role at UCLouvain, this is not normal!")]
     UserHasNoKnownRole,
 

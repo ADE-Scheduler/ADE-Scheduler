@@ -1,9 +1,18 @@
 //! Easily build requests to ADE's API.
 
+use rocket::{
+    http::Status,
+    request::{FromRequest, Outcome, Request},
+};
+use rocket_okapi::{
+    gen::OpenApiGenerator,
+    request::{OpenApiFromRequest, RequestHeaderInput},
+};
 use serde::Deserialize;
 
 use super::{
-    error::Result,
+    error::{Error, Result},
+    redis::{Connection, Redis},
     xml::{Activities, Parameters, Projects, Resources},
 };
 
@@ -30,6 +39,71 @@ pub struct Client {
 pub struct Token {
     pub access_token: String,
     pub expires_in: u32,
+}
+
+impl<'r> OpenApiFromRequest<'r> for Token {
+    fn from_request_input(
+        _gen: &mut OpenApiGenerator,
+        _name: String,
+        _required: bool,
+    ) -> rocket_okapi::Result<RequestHeaderInput> {
+        Ok(RequestHeaderInput::None)
+    }
+}
+
+#[rocket::async_trait]
+impl<'r> FromRequest<'r> for Token {
+    type Error = Option<&'static str>;
+
+    async fn from_request(req: &'r Request<'_>) -> Outcome<Self, Self::Error> {
+        match req.guard::<Connection<Redis>>().await {
+            Outcome::Success(mut con) => {
+                let token = match redis::pipe()
+                    .cmd("GET")
+                    .arg("ade-token")
+                    .cmd("TTL")
+                    .arg("ade-token")
+                    .query_async(&mut *con)
+                    .await
+                {
+                    Ok((access_token, expires_in)) => {
+                        Token {
+                            access_token,
+                            expires_in,
+                        }
+                    },
+                    _ => {
+                        match req.rocket().state::<Client>() {
+                            Some(ade_client) => {
+                                match ade_client.get_token().await {
+                                    Ok(token) => {
+                                        let _result: redis::RedisResult<String> =
+                                            redis::Cmd::set_ex(
+                                                "ade-token",
+                                                &token.access_token,
+                                                token.expires_in as usize,
+                                            )
+                                            .query_async(&mut *con)
+                                            .await;
+                                        token
+                                    },
+                                    Err(_) => {
+                                        return Outcome::Failure((
+                                            Status::InternalServerError,
+                                            None,
+                                        ));
+                                    },
+                                }
+                            },
+                            None => return Outcome::Failure((Status::InternalServerError, None)),
+                        }
+                    },
+                };
+                Outcome::Success(token)
+            },
+            _ => Outcome::Failure((Status::InternalServerError, None)),
+        }
+    }
 }
 
 impl Client {

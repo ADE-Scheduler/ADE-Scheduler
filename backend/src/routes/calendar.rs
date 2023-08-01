@@ -16,9 +16,9 @@ use crate::{ade, error::Result, xml::Activities};
 pub async fn calendar(
     code: &str,
     ade_client: &State<ade::Client>,
-    _redis_client: &State<redis::Client>,
+    token: ade::Token,
 ) -> Result<Json<Activities>> {
-    let token = ade_client.get_token().await.expect("token should be valid");
+    println!("Some token {token:?}");
     let project = ade_client
         .get_projects(&token)
         .await

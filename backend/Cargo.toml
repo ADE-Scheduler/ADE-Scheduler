@@ -20,7 +20,7 @@ thiserror = "1.0.40"
 
 [dependencies.rocket_db_pools]
 branch = "ade-scheduler"
-features = ["diesel_postgres"]
+features = ["deadpool_redis", "diesel_postgres"]
 git = "https://github.com/jeertmans/Rocket"
 
 [dev-dependencies]

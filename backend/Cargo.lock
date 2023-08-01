@@ -254,7 +254,11 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "35ed6e9d84f0b51a7f52daf1c7d71dd136fd7a3f41a8462b8cdb8c78d920fad4"
 dependencies = [
  "bytes",
+ "futures-core",
  "memchr",
+ "pin-project-lite",
+ "tokio",
+ "tokio-util",
 ]
 
 [[package]]
@@ -365,6 +369,16 @@ dependencies = [
  "num_cpus",
  "retain_mut",
  "tokio",
+]
+
+[[package]]
+name = "deadpool-redis"
+version = "0.12.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5f1760f60ffc6653b4afd924c5792098d8c00d9a3deb6b3d989eac17949dc422"
+dependencies = [
+ "deadpool",
+ "redis",
 ]
 
 [[package]]
@@ -1450,12 +1464,18 @@ version = "0.23.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ff5d95dd18a4d76650f0c2607ed8ebdbf63baf9cb934e1c233cd220c694db1d7"
 dependencies = [
+ "async-trait",
+ "bytes",
  "combine",
+ "futures-util",
  "itoa",
  "percent-encoding",
+ "pin-project-lite",
  "ryu",
  "sha1_smol",
  "socket2 0.4.9",
+ "tokio",
+ "tokio-util",
  "url",
 ]
 
@@ -1651,6 +1671,7 @@ version = "0.1.0-rc.3"
 source = "git+https://github.com/jeertmans/Rocket?branch=ade-scheduler#9790c1a1684eaa639c7f811b1d8f09a26025bfeb"
 dependencies = [
  "deadpool",
+ "deadpool-redis",
  "diesel",
  "diesel-async",
  "rocket",

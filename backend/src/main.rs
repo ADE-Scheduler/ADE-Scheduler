@@ -78,19 +78,10 @@ fn rocket() -> Result<rocket::Rocket<rocket::Build>> {
     log::info!("Creating My client with credentials...");
     let my_client = my::Client::new(my_credentials);
 
-    let redis_client: redis::Client = redis::Client::open(
-        figment
-            .find_value("redis.url")
-            .expect("redis.url should be present in the config file")
-            .as_str()
-            .expect("redis.url should be a string"),
-    )?;
-
     let rocket = rocket
         .register("/", catchers![catch_all])
         .manage(ade_client)
         .manage(my_client)
-        .manage(redis_client)
         .mount(
             "/",
             routes![
@@ -115,7 +106,8 @@ fn rocket() -> Result<rocket::Rocket<rocket::Build>> {
             }),
         )
         .attach(rocket_oauth2::OAuth2::<backend::routes::UCLouvain>::fairing("uclouvain"))
-        .attach(backend::models::Db::init());
+        .attach(backend::models::Db::init())
+        .attach(backend::redis::Redis::init());
 
     Ok(rocket)
 }
