@@ -25,7 +25,7 @@
         "id": "non-progs-bugs",
         "icon": "bi bi-bug-fill",
         "title": "Signaler un bug",
-        "content": "Les évènements ne correspondent pas à ceux que vous avez encodés ? Des locaux sont manquants ou sont mal localisés sur la carte ? Une fonctionnalité ne marche pas comme vous le pensiez ? <br><br> Peut-être que le problème est dû à une erreur dans notre code, ou peut-être est-ce dû à une faute dans l'encodage des cours de la part des personnes en charge des données de ADE. Quoi qu'il en soit, contactez-nous et nous ferons tout notre problème pour régler votre problème. "
+        "content": "Les évènements ne correspondent pas à ceux que vous avez encodés ? Des locaux sont manquants ou sont mal localisés sur la carte ? Une fonctionnalité ne marche pas comme vous le pensiez ? <br><br> Peut-être que le problème est dû à une erreur dans notre code, ou peut-être est-ce dû à une faute dans l'encodage des cours de la part des personnes en charge des données de ADE. Quoi qu'il en soit, contactez-nous et nous ferons tout notre possible pour régler votre problème. "
       },
       {
         "id": "non-progs-typo",
