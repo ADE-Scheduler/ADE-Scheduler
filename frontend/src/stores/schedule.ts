@@ -14,10 +14,9 @@ interface Schedule {
 export const useScheduleStore = defineStore("schedule", () => {
   // Current code list
   const codes = ref<Code[]>([
-    { id: 1, code: "code 1" },
-    { id: 2, code: "code 2" },
-    { id: 3, code: "code 3" },
-    { id: 4, code: "code 4 - a very long code !" },
+    { id: 1, code: "LMECA1901" },
+    { id: 2, code: "LMECA2660" },
+    { id: 3, code: "LEPL1103" },
   ]);
 
   function addCode(code: string) {
@@ -25,8 +24,12 @@ export const useScheduleStore = defineStore("schedule", () => {
     codes.value.push({ id, code });
   }
 
-  function deleteCode(id: number) {
-    codes.value = codes.value.filter((code) => code.id !== id);
+  function hasCode(code: string) {
+    return codes.value.some((e) => e.code === code);
+  }
+
+  function deleteCode(code: string) {
+    codes.value = codes.value.filter((e) => e.code !== code);
   }
 
   // Schedule list
@@ -47,6 +50,14 @@ export const useScheduleStore = defineStore("schedule", () => {
 
   function deleteSchedule(id: number) {
     schedules.value = schedules.value.filter((schedule) => schedule.id !== id);
+    // If the current schedule is deleted, set the first schedule as current
+    if (currentSchedule.value.id === id) {
+      // If the schedule list is empty, create a new schedule
+      if (schedules.value.length === 0) {
+        newSchedule();
+      }
+      currentSchedule.value = schedules.value[0];
+    }
   }
 
   function getScheduleName(id: number) {
@@ -68,6 +79,7 @@ export const useScheduleStore = defineStore("schedule", () => {
   return {
     codes,
     addCode,
+    hasCode,
     deleteCode,
     schedules,
     currentSchedule,

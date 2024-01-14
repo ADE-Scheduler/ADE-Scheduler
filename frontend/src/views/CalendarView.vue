@@ -1,20 +1,9 @@
 <script setup lang="ts">
-import { fetch } from "@/api";
-import { onActivated, onUnmounted } from "vue";
 import CodeList from "@/components/CodeList.vue";
 import ToggleDark from "@/components/ToggleDark.vue";
 import ToggleLocale from "@/components/ToggleLocale.vue";
-import MainCalendar from "@/components/MainCalendar.vue";
 import OffcanvasMenu from "@/components/OffcanvasMenu.vue";
 import ScheduleSelector from "@/components/ScheduleSelector.vue";
-
-const { data, abort } = fetch("calendar").get();
-onUnmounted(abort);
-
-onActivated(() => {
-  /* TODO: do some checks here (data out-of-date or null in case of failed request,...) */
-  console.log("Retrieving CalendarView from cache...");
-});
 </script>
 
 <template>
@@ -39,7 +28,7 @@ onActivated(() => {
               <a
                 href="https://www.buymeacoffee.com/adescheduler"
                 class="btn btn-link link-warning"
-                et="_blank"
+                target="_blank"
               >
                 <i class="bi bi-cup-hot-fill"></i>
               </a>
@@ -57,7 +46,25 @@ onActivated(() => {
       </OffcanvasMenu>
     </div>
     <div class="col-md-8 col-lg-9 col-xxl-10 px-0">
-      <MainCalendar />
+      <Transition name="fade" mode="out-in">
+        <RouterView v-slot="{ Component, route }">
+          <KeepAlive>
+            <Component :is="Component" :key="route.path" />
+          </KeepAlive>
+        </RouterView>
+      </Transition>
     </div>
   </div>
 </template>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.25s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

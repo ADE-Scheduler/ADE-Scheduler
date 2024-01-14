@@ -17,13 +17,6 @@ const vFocus = {
 // schedule store
 const scheduleStore = useScheduleStore();
 
-// Code action buttons
-const showBtnAction = ref<number | null>(null);
-// TODO: Delete code function
-function deleteCode(id: number) {
-  scheduleStore.deleteCode(id);
-}
-
 // TODO: Add code function
 const inputCode = ref("");
 function addCode() {
@@ -32,39 +25,21 @@ function addCode() {
     inputCode.value = "";
   }
 }
-
-// TODO: Show code details function
-function showCodeDetails(id: number) {
-  console.log("show code details", id);
-}
 </script>
 
 <template>
   <ul class="list-group w-100">
-    <li
-      role="button"
+    <RouterLink
       class="list-group-item list-group-item-action list-group-item-light"
       v-for="{ id, code } in scheduleStore.codes"
       :key="id"
-      @mouseover="showBtnAction = id"
-      @mouseleave="showBtnAction = null"
-      @click="showCodeDetails(id)"
+      :class="{ active: $route.params.code === code }"
+      :to="{ name: 'Code', params: { code } }"
     >
-      <div class="d-flex justify-content-between">
-        <span class="text-truncate">
-          {{ code }}
-        </span>
-        <button
-          role="button"
-          class="btn btn-link link-danger py-0 pe-0"
-          @click.stop="deleteCode(id)"
-          v-show="showBtnAction === id"
-          style="max-height: 24px"
-        >
-          <i class="bi bi-x-lg"></i>
-        </button>
-      </div>
-    </li>
+      <span class="text-truncate">
+        {{ code }}
+      </span>
+    </RouterLink>
     <li class="list-group-item p-0">
       <div class="bg-transparent">
         <input

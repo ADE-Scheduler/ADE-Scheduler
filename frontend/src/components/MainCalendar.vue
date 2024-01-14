@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import { fetch } from "@/api";
 import { useI18n } from "vue-i18n";
-import { ref, watchEffect } from "vue";
+import { ref, watchEffect, onUnmounted, onActivated } from "vue";
 import { getWeekText } from "@/utils/weeknumbers";
 import { useBreakpoints } from "@/composables/breakpoints";
 
@@ -53,6 +54,10 @@ watchEffect(() => {
     ? "dayGridMonth,timeGridDay"
     : "dayGridMonth,timeGridWeek";
 });
+
+// TODO: Fetch the data for the calendar from the API
+const { data, abort } = fetch("calendar").get();
+onUnmounted(abort);
 </script>
 
 <template>

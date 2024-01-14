@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 import { Collapse } from "bootstrap";
+import { useToggle } from "@vueuse/core";
 import { useScheduleStore } from "@/stores";
 import { onMounted, ref, watch } from "vue";
-import { useToggle, useConfirmDialog } from "@vueuse/core";
-
-import ConfirmModal from "@/components/ConfirmModal.vue";
 
 // i18n stuff
 const { t } = useI18n({
@@ -26,27 +24,6 @@ function selectSchedule(id: number) {
 function newSchedule() {
   scheduleStore.newSchedule();
   showCollapse.value = false;
-}
-
-// Schedule action buttons
-const showBtnAction = ref<number | null>(null);
-
-// TODO: Delete schedule function
-const confirmScheduleDelete = useConfirmDialog();
-const confirmScheduleDeleteName = ref<string | undefined>(undefined);
-async function deleteSchedule(id: number) {
-  // get the name of the schedule
-  confirmScheduleDeleteName.value = scheduleStore.getScheduleName(id);
-  // get user confirmation
-  const res = await confirmScheduleDelete.reveal();
-  if (!res.isCanceled && res.data) {
-    scheduleStore.deleteSchedule(id);
-  }
-}
-
-// TODO: Edit schedule function
-function editSchedule(id: number) {
-  console.log("edit schedule", id);
 }
 
 // Collapse management
@@ -72,18 +49,6 @@ watch(showCollapse, (value) => {
 </script>
 
 <template>
-  <ConfirmModal
-    :reveal="confirmScheduleDelete.isRevealed.value"
-    @cancel="confirmScheduleDelete.cancel()"
-    @confirm="confirmScheduleDelete.confirm(true)"
-  >
-    <template #header>{{ t("confirm-delete-header") }}</template>
-    <template #body>{{
-      t("confirm-delete-body", { s: confirmScheduleDeleteName })
-    }}</template>
-    <template #action>{{ t("confirm-delete-action") }}</template>
-  </ConfirmModal>
-
   <a
     role="button"
     class="d-flex justify-content-between flex-nowrap link-body-emphasis text-decoration-none mt-2"
@@ -101,40 +66,17 @@ watch(showCollapse, (value) => {
   </a>
   <div class="collapse" ref="collapse">
     <ul class="list-group list-group-flush">
-      <li
+      <RouterLink
         role="button"
         class="list-group-item list-group-item-action bg-body-tertiary fs-6"
         v-for="{ id, name } in scheduleStore.schedules"
         :key="id"
-        @mouseover="showBtnAction = id"
-        @mouseleave="showBtnAction = null"
-        @click="selectSchedule(id)"
+        :to="{ name: 'Schedule', params: { schedule: id } }"
       >
-        <div
-          style="min-height: 26px"
-          class="d-flex justify-content-between align-items-center"
-        >
-          <span class="text-truncate">
-            {{ name }}
-          </span>
-          <div class="d-flex flex-nowrap" v-if="showBtnAction === id">
-            <button
-              role="button"
-              class="btn btn-link link-primary py-0 pe-0"
-              @click.stop="editSchedule(id)"
-            >
-              <i class="bi bi-pencil"></i>
-            </button>
-            <button
-              role="button"
-              class="btn btn-link link-danger py-0 pe-0"
-              @click.stop="deleteSchedule(id)"
-            >
-              <i class="bi bi-x-lg"></i>
-            </button>
-          </div>
+        <div class="text-truncate">
+          {{ name }}
         </div>
-      </li>
+      </RouterLink>
       <li
         role="button"
         class="list-group-item list-group-item-action bg-body-tertiary"
@@ -154,12 +96,6 @@ watch(showCollapse, (value) => {
 <i18n lang="yaml">
 en:
   new-schedule: New schedule
-  confirm-delete-header: Delete schedule ?
-  confirm-delete-body: The schedule "{s}" will be deleted permanently.
-  confirm-delete-action: Delete
 fr:
   new-schedule: Nouvel horaire
-  confirm-delete-header: Supprimer l'horaire ?
-  confirm-delete-body: L'horaire "{s}" sera supprimé définitivement.
-  confirm-delete-action: Supprimer
 </i18n>

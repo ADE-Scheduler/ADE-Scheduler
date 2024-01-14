@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { useRoute } from "vue-router";
 import { Offcanvas } from "bootstrap";
 import { ref, onMounted } from "vue";
 import { useSwipe, type UseSwipeDirection } from "@vueuse/core";
+import { watch } from "vue";
 
 // initialize the offcanvas
 let bsOffcanvas: Offcanvas;
@@ -22,6 +24,15 @@ useSwipe(offcanvas, {
     }
   },
 });
+
+// close the offcanvas on route change
+const route = useRoute();
+watch(
+  () => route.path,
+  () => {
+    bsOffcanvas.hide();
+  }
+);
 </script>
 
 <template>

@@ -7,8 +7,24 @@ const routes = [
   },
   {
     path: "/calendar",
-    name: "Calendar",
     component: () => import("@/views/CalendarView.vue"),
+    children: [
+      {
+        path: "",
+        name: "Calendar",
+        component: () => import("@/components/MainCalendar.vue"),
+      },
+      {
+        path: "/codes/:code",
+        name: "Code",
+        component: () => import("@/views/CodeView.vue"),
+      },
+      {
+        path: "/schedules/:schedule",
+        name: "Schedule",
+        component: () => import("@/views/ScheduleView.vue"),
+      },
+    ],
   },
   {
     path: "/classroom",
