@@ -72,6 +72,15 @@ watch(showCollapse, (value) => {
         v-for="{ id, name } in scheduleStore.schedules"
         :key="id"
         :to="{ name: 'Schedule', params: { schedule: id } }"
+        :class="{
+          'text-primary-emphasis':
+            id ===
+            parseInt(
+              Array.isArray($route.params.schedule)
+                ? '-1'
+                : $route.params.schedule
+            ),
+        }"
       >
         <div class="text-truncate">
           {{ name }}

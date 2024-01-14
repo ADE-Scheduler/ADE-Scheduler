@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { fetch } from "@/api";
 import { useI18n } from "vue-i18n";
 import { ref, watchEffect, onUnmounted, onActivated } from "vue";
 import { getWeekText } from "@/utils/weeknumbers";
@@ -55,9 +54,11 @@ watchEffect(() => {
     : "dayGridMonth,timeGridWeek";
 });
 
-// TODO: Fetch the data for the calendar from the API
-const { data, abort } = fetch("calendar").get();
-onUnmounted(abort);
+// Refresh the FC when loading from cache
+const fc = ref<InstanceType<typeof FullCalendar> | null>(null);
+onActivated(() => {
+  fc.value?.getApi().render();
+});
 </script>
 
 <template>
@@ -65,7 +66,7 @@ onUnmounted(abort);
     <div
       class="p-lg-4 p-2 pt-3 bg-body-tertiary rounded-3 border border-light-subtle"
     >
-      <FullCalendar :options="fcOptions" />
+      <FullCalendar ref="fc" :options="fcOptions" />
       <div class="text-warning-emphasis lh-sm fw-light mt-4">
         {{ t("disclaimer") }}
       </div>

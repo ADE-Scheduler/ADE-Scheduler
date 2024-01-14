@@ -70,7 +70,7 @@ async function deleteSchedule() {
         <i class="bi bi-arrow-left me-2" />
         <span>{{ t("nav-back") }}</span>
       </RouterLink>
-      <div class="container mt-3">
+      <div class="mt-3">
         <div class="d-flex">
           <h1 class="display-6">{{ scheduleStore.getScheduleName(sid) }}</h1>
           <div class="d-flex ms-auto">
