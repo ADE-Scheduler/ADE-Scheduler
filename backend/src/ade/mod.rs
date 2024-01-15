@@ -88,20 +88,20 @@ impl<'r> FromRequest<'r> for Token {
                                         token
                                     },
                                     Err(_) => {
-                                        return Outcome::Failure((
+                                        return Outcome::Error((
                                             Status::InternalServerError,
                                             None,
                                         ));
                                     },
                                 }
                             },
-                            None => return Outcome::Failure((Status::InternalServerError, None)),
+                            None => return Outcome::Error((Status::InternalServerError, None)),
                         }
                     },
                 };
                 Outcome::Success(token)
             },
-            _ => Outcome::Failure((Status::InternalServerError, None)),
+            _ => Outcome::Error((Status::InternalServerError, None)),
         }
     }
 }

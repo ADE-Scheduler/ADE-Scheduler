@@ -10,18 +10,14 @@ log = "0.4.17"
 quick-xml = {version = "0.28.2", features = ["serialize"]}
 redis = "0.23.0"
 reqwest = {version = "0.11.18", features = ["json"]}
-rocket = {version = "=0.5.0-rc.3", features = ["secrets", "tls"]}
-rocket_oauth2 = "=0.5.0-rc.2"
-rocket_okapi = {version = "=0.8.0-rc.3", features = ["swagger"]}
+rocket = {version = "0.5.0", features = ["secrets", "tls"]}
+rocket_db_pools = {version = "0.1.0", features = ["deadpool_redis", "diesel_postgres"]}
+rocket_oauth2 = "0.5.0"
+rocket_okapi = {version = "0.8.0", features = ["swagger"]}
 schemars = { version = "0.8.10", features = ["chrono"] }
 serde = {version = "1.0.163", features = ["derive"]}
 serde_json = "1.0.103"
 thiserror = "1.0.40"
-
-[dependencies.rocket_db_pools]
-branch = "ade-scheduler"
-features = ["deadpool_redis", "diesel_postgres"]
-git = "https://github.com/jeertmans/Rocket"
 
 [dev-dependencies]
 lazy_static = "1.4.0"
