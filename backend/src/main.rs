@@ -1,3 +1,5 @@
+//! Main executable, launches the server.
+
 use std::{
     env,
     path::{Path, PathBuf},
@@ -7,13 +9,18 @@ use rocket::{catch, catchers, fs::NamedFile, get, routes, Request};
 use rocket_db_pools::Database;
 use rocket_okapi::swagger_ui::*;
 
-use backend::{ade, error::Result, my};
+use backend::{
+    api::{ade, my},
+    error::Result,
+};
 
+/// Redirect to the index in `/dist` folder.
 #[get("/")]
 async fn index() -> Option<NamedFile> {
     NamedFile::open("../frontend/dist/index.html").await.ok()
 }
 
+/// Redirect to the correct file in `/dist` folder.
 #[get("/<file..>")]
 async fn files(file: PathBuf) -> Option<NamedFile> {
     log::info!("Loading file {:?} from dist/ folder...", file);
@@ -22,6 +29,7 @@ async fn files(file: PathBuf) -> Option<NamedFile> {
         .ok()
 }
 
+/// If a page is not found.
 #[catch(404)]
 async fn catch_all(req: &Request<'_>) -> Option<NamedFile> {
     log::info!(
@@ -31,30 +39,7 @@ async fn catch_all(req: &Request<'_>) -> Option<NamedFile> {
     NamedFile::open("../frontend/dist/index.html").await.ok()
 }
 
-/*
-#[get("/users")]
-async fn list_users(mut db: Connection<Db>) -> String {
-    let results = backend::schema::users::dsl::users
-        .load::<User>(&mut *db)
-        .await
-        .expect("Failed to query users");
-
-    format!("{results:#?}")
-}*/
-
-/*
-#[get("/user/<id>/<name>")]
-async fn create_user(mut db: Connection<Db>, id: i32, name: String) -> String {
-    let user = User { id, name };
-    diesel::insert_into(backend::schema::users::dsl::users)
-        .values(&user)
-        .execute(&mut *db)
-        .await
-        .expect("Error creating user");
-
-    format!("{:#?}", "ok")
-}*/
-
+/// Creates a Rocket instance in build mode, ready to be launched!
 fn rocket() -> Result<rocket::Rocket<rocket::Build>> {
     // Loading environ variables from .env file
     dotenvy::dotenv().ok();
@@ -91,11 +76,21 @@ fn rocket() -> Result<rocket::Rocket<rocket::Build>> {
                 backend::routes::uclouvain_login
             ],
         )
+        /*
         .mount(
             "/api/",
             rocket_okapi::openapi_get_routes![
                 backend::routes::calendar::calendar,
                 backend::routes::classrooms
+            ],
+        )*/
+        .mount(
+            "/api/",
+            rocket_okapi::openapi_get_routes![
+                backend::routes::schedule::get_events,
+                backend::routes::schedule::add_code,
+                backend::routes::schedule::delete_code,
+                backend::routes::schedule::patch_code,
             ],
         )
         .mount(
@@ -112,6 +107,7 @@ fn rocket() -> Result<rocket::Rocket<rocket::Build>> {
     Ok(rocket)
 }
 
+/// Actually launching the Rocket.
 #[rocket::main]
 async fn main() -> Result<()> {
     let _ = rocket()?.launch().await?;

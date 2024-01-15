@@ -6,16 +6,28 @@
 use std::collections::HashMap;
 
 use chrono::{NaiveDate, NaiveTime};
-use rocket_okapi::JsonSchema;
+use rocket::{
+    http::Status,
+    request::{FromRequest, Outcome, Request},
+};
+use rocket_okapi::{
+    gen::OpenApiGenerator,
+    request::{OpenApiFromRequest, RequestHeaderInput},
+    JsonSchema,
+};
 use serde::{de::Error, Deserialize, Deserializer, Serialize};
+
+use crate::redis::{Connection, Redis};
+
+use super::{Client, Token};
 
 /// Convenience trait for building requests with [`reqwest::RequestBuilder`].
 pub trait Parameters {
     /// Return the query parameters needed to obtain a valid XML response.
     ///
     /// ```
-    /// # use backend::xml::{Parameters, Resources};
-    /// # use backend::ade::Token;
+    /// # use backend::api::ade::xml::{Parameters, Resources};
+    /// # use backend::api::ade::Token;
     /// # use backend::error::Result;
     /// use reqwest::Client;
     ///
@@ -39,7 +51,7 @@ pub trait Parameters {
 /// Minimal level of details required: 17 (maximum).
 ///
 /// ```
-/// # use backend::xml::Activities;
+/// # use backend::api::ade::xml::Activities;
 /// let xml = r#"
 /// <?xml version="1.0" encoding="UTF-8"?>
 /// <activities>
@@ -235,7 +247,7 @@ pub enum Category {
 /// Minimal level of details required: 3.
 ///
 /// ```
-/// # use backend::xml::Resources;
+/// # use backend::api::ade::xml::Resources;
 /// let xml = r#"
 /// <?xml version="1.0" encoding="UTF-8"?>
 /// <resources>
@@ -308,7 +320,7 @@ pub struct Resource {
 /// Minimal level of details required: 2.
 ///
 /// ```
-/// # use backend::xml::Projects;
+/// # use backend::api::ade::xml::Projects;
 /// let xml = r#"
 /// <?xml version="1.0" encoding="UTF-8"?>
 /// <projects>
@@ -395,3 +407,58 @@ impl_deref_mut!(
     Projects, projects, Vec<Project>
     Resources, resources, Vec<Resource>
 );
+
+#[rocket::async_trait]
+impl<'r> FromRequest<'r> for Projects {
+    type Error = Option<&'static str>;
+
+    async fn from_request(req: &'r Request<'_>) -> Outcome<Self, Self::Error> {
+        match req.guard::<Connection<Redis>>().await {
+            Outcome::Success(mut con) => {
+                let projects = match redis::Cmd::hgetall("projects")
+                    .query_async::<_, Vec<(u32, String)>>(&mut *con)
+                    .await
+                {
+                    Ok(vec) => {
+                        Projects {
+                            projects: vec
+                                .into_iter()
+                                .map(|(id, name)| Project { id, name })
+                                .collect(),
+                        }
+                    },
+                    _ => {
+                        let token = match req.guard::<Token>().await {
+                            Outcome::Success(token) => token,
+                            _ => return Outcome::Failure((Status::InternalServerError, None)),
+                        };
+                        match req.rocket().state::<Client>() {
+                            Some(ade_client) => {
+                                match ade_client.get_projects(&token).await {
+                                    Ok(projects) => {
+                                        let vec: Vec<_> =
+                                            projects.iter().map(|p| (p.id, &p.name)).collect();
+                                        let _result: redis::RedisResult<String> = redis::pipe()
+                                            .hset_multiple("projects", &vec)
+                                            .query_async(&mut *con)
+                                            .await;
+                                        projects
+                                    },
+                                    Err(_) => {
+                                        return Outcome::Failure((
+                                            Status::InternalServerError,
+                                            None,
+                                        ));
+                                    },
+                                }
+                            },
+                            None => return Outcome::Failure((Status::InternalServerError, None)),
+                        }
+                    },
+                };
+                Outcome::Success(projects)
+            },
+            _ => Outcome::Failure((Status::InternalServerError, None)),
+        }
+    }
+}

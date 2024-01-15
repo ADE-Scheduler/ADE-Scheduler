@@ -8,7 +8,7 @@ use serde::{Deserialize, Deserializer};
 use crate::models::FGS;
 
 /// ```rust
-/// # use backend::json::{BusinessRoles, BusinessRoleCode};
+/// # use backend::api::my::json::{BusinessRoles, BusinessRoleCode};
 /// let json = r#"
 /// {
 ///   "businessRoles": {
@@ -111,7 +111,7 @@ pub enum BusinessRoleCode {
 }
 
 /// ```rust
-/// # use backend::json::Employee;
+/// # use backend::api::my::json::Employee;
 /// use backend::models::FGS;
 ///
 /// let json = r#"
@@ -150,7 +150,7 @@ pub struct Person {
 }
 
 /// ```rust
-/// # use backend::json::Student;
+/// # use backend::api::my::json::Student;
 /// use backend::models::FGS;
 ///
 /// let json = r#"

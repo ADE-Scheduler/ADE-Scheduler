@@ -1,9 +1,12 @@
-use rocket::serde::json::Json;
 /// Calendar routes.
+use rocket::serde::json::Json;
 use rocket::{get, State};
 use rocket_okapi::openapi;
 
-use crate::{ade, error::Result, xml::Activities};
+use crate::{
+    api::ade::{self, xml::Activities},
+    error::Result,
+};
 
 /// Returns the [`Activities`] for a given code. The case is ignored.
 ///

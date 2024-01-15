@@ -7,9 +7,9 @@ use rocket::{
 use rocket_oauth2::{OAuth2, TokenResponse};
 
 use crate::{
+    api::my,
     error::{Error, Result},
     models::{Connection, Db},
-    my,
 };
 
 pub struct UCLouvain;
@@ -32,7 +32,7 @@ pub async fn uclouvain_callback(
     mut db: Connection<Db>,
 ) -> Result<Redirect> {
     use crate::{
-        json::BusinessRoleCode::*,
+        api::my::json::BusinessRoleCode::*,
         models::{NewUser, User},
     };
     // Set a private cookie with the access token

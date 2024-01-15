@@ -2,10 +2,11 @@
 
 use serde::Deserialize;
 
-use super::{
-    error::Result,
-    json::{BusinessRoles, Employee, Student},
-};
+use crate::error::Result;
+
+pub mod json;
+
+use json::{BusinessRoles, Employee, Student};
 
 #[derive(Debug, Deserialize)]
 pub struct Credentials {

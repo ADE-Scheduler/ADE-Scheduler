@@ -10,11 +10,14 @@ use rocket_okapi::{
 };
 use serde::Deserialize;
 
-use super::{
+use crate::{
     error::{Error, Result},
     redis::{Connection, Redis},
-    xml::{Activities, Parameters, Projects, Resources},
 };
+
+pub mod xml;
+
+use xml::{Activities, Parameters, Projects, Resources};
 
 #[derive(Debug, Deserialize)]
 pub struct Endpoints {
