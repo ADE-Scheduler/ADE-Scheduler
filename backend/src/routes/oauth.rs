@@ -38,9 +38,9 @@ pub async fn uclouvain_callback(
     // Set a private cookie with the access token
     println!("token: {}", token.access_token());
     cookies.add_private(
-        Cookie::build("token", token.access_token().to_string())
+        Cookie::build(("token", token.access_token().to_string()))
             .same_site(SameSite::Lax)
-            .finish(),
+            .build(),
     );
     let roles = client.get_roles(token.access_token()).await?;
 
