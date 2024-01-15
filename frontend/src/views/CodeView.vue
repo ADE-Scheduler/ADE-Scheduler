@@ -5,6 +5,8 @@ import { useAlertStore } from "@/stores";
 import { useScheduleStore } from "@/stores";
 import { useRoute, useRouter } from "vue-router";
 
+import NavBack from "@/components/NavBack.vue";
+
 // i18n stuff
 const { t } = useI18n({
   inheritLocale: true,
@@ -40,13 +42,7 @@ function addCode(code: string) {
 
 <template>
   <div class="container py-3">
-    <RouterLink
-      :to="{ name: 'Calendar' }"
-      class="link-secondary link-underline-opacity-0"
-    >
-      <i class="bi bi-arrow-left me-2" />
-      <span>{{ t("nav-back") }}</span>
-    </RouterLink>
+    <NavBack :to="{ name: 'Calendar' }">{{ t("nav-back") }}</NavBack>
     <div class="mt-3">
       <div class="d-flex">
         <h1 class="display-6">{{ code }}</h1>

@@ -22,6 +22,7 @@ onUnmounted(abort);
         style="height: 500px"
         v-model:zoom="zoom"
         :center="[50.6681, 4.6118]"
+        :use-global-leaflet="false"
       >
         <LTileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
       </LMap>

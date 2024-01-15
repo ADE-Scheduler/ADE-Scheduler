@@ -10,6 +10,7 @@
     "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
     "format": "prettier --write src/"
   },
+  "type": "module",
   "dependencies": {
     "@fullcalendar/bootstrap5": "^6.1.10",
     "@fullcalendar/core": "^6.1.10",
@@ -33,7 +34,7 @@
     "@tsconfig/node18": "^2.0.1",
     "@types/bootstrap": "^5.2.10",
     "@types/node": "^18.19.6",
-    "@vitejs/plugin-vue": "^4.6.2",
+    "@vitejs/plugin-vue": "^5.0.3",
     "@vue-leaflet/vue-leaflet": "^0.10.1",
     "@vue/eslint-config-prettier": "^7.1.0",
     "@vue/eslint-config-typescript": "^11.0.3",
@@ -43,7 +44,7 @@
     "prettier": "^2.8.8",
     "sass": "^1.69.7",
     "typescript": "~5.0.4",
-    "vite": "^4.5.1",
+    "vite": "^5.0.11",
     "vue-tsc": "^1.8.27"
   }
 }
