@@ -1,11 +1,19 @@
+# -*- coding: utf-8 -*-
+#
+# Copyright (C) 2020-2024 ADE-Scheduler.
+#
+# ADE-Scheduler is free software; you can redistribute it and/or modify it
+# under the terms of the MIT License; see LICENSE file for more details.
+
+"""ADE api."""
+
 import hashlib
-import json
 import os
 import pickle
 import time
 import warnings
 from collections import Counter, defaultdict
-from typing import Callable, Dict, List, Tuple, Type, Union
+from typing import Callable, Dict, List, Tuple, Union
 
 import pandas as pd
 import requests
@@ -302,7 +310,7 @@ class FakeClient(DummyClient):
     def __init__(self, credentials: ClientCredentials):
         self.credentials = credentials
         self.delay = 150  # Delay in seconds
-        self.expiration = 0
+        self.expiration = -1
         self.renew_token()
 
     def is_expired(self) -> bool:

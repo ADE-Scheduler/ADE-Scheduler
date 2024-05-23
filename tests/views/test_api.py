@@ -32,7 +32,8 @@ def test_get_events(client, manager):
 
         params = dict(code="ELME2M", year=year, view=True)
         rv = client.get(
-            url_for("api.get_events"), query_string=params, follow_redirects=True
+            url_for("api.get_events"),
+            query_string=params, follow_redirects=True
         )
 
         assert rv.status_code == 200
@@ -45,7 +46,8 @@ def test_get_events(client, manager):
     )
 
     assert rv.status_code == 200
-    assert session["current_schedule"].project_id == manager.get_default_project_id()
+    assert session["current_schedule"].project_id == \
+           manager.get_default_project_id()
 
     # Test the "code" param
     params = dict(code="ELME2M", view=True)

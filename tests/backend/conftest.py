@@ -1,3 +1,12 @@
+# -*- coding: utf-8 -*-
+#
+# Copyright (C) 2020-2024 ADE-Scheduler.
+#
+# ADE-Scheduler is free software; you can redistribute it and/or modify it
+# under the terms of the MIT License; see LICENSE file for more details.
+
+"""Configuration for tests."""
+
 import os
 
 import pytest
@@ -9,12 +18,14 @@ from app import app as ade_scheduler
 
 @pytest.fixture(scope="session")
 def app():
+    """Get app instance."""
     return ade_scheduler
 
 
 @pytest.fixture(scope="session")
 def ade_client():
-    return ade.Client(
+    """Get ADE client."""
+    return ade.FakeClient(
         dict(
             url=os.environ["ADE_URL"],
             data=os.environ["ADE_DATA"],
@@ -25,6 +36,7 @@ def ade_client():
 
 @pytest.fixture
 def project_id(ade_client, app):
+    """Get project id."""
     with app.app_context():
         resp = ade_client.get_project_ids()
     project_ids = ade.response_to_project_ids(resp)
@@ -44,6 +56,7 @@ def resources(ade_client, project_id, app):
 
 @pytest.fixture
 def resource_ids(ade_client, project_id, app):
+    """Load resource ids fixture."""
     with app.app_context():
         resp = ade_client.get_resource_ids(project_id)
 
@@ -52,6 +65,7 @@ def resource_ids(ade_client, project_id, app):
 
 @pytest.fixture
 def classrooms(ade_client, project_id, app):
+    """Load classrooms fixture."""
     with app.app_context():
         resp = ade_client.get_classrooms(project_id)
 
@@ -60,6 +74,7 @@ def classrooms(ade_client, project_id, app):
 
 @pytest.fixture
 def courses(ade_client, project_id, resource_ids, app):
+    """Load courses fixture."""
     ids = [
         resource_ids[course]
         for course in ["LEPL1101", "LEPL1102", "LEPL1103", "LEPL1104"]
@@ -73,4 +88,5 @@ def courses(ade_client, project_id, resource_ids, app):
 
 @pytest.fixture
 def server():
+    """Get server fixture."""
     return srv.Server()

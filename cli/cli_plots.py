@@ -1,3 +1,12 @@
+# -*- coding: utf-8 -*-
+#
+# Copyright (C) 2020-2024 ADE-Scheduler.
+#
+# ADE-Scheduler is free software; you can redistribute it and/or modify it
+# under the terms of the MIT License; see LICENSE file for more details.
+
+"""CLI for plots."""
+
 import click
 
 from cli.cli_api_usage import plot_requests_hist
@@ -26,7 +35,6 @@ F_PLOTS = {
 @click.group()
 def plots():
     """Performs operations with Plotly backend"""
-    pass
 
 
 @plots.command()

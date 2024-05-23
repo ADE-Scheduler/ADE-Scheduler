@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# -*- coding: utf-8 -*-
+#
+# Copyright (C) 2024 ADE-Scheduler.
+#
+# ADE-Scheduler is free software; you can redistribute it and/or modify it
+# under the terms of the MIT License; see LICENSE file for more details.
+
+set -e
+
+SCRIPT_DIR="$( cd "$( dirname "$0" )" && pwd )"
+PROGRAM=`basename $0`
+
+source "${SCRIPT_DIR}/includes/message.sh"
+
+# Displays program name
+msg "PROGRAM: ${PROGRAM}"
+
+# poetry is a mandatory condition to launch this program!
+if [[ -z "${VIRTUAL_ENV}" ]]; then
+  error_msg+exit "Error - Launch this script via poetry command:\n\tpoetry run ${PROGRAM}"
+fi
+
+if [[ -z "${FLASK_DEBUG}" ]]; then
+  export FLASK_DEBUG=True
+fi
+if [[ -z "${FLASK_ENV}" ]]; then
+  export FLASK_ENV="development"
+fi
+
+info_msg "Running Flask"
+flask run & pid_server=$!
+
+trap 'kill $pid_server &>/dev/null' EXIT
+
+wait $pid_server

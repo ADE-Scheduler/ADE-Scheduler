@@ -3,11 +3,7 @@
 
 name: CI Testing
 
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+on: [push, pull_request]
 
 jobs:
   build:
@@ -15,7 +11,7 @@ jobs:
     env:
       ADE_AUTHORIZATION: ${{ secrets.ADE_AUTHORIZATION }}
       ADE_DATA: ${{ secrets.ADE_DATA }}
-      ADE_DB_PATH: postgresql://postgres@localhost:5432
+      ADE_DB_PATH: postgresql+psycopg2://adeschtest:adeschtest@localhost:5432/adeschtest
       ADE_FAKE_API: true
       ADE_URL: ${{ secrets.ADE_URL }}
       FLASK_APP: app.py
@@ -31,57 +27,33 @@ jobs:
       fail-fast: false
       matrix:
         python-version: [3.9]
-    services:
-      postgres:
-        # Docker Hub image
-        image: postgres
-        # Provide the password for postgres
-        env:
-          #POSTGRES_PASSWORD: postgres
-          POSTGRES_HOST_AUTH_METHOD: trust
-        # Set health checks to wait until postgres has started
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-        - 5432:5432
-      redis:
-        # Docker Hub image
-        image: redis
-        # Set health checks to wait until redis has started
-        options: >-
-          --health-cmd "redis-cli ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-        - 6379:6379
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
+
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
-    - run: |
-        python -m pip install --upgrade pip
-        python -m pip install -r dev-requirements.txt
+        cache: poetry
+
     - name: Set up Node
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v4
       with:
-        node-version: 10.23.0
-    - name: Install dependencies
+        node-version: '16'
+
+    - name: Docker compose up
+      run: docker-compose up -d
+
+    - name: Bootstrap
       run: |
-        npm install
-    - name: Before script
-      run: |
+        poetry run ./scripts/bootstrap
+        poetry run ./scripts/setup
         wget --no-check-certificate "https://docs.google.com/uc?export=download&id=1E8zboqLDRdufXnXZJUrLnSLih_ATaekO" -O api.zip
         unzip api.zip
-        psql -c 'create database travis_ci_test;' -U postgres -W --host=localhost
-        flask sql init
-        flask redis update
-        npm run build
+
     - name: Test with pytest
       run: |
-        pytest
+        poetry run ./run-tests.sh

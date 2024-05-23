@@ -49,12 +49,14 @@ def test_get_data(client, manager, user):
     assert data["project_id"] == manager.get_project_ids()
     assert data["current_project_id"] == session["current_schedule"].project_id
     assert data["current_schedule"]["id"] == session["current_schedule"].id
-    assert data["current_schedule"]["label"] == session["current_schedule"].label
+    assert data["current_schedule"]["label"] == \
+           session["current_schedule"].label
     assert (
         data["current_schedule"]["color_palette"]
         == session["current_schedule"].color_palette
     )
-    assert data["n_schedules"] == len(session["current_schedule"].best_schedules)
+    assert data["n_schedules"] == \
+           len(session["current_schedule"].best_schedules)
     assert data["events"] == session["current_schedule"].get_events(json=True)
     assert data["codes"] == session["current_schedule"].codes
     assert data["autosave"] == getattr(user, "autosave", False)
@@ -252,7 +254,8 @@ CUSTOM_RECURRING_EVENT_RRULE_MANDATORY_KEYS = {
     "days",
 }
 
-CUSTOM_RECURRING_EVENT_MANDATORY_KEYS -= CUSTOM_RECURRING_EVENT_RRULE_MANDATORY_KEYS
+CUSTOM_RECURRING_EVENT_MANDATORY_KEYS -= \
+    CUSTOM_RECURRING_EVENT_RRULE_MANDATORY_KEYS
 
 
 @pytest.mark.parametrize("user", ["jyl", "louwi"], indirect=True)
@@ -484,7 +487,8 @@ def test_get_events(client, user):
     """Test the get_event route"""
     for i in range(5):
         rv = client.get(
-            url_for("calendar.get_events"), query_string=dict(schedule_number=i)
+            url_for("calendar.get_events"),
+            query_string=dict(schedule_number=i)
         )
         data = json.loads(rv.data)
 
@@ -501,7 +505,8 @@ def test_compute(client, user):
     data = json.loads(rv.data)
 
     assert rv.status_code == 200
-    assert data["n_schedules"] == len(session["current_schedule"].best_schedules)
+    assert data["n_schedules"] == \
+           len(session["current_schedule"].best_schedules)
     assert data["events"] == session["current_schedule"].get_events(
         json=True, schedule_number=1
     )
@@ -513,19 +518,22 @@ def test_compute(client, user):
 @pytest.mark.parametrize("user", ["jyl", "louwi"], indirect=True)
 def test_update_color(client, user):
     """Test the update_color route"""
-    data = dict(color_palette=["BLACK", "YELLOW", "RED"], schedule_number=0)
+    color_palette = ["BLACK", "YELLOW", "RED"]
+    data = dict(color_palette=color_palette, schedule_number=0)
     rv = client.post(url_for("calendar.update_color"), json=data)
     data = json.loads(rv.data)
 
     assert rv.status_code == 200
     assert data["events"] == session["current_schedule"].get_events(json=True)
-    assert session["current_schedule"].color_palette == ["BLACK", "YELLOW", "RED"]
+    assert session["current_schedule"].color_palette == color_palette
 
 
 @pytest.mark.parametrize("user", ["jyl", "louwi"], indirect=True)
 def test_reset_color(client, user):
     """Test the reset_color route"""
-    rv = client.delete(url_for("calendar.reset_color"), json=dict(schedule_number=0))
+    rv = client.delete(
+        url_for("calendar.reset_color"), json=dict(schedule_number=0)
+    )
     data = json.loads(rv.data)
 
     assert rv.status_code == 200

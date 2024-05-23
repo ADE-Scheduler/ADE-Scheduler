@@ -1,8 +1,16 @@
+# -*- coding: utf-8 -*-
+#
+# Copyright (C) 2021-2024 ADE-Scheduler.
+#
+# ADE-Scheduler is free software; you can redistribute it and/or modify it
+# under the terms of the MIT License; see LICENSE file for more details.
+
+"""CLI for sending emails."""
+
 import json
 import time
 
 import click
-import flask
 from authlib.jose import jwt
 from flask import current_app as app
 from flask.cli import with_appcontext
@@ -14,7 +22,6 @@ import backend.models as md
 @click.group()
 def mails():
     """Performs operations with e-mails."""
-    pass
 
 
 @mails.command()

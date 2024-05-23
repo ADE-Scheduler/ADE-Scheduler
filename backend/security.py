@@ -1,10 +1,18 @@
+# -*- coding: utf-8 -*-
+#
+# Copyright (C) 2022-2024 ADE-Scheduler.
+#
+# ADE-Scheduler is free software; you can redistribute it and/or modify it
+# under the terms of the MIT License; see LICENSE file for more details.
+
+"""Security related functions."""
+
 from functools import wraps
 
 from flask import abort, g, make_response, redirect, request, session, url_for
 from flask_login import current_user
 
 import backend.cookies as cookies
-import backend.models as md
 
 
 def fetch_token(name):
