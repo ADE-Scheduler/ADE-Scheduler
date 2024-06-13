@@ -307,6 +307,10 @@ def before_first_request():
 @app.before_request
 def before_request():
     tu.before_request()
+    # Redirect traffic to the .info.ucl.ac.be domain
+    # as it poses an issue with the login system
+    if ".sipr.ucl.ac.be" in request.url_root:
+        return redirect(f"https://ade-scheduler.info.ucl.ac.be/{request.full_path}")
 
 
 @app.after_request
@@ -401,6 +405,28 @@ def migrate(token):
     return redirect(url_for("calendar.index"))
 
 
+def format_error_into_message(
+    e: Exception, request, subject="ADE Scheduler Failure: {}"
+) -> Message:
+    """
+    Formats the error into a (Email) message.
+    """
+    error = getattr(e, "original_exception", e)
+    error_request = f"{request.path} [{request.method}]"
+    error_module = error.__class__.__module__
+    if error_module is None:
+        error_name = error.__class__.__name__
+    else:
+        error_name = f"{error_module}.{error.__class__.__name__}"
+    error_details = str(traceback.format_exc())
+    msg = Message(
+        subject=subject.format(error_name),
+        body=f"Exception on {error_request}: {str(error)}\n\n{error_details}",
+        recipients=app.config["ADMINS"],
+    )
+    return msg
+
+
 # Error handlers
 @app.errorhandler(HTTPError)
 @app.errorhandler(ConnectionError)
@@ -423,6 +449,10 @@ def handle_empty_ade_responses(e):
     However, it does seem to resolve itself by trying again...
     In the meanwhile, flash an error message asking the user to try again.
     """
+    if not app.debug and app.config["MAIL_SEND_ERRORS"]:
+        msg = format_error_into_message(e, request, subject="ADE API Failure: {}")
+        app.config["MAIL_MANAGER"].send(msg)
+
     err_text = gettext(
         "Hum... it looks like there's been a bug with the ADE API. Please try again and if the problem persists, do not hesitate to contact us !"
     )
@@ -436,19 +466,7 @@ def handle_empty_ade_responses(e):
 @app.errorhandler(InternalServerError)
 def handle_exception(e):
     if not app.debug and app.config["MAIL_SEND_ERRORS"]:
-        error = e.original_exception
-        error_request = f"{request.path} [{request.method}]"
-        error_module = error.__class__.__module__
-        if error_module is None:
-            error_name = error.__class__.__name__
-        else:
-            error_name = f"{error_module}.{error.__class__.__name__}"
-        error_details = str(traceback.format_exc())
-        msg = Message(
-            subject=f"ADE Scheduler Failure: {error_name}",
-            body=f"Exception on {error_request}: {str(error)}\n\n{error_details}",
-            recipients=app.config["ADMINS"],
-        )
+        msg = format_error_into_message(e, request)
         app.config["MAIL_MANAGER"].send(msg)
 
     if request.accept_mimetypes.best == "application/json":
