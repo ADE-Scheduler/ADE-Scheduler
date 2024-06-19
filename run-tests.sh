@@ -60,18 +60,6 @@ if [[ -z "${VIRTUAL_ENV}" ]]; then
   error_msg+exit "Error - Launch this script via poetry command:\n\tpoetry run ${PROGRAM}"
 fi
 
-function pretests () {
-  info_msg "Test pydocstyle:"
-  pydocstyle tests/api docs
-  info_msg "Test isort:"
-  isort --check-only --diff tests
-  info_msg "Test useless imports:"
-  autoflake -c -r --remove-all-unused-imports --ignore-init-module-imports . &> /dev/null || {
-      autoflake --remove-all-unused-imports -r --ignore-init-module-imports .
-      exit 1
-    }
-}
-
 function pre_commit () {
   pre-commit run --all-files
 }
@@ -89,7 +77,7 @@ function tests_api () {
 if [ $# -eq 0 ]
   then
     set -e
-    pretests
+    pre_commit
     tests
 fi
 

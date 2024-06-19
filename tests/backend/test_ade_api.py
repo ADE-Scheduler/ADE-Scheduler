@@ -1,6 +1,6 @@
 from time import time
 
-import mock
+import unittest.mock
 
 import backend.ade_api as ade
 
@@ -44,7 +44,7 @@ class TestDummyClientImplementation:
             assert got is not None
 
 
-@mock.patch('backend.ade_api.get_token',
+@unittest.mock.patch('backend.ade_api.get_token',
             return_value=('my_token', 1))
 def test_get_token(ade_client, app):
     with app.app_context():
