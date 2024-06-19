@@ -1,20 +1,15 @@
 [build-system]
 build-backend = "poetry.core.masonry.api"
-requires = ["poetry-core"]
-
-[tool.black]
-target-version = ["py39"]
-
-[tool.isort]
-profile = "black"
-py_version = 39
-
-[tool.mypy]
-python_version = "3.9"
+requires = ["poetry.masonry.api"]
 
 [tool.poetry]
-authors = ["Jérome Eertmans <jeertmans@icloud.com>", "Gilles Poncelet <gillesponcelet98@gmail.com>", "Louis Navarre <louisnavarre@hotmail.com>"]
-description = ""
+authors = [
+  "Jérome Eertmans <jeertmans@icloud.com>",
+  "Gilles Poncelet <gillesponcelet98@gmail.com>",
+  "Louis Navarre <louisnavarre@hotmail.com>",
+  "Laurent Dubois <laurent.dubois@uclouvain.be>"
+]
+description = "ADE Scheduler: a scheduling tool made for humans"
 license = "MIT"
 name = "ADE Scheduler"
 packages = [
@@ -36,11 +31,13 @@ flask = "2.0.2"
 flask-babel = "2.0.0"
 flask-compress = "1.10.1"
 flask-jsglue = "0.3.1"
+flask-limiter = ">=2,<3"
 flask-login = "0.5.0"
 flask-mail = "0.9.1"
 flask-migrate = "3.1.0"
 flask-session = "0.4.0"
 flask-sqlalchemy = "2.5.1"
+flask-talisman = ">=0.3.2,<1.0"
 geopy = "2.2.0"
 ics = "0.7"
 jinja2 = "3.0.2"
@@ -49,33 +46,77 @@ lxml = "4.6.5"
 numpy = "1.22.1"
 pandas = "1.4.0"
 plotly = "5.5.0"
-psycopg2-binary = "2.9.1"
+psycopg2-binary = "^2.9.9"
 pyopenssl = "21.0.0"
 python = "^3.9"
 python-dotenv = "0.19.2"
 pytz = "2021.3"
 redis = "3.5.3"
 requests = "2.26.0"
+sentry-sdk = {version = ">=1.0.0,<2.0.0", extras = ["flask"]}
 sqlalchemy = "1.4.22"
 tatsu = "5.6.1"
 telegram = "0.0.1"
+uritools = ">=1.0.1"
 user-agents = "2.2.0"
 werkzeug = "2.0.2"
 
 [tool.poetry.group.bot.dependencies]
-python-dotenv = "0.19.2"
+python-dotenv = ">=0.13.0"
 python-telegram-bot = "13.10"
 
 [tool.poetry.group.dev.dependencies]
-black = "21.12b0"
-mypy = "0.931"
-pre-commit = "2.17.0"
+coverage = ">=5.3,<8"
+docker-services-cli = ">=0.4.0"
+pre-commit = ">=3.5.0"
+pytest-cov = ">=3.0.0"
 pytest-flask = "1.2.0"
 
 [tool.poetry.group.docs.dependencies]
 furo = "^2022.9.29"
 myst-parser = "^0.18.1"
-sphinx = "4.4.0"
+sphinx = ">=4.4.0"
 sphinx-click = "3.0.2"
 sphinx-copybutton = "^0.5.1"
 sphinxext-opengraph = "^0.7.5"
+
+[tool.pyright]
+include = ["backend", "cli", "views", "tests"]
+venv = "venv"
+venvPath = "."
+
+[tool.pytest.ini_options]
+addopts = [
+  "--color=yes",
+  "--doctest-glob=*.rst",
+  "--doctest-modules",
+  "--cov-report=term-missing",
+  "--cov=backend",
+  "--ignore=setup.py",
+  "--ignore=docs/source/conf.py"
+]
+doctest_optionflags = ["NORMALIZE_WHITESPACE"]
+testpaths = [
+  "docs",
+  "tests"
+]
+
+[tool.ruff]
+line-length = 80
+target-version = "py39"
+
+[tool.ruff.format]
+docstring-code-format = true
+
+[tool.ruff.lint]
+extend-ignore = [
+  "D203",  # no-blank-line-before-class
+  "D212"  # multi-line-summary-second-line
+]
+# TODO: add CPY001 once stabilized
+extend-select = ["B", "C90", "D", "I", "N", "RUF", "UP", "T"]
+isort = {known-first-party = ["backend", "cli", "views", "tests"]}
+
+[tool.ruff.lint.per-file-ignores]
+"**/{backend,cli,bot,docs,migrations,views,tests}/*" = ["D"]
+"app.py" = ["D"]

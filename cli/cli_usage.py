@@ -1,3 +1,11 @@
+#
+# Copyright (C) 2020-2024 ADE-Scheduler.
+#
+# ADE-Scheduler is free software; you can redistribute it and/or modify it
+# under the terms of the MIT License; see LICENSE file for more details.
+
+"""CLI for usage."""
+
 import datetime
 import json
 
@@ -16,7 +24,6 @@ import backend.models as md
 @click.group()
 def usage():
     """Performs operations on the Usage table."""
-    pass
 
 
 @usage.command()
@@ -67,7 +74,8 @@ def plot_requests_per_blueprint_hist(latest):
 
     if latest >= 0:
         sql_query = sql_query.filter(
-            table.datetime >= datetime.datetime.now() - datetime.timedelta(days=latest)
+            table.datetime
+            >= datetime.datetime.now() - datetime.timedelta(days=latest)
         )
 
     sql_query = sql_query.with_entities(table.datetime, table.blueprint)
@@ -97,7 +105,8 @@ def plot_requests_per_blueprint_hist(latest):
     server.set_value(key, value)
 
     click.secho(
-        f"Successfully created a plot and saved into server with key={key}", fg="green"
+        f"Successfully created a plot and saved into server with key={key}",
+        fg="green",
     )
 
 
@@ -114,17 +123,23 @@ def plot_views_per_blueprint_hist(latest):
 
     if latest >= 0:
         sql_query = sql_query.filter(
-            table.datetime >= datetime.datetime.now() - datetime.timedelta(days=latest)
+            table.datetime
+            >= datetime.datetime.now() - datetime.timedelta(days=latest)
         )
 
-    sql_query = sql_query.with_entities(table.datetime, table.blueprint, table.path)
+    sql_query = sql_query.with_entities(
+        table.datetime, table.blueprint, table.path
+    )
     df = md.query_to_dataframe(sql_query)
 
     click.echo("Generating plot...")
     df.dropna(subset=["datetime", "blueprint"], inplace=True)
 
     index = np.logical_or.reduce(
-        [df.path.str.endswith(f"/{blueprint}/") for blueprint in df.blueprint.unique()]
+        [
+            df.path.str.endswith(f"/{blueprint}/")
+            for blueprint in df.blueprint.unique()
+        ]
     )
 
     df = df[index]
@@ -150,7 +165,8 @@ def plot_views_per_blueprint_hist(latest):
     server.set_value(key, value)
 
     click.secho(
-        f"Successfully created a plot and saved into server with key={key}", fg="green"
+        f"Successfully created a plot and saved into server with key={key}",
+        fg="green",
     )
 
 
@@ -186,13 +202,21 @@ def plot_ics_requests_hist():
 
     fig = go.Figure(
         go.Histogram(
-            x=df.index, y=df.values, histfunc="sum", nbinsx=int(df.size), name="all"
+            x=df.index,
+            y=df.values,
+            histfunc="sum",
+            nbinsx=int(df.size),
+            name="all",
         )
     )
 
     fig.add_trace(
         go.Histogram(
-            x=un.index, y=un.values, histfunc="sum", nbinsx=int(un.size), name="unique"
+            x=un.index,
+            y=un.values,
+            histfunc="sum",
+            nbinsx=int(un.size),
+            name="unique",
         )
     )
     fig.update_layout(
@@ -212,7 +236,8 @@ def plot_ics_requests_hist():
     server.set_value(key, value)
 
     click.secho(
-        f"Successfully created a plot and saved into server with key={key}", fg="green"
+        f"Successfully created a plot and saved into server with key={key}",
+        fg="green",
     )
 
 
@@ -244,7 +269,8 @@ def plot_unique_ip_addresses_per_day():
     server.set_value(key, value)
 
     click.secho(
-        f"Successfully created a plot and saved into server with key={key}", fg="green"
+        f"Successfully created a plot and saved into server with key={key}",
+        fg="green",
     )
 
 
@@ -275,5 +301,6 @@ def plot_platforms_pie():
     server.set_value(key, value)
 
     click.secho(
-        f"Successfully created a plot and saved into server with key={key}", fg="green"
+        f"Successfully created a plot and saved into server with key={key}",
+        fg="green",
     )

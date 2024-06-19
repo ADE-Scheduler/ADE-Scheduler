@@ -1,10 +1,12 @@
-"""use uclouvain oauth
+"""
+use uclouvain oauth
 
 Revision ID: 93c749eaa6b4
 Revises: 7e8b8d04baec
 Create Date: 2022-01-23 20:45:39.617122
 
 """
+
 import sqlalchemy as sa
 from alembic import op
 
@@ -97,31 +99,47 @@ def downgrade():
         ),
     )
     op.add_column(
-        "user", sa.Column("us_phone_number", sa.VARCHAR(length=128), nullable=True)
+        "user",
+        sa.Column("us_phone_number", sa.VARCHAR(length=128), nullable=True),
     )
-    op.add_column("user", sa.Column("us_totp_secrets", sa.TEXT(), nullable=True))
+    op.add_column(
+        "user", sa.Column("us_totp_secrets", sa.TEXT(), nullable=True)
+    )
     op.add_column(
         "user", sa.Column("last_login_ip", sa.VARCHAR(length=64), nullable=True)
     )
     op.add_column(
-        "user", sa.Column("tf_phone_number", sa.VARCHAR(length=128), nullable=True)
+        "user",
+        sa.Column("tf_phone_number", sa.VARCHAR(length=128), nullable=True),
     )
     op.add_column(
-        "user", sa.Column("tf_primary_method", sa.VARCHAR(length=64), nullable=True)
-    )
-    op.add_column("user", sa.Column("username", sa.VARCHAR(length=255), nullable=True))
-    op.add_column("user", sa.Column("confirmed_at", sa.DATETIME(), nullable=True))
-    op.add_column(
-        "user", sa.Column("fs_uniquifier", sa.VARCHAR(length=64), nullable=False)
+        "user",
+        sa.Column("tf_primary_method", sa.VARCHAR(length=64), nullable=True),
     )
     op.add_column(
-        "user", sa.Column("tf_totp_secret", sa.VARCHAR(length=255), nullable=True)
+        "user", sa.Column("username", sa.VARCHAR(length=255), nullable=True)
     )
-    op.add_column("user", sa.Column("last_login_at", sa.DATETIME(), nullable=True))
     op.add_column(
-        "user", sa.Column("current_login_ip", sa.VARCHAR(length=64), nullable=True)
+        "user", sa.Column("confirmed_at", sa.DATETIME(), nullable=True)
     )
-    op.add_column("user", sa.Column("current_login_at", sa.DATETIME(), nullable=True))
+    op.add_column(
+        "user",
+        sa.Column("fs_uniquifier", sa.VARCHAR(length=64), nullable=False),
+    )
+    op.add_column(
+        "user",
+        sa.Column("tf_totp_secret", sa.VARCHAR(length=255), nullable=True),
+    )
+    op.add_column(
+        "user", sa.Column("last_login_at", sa.DATETIME(), nullable=True)
+    )
+    op.add_column(
+        "user",
+        sa.Column("current_login_ip", sa.VARCHAR(length=64), nullable=True),
+    )
+    op.add_column(
+        "user", sa.Column("current_login_at", sa.DATETIME(), nullable=True)
+    )
     op.add_column("user", sa.Column("login_count", sa.INTEGER(), nullable=True))
     op.add_column(
         "user",

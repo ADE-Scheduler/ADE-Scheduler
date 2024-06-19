@@ -3,7 +3,7 @@ import os
 import requests
 
 
-class API(object):
+class API:
     BASE_URL = "https://gw.api.uclouvain.be"
     ENDPOINT = ""
 

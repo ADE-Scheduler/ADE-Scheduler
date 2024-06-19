@@ -1,6 +1,7 @@
 import json
 import time
-from typing import Dict, Iterable, Union
+from collections.abc import Iterable
+from typing import Union
 
 import pandas as pd
 from geopy.geocoders import Nominatim
@@ -21,7 +22,12 @@ class Address:
 
     :Example:
 
-    >>> informations = dict(address1='Rue Rose 42', zipCode='1300', city='Wavre', country='Belgique')
+    >>> informations = dict(
+    ...     address1="Rue Rose 42",
+    ...     zipCode="1300",
+    ...     city="Wavre",
+    ...     country="Belgique",
+    ... )
     >>> address = Address(**informations)
     """
 
@@ -47,18 +53,18 @@ class Address:
         return location
 
 
-def get_geo_locations() -> Dict:
+def get_geo_locations() -> dict:
     """
     Returns the dictionary mapping each address to its geo-location.
 
     :return: the geo-locations
     :rtype: Dict
     """
-    with open("static/json/geo_locations.json", "r") as f:
+    with open("static/json/geo_locations.json") as f:
         return json.load(f)
 
 
-def save_geo_locations(geo_locations: Dict):
+def save_geo_locations(geo_locations: dict):
     """
     Saves the dictionary of geo-locations into a json file with pretty indent.
     This file can be manually edited without causing any problem.
@@ -71,7 +77,9 @@ def save_geo_locations(geo_locations: Dict):
         f.write("\n")
 
 
-def prettify_classrooms(classrooms: pd.DataFrame, sleep: float = 0) -> pd.DataFrame:
+def prettify_classrooms(
+    classrooms: pd.DataFrame, sleep: float = 0
+) -> pd.DataFrame:
     """
     Returns the classrooms dataframe in a pretty format, useful when need to display.
 
@@ -87,19 +95,20 @@ def prettify_classrooms(classrooms: pd.DataFrame, sleep: float = 0) -> pd.DataFr
     :return: the classrooms in a prettier format and with geo-location information
     :rtype: pd.DataFrame
     """
-
     geolocator = Nominatim(user_agent="ADE_SCHEDULER")
     geo_locations = get_geo_locations()
 
-    def __pretty__(classroom: pd.Series):
+    def pretty(classroom: pd.Series) -> pd.Series:
         address = Address(**classroom.to_dict())
         location = str(address).replace("\n", ", ")
         name = classroom[rsrc.INDEX.NAME]
         code = classroom[rsrc.INDEX.CODE]
 
-        return pd.Series([name, code, location], index=["name", "code", "address"])
+        return pd.Series(
+            [name, code, location], index=["name", "code", "address"]
+        )
 
-    def __geoloc__(classroom: pd.Series):
+    def geoloc(classroom: pd.Series) -> pd.Series:
         name = classroom["name"]
         code = classroom["code"]
         address = classroom["address"]
@@ -119,7 +128,7 @@ def prettify_classrooms(classrooms: pd.DataFrame, sleep: float = 0) -> pd.DataFr
             dtype=object,
         )
 
-    classrooms = classrooms.apply(__pretty__, axis=1, result_type="expand")
+    classrooms = classrooms.apply(pretty, axis=1, result_type="expand")
 
     for address in classrooms["address"].unique():
         if address not in geo_locations:
@@ -132,7 +141,7 @@ def prettify_classrooms(classrooms: pd.DataFrame, sleep: float = 0) -> pd.DataFr
 
     save_geo_locations(geo_locations)
 
-    return classrooms.apply(__geoloc__, axis=1, result_type="expand")
+    return classrooms.apply(geoloc, axis=1, result_type="expand")
 
 
 class Classroom:
@@ -172,7 +181,9 @@ class Classroom:
         :return: the location
         :rtype: str
         """
-        return "\n".join(filter(None, str(self).split("\n")))  # Removes blank lines
+        return "\n".join(
+            filter(None, str(self).split("\n"))
+        )  # Removes blank lines
 
 
 def merge_classrooms(classrooms: Iterable[Classroom]) -> Classroom:
@@ -186,15 +197,21 @@ def merge_classrooms(classrooms: Iterable[Classroom]) -> Classroom:
 
     :Example:
 
-    >>> c1 = Classroom(address1, 'classA', 1)
-    >>> c2 = Classroom(address2, 'classB', 2)
+    >>> c1 = Classroom(address1, "classA", 1)
+    >>> c2 = Classroom(address2, "classB", 2)
     >>> c3 = merge_classrooms((c1, c2))
     """
     names = " | ".join(
-        classroom.infos["name"] for classroom in classrooms if classroom.infos["name"]
+        classroom.infos["name"]
+        for classroom in classrooms
+        if classroom.infos["name"]
     )
-    addresses = "\n".join(str(classroom.infos["address"]) for classroom in classrooms)
+    addresses = "\n".join(
+        str(classroom.infos["address"]) for classroom in classrooms
+    )
     id = "|".join(
-        classroom.infos["id"] for classroom in classrooms if classroom.infos["id"]
+        classroom.infos["id"]
+        for classroom in classrooms
+        if classroom.infos["id"]
     )
     return Classroom(name=names, address=addresses, id=id)

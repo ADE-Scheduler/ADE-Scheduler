@@ -1,0 +1,24 @@
+# -*- coding: utf-8 -*-
+#
+# Copyright (C) 2024 ADE-Scheduler.
+#
+# ADE-Scheduler is free software; you can redistribute it and/or modify it
+# under the terms of the MIT License; see LICENSE file for more details.
+
+version: '3.0'
+services:
+  cache:
+    image: redis
+    restart: unless-stopped
+    read_only: true
+    ports:
+      - 6379:6379
+  db:
+    image: postgres:15
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=adeschtest
+      - POSTGRES_PASSWORD=adeschtest
+      - POSTGRES_DB=adeschtest
+    ports:
+      - 5432:5432

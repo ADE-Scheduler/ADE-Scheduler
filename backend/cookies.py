@@ -1,6 +1,5 @@
-"""
-Provides utils to store and retrieve cookies, as well as a secure mechanism to score oauth tokens in cookies.
-"""
+"""Provides utils to store and retrieve cookies, as well as a secure mechanism to score oauth tokens in cookies."""
+
 import json
 from typing import Any, Optional
 
@@ -26,6 +25,6 @@ def get_oauth_token() -> Optional[dict]:
         try:
             token = app.config["FERNET"].decrypt(cookie.encode()).decode()
             return json.loads(token)
-        except:
+        except:  # noqa: E722
             return None
     return None

@@ -4,12 +4,11 @@
 # ADE-Scheduler is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
 
-"""Configuration for tests."""
+"""Utilities for tests."""
 
-import os
-import sys
+import json
 
-from dotenv import find_dotenv, load_dotenv
 
-sys.path.append(os.getcwd())
-load_dotenv(find_dotenv(".flaskenv"))
+def get_json(response):
+    """Get JSON from response."""
+    return json.loads(response.get_data(as_text=True))

@@ -12,10 +12,16 @@ def schedules():
 
 @schedules.command()
 @click.option(
-    "-m", default=None, type=int, help="Number of most common codes, all by default."
+    "-m",
+    default=None,
+    type=int,
+    help="Number of most common codes, all by default.",
 )
 @click.option(
-    "-n", default=None, type=int, help="Number of most common prefixes, all by default."
+    "-n",
+    default=None,
+    type=int,
+    help="Number of most common prefixes, all by default.",
 )
 @with_appcontext
 def stats(m, n):

@@ -1,3 +1,4 @@
+import unittest.mock
 from time import time
 
 import backend.ade_api as ade
@@ -42,6 +43,7 @@ class TestDummyClientImplementation:
             assert got is not None
 
 
+@unittest.mock.patch("backend.ade_api.get_token", return_value=("my_token", 1))
 def test_get_token(ade_client, app):
     with app.app_context():
         func = ade.get_token
@@ -68,7 +70,8 @@ def test_all_requests(ade_client, app):
 
         # 2. Resources
 
-        if False:  # We avoid getting all resources if this function is not used
+        if False:
+            # We avoid getting all resources if this function is not used
             resp = ade_client.get_resources(project_id)
 
             assert resp is not None

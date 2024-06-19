@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+# -*- coding: utf-8 -*-
+#
+# Copyright (C) 2024 ADE-Scheduler.
+#
+# ADE-Scheduler is free software; you can redistribute it and/or modify it
+# under the terms of the MIT License; see LICENSE file for more details.
+
+set -e
+
+SCRIPT_DIR="$( cd "$( dirname "$0" )" && pwd )"
+PROGRAM=`basename $0`
+
+source "${SCRIPT_DIR}/includes/message.sh"
+
+# Displays program name
+msg "PROGRAM: ${PROGRAM}"
+
+cmd="poetry install"
+
+# Poetry is a mandatory condition to launch this program!
+if [[ -z "${VIRTUAL_ENV}" ]]; then
+  error_msg+exit "Error - Launch this script via poetry command:\n\tpoetry run ${PROGRAM}"
+fi
+
+# create virtualenv and upgrade pip
+info_msg "Upgrade pip"
+poetry run pip install --upgrade pip
+
+# BOOTSTRAP START
+# install the application and all the dependencies
+info_msg "Install with command: ${cmd}"
+${cmd}
+
+# collect static files and compile html/css assets
+# ------------------------------------------------
+# Update & install Node deps
+info_msg "Build web assets: using webpack"
+npm ci
+# build the web assets
+info_msg "Build web assets: using webpack"
+npx webpack
+
+info_msg "Compile translations"
+pybabel compile -d translations
+
+success_msg "${PROGRAM} finished!"
+exit 0

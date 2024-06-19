@@ -19,7 +19,6 @@ def test_get_data(client):
 
 def test_get_occupation(client):
     """Test the get_occupation(id) route"""
-
     # 2321 is the ID for the Sciences 10; maybe use a "more robust" method
     # to obtain a "test" ID ?
     rv = client.get(url_for("classroom.get_occupation", id=2321))

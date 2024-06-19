@@ -1,6 +1,7 @@
+from collections.abc import Mapping
 from datetime import timedelta
 from pickle import dumps, loads
-from typing import Any, Dict, List, Mapping, Optional, Tuple
+from typing import Any, Optional
 
 from redis import Redis
 from redis.exceptions import ConnectionError
@@ -30,7 +31,9 @@ REQUIRED_CONFIG_KEYS = [
 ]
 
 
-def parse_redis_ttl_config(conf: Mapping[str, str]) -> Dict[str, Dict[str, int]]:
+def parse_redis_ttl_config(
+    conf: Mapping[str, str],
+) -> dict[str, dict[str, int]]:
     """
     Parses a config mapping (from a config file for example) into a usable TTL config.
     Each key, value pair holds the name of the resource stored in the server and the
@@ -44,7 +47,8 @@ def parse_redis_ttl_config(conf: Mapping[str, str]) -> Dict[str, Dict[str, int]]
 
     def _parse_ttl(ttl_str):
         key_val = (
-            key_val_str.split("=", maxsplit=1) for key_val_str in ttl_str.split(",")
+            key_val_str.split("=", maxsplit=1)
+            for key_val_str in ttl_str.split(",")
         )
         _ret = {key.strip(): int(val.strip()) for key, val in key_val}
 
@@ -61,7 +65,9 @@ def parse_redis_ttl_config(conf: Mapping[str, str]) -> Dict[str, Dict[str, int]]
 
     for key in REQUIRED_CONFIG_KEYS:
         if key not in ret:
-            raise ValueError(f"The ttl configuration is missing the `{key}` key")
+            raise ValueError(
+                f"The ttl configuration is missing the `{key}` key"
+            )
 
     return ret
 
@@ -77,7 +83,7 @@ class Server(Redis):
 
     :Example:
 
-    >>> s = Server(host='localhost', port=6379)
+    >>> s = Server(host="localhost", port=6379)
     """
 
     def __init__(self, *arg, **kwargs):
@@ -105,17 +111,15 @@ class Server(Redis):
         raise NotImplementedError
 
     def shutdown(self):
-        """
-        Shuts the server down.
-        """
+        """Shuts the server down."""
         super().shutdown(save=True)
 
     def set_value(
         self,
         key: str,
         value: Any,
-        expire_in: Optional[Dict[str, int]] = None,
-        notify_expire_in: Optional[Dict[str, int]] = None,
+        expire_in: Optional[dict[str, int]] = None,
+        notify_expire_in: Optional[dict[str, int]] = None,
         hmap: bool = False,
     ):
         """
@@ -132,7 +136,9 @@ class Server(Redis):
 
         :Example:
 
-        >>> s.set_value('apple', {'weight': 400, 'unit': 'g'}, expire_in={'hours': 10})
+        >>> s.set_value(
+        ...     "apple", {"weight": 400, "unit": "g"}, expire_in={"hours": 10}
+        ... )
         """
         if hmap:
             self.hset(key, mapping=value)
@@ -175,7 +181,7 @@ class Server(Redis):
 
         :Example:
 
-        >>> s.get_value('apple')
+        >>> s.get_value("apple")
         {'weight': 400, 'unit': 'g'}
         """
         if hmap:
@@ -190,7 +196,7 @@ class Server(Redis):
 
     def get_multiple_values(
         self, *keys: str, prefix: str = "", **kwargs
-    ) -> Tuple[Dict[str, Any], List[str]]:
+    ) -> tuple[dict[str, Any], list[str]]:
         """
         Returns all the values corresponding the given keys. If key does not match any value, the key is returned
         explicitly tell that it is missing. An optional prefix can be added to every key.
@@ -217,7 +223,7 @@ class Server(Redis):
 
     def get_multiple_values_expired(
         self, *keys: str, prefix: str = ""
-    ) -> Tuple[Dict[str, Optional[bool]]]:
+    ) -> tuple[dict[str, Optional[bool]]]:
         """
         Returns, for each key, wether a expire notification was issued or not, and None is returned if the case the key does not exist.
         An optional prefix can be added to every key.

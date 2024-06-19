@@ -95,10 +95,14 @@ def expire(pattern, time, random):
     help="Pattern of the keys. By default, selects all the keys.",
 )
 @click.option(
-    "--session/--no-session", default=False, help="Display the amount of user sessions."
+    "--session/--no-session",
+    default=False,
+    help="Display the amount of user sessions.",
 )
 @click.option(
-    "--code/--no-code", default=False, help="Display the amount of unique codes."
+    "--code/--no-code",
+    default=False,
+    help="Display the amount of unique codes.",
 )
 @with_appcontext
 def count(pattern, session, code):

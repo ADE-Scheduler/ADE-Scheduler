@@ -2,9 +2,8 @@ import json
 from distutils.util import strtobool
 from typing import Any
 
-from flask import Blueprint
+from flask import Blueprint, jsonify, redirect, request, session, url_for
 from flask import current_app as app
-from flask import jsonify, redirect, request, session, url_for
 
 import backend.models as md
 import backend.schedules as schd
@@ -12,9 +11,7 @@ import views.utils as utl
 
 
 class ApiEncoder(json.JSONEncoder):
-    """
-    Subclass of json decoder made for the calendar-specific JSON encodings.
-    """
+    """Subclass of json decoder made for the calendar-specific JSON encodings."""
 
     def default(self, obj: Any) -> Any:
         if isinstance(obj, set):
@@ -24,9 +21,7 @@ class ApiEncoder(json.JSONEncoder):
 
 
 class ApiDecoder(json.JSONDecoder):
-    """
-    Subclass of json decoder made for the calendar-specific JSON decodings.
-    """
+    """Subclass of json decoder made for the calendar-specific JSON decodings."""
 
     def decode(self, obj: Any, w: Any = None) -> str:
         decoded = json.JSONDecoder().decode(obj)
@@ -49,8 +44,7 @@ def before_api_request():
 
 @api.route("/events", methods=["GET"])
 def get_events():
-    """
-    API endpoint to fetch the schedule matching the various arguments.
+    """API endpoint to fetch the schedule matching the various arguments.
 
     The request accepts 3 arguments:
      - view: if set to True, shows the schedule in ADE-Scheduler's schedule viewer.
@@ -70,9 +64,11 @@ def get_events():
     Generally, those are uppercase. /!\\
 
     Example:
+    -------
         https://ade-scheduler.info.ucl.ac.be/api/events?year=2020-2021&code=LMECA2170&code=LEPL1104&view=true
     or, with filtered events:
         https://ade-scheduler.info.ucl.ac.be/api/events?year=2020-2021&code=LEPL1104&LEPL1104=TP: LEPL1104_Q2B-APE&view=true
+
     """
     mng = app.config["MANAGER"]
 

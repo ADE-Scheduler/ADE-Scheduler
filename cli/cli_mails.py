@@ -1,8 +1,15 @@
+#
+# Copyright (C) 2021-2024 ADE-Scheduler.
+#
+# ADE-Scheduler is free software; you can redistribute it and/or modify it
+# under the terms of the MIT License; see LICENSE file for more details.
+
+"""CLI for sending emails."""
+
 import json
 import time
 
 import click
-import flask
 from authlib.jose import jwt
 from flask import current_app as app
 from flask.cli import with_appcontext
@@ -14,13 +21,14 @@ import backend.models as md
 @click.group()
 def mails():
     """Performs operations with e-mails."""
-    pass
 
 
 @mails.command()
 @click.option("-s", "--subject", default="", type=str, help="Subject")
 @click.option("-b", "--body", default="", type=str, help="Body")
-@click.option("-r", "--recipients", default=[""], type=list, help="List of recipients")
+@click.option(
+    "-r", "--recipients", default=[""], type=list, help="List of recipients"
+)
 @click.option(
     "-f",
     "--filename",
@@ -57,9 +65,10 @@ def send(subject, body, recipients, filename, html, all_users):
             abort=True,
         )
 
-        with app.config["MAIL_MANAGER"].connect() as conn, click.progressbar(
-            emails
-        ) as bar:
+        with (
+            app.config["MAIL_MANAGER"].connect() as conn,
+            click.progressbar(emails) as bar,
+        ):
             for email in bar:
                 time.sleep(2.5)  # Required for no-reply@uclouvain.be
                 msg.recipients = [email]
@@ -108,7 +117,10 @@ Gilles et Jérome.
         abort=True,
     )
 
-    with app.config["MAIL_MANAGER"].connect() as conn, click.progressbar(emails) as bar:
+    with (
+        app.config["MAIL_MANAGER"].connect() as conn,
+        click.progressbar(emails) as bar,
+    ):
         for i, email in enumerate(bar):
             time.sleep(1.5)  # Required for no-reply@uclouvain.be
 
@@ -116,7 +128,9 @@ Gilles et Jérome.
 
             payload = {"email": email}
             header = {"alg": "HS256"}
-            token = jwt.encode(header, payload, app.config["SECRET_KEY"]).decode()
+            token = jwt.encode(
+                header, payload, app.config["SECRET_KEY"]
+            ).decode()
             msg.body = body.format(
                 lien=f"https://ade-scheduler.info.ucl.ac.be/migrate/{token}"
             )

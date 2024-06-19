@@ -24,7 +24,9 @@ def list():
 @with_appcontext
 def get(ids):
     """Returns link of external calendar with given ids."""
-    ecs = md.ExternalCalendar.query.filter(md.ExternalCalendar.id.in_(ids)).all()
+    ecs = md.ExternalCalendar.query.filter(
+        md.ExternalCalendar.id.in_(ids)
+    ).all()
 
     for ec in ecs:
         click.echo(ec.url)

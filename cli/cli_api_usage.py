@@ -1,3 +1,11 @@
+#
+# Copyright (C) 2020-2024 ADE-Scheduler.
+#
+# ADE-Scheduler is free software; you can redistribute it and/or modify it
+# under the terms of the MIT License; see LICENSE file for more details.
+
+"""CLI for api usage."""
+
 import datetime
 
 import click
@@ -11,7 +19,6 @@ import backend.models as md
 @click.group()
 def api_usage():
     """Performs operations on the ApiUsage table."""
-    pass
 
 
 @api_usage.command()
@@ -28,7 +35,8 @@ def plot_requests_hist(latest):
 
     if latest >= 0:
         sql_query = sql_query.filter(
-            table.datetime >= datetime.datetime.now() - datetime.timedelta(days=latest)
+            table.datetime
+            >= datetime.datetime.now() - datetime.timedelta(days=latest)
         )
 
     sql_query = sql_query.with_entities(table.datetime, table.status)
@@ -58,5 +66,6 @@ def plot_requests_hist(latest):
     server.set_value(key, value)
 
     click.secho(
-        f"Successfully created a plot and saved into server with key={key}", fg="green"
+        f"Successfully created a plot and saved into server with key={key}",
+        fg="green",
     )

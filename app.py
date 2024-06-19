@@ -1,4 +1,3 @@
-# Python imports
 import base64
 import configparser
 import distutils
@@ -7,15 +6,21 @@ import traceback
 import warnings
 from datetime import timedelta
 
-# External imports
 import authlib.jose as jose
 from authlib.integrations.flask_client import OAuth
 from cryptography.fernet import Fernet
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
-
-# Flask imports
-from flask import Flask, flash, g, redirect, render_template, request, session, url_for
+from flask import (
+    Flask,
+    flash,
+    g,
+    redirect,
+    render_template,
+    request,
+    session,
+    url_for,
+)
 from flask_babel import Babel, gettext
 from flask_compress import Compress
 from flask_jsglue import JSGlue
@@ -29,14 +34,11 @@ from flask_login import (
 from flask_mail import Mail, Message, email_dispatched
 from flask_migrate import Migrate
 from flask_session import Session
-
-# External imports
 from jsmin import jsmin
 from lxml.etree import XMLSyntaxError
 from requests.exceptions import ConnectionError, HTTPError
 from werkzeug.exceptions import InternalServerError
 
-# Backend imports
 import backend.ade_api as ade
 import backend.cookies as cookies
 import backend.manager as mng
@@ -47,8 +49,6 @@ import backend.security as scty
 import backend.servers as srv
 import backend.track_usage as tu
 import backend.uclouvain_apis as ucl
-
-# CLI commands
 from cli import (
     cli_api_usage,
     cli_client,
@@ -62,8 +62,6 @@ from cli import (
     cli_usage,
     cli_users,
 )
-
-# Views imports
 from views import utils as utl
 from views.account import account
 from views.admin import admin
@@ -97,7 +95,8 @@ if app.config["PROFILE"]:
     if os.path.exists(profile_dir):
         if not os.path.isdir(profile_dir):
             warnings.warn(
-                f"You cannot save the profiling to {profile_dir} since it is a file. It must be a directory."
+                f"You cannot save the profiling to {profile_dir} since it is a file. It must be a directory.",
+                stacklevel=2,
             )
             profile_dir = None
     else:
@@ -174,9 +173,9 @@ app.config["MAIL_USE_TLS"] = True
 app.config["MAIL_USERNAME"] = os.environ["MAIL_USERNAME"]
 app.config["MAIL_PASSWORD"] = os.getenv("MAIL_PASSWORD", None)
 app.config["MAIL_DEFAULT_SENDER"] = os.environ["MAIL_USERNAME"]
-app.config[
-    "MAIL_MAX_EMAILS"
-] = 30  # Better for avoiding errors from no-reply@uclouvain.be
+app.config["MAIL_MAX_EMAILS"] = (
+    30  # Better for avoiding errors from no-reply@uclouvain.be
+)
 app.config["ADMINS"] = [os.environ["MAIL_ADMIN"]]
 
 # Allows compression of text assets
@@ -186,13 +185,15 @@ if app.env == "development":
 
 for optional, default in [("MAIL_DISABLE", False), ("MAIL_SEND_ERRORS", True)]:
     if optional in os.environ:
-        app.config[optional] = bool(distutils.util.strtobool(os.environ[optional]))
+        app.config[optional] = bool(
+            distutils.util.strtobool(os.environ[optional])
+        )
     else:
         app.config[optional] = default
 
 
 def log_mail_message(message, app):
-    """If mails are disabled, their content will be outputted in the debug output"""
+    """If mails are disabled, their content will be outputted in the debug output."""
     app.logger.debug(
         f"A mail was supposed to be send:\n"
         f"[SUBJECT]:\n{message.subject}\n"
@@ -243,7 +244,9 @@ app.config["UCLOUVAIN_MANAGER"] = oauth.create_client("uclouvain")
 # Setup Flask-Session
 app.config["SESSION_TYPE"] = "redis"
 app.config["SESSION_REDIS"] = manager.server
-app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(**redis_ttl_config["user_session"])
+app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(
+    **redis_ttl_config["user_session"]
+)
 app.config["SESSION_MANAGER"] = Session(app)
 
 # Setup Flask-Babel
@@ -273,7 +276,7 @@ def autoversion_filter(filename):
         timestamp = str(os.path.getmtime(fullpath))
     except OSError:
         return filename
-    newfilename = "{0}?{1}".format(filename, timestamp)
+    newfilename = f"{filename}?{timestamp}"
     return newfilename
 
 
@@ -332,12 +335,12 @@ def when_user_logged_out(sender, user):
     utl.init_session()
 
     if session["current_schedule"].id is not None:
-        if (
-            not user.is_anonymous
-        ):  # Fixes problem whem confirmation link logs out but not account was actually logged in
+        if not user.is_anonymous:  # Fixes problem whem confirmation link logs out but not account was actually logged in
             user.set_last_schedule_id(session["current_schedule"].id)
 
-        session["current_schedule"] = schd.Schedule(manager.get_default_project_id())
+        session["current_schedule"] = schd.Schedule(
+            manager.get_default_project_id()
+        )
         session["current_schedule_modified"] = False
 
 
@@ -373,7 +376,9 @@ def migrate(token):
         claims = jose.jwt.decode(token, app.config["SECRET_KEY"])
     except jose.errors.DecodeError:
         flash(
-            gettext("Oops, it looks like you provided an invalid migration token."),
+            gettext(
+                "Oops, it looks like you provided an invalid migration token."
+            ),
             "error",
         )
         return redirect(url_for("calendar.index"))
@@ -396,7 +401,8 @@ def migrate(token):
     old_user.confirmed_at = None
     md.db.session.commit()
     flash(
-        gettext("Success: your data has been migrated to your new account !"), "success"
+        gettext("Success: your data has been migrated to your new account !"),
+        "success",
     )
     return redirect(url_for("calendar.index"))
 
@@ -446,7 +452,7 @@ def handle_exception(e):
         error_details = str(traceback.format_exc())
         msg = Message(
             subject=f"ADE Scheduler Failure: {error_name}",
-            body=f"Exception on {error_request}: {str(error)}\n\n{error_details}",
+            body=f"Exception on {error_request}: {error!s}\n\n{error_details}",
             recipients=app.config["ADMINS"],
         )
         app.config["MAIL_MANAGER"].send(msg)
@@ -464,7 +470,8 @@ def forbidden(e):
     else:
         return (
             render_template(
-                "errorhandler/403.html", message="403 Forbidden access ヽ(ಠ_ಠ) ノ"
+                "errorhandler/403.html",
+                message="403 Forbidden access ヽ(ಠ_ಠ) ノ",  # noqa: RUF001
             ),
             e.code,
         )
@@ -478,7 +485,8 @@ def page_not_found(e):
     else:
         return (
             render_template(
-                "errorhandler/404.html", message=gettext("404 Page not found :(")
+                "errorhandler/404.html",
+                message=gettext("404 Page not found :("),
             ),
             e.code,
         )
@@ -494,7 +502,6 @@ def make_shell_context():
         "Link": md.Link,
         "User": md.User,
         "oUser": md.OldUser,
-        "Role": md.Role,
         "Usage": md.Usage,
         "Api": md.ApiUsage,
         "mng": app.config["MANAGER"],

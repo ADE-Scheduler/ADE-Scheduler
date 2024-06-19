@@ -1,5 +1,12 @@
+#
+# Copyright (C) 2020-2024 ADE-Scheduler.
+#
+# ADE-Scheduler is free software; you can redistribute it and/or modify it
+# under the terms of the MIT License; see LICENSE file for more details.
+
+"""Configuration for tests."""
+
 import copy
-import datetime
 
 import pytest
 from flask import session
@@ -13,23 +20,26 @@ from backend.mixins import AnonymousUser
 
 @pytest.fixture(scope="session")
 def app():
+    """Flask application fixture."""
     return ade_scheduler
 
 
 @pytest.fixture(scope="session")
 def manager(app):
+    """Get manager fixture."""
     return app.config["MANAGER"]
 
 
 @pytest.fixture(scope="session")
 def db(manager):
+    """Database fixture."""
     return manager.database
 
 
 @pytest.fixture
 def jyl(app, manager, db):
-    """
-    Create a test user.
+    """Create a test user.
+
     JYL has a confirmed account and is logged in.
     """
     jyl = md.User(
@@ -37,13 +47,16 @@ def jyl(app, manager, db):
         email="jyl@scheduler.ade",
     )
 
-    data = schd.Schedule(manager.get_default_project_id(), label="JYL'S SCHEDULE")
+    data = schd.Schedule(
+        manager.get_default_project_id(), label="JYL'S SCHEDULE"
+    )
     data.add_course("LEPL1104")
     active_schedule = md.Schedule(data, user=jyl)
     db.session.add(active_schedule)
 
     old_schedule = md.Schedule(
-        schd.Schedule(manager.get_default_project_id(), label="OLD SCHEDULE"), user=jyl
+        schd.Schedule(manager.get_default_project_id(), label="OLD SCHEDULE"),
+        user=jyl,
     )
     db.session.add(old_schedule)
     db.session.commit()
@@ -59,7 +72,7 @@ def jyl(app, manager, db):
 
     # Logout & delete user
     @app.login_manager.request_loader
-    def load_user_from_request(request):
+    def load_user_from_request(request):  # noqa: F811
         return None
 
     db.session.delete(active_schedule)
@@ -70,8 +83,8 @@ def jyl(app, manager, db):
 
 @pytest.fixture
 def gerom(app, manager, db):
-    """
-    Create a test user.
+    """Create a test user.
+
     Gerom has a confirmed account, but is not logged in.
     """
     gerom = md.User(
@@ -80,7 +93,9 @@ def gerom(app, manager, db):
     )
 
     schedule = md.Schedule(
-        schd.Schedule(manager.get_default_project_id(), label="GEROM'S SCHEDULE"),
+        schd.Schedule(
+            manager.get_default_project_id(), label="GEROM'S SCHEDULE"
+        ),
         user=gerom,
     )
     db.session.add(schedule)
@@ -95,8 +110,8 @@ def gerom(app, manager, db):
 
 @pytest.fixture
 def louwi(app, manager):
-    """
-    Create a test user.
+    """Create a test user.
+
     Louwi has no account, but is an active anonymous user.
     """
 
@@ -111,10 +126,11 @@ def louwi(app, manager):
     yield AnonymousUser()
 
     @app.login_manager.request_loader
-    def load_user_from_request(request):
+    def load_user_from_request(request):  # noqa: F811
         return None
 
 
 @pytest.fixture
 def user(request):
+    """User fixture."""
     return request.getfixturevalue(request.param)

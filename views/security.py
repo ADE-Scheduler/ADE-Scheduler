@@ -1,8 +1,7 @@
 from datetime import datetime
 
-from flask import Blueprint
+from flask import Blueprint, flash, redirect, request, session, url_for
 from flask import current_app as app
-from flask import flash, redirect, request, session, url_for
 from flask_babel import gettext
 from flask_login import login_user, logout_user
 from requests.exceptions import HTTPError
@@ -14,7 +13,7 @@ security = Blueprint("security", __name__, static_folder="../static")
 
 
 @security.route("/login")
-def login():
+def login():  # noqa: C901
     # The UCLouvain login API only works on one specific hostname:
     #   ade-scheduler.info.ucl.ac.be on port 443
     #
@@ -130,7 +129,9 @@ def login():
 
             # Not implemented, raise error
             else:
-                raise NotImplementedError(f"Role {role} is not implemented yet !")
+                raise NotImplementedError(
+                    f"Role {role} is not implemented yet !"
+                )
 
             now = datetime.now()
             user = md.User(
