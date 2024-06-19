@@ -3,9 +3,8 @@ from typing import Any
 from urllib.parse import urlparse
 
 import requests
-from flask import Blueprint
+from flask import Blueprint, jsonify, render_template, request, session
 from flask import current_app as app
-from flask import jsonify, render_template, request, session
 from flask_babel import LazyString, gettext
 from flask_login import current_user, login_required
 from ics import Calendar
@@ -16,9 +15,7 @@ from backend.manager import ExternalCalendarAlreadyExistsError
 
 
 class AccountEncoder(json.JSONEncoder):
-    """
-    Subclass of json decoder made for the account-specific JSON encodings.
-    """
+    """Subclass of json decoder made for the account-specific JSON encodings."""
 
     def default(self, obj: Any) -> Any:
         if isinstance(obj, set):
@@ -30,9 +27,7 @@ class AccountEncoder(json.JSONEncoder):
 
 
 class AccountDecoder(json.JSONDecoder):
-    """
-    Subclass of json decoder made for the account-specific JSON decodings.
-    """
+    """Subclass of json decoder made for the account-specific JSON decodings."""
 
     def decode(self, obj: Any, w: Any = None) -> str:
         decoded = json.JSONDecoder().decode(obj)
@@ -138,14 +133,18 @@ def delete_schedule(id):
     id = int(id)
     schedule = current_user.get_schedule(id=id)
     if schedule is None and id != -1:
-        return gettext("Schedule n°%d is not in your schedule list.") % int(id), 403
+        return gettext("Schedule n°%d is not in your schedule list.") % int(
+            id
+        ), 403
 
     if schedule is not None:
         current_user.remove_schedule(schedule)
 
     if id == session["current_schedule"].id or id == -1:
         mng = app.config["MANAGER"]
-        session["current_schedule"] = schd.Schedule(mng.get_default_project_id())
+        session["current_schedule"] = schd.Schedule(
+            mng.get_default_project_id()
+        )
         session["current_schedule_modified"] = True
 
     return (
@@ -247,7 +246,9 @@ def add_external_calendar():
         # TODO: how to prevent attacks? See https://lgtm.com/rules/1514759767119/
         _ = Calendar(requests.get(url).text)  # lgtm [py/full-ssrf]
     except Exception:
-        return gettext("The url you entered does not return a valid .ics file."), 400
+        return gettext(
+            "The url you entered does not return a valid .ics file."
+        ), 400
 
     if not current_user.is_authenticated:
         return gettext("To save your schedule, you need to be logged in."), 401
@@ -266,6 +267,8 @@ def add_external_calendar():
         return str(e), 400
 
     return (
-        gettext("Your calendar has been created and is now awaiting for approval."),
+        gettext(
+            "Your calendar has been created and is now awaiting for approval."
+        ),
         200,
     )

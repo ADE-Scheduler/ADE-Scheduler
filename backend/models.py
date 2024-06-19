@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Copyright (C) 2020-2024 ADE-Scheduler.
 #
@@ -30,7 +29,9 @@ VIEWER_LEVEL = 2
 db = SQLAlchemy()
 
 
-def query_to_dataframe(query: BaseQuery, *args: Any, **kwargs: Any) -> pd.DataFrame:
+def query_to_dataframe(
+    query: BaseQuery, *args: Any, **kwargs: Any
+) -> pd.DataFrame:
     """
     Parses a SQL query from the database into a dataframe.
 
@@ -46,7 +47,9 @@ def query_to_dataframe(query: BaseQuery, *args: Any, **kwargs: Any) -> pd.DataFr
     return pd.read_sql(query.statement, query.session.bind, *args, **kwargs)
 
 
-def table_to_dataframe(table: db.Model, *args: Any, **kwargs: Any) -> pd.DataFrame:
+def table_to_dataframe(
+    table: db.Model, *args: Any, **kwargs: Any
+) -> pd.DataFrame:
     """
     Parses a table from the database into a dataframe.
 
@@ -59,7 +62,9 @@ def table_to_dataframe(table: db.Model, *args: Any, **kwargs: Any) -> pd.DataFra
     :return: a dataframe of table
     :rtype: pd.DataFrame
     """
-    return pd.read_sql(table.__tablename__, table.query.session.bind, *args, **kwargs)
+    return pd.read_sql(
+        table.__tablename__, table.query.session.bind, *args, **kwargs
+    )
 
 
 def reformat_status_in_dataframe(df: pd.DataFrame):
@@ -81,7 +86,6 @@ class GUID(TypeDecorator):
 
     Uses PostgreSQL's UUID type, otherwise uses
     CHAR(32), storing as stringified hex values.
-
     """
 
     impl = CHAR
@@ -115,15 +119,13 @@ class GUID(TypeDecorator):
             return value
 
 
-class LevelAccessDenied(Exception):
+class LevelAccessDeniedError(Exception):
     def __str__(self):
         return "The level access you used is not permitted for this function."
 
 
 class ScheduleDoNotMatchError(Exception):
-    """
-    Exception that will occur if a user tries to update a schedule's data with a non-matching ID.
-    """
+    """Exception that will occur if a user tries to update a schedule's data with a non-matching ID."""
 
     def __init__(self, database_id, data_id):
         self.database_id = database_id
@@ -159,7 +161,9 @@ class User(mxn.UserMixin, db.Model):
     __tablename__ = "user"
     # Basic user info
     id = db.Column(db.Integer, primary_key=True)
-    fgs = db.Column(db.String(8), unique=True, nullable=False)  # The user identifier
+    fgs = db.Column(
+        db.String(8), unique=True, nullable=False
+    )  # The user identifier
     email = db.Column(db.String(255), unique=True, nullable=False)
     first_name = db.Column(db.String(40))
     last_name = db.Column(db.String(40))
@@ -211,9 +215,11 @@ class User(mxn.UserMixin, db.Model):
             self.schedules.remove(schedule)
             db.session.commit()
 
-    def share_schedule_with_emails(self, schedule, *emails: str, level=EDITOR_LEVEL):
+    def share_schedule_with_emails(
+        self, schedule, *emails: str, level=EDITOR_LEVEL
+    ):
         if level == OWNER_LEVEL:
-            raise LevelAccessDenied
+            raise LevelAccessDeniedError
 
         emails = [
             email for email in emails if email != self.email
@@ -257,9 +263,7 @@ class User(mxn.UserMixin, db.Model):
 
 
 class Schedule(db.Model):
-    """
-    Table used to store Schedules in the database.
-    """
+    """Table used to store Schedules in the database."""
 
     __tablename__ = "schedule"
     id = db.Column(db.Integer(), primary_key=True)
@@ -268,9 +272,7 @@ class Schedule(db.Model):
     link = db.relationship("Link", uselist=False, backref="schedule")
 
     def __init__(self, data, user=None):
-        """
-        Creates a schedule, binds it to its creator if any.
-        """
+        """Creates a schedule, binds it to its creator if any."""
         # Schedule creation, update id
         if user is not None:
             self.users = [user]
@@ -324,9 +326,7 @@ class Link(db.Model):
     choice = db.Column(db.Integer(), default=0)
 
     def __init__(self, schedule):
-        """
-        Creates a link, binds it to a schedule
-        """
+        """Creates a link, binds it to a schedule"""
         generated_link = secrets.token_urlsafe(32)
         while Link.query.filter(Link.link == generated_link).first():
             generated_link = secrets.token_urlsafe(32)
@@ -396,9 +396,7 @@ class ApiUsage(db.Model):
     datetime = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
     def __init__(self, url, response):
-        """
-        Logs one request made to the API.
-        """
+        """Logs one request made to the API."""
         self.url = url
         self.speed = response.elapsed.total_seconds()
         self.status = response.status_code

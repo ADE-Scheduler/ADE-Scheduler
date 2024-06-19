@@ -1,10 +1,12 @@
-"""Adding description to external events
+"""
+Adding description to external events
 
 Revision ID: edca2de88864
 Revises: ed6e74cb1a7e
 Create Date: 2022-08-16 14:46:53.683176
 
 """
+
 import sqlalchemy as sa
 from alembic import op
 

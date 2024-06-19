@@ -1,10 +1,11 @@
 import operator
 from collections import defaultdict, deque
+from collections.abc import Iterable
 from datetime import timedelta
 from heapq import nsmallest
 from itertools import chain, product, repeat, starmap
 from random import randint
-from typing import Dict, Iterable, List, Optional, Set, Tuple, Union
+from typing import Optional, Union
 
 from flask import current_app as app
 from flask_babel import lazy_gettext as _l
@@ -64,7 +65,7 @@ class Schedule:
     def __init__(
         self,
         project_id: str,
-        schedule_id: int = None,
+        schedule_id: Optional[int] = None,
         label: str = DEFAULT_SCHEDULE_NAME,
     ):
         self.id = schedule_id
@@ -78,7 +79,7 @@ class Schedule:
         self.color_palette = list(COLOR_PALETTE)
         self.options = dict()
 
-    def get_min_max_time_slots(self) -> Tuple[str, str]:
+    def get_min_max_time_slots(self) -> tuple[str, str]:
         mng = app.config["MANAGER"]
         ext_cals = filter(lambda s: "EXT:" in s, self.codes)
 
@@ -87,7 +88,9 @@ class Schedule:
         for course in courses:
             course_events = course.get_events()
             for event in course_events:
-                if event.all_day or (event.end - event.begin) == timedelta(hours=24):
+                if event.all_day or (event.end - event.begin) == timedelta(
+                    hours=24
+                ):
                     continue
 
                 for dt in [event.begin, event.end]:
@@ -110,13 +113,13 @@ class Schedule:
 
     def get_option(self, option: str) -> bool:
         if not hasattr(self, "options"):
-            setattr(self, "options", default_options())
+            self.options = default_options()
 
         return self.options[option]
 
     def set_option(self, option: str, value: bool):
         if not hasattr(self, "options"):
-            setattr(self, "options", default_options())
+            self.options = default_options()
 
         self.options[option] = value
 
@@ -142,7 +145,7 @@ class Schedule:
     def reset_filters(self, code):
         self.filtered_subcodes[code] = set()
 
-    def add_course(self, codes: Union[Iterable[str], str]) -> List[str]:
+    def add_course(self, codes: Union[Iterable[str], str]) -> list[str]:
         """
         Adds one or many courses to the schedule.
 
@@ -183,7 +186,7 @@ class Schedule:
         :param event: the event to add
         :type event: CustomEvent (or RecurringCustomEvent)
         """
-        if not event in self.custom_events:
+        if event not in self.custom_events:
             self.custom_events.append(event)
 
     def get_custom_event(self, id: str) -> Optional[evt.CustomEvent]:
@@ -256,7 +259,7 @@ class Schedule:
                 return event.color
             return None
 
-    def get_courses(self) -> List[Course]:
+    def get_courses(self) -> list[Course]:
         """
         Returns all the courses of this schedule as a list.
 
@@ -268,7 +271,7 @@ class Schedule:
 
     def get_events(
         self, json: bool = False, schedule_number: int = 0
-    ) -> List[evt.Event]:
+    ) -> list[evt.Event]:
         """
         Extracts all the events matching ids in the filtered_subcodes list.
 
@@ -290,7 +293,9 @@ class Schedule:
         # Course Events
         n = len(self.color_palette)
         for i, course in enumerate(courses):
-            course_events = course.get_events(view=views[course.code], reverse=True)
+            course_events = course.get_events(
+                view=views[course.code], reverse=True
+            )
             if json:
                 events.extend(
                     [e.json(self.color_palette[i % n]) for e in course_events]
@@ -306,7 +311,7 @@ class Schedule:
 
         return events
 
-    def get_summary(self) -> Dict[str, Dict[str, Set[str]]]:
+    def get_summary(self) -> dict[str, dict[str, set[str]]]:
         """
         Returns the summary of all activities within the schedule.
 
@@ -328,11 +333,13 @@ class Schedule:
         :return: iCalendar-formatted schedule
         :rtype: str
         """
-        return str(Calendar(events=self.get_events(schedule_number=schedule_number)))
+        return str(
+            Calendar(events=self.get_events(schedule_number=schedule_number))
+        )
 
-    def compute_best(
+    def compute_best(  # noqa: C901
         self, n_best: int = 5, safe_compute: bool = True
-    ) -> List[Iterable[evt.CustomEvent]]:
+    ) -> list[Iterable[evt.CustomEvent]]:
         """
         Computes best schedules trying to minimize conflicts selecting, for each type of event, one event.
 
@@ -373,9 +380,7 @@ class Schedule:
         valid = df.index.get_level_values("type") != evt.EventOTHER
         df_main, df_other = df[valid], df[~valid]
 
-        max_bests_found = (
-            1  # Number of best schedules found (will take the maximum value out of all
-        )
+        max_bests_found = 1  # Number of best schedules found (will take the maximum value out of all
         # weeks)
 
         for week, week_data in df_main.groupby("week"):
@@ -390,7 +395,9 @@ class Schedule:
                         r = repeat(e)
                         # If that event overlaps with any of the events in tmp
                         if any(starmap(operator.xor, zip(tmp, r))):
-                            week_data = week_data.drop(index=index, errors="ignore")
+                            week_data = week_data.drop(
+                                index=index, errors="ignore"
+                            )
                         else:
                             # We append to left because last event is most likely to
                             # conflict (if sorted)
@@ -404,19 +411,21 @@ class Schedule:
             # We add actual filter to current week
             for event_code, filtered_ids in self.filtered_subcodes.items():
                 for i in range(n_best):
-                    self.best_schedules[i][event_code][week].update(filtered_ids)
+                    self.best_schedules[i][event_code][week].update(
+                        filtered_ids
+                    )
             # Events present in the best schedule will be later removed from the filter
 
             events = [
                 [
                     data_id.values
-                    for _, data_id in data.sample(frac=1, random_state=seed).groupby(
-                        level="id", sort=False
-                    )
+                    for _, data_id in data.sample(
+                        frac=1, random_state=seed
+                    ).groupby(level="id", sort=False)
                 ]
-                for _, data in week_data.groupby(level=["code", "type"], sort=False)[
-                    "event"
-                ]
+                for _, data in week_data.groupby(
+                    level=["code", "type"], sort=False
+                )["event"]
             ]
 
             # Generate all possible schedules for a given week
@@ -456,7 +465,8 @@ class Schedule:
 
 
 def evaluate_week(
-    week: Iterable[Iterable[evt.CustomEvent]], fts: Iterable[evt.CustomEvent] = None
+    week: Iterable[Iterable[evt.CustomEvent]],
+    fts: Optional[Iterable[evt.CustomEvent]] = None,
 ) -> float:
     """
     Evaluates how much a given week contains conflicts.
@@ -471,7 +481,9 @@ def evaluate_week(
     week = sorted(chain.from_iterable(week))  # We sort all the events
 
     if fts is not None:
-        week = sorted(week + fts)  # We additionally sort the fts, within the week
+        week = sorted(
+            week + fts
+        )  # We additionally sort the fts, within the week
     return sum(
         starmap(operator.mul, zip(week[:-1], week[1:]))
     )  # We sum all the overlaps

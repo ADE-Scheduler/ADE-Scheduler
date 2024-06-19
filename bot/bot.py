@@ -33,10 +33,7 @@ def admin_required(func):
 
 @admin_required
 def service_command(update: Update, context: CallbackContext):
-    """
-    Interact with the server's services: Redis, PostgreSQL & Apache.
-    """
-
+    """Interact with the server's services: Redis, PostgreSQL & Apache."""
     commands = ["start", "stop", "reload", "restart"]
 
     # Load args
@@ -63,15 +60,11 @@ def service_command(update: Update, context: CallbackContext):
 
 @admin_required
 def status_command(update: Update, context: CallbackContext):
-    """
-    Display service status.
-    """
-
+    """Display service status."""
     for service in services:
         res = subprocess.run(
             ["systemctl", "status", service],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
+            capture_output=True,
         )
         if res.stdout:
             update.message.reply_markdown_v2(f"```\n{res.stdout.decode()}\n```")
@@ -81,9 +74,7 @@ def status_command(update: Update, context: CallbackContext):
 
 @admin_required
 def top_command(update: Update, context: CallbackContext):
-    """
-    Display processes usage using top tool.
-    """
+    """Display processes usage using top tool."""
     commands = ["mem", "cpu"]
 
     # Load args
@@ -99,15 +90,13 @@ def top_command(update: Update, context: CallbackContext):
 
     res = subprocess.run(
         ["ps", "-o", "%cpu,%mem,comm", "ax", f"--sort=-%{command}"],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        capture_output=True,
     )
 
     res = subprocess.run(
         ["head", "-20"],
         input=res.stdout,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        capture_output=True,
     )
 
     if res.stdout:
@@ -118,19 +107,15 @@ def top_command(update: Update, context: CallbackContext):
 
 @admin_required
 def flask_command(update: Update, context: CallbackContext):
-    """
-    Interact with the Flask CLI.
-    """
-
+    """Interact with the Flask CLI."""
     # flask run should NOT be called
     if context.args[0] == "run":
         update.message.reply_text("Bad idea...")
         return
 
     res = subprocess.run(
-        ["venv/bin/flask"] + context.args,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        ["venv/bin/flask", *context.args],
+        capture_output=True,
     )
     if res.stdout:
         update.message.reply_markdown_v2(f"```\n{res.stdout.decode()}\n```")
@@ -139,10 +124,7 @@ def flask_command(update: Update, context: CallbackContext):
 
 
 def health_check(context: CallbackContext):
-    """
-    Periodic job to check the services' status.
-    """
-
+    """Periodic job to check the services' status."""
     # Check services status
     for service in services:
         try:

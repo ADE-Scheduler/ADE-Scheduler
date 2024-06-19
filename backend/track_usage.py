@@ -26,7 +26,9 @@ class ParsedUserAgent(UserAgent):
     def version(self):
         ua = self._details["user_agent"]
         return ".".join(
-            ua[key] for key in ("major", "minor", "patch") if ua[key] is not None
+            ua[key]
+            for key in ("major", "minor", "patch")
+            if ua[key] is not None
         )
 
 
@@ -48,7 +50,9 @@ def after_request(response):
         dict(
             url=request.url,
             status=response.status_code,
-            username=current_user.email if current_user.is_authenticated else None,
+            username=current_user.email
+            if current_user.is_authenticated
+            else None,
             user_agent=ParsedUserAgent(request.user_agent.string),
             blueprint=request.blueprint,
             path=request.path,

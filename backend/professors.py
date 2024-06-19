@@ -1,4 +1,5 @@
-from typing import Iterable, Optional
+from collections.abc import Iterable
+from typing import Optional
 
 
 class Professor:
@@ -33,12 +34,14 @@ def merge_professors(professors: Iterable[Professor]) -> Professor:
 
     :Example:
 
-    >>> p1 = Professor('Jean Moulin', 'jean.moulin@mail.com')
-    >>> p2 = Professor('Marc Potier', 'marc.potier@mail.com')
+    >>> p1 = Professor("Jean Moulin", "jean.moulin@mail.com")
+    >>> p2 = Professor("Marc Potier", "marc.potier@mail.com")
     >>> p3 = merge_professors((p1, p2))
     """
     name = " & ".join(professor.name for professor in professors)
-    email = " & ".join(professor.email for professor in professors if professor.email)
+    email = " & ".join(
+        professor.email for professor in professors if professor.email
+    )
     if len(email) > 0:
         return Professor(name, email)
     else:

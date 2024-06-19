@@ -15,7 +15,9 @@ def init_session():
         session["uuid"] = uuid.uuid4()
 
     if not session.get("current_schedule"):
-        session["current_schedule"] = schd.Schedule(mng.get_default_project_id())
+        session["current_schedule"] = schd.Schedule(
+            mng.get_default_project_id()
+        )
 
     if session.get("current_schedule_modified", None) is None:
         session["current_schedule_modified"] = False
@@ -42,12 +44,17 @@ def autosave_schedule(response):
 
 
 def autoload_schedule():
-    if current_user.is_authenticated and session["current_schedule"].id is not None:
+    if (
+        current_user.is_authenticated
+        and session["current_schedule"].id is not None
+    ):
         schedule = current_user.get_schedule(id=session["current_schedule"].id)
 
         if schedule is None:
             mng = app.config["MANAGER"]
-            session["current_schedule"] = schd.Schedule(mng.get_default_project_id())
+            session["current_schedule"] = schd.Schedule(
+                mng.get_default_project_id()
+            )
             session["current_schedule_modified"] = False
             return
 

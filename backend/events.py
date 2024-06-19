@@ -1,7 +1,8 @@
 import re
 import unicodedata
+from collections.abc import Iterable
 from datetime import datetime
-from typing import Any, Dict, Iterable, Optional, Tuple, Type, Union
+from typing import Any, Optional, Union
 
 from flask_babel import gettext
 from ics import Event
@@ -70,7 +71,7 @@ class CustomEvent(Event):
 
     def __getattr__(self, item):
         if item == "color" and not hasattr(super(), "color"):
-            setattr(self, "color", self.DEFAULT_COLOR)
+            self.color = self.DEFAULT_COLOR
             return self.DEFAULT_COLOR
         else:
             return super().__getattr__(item)
@@ -117,14 +118,14 @@ class CustomEvent(Event):
 
     def set_weight(self, weight: float):
         """
-        changes the weight of the event.
+        Changes the weight of the event.
 
         :param weight: the weight
         :type weight: float
         """
         self.weight = weight
 
-    def json(self, color: str = None) -> Dict[str, Any]:
+    def json(self, color: Optional[str] = None) -> dict[str, Any]:
         """
         Returns the event as a json-like format.
 
@@ -133,7 +134,6 @@ class CustomEvent(Event):
         :return: a dictionary containing relevant information
         :rtype: Dict[str, Any]
         """
-
         if color is None:
             color = self.color
 
@@ -179,7 +179,7 @@ class RecurringCustomEvent(CustomEvent):
         r = super().json(color=color)
         del r["start"]
         del r["end"]
-        DAYS = [
+        days = [
             gettext("Sunday"),
             gettext("Monday"),
             gettext("Tuesday"),
@@ -201,12 +201,12 @@ class RecurringCustomEvent(CustomEvent):
                 "startRecur": self.begin.format(),
                 "endRecur": self.end_recurrence.format(),
                 "rrule": {
-                    "days": [DAYS[i] for i in self.freq],
+                    "days": [days[i] for i in self.freq],
                     "start": str(self.begin),
                     "end": str(self.end),
-                    "pretty_days": ", ".join(DAYS[i] for i in self.freq),
-                    "pretty_start": f"{DAYS[(self.begin.weekday() + 1) % 7]} {self.begin.format(PRETTY_DATE_FORMAT)}",
-                    "pretty_end": f"{DAYS[(self.end_recurrence.weekday() + 1) % 7]} {self.end_recurrence.format(PRETTY_DATE_FORMAT)}",
+                    "pretty_days": ", ".join(days[i] for i in self.freq),
+                    "pretty_start": f"{days[(self.begin.weekday() + 1) % 7]} {self.begin.format(PRETTY_DATE_FORMAT)}",
+                    "pretty_end": f"{days[(self.end_recurrence.weekday() + 1) % 7]} {self.end_recurrence.format(PRETTY_DATE_FORMAT)}",
                 },
             }
         )
@@ -272,7 +272,9 @@ class AcademicalEvent(CustomEvent):
     ):
         super().__init__(
             name=name,
-            location=merge_classrooms(classrooms).location() if classrooms else "",
+            location=merge_classrooms(classrooms).location()
+            if classrooms
+            else "",
             description=str(professor),
             begin=begin,
             end=end,
@@ -282,14 +284,16 @@ class AcademicalEvent(CustomEvent):
         self.code = code
         self.classrooms = classrooms
         self.description = (
-            f"{self.name}\n" f"{str(self.duration)}\n" f"{self.description}"
+            f"{self.name}\n" f"{self.duration!s}\n" f"{self.description}"
         )
         self.note = note
 
         if self.note:
             self.description = f"{self.description}\n{self.note}"
 
-        if name is None or len(name) == 0:  # Fix for special events with no name
+        if (
+            name is None or len(name) == 0
+        ):  # Fix for special events with no name
             self.name = id
         else:
             self.name = f"{prefix}{self.name}"
@@ -332,7 +336,11 @@ class AcademicalEvent(CustomEvent):
     def json(self, color=""):
         r = super().json(color=color)
         r.update(
-            {"title": self.name, "description": self.description, "code": self.code}
+            {
+                "title": self.name,
+                "description": self.description,
+                "code": self.code,
+            }
         )
 
         # Remove empty lines
@@ -429,7 +437,7 @@ def extract_code(course_id: str) -> str:
         return ""
 
 
-def extract_type(course_type: str, course_id: str) -> Type[AcademicalEvent]:
+def extract_type(course_type: str, course_id: str) -> type[AcademicalEvent]:
     """
     Extract the type of Academical event from course type or course id.
     Sometimes, information from ADE API is wrong...
@@ -469,7 +477,9 @@ def extract_type(course_type: str, course_id: str) -> Type[AcademicalEvent]:
         return EventOTHER
 
 
-def extract_datetime(date: str, start: str, end: str) -> Tuple[datetime, datetime]:
+def extract_datetime(
+    date: str, start: str, end: str
+) -> tuple[datetime, datetime]:
     """
     Parses infos to return the start and end time of an event.
 

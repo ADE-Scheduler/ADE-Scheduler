@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Copyright (C) 2020-2024 ADE-Scheduler.
 #
@@ -13,7 +12,7 @@ import pickle
 import time
 import warnings
 from collections import Counter, defaultdict
-from typing import Callable, Dict, List, Tuple, Union
+from typing import Callable, Union
 
 import pandas as pd
 import requests
@@ -30,15 +29,13 @@ from backend.uclouvain_apis import ADE
 
 
 class ExpiredTokenError(Exception):
-    """
-    Exception that will occur if a token is expired.
-    """
+    """Exception that will occur if a token is expired."""
 
     def __str__(self):
         return "The token you were using is now expired! Renew the token to proceed normally."
 
 
-ClientCredentials = Dict[str, Union[str, List[int]]]
+ClientCredentials = dict[str, Union[str, list[int]]]
 Request = Union[str, int]
 
 
@@ -53,7 +50,9 @@ class DummyClient:
     :Example:
 
     >>> import backend.credentials as credentials
-    >>> credentials = credentials.get_credentials(credentials.ADE_API_CREDENTIALS)
+    >>> credentials = credentials.get_credentials(
+    ...     credentials.ADE_API_CREDENTIALS
+    ... )
     >>> client = Client(credentials)
     """
 
@@ -79,9 +78,7 @@ class DummyClient:
         raise NotImplementedError
 
     def renew_token(self) -> None:
-        """
-        Renews the current token requesting a new one.
-        """
+        """Renews the current token requesting a new one."""
         raise NotImplementedError
 
     def request(self, **kwargs: Request) -> requests.Response:
@@ -121,6 +118,7 @@ class DummyClient:
             "done. You should only use this request if you "
             "really need all the resources.",
             DeprecationWarning,
+            stacklevel=2,
         )
         return self.request(
             projectId=project_id, function="resources", detail=13, tree="false"
@@ -128,7 +126,7 @@ class DummyClient:
 
     def get_course_resources(
         self, project_id: str
-    ) -> Tuple[requests.Response, requests.Response]:
+    ) -> tuple[requests.Response, requests.Response]:
         """
         Requests all the course resource for a specific project.
 
@@ -163,7 +161,9 @@ class DummyClient:
         :return: the response
         :rtype: request.Response
         """
-        return self.request(projectId=project_id, function="resources", detail=2)
+        return self.request(
+            projectId=project_id, function="resources", detail=2
+        )
 
     def get_classrooms(self, project_id: str) -> requests.Response:
         """
@@ -183,7 +183,7 @@ class DummyClient:
         )
 
     def get_activities(
-        self, resource_ids: List[str], project_id: str
+        self, resource_ids: list[str], project_id: str
     ) -> requests.Response:
         """
         Requests all activities (set of events)  for a specific project.
@@ -275,14 +275,14 @@ def load_response(request_name: str) -> requests.Response:
     :rtype: requests.Response
     :raises HTTPError: if the response to the request could not be found in the file
     """
-    filename = get_response_path((request_name))
+    filename = get_response_path(request_name)
     try:
         with open(filename, "rb") as f:
             return pickle.load(f)
-    except FileNotFoundError:
+    except FileNotFoundError as err:
         raise requests.exceptions.HTTPError(
             f"key [{request_name}] for request was not found"
-        )
+        ) from err
 
 
 def save_response(response: requests.Response, request_name: str):
@@ -294,7 +294,7 @@ def save_response(response: requests.Response, request_name: str):
     :param request_name: the parameters used in the request, concatenated as in :func:`FakeClient.request`
     :type request_name: str
     """
-    filename = get_response_path((request_name))
+    filename = get_response_path(request_name)
     with open(filename, "wb") as f:
         pickle.dump(response, f)
 
@@ -331,7 +331,7 @@ class FakeClient(DummyClient):
         return load_response(args)
 
 
-def get_token(credentials: ClientCredentials) -> Tuple[str, int]:
+def get_token(credentials: ClientCredentials) -> tuple[str, int]:
     """
     Requests a new token to the API.
 
@@ -346,7 +346,9 @@ def get_token(credentials: ClientCredentials) -> Tuple[str, int]:
     header = {"Authorization": authorization}
     resp = requests.post(url=url, headers=header, data=data)
 
-    if current_app:  # To prevent error on app initilisation where a token is requested
+    if (
+        current_app
+    ):  # To prevent error on app initilisation where a token is requested
         md.ApiUsage("token", resp)
     resp.raise_for_status()
     r = resp.json()
@@ -365,7 +367,9 @@ def response_to_root(response: requests.Response) -> etree._Element:
     return etree.fromstring(response.content)
 
 
-def response_to_project_ids(project_ids_response: requests.Response) -> Dict[str, str]:
+def response_to_project_ids(
+    project_ids_response: requests.Response,
+) -> dict[str, str]:
     """
     Extracts an API response into an iterator of project ids and years.
 
@@ -386,7 +390,9 @@ def response_to_project_ids(project_ids_response: requests.Response) -> Dict[str
     return {year: id for id, year in zip(ids, years)}
 
 
-def response_to_resources(resources_response: requests.Response) -> pd.DataFrame:
+def response_to_resources(
+    resources_response: requests.Response,
+) -> pd.DataFrame:
     """
     Extracts an API response into an dataframe containing all resources.
 
@@ -416,7 +422,7 @@ def response_to_resources(resources_response: requests.Response) -> pd.DataFrame
 
 
 def response_to_course_resources(
-    course_resources_response: Tuple[requests.Response, requests.Response]
+    course_resources_response: tuple[requests.Response, requests.Response],
 ) -> pd.DataFrame:
     """
     Extracts an API response into an dataframe containing all course resources.
@@ -449,7 +455,7 @@ def response_to_course_resources(
     return pd.concat(dfs)
 
 
-def response_to_resource_ids(resource_ids_response) -> Dict[str, str]:
+def response_to_resource_ids(resource_ids_response) -> dict[str, str]:
     """
     Extracts an API response into an dictionary mapping a resource name to its ids.
 
@@ -508,7 +514,9 @@ def room_to_classroom(room: etree._Element) -> Classroom:
     return classroom
 
 
-def response_to_classrooms(classrooms_response: requests.Response) -> List[Classroom]:
+def response_to_classrooms(
+    classrooms_response: requests.Response,
+) -> list[Classroom]:
     """
     Extracts an API response into list of classrooms.
 
@@ -566,8 +574,12 @@ def parse_event(
     note = event.attrib["note"]
 
     instructors = list()
-    for instructor in event.xpath('.//eventParticipant[@category="instructor"]'):
-        instructors.append(professors.Professor(instructor.attrib["name"], None))
+    for instructor in event.xpath(
+        './/eventParticipant[@category="instructor"]'
+    ):
+        instructors.append(
+            professors.Professor(instructor.attrib["name"], None)
+        )
     event_instructor = professors.merge_professors(instructors)
 
     # We create the event
@@ -586,7 +598,7 @@ def parse_event(
 
 def parse_activity(
     activity: etree._Element,
-) -> Tuple[List[backend.events.AcademicalEvent], str, str, str]:
+) -> tuple[list[backend.events.AcademicalEvent], str, str, str]:
     """
     Parses an element from a request into a list of events and some activity information.
 
@@ -600,7 +612,9 @@ def parse_activity(
     activity_name = activity.attrib["code"]
 
     event_type = backend.events.extract_type(activity_type, activity_id)
-    event_codes = activity.xpath('.//eventParticipant[@category="category5"]/@name')
+    event_codes = activity.xpath(
+        './/eventParticipant[@category="category5"]/@name'
+    )
     events = activity.xpath(".//event")
     events_list = list()
 
@@ -613,13 +627,15 @@ def parse_activity(
 
     for event in events:
         events_list.append(
-            parse_event(event, event_type, activity_name, activity_id, activity_code)
+            parse_event(
+                event, event_type, activity_name, activity_id, activity_code
+            )
         )
 
     return events_list, activity_name, activity_id, activity_code
 
 
-def response_to_courses(activities_response: requests.Response) -> List[Course]:
+def response_to_courses(activities_response: requests.Response) -> list[Course]:
     """
     Extracts an API response into list of courses.
 
@@ -630,7 +646,9 @@ def response_to_courses(activities_response: requests.Response) -> List[Course]:
 
     :Example:
 
-    >>> response = client.get_activities(['1234'], 9)  # project id for 2019-2020
+    >>> response = client.get_activities(
+    ...     ["1234"], 9
+    ... )  # project id for 2019-2020
     >>> courses = response_to_courses(response)
     """
     root = response_to_root(activities_response)
@@ -654,7 +672,7 @@ def response_to_courses(activities_response: requests.Response) -> List[Course]:
 def response_to_events(
     activities_response: requests.Response,
     filter_func: Callable[[backend.events.AcademicalEvent], bool],
-) -> List[backend.events.AcademicalEvent]:
+) -> list[backend.events.AcademicalEvent]:
     """
     Extracts an API response into list of events.
 
@@ -667,7 +685,9 @@ def response_to_events(
 
     :Example:
 
-    >>> response = client.get_activities(['1234'], 9)  # project id for 2019-2020
+    >>> response = client.get_activities(
+    ...     ["1234"], 9
+    ... )  # project id for 2019-2020
     >>> events = response_to_events(response)
     """
     root = response_to_root(activities_response)

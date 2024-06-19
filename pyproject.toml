@@ -96,6 +96,10 @@ addopts = [
   "--ignore=docs/source/conf.py"
 ]
 doctest_optionflags = ["NORMALIZE_WHITESPACE"]
+testpaths = [
+  "docs",
+  "tests"
+]
 
 [tool.ruff]
 line-length = 80

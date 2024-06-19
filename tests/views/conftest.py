@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Copyright (C) 2020-2024 ADE-Scheduler.
 #
@@ -56,9 +55,8 @@ def jyl(app, manager, db):
     db.session.add(active_schedule)
 
     old_schedule = md.Schedule(
-        schd.Schedule(
-            manager.get_default_project_id(), label="OLD SCHEDULE"
-        ), user=jyl
+        schd.Schedule(manager.get_default_project_id(), label="OLD SCHEDULE"),
+        user=jyl,
     )
     db.session.add(old_schedule)
     db.session.commit()
@@ -74,7 +72,7 @@ def jyl(app, manager, db):
 
     # Logout & delete user
     @app.login_manager.request_loader
-    def load_user_from_request(request):
+    def load_user_from_request(request):  # noqa: F811
         return None
 
     db.session.delete(active_schedule)
@@ -95,8 +93,9 @@ def gerom(app, manager, db):
     )
 
     schedule = md.Schedule(
-        schd.Schedule(manager.get_default_project_id(),
-                      label="GEROM'S SCHEDULE"),
+        schd.Schedule(
+            manager.get_default_project_id(), label="GEROM'S SCHEDULE"
+        ),
         user=gerom,
     )
     db.session.add(schedule)
@@ -127,7 +126,7 @@ def louwi(app, manager):
     yield AnonymousUser()
 
     @app.login_manager.request_loader
-    def load_user_from_request(request):
+    def load_user_from_request(request):  # noqa: F811
         return None
 
 

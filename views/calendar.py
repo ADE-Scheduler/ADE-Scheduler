@@ -2,9 +2,8 @@ import json
 from datetime import datetime
 from typing import Any
 
-from flask import Blueprint
-from flask import current_app as app
 from flask import (
+    Blueprint,
     g,
     jsonify,
     make_response,
@@ -14,6 +13,7 @@ from flask import (
     session,
     url_for,
 )
+from flask import current_app as app
 from flask_babel import LazyString, gettext
 from flask_login import current_user, login_required
 
@@ -23,9 +23,7 @@ import views.utils as utl
 
 
 class CalendarEncoder(json.JSONEncoder):
-    """
-    Subclass of json decoder made for the calendar-specific JSON encodings.
-    """
+    """Subclass of json decoder made for the calendar-specific JSON encodings."""
 
     def default(self, obj: Any) -> Any:
         if isinstance(obj, set):
@@ -37,9 +35,7 @@ class CalendarEncoder(json.JSONEncoder):
 
 
 class CalendarDecoder(json.JSONDecoder):
-    """
-    Subclass of json decoder made for the calendar-specific JSON decodings.
-    """
+    """Subclass of json decoder made for the calendar-specific JSON decodings."""
 
     def decode(self, obj: Any, w: Any = None) -> str:
         decoded = json.JSONDecoder().decode(obj)
@@ -99,7 +95,9 @@ def clear():
 @calendar.route("/data", methods=["GET"])
 def get_data():
     mng = app.config["MANAGER"]
-    min_time_slot, max_time_slot = session["current_schedule"].get_min_max_time_slots()
+    min_time_slot, max_time_slot = session[
+        "current_schedule"
+    ].get_min_max_time_slots()
     return (
         jsonify(
             {
@@ -150,13 +148,20 @@ def load_schedule(id):
                         "color_palette": schedule.data.color_palette,
                     },
                     "project_id": mng.get_project_ids(),
-                    "current_project_id": session["current_schedule"].project_id,
-                    "n_schedules": len(session["current_schedule"].best_schedules),
+                    "current_project_id": session[
+                        "current_schedule"
+                    ].project_id,
+                    "n_schedules": len(
+                        session["current_schedule"].best_schedules
+                    ),
                     "events": session["current_schedule"].get_events(json=True),
                     "codes": session["current_schedule"].codes,
                     "schedules": list(
                         map(
-                            lambda s: {"id": s.id, "label": gettext(s.data.label)},
+                            lambda s: {
+                                "id": s.id,
+                                "label": gettext(s.data.label),
+                            },
                             current_user.get_schedules(),
                         )
                     ),
@@ -174,7 +179,9 @@ def search_code(search_key):
     search_key = search_key.replace("*", "")  # * does not work in Python
     # see: https://stackoverflow.com/questions/3675144/regex-error-nothing-to-repeat/44657703
     mng = app.config["MANAGER"]
-    codes = mng.get_codes_matching(search_key, session["current_schedule"].project_id)
+    codes = mng.get_codes_matching(
+        search_key, session["current_schedule"].project_id
+    )
     return jsonify({"codes": codes}), 200
 
 
@@ -182,12 +189,18 @@ def search_code(search_key):
 def add_code(code):
     mng = app.config["MANAGER"]
     code = code.upper()
-    if not mng.code_exists(code, project_id=session["current_schedule"].project_id):
-        return gettext("The code you added does not exist in our database."), 404
+    if not mng.code_exists(
+        code, project_id=session["current_schedule"].project_id
+    ):
+        return gettext(
+            "The code you added does not exist in our database."
+        ), 404
 
     codes = session["current_schedule"].add_course(code)
 
-    min_time_slot, max_time_slot = session["current_schedule"].get_min_max_time_slots()
+    min_time_slot, max_time_slot = session[
+        "current_schedule"
+    ].get_min_max_time_slots()
     if codes:
         session["current_schedule_modified"] = True
     return (
@@ -208,7 +221,9 @@ def remove_code(code):
     session["current_schedule"].remove_course(code)
     session["current_schedule_modified"] = True
 
-    min_time_slot, max_time_slot = session["current_schedule"].get_min_max_time_slots()
+    min_time_slot, max_time_slot = session[
+        "current_schedule"
+    ].get_min_max_time_slots()
     return (
         jsonify(
             {
@@ -224,7 +239,9 @@ def remove_code(code):
 @calendar.route("/<path:code>/info", methods=["GET"])
 def get_info(code):
     mng = app.config["MANAGER"]
-    courses = mng.get_courses(code, project_id=session["current_schedule"].project_id)
+    courses = mng.get_courses(
+        code, project_id=session["current_schedule"].project_id
+    )
 
     summary = dict()
     title = dict()
@@ -247,10 +264,12 @@ def get_info(code):
 @calendar.route("/custom_event", methods=["POST"])
 def add_custom_event():
     event = request.json
-    event["begin"] = datetime.strptime(event["begin"], "%Y-%m-%d %H:%M").astimezone(
+    event["begin"] = datetime.strptime(
+        event["begin"], "%Y-%m-%d %H:%M"
+    ).astimezone(evt.TZ)
+    event["end"] = datetime.strptime(event["end"], "%Y-%m-%d %H:%M").astimezone(
         evt.TZ
     )
-    event["end"] = datetime.strptime(event["end"], "%Y-%m-%d %H:%M").astimezone(evt.TZ)
     if event.get("end_recurrence"):
         event["end_recurrence"] = datetime.strptime(
             event["end_recurrence"], "%Y-%m-%d %H:%M"
@@ -325,7 +344,9 @@ def download():
     link = request.args.get("link")
 
     try:
-        choice = int(request.args.get("choice")) if request.args.get("choice") else 0
+        choice = (
+            int(request.args.get("choice")) if request.args.get("choice") else 0
+        )
     except ValueError:
         choice = 0
 
@@ -340,7 +361,9 @@ def download():
 
     if schedule is None:
         return (
-            gettext("The schedule you requested does not exist in our database !"),
+            gettext(
+                "The schedule you requested does not exist in our database !"
+            ),
             400,
         )
     else:
@@ -348,7 +371,9 @@ def download():
         resp.mimetype = "text/calendar"
         resp.headers["Content-Disposition"] = (
             "attachment; filename="
-            + "".join(c for c in schedule.label if c.isalnum() or c in ("_")).rstrip()
+            + "".join(
+                c for c in schedule.label if c.isalnum() or c in ("_")
+            ).rstrip()
             + ".ics"
         )
         g.track_var["schedule download"] = schedule.id
@@ -366,7 +391,9 @@ def share():
 
     if schedule is None:
         return (
-            gettext("The schedule you requested does not exist in our database !"),
+            gettext(
+                "The schedule you requested does not exist in our database !"
+            ),
             400,
         )
     else:
@@ -380,21 +407,27 @@ def share():
 def apply_filter():
     schedule = session["current_schedule"]
     for code, filters in request.json.items():
-        for type, filters in filters.items():
-            for filter, value in filters.items():
+        for _type, subfilters in filters.items():
+            for _filter, value in subfilters.items():
                 if not value:
-                    schedule.add_filter(code, type + ": " + filter)
+                    schedule.add_filter(code, _type + ": " + _filter)
                 else:
-                    schedule.remove_filter(code, type + ": " + filter)
+                    schedule.remove_filter(code, _type + ": " + _filter)
     session["current_schedule_modified"] = True
-    return (jsonify({"events": session["current_schedule"].get_events(json=True)}), 200)
+    return (
+        jsonify({"events": session["current_schedule"].get_events(json=True)}),
+        200,
+    )
 
 
 @calendar.route("/schedule/year/<id>", methods=["PUT"])
 def update_poject_id(id):
     session["current_schedule"].project_id = id
     session["current_schedule_modified"] = True
-    return (jsonify({"events": session["current_schedule"].get_events(json=True)}), 200)
+    return (
+        jsonify({"events": session["current_schedule"].get_events(json=True)}),
+        200,
+    )
 
 
 @calendar.route("/schedule/link", methods=["GET"])
@@ -409,7 +442,9 @@ def export():
 
     link = mng.get_link(session["current_schedule"].id)
     if link is None:
-        return gettext("Hum... this schedule does not have an associated link."), 401
+        return gettext(
+            "Hum... this schedule does not have an associated link."
+        ), 401
     else:
         return jsonify({"link": link})
 

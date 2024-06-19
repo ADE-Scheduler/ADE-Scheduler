@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Copyright (C) 2020-2024 ADE-Scheduler.
 #
@@ -17,7 +16,11 @@ from cli.cli_usage import (
     plot_unique_ip_addresses_per_day,
     plot_views_per_blueprint_hist,
 )
-from cli.cli_users import plot_users_emails_pie, plot_users_hist, plot_users_last_seen
+from cli.cli_users import (
+    plot_users_emails_pie,
+    plot_users_hist,
+    plot_users_last_seen,
+)
 
 F_PLOTS = {
     "api-usage-requests-hist": plot_requests_hist,
@@ -41,7 +44,7 @@ def plots():
 @click.option(
     "-s",
     "--select",
-    type=click.Choice(["all"] + list(F_PLOTS.keys()), case_sensitive=False),
+    type=click.Choice(["all", *list(F_PLOTS.keys())], case_sensitive=False),
     default="all",
     help="Generate a plot for a given function. By default, will generate all plots.",
 )

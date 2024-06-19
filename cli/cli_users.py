@@ -20,7 +20,8 @@ def users():
 def count():
     """Count the number of current users."""
     click.echo(
-        f"There are currently {md.User.query.count()} " f"users on ADE-Scheduler."
+        f"There are currently {md.User.query.count()} "
+        f"users on ADE-Scheduler."
     )
 
 
@@ -31,7 +32,11 @@ def stats():
     confirmed_users = md.User.query.all()
     df = pd.DataFrame(
         [
-            [user.created_at.strftime("%Y/%m/%d"), user.email, len(user.schedules)]
+            [
+                user.created_at.strftime("%Y/%m/%d"),
+                user.email,
+                len(user.schedules),
+            ]
             for user in confirmed_users
         ],
         columns=["date", "email", "n_schedules"],
@@ -94,7 +99,8 @@ def plot_users_hist():
     server.set_value(key, value)
 
     click.secho(
-        f"Successfully created a plot and saved into server with key={key}", fg="green"
+        f"Successfully created a plot and saved into server with key={key}",
+        fg="green",
     )
 
 
@@ -119,7 +125,8 @@ def plot_users_emails_pie():
     server.set_value(key, value)
 
     click.secho(
-        f"Successfully created a plot and saved into server with key={key}", fg="green"
+        f"Successfully created a plot and saved into server with key={key}",
+        fg="green",
     )
 
 
@@ -163,5 +170,6 @@ def plot_users_last_seen():
     server.set_value(key, value)
 
     click.secho(
-        f"Successfully created a plot and saved into server with key={key}", fg="green"
+        f"Successfully created a plot and saved into server with key={key}",
+        fg="green",
     )

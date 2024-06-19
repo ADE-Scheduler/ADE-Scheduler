@@ -3,8 +3,9 @@ class TestServer:
     def test_is_running(server):
         func = server.is_running
 
-        assert func(), \
-            "Did you forget to run redis ? Or did you get the port wrong ?"
+        assert (
+            func()
+        ), "Did you forget to run redis ? Or did you get the port wrong ?"
 
     @staticmethod
     def test_set_value(server):

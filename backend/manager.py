@@ -1,4 +1,5 @@
-from typing import Dict, Iterator, List, Optional, Tuple, Union
+from collections.abc import Iterator
+from typing import Optional, Union
 
 import lxml
 import pandas as pd
@@ -17,18 +18,16 @@ import backend.servers as srv
 
 
 class ScheduleNotFountError(Exception):
-    """
-    Exception that will occur if a schedule is marked as saved but is not in the database.
-    """
+    """Exception that will occur if a schedule is marked as saved but is not in the database."""
 
     def __str__(self):
-        return gettext("The given schedule is somehow not saved in our database...")
+        return gettext(
+            "The given schedule is somehow not saved in our database..."
+        )
 
 
 class ExternalCalendarAlreadyExistsError(Exception):
-    """
-    Exception that will occur if someone tries to create a calendar with a code already taken.
-    """
+    """Exception that will occur if someone tries to create a calendar with a code already taken."""
 
     def __str__(self):
         return gettext("The given calendar code is already taken.")
@@ -52,14 +51,20 @@ class Manager:
     """
 
     def __init__(
-        self, client: ade.Client, server: srv.Server, database: md.SQLAlchemy, ttl: Dict
+        self,
+        client: ade.Client,
+        server: srv.Server,
+        database: md.SQLAlchemy,
+        ttl: dict,
     ):
         self.server = server
         self.client = client
         self.database = database
         self.ttl = ttl
 
-    def get_courses(self, *codes: str, project_id: str = None) -> List[crs.Course]:
+    def get_courses(  # noqa: C901
+        self, *codes: str, project_id: Optional[str] = None
+    ) -> list[crs.Course]:
         """
         Returns the courses with given codes as a list.
         Order of courses is consistent with initial order of the codes.
@@ -90,20 +95,20 @@ class Manager:
         def _fetch_code(code_not_found):
             course_not_found = None
             if code_not_found.startswith("EXT:"):
-                extCal = (
+                ext_cal = (
                     md.ExternalCalendar.query.filter_by(approved=True)
                     .filter(md.ExternalCalendar.code == code_not_found)
                     .first()
                 )
-                if extCal is None:  # In case the owner of extCal deleted it
+                if ext_cal is None:  # In case the owner of ext_cal deleted it
                     return None
-                url = extCal.url
+                url = ext_cal.url
                 events = Calendar(requests.get(url).text).events
                 events = [
                     evt.EventEXTERN.from_event(event, code_not_found[4:])
                     for event in events
                 ]
-                course_not_found = crs.Course(code_not_found[4:], extCal.name)
+                course_not_found = crs.Course(code_not_found[4:], ext_cal.name)
                 for event in events:
                     course_not_found.add_activity([event])
 
@@ -153,7 +158,7 @@ class Manager:
                     expire_in=self.ttl["courses"],
                     notify_expire_in=self.ttl["courses_notify"],
                 )
-            except lxml.etree.XMLSyntaxError as e:
+            except lxml.etree.XMLSyntaxError:
                 self.server.set_value(
                     prefix + code_expired,
                     courses[code_expired],  # this already exists
@@ -173,8 +178,8 @@ class Manager:
         return ret
 
     def get_events_in_classroom(
-        self, classroom_id: str, project_id: str = None
-    ) -> List[evt.AcademicalEvent]:
+        self, classroom_id: str, project_id: Optional[str] = None
+    ) -> list[evt.AcademicalEvent]:
         if project_id is None:
             project_id = self.get_default_project_id()
 
@@ -194,10 +199,12 @@ class Manager:
         events = ade.response_to_events(
             self.client.get_activities([classroom_id], project_id), filter_func
         )
-        self.server.set_value(key, events, expire_in=self.ttl["events_in_classroom"])
+        self.server.set_value(
+            key, events, expire_in=self.ttl["events_in_classroom"]
+        )
         return events
 
-    def get_resources(self, project_id: str = None) -> pd.DataFrame:
+    def get_resources(self, project_id: Optional[str] = None) -> pd.DataFrame:
         """
         Returns the resources.
 
@@ -217,9 +224,7 @@ class Manager:
         return self.server.get_value(key)
 
     def update_resources(self):
-        """
-        Updates the resources contained in the server for all project ids.
-        """
+        """Updates the resources contained in the server for all project ids."""
         key = "[PROJECT_IDs]"
         if not self.server.exists(key):
             self.update_project_ids()
@@ -228,10 +233,16 @@ class Manager:
             value = value.decode()
             key = f"[RESOURCES,project_id={value}]"
 
-            resources = ade.response_to_resources(self.client.get_resources(value))
-            self.server.set_value(key, resources, expire_in=self.ttl["resources"])
+            resources = ade.response_to_resources(
+                self.client.get_resources(value)
+            )
+            self.server.set_value(
+                key, resources, expire_in=self.ttl["resources"]
+            )
 
-    def get_course_resources(self, project_id: str = None) -> pd.DataFrame:
+    def get_course_resources(
+        self, project_id: Optional[str] = None
+    ) -> pd.DataFrame:
         """
         Returns the course resources.
 
@@ -251,9 +262,7 @@ class Manager:
         return self.server.get_value(key)
 
     def update_course_resources(self):
-        """
-        Updates the course resources contained in the server for all project ids.
-        """
+        """Updates the course resources contained in the server for all project ids."""
         key = "[PROJECT_IDs]"
         if not self.server.exists(key):
             self.update_project_ids()
@@ -276,13 +285,17 @@ class Manager:
                 key, course_resources, expire_in=self.ttl["course_resources"]
             )
 
-    def get_codes_matching(self, pattern: str, project_id: str = None) -> List[str]:
+    def get_codes_matching(
+        self, pattern: str, project_id: Optional[str] = None
+    ) -> list[str]:
         # Actually returns names matchings :)
         course_resources = self.get_course_resources(project_id)
         matching_code = course_resources[rsrc.INDEX.NAME].str.contains(
             pattern, case=False, regex=False
         )
-        courses_matching = course_resources[matching_code][rsrc.INDEX.NAME].to_list()
+        courses_matching = course_resources[matching_code][
+            rsrc.INDEX.NAME
+        ].to_list()
         courses_matching.extend(
             map(
                 lambda ec: ec.code,
@@ -295,8 +308,8 @@ class Manager:
 
     def get_classrooms(
         self,
-        project_id: str = None,
-        search_dict: Dict[str, str] = None,
+        project_id: Optional[str] = None,
+        search_dict: Optional[dict[str, str]] = None,
         return_json: bool = False,
     ):
         if project_id is None:
@@ -321,10 +334,10 @@ class Manager:
         else:
             return classrooms
 
-    def update_classrooms(self, drop_empty: List[str] = [rsrc.INDEX.ADDRESS]):
-        """
-        Updates the classrooms contained in the server for all project ids.
-        """
+    def update_classrooms(self, drop_empty: Optional[list[str]] = None):
+        """Updates the classrooms contained in the server for all project ids."""
+        if drop_empty is None:
+            drop_empty = [rsrc.INDEX.ADDRESS]
         key = "[PROJECT_IDs]"
         if not self.server.exists(key):
             self.update_project_ids()
@@ -335,7 +348,9 @@ class Manager:
 
             resources = self.get_resources(project_id=value)
 
-            classrooms_index = resources[rsrc.INDEX.TYPE] == rsrc.TYPES.CLASSROOM
+            classrooms_index = (
+                resources[rsrc.INDEX.TYPE] == rsrc.TYPES.CLASSROOM
+            )
             classrooms = resources[classrooms_index]
 
             for drop_index in drop_empty:
@@ -344,9 +359,13 @@ class Manager:
 
             classrooms = clrm.prettify_classrooms(classrooms)
 
-            self.server.set_value(key, classrooms, expire_in=self.ttl["classrooms"])
+            self.server.set_value(
+                key, classrooms, expire_in=self.ttl["classrooms"]
+            )
 
-    def get_resource_ids(self, *codes: str, project_id: str = None) -> Iterator[str]:
+    def get_resource_ids(
+        self, *codes: str, project_id: Optional[str] = None
+    ) -> Iterator[str]:
         """
         Returns the resource ids of each code.
 
@@ -363,12 +382,12 @@ class Manager:
         key = f"[RESOURCE_IDs,project_id={project_id}]"
         if not self.server.exists(key):
             self.update_resource_ids()
-        return map(lambda x: x.decode(), filter(None, self.server.hmget(key, codes)))
+        return map(
+            lambda x: x.decode(), filter(None, self.server.hmget(key, codes))
+        )
 
     def update_resource_ids(self):
-        """
-        Updates the resource ids contained in the server for all project ids.
-        """
+        """Updates the resource ids contained in the server for all project ids."""
         key = "[PROJECT_IDs]"
         if not self.server.exists(key):
             self.update_project_ids()
@@ -383,10 +402,8 @@ class Manager:
                 key, resource_ids, expire_in=self.ttl["resource_ids"], hmap=True
             )
 
-    def code_exists(self, code, project_id: str = None) -> bool:
-        """
-        Checks if a given code exists in the database for a given project id
-        """
+    def code_exists(self, code, project_id: Optional[str] = None) -> bool:
+        """Checks if a given code exists in the database for a given project id"""
         if code.startswith("EXT:"):
             return (
                 md.ExternalCalendar.query.filter_by(approved=True)
@@ -405,7 +422,7 @@ class Manager:
 
     def get_project_ids(
         self, year: Optional[str] = None
-    ) -> Union[List[Dict[str, str]], str, None]:
+    ) -> Union[list[dict[str, str]], str, None]:
         """
         Returns the project ids. If year is specified, only the project id of this year is returned.
 
@@ -429,9 +446,7 @@ class Manager:
             return None
 
     def update_project_ids(self):
-        """
-        Updates the project ids.
-        """
+        """Updates the project ids."""
         key = "[PROJECT_IDs]"
         project_ids = ade.response_to_project_ids(self.client.get_project_ids())
         self.server.set_value(
@@ -464,14 +479,18 @@ class Manager:
             self.database.session.commit()
 
         else:  # this schedule has already been saved
-            schd = md.Schedule.query.filter(md.Schedule.id == schedule.id).first()
+            schd = md.Schedule.query.filter(
+                md.Schedule.id == schedule.id
+            ).first()
             if schd is None:
                 raise ScheduleNotFountError
             else:
                 schd.update_data(schedule)
 
             if user is not None:
-                user_has_schedule = user.get_schedule(id=schedule.id) is not None
+                user_has_schedule = (
+                    user.get_schedule(id=schedule.id) is not None
+                )
             else:
                 user_has_schedule = False
 
@@ -496,7 +515,7 @@ class Manager:
         else:
             return None
 
-    def get_plots(self) -> List[Tuple[str, dict]]:
+    def get_plots(self) -> list[tuple[str, dict]]:
         """
         Returns all the (key, plot) pairs stored in the server.
         Plots are json dictionary generated using Plotly.
@@ -506,7 +525,9 @@ class Manager:
         """
         plots = []
         for key in self.server.scan_iter(match="*PLOT*"):
-            plots.append({"id": key.decode(), "data": self.server.get_value(key)})
+            plots.append(
+                {"id": key.decode(), "data": self.server.get_value(key)}
+            )
 
         return plots
 
@@ -522,13 +543,15 @@ class Manager:
         if not code.startswith("EXT:"):
             code = "EXT:" + code
 
-        extCal = md.ExternalCalendar.query.filter_by(code=code).first()
-        if extCal is None:  # this external calendar code is not yet saved
+        ext_cal = md.ExternalCalendar.query.filter_by(code=code).first()
+        if ext_cal is None:  # this external calendar code is not yet saved
             md.ExternalCalendar(code, name, url, description, user, approved)
         else:  # this external calendar code is already in DB
             raise ExternalCalendarAlreadyExistsError
 
-    def get_external_calendars(self, user: md.User) -> List[md.ExternalCalendar]:
+    def get_external_calendars(
+        self, user: md.User
+    ) -> list[md.ExternalCalendar]:
         return md.ExternalCalendar.query.filter(
             md.ExternalCalendar.user_id == user.id
         ).all()

@@ -1,12 +1,13 @@
 from collections import defaultdict
+from collections.abc import Iterable
 from itertools import repeat
-from typing import Any, Dict, Iterable, List, Optional, Set, Union
+from typing import Any, Optional, Union
 
 import pandas as pd
 
 from backend.events import AcademicalEvent
 
-View = Union[List[str], Set[str], Dict[int, str]]
+View = Union[list[str], set[str], dict[int, str]]
 
 
 def generate_empty_dataframe():
@@ -35,7 +36,7 @@ class Course:
 
     :Example:
 
-    >>> course = Course('LMECA2732', 'Robotics')
+    >>> course = Course("LMECA2732", "Robotics")
     """
 
     def __init__(
@@ -72,7 +73,7 @@ class Course:
     def __repr__(self) -> str:
         return str(self)
 
-    def add_activity(self, events: List[AcademicalEvent]):
+    def add_activity(self, events: list[AcademicalEvent]):
         """
         Adds an activity to the current course's activities. An activity is a set of events with the same id.
 
@@ -85,12 +86,18 @@ class Course:
         event_type = type(events[0])
         id = events[0].id
         tuples = list(repeat((self.code, event_type, id), len(data)))
-        index = pd.MultiIndex.from_tuples(tuples, names=self.activities.index.name)
-        df = pd.DataFrame(data=data, columns=self.activities.columns, index=index)
+        index = pd.MultiIndex.from_tuples(
+            tuples, names=self.activities.index.name
+        )
+        df = pd.DataFrame(
+            data=data, columns=self.activities.columns, index=index
+        )
         self.activities = pd.concat([self.activities, df])
 
     def set_weights(
-        self, percentage: float = 50, event_type: Optional[AcademicalEvent] = None
+        self,
+        percentage: float = 50,
+        event_type: Optional[AcademicalEvent] = None,
     ):
         """
         Modifies this course's events weight.
@@ -111,7 +118,7 @@ class Course:
             valid = self.activities.index.get_level_values(level) == event_type
             self.activities["event"][valid].apply(f)
 
-    def get_summary(self) -> Dict[str, Set[str]]:
+    def get_summary(self) -> dict[str, set[str]]:
         """
         Returns the summary of all activities in the course.
 
@@ -120,7 +127,9 @@ class Course:
         """
         # TODO: Fix summary for external calendar
         summary = defaultdict(set)
-        ids = self.activities.index.get_level_values("id").sort_values().unique()
+        ids = (
+            self.activities.index.get_level_values("id").sort_values().unique()
+        )
         for id in ids:
             event_type, code = id.split(": ", maxsplit=1)
             summary[event_type].add(code)
@@ -187,7 +196,7 @@ def merge_courses(
     code: str = "0000",
     name: str = "merged",
     weight: float = 1,
-    views: Optional[Dict[str, View]] = None,
+    views: Optional[dict[str, View]] = None,
     **kwargs: Any,
 ) -> Course:
     """
@@ -214,5 +223,7 @@ def merge_courses(
             for course in courses
         )
     else:
-        activities = pd.concat(course.get_activities(**kwargs) for course in courses)
+        activities = pd.concat(
+            course.get_activities(**kwargs) for course in courses
+        )
     return Course(code=code, name=name, weight=weight, activities=activities)

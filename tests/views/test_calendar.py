@@ -49,14 +49,16 @@ def test_get_data(client, manager, user):
     assert data["project_id"] == manager.get_project_ids()
     assert data["current_project_id"] == session["current_schedule"].project_id
     assert data["current_schedule"]["id"] == session["current_schedule"].id
-    assert data["current_schedule"]["label"] == \
-           session["current_schedule"].label
+    assert (
+        data["current_schedule"]["label"] == session["current_schedule"].label
+    )
     assert (
         data["current_schedule"]["color_palette"]
         == session["current_schedule"].color_palette
     )
-    assert data["n_schedules"] == \
-           len(session["current_schedule"].best_schedules)
+    assert data["n_schedules"] == len(
+        session["current_schedule"].best_schedules
+    )
     assert data["events"] == session["current_schedule"].get_events(json=True)
     assert data["codes"] == session["current_schedule"].codes
     assert data["autosave"] == getattr(user, "autosave", False)
@@ -88,7 +90,6 @@ def test_load_schedule(client, jyl):
 @pytest.mark.parametrize("user", ["jyl", "louwi"], indirect=True)
 def test_search_code(client, user):
     """Test the search_code route"""
-
     # Test for "ELME2M"
     rv = client.get(url_for("calendar.search_code", search_key="EL"))
     data = json.loads(rv.data)
@@ -126,7 +127,6 @@ def test_search_code(client, user):
 @pytest.mark.parametrize("user", ["jyl", "louwi"], indirect=True)
 def test_add_code(client, user):
     """Test the add_code route"""
-
     # Test for "ELME2M"
     rv = client.patch(url_for("calendar.add_code", code="ELME2M"))
     data = json.loads(rv.data)
@@ -153,7 +153,6 @@ def test_add_code(client, user):
 @pytest.mark.parametrize("user", ["jyl", "louwi"], indirect=True)
 def test_remove_code(client, user):
     """Test the remove_code route"""
-
     # Test for "LEPL1104"
     rv = client.delete(url_for("calendar.remove_code", code="LEPL1104"))
 
@@ -176,7 +175,6 @@ def test_remove_code(client, user):
 @pytest.mark.parametrize("user", ["jyl", "louwi"], indirect=True)
 def test_get_info(client, manager, user):
     """Test the get_info route"""
-
     # Test with "ELME2M", a "master" course
     rv = client.get(url_for("calendar.get_info", code="ELME2M"))
     data = json.loads(rv.data)
@@ -254,14 +252,14 @@ CUSTOM_RECURRING_EVENT_RRULE_MANDATORY_KEYS = {
     "days",
 }
 
-CUSTOM_RECURRING_EVENT_MANDATORY_KEYS -= \
+CUSTOM_RECURRING_EVENT_MANDATORY_KEYS -= (
     CUSTOM_RECURRING_EVENT_RRULE_MANDATORY_KEYS
+)
 
 
 @pytest.mark.parametrize("user", ["jyl", "louwi"], indirect=True)
 def test_add_custom_event(client, user):
     """Test the add_custom_event route"""
-
     # Test non-recurring event
     rv = client.post(
         url_for("calendar.add_custom_event"),
@@ -487,8 +485,7 @@ def test_get_events(client, user):
     """Test the get_event route"""
     for i in range(5):
         rv = client.get(
-            url_for("calendar.get_events"),
-            query_string=dict(schedule_number=i)
+            url_for("calendar.get_events"), query_string=dict(schedule_number=i)
         )
         data = json.loads(rv.data)
 
@@ -505,8 +502,9 @@ def test_compute(client, user):
     data = json.loads(rv.data)
 
     assert rv.status_code == 200
-    assert data["n_schedules"] == \
-           len(session["current_schedule"].best_schedules)
+    assert data["n_schedules"] == len(
+        session["current_schedule"].best_schedules
+    )
     assert data["events"] == session["current_schedule"].get_events(
         json=True, schedule_number=1
     )

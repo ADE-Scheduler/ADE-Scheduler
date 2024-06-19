@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Copyright (C) 2022-2024 ADE-Scheduler.
 #
@@ -35,9 +34,7 @@ def update_token(name, token, refresh_token=None, access_token=None):
 
 
 def roles_required(*roles):
-    """
-    Decorator which specifies that a user must have all the specified roles to access a view.
-    """
+    """Decorator which specifies that a user must have all the specified roles to access a view."""
 
     def wrapper(fn):
         @wraps(fn)
