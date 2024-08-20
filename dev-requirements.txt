@@ -23,16 +23,16 @@ Flask-HTTPAuth
 Flask-Talisman
 Flask-Caching
 flask_jsglue
-authlib 
+authlib
 requests
-lxml  
-ics 
-geopy 
-pandas 
-jsmin 
-flask-login 
-flask-session  
-flask-mail 
+lxml
+ics
+geopy
+pandas
+jsmin
+flask-login
+flask-session
+flask-mail
 flask-babel
 flask-compress
 

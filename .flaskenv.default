@@ -26,5 +26,3 @@ MAIL_USERNAME = no-email@gmail.com
 MAIL_PASSWORD = some-password
 MAIL_ADMIN = no-email@gmail.com
 MAIL_DISABLE = true
-
-

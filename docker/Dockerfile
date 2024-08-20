@@ -52,4 +52,3 @@ COPY --chown=dev:dev . /ADE-Scheduler/
 # Entrypoint
 COPY ./docker/entrypoint.sh /run/entrypoint.sh
 ENTRYPOINT ["/run/entrypoint.sh"]
-
