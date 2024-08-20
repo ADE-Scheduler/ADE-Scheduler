@@ -8,9 +8,10 @@ FLASK_SALT= GHIJKL
 TEMPLATE_AUTO_RELOAD = True
 
 # DEV
-ADE_URL=https://gw.api.uclouvain.be/token
-ADE_DATA = grant_type=client_credentials
-ADE_AUTHORIZATION = Basic some_secret_key
+ADE_URL = <leave empty>
+ADE_DATA = <leave empty>
+ADE_AUTHORIZATION = <leave empty>
+ADE_FAKE_API = true
 
 # UCLOUVAIN OAUTH2 API
 UCLOUVAIN_CLIENT_ID = some_secret_id
@@ -26,5 +27,4 @@ MAIL_PASSWORD = some-password
 MAIL_ADMIN = no-email@gmail.com
 MAIL_DISABLE = true
 
-# USE FAKE API
-ADE_FAKE_API = false
+
