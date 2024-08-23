@@ -38,9 +38,9 @@ WORKDIR /ADE-Scheduler
 # Copy application code
 COPY --chown=dev:dev . /ADE-Scheduler/
 
-# Install poetry and modify the PATH 
+# Install poetry and modify the PATH
 RUN curl -sSL https://install.python-poetry.org | python3.9 - && \
-    echo 'export PATH="/home/root/.dev/bin:$PATH"' 
+    echo 'export PATH="/home/root/.dev/bin:$PATH"'
 
 # Update & install Node deps (& run Webpack)
 RUN npm install && \
@@ -53,7 +53,7 @@ RUN python3.9 -m venv venv && \
 
 # Execute poetry lock
 RUN source ~/.bashrc && \
-    poetry lock 
+    poetry lock
 
 # Set the entrypoint script
 COPY ./docker/entrypoint.sh /run/entrypoint.sh
