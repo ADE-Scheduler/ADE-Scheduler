@@ -1,54 +1,60 @@
-FROM centos:centos7.9.2009
+# Use Rocky Linux 8 as the base image
+FROM rockylinux:8
 
-# Update repository URLs to point to the CentOS vault
-RUN cd /etc/yum.repos.d/ && \
-    sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-* && \
-    sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-* && \
-    yum -y update
+# Update repository URLs to point to Rocky Linux repositories
+RUN dnf -y update && \
+    dnf -y install epel-release
 
+# Install necessary development tools and dependencies
+RUN dnf -y groupinstall "Development Tools" && \
+    dnf -y install openssl-devel libffi-devel bzip2-devel sqlite-devel ncurses-devel readline-devel wget curl
 
-# Install needed deps for python install
-RUN yum -y groupinstall "Development Tools"
-RUN yum -y install openssl-devel \
-                   libffi-devel \
-                   bzip2-devel \
-                   sqlite-devel \
-                   ncurses-devel \
-                   libreadline5-dev \
-                   wget
+# Install Python 3.9 from source
+RUN wget https://www.python.org/ftp/python/3.9.10/Python-3.9.10.tgz && \
+    tar xvf Python-3.9.10.tgz && \
+    cd Python-3.9.10 && \
+    ./configure --enable-optimizations --enable-loadable-sqlite-extensions && \
+    make altinstall -j && \
+    cd .. && \
+    rm -rf Python-3.9.10*
 
-# Install Python 3.10
-RUN wget https://www.python.org/ftp/python/3.9.10/Python-3.9.10.tgz
-RUN tar xvf Python-3.9.10.tgz
-WORKDIR "/Python-3.9.10"
-RUN ./configure --enable-optimizations \
-                --enable-loadable-sqlite-extensions
-RUN make altinstall -j
-RUN python3.9 -m pip install gnureadline
-WORKDIR "/"
-
-# Install Redis
-RUN yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
-RUN yum -y --enablerepo=remi install redis
-
+# Install Redis from the official repository
+RUN dnf -y install https://rpms.remirepo.net/enterprise/remi-release-8.rpm && \
+    dnf -y --enablerepo=remi install redis
 
 # Install PostgreSQL
-RUN yum -y install postgresql-server postgresql-contrib
-# TODO: make postgres work to get the same env as the prod server ?
+RUN dnf -y install postgresql-server postgresql-contrib
 
-# Install Node.js
-RUN curl -sL https://rpm.nodesource.com/setup_16.x | bash -
-RUN yum -y install nodejs
+# Install Node.js 16.x
+RUN curl -sL https://rpm.nodesource.com/setup_16.x | bash - && \
+    dnf -y install nodejs
 
-# Add dev user
-RUN useradd -ms /bin/bash dev
+# Create a non-root user for running the application
+RUN useradd -m dev
 USER dev
 
 WORKDIR /ADE-Scheduler
 
-# Copy the application code
+# Copy application code
 COPY --chown=dev:dev . /ADE-Scheduler/
 
-# Entrypoint
+# Install poetry and modify the PATH 
+RUN curl -sSL https://install.python-poetry.org | python3.9 - && \
+    echo 'export PATH="/home/root/.dev/bin:$PATH"' 
+
+# Update & install Node deps (& run Webpack)
+RUN npm install && \
+    npx webpack --progress --watch --no-stats &
+
+# Update & install Python deps
+RUN python3.9 -m venv venv && \
+    source /ADE-Scheduler/venv/bin/activate && \
+    /ADE-Scheduler/venv/bin/python3.9 -m pip install --upgrade pip
+
+# Execute poetry lock
+RUN source ~/.bashrc && \
+    poetry lock 
+
+# Set the entrypoint script
 COPY ./docker/entrypoint.sh /run/entrypoint.sh
 ENTRYPOINT ["/run/entrypoint.sh"]

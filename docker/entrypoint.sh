@@ -3,24 +3,12 @@
 
 cd /ADE-Scheduler
 
-# Update & install Node deps (& run Webpack)
-npm install
-echo "Running Webpack..."
-npx webpack --progress --watch --no-stats &
-
-# Update & install Python deps
-if [ ! -d "venv" ]; then
-    echo "Installing virtualenv..."
-    python3.9 -m venv venv
-fi
+# venv environment
 source /ADE-Scheduler/venv/bin/activate
-/ADE-Scheduler/venv/bin/python3.9 -m pip install --upgrade pip
 
-
-#Install requirements
-pip install urllib3==1.26.6
-pip install --no-cache-dir -r /ADE-Scheduler/dev-requirements.txt
-
+# Run poetry to install modules from pyproject.toml
+source ~/.bashrc
+poetry install
 
 # Create .flaskenv from default
 if [ ! -f ".flaskenv" ]; then
