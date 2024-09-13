@@ -2,11 +2,11 @@
   <img src="static/img/ade_scheduler_icon.png" width="200" height="200"> </img>
 </p>
 <p align="center">
-    <img alt="Website" src="https://img.shields.io/website?down_color=red&down_message=offline&label=Status%20&style=for-the-badge&up_color=green&up_message=online&url=https%3A%2F%2Fade-scheduler.info.ucl.ac.be">
+    <img alt="Website" src="https://img.shields.io/website?down_color=red&down_message=offline&label=Status%20&style=for-the-badge&up_color=green&up_message=online&url=https%3A%2F%2Fmonhoraire.uclouvain.be">
 </p>
 <p align="center">
-<img src="https://img.shields.io/endpoint?url=https://ade-scheduler.info.ucl.ac.be/api/shield/user">
-<img src="https://img.shields.io/endpoint?url=https://ade-scheduler.info.ucl.ac.be/api/shield/schedule">
+<img src="https://img.shields.io/endpoint?url=https://monhoraire.uclouvain.be/api/shield/user">
+<img src="https://img.shields.io/endpoint?url=https://monhoraire.uclouvain.be/api/shield/schedule">
 </p>
 
 # ADE Scheduler: a scheduling tool made for humans
@@ -16,14 +16,14 @@
 ### Project creators
 
 - [Eertmans Jérome](https://www.linkedin.com/in/j%C3%A9rome-eertmans-130ab1130/) (active maintainer)
-- [Navarre Louis](https://www.linkedin.com/in/louis-navarre-36b78b143/)
+- [Navarre Louis](https://www.linkedin.com/in/louis-navarre-36b78b143/) (active maintainer until ~2021)
 - [Poncelet Gilles](https://www.linkedin.com/in/gilles-poncelet-020442195/) (active maintainer)
 
 We are three former students from the Ecole Polytechnique de Louvain (EPL) and were starting our first master year at the start of the project.
 
 ### Why such a tool ?
 
-The currently used scheduling tool used by the UCLouvain, [ADE](http://horaire.uclouvain.be/direct/), lacks an intuitive interface and general usability. Therefore, we decided to create ADE-Scheduler as a "wrapper" around this tool to make it more intuitive, nice and complete.
+Until our tool became the official tool used by UCLouvain, the previously used scheduling tool, [ADE](http://horaire.uclouvain.be/direct/), lacked an intuitive interface and general usability. Therefore, we decided to create ADE-Scheduler as a "wrapper" around this tool to make it more intuitive, nice and complete.
 
 Before that, we were using the excellent [ADE2ICS](https://github.com/cdamman/UCL2ICS) made by Corentin Damman which allowed to create subscription links where one could select its events (TPs, CMs, etc). ADE-Scheduler is therefore an improvement of this tool.
 
@@ -37,6 +37,7 @@ Before that, we were using the excellent [ADE2ICS](https://github.com/cdamman/UC
 - **2021 - December**: 7000+ users
 - **2022 - January**: moving auth. system to UCLouvain OAuth, thereby resetting the number of users to 0 on January 29nth, 2022
 - **2022 - Summer**: first major contribution from students to the ADE Scheduler repository
+- **2204 - September**: ADE Scheduler became the **official UCLouvain scheduling tool** and changed its name to "Mon Horaire"!
 
 ### How does it work ?
 
@@ -75,6 +76,7 @@ speaks for itself:
 But an intuitive design is not the only advantage of ADE Scheduler, it also
 comes with several useful tools which ADE does not have:
 
+- [x] automatically load courses based on classes in your enrolled in;
 - [x] black-listing some events in order to have a clean schedule
 - [x] easily viewing multiple courses
 - [x] handling multiple schedules
@@ -90,7 +92,7 @@ comes with several useful tools which ADE does not have:
 
 ### Documentation
 
-The website's documentation is available on the [help page](https://ade-scheduler.info.ucl.ac.be/help).
+The website's documentation is available on the [help page](monhoraire.uclouvain.be/help).
 
 ### Future improvements
 
