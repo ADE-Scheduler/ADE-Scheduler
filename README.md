@@ -112,4 +112,6 @@ We are open to any suggestions !
 This application being open source, everyone is more than welcome to contribute in any way !
 To see more details about our contributing guidelines, please refer to [contributing](/CONTRIBUTING.md).
 
-Any suggestion, idea or bugs are much appreciated, and you can contact us at all times either by [mail](mailto:adescheduler@gmail.com) or directly on this repository.
+Any suggestion, idea or bugs are much appreciated,
+and you can contact us at all times via the
+[discussions](https://github.com/ADE-Scheduler/ADE-Scheduler/discussions) page.
