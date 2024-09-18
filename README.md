@@ -16,10 +16,14 @@
 ### Project creators
 
 - [Eertmans Jérome](https://www.linkedin.com/in/j%C3%A9rome-eertmans-130ab1130/) (active maintainer)
-- [Navarre Louis](https://www.linkedin.com/in/louis-navarre-36b78b143/) (active maintainer until ~2021)
+- [Navarre Louis](https://www.linkedin.com/in/louis-navarre-36b78b143/) (maintainer until ~2021)
 - [Poncelet Gilles](https://www.linkedin.com/in/gilles-poncelet-020442195/) (active maintainer)
 
 We are three former students from the Ecole Polytechnique de Louvain (EPL) and were starting our first master year at the start of the project.
+
+### Project maintainers
+
+- Laurent Dubois ([@lauren-d](https://github.com/lauren-d))
 
 ### Why such a tool ?
 
@@ -108,4 +112,6 @@ We are open to any suggestions !
 This application being open source, everyone is more than welcome to contribute in any way !
 To see more details about our contributing guidelines, please refer to [contributing](/CONTRIBUTING.md).
 
-Any suggestion, idea or bugs are much appreciated, and you can contact us at all times either by [mail](mailto:adescheduler@gmail.com) or directly on this repository.
+Any suggestion, idea or bugs are much appreciated,
+and you can contact us at all times via the
+[discussions](https://github.com/ADE-Scheduler/ADE-Scheduler/discussions) page.
