@@ -41,7 +41,7 @@ Before that, we were using the excellent [ADE2ICS](https://github.com/cdamman/UC
 - **2021 - December**: 7000+ users
 - **2022 - January**: moving auth. system to UCLouvain OAuth, thereby resetting the number of users to 0 on January 29nth, 2022
 - **2022 - Summer**: first major contribution from students to the ADE Scheduler repository
-- **2204 - September**: ADE Scheduler became the **official UCLouvain scheduling tool** and changed its name to "Mon Horaire"!
+- **2024 - September**: ADE Scheduler became the **official UCLouvain scheduling tool** and changed its name to "Mon Horaire"!
 
 ### How does it work ?
 
