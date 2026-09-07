@@ -408,7 +408,7 @@ def response_to_resources(resources_response: requests.Response) -> pd.DataFrame
 
 
 def response_to_course_resources(
-    course_resources_response: Tuple[requests.Response, requests.Response]
+    course_resources_response: Tuple[requests.Response, requests.Response],
 ) -> pd.DataFrame:
     """
     Extracts an API response into an dataframe containing all course resources.
