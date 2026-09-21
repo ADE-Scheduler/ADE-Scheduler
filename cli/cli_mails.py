@@ -57,9 +57,10 @@ def send(subject, body, recipients, filename, html, all_users):
             abort=True,
         )
 
-        with app.config["MAIL_MANAGER"].connect() as conn, click.progressbar(
-            emails
-        ) as bar:
+        with (
+            app.config["MAIL_MANAGER"].connect() as conn,
+            click.progressbar(emails) as bar,
+        ):
             for email in bar:
                 time.sleep(2.5)  # Required for no-reply@uclouvain.be
                 msg.recipients = [email]
