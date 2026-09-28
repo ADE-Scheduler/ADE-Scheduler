@@ -2,7 +2,9 @@ import json
 from datetime import datetime
 from typing import Any
 
-from flask import Blueprint
+from flask import (
+    Blueprint,
+)
 from flask import current_app as app
 from flask import (
     g,
@@ -113,12 +115,14 @@ def get_data():
                 "n_schedules": len(session["current_schedule"].best_schedules),
                 "events": session["current_schedule"].get_events(json=True),
                 "codes": session["current_schedule"].codes,
-                "schedules": list()
-                if not current_user.is_authenticated
-                else list(
-                    map(
-                        lambda s: {"id": s.id, "label": gettext(s.data.label)},
-                        current_user.get_schedules(),
+                "schedules": (
+                    list()
+                    if not current_user.is_authenticated
+                    else list(
+                        map(
+                            lambda s: {"id": s.id, "label": gettext(s.data.label)},
+                            current_user.get_schedules(),
+                        )
                     )
                 ),
                 "autosave": getattr(current_user, "autosave", False),
@@ -436,14 +440,16 @@ def compute():
     return (
         jsonify(
             {
-                "n_schedules": len(session["current_schedule"].best_schedules)
-                if bests is not None
-                else 0,
-                "events": session["current_schedule"].get_events(
-                    json=True, schedule_number=1
-                )
-                if bests is not None
-                else list(),
+                "n_schedules": (
+                    len(session["current_schedule"].best_schedules)
+                    if bests is not None
+                    else 0
+                ),
+                "events": (
+                    session["current_schedule"].get_events(json=True, schedule_number=1)
+                    if bests is not None
+                    else list()
+                ),
                 "selected_schedule": 1 if bests is not None else 0,
             }
         ),
