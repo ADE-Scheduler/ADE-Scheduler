@@ -1,6 +1,7 @@
 """
 Provides utils to store and retrieve cookies, as well as a secure mechanism to score oauth tokens in cookies.
 """
+
 import json
 from typing import Any, Optional
 
