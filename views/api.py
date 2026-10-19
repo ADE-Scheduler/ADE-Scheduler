@@ -2,9 +2,8 @@ import json
 from distutils.util import strtobool
 from typing import Any
 
-from flask import Blueprint
+from flask import Blueprint, jsonify, redirect, request, session, url_for
 from flask import current_app as app
-from flask import jsonify, redirect, request, session, url_for
 
 import backend.models as md
 import backend.schedules as schd
