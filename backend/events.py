@@ -260,6 +260,7 @@ class AcademicalEvent(CustomEvent):
     """
 
     KEYWORDS = ()
+    professor = ""  # Default for events cached before this attribute existed
 
     def __init__(
         self,
@@ -289,6 +290,7 @@ class AcademicalEvent(CustomEvent):
         self.id = f"{prefix}{id}"
         self.code = code
         self.event_code = event_code
+        self.professor = str(professor)
         self.classrooms = classrooms
         time_slot = (
             f"{pretty_hour_formatter(self.begin)} - "
@@ -352,6 +354,8 @@ class AcademicalEvent(CustomEvent):
                 "description": self.description,
                 "code": self.code,
                 "event_code": self.event_code,
+                "professor": self.professor,
+                "note": self.note or "",
             }
         )
 
