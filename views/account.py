@@ -3,9 +3,8 @@ from typing import Any
 from urllib.parse import urlparse
 
 import requests
-from flask import Blueprint
+from flask import Blueprint, jsonify, render_template, request, session
 from flask import current_app as app
-from flask import jsonify, render_template, request, session
 from flask_babel import LazyString, gettext
 from flask_login import current_user, login_required
 from ics import Calendar
