@@ -1,8 +1,7 @@
 from datetime import datetime
 
-from flask import Blueprint
+from flask import Blueprint, flash, redirect, request, session, url_for
 from flask import current_app as app
-from flask import flash, redirect, request, session, url_for
 from flask_babel import gettext
 from flask_login import login_user, logout_user
 from requests.exceptions import HTTPError
