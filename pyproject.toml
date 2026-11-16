@@ -18,9 +18,9 @@ description = ""
 license = "MIT"
 name = "ADE Scheduler"
 packages = [
-  {include = "backend"},
-  {include = "cli"},
-  {include = "views"}
+  { include = "backend" },
+  { include = "cli" },
+  { include = "views" }
 ]
 readme = "README.md"
 version = "0.1.0"
